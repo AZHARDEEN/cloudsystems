@@ -1,0 +1,108 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<weblogic-ejb-jar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.bea.com/ns/weblogic/weblogic-ejb-jar http://www.bea.com/ns/weblogic/weblogic-ejb-jar/1.0/weblogic-ejb-jar.xsd" xmlns="http://www.bea.com/ns/weblogic/weblogic-ejb-jar">
+
+    <weblogic-enterprise-bean>
+        <ejb-name>RegisterFacadeSession</ejb-name>
+            <stateless-session-descriptor>
+                <pool>
+                    <max-beans-in-free-pool>100</max-beans-in-free-pool>
+                    <initial-beans-in-free-pool>50</initial-beans-in-free-pool>
+                </pool>
+            </stateless-session-descriptor>
+        <transaction-descriptor>
+            <trans-timeout-seconds>60</trans-timeout-seconds>
+        </transaction-descriptor>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    
+    <weblogic-enterprise-bean>
+        <ejb-name>AddressTypeSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    
+    <weblogic-enterprise-bean>
+        <ejb-name>CountrySession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>TitleSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>BasicTableSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>StateSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+                
+    <weblogic-enterprise-bean>
+        <ejb-name>UserTypeSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>RegionSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>UserStatusSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>ContactTypeSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+                   
+    <weblogic-enterprise-bean>
+        <ejb-name>LoginSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+ 
+    <weblogic-enterprise-bean>
+        <ejb-name>TableManagerSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>PersonSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>GenderSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>CivilStateSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+ 
+    <weblogic-enterprise-bean>
+        <ejb-name>DocumentTypeSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>CitySession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>UserFacadeSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>UserSession</ejb-name>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    
+</weblogic-ejb-jar>

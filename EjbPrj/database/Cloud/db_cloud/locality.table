@@ -1,0 +1,975 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<table xmlns="http://xmlns.oracle.com/jdeveloper/1111/offlinedb">
+  <ID class="oracle.javatools.db.IdentifierBasedID">
+    <name>locality</name>
+    <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+    <schemaName>db_cloud</schemaName>
+    <type>TABLE</type>
+  </ID>
+  <name>locality</name>
+  <columns>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>loc_id_in</name>
+        <identifier class="java.lang.String">106b57a4-a8c0-4a72-a96c-947a83391f04</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>loc_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">8e421601-6f80-404e-b195-fe9fbc137fae</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>loc_id_in</name>
+            <identifier class="java.lang.String">106b57a4-a8c0-4a72-a96c-947a83391f04</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>locality</name>
+              <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>loc_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>locality</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>loc_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>loc_county_id</name>
+        <identifier class="java.lang.String">d832a0d6-e43e-4340-b42c-ffaabf2a3dba</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>loc_county_id</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">0653f90e-0245-4db5-8964-6d9fc523fe5e</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>loc_county_id</name>
+            <identifier class="java.lang.String">d832a0d6-e43e-4340-b42c-ffaabf2a3dba</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>locality</name>
+              <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>loc_county_id</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>locality</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>loc_county_id</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>loc_name_ch</name>
+        <identifier class="java.lang.String">b54ad7ca-6f81-4996-9be2-88e6a710a8c9</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>loc_name_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">608e7c65-de4a-4386-a326-38c360a5f3ca</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>loc_name_ch</name>
+            <identifier class="java.lang.String">b54ad7ca-6f81-4996-9be2-88e6a710a8c9</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>locality</name>
+              <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">128</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>loc_name_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>locality</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>loc_name_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>sta_id_in</name>
+        <identifier class="java.lang.String">2e5d8550-a01f-46be-8653-ad22c9b9db09</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>sta_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">51980802-d03b-46fc-a21a-fcca83ebac23</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>sta_id_in</name>
+            <identifier class="java.lang.String">2e5d8550-a01f-46be-8653-ad22c9b9db09</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>locality</name>
+              <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>sta_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>locality</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>sta_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>loc_state_capital_bt</name>
+        <identifier class="java.lang.String">8bae33b6-a01e-459a-afda-b675417e76c8</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>loc_state_capital_bt</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">aadc5386-79ec-4ef2-9b85-47690a7307ee</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>loc_state_capital_bt</name>
+            <identifier class="java.lang.String">8bae33b6-a01e-459a-afda-b675417e76c8</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>locality</name>
+              <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>bool</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>loc_state_capital_bt</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>locality</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <default class="java.lang.String">false</default>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>loc_state_capital_bt</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>loc_country_capital_bt</name>
+        <identifier class="java.lang.String">6cee0202-32f0-451f-8352-2ab782e0d8cf</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>loc_country_capital_bt</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">9672acf0-dad5-4140-be01-9d87999bb5c3</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>loc_country_capital_bt</name>
+            <identifier class="java.lang.String">6cee0202-32f0-451f-8352-2ab782e0d8cf</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>locality</name>
+              <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>bool</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>loc_country_capital_bt</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>locality</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <default class="java.lang.String">false</default>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>loc_country_capital_bt</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>loc_alt_name_ch</name>
+        <identifier class="java.lang.String">11174831-2989-42eb-8160-56d889efab31</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>loc_alt_name_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">7210011f-f611-416d-ac4f-5253bf4b1cff</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>loc_alt_name_ch</name>
+            <identifier class="java.lang.String">11174831-2989-42eb-8160-56d889efab31</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>locality</name>
+              <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">128</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>loc_alt_name_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>locality</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>loc_alt_name_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>ctr_id_in</name>
+        <identifier class="java.lang.String">1e1553eb-100e-4143-898c-8ddb89db211a</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>ctr_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">eba46f15-6059-4978-9081-0e8864982598</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>ctr_id_in</name>
+            <identifier class="java.lang.String">1e1553eb-100e-4143-898c-8ddb89db211a</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>locality</name>
+              <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>ctr_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>locality</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>ctr_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>reg_id_in</name>
+        <identifier class="java.lang.String">f0c54540-aa46-406b-bdfe-fe50796db348</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>reg_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">b8f62bbd-2940-4edd-8376-d782e780f626</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>reg_id_in</name>
+            <identifier class="java.lang.String">f0c54540-aa46-406b-bdfe-fe50796db348</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>locality</name>
+              <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>reg_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>locality</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>reg_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+  </columns>
+  <constraints>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>locality_ctr_id_in_fkey</name>
+        <identifier class="java.lang.String">5954033c-7987-406c-a1e4-a8a1a2267335</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>locality_ctr_id_in_fkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>ctr_id_in</name>
+          <identifier class="java.lang.String">1e1553eb-100e-4143-898c-8ddb89db211a</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>locality</name>
+            <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>locality_ctr_id_in_fkey</name>
+            <childObjectNames>
+              <childObjectName>ctr_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.ReferenceID">
+        <name>country_pkey</name>
+        <childObjectNames>
+          <childObjectName>ctr_id_in</childObjectName>
+        </childObjectNames>
+        <parent class="oracle.javatools.db.ReferenceID">
+          <name>country</name>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <subType>PKConstraint</subType>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>locality_loc_county_id_fkey</name>
+        <identifier class="java.lang.String">a532d5fb-5068-49fb-a148-208d12cbc0fc</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>locality_loc_county_id_fkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>loc_county_id</name>
+          <identifier class="java.lang.String">d832a0d6-e43e-4340-b42c-ffaabf2a3dba</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>locality</name>
+            <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>locality_loc_county_id_fkey</name>
+            <childObjectNames>
+              <childObjectName>loc_county_id</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>locality_pkey</name>
+        <identifier class="java.lang.String">13c70638-f9a4-4660-ac9a-1dfb079d1d29</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>locality_reg_id_in_fkey</name>
+        <identifier class="java.lang.String">d967b107-cd23-4373-bf9e-7be52b0907a2</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>locality_reg_id_in_fkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>reg_id_in</name>
+          <identifier class="java.lang.String">f0c54540-aa46-406b-bdfe-fe50796db348</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>locality</name>
+            <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>locality_reg_id_in_fkey</name>
+            <childObjectNames>
+              <childObjectName>reg_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.ReferenceID">
+        <name>region_pkey</name>
+        <childObjectNames>
+          <childObjectName>reg_id_in</childObjectName>
+        </childObjectNames>
+        <parent class="oracle.javatools.db.ReferenceID">
+          <name>region</name>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <subType>PKConstraint</subType>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>locality_sta_id_in_fkey</name>
+        <identifier class="java.lang.String">0a32cf1f-952a-4327-b044-e0bf940b741b</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>locality_sta_id_in_fkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>sta_id_in</name>
+          <identifier class="java.lang.String">2e5d8550-a01f-46be-8653-ad22c9b9db09</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>locality</name>
+            <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>locality_sta_id_in_fkey</name>
+            <childObjectNames>
+              <childObjectName>sta_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>state_pkey</name>
+        <identifier class="java.lang.String">19198d1d-e49d-487b-830f-291c7c82bb9d</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>state</name>
+          <identifier class="java.lang.String">b7b78ada-f93c-4b6f-81cc-c19d30e5fa88</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>locality_pkey</name>
+        <identifier class="java.lang.String">13c70638-f9a4-4660-ac9a-1dfb079d1d29</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>locality</name>
+          <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>locality_pkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>loc_id_in</name>
+          <identifier class="java.lang.String">106b57a4-a8c0-4a72-a96c-947a83391f04</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>locality</name>
+            <identifier class="java.lang.String">325999c4-615c-4617-a6f7-67982454001e</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>locality_pkey</name>
+            <childObjectNames>
+              <childObjectName>loc_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>locality</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>PKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+    </constraint>
+  </constraints>
+  <properties>
+    <entry>
+      <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+      <value class="oracle.javatools.db.ReferenceID">
+        <name>locality</name>
+        <schemaName>db_cloud</schemaName>
+        <type>TABLE</type>
+      </value>
+    </entry>
+    <entry>
+      <key>TableType</key>
+      <value class="oracle.javatools.db.Table$TableType">NORMAL</value>
+    </entry>
+  </properties>
+  <schema>
+    <ID class="oracle.javatools.db.IdentifierBasedID">
+      <name>db_cloud</name>
+      <identifier class="java.lang.String">52ebbce5-f853-4ea1-86f7-42956ca419c7</identifier>
+      <schemaName>db_cloud</schemaName>
+      <type>SCHEMA</type>
+    </ID>
+    <name>db_cloud</name>
+  </schema>
+</table>

@@ -1,0 +1,302 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<table xmlns="http://xmlns.oracle.com/jdeveloper/1111/offlinedb">
+  <ID class="oracle.javatools.db.IdentifierBasedID">
+    <name>gender</name>
+    <identifier class="java.lang.String">7d8cc29e-e04f-4835-afdb-736a9bdef7bd</identifier>
+    <schemaName>db_cloud</schemaName>
+    <type>TABLE</type>
+  </ID>
+  <name>gender</name>
+  <columns>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>gnd_id_in</name>
+        <identifier class="java.lang.String">838641d5-ecae-4af2-a584-da91b1b7b89f</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>gender</name>
+          <identifier class="java.lang.String">7d8cc29e-e04f-4835-afdb-736a9bdef7bd</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>gnd_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">edf1ca82-6df3-47f7-92ae-4972c22f9b2b</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>gnd_id_in</name>
+            <identifier class="java.lang.String">838641d5-ecae-4af2-a584-da91b1b7b89f</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>gender</name>
+              <identifier class="java.lang.String">7d8cc29e-e04f-4835-afdb-736a9bdef7bd</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>gnd_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>gender</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>gnd_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>gender</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>gnd_description_ch</name>
+        <identifier class="java.lang.String">85e6cdb6-fa78-4987-aebd-1ca148216f5f</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>gender</name>
+          <identifier class="java.lang.String">7d8cc29e-e04f-4835-afdb-736a9bdef7bd</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>gnd_description_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">b4a55efb-dcd7-4dff-95c1-90af591916e0</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>gnd_description_ch</name>
+            <identifier class="java.lang.String">85e6cdb6-fa78-4987-aebd-1ca148216f5f</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>gender</name>
+              <identifier class="java.lang.String">7d8cc29e-e04f-4835-afdb-736a9bdef7bd</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">32</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>gnd_description_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>gender</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>gnd_description_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>gender</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>gnd_default_bt</name>
+        <identifier class="java.lang.String">1eb9407c-b2ba-4d10-9863-e230a55778d5</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>gender</name>
+          <identifier class="java.lang.String">7d8cc29e-e04f-4835-afdb-736a9bdef7bd</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>gnd_default_bt</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">8ac4b53e-53c6-4dc5-8fa4-da1e2d8181ab</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>gnd_default_bt</name>
+            <identifier class="java.lang.String">1eb9407c-b2ba-4d10-9863-e230a55778d5</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>gender</name>
+              <identifier class="java.lang.String">7d8cc29e-e04f-4835-afdb-736a9bdef7bd</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>bool</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>gnd_default_bt</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>gender</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <default class="java.lang.String">false</default>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>gnd_default_bt</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>gender</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+  </columns>
+  <constraints>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>gender_pkey</name>
+        <identifier class="java.lang.String">e82f44ba-b49b-4aeb-98e5-eee7b1503dad</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>gender</name>
+          <identifier class="java.lang.String">7d8cc29e-e04f-4835-afdb-736a9bdef7bd</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>gender_pkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>gnd_id_in</name>
+          <identifier class="java.lang.String">838641d5-ecae-4af2-a584-da91b1b7b89f</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>gender</name>
+            <identifier class="java.lang.String">7d8cc29e-e04f-4835-afdb-736a9bdef7bd</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>gender_pkey</name>
+            <childObjectNames>
+              <childObjectName>gnd_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>gender</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>PKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+    </constraint>
+  </constraints>
+  <properties>
+    <entry>
+      <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+      <value class="oracle.javatools.db.ReferenceID">
+        <name>gender</name>
+        <schemaName>db_cloud</schemaName>
+        <type>TABLE</type>
+      </value>
+    </entry>
+    <entry>
+      <key>TableType</key>
+      <value class="oracle.javatools.db.Table$TableType">NORMAL</value>
+    </entry>
+  </properties>
+  <schema>
+    <ID class="oracle.javatools.db.IdentifierBasedID">
+      <name>db_cloud</name>
+      <identifier class="java.lang.String">52ebbce5-f853-4ea1-86f7-42956ca419c7</identifier>
+      <schemaName>db_cloud</schemaName>
+      <type>SCHEMA</type>
+    </ID>
+    <name>db_cloud</name>
+  </schema>
+</table>

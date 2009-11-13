@@ -1,0 +1,10 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<schema xmlns="http://xmlns.oracle.com/jdeveloper/1111/offlinedb">
+  <ID class="oracle.javatools.db.IdentifierBasedID">
+    <name>db_cloud</name>
+    <identifier class="java.lang.String">52ebbce5-f853-4ea1-86f7-42956ca419c7</identifier>
+    <schemaName>db_cloud</schemaName>
+    <type>SCHEMA</type>
+  </ID>
+  <name>db_cloud</name>
+</schema>

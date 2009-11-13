@@ -1,0 +1,362 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<table xmlns="http://xmlns.oracle.com/jdeveloper/1111/offlinedb">
+  <ID class="oracle.javatools.db.IdentifierBasedID">
+    <name>system_message</name>
+    <identifier class="java.lang.String">562d5887-91c2-45c7-8268-8926a1d260cb</identifier>
+    <schemaName>db_cloud</schemaName>
+    <type>TABLE</type>
+  </ID>
+  <name>system_message</name>
+  <columns>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>smg_ig_in</name>
+        <identifier class="java.lang.String">a8bb36bf-dfde-49a7-9b8e-dad921a6d0c8</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>system_message</name>
+          <identifier class="java.lang.String">562d5887-91c2-45c7-8268-8926a1d260cb</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>smg_ig_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">f8aa37e0-25c4-43d4-a1bf-a6e94524f40c</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>smg_ig_in</name>
+            <identifier class="java.lang.String">a8bb36bf-dfde-49a7-9b8e-dad921a6d0c8</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>system_message</name>
+              <identifier class="java.lang.String">562d5887-91c2-45c7-8268-8926a1d260cb</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>smg_ig_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>system_message</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>smg_ig_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>system_message</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>smg_message_ch</name>
+        <identifier class="java.lang.String">46878788-f8e3-4799-bc44-ba92eaafd222</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>system_message</name>
+          <identifier class="java.lang.String">562d5887-91c2-45c7-8268-8926a1d260cb</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>smg_message_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">d3fc54fa-262f-4b10-99d8-b3f043a95881</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>smg_message_ch</name>
+            <identifier class="java.lang.String">46878788-f8e3-4799-bc44-ba92eaafd222</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>system_message</name>
+              <identifier class="java.lang.String">562d5887-91c2-45c7-8268-8926a1d260cb</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">256</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>smg_message_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>system_message</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>smg_message_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>system_message</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>smt_id_in</name>
+        <identifier class="java.lang.String">a79b92d4-f5c1-4cb7-9fe5-519bff7f35cf</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>system_message</name>
+          <identifier class="java.lang.String">562d5887-91c2-45c7-8268-8926a1d260cb</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>smt_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">efb0089a-6f8b-4193-945e-f9cbd9cf1fd3</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>smt_id_in</name>
+            <identifier class="java.lang.String">a79b92d4-f5c1-4cb7-9fe5-519bff7f35cf</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>system_message</name>
+              <identifier class="java.lang.String">562d5887-91c2-45c7-8268-8926a1d260cb</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>bpchar</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>smt_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>system_message</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>smt_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>system_message</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+  </columns>
+  <constraints>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>system_message_smt_id_in_fkey</name>
+        <identifier class="java.lang.String">8d35bc13-831d-4121-bd48-9b3b0bb35938</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>system_message</name>
+          <identifier class="java.lang.String">562d5887-91c2-45c7-8268-8926a1d260cb</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>system_message_smt_id_in_fkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>smt_id_in</name>
+          <identifier class="java.lang.String">a79b92d4-f5c1-4cb7-9fe5-519bff7f35cf</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>system_message</name>
+            <identifier class="java.lang.String">562d5887-91c2-45c7-8268-8926a1d260cb</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>system_message_smt_id_in_fkey</name>
+            <childObjectNames>
+              <childObjectName>smt_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>system_message</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>system_message_type_pkey</name>
+        <identifier class="java.lang.String">cde66c39-7df8-4a1f-bf4d-d8cc3f29dc20</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>system_message_type</name>
+          <identifier class="java.lang.String">eaf45224-fee4-4457-948d-02ac7fc9877f</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>system_message_pkey</name>
+        <identifier class="java.lang.String">fae452d0-99b5-42c3-805f-b90e605258ef</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>system_message</name>
+          <identifier class="java.lang.String">562d5887-91c2-45c7-8268-8926a1d260cb</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>system_message_pkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>smg_ig_in</name>
+          <identifier class="java.lang.String">a8bb36bf-dfde-49a7-9b8e-dad921a6d0c8</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>system_message</name>
+            <identifier class="java.lang.String">562d5887-91c2-45c7-8268-8926a1d260cb</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>system_message_pkey</name>
+            <childObjectNames>
+              <childObjectName>smg_ig_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>system_message</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>PKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+    </constraint>
+  </constraints>
+  <properties>
+    <entry>
+      <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+      <value class="oracle.javatools.db.ReferenceID">
+        <name>system_message</name>
+        <schemaName>db_cloud</schemaName>
+        <type>TABLE</type>
+      </value>
+    </entry>
+    <entry>
+      <key>TableType</key>
+      <value class="oracle.javatools.db.Table$TableType">NORMAL</value>
+    </entry>
+  </properties>
+  <schema>
+    <ID class="oracle.javatools.db.IdentifierBasedID">
+      <name>db_cloud</name>
+      <identifier class="java.lang.String">52ebbce5-f853-4ea1-86f7-42956ca419c7</identifier>
+      <schemaName>db_cloud</schemaName>
+      <type>SCHEMA</type>
+    </ID>
+    <name>db_cloud</name>
+  </schema>
+</table>
