@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<xmi:XMI xmi:version='2.1' xmlns:xmi='http://schema.omg.org/spec/XMI/2.1' xmlns:uml='http://schema.omg.org/spec/UML/2.1.1/uml.xml'>
+ <documentation exporter='Oracle JDeveloper' exporterVersion='11.1.1.1.0'/>
+ <uml:UseCase xmi:uuid='urn:uuid:08c45926-4d2b-4a0e-ac64-7f5af20c76aa'
+   isAbstract='false'
+   isLeaf='false'
+   name='Realizar Cadastro Básico no Sistema'
+   visibility='public'>
+  <extensionPoint xmi:uuid='urn:uuid:6651c96b-13d4-46ff-959d-2248d292c1e6'
+    isLeaf='false'
+    name='DefaultExtensionPoint'/>
+ </uml:UseCase>
+</xmi:XMI>
