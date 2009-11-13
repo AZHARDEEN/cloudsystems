@@ -1,0 +1,45 @@
+<grid fixedLayout="true" width="100%">
+    <columns>
+        <column width="90px" />
+        <column/>
+    </columns>
+    <rows>
+        <row>
+            <label value="Sexo" width="90px" />
+            <!--
+            <combobox id="gender" readonly="true" 
+                use="br.com.mcampos.web.resources.GenderComboBox"
+                onCreate="gender.setChildCombo ( title );"
+                onSelect="gender.loadTitles( );" >
+            </combobox>
+            -->
+            <combobox id="gender" readonly="true" >
+            </combobox>
+        </row>
+        <row>
+            <label value="Tratamento" width="90px" />
+            <combobox id="title" readonly="true" >
+            </combobox>
+        </row>
+        <row>
+            <label value="Estado Civil" width="90px" />
+            <combobox id="maritalStatus" readonly="true" constraint="no empty" >
+            </combobox>
+        </row>
+        <row>
+            <label value="Data de Nascimento" width="90px" />
+            <hbox >
+                <datebox id="birthdate" constraint="no future, no empty, no today" format="dd/MM/yyyy" />
+                <label value = "DD/MM/YYYY"  />
+            </hbox>
+        </row>
+        <row>
+            <label value="Nome do Pai" width="90px" />
+            <textbox id="fatherName" width="99%" constraint="no empty" maxlength="255"/>
+        </row>
+        <row>
+            <label value="Nome da Mãe" width="90px" />
+            <textbox id="motherName" width="99%" constraint="no empty" maxlength="255"/>
+        </row>
+    </rows>
+</grid>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" >
+    <div id="rootParent" apply="br.com.mcampos.controller.RegisterController" align="center" width="100%">
+        <panel border="normal" title="Registrar" width="500px" > 
+            <panelchildren>
+                <div align="left" >
+                    <grid fixedLayout="false">
+                        <columns>
+                            <column width="23%" />
+                            <column/>
+                        </columns>
+                        <rows>
+                            <row spans="2" align="center">Informe os seus dados para o cadastro básico</row>
+                            <row>
+                                <label value="E-mail" />
+                                <textbox id="email" width="99%" maxlength="128" constraint="/.+@.+\.[a-z]+/: Por favor, entre com um email válido!" />
+                            </row>
+                            <row>
+                                <label value="Confirme o email" />
+                                <textbox id="re_email" width="99%" maxlength="128" constraint="/.+@.+\.[a-z]+/: Por favor, entre com um email válido!" />
+                            </row>
+                            <row>
+                                <label value="Nome completo" />
+                                <textbox id="name" width="99%" maxlength="128"
+                                    constraint="no empty: Por favor, entre com o seu nome. Esta informação é obrigatória." 
+                                />
+                            </row>
+                            <row>
+                                <label value="Identidade" />                        
+                                <textbox id="identity" width="195px" maxlength="24" constraint="no empty: Por favor, informe a sua identidade"/>
+                            </row>
+                            <row>
+                                <label value="CPF"  />        
+                                <textbox id="cpf" width="195px" maxlength="14" constraint="no empty: Por favor, entre com o seu CPF. Esta informação é obrigatória" />
+                            </row>
+                            <row>
+                                <label value="Senha" />
+                                <textbox type="password" id="password" width="195px" 
+                                    constraint="no empty: Por favor, crie uma senha de acesso ao sistema." maxlength="16" />
+                            </row>
+                            <row>
+                                <label value="Confirme a senha" />
+                                <textbox type="password" id="repassword" width="195px" constraint="no empty: por favor, confirme a sua senha de acesso ao sistema." maxlength="16" />
+                            </row>
+                        </rows>
+                    </grid>
+                </div>
+                <separator />
+                <div fulfill="=/resources/captcha.zul" >
+                </div>        
+                <separator />
+                <div fulfill="=/resources/submit_cancel.zul" >
+                </div>
+            </panelchildren>
+        </panel>
+    </div>
+</zk>
