@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div align="center" id="rootParent" apply="br.com.mcampos.controller.LoginController">
+        <panel border="normal" title="Login" width="400px" > 
+            <panelchildren>
+                <div align="left">
+                    <grid >
+                        <columns>
+                            <column width="23%" />
+                            <column/>
+                        </columns>
+                        <rows>
+                            <row spans="2" align="center">Informe o seu login(email) e sua senha</row>
+                            <row>
+                                <label value="Identificação"/>
+                                <textbox id="identification"  width="98%" maxlength="128" constraint="no empty: Por favor, entre com a sua identificação." />
+                            </row>
+                            <row>
+                                <label value="Senha"  />
+                                <textbox id="password" type="password" width="98%" maxlength="16" constraint="no empty: Por favor, informe a sua senha." />
+                            </row>
+                        </rows>
+                    </grid>
+                    <separator />
+                    <div fulfill="=/resources/captcha.zul" >
+                    </div>        
+                    <separator />
+                    <div fulfill="=/resources/submit_cancel.zul" >
+                    </div>
+                    <separator />
+                    <div align="right">
+                        <toolbarbutton label="Esqueceu a senha?" href="/forgot_password.zul" />
+                    </div>
+                </div>
+            </panelchildren>
+        </panel>
+    </div>
+</zk>

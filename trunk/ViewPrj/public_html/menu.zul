@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul"  >
+    <div width="100%" apply="br.com.mcampos.controller.MenuController" align="center" id="divMainMenu">
+        <menubar id = "mainMenu" width="100%" >
+            <menu id="loginMenu" label="acesso ao sistema" >
+                <menupopup >
+                    <menuitem  label="Login" id="loginMenuItem" image="img/login_16x16.png"/>
+                    <menuseparator />
+                    <menuitem  label="Registre-se" id="registerMenuItem" />
+                    <menuitem  label="Reenviar email de confirmação" id="resentEmailMenuItem" />
+                    <menuitem  label="Valide o seu Email" id="validateEmailMenuItem"  />
+                </menupopup>
+            </menu>
+        </menubar>
+    </div>
+</zk>
