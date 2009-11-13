@@ -1,0 +1,779 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<table xmlns="http://xmlns.oracle.com/jdeveloper/1111/offlinedb">
+  <ID class="oracle.javatools.db.IdentifierBasedID">
+    <name>users</name>
+    <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+    <schemaName>db_cloud</schemaName>
+    <type>TABLE</type>
+  </ID>
+  <name>users</name>
+  <columns>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>usr_id_in</name>
+        <identifier class="java.lang.String">7501e5f5-bce2-4431-b4ab-5fb42c96aa8e</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>users</name>
+          <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>usr_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">5c7be82f-9661-4556-bbe2-e63b64d33945</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>usr_id_in</name>
+            <identifier class="java.lang.String">7501e5f5-bce2-4431-b4ab-5fb42c96aa8e</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>users</name>
+              <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>usr_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>users</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>usr_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>users</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>usr_name_ch</name>
+        <identifier class="java.lang.String">fc47d849-4865-4f4b-a1d8-a28c8ab9c67f</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>users</name>
+          <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>usr_name_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">f55c569c-6c58-49ed-9571-ff31f85e4545</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>usr_name_ch</name>
+            <identifier class="java.lang.String">fc47d849-4865-4f4b-a1d8-a28c8ab9c67f</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>users</name>
+              <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">128</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>usr_name_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>users</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>usr_name_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>users</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>ust_id_in</name>
+        <identifier class="java.lang.String">ea13b8c8-1749-47bb-ad82-3df65645222b</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>users</name>
+          <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>ust_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">1d3d1e80-2755-4c44-90a1-77ef585b2d30</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>ust_id_in</name>
+            <identifier class="java.lang.String">ea13b8c8-1749-47bb-ad82-3df65645222b</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>users</name>
+              <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>ust_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>users</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>ust_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>users</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>usr_nick_name_ch</name>
+        <identifier class="java.lang.String">b2c70cef-d2cd-4a7e-9a84-d7d138b98cc1</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>users</name>
+          <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>usr_nick_name_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">05ebccb9-a4a1-48bb-b2ce-3b67bf285179</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>usr_nick_name_ch</name>
+            <identifier class="java.lang.String">b2c70cef-d2cd-4a7e-9a84-d7d138b98cc1</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>users</name>
+              <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">128</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>usr_nick_name_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>users</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>usr_nick_name_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>users</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>usr_insert_dt</name>
+        <identifier class="java.lang.String">f45c801a-7d4a-4a7f-8d69-33736914cffc</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>users</name>
+          <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>usr_insert_dt</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">533eb3de-1e3d-4041-92d6-a311f993f237</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>usr_insert_dt</name>
+            <identifier class="java.lang.String">f45c801a-7d4a-4a7f-8d69-33736914cffc</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>users</name>
+              <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>TIMESTAMP</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>usr_insert_dt</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>users</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>usr_insert_dt</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>users</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>usr_update_dt</name>
+        <identifier class="java.lang.String">7d4fc98c-ce2a-4755-a653-457545105865</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>users</name>
+          <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>usr_update_dt</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">e14c2d1d-b62b-4968-a83c-5ddfc1df860b</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>usr_update_dt</name>
+            <identifier class="java.lang.String">7d4fc98c-ce2a-4755-a653-457545105865</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>users</name>
+              <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>TIMESTAMP</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>usr_update_dt</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>users</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>usr_update_dt</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>users</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>usr_observation_tx</name>
+        <identifier class="java.lang.String">adbf4b18-50e1-4934-a689-8cdde97f3e27</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>users</name>
+          <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>usr_observation_tx</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">3cc4f354-cb6c-4328-9f80-d6a29d856dab</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>usr_observation_tx</name>
+            <identifier class="java.lang.String">adbf4b18-50e1-4934-a689-8cdde97f3e27</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>users</name>
+              <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>text</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>usr_observation_tx</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>users</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>usr_observation_tx</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>users</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>uts_id_in</name>
+        <identifier class="java.lang.String">740685e4-d864-4c79-ba6a-1568941c82e8</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>users</name>
+          <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>uts_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">8163930a-b526-4075-8edc-2f4fe5a96124</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>uts_id_in</name>
+            <identifier class="java.lang.String">740685e4-d864-4c79-ba6a-1568941c82e8</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>users</name>
+              <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>uts_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>users</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>uts_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>users</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+  </columns>
+  <constraints>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>users_ust_id_in_fkey</name>
+        <identifier class="java.lang.String">ff909dc3-ceff-4fe7-9bd5-f3c7ae28b3d1</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>users</name>
+          <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>users_ust_id_in_fkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>ust_id_in</name>
+          <identifier class="java.lang.String">ea13b8c8-1749-47bb-ad82-3df65645222b</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>users</name>
+            <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>users_ust_id_in_fkey</name>
+            <childObjectNames>
+              <childObjectName>ust_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>users</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>user_type_pkey</name>
+        <identifier class="java.lang.String">bd2f34e2-4e85-499d-8d9c-534c027b4027</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>user_type</name>
+          <identifier class="java.lang.String">14eb0446-45d0-4736-b0a9-a0a20e57aeae</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>users_uts_id_in_fkey</name>
+        <identifier class="java.lang.String">38d0a66b-0228-43a6-88a7-529157342c7e</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>users</name>
+          <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>users_uts_id_in_fkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>uts_id_in</name>
+          <identifier class="java.lang.String">740685e4-d864-4c79-ba6a-1568941c82e8</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>users</name>
+            <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>users_uts_id_in_fkey</name>
+            <childObjectNames>
+              <childObjectName>uts_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>users</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>user_status_pkey</name>
+        <identifier class="java.lang.String">ec3b8c80-7353-4e0a-981d-eb6ea117cb9b</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>user_status</name>
+          <identifier class="java.lang.String">d38dd34f-c991-47e4-bc13-657aba3ca226</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>users_pkey</name>
+        <identifier class="java.lang.String">f09bf1e2-08a4-40a8-8a97-415ed2262b0d</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>users</name>
+          <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>users_pkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>usr_id_in</name>
+          <identifier class="java.lang.String">7501e5f5-bce2-4431-b4ab-5fb42c96aa8e</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>users</name>
+            <identifier class="java.lang.String">787901b3-7f2d-4710-abf9-865b2dfae629</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>users_pkey</name>
+            <childObjectNames>
+              <childObjectName>usr_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>users</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>PKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+    </constraint>
+  </constraints>
+  <properties>
+    <entry>
+      <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+      <value class="oracle.javatools.db.ReferenceID">
+        <name>users</name>
+        <schemaName>db_cloud</schemaName>
+        <type>TABLE</type>
+      </value>
+    </entry>
+    <entry>
+      <key>TableType</key>
+      <value class="oracle.javatools.db.Table$TableType">NORMAL</value>
+    </entry>
+  </properties>
+  <schema>
+    <ID class="oracle.javatools.db.IdentifierBasedID">
+      <name>db_cloud</name>
+      <identifier class="java.lang.String">52ebbce5-f853-4ea1-86f7-42956ca419c7</identifier>
+      <schemaName>db_cloud</schemaName>
+      <type>SCHEMA</type>
+    </ID>
+    <name>db_cloud</name>
+  </schema>
+</table>

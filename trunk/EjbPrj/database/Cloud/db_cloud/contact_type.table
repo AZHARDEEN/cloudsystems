@@ -1,0 +1,449 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<table xmlns="http://xmlns.oracle.com/jdeveloper/1111/offlinedb">
+  <ID class="oracle.javatools.db.IdentifierBasedID">
+    <name>contact_type</name>
+    <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+    <schemaName>db_cloud</schemaName>
+    <type>TABLE</type>
+  </ID>
+  <name>contact_type</name>
+  <columns>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>cct_id_in</name>
+        <identifier class="java.lang.String">3ae77482-8daf-4df5-bf7b-e1ad0c8adfaf</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>contact_type</name>
+          <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>cct_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">3468076c-6906-48b8-951a-ef87558415c6</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>cct_id_in</name>
+            <identifier class="java.lang.String">3ae77482-8daf-4df5-bf7b-e1ad0c8adfaf</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>contact_type</name>
+              <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>cct_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>contact_type</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>cct_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>contact_type</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>cct_description_ch</name>
+        <identifier class="java.lang.String">aacc53ce-fbd7-4cb5-ab3d-088c7f7aa806</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>contact_type</name>
+          <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>cct_description_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">077894ec-a229-454e-9979-05de795d984e</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>cct_description_ch</name>
+            <identifier class="java.lang.String">aacc53ce-fbd7-4cb5-ab3d-088c7f7aa806</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>contact_type</name>
+              <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">64</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>cct_description_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>contact_type</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>cct_description_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>contact_type</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>cct_mask_ch</name>
+        <identifier class="java.lang.String">889c13a3-d716-4a2c-9b4d-b79ba6ebd318</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>contact_type</name>
+          <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>cct_mask_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">a533a826-cc2c-4845-9e0b-a92aceebd238</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>cct_mask_ch</name>
+            <identifier class="java.lang.String">889c13a3-d716-4a2c-9b4d-b79ba6ebd318</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>contact_type</name>
+              <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">128</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>cct_mask_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>contact_type</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>cct_mask_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>contact_type</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>cct_default_bt</name>
+        <identifier class="java.lang.String">6833f578-e333-4e9b-9a08-0d56b239876d</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>contact_type</name>
+          <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>cct_default_bt</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">f3515772-f69a-49e6-be59-dfdf05a18368</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>cct_default_bt</name>
+            <identifier class="java.lang.String">6833f578-e333-4e9b-9a08-0d56b239876d</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>contact_type</name>
+              <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>bool</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>cct_default_bt</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>contact_type</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <default class="java.lang.String">false</default>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>cct_default_bt</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>contact_type</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>cct_allow_duplicate_bt</name>
+        <identifier class="java.lang.String">d0e2037e-b54d-4936-af95-b813915f6915</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>contact_type</name>
+          <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>cct_allow_duplicate_bt</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">609cefa6-04ee-4969-83f2-9307fd445407</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>cct_allow_duplicate_bt</name>
+            <identifier class="java.lang.String">d0e2037e-b54d-4936-af95-b813915f6915</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>contact_type</name>
+              <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>bool</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>cct_allow_duplicate_bt</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>contact_type</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <default class="java.lang.String">false</default>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>cct_allow_duplicate_bt</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>contact_type</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+  </columns>
+  <constraints>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>contact_type_pkey</name>
+        <identifier class="java.lang.String">dd63c220-3939-42ea-a477-6429d790006e</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>contact_type</name>
+          <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>contact_type_pkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>cct_id_in</name>
+          <identifier class="java.lang.String">3ae77482-8daf-4df5-bf7b-e1ad0c8adfaf</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>contact_type</name>
+            <identifier class="java.lang.String">665c580a-5e5a-4329-bf0d-186625824364</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>contact_type_pkey</name>
+            <childObjectNames>
+              <childObjectName>cct_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>contact_type</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>PKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+    </constraint>
+  </constraints>
+  <properties>
+    <entry>
+      <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+      <value class="oracle.javatools.db.ReferenceID">
+        <name>contact_type</name>
+        <schemaName>db_cloud</schemaName>
+        <type>TABLE</type>
+      </value>
+    </entry>
+    <entry>
+      <key>TableType</key>
+      <value class="oracle.javatools.db.Table$TableType">NORMAL</value>
+    </entry>
+  </properties>
+  <schema>
+    <ID class="oracle.javatools.db.IdentifierBasedID">
+      <name>db_cloud</name>
+      <identifier class="java.lang.String">52ebbce5-f853-4ea1-86f7-42956ca419c7</identifier>
+      <schemaName>db_cloud</schemaName>
+      <type>SCHEMA</type>
+    </ID>
+    <name>db_cloud</name>
+  </schema>
+</table>

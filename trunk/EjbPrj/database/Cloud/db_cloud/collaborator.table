@@ -1,0 +1,783 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<table xmlns="http://xmlns.oracle.com/jdeveloper/1111/offlinedb">
+  <ID class="oracle.javatools.db.IdentifierBasedID">
+    <name>collaborator</name>
+    <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+    <schemaName>db_cloud</schemaName>
+    <type>TABLE</type>
+  </ID>
+  <name>collaborator</name>
+  <columns>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>usr_id_in</name>
+        <identifier class="java.lang.String">704655cf-4130-4b79-a71a-be7acc94cfa5</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>collaborator</name>
+          <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>usr_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">457eb9a7-0065-4332-8045-76ca5690f0e9</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>usr_id_in</name>
+            <identifier class="java.lang.String">704655cf-4130-4b79-a71a-be7acc94cfa5</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>collaborator</name>
+              <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>usr_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>collaborator</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>Comment</key>
+          <value class="java.lang.String">Usar sequence: seq_usuario</value>
+        </entry>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>usr_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>collaborator</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>col_id_in</name>
+        <identifier class="java.lang.String">4c28d192-3096-4e95-be0a-d3974eb6a43a</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>collaborator</name>
+          <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>col_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">99719e3b-8ad4-4646-b87f-6ff2530852a7</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>col_id_in</name>
+            <identifier class="java.lang.String">4c28d192-3096-4e95-be0a-d3974eb6a43a</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>collaborator</name>
+              <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>col_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>collaborator</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>Comment</key>
+          <value class="java.lang.String">Usar sequence: seq_usuario</value>
+        </entry>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>col_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>collaborator</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>col_from_dt</name>
+        <identifier class="java.lang.String">3e359b21-d587-476e-b48d-5c339f0a2a02</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>collaborator</name>
+          <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>col_from_dt</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">ea09614d-31b4-4726-8a32-bfded7ed16fc</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>col_from_dt</name>
+            <identifier class="java.lang.String">3e359b21-d587-476e-b48d-5c339f0a2a02</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>collaborator</name>
+              <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>TIMESTAMP</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>col_from_dt</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>collaborator</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>col_from_dt</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>collaborator</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>cps_id_in</name>
+        <identifier class="java.lang.String">5dcd091a-380d-434c-b868-c5806eef58c2</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>collaborator</name>
+          <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>cps_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">922c4148-ec1e-4c12-a583-7d5919bcb876</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>cps_id_in</name>
+            <identifier class="java.lang.String">5dcd091a-380d-434c-b868-c5806eef58c2</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>collaborator</name>
+              <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>cps_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>collaborator</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>cps_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>collaborator</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>clt_id_in</name>
+        <identifier class="java.lang.String">0a293f62-5035-4cec-8959-6e2d70235ea2</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>collaborator</name>
+          <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>clt_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">b9793476-ded2-4a05-89b2-dce372d071c2</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>clt_id_in</name>
+            <identifier class="java.lang.String">0a293f62-5035-4cec-8959-6e2d70235ea2</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>collaborator</name>
+              <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>clt_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>collaborator</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>clt_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>collaborator</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>col_to_dt</name>
+        <identifier class="java.lang.String">ea68d400-4c5e-4b63-9f6a-2b441ef5688b</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>collaborator</name>
+          <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>col_to_dt</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">3d96595d-956a-42c2-8bd6-b219084ea627</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>col_to_dt</name>
+            <identifier class="java.lang.String">ea68d400-4c5e-4b63-9f6a-2b441ef5688b</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>collaborator</name>
+              <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>TIMESTAMP</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>col_to_dt</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>collaborator</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>col_to_dt</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>collaborator</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+  </columns>
+  <constraints>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>collaborator_clt_id_in_fkey</name>
+        <identifier class="java.lang.String">4c022a7a-4d6d-4df7-bf34-62b194cec7ce</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>collaborator</name>
+          <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>collaborator_clt_id_in_fkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>clt_id_in</name>
+          <identifier class="java.lang.String">0a293f62-5035-4cec-8959-6e2d70235ea2</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>collaborator</name>
+            <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>collaborator_clt_id_in_fkey</name>
+            <childObjectNames>
+              <childObjectName>clt_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>collaborator</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>collaborator_type_pkey</name>
+        <identifier class="java.lang.String">5f5367c1-961f-4764-bfe1-a7c0aa91e76e</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>collaborator_type</name>
+          <identifier class="java.lang.String">f2019f35-26da-49da-9e55-a30bd67cc3c0</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>collaborator_col_id_in_fkey</name>
+        <identifier class="java.lang.String">60003212-9bd1-45bf-82d2-08c84eb0ebf7</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>collaborator</name>
+          <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>collaborator_col_id_in_fkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>col_id_in</name>
+          <identifier class="java.lang.String">4c28d192-3096-4e95-be0a-d3974eb6a43a</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>collaborator</name>
+            <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>collaborator_col_id_in_fkey</name>
+            <childObjectNames>
+              <childObjectName>col_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>collaborator</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>person_pkey</name>
+        <identifier class="java.lang.String">951e37e0-75b4-4dfa-b71c-e9e8c1e2825d</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>person</name>
+          <identifier class="java.lang.String">f3044a8c-f3f5-4f29-9fe0-550c51480cb2</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>collaborator_cps_id_in_fkey</name>
+        <identifier class="java.lang.String">aae8e2f9-3138-4f9b-8a8f-5a6d60e86243</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>collaborator</name>
+          <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>collaborator_cps_id_in_fkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>cps_id_in</name>
+          <identifier class="java.lang.String">5dcd091a-380d-434c-b868-c5806eef58c2</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>collaborator</name>
+            <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>collaborator_cps_id_in_fkey</name>
+            <childObjectNames>
+              <childObjectName>cps_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>collaborator</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>company_position_pkey</name>
+        <identifier class="java.lang.String">641555ed-99cc-40de-ae88-fa5ebb17fa76</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>company_position</name>
+          <identifier class="java.lang.String">eed4c76d-7b61-485b-ad0b-950b1ce985cd</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>collaborator_usr_id_in_fkey</name>
+        <identifier class="java.lang.String">fba0ed88-c973-46e6-8ac7-f4b23569b587</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>collaborator</name>
+          <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>collaborator_usr_id_in_fkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>usr_id_in</name>
+          <identifier class="java.lang.String">704655cf-4130-4b79-a71a-be7acc94cfa5</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>collaborator</name>
+            <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>collaborator_usr_id_in_fkey</name>
+            <childObjectNames>
+              <childObjectName>usr_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>collaborator</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>company_pkey</name>
+        <identifier class="java.lang.String">15cd1c17-c7b3-49d8-97e8-249776229899</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>company</name>
+          <identifier class="java.lang.String">8bfd0208-70f8-4fcd-be68-f6a45b78b660</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>pk_collaborator</name>
+        <identifier class="java.lang.String">1ae58ede-5606-4187-83ca-8db1646a4cf0</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>collaborator</name>
+          <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>pk_collaborator</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>usr_id_in</name>
+          <identifier class="java.lang.String">704655cf-4130-4b79-a71a-be7acc94cfa5</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>collaborator</name>
+            <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>col_id_in</name>
+          <identifier class="java.lang.String">4c28d192-3096-4e95-be0a-d3974eb6a43a</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>collaborator</name>
+            <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>col_from_dt</name>
+          <identifier class="java.lang.String">3e359b21-d587-476e-b48d-5c339f0a2a02</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>collaborator</name>
+            <identifier class="java.lang.String">c0a4fccb-d5fb-4bc7-9a8a-4cefcc4f7c98</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>pk_collaborator</name>
+            <childObjectNames>
+              <childObjectName>usr_id_in</childObjectName>
+              <childObjectName>col_id_in</childObjectName>
+              <childObjectName>col_from_dt</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>collaborator</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>PKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+    </constraint>
+  </constraints>
+  <properties>
+    <entry>
+      <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+      <value class="oracle.javatools.db.ReferenceID">
+        <name>collaborator</name>
+        <schemaName>db_cloud</schemaName>
+        <type>TABLE</type>
+      </value>
+    </entry>
+    <entry>
+      <key>TableType</key>
+      <value class="oracle.javatools.db.Table$TableType">NORMAL</value>
+    </entry>
+  </properties>
+  <schema>
+    <ID class="oracle.javatools.db.IdentifierBasedID">
+      <name>db_cloud</name>
+      <identifier class="java.lang.String">52ebbce5-f853-4ea1-86f7-42956ca419c7</identifier>
+      <schemaName>db_cloud</schemaName>
+      <type>SCHEMA</type>
+    </ID>
+    <name>db_cloud</name>
+  </schema>
+</table>

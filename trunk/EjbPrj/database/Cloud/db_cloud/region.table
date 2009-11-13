@@ -1,0 +1,521 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<table xmlns="http://xmlns.oracle.com/jdeveloper/1111/offlinedb">
+  <ID class="oracle.javatools.db.IdentifierBasedID">
+    <name>region</name>
+    <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+    <schemaName>db_cloud</schemaName>
+    <type>TABLE</type>
+  </ID>
+  <name>region</name>
+  <columns>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>reg_id_in</name>
+        <identifier class="java.lang.String">0f661360-888e-4125-b67b-f1a1e3eeb4e9</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>region</name>
+          <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>reg_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">1bf555fc-0132-45dd-896d-cb696ab4284a</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>reg_id_in</name>
+            <identifier class="java.lang.String">0f661360-888e-4125-b67b-f1a1e3eeb4e9</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>region</name>
+              <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>reg_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>region</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>reg_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>region</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>reg_name_ch</name>
+        <identifier class="java.lang.String">a700fbd1-19ce-43c8-a98b-1cc0a71d78dd</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>region</name>
+          <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>reg_name_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">106113dc-fbe9-4a45-9be8-a38df9cdcead</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>reg_name_ch</name>
+            <identifier class="java.lang.String">a700fbd1-19ce-43c8-a98b-1cc0a71d78dd</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>region</name>
+              <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">64</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>reg_name_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>region</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>reg_name_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>region</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>reg_abbreviation_ch</name>
+        <identifier class="java.lang.String">f4d40fa7-e9a3-4df5-a2cf-d3236b2be681</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>region</name>
+          <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>reg_abbreviation_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">d10ec330-4b59-4440-8ba6-b0d31ed308f5</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>reg_abbreviation_ch</name>
+            <identifier class="java.lang.String">f4d40fa7-e9a3-4df5-a2cf-d3236b2be681</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>region</name>
+              <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">32</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>reg_abbreviation_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>region</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>reg_abbreviation_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>region</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>ctr_id_in</name>
+        <identifier class="java.lang.String">c72d1098-48b3-4d32-bf13-254388e9c3cc</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>region</name>
+          <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>ctr_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">8e8abd82-c407-4763-85c7-ca7163261176</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>ctr_id_in</name>
+            <identifier class="java.lang.String">c72d1098-48b3-4d32-bf13-254388e9c3cc</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>region</name>
+              <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>ctr_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>region</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>ctr_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>region</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>reg_flag_bin</name>
+        <identifier class="java.lang.String">d352d55b-cb6d-4b69-8fda-6d52197330bd</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>region</name>
+          <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>COLUMN</type>
+      </ID>
+      <name>reg_flag_bin</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">94db4956-ea6b-470a-9e63-4caee3f3bbdc</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>reg_flag_bin</name>
+            <identifier class="java.lang.String">d352d55b-cb6d-4b69-8fda-6d52197330bd</identifier>
+            <parent class="oracle.javatools.db.IdentifierBasedID">
+              <name>region</name>
+              <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>db_cloud</schemaName>
+            <type>COLUMN</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>DataTypeUsage</type>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>bytea</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>reg_flag_bin</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>region</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>reg_flag_bin</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>region</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+  </columns>
+  <constraints>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>region_ctr_id_in_fkey</name>
+        <identifier class="java.lang.String">c26827c8-b017-43f3-b4fb-82a7a3ffec2a</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>region</name>
+          <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>region_ctr_id_in_fkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>ctr_id_in</name>
+          <identifier class="java.lang.String">c72d1098-48b3-4d32-bf13-254388e9c3cc</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>region</name>
+            <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>region_ctr_id_in_fkey</name>
+            <childObjectNames>
+              <childObjectName>ctr_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>region</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>country_pkey</name>
+        <identifier class="java.lang.String">2fb08157-2a6f-4baf-bcd1-e8193ede3b5c</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>country</name>
+          <identifier class="java.lang.String">43edca3c-618c-4aa0-848d-c71dc9f005a7</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <name>region_pkey</name>
+        <identifier class="java.lang.String">53d7a690-138a-4038-94d1-bbfc3f8a57b0</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>region</name>
+          <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>db_cloud</schemaName>
+        <type>CONSTRAINT</type>
+      </ID>
+      <name>region_pkey</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>reg_id_in</name>
+          <identifier class="java.lang.String">0f661360-888e-4125-b67b-f1a1e3eeb4e9</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>region</name>
+            <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>ctr_id_in</name>
+          <identifier class="java.lang.String">c72d1098-48b3-4d32-bf13-254388e9c3cc</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>region</name>
+            <identifier class="java.lang.String">c04c72c8-5987-4490-a138-47b421a29e64</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>region_pkey</name>
+            <childObjectNames>
+              <childObjectName>reg_id_in</childObjectName>
+              <childObjectName>ctr_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>region</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>PKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+    </constraint>
+  </constraints>
+  <properties>
+    <entry>
+      <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+      <value class="oracle.javatools.db.ReferenceID">
+        <name>region</name>
+        <schemaName>db_cloud</schemaName>
+        <type>TABLE</type>
+      </value>
+    </entry>
+    <entry>
+      <key>TableType</key>
+      <value class="oracle.javatools.db.Table$TableType">NORMAL</value>
+    </entry>
+  </properties>
+  <schema>
+    <ID class="oracle.javatools.db.IdentifierBasedID">
+      <name>db_cloud</name>
+      <identifier class="java.lang.String">52ebbce5-f853-4ea1-86f7-42956ca419c7</identifier>
+      <schemaName>db_cloud</schemaName>
+      <type>SCHEMA</type>
+    </ID>
+    <name>db_cloud</name>
+  </schema>
+</table>
