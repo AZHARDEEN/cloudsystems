@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<div align="left" xmlns="http://www.zkoss.org/2005/zul">
+	<grid fixedLayout="true" >
+		<columns>
+			<column width="23%" />
+			<column  />
+		</columns>
+		<rows>
+            <row spans="2" align="center">Digite os caracteres que aparecem na imagem</row>
+			<row>
+				<label value="Validação" />
+				<hbox >
+					<captcha id="captcha" length="7" width="160px" height="45px" />
+					<vbox >
+						<textbox width="118px" id="recapctcha" maxlength="7" constraint="no empty: Por favor, entre com a validação (Captcha)" />
+						<button width="118px" label="Regerar Captcha" onClick="captcha.randomValue(); val.value=captcha.value;" />
+					</vbox>
+				</hbox>
+			</row>
+		</rows>
+	</grid>            
+</div>        

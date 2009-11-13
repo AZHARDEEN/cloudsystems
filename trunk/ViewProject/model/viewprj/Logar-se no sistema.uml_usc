@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<xmi:XMI xmi:version='2.1' xmlns:xmi='http://schema.omg.org/spec/XMI/2.1' xmlns:uml='http://schema.omg.org/spec/UML/2.1.1/uml.xml'>
+ <documentation exporter='Oracle JDeveloper' exporterVersion='11.1.1.1.0'/>
+ <uml:UseCase xmi:uuid='urn:uuid:e86b801c-e42b-4c41-bf45-71ecf7ba48cf'
+   isAbstract='false'
+   isLeaf='false'
+   name='Logar-se no sistema'
+   visibility='public'>
+  <extensionPoint xmi:uuid='urn:uuid:4ecc209e-7bbb-4769-b866-eda46c78848c'
+    isLeaf='false'
+    name='DefaultExtensionPoint'/>
+ </uml:UseCase>
+</xmi:XMI>
