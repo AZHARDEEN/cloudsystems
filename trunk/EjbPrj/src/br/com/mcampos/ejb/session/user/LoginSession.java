@@ -1,12 +1,9 @@
 package br.com.mcampos.ejb.session.user;
 
 import br.com.mcampos.dto.RegisterDTO;
-import br.com.mcampos.dto.user.ListUserDTO;
-import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
-import br.com.mcampos.ejb.entity.login.Login;
 
 import br.com.mcampos.ejb.entity.user.Person;
 
