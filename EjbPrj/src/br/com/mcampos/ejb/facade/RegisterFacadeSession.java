@@ -15,19 +15,35 @@ import javax.ejb.Remote;
 public interface RegisterFacadeSession
 {
     List getAllCivilState ();
+
     List getAllAddressType ();
+
     List getAllContactType ();
+
     List getAllDocumentType ();
+
     List getAllGender ();
+
     List getAllTitle ();
+
     List getAllState ( Integer countryId );
+
     List getAllCity ( Integer countryId, Integer stateId );
-    void createNewLogin (RegisterDTO user );
+
+    void createNewLogin ( RegisterDTO user );
+
     PersonDTO findUserByDocument ( String document );
+
     LoginDTO makePassword ( String identification );
-    void changePassword ( String document, String oldPassword, String newPassword );
+
+    void changePassword ( String document, String oldPassword,
+                          String newPassword );
+
     void validateEmail ( String token, String password );
+
     void addPerson ( PersonDTO person );
+
     Boolean documentExists ( String document );
+
     void sendValidationEmail ( String document );
 }
