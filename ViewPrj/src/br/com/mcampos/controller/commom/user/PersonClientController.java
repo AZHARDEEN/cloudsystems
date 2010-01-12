@@ -23,8 +23,6 @@ import java.util.List;
 
 import java.util.Map;
 
-import net.sf.jasperreports.engine.JasperReport;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Combobox;
