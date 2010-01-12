@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.js"?>
+<?script type="text/javascript" src="jquery.meiomask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul" >
     <div id="rootParent" apply="br.com.mcampos.controller.RegisterController" align="center" width="100%">
         <panel border="normal" title="Registrar" width="500px" > 
@@ -31,7 +33,9 @@
                             </row>
                             <row>
                                 <label value="CPF"  />        
-                                <textbox id="cpf" width="195px" maxlength="14" constraint="no empty: Por favor, entre com o seu CPF. Esta informação é obrigatória" />
+                                <textbox id="cpf" width="195px" maxlength="14" constraint="no empty: Por favor, entre com o seu CPF. Esta informação é obrigatória" >
+                                    <custom-attributes alt="cpf" />
+                                </textbox>
                             </row>
                             <row>
                                 <label value="Senha" />
