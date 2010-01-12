@@ -4,10 +4,6 @@ import br.com.mcampos.dto.user.PersonDTO;
 
 import br.com.mcampos.ejb.entity.user.Person;
 
-import br.com.mcampos.util.locator.ServiceLocator;
-
-import java.io.Serializable;
-
 import java.lang.reflect.Field;
 
 import java.util.Collections;
