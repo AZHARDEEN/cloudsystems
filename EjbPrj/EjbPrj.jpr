@@ -430,7 +430,7 @@
             <value n="javaOptions" v="-javaagent:../modules/org.eclipse.persistence_1.0.0.0_1-1-0.jar"/>
             <value n="name" v="EclipseLink JPA Client"/>
             <value n="remoteDebuggingProfiling" v="false"/>
-            <url n="runDirectoryURL" protocol="file" path="/C:/Program Files/Oracle/Middleware/jdeveloper/"/>
+            <url n="runDirectoryURL" protocol="file" path="/C:/Oracle/Middleware/jdeveloper/"/>
             <value n="VMName" v="client"/>
          </hash>
       </hash>
