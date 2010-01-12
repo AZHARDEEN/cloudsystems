@@ -17,6 +17,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.HtmlBasedComponent;
 import org.zkoss.zk.ui.WrongValueException;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Captcha;
 import org.zkoss.zul.Div;
@@ -87,6 +88,7 @@ public class RegisterController extends BaseLoginOptionsController
         super.doAfterCompose( c );
         if ( email != null )
             email.setFocus( true );
+        Clients.evalJavaScript("(function($){$(function(){$('input:text').setMask();});})(jQuery);");
     }
 
     protected Boolean validate()
@@ -128,8 +130,7 @@ public class RegisterController extends BaseLoginOptionsController
     {
         onClick$cmdSubmit();
     }
-
-
+    
     protected boolean validateCPF()
     {
         String sCPF;
