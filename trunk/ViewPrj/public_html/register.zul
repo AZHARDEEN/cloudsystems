@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<?script type="text/javascript" src="/js/jquery.js"?>
-<?script type="text/javascript" src="jquery.meiomask.js" charset="utf-8" ?>
+<?component name="textbox" class="br.com.mcampos.util.components.TextboxExt" extends="textbox" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul" >
     <div id="rootParent" apply="br.com.mcampos.controller.RegisterController" align="center" width="100%">
         <panel border="normal" title="Registrar" width="500px" > 
@@ -15,36 +14,33 @@
                             <row spans="2" align="center">Informe os seus dados para o cadastro básico</row>
                             <row>
                                 <label value="E-mail" />
-                                <textbox id="email" width="99%" maxlength="128" constraint="/.+@.+\.[a-z]+/: Por favor, entre com um email válido!" />
+                                <textbox id="email" width="99%" maxlength="128" />
                             </row>
                             <row>
                                 <label value="Confirme o email" />
-                                <textbox id="re_email" width="99%" maxlength="128" constraint="/.+@.+\.[a-z]+/: Por favor, entre com um email válido!" />
+                                <textbox id="re_email" width="99%" maxlength="128" />
                             </row>
                             <row>
                                 <label value="Nome completo" />
-                                <textbox id="name" width="99%" maxlength="128"
-                                    constraint="no empty: Por favor, entre com o seu nome. Esta informação é obrigatória." 
-                                />
+                                <textbox id="name" width="99%" maxlength="128"/>
                             </row>
                             <row>
                                 <label value="Identidade" />                        
-                                <textbox id="identity" width="195px" maxlength="24" constraint="no empty: Por favor, informe a sua identidade"/>
+                                <textbox id="identity" width="195px" maxlength="24"/>
                             </row>
                             <row>
                                 <label value="CPF"  />        
-                                <textbox id="cpf" width="195px" maxlength="14" constraint="no empty: Por favor, entre com o seu CPF. Esta informação é obrigatória" >
+                                <textbox id="cpf" width="195px" maxlength="14" alt="cpf" >
                                     <custom-attributes alt="cpf" />
                                 </textbox>
                             </row>
                             <row>
                                 <label value="Senha" />
-                                <textbox type="password" id="password" width="195px" 
-                                    constraint="no empty: Por favor, crie uma senha de acesso ao sistema." maxlength="16" />
+                                <textbox type="password" id="password" width="195px" maxlength="16" />
                             </row>
                             <row>
                                 <label value="Confirme a senha" />
-                                <textbox type="password" id="repassword" width="195px" constraint="no empty: por favor, confirme a sua senha de acesso ao sistema." maxlength="16" />
+                                <textbox type="password" id="repassword" width="195px" maxlength="16" />
                             </row>
                         </rows>
                     </grid>

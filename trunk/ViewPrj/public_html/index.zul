@@ -2,18 +2,12 @@
 <?page id="index" title="Home" cacheable="false" 
 	language="xul/html" contentType="text/html;charset=UTF-8"?>
 <?script type="text/javascript" src="/js/jquery.js"?>
-<?script type="text/javascript" src="jquery.meiomask.js" charset="utf-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<?component name="textbox" class="br.com.mcampos.util.components.TextboxExt" extends="textbox" ?>
 
-<window xmlns="http://www.zkoss.org/2005/zul" width="100%" height="100%" apply="br.com.mcampos.controller.IndexController">
-    <script type="text/javascript" >
-      (function($){
-        // call setMask function on the document.ready event
-          $(function(){
-            $('input:text').setMask();
-          }
-        );
-      })(jQuery);
-    </script>
+<window xmlns="http://www.zkoss.org/2005/zul" width="100%" height="100%" 
+    xmlns:h="[http://www.w3.org/1999/xhtml http://www.w3.org/1999/xhtml]"
+    apply="br.com.mcampos.controller.IndexController">
     <borderlayout height="100%" width="100%">
         <north >
             <div align="left" width="100%" id="divMenu" fulfill="=/menu.zul" >
