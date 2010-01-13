@@ -88,7 +88,7 @@ public class RegisterController extends BaseLoginOptionsController
         super.doAfterCompose( c );
         if ( email != null )
             email.setFocus( true );
-        Clients.evalJavaScript("(function($){$(function(){$('input:text').setMask();});})(jQuery);");
+        Clients.evalJavaScript( "$('input:text').setMask();" );
     }
 
     protected Boolean validate()

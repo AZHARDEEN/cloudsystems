@@ -3,6 +3,7 @@ package br.com.mcampos.controller;
 import br.com.mcampos.controller.core.BaseController;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zkex.zul.Center;
 
 public class IndexController extends BaseController 
@@ -22,7 +23,6 @@ public class IndexController extends BaseController
     @Override
     public void doAfterCompose( Component comp ) throws Exception {
         super.doAfterCompose( comp );
-        
     }
     
     public void onClick$loginMenuItem (  )
