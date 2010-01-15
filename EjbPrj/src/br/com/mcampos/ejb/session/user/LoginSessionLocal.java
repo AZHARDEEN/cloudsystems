@@ -19,6 +19,7 @@ import javax.ejb.Local;
 @Local
 public interface LoginSessionLocal
 {
+    void add( RegisterDTO login );
     void add( RegisterDTO login, Person person );
     void update( LoginDTO login );
     void delete( Integer id );

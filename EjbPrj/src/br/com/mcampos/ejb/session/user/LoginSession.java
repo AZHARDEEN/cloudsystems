@@ -16,6 +16,7 @@ import javax.ejb.Remote;
 @Remote
 public interface LoginSession
 {
+    void add( RegisterDTO login );
     void add( RegisterDTO login, Person person );
     void update( LoginDTO login );
     void delete( Integer id );
