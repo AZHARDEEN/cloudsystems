@@ -15,4 +15,10 @@ public class LoginFacadeSessionBean implements LoginFacadeSession, LoginFacadeSe
     public LoginFacadeSessionBean()
     {
     }
+
+
+    public Boolean add()
+    {
+        return true;
+    }
 }

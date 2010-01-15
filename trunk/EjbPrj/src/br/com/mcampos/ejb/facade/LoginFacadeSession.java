@@ -5,5 +5,5 @@ import javax.ejb.Remote;
 @Remote
 public interface LoginFacadeSession
 {
-    Boolean add
+    Boolean add();
 }
