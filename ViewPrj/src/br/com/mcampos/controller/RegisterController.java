@@ -1,12 +1,10 @@
 package br.com.mcampos.controller;
 
-import br.com.mcampos.controller.core.BaseController;
 import br.com.mcampos.dto.RegisterDTO;
-import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.util.CPF;
 import br.com.mcampos.util.MultilineMessageBox;
-import br.com.mcampos.util.business.RegisterLocator;
+import br.com.mcampos.util.business.LoginLocator;
 
 
 import java.text.ParseException;
@@ -18,9 +16,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.HtmlBasedComponent;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Captcha;
-import org.zkoss.zul.Div;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 
@@ -34,7 +30,7 @@ public class RegisterController extends BaseLoginOptionsController
     protected static final int identityDocumentId = 2;
     protected static final int emailDocumentId = 6;
 
-    protected RegisterLocator locator;
+    protected LoginLocator locator;
 
     private Textbox name;
     private Textbox email;
@@ -49,20 +45,20 @@ public class RegisterController extends BaseLoginOptionsController
     public RegisterController( char c )
     {
         super( c );
-        this.locator = new RegisterLocator();
+        this.locator = new LoginLocator();
     }
 
     public RegisterController()
     {
         super();
-        this.locator = new RegisterLocator();
+        this.locator = new LoginLocator();
     }
 
     public void onClick$cmdSubmit()
     {
         try {
-            if ( validate() ) {
-                //gotoPage( "/registered.zul" );
+            if ( validate() && addNewUser() ) {
+                gotoPage( "/registered.zul" );
             }
         }
         catch ( WrongValueException e ) {
@@ -123,7 +119,7 @@ public class RegisterController extends BaseLoginOptionsController
             return false;
         if ( validateCaptcha() == false )
             return false;
-        return addNewUser();
+        return true;
     }
 
     protected void onOK$recapctcha()
@@ -158,7 +154,7 @@ public class RegisterController extends BaseLoginOptionsController
         newLogin.addDocument( DocumentTypeDTO.createDocumentTypeEmail(), email.getValue() );
         newLogin.addDocument( DocumentTypeDTO.createDocumentTypeIdentity(), identity.getValue() );
         try {
-            getLocator().addNewUser( newLogin );
+            getLocator().add( newLogin );
             return true;
         }
         catch ( EJBException ejbException ) {
@@ -204,7 +200,7 @@ public class RegisterController extends BaseLoginOptionsController
     }
 
 
-    public RegisterLocator getLocator()
+    public LoginLocator getLocator()
     {
         return locator;
     }
