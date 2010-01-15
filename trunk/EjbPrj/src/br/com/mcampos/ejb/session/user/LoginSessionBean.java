@@ -66,6 +66,11 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
     {
     }
 
+    public void add( RegisterDTO dto )
+    {
+        
+    }
+
 
     public void add( RegisterDTO dto, Person person )
     {
