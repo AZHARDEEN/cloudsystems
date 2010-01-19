@@ -68,7 +68,12 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
 
     public void add( RegisterDTO dto )
     {
-        
+        /*
+         * Verificar os parametros novamente. Pois nao podemos confiar no controller.
+         */
+        if ( SysUtils.isEmpty( dto.getName() ) )
+            throw new InvalidParameterException ( "Name could not be null" );
+        if ( SysUtils.isEmpty( dto.get ))
     }
 
 

@@ -6,6 +6,8 @@ import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
 
 import br.com.mcampos.ejb.session.user.LoginSessionBean;
 
+import br.com.mcampos.ejb.session.user.LoginSessionLocal;
+
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -20,7 +22,7 @@ import javax.persistence.PersistenceContext;
 public class LoginFacadeSessionBean implements LoginFacadeSession, LoginFacadeSessionLocal
 {
     @EJB SystemMessagesSessionLocal systemMessage;
-    @EJB LoginSessionBean login;
+    @EJB LoginSessionLocal login;
     
     public LoginFacadeSessionBean()
     {
