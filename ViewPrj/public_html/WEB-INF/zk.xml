@@ -33,7 +33,18 @@
 		<name>org.zkoss.zul.include.mode</name>
 		<value>auto</value>
 	</library-property>
-    
+
+    <library-property>
+        <name>org.zkoss.zul.theme.fontFamilyC</name>
+        <value>Courier New</value>
+    </library-property>
+    <!--
+    <library-property>
+        <name>org.zkoss.zul.theme.fontFamilyT</name>
+        <value>Courier New</value>
+    </library-property>
+    -->
+
     
  	<device-config>
 		<device-type>ajax</device-type>
