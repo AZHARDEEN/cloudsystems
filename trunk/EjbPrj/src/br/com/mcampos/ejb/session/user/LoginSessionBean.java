@@ -1,8 +1,8 @@
 package br.com.mcampos.ejb.session.user;
 
 import br.com.mcampos.dto.RegisterDTO;
-import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
+import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
@@ -37,7 +37,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 import javax.ejb.TransactionAttribute;
@@ -53,31 +52,54 @@ import javax.persistence.Query;
 import org.jasypt.util.password.BasicPasswordEncryptor;
 
 @Stateless( name = "LoginSession", mappedName = "CloudSystems-EjbPrj-LoginSession" )
-@Remote
 @Local
-public class LoginSessionBean implements LoginSession, LoginSessionLocal
+public class LoginSessionBean implements LoginSessionLocal
 {
     @PersistenceContext( unitName = "EjbPrj" )
     private EntityManager em;
     @EJB
     CollaboratorSessionLocal collaborator;
+    @EJB
+    UserSessionLocal user;
 
-    public LoginSessionBean()
+    public LoginSessionBean ()
     {
     }
 
-    public void add( RegisterDTO dto )
+    public void add ( RegisterDTO dto )
     {
         /*
          * Verificar os parametros novamente. Pois nao podemos confiar no controller.
          */
+        Users userEntity;
+
+
         if ( SysUtils.isEmpty( dto.getName() ) )
-            throw new InvalidParameterException ( "Name could not be null" );
-        if ( SysUtils.isEmpty( dto.get ))
+            throw new InvalidParameterException( "Registro sem o nome do usuário" );
+        if ( dto.getDocuments().size() < 1 )
+            throw new InvalidParameterException( "Registro sem ao menos um documento" );
+        if ( SysUtils.isEmpty( dto.getPassword() ) )
+            throw new InvalidParameterException( "Registro nao possui senha" );
+
+        userEntity = user.findByDocumentList( dto.getDocuments() );
+        if ( userEntity == null ) {
+            /*
+             * Não existe nenhum usuario com os documentos fornecidos, portanto
+             * deveremos criar um novo documento.
+             */
+        }
+        else {
+            /*
+             * Just in case, user must be a person!!!!
+             */
+            if ( !(user instanceof Person) ) {
+                throw new InvalidParameterException( "Usuário não é uma pessoa física" );
+            }
+        }
     }
 
 
-    public void add( RegisterDTO dto, Person person )
+    protected void add ( RegisterDTO dto, Person person )
     {
         String encryptedPassword;
         BasicPasswordEncryptor passwordEncryptor;
@@ -97,7 +119,7 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
          */
     }
 
-    protected void setPasswordExpirationDate( Login login )
+    protected void setPasswordExpirationDate ( Login login )
     {
         Integer days;
         SystemParameters sysParam = null;
@@ -125,7 +147,7 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
         }
     }
 
-    public void update( LoginDTO dto )
+    public void update ( LoginDTO dto )
     {
         Login login = DTOFactory.copy( dto );
         Users old;
@@ -145,7 +167,7 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
         em.merge( login );
     }
 
-    public void delete( Integer id )
+    public void delete ( Integer id )
     {
         Login login;
 
@@ -164,7 +186,7 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
     }
 
 
-    public void delete( Integer[] logins )
+    public void delete ( Integer[] logins )
     {
         if ( logins == null || logins.length == 0 )
             throw new IllegalArgumentException( "Logins cannot be null or empty" );
@@ -174,7 +196,7 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
         }
     }
 
-    public void updateLoginStatus( Integer id, Integer newStatus )
+    public void updateLoginStatus ( Integer id, Integer newStatus )
     {
         Login login = em.find( Login.class, id );
         if ( login == null || newStatus == null )
@@ -183,70 +205,9 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
     }
 
 
-    /** <code>select o from Login o</code> */
-    @TransactionAttribute( value = TransactionAttributeType.NOT_SUPPORTED )
-    public List<LoginDTO> getLoginFindAll()
-    {
-        return getDTOList( em.createNamedQuery( "Login.findAll" ).getResultList() );
-    }
 
 
-    /** <code>select o from Login o</code> */
-    @TransactionAttribute( value = TransactionAttributeType.NOT_SUPPORTED )
-    public List<ListLoginDTO> getList()
-    {
-        return getList( em.createNamedQuery( "Login.findAll" ).getResultList() );
-    }
-
-
-    @TransactionAttribute( value = TransactionAttributeType.NOT_SUPPORTED )
-    protected List<LoginDTO> getDTOList( List<Login> list )
-    {
-        List<LoginDTO> dtos;
-
-        if ( list == null )
-            return Collections.emptyList();
-        dtos = new ArrayList<LoginDTO>( list.size() );
-        for ( Login item : list )
-            dtos.add( DTOFactory.copy( item, true ) );
-        return dtos;
-    }
-
-
-    @TransactionAttribute( value = TransactionAttributeType.NOT_SUPPORTED )
-    protected List<ListLoginDTO> getList( List<Login> list )
-    {
-        List<ListLoginDTO> dtos;
-
-        if ( list == null )
-            return Collections.emptyList();
-        dtos = new ArrayList<ListLoginDTO>( list.size() );
-        for ( Login item : list )
-            dtos.add( DTOFactory.copy( item ) );
-        return dtos;
-    }
-
-
-    protected Login getLoginByDocument( String document )
-    {
-        Login login;
-        Query query;
-        UserDocument userDocument;
-
-        try {
-
-            query = em.createNamedQuery( "UserDocument.findByDocument" );
-            query.setParameter( "document", document );
-            userDocument = ( UserDocument )query.getSingleResult();
-            login = em.find( Login.class, userDocument.getUserId() );
-        }
-        catch ( Exception e ) {
-            throw new EJBException( "Usuário inválido, não foi possível realizar o login.", e );
-        }
-        return login;
-    }
-
-    public void logoutUser( LoginDTO dto )
+    public void logoutUser ( LoginDTO dto )
     {
         if ( dto == null || dto.getUserId() == null )
             return;
@@ -257,14 +218,39 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
 
     }
 
+    protected Login getLoginByDocument( UserDocumentDTO document )
+     {
+         Login login;
+         Query query;
+         UserDocument userDocument;
 
-    public LoginDTO loginUser( LoginCredentialDTO dto )
+         try {
+
+             query = em.createNamedQuery( "UserDocument.findByDocument" );
+             query.setParameter( "document", document.getCode() );
+             query.setParameter( "docType", document.getDocumentType().getId() );
+             userDocument = ( UserDocument )query.getSingleResult();
+             login = em.find( Login.class, userDocument.getUserId() );
+         }
+         catch ( Exception e ) {
+             throw new EJBException( "Usuário inválido, não foi possível realizar o login.", e );
+         }
+         return login;
+     }
+
+
+
+    public LoginDTO loginUser ( LoginCredentialDTO dto )
     {
-        Login login;
+        Login login = null;
         BasicPasswordEncryptor passwordEncryptor;
         SystemParameters sysParam = null;
 
-        login = getLoginByDocument( dto.getDocument() );
+        for ( UserDocumentDTO doc : dto.getDocuments() ) {
+            login = getLoginByDocument( doc );
+            if ( login != null )
+                break;
+        }
         if ( login == null )
             throw new EJBException( "Usuário o senha inválida." );
         verifyUserStatus( login );
@@ -304,7 +290,7 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
         return loginDTO;
     }
 
-    protected void storeAccessLog( Login login, LoginCredentialDTO dto, Integer accessLogType )
+    protected void storeAccessLog ( Login login, LoginCredentialDTO dto, Integer accessLogType )
     {
         AccessLog log;
 
@@ -318,7 +304,14 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
         em.persist( log );
     }
 
-    public LoginDTO makeNewPassword( String document )
+    /**
+     * Cria uma nova senha para o usuario logar no sistema e envia esta senha via email.
+     *
+     *
+     * @param document UserDocumentDTO - identificao do usuario via documento (Email)
+     * @exception InvalidParameterException
+     */
+    public void makeNewPassword ( UserDocumentDTO document )
     {
         Login login;
         BasicPasswordEncryptor passwordEncryptor;
@@ -337,11 +330,10 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
         /*
          * TODO: SEND EMAIL
          */
-        return DTOFactory.copy( login, false );
     }
 
 
-    protected void storeOldPassword( Login login )
+    protected void storeOldPassword ( Login login )
     {
         LastUsedPassword lastUsedPassword;
         Timestamp now;
@@ -364,21 +356,34 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
     }
 
 
-    protected void verifyUserStatus( Login login )
+    protected void verifyUserStatus ( Login login )
     {
         if ( login.getUserStatus().getAllowLogin() == true )
             return;
 
         switch ( ( int )( login.getUserStatus().getId() ) ) {
-            case UserStatus.statusMaxLoginTryCount: throw new EJBException( "Usuário bloqueado por excesso de tentativas de login." );
-            case UserStatus.statusInativo: throw new EJBException( "Usuário está inativo." );
-            case UserStatus.statusEmailNotValidated: throw new EJBException( "O email ainda não foi validado. Valide o email antes." );
-            default: throw new EJBException( "Usuário não pode usar o sistema." );
+        case UserStatus.statusMaxLoginTryCount:
+            throw new EJBException( "Usuário bloqueado por excesso de tentativas de login." );
+        case UserStatus.statusInativo:
+            throw new EJBException( "Usuário está inativo." );
+        case UserStatus.statusEmailNotValidated:
+            throw new EJBException( "O email ainda não foi validado. Valide o email antes." );
+        default:
+            throw new EJBException( "Usuário não pode usar o sistema." );
         }
     }
 
 
-    public void changePassword( String document, String oldPassword, String newPassword )
+    /**
+     * Altera a senha do usuário. Deve-se imaginar que o usuario não está logado no sistema
+     * para alterar a sua senha.
+     *
+     * @param document UserDocumentDTO - identificado do usuario via documento (Email)
+     * @param oldPassword - A senha antiga a ser alterada
+     * @param newPassword - A nova senha
+     * @exception InvalidParameterException
+     */
+    public void changePassword ( UserDocumentDTO document, String oldPassword, String newPassword )
     {
         Login login;
         BasicPasswordEncryptor passwordEncryptor;
@@ -405,7 +410,7 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
     }
 
 
-    protected Boolean isPasswordUsed( Login login, String newPassword )
+    protected Boolean isPasswordUsed ( Login login, String newPassword )
     {
         List<LastUsedPassword> list;
         BasicPasswordEncryptor passwordEncryptor;
@@ -425,14 +430,25 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
     }
 
     @TransactionAttribute( value = TransactionAttributeType.REQUIRES_NEW )
-    protected void incrementTryCount( Login login )
+    protected void incrementTryCount ( Login login )
     {
         em.merge( login );
         login.incrementTryCount();
         em.flush();
     }
 
-    public void validateEmail( String token, String password )
+    /**
+     * Valida o email informado no ato do cadastro. Quando o usuario se cadastra no sistema,
+     * deve obrigatóriamente informar um email válido e único no sistema. Este será a 'identidade'
+     * do usuário no sistema, e, portanto, este email deve ser validado.
+     *
+     *
+     * @param token Código gerado pelo sistema e enviado ao email do novo cadastro.
+     *              Este token deve ser único no sistema.
+     * @param password Senha de validação. Este é a senha informada pelo usuário no ato do cadstro
+     * @exception InvalidParameterException
+     */
+    public void validateEmail ( String token, String password )
     {
         Login login;
         BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
@@ -457,7 +473,7 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
     }
 
 
-    public Long getRecordCount()
+    public Long getRecordCount ()
     {
         Long recordCount;
 
@@ -467,7 +483,7 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
 
 
     /** <code>select o from Users o</code> */
-    public List<ListLoginDTO> getLoginByRange( int firstResult, int maxResults )
+    public List<ListLoginDTO> getLoginByRange ( int firstResult, int maxResults )
     {
         Query query = em.createNamedQuery( "Login.findAll" );
         if ( firstResult > 0 ) {
@@ -480,7 +496,7 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
     }
 
 
-    protected List<ListLoginDTO> copy( List<Login> list )
+    protected List<ListLoginDTO> copy ( List<Login> list )
     {
         List<ListLoginDTO> dtos = null;
 
@@ -494,4 +510,18 @@ public class LoginSessionBean implements LoginSession, LoginSessionLocal
         return dtos;
 
     }
+
+
+    /**
+     * Reenvia um email de confirmação de cadastro de login.
+     *
+     *
+     * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
+     * @exception InvalidParameterException
+     */
+    public void sendValidationEmail ( UserDocumentDTO dto )
+    {
+
+    }
+
 }
