@@ -90,6 +90,12 @@ public class DocumentTypeDTO extends DisplayNameDTO implements Comparable<Docume
 		return new DocumentTypeDTO ( typeEmail );
 	}
 
+    public static DocumentTypeDTO createDocumentTypeCNPJ ( )
+    {
+        return new DocumentTypeDTO ( typeCNPJ );
+    }
+
+
     public int compareTo( DocumentTypeDTO o )
     {
         if ( o == null || o.getId() == null )

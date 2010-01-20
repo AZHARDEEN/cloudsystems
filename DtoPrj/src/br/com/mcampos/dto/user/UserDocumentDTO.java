@@ -5,101 +5,119 @@ import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 
 import java.io.Serializable;
 
-public class UserDocumentDTO implements Serializable, Comparable<UserDocumentDTO>
+public class UserDocumentDTO implements Serializable,
+                                        Comparable<UserDocumentDTO>
 {
 
-	public static final int typeCPF = 1;
+    public static final int typeCPF = 1;
     public static final int typeCNPJ = 10;
-	public static final int typeIdentity = 2;
-	public static final int typeEmail = 6;
-	
-	protected static final String forbidenCPFChars = "[\\-.\\/]";
+    public static final int typeIdentity = 2;
+    public static final int typeEmail = 6;
+
+    protected static final String forbidenCPFChars = "[\\-.\\/]";
 
 
     private Integer userId;
     private DocumentTypeDTO documentType;
-    
+
     private String code;
     private String additionalInfo;
-    
-    
-    
-    public UserDocumentDTO()
+
+
+    public UserDocumentDTO ()
     {
         super();
     }
-	
-    public void setCode( String code )
+
+    public void setCode ( String code )
     {
         this.code = code;
     }
 
-    public String getCode()
+    public String getCode ()
     {
         return removeDocumentFormat( this.code );
     }
 
-    public void setAdditionalInfo( String additionalInfo )
+    public void setAdditionalInfo ( String additionalInfo )
     {
         this.additionalInfo = additionalInfo;
     }
 
-    public String getAdditionalInfo()
+    public String getAdditionalInfo ()
     {
         return additionalInfo;
     }
 
-    public void setUserId( Integer user )
+    public void setUserId ( Integer user )
     {
         this.userId = user;
     }
 
-    public Integer getUserId()
+    public Integer getUserId ()
     {
         return userId;
     }
 
-    public void setDocumentType( DocumentTypeDTO documentType )
+    public void setDocumentType ( DocumentTypeDTO documentType )
     {
         this.documentType = documentType;
     }
 
-    public DocumentTypeDTO getDocumentType()
+    public DocumentTypeDTO getDocumentType ()
     {
         return documentType;
     }
-
-	public static UserDocumentDTO createUserDocumentCPF ( String cpf )
-	{
-		UserDocumentDTO dto = new UserDocumentDTO ( );
+    
+    
+    protected static UserDocumentDTO create ( String code, DocumentTypeDTO docType )
+    {
+        UserDocumentDTO dto = new UserDocumentDTO();
         
-        dto.setDocumentType( DocumentTypeDTO.createDocumentTypeCPF() );
-	    dto.setCode(cpf );            
+        dto.setDocumentType( docType );
+        dto.setCode( code );
         return dto;
-	}
-	
-	protected String removeDocumentFormat ( String document )
-	{
-		String code;
-		
-		if ( document == null || document.length() == 0 )
-			return null;
-	    code = document.trim();
-		if ( getDocumentType() != null ) {
-			switch ( getDocumentType().getId() ) {
-				case UserDocumentDTO.typeCPF:
-                case UserDocumentDTO.typeCNPJ:
-					code = code.replaceAll( forbidenCPFChars, "" );
-					break;
-				case UserDocumentDTO.typeEmail:
-					code = code.toLowerCase();
-					break;
-			}
-		}
-		return code;
-	}
+    }
 
-    public int compareTo( UserDocumentDTO o )
+    public static UserDocumentDTO createUserDocumentCPF ( String cpf )
+    {
+        return create ( cpf, DocumentTypeDTO.createDocumentTypeCPF() );
+    }
+
+    public static UserDocumentDTO createUserDocumentEmail ( String email )
+    {
+        return create ( email, DocumentTypeDTO.createDocumentTypeEmail() );
+    }
+
+
+    public static UserDocumentDTO createUserDocumentCNPJ ( String code )
+    {
+        return create ( code, DocumentTypeDTO.createDocumentTypeCNPJ() );
+    }
+
+
+    protected String removeDocumentFormat ( String document )
+    {
+        String code;
+
+        if ( document == null || document.length() == 0 )
+            return null;
+        code = document.trim();
+        if ( getDocumentType() != null ) {
+            switch ( getDocumentType().getId() ) {
+            case UserDocumentDTO.typeCPF:
+            case UserDocumentDTO.typeCNPJ:
+                code = code.replaceAll( forbidenCPFChars, "" );
+                break;
+            case UserDocumentDTO.typeEmail:
+                code = code.toLowerCase();
+                break;
+            }
+        }
+        return code;
+    }
+
+    public int compareTo ( UserDocumentDTO o )
     {
         int nRet = getDocumentType().compareTo( o.getDocumentType() );
         if ( nRet != 0 )
@@ -108,15 +126,14 @@ public class UserDocumentDTO implements Serializable, Comparable<UserDocumentDTO
     }
 
     @Override
-    public boolean equals( Object obj )
+    public boolean equals ( Object obj )
     {
-        if ( obj instanceof UserDocumentDTO ) 
-        {
-            UserDocumentDTO dto = ( UserDocumentDTO ) obj;
-            
+        if ( obj instanceof UserDocumentDTO ) {
+            UserDocumentDTO dto = ( UserDocumentDTO )obj;
+
             if ( getUserId() != null ) {
-                return getDocumentType().equals( dto.getDocumentType() )
-                    && getUserId().equals( dto.getUserId() );
+                return getDocumentType().equals( dto.getDocumentType() ) &&
+                    getUserId().equals( dto.getUserId() );
             }
             else
                 return getDocumentType().equals( dto.getDocumentType() );
