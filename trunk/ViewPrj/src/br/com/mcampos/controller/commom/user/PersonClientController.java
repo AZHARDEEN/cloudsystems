@@ -98,15 +98,15 @@ public class PersonClientController extends UserClientController
     {
         super.preparePage();         
         
-		getLoaderLocator().loadState ( bornState );
+		//getLoaderLocator().loadState ( bornState );
         if ( bornState.getSelectedIndex() > 0 )
             onSelect$bornState();
-        getLoaderLocator().loadContactType( contactType );
-        getLoaderLocator().loadGender ( gender );
+        //getLoaderLocator().loadContactType( contactType );
+        //getLoaderLocator().loadGender ( gender );
         if ( gender.getSelectedIndex() >= 0 ) {
             onSelect$gender();
         }
-        getLoaderLocator().loadCivilState( maritalStatus );
+        //getLoaderLocator().loadCivilState( maritalStatus );
     }
     
     protected void showInfo ( Integer id )
@@ -228,7 +228,7 @@ public class PersonClientController extends UserClientController
         
         GenderDTO dto = ( GenderDTO ) item.getValue();
         if ( dto != null ) {
-            getLoaderLocator().loadSimpleDTO( title, dto.getTitles(), true );
+            //getLoaderLocator().loadSimpleDTO( title, dto.getTitles(), true );
             title.setFocus( true );
         }
     }
@@ -243,7 +243,7 @@ public class PersonClientController extends UserClientController
             return;
         StateDTO dto = ( StateDTO ) item.getValue();
         if ( dto != null ) {
-            getLoaderLocator().loadCity( bornCity, dto.getCountryId(), dto.getId() );
+            //getLoaderLocator().loadCity( bornCity, dto.getCountryId(), dto.getId() );
         }
     }
     
@@ -261,7 +261,7 @@ public class PersonClientController extends UserClientController
             item = ( GenderDTO ) comboItem.getValue();
             if ( item.compareTo( targetDTO ) == 0 ) {
                 gender.setSelectedItem( comboItem );
-                getLoaderLocator().loadSimpleDTO( title, item.getTitles(), false );
+                //getLoaderLocator().loadSimpleDTO( title, item.getTitles(), false );
                 break;
             }
         }

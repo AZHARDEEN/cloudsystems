@@ -6,14 +6,13 @@ import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
+import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.facade.UserFacadeSession;
-import br.com.mcampos.ejb.session.user.UserSession;
 
 import com.bea.common.engine.InvalidParameterException;
 
-import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
 public class UsersLocator extends BusinessDelegate
@@ -53,11 +52,7 @@ public class UsersLocator extends BusinessDelegate
         return getSessionBean().getUsersByRange( firstResult, maxResults );
     }
     
-    public Boolean documentExists ( String document )
-    {
-        return getSessionBean().documentExists( document );   
-    }
-    
+ 
     List<ListLoginDTO> getLoginList()
     {
         return getSessionBean().getLoginList();
@@ -116,9 +111,9 @@ public class UsersLocator extends BusinessDelegate
         getSessionBean().updateLoginStatus( id, newStatus );
     }
     
-    public UserDTO getUserByDocument ( String document, Integer docType )
+    public UserDTO getUserByDocument ( UserDocumentDTO dto )
     {
-        return getSessionBean().getUserByDocument( document, docType );
+        return getSessionBean().getUserByDocument( dto );
     }
     
     

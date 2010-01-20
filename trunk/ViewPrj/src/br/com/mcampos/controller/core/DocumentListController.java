@@ -179,7 +179,7 @@ public class DocumentListController extends BaseClientListController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
-        getLoaderLocator().loadDocumentType( documentType );
+        //getLoaderLocator().loadDocumentType( documentType );
     }
 
 }

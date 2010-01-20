@@ -5,26 +5,18 @@ import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.address.AddressTypeDTO;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.StateDTO;
-import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserContactDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.dto.user.attributes.CivilStateDTO;
 import br.com.mcampos.dto.user.attributes.ContactTypeDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
-import br.com.mcampos.dto.user.attributes.GenderDTO;
-import br.com.mcampos.dto.user.attributes.TitleDTO;
-import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.util.MultilineMessageBox;
-import br.com.mcampos.util.business.RegisterLocator;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 import br.com.mcampos.util.business.UsersLocator;
 
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -36,7 +28,6 @@ import org.zkoss.zul.Textbox;
 
 public abstract class UserClientController extends LoggedBaseController
 {
-    protected RegisterLocator loaderLocator;
     protected UsersLocator userLocator;
     protected SimpleTableLoaderLocator simpleLoader;
     private Listbox contactList;
@@ -67,20 +58,14 @@ public abstract class UserClientController extends LoggedBaseController
     protected abstract Boolean persist ();
     
 
-    protected void setLoaderLocator( RegisterLocator loaderLocator )
+    protected Object getLoaderLocator()
     {
-        this.loaderLocator = loaderLocator;
-    }
-
-    protected RegisterLocator getLoaderLocator()
-    {
-        if ( loaderLocator == null )
-            loaderLocator = new RegisterLocator ();
-        return loaderLocator;
+        return null;
     }
 
     protected void preparePage ()
     {
+        /*
 		if ( addressType != null )
 			getLoaderLocator().loadAddressType( addressType );
 		if ( state != null ) {
@@ -88,6 +73,7 @@ public abstract class UserClientController extends LoggedBaseController
 			if ( state.getSelectedIndex() > 0 )
 				onSelect$state();
 		}
+        */
     }
 
 
@@ -100,7 +86,7 @@ public abstract class UserClientController extends LoggedBaseController
             return;
         StateDTO dto = ( StateDTO ) item.getValue();
         if ( dto != null ) {
-            getLoaderLocator().loadCity( city, dto.getCountryId(), dto.getId() );
+            //getLoaderLocator().loadCity( city, dto.getCountryId(), dto.getId() );
         }
     }
 
@@ -280,7 +266,7 @@ public abstract class UserClientController extends LoggedBaseController
             item = ( StateDTO ) comboItem.getValue();
             if ( item.compareTo( targetDTO ) == 0 ) {
                 comboState.setSelectedItem( comboItem );
-                getLoaderLocator().loadCity( comboCity, item.getCountryId(), item.getId() );
+                //getLoaderLocator().loadCity( comboCity, item.getCountryId(), item.getId() );
                 break;
             }
         }

@@ -226,7 +226,7 @@ public class CompanyClientController extends UserClientController
         document = cnpj.getValue();
 
         if ( ( document != null ) && ( document.isEmpty() == false ) ) {
-            UserDTO dto = getUserLocator().getUserByDocument( document, UserDocumentDTO.typeCNPJ );
+            UserDTO dto = getUserLocator().getUserByDocument( UserDocumentDTO.createUserDocumentCNPJ( document ) );
 
             if ( ( dto != null ) && ( dto instanceof CompanyDTO ) ) {
                 showInfo( ( CompanyDTO )dto );

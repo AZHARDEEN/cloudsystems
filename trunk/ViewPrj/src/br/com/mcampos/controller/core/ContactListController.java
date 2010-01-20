@@ -1,16 +1,11 @@
 package br.com.mcampos.controller.core;
 
-import br.com.mcampos.dto.user.UserContactDTO;
-import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.attributes.ContactTypeDTO;
-
-import br.com.mcampos.util.business.RegisterLocator;
 
 import java.util.Iterator;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Listbox;
@@ -65,7 +60,7 @@ public class ContactListController extends BaseClientListController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
-        getLoaderLocator().loadContactType( contactType );
+        //getLoaderLocator().loadContactType( contactType );
     }
 
 

@@ -1,16 +1,14 @@
 package br.com.mcampos.controller;
 
-import br.com.mcampos.controller.core.BaseController;
+import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.util.MultilineMessageBox;
-import br.com.mcampos.util.business.RegisterLocator;
 
-import java.util.Map;
+
+import br.com.mcampos.util.business.LoginLocator;
 
 import javax.ejb.EJBException;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Captcha;
 import org.zkoss.zul.Messagebox;
@@ -28,7 +26,7 @@ public class ChangePasswordController extends BaseLoginOptionsController {
     protected static String loginCookieName = "LoginCookieName";
     
 
-    protected RegisterLocator locator;
+    protected LoginLocator locator;
 
 
     public ChangePasswordController() {
@@ -81,7 +79,7 @@ public class ChangePasswordController extends BaseLoginOptionsController {
     public void doAfterCompose( Component comp ) throws Exception {
         super.doAfterCompose( comp );
         
-        this.locator = new RegisterLocator ();
+        this.locator = new LoginLocator ();
         String csLogin = getCookie( loginCookieName );
         if ( csLogin != null && csLogin.isEmpty() == false ) {
             identity.setValue( csLogin );
@@ -92,11 +90,11 @@ public class ChangePasswordController extends BaseLoginOptionsController {
         }   
     }
     
-    public void setLocator( RegisterLocator locator ) {
+    public void setLocator( LoginLocator locator ) {
         this.locator = locator;
     }
 
-    public RegisterLocator getLocator() {
+    public LoginLocator getLocator() {
         return locator;
     }
     
@@ -116,7 +114,7 @@ public class ChangePasswordController extends BaseLoginOptionsController {
         if ( validateCaptcha() ) {
             csIdentification = identity.getValue();
             try {
-                getLocator().changePassword( csIdentification, csOldPassword, csPassword );
+                getLocator().changePassword( UserDocumentDTO.createUserDocumentEmail( csIdentification ), csOldPassword, csPassword );
                 Sessions.getCurrent().invalidate();
                 gotoPage ("/password_changed.zul");
             }
