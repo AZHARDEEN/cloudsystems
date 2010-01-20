@@ -1,35 +1,29 @@
 package br.com.mcampos.dto.user.login;
 
+import br.com.mcampos.dto.user.UserDocumentDTO;
+
+import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
+
 import java.io.Serializable;
+
+import java.util.ArrayList;
 
 public class LoginCredentialDTO implements Serializable {
 
-    protected String document;
     protected String password;
     protected String remoteAddr;
     protected String remoteHost;
+    protected ArrayList<UserDocumentDTO> documents;
     
     public LoginCredentialDTO() {
         super();
     }
 
-    public LoginCredentialDTO( String document, String password, String remoteAddr, String remoteHost ) {
+    public LoginCredentialDTO( String password, String remoteAddr, String remoteHost ) {
         super();
-        setDocument ( document );
         setPassword ( password );
         setRemoteAddr ( remoteAddr );
         setRemoteHost ( remoteHost );
-    }
-
-    public void setDocument( String document ) {
-        this.document = document;
-    }
-
-	/**
-	 * @return
-	 */
-	public String getDocument() {
-        return document;
     }
 
     public void setPassword( String password ) {
@@ -54,5 +48,26 @@ public class LoginCredentialDTO implements Serializable {
 
     public String getRemoteHost() {
         return remoteHost;
+    }
+
+
+    public void setDocuments( ArrayList<UserDocumentDTO> documents )
+    {
+        this.documents = documents;
+    }
+
+    public ArrayList<UserDocumentDTO> getDocuments()
+    {
+        if ( documents == null )
+            documents = new ArrayList<UserDocumentDTO>();
+        return documents;
+    }
+    
+    public void addDocument ( DocumentTypeDTO type, String document )
+    {
+        UserDocumentDTO dto = new UserDocumentDTO ();
+        dto.setDocumentType( type );
+        dto.setCode( document );
+        getDocuments().add( dto );
     }
 }
