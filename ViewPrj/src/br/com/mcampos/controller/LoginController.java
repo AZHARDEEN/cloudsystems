@@ -1,7 +1,6 @@
 package br.com.mcampos.controller;
 
-import br.com.mcampos.controller.core.BaseController;
-import br.com.mcampos.dto.user.attributes.UserStatusDTO;
+import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.util.MultilineMessageBox;
@@ -9,14 +8,11 @@ import br.com.mcampos.util.MultilineMessageBox;
 
 import br.com.mcampos.util.business.UsersLocator;
 
-import java.util.Map;
-
 import javax.ejb.EJBException;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Captcha;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
@@ -53,12 +49,14 @@ public class LoginController extends BaseLoginOptionsController {
                 Execution exec = Executions.getCurrent();
                 LoginCredentialDTO credential;
                 
-                
-                credential = new LoginCredentialDTO ( csIdentification, csPassword, 
+                /*
+                 * TODO: regra: permitir o login por qualquer tipo de documento, nao apenas com o email.
+                 */
+                credential = new LoginCredentialDTO ( csPassword, 
                                                       exec.getRemoteAddr(), 
                                                       exec.getRemoteHost() );
+                credential.addDocument( DocumentTypeDTO.createDocumentTypeEmail(), csIdentification );
                 LoginDTO user = getLocator().loginUser( credential );
-                
                 if ( user != null ) {
                     csLogin = identification.getValue ();
                     setCookie( loginCookieName, csLogin, 5 );

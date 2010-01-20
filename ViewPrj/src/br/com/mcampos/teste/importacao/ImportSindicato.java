@@ -11,8 +11,6 @@ import br.com.mcampos.dto.user.attributes.ContactTypeDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.dto.user.attributes.GenderDTO;
 import br.com.mcampos.dto.user.attributes.TitleDTO;
-import br.com.mcampos.dto.user.attributes.UserTypeDTO;
-import br.com.mcampos.util.business.RegisterLocator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -33,14 +31,14 @@ import javax.ejb.EJBException;
 
 public class ImportSindicato
 {
-    RegisterLocator locator;
+    //RegisterLocator locator;
     
     
     
     public ImportSindicato()
     {
         super();
-        locator = new RegisterLocator();
+        //locator = new RegisterLocator();
     }
     
     public String[] splitName ( String name )
@@ -207,6 +205,7 @@ public class ImportSindicato
         if ( document == null || document.isEmpty() )
             return;
         convertedDocument = document.replaceAll("[ .-]", "");
+        /*
         if ( getLocator().documentExists( convertedDocument ) == false ) {
             UserDocumentDTO doc;
             
@@ -218,6 +217,7 @@ public class ImportSindicato
         }
         else
             addDocument ( dto, document + "$", documentType );
+        */
     }
     
 
@@ -303,7 +303,7 @@ public class ImportSindicato
                         dto.add( new UserContactDTO (new ContactTypeDTO (4, null, null, null), splitarray[14], null ) );
                     
                     try {
-                        importSindicato.getLocator().add ( dto );
+                        //importSindicato.getLocator().add ( dto );
                     }
                     catch ( EJBException e )
                     {
@@ -340,15 +340,5 @@ public class ImportSindicato
         {
             return;
         }
-    }
-
-    public void setLocator( RegisterLocator locator )
-    {
-        this.locator = locator;
-    }
-
-    public RegisterLocator getLocator()
-    {
-        return locator;
     }
 }

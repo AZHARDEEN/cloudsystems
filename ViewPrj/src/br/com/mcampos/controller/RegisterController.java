@@ -39,7 +39,6 @@ public class RegisterController extends BaseLoginOptionsController
     private Textbox repassword;
     private Textbox recapctcha;
     private Captcha captcha;
-    private Textbox identity;
     private Textbox cpf;
 
     public RegisterController( char c )
@@ -75,7 +74,6 @@ public class RegisterController extends BaseLoginOptionsController
         email.setValue( "marcelodecampos@uol.com.br" );
         repassword.setValue( "123456" );
         password.setValue( "123456" );
-        identity.setValue( "1203322 SSP DF" );
         cpf.setValue( "XXXXXXX" );
     }
 
@@ -90,13 +88,11 @@ public class RegisterController extends BaseLoginOptionsController
     protected Boolean validate()
     {
         String sName, sEmail, sReEmail, sPassword, sRePassword;
-        String id;
 
 
         sName = name.getValue();
         sEmail = email.getValue();
         sReEmail = re_email.getValue();
-        id = identity.getValue();
         sPassword = password.getValue();
         sRePassword = repassword.getValue();
 
@@ -147,14 +143,15 @@ public class RegisterController extends BaseLoginOptionsController
     {
         RegisterDTO newLogin;
 
-        newLogin = new RegisterDTO( name.getValue(), email.getValue(), password.getValue() );
+        newLogin = new RegisterDTO( );
+        newLogin.setName( name.getValue() );
+        newLogin.setPassword( password.getValue() );
         newLogin.setRemoteAddr( Executions.getCurrent().getRemoteAddr() );
         newLogin.setRemoteHost( Executions.getCurrent().getRemoteHost() );
         newLogin.addDocument( DocumentTypeDTO.createDocumentTypeCPF(), cpf.getValue() );
         newLogin.addDocument( DocumentTypeDTO.createDocumentTypeEmail(), email.getValue() );
-        newLogin.addDocument( DocumentTypeDTO.createDocumentTypeIdentity(), identity.getValue() );
         try {
-            getLocator().add( newLogin );
+            getLocator().create( newLogin );
             return true;
         }
         catch ( EJBException ejbException ) {

@@ -25,14 +25,8 @@
                                 <textbox id="name" width="99%" maxlength="128"/>
                             </row>
                             <row>
-                                <label value="Identidade" />                        
-                                <textbox id="identity" width="195px" maxlength="24"/>
-                            </row>
-                            <row>
                                 <label value="CPF"  />        
-                                <textbox id="cpf" width="195px" maxlength="14" alt="cpf" >
-                                    <custom-attributes alt="cpf" />
-                                </textbox>
+                                <textbox id="cpf" width="195px" maxlength="14" alt="cpf" />
                             </row>
                             <row>
                                 <label value="Senha" />

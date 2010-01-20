@@ -1,9 +1,8 @@
 package br.com.mcampos.controller;
 
-import br.com.mcampos.controller.core.BaseController;
-import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.util.MultilineMessageBox;
-import br.com.mcampos.util.business.RegisterLocator;
+import br.com.mcampos.util.business.LoginLocator;
 
 import javax.ejb.EJBException;
 
@@ -29,7 +28,7 @@ public class ValidateEmailController extends BaseLoginOptionsController
     protected static String loginCookieName = "LoginCookieName";
 
 
-    protected RegisterLocator locator;
+    protected LoginLocator locator = null;
     
     public ValidateEmailController()
     {
@@ -81,7 +80,6 @@ public class ValidateEmailController extends BaseLoginOptionsController
     {
         super.doAfterCompose( comp );
 
-        this.locator = new RegisterLocator();
         String csToken;
 
         csToken = Executions.getCurrent().getParameter( "token" );
@@ -94,13 +92,10 @@ public class ValidateEmailController extends BaseLoginOptionsController
             token.setFocus( true );
     }
 
-    public void setLocator( RegisterLocator locator )
+    public LoginLocator getLocator()
     {
-        this.locator = locator;
-    }
-
-    public RegisterLocator getLocator()
-    {
+        if ( this.locator == null )
+            this.locator = new LoginLocator();
         return locator;
     }
 

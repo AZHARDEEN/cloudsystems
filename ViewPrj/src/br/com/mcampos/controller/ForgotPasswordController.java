@@ -1,16 +1,13 @@
 package br.com.mcampos.controller;
 
-import br.com.mcampos.controller.core.BaseController;
-
-import br.com.mcampos.dto.user.login.LoginDTO;
+import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.util.MultilineMessageBox;
 
-import br.com.mcampos.util.business.RegisterLocator;
+import br.com.mcampos.util.business.LoginLocator;
 
 import javax.ejb.EJBException;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Captcha;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
@@ -24,7 +21,7 @@ public class ForgotPasswordController extends BaseLoginOptionsController
     protected static String loginCookieName = "LoginCookieName";
 
 
-    protected RegisterLocator locator;
+    protected LoginLocator locator;
 
     public ForgotPasswordController()
     {
@@ -76,7 +73,7 @@ public class ForgotPasswordController extends BaseLoginOptionsController
     {
         super.doAfterCompose( comp );
 
-        this.locator = new RegisterLocator();
+        this.locator = new LoginLocator();
         String csLogin = getCookie( loginCookieName );
         if ( csLogin != null && csLogin.isEmpty() == false ) {
             identification.setValue( csLogin );
@@ -87,12 +84,12 @@ public class ForgotPasswordController extends BaseLoginOptionsController
         }
     }
 
-    public void setLocator( RegisterLocator locator )
+    public void setLocator( LoginLocator locator )
     {
         this.locator = locator;
     }
 
-    public RegisterLocator getLocator()
+    public LoginLocator getLocator()
     {
         return locator;
     }
@@ -105,10 +102,8 @@ public class ForgotPasswordController extends BaseLoginOptionsController
         csIdentification = identification.getValue();
         if ( validateCaptcha() ) {
             try {
-                if ( getLocator().makePasssword( csIdentification ) != null )
-                    gotoPage( "/validate_email_sent.zul" );
-                else
-                    showErrorMessage( "Não foi possível outro email de confirmação" );
+                getLocator().makeNewPasssword( UserDocumentDTO.createUserDocumentEmail( csIdentification ) );
+                gotoPage( "/validate_email_sent.zul" );
             }
             catch ( EJBException ejbException ) {
                 showErrorMessage( ejbException.getMessage() );
