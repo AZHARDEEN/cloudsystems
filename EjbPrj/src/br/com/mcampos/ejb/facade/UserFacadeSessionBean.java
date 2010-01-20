@@ -7,9 +7,12 @@ import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
+import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
+import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.user.Company;
+import br.com.mcampos.ejb.entity.user.Person;
 import br.com.mcampos.ejb.entity.user.Users;
 import br.com.mcampos.ejb.entity.user.attributes.CollaboratorType;
 import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
@@ -33,8 +36,7 @@ import javax.ejb.Stateless;
 
 @Stateless( name = "UserFacadeSession", mappedName = "CloudSystems-EjbPrj-UserFacadeSession" )
 @Remote
-@Local
-public class UserFacadeSessionBean implements UserFacadeSession, UserFacadeSessionLocal
+public class UserFacadeSessionBean implements UserFacadeSession
 {
 
     @EJB
@@ -61,7 +63,7 @@ public class UserFacadeSessionBean implements UserFacadeSession, UserFacadeSessi
 
     public Long getClientRecordCount( Integer owner )
     {
-        return user.getClientRecordCount( owner );
+        return null;
     }
 
     public List<ListUserDTO> getUsersByRange( Integer firstResult, Integer maxResults )
@@ -69,14 +71,9 @@ public class UserFacadeSessionBean implements UserFacadeSession, UserFacadeSessi
         return user.getUsersByRange( firstResult, maxResults );
     }
 
-    public Boolean documentExists( String document )
-    {
-        return user.documentExists( document );
-    }
-
     public List<ListLoginDTO> getLoginList()
     {
-        return login.getList();
+        return null;
     }
 
     public Long getLoginRecordCount()
@@ -86,7 +83,7 @@ public class UserFacadeSessionBean implements UserFacadeSession, UserFacadeSessi
 
     public List<ListLoginDTO> getLoginByRange( Integer firstResult, Integer maxResults )
     {
-        return login.getLoginByRange( firstResult, maxResults );
+        return null;
     }
 
     public PersonDTO getPerson( Integer userId )
@@ -190,9 +187,18 @@ public class UserFacadeSessionBean implements UserFacadeSession, UserFacadeSessi
         login.updateLoginStatus( id, newStatus );
     }
 
-    public UserDTO getUserByDocument( String document, Integer docType )
+    public UserDTO getUserByDocument( UserDocumentDTO dto )
     {
-        return user.getUserByDocument( document, docType );
+        Users entity;
+        
+        entity = user.getUserByDocument( dto );
+        if ( user != null ) {
+            if ( user instanceof Person )
+                return ( DTOFactory.copy( ( Person )user, true ) );
+            else
+                return ( DTOFactory.copy( ( Company )user ) );
+        }
+        return null;
     }
 
     protected void testParam( BasicDTO dto )

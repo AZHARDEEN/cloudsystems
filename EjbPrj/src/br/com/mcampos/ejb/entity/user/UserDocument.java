@@ -20,7 +20,6 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries({
   @NamedQuery(name = "UserDocument.findAll", query = "select o from UserDocument o"),
-  @NamedQuery(name = "UserDocument.findByDocument", query = "select o from UserDocument o where o.code = :document"),
   @NamedQuery(name = "UserDocument.findDocument", query = "select o from UserDocument o where o.code = :document and o.documentType.id = :docType")
 })
 @Table( name = "\"user_document\"" )
