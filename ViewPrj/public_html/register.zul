@@ -13,16 +13,16 @@
                         <rows>
                             <row spans="2" align="center">Informe os seus dados para o cadastro básico</row>
                             <row>
+                                <label value="Nome completo" />
+                                <textbox id="name" width="99%" maxlength="128"/>
+                            </row>
+                            <row>
                                 <label value="E-mail" />
                                 <textbox id="email" width="99%" maxlength="128" />
                             </row>
                             <row>
                                 <label value="Confirme o email" />
                                 <textbox id="re_email" width="99%" maxlength="128" />
-                            </row>
-                            <row>
-                                <label value="Nome completo" />
-                                <textbox id="name" width="99%" maxlength="128"/>
                             </row>
                             <row>
                                 <label value="CPF"  />        
