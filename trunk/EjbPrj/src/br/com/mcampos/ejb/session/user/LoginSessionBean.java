@@ -92,7 +92,7 @@ public class LoginSessionBean implements LoginSessionLocal
             /*
              * Just in case, user must be a person!!!!
              */
-            if ( !(user instanceof Person) ) {
+            if ( !(userEntity instanceof Person) ) {
                 throw new InvalidParameterException( "Usuário não é uma pessoa física" );
             }
         }
