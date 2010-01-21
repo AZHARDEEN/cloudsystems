@@ -80,8 +80,8 @@ public class RegisterController extends BaseLoginOptionsController
     public void doAfterCompose( Component c ) throws Exception
     {
         super.doAfterCompose( c );
-        if ( email != null )
-            email.setFocus( true );
+        if ( name != null )
+            name.setFocus( true );
         Clients.evalJavaScript( "$('input:text').setMask();" );
     }
 
