@@ -15,7 +15,13 @@
       <value n="oracle.mds.internal.dt.ide.migrator.MDSConfigMigratorHelper" v="11.1.1.0.5313"/>
       <value n="oracle.webcenter.internal.dt.migration.WebCenterWorkspaceMigrator" v="11.1.1.1.0.090820.0735;11.1.1.2.0.091030.1847"/>
    </hash>
-   <list n="listOfChildren"/>
+   <list n="listOfChildren">
+      <hash><url n="URL" path="doc/Documentacao.jpr"/></hash>
+      <hash><url n="URL" path="DtoPrj/DTOPrj.jpr"/></hash>
+      <hash><url n="URL" path="EjbPrj/EjbPrj.jpr"/></hash>
+      <hash><url n="URL" path="SysUtils/SysUtils.jpr"/></hash>
+      <hash><url n="URL" path="ViewPrj/ViewPrj.jpr"/></hash>
+   </list>
    <hash n="oracle.jdeveloper.deploy.dt.DeploymentProfiles">
       <hash n="profileDefinitions">
          <hash n="cloudsystems">
