@@ -48,15 +48,4 @@ public interface UserFacadeSession
     void updateLoginStatus ( Integer id, Integer newStatus );
 
     UserDTO getUserByDocument ( UserDocumentDTO dto );
-
-    void addBusinessEntity ( UserDTO dto, LoginDTO login );
-
-    List<ListUserDTO> getBusinessList ( Integer userId );
-
-    Long getBusinessentityCount ( Integer userId );
-
-    UserDTO getBusinessEntity ( Integer userId, Integer currentUserId );
-
-    List<ListUserDTO> getBusinessEntityByRange ( Integer curentUserId, Integer itemStartNumber, Integer pageSize );
-
 }

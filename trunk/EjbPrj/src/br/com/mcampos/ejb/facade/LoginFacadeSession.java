@@ -6,12 +6,20 @@ import br.com.mcampos.dto.user.UserDocumentDTO;
 
 import br.com.mcampos.dto.user.login.LoginDTO;
 
+import javax.ejb.EJBException;
 import javax.ejb.Remote;
 
 @Remote
 public interface LoginFacadeSession
 {
-    Boolean add(RegisterDTO dto);
+    /**
+     * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
+     * observado que o mesmo depende do relacionamento com a entidade pessoa.
+     * 
+     * @param dto
+     * @exception EJBException
+     */
+    void add(RegisterDTO dto);
     
     /**
      * Altera a senha do usuário. Deve-se imaginar que o usuario não está logado no sistema
@@ -20,7 +28,7 @@ public interface LoginFacadeSession
      * @param document UserDocumentDTO - identificado do usuario via documento (Email)
      * @param oldPassword - A senha antiga a ser alterada
      * @param newPassword - A nova senha
-     * @exception InvalidParameterException
+     * @exception EJBException
      */
     void changePassword ( UserDocumentDTO document, String oldPassword, String newPassword );
     
@@ -33,7 +41,7 @@ public interface LoginFacadeSession
      * @param token Código gerado pelo sistema e enviado ao email do novo cadastro.
      *              Este token deve ser único no sistema.
      * @param password Senha de validação. Este é a senha informada pelo usuário no ato do cadstro
-     * @exception InvalidParameterException
+     * @exception EJBException
      */
     void validateEmail ( String token, String password );
     
@@ -42,7 +50,7 @@ public interface LoginFacadeSession
      * 
      * 
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
-     * @exception InvalidParameterException
+     * @exception EJBException
      */
     void makeNewPassword ( UserDocumentDTO dto );
     
@@ -52,7 +60,7 @@ public interface LoginFacadeSession
      * 
      * 
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
-     * @exception InvalidParameterException
+     * @exception EJBException
      */
     void sendValidationEmail ( UserDocumentDTO dto );
 }
