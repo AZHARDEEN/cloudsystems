@@ -28,10 +28,7 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries({
-  @NamedQuery(name = "Person.findAll", query = "select o from Person o"),
-  @NamedQuery(name = "Person.findByDocument", 
-			  query = "select o from Person o JOIN o.documents d " +
-						"WHERE d.code = :document AND d.documentType.id = :type ")
+  @NamedQuery(name = "Person.findAll", query = "select o from Person o")
 })
 @Table( name = "\"person\"" )
 @DiscriminatorValue( "1" )
