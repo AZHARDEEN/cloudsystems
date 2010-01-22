@@ -13,7 +13,16 @@ import javax.ejb.Local;
 @Local
 public interface LoginSessionLocal
 {
-    void add( RegisterDTO login );
+    /**
+     * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
+     * observado que o mesmo depende do relacionamento com a entidade pessoa.
+     * Após incluido o login com os dados mais básicos necessários, o novo usuário do 
+     * sistema DEVE completar o registro.
+     *
+     * @param dto DTO com os dados básicos para inclusão.
+     * @exception InvalidParameterException
+     */
+    void add( RegisterDTO dto );
     void update( LoginDTO login );
     void delete( Integer id );
     LoginDTO loginUser ( LoginCredentialDTO dto );

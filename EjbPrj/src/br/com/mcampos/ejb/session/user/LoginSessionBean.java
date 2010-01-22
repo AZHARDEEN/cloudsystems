@@ -59,19 +59,30 @@ public class LoginSessionBean implements LoginSessionLocal
     private EntityManager em;
     @EJB
     CollaboratorSessionLocal collaborator;
-    @EJB
-    UserSessionLocal user;
+    
+    @EJB PersonSessionLocal personSession;
+    
+    @EJB UserSessionLocal userSession;
 
     public LoginSessionBean ()
     {
     }
 
+    /**
+     * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
+     * observado que o mesmo depende do relacionamento com a entidade pessoa.
+     * Após incluido o login com os dados mais básicos necessários, o novo usuário do 
+     * sistema DEVE completar o registro.
+     *
+     * @param dto DTO com os dados básicos para inclusão.
+     * @exception InvalidParameterException
+     */
     public void add ( RegisterDTO dto )
     {
         /*
          * Verificar os parametros novamente. Pois nao podemos confiar no controller.
          */
-        Users userEntity;
+        Person person;
 
 
         if ( SysUtils.isEmpty( dto.getName() ) )
@@ -81,24 +92,15 @@ public class LoginSessionBean implements LoginSessionLocal
         if ( SysUtils.isEmpty( dto.getPassword() ) )
             throw new InvalidParameterException( "Registro nao possui senha" );
 
-        userEntity = user.findByDocumentList( dto.getDocuments() );
-        if ( userEntity == null ) {
-            /*
-             * Não existe nenhum usuario com os documentos fornecidos, portanto
-             * deveremos criar um novo documento.
-             */
+        person = (Person) getUserSession().findByDocumentList( dto.getDocuments() );
+        if ( person == null ) {
+            person = getPersonSession().add( DTOFactory.copy ( dto ) );
         }
-        else {
-            /*
-             * Just in case, user must be a person!!!!
-             */
-            if ( !(userEntity instanceof Person) ) {
-                throw new InvalidParameterException( "Usuário não é uma pessoa física" );
-            }
-        }
+        if ( person.getLogin() != null )
+            throw new EJBException ( "Este cadastro já possui login" );
+        add ( dto, person );
     }
-
-
+    
     protected void add ( RegisterDTO dto, Person person )
     {
         String encryptedPassword;
@@ -524,4 +526,13 @@ public class LoginSessionBean implements LoginSessionLocal
 
     }
 
+    protected PersonSessionLocal getPersonSession()
+    {
+        return personSession;
+    }
+
+    protected UserSessionLocal getUserSession()
+    {
+        return userSession;
+    }
 }

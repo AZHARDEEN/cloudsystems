@@ -4,7 +4,6 @@ import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.entity.user.Collaborator;
 import br.com.mcampos.ejb.entity.user.Company;
 import br.com.mcampos.ejb.entity.user.Person;
 import br.com.mcampos.ejb.entity.user.UserDocument;
@@ -16,6 +15,7 @@ import br.com.mcampos.ejb.session.user.attributes.UserDocumentSessionLocal;
 import java.security.InvalidParameterException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -36,15 +36,26 @@ public class UserSessionBean implements UserSessionLocal
     @PersistenceContext( unitName = "EjbPrj" )
     private EntityManager em;
 
-    @EJB CollaboratorSessionLocal collaborator;
-    @EJB ClientSessionLocal client;
     @EJB UserDocumentSessionLocal userDocumentoSession;
 
     public UserSessionBean ()
     {
     }
 
+    /**************************************************************************************
+     * PUBLIC FUNCTIONS
+     *************************************************************************************/
+    protected UserDocumentSessionLocal getUserDocumentoSession ()
+    {
+        return userDocumentoSession;
+    }
 
+
+    /**************************************************************************************
+     * PUBLIC FUNCTIONS
+     *************************************************************************************/
+
+    @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public Long getRecordCount ()
     {
         Long recordCount;
@@ -55,6 +66,7 @@ public class UserSessionBean implements UserSessionLocal
 
 
     /** <code>select o from Users o</code> */
+    @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public List<ListUserDTO> getUsersByRange ( int firstResult, int maxResults )
     {
         Query query = em.createNamedQuery( "Users.findAll" );
@@ -64,7 +76,14 @@ public class UserSessionBean implements UserSessionLocal
         if ( maxResults > 0 ) {
             query = query.setMaxResults( maxResults );
         }
-        return copy( query.getResultList() );
+        try {
+            return copy( query.getResultList() );
+        }
+        catch ( NoResultException e ) 
+        {
+            e = null;
+            return Collections.EMPTY_LIST;
+        }
     }
 
 
@@ -81,6 +100,7 @@ public class UserSessionBean implements UserSessionLocal
 
     }
 
+    @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public UserDTO get ( Integer id )
     {
         Users entity;
@@ -114,6 +134,7 @@ public class UserSessionBean implements UserSessionLocal
      * @see br.com.mcampos.ejb.entity.user.Users
      *
      */
+    @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public Users findByDocumentList ( List<UserDocumentDTO> list )
     {
         Users user = null, foundUser = null;
@@ -132,9 +153,9 @@ public class UserSessionBean implements UserSessionLocal
 
     /**
      * Procura por um usuario baseado em um documento do usuário ( CPF, ID...) específico
-     * 
+     *
      * @param dto DocumentTypeDTO
-     * @return Users - Entity user.
+     * @return Users - Entity userSession.
      */
     @TransactionAttribute( value = TransactionAttributeType.NOT_SUPPORTED )
     public Users getUserByDocument ( UserDocumentDTO dto )
@@ -149,32 +170,22 @@ public class UserSessionBean implements UserSessionLocal
 
 
 
-    public List<ListUserDTO> getBusinessList ( Integer userId )
+    /**
+     * Procura por um usuario baseado em um documento do usuário ( CPF, ID...) específico
+     *
+     * @param entity DocumentTypeDTO
+     * @return Users - Entity userSession.
+     */
+    @TransactionAttribute( value = TransactionAttributeType.NOT_SUPPORTED )
+    public Users getUserByDocument ( UserDocument entity )
     {
-        List<ListUserDTO> list = null;
-        List<Collaborator> companies;
+        UserDocument userDocument;
 
-        companies = getCollaborator().getCompanies( userId );
-        for ( Collaborator item : companies ) {
-            if ( list == null )
-                list = new ArrayList<ListUserDTO>();
-            list.add( DTOFactory.copy( ( Users )item.getCompany() ) );
-        }
-        return list;
+        userDocument = getUserDocumentoSession().find( entity );
+        if ( userDocument == null )
+            return null;
+        return em.find( Users.class, userDocument.getUserId() );
     }
 
-    public CollaboratorSessionLocal getCollaborator ()
-    {
-        return collaborator;
-    }
 
-    public ClientSessionLocal getClient ()
-    {
-        return client;
-    }
-
-    public UserDocumentSessionLocal getUserDocumentoSession ()
-    {
-        return userDocumentoSession;
-    }
 }
