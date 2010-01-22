@@ -127,7 +127,7 @@ public class CompanyClientController extends UserClientController
         addDocuments( dto );
 
         if ( isBusinessParam() ) {
-            getUserLocator().addBusinessEntity( dto, getLoggedInUser() );
+            //getUserLocator().addBusinessEntity( dto, getLoggedInUser() );
         }
         else {
             getUserLocator().add( dto );

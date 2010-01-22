@@ -26,14 +26,15 @@ public class BusinessEntityListModel extends BaseListModel<ListUserDTO>
 
     public int getTotalSize()
     {
-        Long nRecords;
-        nRecords = getLocator ().getBusinessEntityCount( getCurentUserId() );
-        return nRecords.intValue();
+        //Long nRecords;
+        //nRecords = getLocator ().getBusinessEntityCount( getCurentUserId() );
+        return 0; //nRecords.intValue();
     }
 
     protected List getPageData( int itemStartNumber, int pageSize )
     {
-        return getLocator().getBusinessEntityByRange ( getCurentUserId(), itemStartNumber, pageSize );
+        //return getLocator().getBusinessEntityByRange ( getCurentUserId(), itemStartNumber, pageSize );
+        return Collections.EMPTY_LIST;
     }
 
     public void setCurentUserId( Integer curentUserId )
