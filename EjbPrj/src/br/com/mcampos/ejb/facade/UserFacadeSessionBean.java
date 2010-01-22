@@ -206,24 +206,4 @@ public class UserFacadeSessionBean implements UserFacadeSession
         if ( dto == null )
             systemMessage.throwMessage( 26 );
     }
-    
-    public List<ListUserDTO> getBusinessList ( Integer userId )
-    {
-        return user.getBusinessList (userId );
-    }
-    
-    public Long getBusinessentityCount ( Integer userId )
-    {
-        return collaborator.getBusinessEntityCount( userId );
-    }
-
-    public UserDTO getBusinessEntity ( Integer userId, Integer currentUserId )
-    {
-        return collaborator.getBusinessEntity( userId, currentUserId );
-    }
-
-    public List<ListUserDTO> getBusinessEntityByRange ( Integer curentUserId, Integer itemStartNumber, Integer pageSize )
-    {
-        return collaborator.getBusinessEntityByRange( curentUserId, itemStartNumber, pageSize );
-    }
 }
