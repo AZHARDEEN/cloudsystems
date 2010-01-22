@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.session.user;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.ejb.entity.user.UserDocument;
 import br.com.mcampos.ejb.entity.user.Users;
 
 import java.util.List;
@@ -18,7 +19,6 @@ public interface UserSessionLocal
 
     List<ListUserDTO> getUsersByRange( int firstResult, int maxResults );
     UserDTO get ( Integer id );
-    List<ListUserDTO> getBusinessList (Integer userId);
     
     /*
      * Procura por um registro na tabela de documentos de usuarios (userdocuments).
@@ -41,10 +41,17 @@ public interface UserSessionLocal
     
     /**
      * Procura por um usuario baseado em um documento do usuário ( CPF, ID...) específico
-     * 
+     *
      * @param dto DocumentTypeDTO
-     * @return Users - Entity user.
+     * @return Users - Entity userSession.
      */
     Users getUserByDocument ( UserDocumentDTO dto );
     
+    /**
+     * Procura por um usuario baseado em um documento do usuário ( CPF, ID...) específico
+     *
+     * @param entity DocumentTypeDTO
+     * @return Users - Entity userSession.
+     */
+    Users getUserByDocument ( UserDocument entity );
 }

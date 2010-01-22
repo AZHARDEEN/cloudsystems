@@ -11,7 +11,24 @@ import javax.ejb.Local;
 @Local
 public interface PersonSessionLocal
 {
-    Person add( PersonDTO person );
+    /**
+     * Adiciona um pessoa (Usuario do tipo pessoa) no banco de dados.
+     * @param dto DTO personDTO
+     * @return Person EntityBean
+     */
+    Person add( PersonDTO dto );
+    
+    /**
+     * Adiciona um pessoa (Usuario do tipo pessoa) no banco de dados. Esta funcao 
+     * recebe como parâmetro uma Entity que não está gerenciado pelo EJB.
+     * 
+     * 
+     * @param entity EntityBean Não gerenciado (Not Managed)
+     * @return Person EntityBean
+     */
+    Person add( Person entity );
+    
+    
 	Person createPersonForLogin( RegisterDTO dto );
     Person update( PersonDTO person );
     void delete( Integer id );
