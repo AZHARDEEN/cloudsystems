@@ -60,6 +60,7 @@ public class BusinessEntityController extends BaseUserListController
 
     protected void showInformation( Object obj )
     {
+        /*
         ListUserDTO dto = ( ListUserDTO )obj;
         UserDTO user = getLocator().getBusinessEntity( dto.getId(), getLoggedInUser() );
 
@@ -69,6 +70,7 @@ public class BusinessEntityController extends BaseUserListController
             else
                 showCompanyInfo( ( CompanyDTO )user );
         }
+        */
     }
 
     public void onClick$cmdCreate()

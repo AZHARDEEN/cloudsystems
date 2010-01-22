@@ -115,30 +115,4 @@ public class UsersLocator extends BusinessDelegate
     {
         return getSessionBean().getUserByDocument( dto );
     }
-    
-    
-    public void addBusinessEntity (  UserDTO dto, LoginDTO loginDTO )
-    {
-        getSessionBean().addBusinessEntity( dto, loginDTO );
-    }
-    
-    public List<ListUserDTO> getBusinessList ( LoginDTO dto )
-    {
-        return getSessionBean().getBusinessList ( dto.getUserId() );
-    }
-    
-    public Long getBusinessEntityCount ( Integer userId )
-    {
-        return getSessionBean().getBusinessentityCount( userId );
-    }
-
-    public UserDTO getBusinessEntity ( Integer businessEntityId, LoginDTO currentUser )
-    {
-        return getSessionBean().getBusinessEntity( businessEntityId, currentUser.getUserId() );
-    }
-    
-    public List<ListUserDTO> getBusinessEntityByRange ( Integer curentUserId, Integer itemStartNumber, Integer pageSize )
-    {
-        return getSessionBean().getBusinessEntityByRange( curentUserId, itemStartNumber, pageSize );
-    }
 }
