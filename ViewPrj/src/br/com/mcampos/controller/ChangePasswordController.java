@@ -1,6 +1,7 @@
 package br.com.mcampos.controller;
 
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.MultilineMessageBox;
 
 
@@ -118,8 +119,8 @@ public class ChangePasswordController extends BaseLoginOptionsController {
                 Sessions.getCurrent().invalidate();
                 gotoPage ("/password_changed.zul");
             }
-            catch ( EJBException ejbException ) {
-                showErrorMessage( ejbException.getCause().getMessage() );
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage() );
             }
         }
     }

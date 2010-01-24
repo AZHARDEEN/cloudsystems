@@ -1,6 +1,7 @@
 package br.com.mcampos.controller.admin.tables;
 
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
 import java.util.List;
@@ -74,8 +75,14 @@ public class UserStatusController extends TableController
         UserStatusDTO record;
         
         wishedId = (Integer) id;
-        record = getLocator().getUserStatus ( wishedId );
-        return record;
+        try {
+            record = getLocator().getUserStatus ( wishedId );
+            return record;
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Error" );
+            return null;
+        }
     }
 
     protected void showRecord( Object obj )
@@ -89,11 +96,18 @@ public class UserStatusController extends TableController
     protected Object saveRecord( SimpleTableLoaderLocator loc )
     {
         UserStatusDTO record = new UserStatusDTO ( editId.getValue(), editDescription.getValue() );
-        if ( isAddNewOperation() )
-            locator.addUserStatus( record );        
-        else
-            locator.updateUserStatus( record );
-        return record;
+        try {
+            if ( isAddNewOperation() )
+                locator.addUserStatus( record );        
+            else
+                locator.updateUserStatus( record );
+            return record;
+        }
+        catch ( ApplicationException e )
+        {
+            showErrorMessage( e.getMessage(), "Error" );
+            return null;
+        }
     }
 
     protected void updateEditableRecords( SimpleTableLoaderLocator locator,
@@ -124,6 +138,11 @@ public class UserStatusController extends TableController
     protected void deleteRecord( SimpleTableLoaderLocator locator,
                                  Listitem item )
     {
-        locator.deleteUserStatus( (Integer)item.getValue() );
+        try {
+            locator.deleteUserStatus( (Integer)item.getValue() );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Error" );
+        }
     }
 }

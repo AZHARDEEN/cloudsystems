@@ -1,6 +1,7 @@
 package br.com.mcampos.controller.admin.tables;
 
 import br.com.mcampos.dto.user.attributes.TitleDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
 
@@ -75,7 +76,7 @@ public class TitleController extends TableController
         }
     }
 
-    protected Object getSingleRecord( Object id )
+    protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
         TitleDTO record;
@@ -94,7 +95,7 @@ public class TitleController extends TableController
         recordMask.setValue( record.getAbbreviation() );
     }
 
-    protected Object saveRecord( SimpleTableLoaderLocator loc )
+    protected Object saveRecord( SimpleTableLoaderLocator loc ) throws ApplicationException
     {
         TitleDTO record = new TitleDTO ( editId.getValue(), editDescription.getValue(), 
                                                editMask.getValue() );
@@ -133,7 +134,7 @@ public class TitleController extends TableController
     }
 
     protected void deleteRecord( SimpleTableLoaderLocator locator,
-                                 Listitem item )
+                                 Listitem item ) throws ApplicationException
     {
         locator.deleteTitle( (Integer)item.getValue() );
     }

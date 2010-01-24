@@ -12,6 +12,7 @@ import br.com.mcampos.dto.user.attributes.GenderDTO;
 import br.com.mcampos.dto.user.attributes.TitleDTO;
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.CPF;
 
@@ -35,7 +36,6 @@ public class PersonClientController extends UserClientController
 {
     private Textbox name;
     private Textbox cpf;
-    private Combobox contactType;
     private Combobox gender;
     private Combobox title;
     private Combobox maritalStatus;
@@ -194,8 +194,13 @@ public class PersonClientController extends UserClientController
         addAddresses( dto );
         addContacts( dto );
         addDocuments( dto );
-        getUserLocator().add( dto );
-        
+
+        try {
+            getUserLocator().add( dto );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
+        }
         currentUser = getLoggedInUser();
         if ( currentUser.getUserStatus().getId() == UserStatusDTO.statusFullfillRecord ) {
             currentUser.setUserStatus( new UserStatusDTO ( UserStatusDTO.statusOk ) );

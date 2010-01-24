@@ -1,6 +1,7 @@
 package br.com.mcampos.controller.admin.tables;
 
 import br.com.mcampos.dto.user.attributes.CivilStateDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
 
@@ -70,7 +71,7 @@ public class CivilStateController extends TableController
             updateListboxItem( row, o, true );
     }
     
-    protected Object getSingleRecord ( Object id )
+    protected Object getSingleRecord ( Object id ) throws ApplicationException
     {
         Integer wishedId;
         CivilStateDTO record;
@@ -112,7 +113,7 @@ public class CivilStateController extends TableController
         editDescription.setFocus( true );
     }
     
-    protected Object saveRecord ( SimpleTableLoaderLocator locator )
+    protected Object saveRecord ( SimpleTableLoaderLocator locator ) throws ApplicationException
     {
         CivilStateDTO record = new CivilStateDTO ( editId.getValue(), editDescription.getValue() );
         if ( isAddNewOperation() )
@@ -123,7 +124,7 @@ public class CivilStateController extends TableController
     }
 
 
-    protected void deleteRecord ( SimpleTableLoaderLocator locator, Listitem item )
+    protected void deleteRecord ( SimpleTableLoaderLocator locator, Listitem item ) throws ApplicationException
     {
         locator.deleteCivilState( (Integer)item.getValue() );
     }

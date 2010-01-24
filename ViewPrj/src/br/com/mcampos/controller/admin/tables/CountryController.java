@@ -1,6 +1,7 @@
 package br.com.mcampos.controller.admin.tables;
 
 import br.com.mcampos.dto.address.CountryDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
 import java.util.List;
@@ -79,7 +80,7 @@ public class CountryController extends TableController
         }
     }
 
-    protected Object getSingleRecord( Object id )
+    protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
         CountryDTO record;
@@ -99,7 +100,7 @@ public class CountryController extends TableController
         recordNumcode.setValue ( record.getNumericCode().toString() );
     }
 
-    protected Object saveRecord( SimpleTableLoaderLocator loc )
+    protected Object saveRecord( SimpleTableLoaderLocator loc ) throws ApplicationException
     {
         CountryDTO record = new CountryDTO ( );
         record.setId( editId.getValue() );
@@ -143,7 +144,7 @@ public class CountryController extends TableController
     }
 
     protected void deleteRecord( SimpleTableLoaderLocator locator,
-                                 Listitem item )
+                                 Listitem item ) throws ApplicationException
     {
         locator.deleteUserType( (Integer)item.getValue() );
     }

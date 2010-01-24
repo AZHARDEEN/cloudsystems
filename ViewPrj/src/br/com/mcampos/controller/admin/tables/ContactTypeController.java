@@ -2,6 +2,7 @@ package br.com.mcampos.controller.admin.tables;
 
 
 import br.com.mcampos.dto.user.attributes.ContactTypeDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
 import java.util.List;
@@ -81,7 +82,7 @@ public class ContactTypeController extends TableController
         }
     }
 
-    protected Object getSingleRecord( Object id )
+    protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
         ContactTypeDTO record;
@@ -101,7 +102,7 @@ public class ContactTypeController extends TableController
         recordDuplicate.setChecked( record.getAllowDuplicate() );
     }
 
-    protected Object saveRecord( SimpleTableLoaderLocator loc )
+    protected Object saveRecord( SimpleTableLoaderLocator loc ) throws ApplicationException
     {
         ContactTypeDTO record = new ContactTypeDTO ( editId.getValue(), editDescription.getValue(), 
                                                editMask.getValue(),  editDuplicate.isChecked() );
@@ -142,7 +143,7 @@ public class ContactTypeController extends TableController
     }
 
     protected void deleteRecord( SimpleTableLoaderLocator locator,
-                                 Listitem item )
+                                 Listitem item ) throws ApplicationException
     {
         locator.deleteContactType( (Integer)item.getValue() );
     }

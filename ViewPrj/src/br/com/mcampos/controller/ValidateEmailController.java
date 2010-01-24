@@ -1,6 +1,7 @@
 package br.com.mcampos.controller;
 
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.MultilineMessageBox;
 import br.com.mcampos.util.business.LoginLocator;
 
@@ -114,8 +115,8 @@ public class ValidateEmailController extends BaseLoginOptionsController
                 Sessions.getCurrent().invalidate();
                 gotoPage( "/email_validated.zul" );
             }
-            catch ( EJBException ejbException ) {
-                showErrorMessage( ejbException.getCause().getMessage() );
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage() );
             }
         }
     }

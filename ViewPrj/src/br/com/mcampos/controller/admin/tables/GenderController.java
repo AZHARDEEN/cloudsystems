@@ -2,6 +2,7 @@ package br.com.mcampos.controller.admin.tables;
 
 
 import br.com.mcampos.dto.user.attributes.GenderDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
 import java.util.List;
@@ -70,10 +71,15 @@ public class GenderController extends TableController
     protected Object getSingleRecord( Object id )
     {
         Integer wishedId;
-        GenderDTO record;
+        GenderDTO record = null;
         
         wishedId = (Integer) id;
-        record = getLocator().getGender ( wishedId );
+        try {
+            record = getLocator().getGender ( wishedId );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Error" );
+        }
         return record;
     }
 
@@ -88,10 +94,16 @@ public class GenderController extends TableController
     protected Object saveRecord( SimpleTableLoaderLocator loc )
     {
         GenderDTO record = new GenderDTO ( editId.getValue(), editDescription.getValue(), null );
-        if ( isAddNewOperation() )
-            locator.addGender( record );        
+        try {
+            if ( isAddNewOperation() ) {
+                locator.addGender( record );
+            }
         else
             locator.updateGender( record );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Error" );
+        }
         return record;
     }
 
@@ -122,6 +134,11 @@ public class GenderController extends TableController
 
     protected void deleteRecord( SimpleTableLoaderLocator locator, Listitem item )
     {
-        locator.deleteGender( (Integer)item.getValue() );
+        try {
+            locator.deleteGender( (Integer)item.getValue() );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Error" );
+        }
     }
 }

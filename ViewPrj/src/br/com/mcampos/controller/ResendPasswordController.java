@@ -1,6 +1,7 @@
 package br.com.mcampos.controller;
 
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.MultilineMessageBox;
 
 import br.com.mcampos.util.business.LoginLocator;
@@ -103,8 +104,8 @@ public class ResendPasswordController extends BaseLoginOptionsController
                 getLocator().sendValidationEmail ( UserDocumentDTO.createUserDocumentEmail( csIdentification ) );
                 gotoPage ("/forgot_password_sent.zul");
             }
-            catch ( EJBException ejbException ) {
-                showErrorMessage( ejbException.getMessage() );
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage() );
             }
         }
     }

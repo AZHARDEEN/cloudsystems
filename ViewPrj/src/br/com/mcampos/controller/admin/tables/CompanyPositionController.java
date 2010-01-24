@@ -1,6 +1,7 @@
 package br.com.mcampos.controller.admin.tables;
 
 import br.com.mcampos.dto.user.attributes.CompanyPositionDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
 import java.util.Collections;
@@ -67,7 +68,7 @@ public class CompanyPositionController extends TableController
         }
     }
 
-    protected Object getSingleRecord( Object id )
+    protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
         CompanyPositionDTO record;
@@ -85,7 +86,7 @@ public class CompanyPositionController extends TableController
         recordDescription.setValue ( record.getDescription() );
     }
 
-    protected Object saveRecord( SimpleTableLoaderLocator loc )
+    protected Object saveRecord( SimpleTableLoaderLocator loc ) throws ApplicationException
     {
         CompanyPositionDTO record = new CompanyPositionDTO ( editId.getValue(), editDescription.getValue() );
         if ( isAddNewOperation() )
@@ -121,7 +122,7 @@ public class CompanyPositionController extends TableController
     }
 
     protected void deleteRecord( SimpleTableLoaderLocator locator,
-                                 Listitem item )
+                                 Listitem item ) throws ApplicationException
     {
         locator.deleteCompanyPosition( (Integer)item.getValue() );
     }

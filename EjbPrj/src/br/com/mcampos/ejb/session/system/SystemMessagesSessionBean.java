@@ -2,11 +2,13 @@ package br.com.mcampos.ejb.session.system;
 
 import br.com.mcampos.ejb.entity.system.SystemMessage;
 
+import br.com.mcampos.ejb.entity.system.SystemMessagePK;
+import br.com.mcampos.exception.ApplicationException;
+
+import br.com.mcampos.exception.ApplicationRuntimeException;
+
 import java.util.List;
 
-import javax.ejb.EJBException;
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 import javax.persistence.EntityManager;
@@ -14,12 +16,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "SystemMessagesSession", mappedName = "CloudSystems-EjbPrj-SystemMessagesSession" )
-@Remote
-@Local
-public class SystemMessagesSessionBean implements SystemMessagesSession, SystemMessagesSessionLocal
+public class SystemMessagesSessionBean implements SystemMessagesSessionLocal
 {
     @PersistenceContext( unitName="EjbPrj" )
     private EntityManager em;
+    
+    public static final Integer systemCommomMessageTypeId = 2;
+
 
     public SystemMessagesSessionBean()
     {
@@ -73,14 +76,23 @@ public class SystemMessagesSessionBean implements SystemMessagesSession, SystemM
         return query.getResultList();
     }
     
-    public void throwMessage ( Integer messageId )
+    public void throwException ( Integer typeId, Integer id ) throws ApplicationException
     {
-        try {
-            SystemMessage msg = em.find( SystemMessage.class, messageId );
-            if ( msg != null ) {
-                throw new EJBException ( msg.getMessage() );
-            }
-        } catch ( Exception e ){};
-        throw new EJBException ( "SystemMessage [" + messageId.toString() + "] não está definida" );
+        SystemMessage msg = em.find( SystemMessage.class, new SystemMessagePK ( id, typeId ) );
+        if ( msg != null ) 
+            throw new ApplicationException ( id, msg.getMessage() );
+        else
+            throw new ApplicationException ( id, "SystemMessage [" + id.toString() + "] não está definida" );
     }
+
+
+    public void throwRuntimeException ( Integer typeId, Integer id ) throws ApplicationRuntimeException
+    {
+        SystemMessage msg = em.find( SystemMessage.class, new SystemMessagePK ( id, typeId ) );
+        if ( msg != null ) 
+            throw new ApplicationRuntimeException ( id, msg.getMessage() );
+        else
+            throw new ApplicationRuntimeException ( id, "SystemMessage [" + id.toString() + "] não está definida" );
+    }
+
 }

@@ -5,8 +5,7 @@ import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.user.attributes.UserStatus;
 
 
-import com.bea.common.engine.InvalidParameterException;
-
+import java.security.InvalidParameterException;
 
 import java.util.ArrayList;
 import java.util.List;

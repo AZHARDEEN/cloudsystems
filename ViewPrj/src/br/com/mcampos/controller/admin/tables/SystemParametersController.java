@@ -1,13 +1,11 @@
 package br.com.mcampos.controller.admin.tables;
 
 import br.com.mcampos.dto.system.SystemParametersDTO;
-import br.com.mcampos.dto.user.attributes.UserTypeDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
-import java.util.Collections;
 import java.util.List;
 
-import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -68,11 +66,17 @@ public class SystemParametersController extends TableController {
 
     protected Object getSingleRecord( Object id ) {
         String wishedId;
-        SystemParametersDTO record;
         
         wishedId = (String) id;
-        record = getLocator().getSystemParameters( wishedId );
-        return record;
+        try {
+            SystemParametersDTO record = null;
+            record = getLocator().getSystemParameters( wishedId );
+            return record;
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage ( e.getMessage(), "Erro" );
+            return null;
+        }
     }
 
     protected void showRecord( Object obj ) {
@@ -85,10 +89,16 @@ public class SystemParametersController extends TableController {
 
     protected Object saveRecord( SimpleTableLoaderLocator loc ) {
         SystemParametersDTO record = new SystemParametersDTO ( editId.getValue(), editDescription.getValue(), editValue.getValue() );
-        if ( isAddNewOperation() )
-            locator.addSystemParameters( record );        
-        else
-            locator.updateSystemParameters( record );
+        try {
+            if ( isAddNewOperation() )
+                locator.addSystemParameters( record );        
+            else
+                locator.updateSystemParameters( record );
+        }
+        catch ( ApplicationException e ) 
+        {
+            showErrorMessage ( e.getMessage(), "Erro" );
+        }
         return record;
     }
 

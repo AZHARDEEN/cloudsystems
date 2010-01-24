@@ -7,6 +7,7 @@ import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
 
 import br.com.mcampos.ejb.session.user.LoginSessionLocal;
 
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
 import javax.ejb.EJB;
@@ -20,6 +21,8 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
     SystemMessagesSessionLocal systemMessage;
     @EJB
     LoginSessionLocal login;
+    
+    private static final Integer systemMessageTypeId = 1;
 
     public LoginFacadeSessionBean()
     {
@@ -39,10 +42,10 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
      * @param dto
      * @exception EJBException
      */
-    public void add( RegisterDTO dto )
+    public void add( RegisterDTO dto ) throws ApplicationException
     {
         if ( dto == null )
-            systemMessage.throwMessage( 26 );
+            systemMessage.throwException( systemMessageTypeId, 1 );
         login.add( dto );
     }
 
@@ -54,10 +57,10 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception EJBException
      */
-    public void makeNewPassword( UserDocumentDTO dto )
+    public void makeNewPassword( UserDocumentDTO dto ) throws ApplicationException
     {
         if ( dto == null )
-            systemMessage.throwMessage( 26 );
+            systemMessage.throwException( systemMessageTypeId, 1 );
         getLogin().makeNewPassword( dto );
     }
 
@@ -70,11 +73,14 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
      * @param newPassword - A nova senha
      * @exception EJBException
      */
-    public void changePassword( UserDocumentDTO dto, String oldPassword, String newPassword )
+    public void changePassword( UserDocumentDTO dto, String oldPassword, String newPassword ) throws ApplicationException
     {
         if ( dto == null || SysUtils.isEmpty( oldPassword ) || SysUtils.isEmpty( newPassword ) )
-            systemMessage.throwMessage( 26 );
-
+            systemMessage.throwException( systemMessageTypeId, 1 );
+        if ( SysUtils.isEmpty( oldPassword ) )
+            systemMessage.throwException( systemMessageTypeId, 6 );
+        if ( SysUtils.isEmpty( newPassword ) )
+            systemMessage.throwException( systemMessageTypeId, 7 );
         getLogin().changePassword( dto, oldPassword, newPassword );
     }
 
@@ -89,10 +95,12 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
      * @param password Senha de validação. Este é a senha informada pelo usuário no ato do cadstro
      * @exception EJBException
      */
-    public void validateEmail( String token, String password )
+    public void validateEmail( String token, String password ) throws ApplicationException
     {
-        if ( SysUtils.isEmpty( token ) || SysUtils.isEmpty( password ) )
-            systemMessage.throwMessage( 26 );
+        if ( SysUtils.isEmpty( password ) )
+            systemMessage.throwException( systemMessageTypeId, 6 );
+        if ( SysUtils.isEmpty( token )  )
+            systemMessage.throwException( systemMessageTypeId, 7 );
         getLogin().validateEmail( token, password );
     }
 
@@ -103,10 +111,10 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception EJBException
      */
-    public void sendValidationEmail( UserDocumentDTO dto )
+    public void sendValidationEmail( UserDocumentDTO dto ) throws ApplicationException
     {
         if ( dto == null )
-            systemMessage.throwMessage( 26 );
+            systemMessage.throwException( systemMessageTypeId, 1 );
         getLogin().sendValidationEmail( dto );
     }
 }

@@ -6,6 +6,8 @@ import br.com.mcampos.dto.user.UserDocumentDTO;
 
 import br.com.mcampos.dto.user.login.LoginDTO;
 
+import br.com.mcampos.exception.ApplicationException;
+
 import javax.ejb.EJBException;
 import javax.ejb.Remote;
 
@@ -19,7 +21,7 @@ public interface LoginFacadeSession
      * @param dto
      * @exception EJBException
      */
-    void add(RegisterDTO dto);
+    void add(RegisterDTO dto) throws ApplicationException;
     
     /**
      * Altera a senha do usuário. Deve-se imaginar que o usuario não está logado no sistema
@@ -30,7 +32,7 @@ public interface LoginFacadeSession
      * @param newPassword - A nova senha
      * @exception EJBException
      */
-    void changePassword ( UserDocumentDTO document, String oldPassword, String newPassword );
+    void changePassword ( UserDocumentDTO document, String oldPassword, String newPassword ) throws ApplicationException;
     
     /**
      * Valida o email informado no ato do cadastro. Quando o usuario se cadastra no sistema,
@@ -43,7 +45,7 @@ public interface LoginFacadeSession
      * @param password Senha de validação. Este é a senha informada pelo usuário no ato do cadstro
      * @exception EJBException
      */
-    void validateEmail ( String token, String password );
+    void validateEmail ( String token, String password ) throws ApplicationException;
     
     /**
      * Cria uma nova senha para o usuario logar no sistema e envia esta senha via email.
@@ -52,7 +54,7 @@ public interface LoginFacadeSession
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception EJBException
      */
-    void makeNewPassword ( UserDocumentDTO dto );
+    void makeNewPassword ( UserDocumentDTO dto ) throws ApplicationException;
     
     
     /**
@@ -62,7 +64,7 @@ public interface LoginFacadeSession
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception EJBException
      */
-    void sendValidationEmail ( UserDocumentDTO dto );
+    void sendValidationEmail ( UserDocumentDTO dto ) throws ApplicationException;
 }
 
 

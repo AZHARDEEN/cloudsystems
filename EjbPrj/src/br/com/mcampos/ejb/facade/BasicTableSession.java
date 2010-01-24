@@ -18,6 +18,8 @@ import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 
+import br.com.mcampos.exception.ApplicationException;
+
 import java.util.List;
 
 import javax.ejb.Remote;
@@ -25,108 +27,108 @@ import javax.ejb.Remote;
 @Remote
 public interface BasicTableSession
 {
-    CivilStateDTO getCivilState ( Integer id );
+    CivilStateDTO getCivilState ( Integer id ) throws ApplicationException;
 
 
     /*CivilState Facede Service*/
-    void addCivilState ( CivilStateDTO newRecord );
-    void updateCivilState ( CivilStateDTO newRecord );
-    void deleteCivilState ( Integer id );
-    Integer getCivilStateMaxPKValue ();
+    void addCivilState ( CivilStateDTO newRecord ) throws ApplicationException;
+    void updateCivilState ( CivilStateDTO newRecord ) throws ApplicationException;
+    void deleteCivilState ( Integer id ) throws ApplicationException;
+    Integer getCivilStateMaxPKValue () ;
     List getAllCivilState ();
 
 
     /*AddressType Facede Service*/
-    AddressTypeDTO getAddressType ( Integer id );
-    void addAddressType ( AddressTypeDTO newRecord );
-    void updateAddressType ( AddressTypeDTO newRecord );
-    void deleteAddressType ( Integer id );
+    AddressTypeDTO getAddressType ( Integer id ) throws ApplicationException;
+    void addAddressType ( AddressTypeDTO newRecord ) throws ApplicationException;
+    void updateAddressType ( AddressTypeDTO newRecord ) throws ApplicationException;
+    void deleteAddressType ( Integer id ) throws ApplicationException;
     Integer getAddressTypeMaxPKValue ();
     List getAllAddressType ();
 
 
     /*ContactType Facede Service*/
-   ContactTypeDTO getContactType ( Integer id );
-    void addContactType ( ContactTypeDTO newRecord );
-    void updateContactType ( ContactTypeDTO newRecord );
-    void deleteContactType ( Integer id );
+   ContactTypeDTO getContactType ( Integer id ) throws ApplicationException;
+    void addContactType ( ContactTypeDTO newRecord ) throws ApplicationException;
+    void updateContactType ( ContactTypeDTO newRecord ) throws ApplicationException;
+    void deleteContactType ( Integer id )throws ApplicationException;
     Integer getContactTypeMaxPKValue ();
     List getAllContactType ();
 
 
     /*DocumentType Facede Service*/
-    DocumentTypeDTO getDocumentType ( Integer id );
-    void addDocumentType ( DocumentTypeDTO newRecord );
-    void updateDocumentType ( DocumentTypeDTO newRecord );
-    void deleteDocumentType ( Integer id );
+    DocumentTypeDTO getDocumentType ( Integer id ) throws ApplicationException;
+    void addDocumentType ( DocumentTypeDTO newRecord ) throws ApplicationException;
+    void updateDocumentType ( DocumentTypeDTO newRecord ) throws ApplicationException;
+    void deleteDocumentType ( Integer id ) throws ApplicationException;
     Integer getDocumentTypeMaxPKValue ();
     List getAllDocumentType ();
 
 
     /*Gender Facede Service*/
-    GenderDTO getGender ( Integer id );
-    void addGender ( GenderDTO newRecord );
-    void updateGender ( GenderDTO newRecord );
-    void deleteGender ( Integer id );
+    GenderDTO getGender ( Integer id ) throws ApplicationException;
+    void addGender ( GenderDTO newRecord ) throws ApplicationException;
+    void updateGender ( GenderDTO newRecord ) throws ApplicationException;
+    void deleteGender ( Integer id ) throws ApplicationException;
     Integer getGenderMaxPKValue ();
     List getAllGender ();
 
 
     /*Title Facede Service*/
-    TitleDTO getTitle ( Integer id );
-    void addTitle ( TitleDTO newRecord );
-    void updateTitle ( TitleDTO newRecord );
-    void deleteTitle ( Integer id );
+    TitleDTO getTitle ( Integer id ) throws ApplicationException;
+    void addTitle ( TitleDTO newRecord ) throws ApplicationException;
+    void updateTitle ( TitleDTO newRecord ) throws ApplicationException;
+    void deleteTitle ( Integer id ) throws ApplicationException;
     Integer getTitleMaxPKValue ();
     List getAllTitle ();
 
     /*UserStatus Facede Service*/
-    UserStatusDTO getUserStatus ( Integer id );
-    void addUserStatus ( UserStatusDTO newRecord );
-    void updateUserStatus ( UserStatusDTO newRecord );
-    void deleteUserStatus ( Integer id );
+    UserStatusDTO getUserStatus ( Integer id ) throws ApplicationException;
+    void addUserStatus ( UserStatusDTO newRecord ) throws ApplicationException;
+    void updateUserStatus ( UserStatusDTO newRecord ) throws ApplicationException;
+    void deleteUserStatus ( Integer id ) throws ApplicationException;
     Integer getUserStatusMaxPKValue ();
     List getAllUserStatus ();
 
     /*UserType Facede Service*/
-    UserTypeDTO getUserType ( Integer id );
-    void addUserType ( UserTypeDTO newRecord );
-    void updateUserType ( UserTypeDTO newRecord );
-    void deleteUserType ( Integer id );
+    UserTypeDTO getUserType ( Integer id ) throws ApplicationException;
+    void addUserType ( UserTypeDTO newRecord ) throws ApplicationException;
+    void updateUserType ( UserTypeDTO newRecord ) throws ApplicationException;
+    void deleteUserType ( Integer id ) throws ApplicationException;
     Integer getUserTypeMaxPKValue ();
     List getAllUserType ();
 
     /*Country Facade Service*/
-    CountryDTO getCountry ( Integer id );
-    void addCountry ( CountryDTO newRecord );
-    void updateCountry ( CountryDTO newRecord );
-    void deleteCountry ( Integer id );
+    CountryDTO getCountry ( Integer id ) throws ApplicationException;
+    void addCountry ( CountryDTO newRecord ) throws ApplicationException;
+    void updateCountry ( CountryDTO newRecord ) throws ApplicationException;
+    void deleteCountry ( Integer id ) throws ApplicationException;
     Integer getCountryMaxPKValue ();
     List getAllCountry ();
 
 
     /*SystemParameters Facade Service*/
-    SystemParametersDTO getSystemParameters ( String id );
-    void addSystemParameters ( SystemParametersDTO newRecord );
-    void updateSystemParameters ( SystemParametersDTO newRecord );
+    SystemParametersDTO getSystemParameters ( String id ) throws ApplicationException;
+    void addSystemParameters ( SystemParametersDTO newRecord ) throws ApplicationException;
+    void updateSystemParameters ( SystemParametersDTO newRecord ) throws ApplicationException;
     List getAllSystemParameters ();
     
     /*AccessLogType Facade Service*/
-    public AccessLogTypeDTO getAccessLogType ( Integer id );
-    public void add ( AccessLogTypeDTO newRecord );
-    public void updateAccessLogType ( AccessLogTypeDTO newRecord );
+    public AccessLogTypeDTO getAccessLogType ( Integer id ) throws ApplicationException;
+    public void add ( AccessLogTypeDTO newRecord ) throws ApplicationException;
+    public void updateAccessLogType ( AccessLogTypeDTO newRecord ) throws ApplicationException;
     public List getAllAccessLogType ();
-    public void deleteAccessLogType ( Integer id );
+    public void deleteAccessLogType ( Integer id ) throws ApplicationException;
     public Integer getAccessLogTypeMaxPKValue ();
     
 
 
     /*CompanyType Facade Service*/
-    public CompanyTypeDTO getCompanyType ( Integer id );
-    public void add ( CompanyTypeDTO newRecord );
-    public void updateCompanyType ( CompanyTypeDTO newRecord );
+    public CompanyTypeDTO getCompanyType ( Integer id ) throws ApplicationException;
+    public void add ( CompanyTypeDTO newRecord ) throws ApplicationException;
+    public void updateCompanyType ( CompanyTypeDTO newRecord ) throws ApplicationException;
     public List getAllCompanyType ();
-    public void deleteCompanyType ( Integer id );
+    public void deleteCompanyType ( Integer id ) throws ApplicationException;
     public Integer getCompanyTypeMaxPKValue ();
 
 
@@ -134,10 +136,10 @@ public interface BasicTableSession
 
 
     /*CompanyPosition Facade Service*/
-    public CompanyPositionDTO getCompanyPosition ( Integer id );
-    public void add ( CompanyPositionDTO newRecord );
-    public void updateCompanyPosition ( CompanyPositionDTO newRecord );
+    public CompanyPositionDTO getCompanyPosition ( Integer id ) throws ApplicationException;
+    public void add ( CompanyPositionDTO newRecord ) throws ApplicationException;
+    public void updateCompanyPosition ( CompanyPositionDTO newRecord ) throws ApplicationException;
     public List getAllCompanyPosition ();
-    public void deleteCompanyPosition ( Integer id );
+    public void deleteCompanyPosition ( Integer id ) throws ApplicationException;
     public Integer getCompanyPositionMaxPKValue ();
 }

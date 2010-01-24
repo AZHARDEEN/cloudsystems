@@ -30,11 +30,11 @@
     <class>br.com.mcampos.ejb.entity.user.Company</class>
     <class>br.com.mcampos.ejb.entity.user.attributes.CompanyPosition</class>
     <class>br.com.mcampos.ejb.entity.user.attributes.CompanyType</class>
-    <class>br.com.mcampos.ejb.entity.system.SystemMessage</class>
-    <class>br.com.mcampos.ejb.entity.system.SystemMessageType</class>
     <class>br.com.mcampos.ejb.entity.user.Collaborator</class>
     <class>br.com.mcampos.ejb.entity.user.attributes.CollaboratorType</class>
     <class>br.com.mcampos.ejb.entity.user.Client</class>
+    <class>br.com.mcampos.ejb.entity.system.SystemMessageType</class>
+    <class>br.com.mcampos.ejb.entity.system.SystemMessage</class>
     <properties>
         <property name="eclipselink.target-server" value="WebLogic_10"/>
         <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/CloudDS"/>

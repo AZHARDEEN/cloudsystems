@@ -2,6 +2,7 @@ package br.com.mcampos.controller.admin.tables;
 
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
 import java.util.Collections;
@@ -69,7 +70,7 @@ public class AccessLogTypeController extends TableController
 
     }
 
-    protected Object getSingleRecord( Object id )
+    protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
         AccessLogTypeDTO record;
@@ -87,7 +88,7 @@ public class AccessLogTypeController extends TableController
         recordDescription.setValue ( record.getDescription() );
     }
 
-    protected Object saveRecord( SimpleTableLoaderLocator loc )
+    protected Object saveRecord( SimpleTableLoaderLocator loc ) throws ApplicationException
     {
         AccessLogTypeDTO record = new AccessLogTypeDTO ( editId.getValue(), editDescription.getValue() );
         if ( isAddNewOperation() )
@@ -123,7 +124,7 @@ public class AccessLogTypeController extends TableController
     }
 
     protected void deleteRecord( SimpleTableLoaderLocator locator,
-                                 Listitem item )
+                                 Listitem item ) throws ApplicationException
     {
         locator.deleteAccessLogType( (Integer)item.getValue() );
     }
