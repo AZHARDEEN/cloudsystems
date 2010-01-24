@@ -1,7 +1,6 @@
 package br.com.mcampos.ejb.facade;
 
 import br.com.mcampos.dto.core.BasicDTO;
-import br.com.mcampos.dto.core.DisplayNameDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
@@ -23,19 +22,17 @@ import br.com.mcampos.ejb.session.user.PersonSessionLocal;
 
 import br.com.mcampos.ejb.session.user.UserSessionLocal;
 
-import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.exception.ApplicationException;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 
 @Stateless( name = "UserFacadeSession", mappedName = "CloudSystems-EjbPrj-UserFacadeSession" )
-@Remote
 public class UserFacadeSessionBean implements UserFacadeSession
 {
 
@@ -51,6 +48,9 @@ public class UserFacadeSessionBean implements UserFacadeSession
     SystemMessagesSessionLocal systemMessage;
     @EJB
     CollaboratorSessionLocal collaborator;
+
+    private static final Integer systemMessageTypeId = 3;
+    
 
     public UserFacadeSessionBean()
     {
@@ -73,7 +73,7 @@ public class UserFacadeSessionBean implements UserFacadeSession
 
     public List<ListLoginDTO> getLoginList()
     {
-        return null;
+        return Collections.EMPTY_LIST;
     }
 
     public Long getLoginRecordCount()
@@ -83,7 +83,7 @@ public class UserFacadeSessionBean implements UserFacadeSession
 
     public List<ListLoginDTO> getLoginByRange( Integer firstResult, Integer maxResults )
     {
-        return null;
+        return Collections.EMPTY_LIST;
     }
 
     public PersonDTO getPerson( Integer userId )
@@ -105,7 +105,7 @@ public class UserFacadeSessionBean implements UserFacadeSession
     }
 
 
-    public void add( PersonDTO dto )
+    public void add( PersonDTO dto ) throws ApplicationException
     {
         testParam( dto );
         try {
@@ -119,7 +119,7 @@ public class UserFacadeSessionBean implements UserFacadeSession
         }
     }
 
-    public void add( CompanyDTO dto )
+    public void add( CompanyDTO dto ) throws ApplicationException
     {
         testParam( dto );
         try {
@@ -133,7 +133,7 @@ public class UserFacadeSessionBean implements UserFacadeSession
         }
     }
 
-    public void addBusinessEntity( UserDTO dto, LoginDTO loginDTO )
+    public void addBusinessEntity( UserDTO dto, LoginDTO loginDTO ) throws ApplicationException
     {
         testParam( dto );
         testParam( loginDTO );
@@ -146,7 +146,7 @@ public class UserFacadeSessionBean implements UserFacadeSession
                 if ( dto instanceof CompanyDTO ) {
                     if ( company.hasManagers( dto.getId() ) ) {
                         if ( company.isManager( dto.getId(), loginDTO.getUserId() ) == false )
-                            systemMessage.throwMessage( 27 );
+                            systemMessage.throwException(systemMessageTypeId, 27 );
                     }
                     entity = company.updateBusinessEntity ( ( CompanyDTO )dto, loginDTO );
                 }
@@ -201,9 +201,9 @@ public class UserFacadeSessionBean implements UserFacadeSession
         return null;
     }
 
-    protected void testParam( BasicDTO dto )
+    protected void testParam( BasicDTO dto ) throws ApplicationException
     {
         if ( dto == null )
-            systemMessage.throwMessage( 26 );
+            systemMessage.throwException( systemMessageTypeId, 26 );
     }
 }

@@ -2,6 +2,7 @@ package br.com.mcampos.controller.admin.tables;
 
 
 import br.com.mcampos.controller.core.LoggedBaseController;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.IntegerComparator;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
@@ -40,11 +41,11 @@ public abstract class TableController extends LoggedBaseController
     protected abstract List getList ();
     protected abstract void insertIntoListbox ( Listbox listbox, Object e );
     protected abstract void updateListboxItem ( Listitem item, Object e, Boolean bNew );
-    protected abstract Object getSingleRecord ( Object id );
+    protected abstract Object getSingleRecord ( Object id ) throws ApplicationException;
     protected abstract void showRecord ( Object record );
-    protected abstract Object saveRecord ( SimpleTableLoaderLocator loc );
+    protected abstract Object saveRecord ( SimpleTableLoaderLocator loc ) throws ApplicationException;
     protected abstract void updateEditableRecords ( SimpleTableLoaderLocator locator, Listitem item );
-    protected abstract void deleteRecord ( SimpleTableLoaderLocator locator, Listitem item );
+    protected abstract void deleteRecord ( SimpleTableLoaderLocator locator, Listitem item ) throws ApplicationException;
     
     public TableController( char c )
     {
@@ -68,7 +69,7 @@ public abstract class TableController extends LoggedBaseController
         loadList ( listboxRecord );
     }
     
-    protected void showErrorMessage ( String description, Exception cause, String title )
+    protected void showErrorMessage ( String description, String title )
     {
         try {
             Messagebox.show( description, title, Messagebox.OK, Messagebox.ERROR );
@@ -101,7 +102,7 @@ public abstract class TableController extends LoggedBaseController
             }                 
         }
         catch ( Exception e ) {
-            showErrorMessage( "Ocorreu um erro ao carregar a lista do banco de dados.", e, "Carregar a Lista");
+            showErrorMessage( "Ocorreu um erro ao carregar a lista do banco de dados.", "Carregar a Lista");
         }
     }
     
@@ -115,7 +116,7 @@ public abstract class TableController extends LoggedBaseController
         }
         catch ( Exception e )
         {
-            showErrorMessage( "Ocorreu um erro ao processar a solicitação de inclusão. Não foi possível obter o valor do campo Chave", e, "Criar Novo Registro");
+            showErrorMessage( "Ocorreu um erro ao processar a solicitação de inclusão. Não foi possível obter o valor do campo Chave", "Criar Novo Registro");
             onClick$cmdCancel();
         }
     }
@@ -133,7 +134,7 @@ public abstract class TableController extends LoggedBaseController
             }
             catch ( Exception e )
             {
-                showErrorMessage( "Ocorreu um erro ao processar a solicitação de atualizar o registro", e, "Atualizar Registro Corrente");
+                showErrorMessage( "Ocorreu um erro ao processar a solicitação de atualizar o registro", "Atualizar Registro Corrente");
                 onClick$cmdCancel();
             }
         }
@@ -145,15 +146,15 @@ public abstract class TableController extends LoggedBaseController
         
         
         showEditPanel( false );
-        try {
-            deleteItem = listboxRecord.getSelectedItem();
-            if ( deleteItem != null ) {
+        deleteItem = listboxRecord.getSelectedItem();
+        if ( deleteItem != null ) {
+            try {
                 deleteRecord ( getLocator(), deleteItem );
                 listboxRecord.removeChild( deleteItem );
             }
-        }
-        catch ( EJBException e ) {
-            showErrorMessage( "Ocorreu um erro ao tentar excluir o registro. A transação foi desfeita.", e, "Excluir Registro");
+            catch ( ApplicationException e ) {
+                showErrorMessage( "Ocorreu um erro ao tentar excluir o registro. A transação foi desfeita.", "Excluir Registro");
+            }
         }
     }
 
@@ -213,9 +214,9 @@ public abstract class TableController extends LoggedBaseController
             else
                 updateListboxItem( updatableItem, record, false );
         }
-        catch ( EJBException e ) {
-            showErrorMessage( "Ocorreu um erro ao tentar salvar o registro. A transação foi desfeita.", e, "Salvar atualizações");
-        };
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Salvar atualizações");
+        }
         setAddNewOperation ( false );
     }
 
@@ -235,8 +236,8 @@ public abstract class TableController extends LoggedBaseController
             if ( record != null )
                 showRecord ( record );
         }
-        catch ( EJBException e ) {
-            showErrorMessage( "Ocorreu um erro ao obter os dados do registro selecionado a partir do banco de dados", e, "Obter Informações do Registro");
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Obter Informações do Registro");
         }
     }
 

@@ -12,6 +12,8 @@ import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 
+import br.com.mcampos.exception.ApplicationException;
+
 import java.util.List;
 
 import javax.ejb.Remote;
@@ -35,9 +37,9 @@ public interface UserFacadeSession
 
     void deleteLogin ( Integer[] logins );
 
-    void add ( PersonDTO dto );
+    void add ( PersonDTO dto ) throws ApplicationException;
 
-    void add ( CompanyDTO dto );
+    void add ( CompanyDTO dto ) throws ApplicationException;
 
     UserDTO getUser ( Integer userId );
 

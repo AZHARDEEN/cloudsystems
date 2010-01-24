@@ -22,6 +22,8 @@ import br.com.mcampos.ejb.entity.user.UserDocument;
 import br.com.mcampos.ejb.entity.user.Users;
 import br.com.mcampos.ejb.entity.user.attributes.UserStatus;
 
+import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.security.InvalidParameterException;
@@ -63,6 +65,11 @@ public class LoginSessionBean implements LoginSessionLocal
     @EJB PersonSessionLocal personSession;
     
     @EJB UserSessionLocal userSession;
+    
+    @EJB SystemMessagesSessionLocal systemMessage;
+    
+    private static final Integer systemMessageTypeId = 1;
+    
 
     public LoginSessionBean ()
     {
@@ -77,27 +84,31 @@ public class LoginSessionBean implements LoginSessionLocal
      * @param dto DTO com os dados básicos para inclusão.
      * @exception InvalidParameterException
      */
-    public void add ( RegisterDTO dto )
+    public void add ( RegisterDTO dto ) throws ApplicationException
     {
         /*
          * Verificar os parametros novamente. Pois nao podemos confiar no controller.
          */
         Person person;
 
-
+        if ( dto == null )
+            getSystemMessage().throwException( systemMessageTypeId, 1 );
         if ( SysUtils.isEmpty( dto.getName() ) )
-            throw new InvalidParameterException( "Registro sem o nome do usuário" );
+            getSystemMessage().throwException( systemMessageTypeId, 2 );
         if ( dto.getDocuments().size() < 1 )
-            throw new InvalidParameterException( "Registro sem ao menos um documento" );
+            getSystemMessage().throwException( systemMessageTypeId, 3 );
+        /*
+         * TODO: testar explicitamente a existência do email e do cpf
+         */
         if ( SysUtils.isEmpty( dto.getPassword() ) )
-            throw new InvalidParameterException( "Registro nao possui senha" );
+            getSystemMessage().throwException( systemMessageTypeId, 4 );
 
         person = (Person) getUserSession().findByDocumentList( dto.getDocuments() );
         if ( person == null ) {
             person = getPersonSession().add( DTOFactory.copy ( dto ) );
         }
         if ( person.getLogin() != null )
-            throw new EJBException ( "Este cadastro já possui login" );
+            getSystemMessage().throwException( systemMessageTypeId, 5 );
         add ( dto, person );
     }
     
@@ -534,5 +545,10 @@ public class LoginSessionBean implements LoginSessionLocal
     protected UserSessionLocal getUserSession()
     {
         return userSession;
+    }
+
+    protected SystemMessagesSessionLocal getSystemMessage()
+    {
+        return systemMessage;
     }
 }

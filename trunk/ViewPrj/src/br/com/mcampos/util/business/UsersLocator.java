@@ -11,7 +11,9 @@ import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.facade.UserFacadeSession;
 
-import com.bea.common.engine.InvalidParameterException;
+import br.com.mcampos.exception.ApplicationException;
+
+import java.security.InvalidParameterException;
 
 import java.util.List;
 
@@ -83,14 +85,14 @@ public class UsersLocator extends BusinessDelegate
         getSessionBean().deleteLogin( logins );
     }
     
-    public void add ( PersonDTO dto )
+    public void add ( PersonDTO dto ) throws ApplicationException
     {
         if ( dto == null )
             throw new InvalidParameterException ( "Parâmetro dto não pode ser nulo." );
         getSessionBean().add( dto );
     }
     
-    public void add ( CompanyDTO dto )
+    public void add ( CompanyDTO dto ) throws ApplicationException
     {
         if ( dto == null )
             throw new InvalidParameterException ( "Parâmetro dto não pode ser nulo." );

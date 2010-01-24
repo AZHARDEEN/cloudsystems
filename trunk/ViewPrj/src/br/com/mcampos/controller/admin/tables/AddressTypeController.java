@@ -1,6 +1,7 @@
 package br.com.mcampos.controller.admin.tables;
 
 import br.com.mcampos.dto.address.AddressTypeDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
 import java.util.List;
@@ -68,7 +69,7 @@ public class AddressTypeController extends TableController
             updateListboxItem( row, o, true );
     }
     
-    protected Object getSingleRecord ( Object id )
+    protected Object getSingleRecord ( Object id ) throws ApplicationException
     {
         Integer wishedId;
         AddressTypeDTO record;
@@ -110,7 +111,7 @@ public class AddressTypeController extends TableController
         editDescription.setFocus( true );
     }
     
-    protected Object saveRecord ( SimpleTableLoaderLocator locator )
+    protected Object saveRecord ( SimpleTableLoaderLocator locator ) throws ApplicationException
     {
         AddressTypeDTO record = new AddressTypeDTO ( editId.getValue(), editDescription.getValue() );
         if ( isAddNewOperation() )
@@ -121,7 +122,7 @@ public class AddressTypeController extends TableController
     }
 
 
-    protected void deleteRecord ( SimpleTableLoaderLocator locator, Listitem item )
+    protected void deleteRecord ( SimpleTableLoaderLocator locator, Listitem item ) throws ApplicationException
     {
         locator.deleteAddressType( (Integer)item.getValue() );
     }

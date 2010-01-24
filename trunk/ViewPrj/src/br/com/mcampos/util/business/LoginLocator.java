@@ -4,6 +4,7 @@ import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.ejb.facade.LoginFacadeSession;
 
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.security.InvalidParameterException;
@@ -30,7 +31,7 @@ public class LoginLocator extends BusinessDelegate
      * Os dados são os mínimos necessários, depois o novo usuário deverá completar o seu registro.
      * @exception InvalidParameterException
      */
-    public void create ( RegisterDTO dto )
+    public void create ( RegisterDTO dto ) throws ApplicationException
     {
         if ( dto == null )
             throw new InvalidParameterException( "Nenhum parametro pode ser nulo ou vazio" );
@@ -47,7 +48,7 @@ public class LoginLocator extends BusinessDelegate
      * @exception InvalidParameterException
      */
     public void changePassword ( UserDocumentDTO dto, String oldPassword,
-                                 String newPassword )
+                                 String newPassword ) throws ApplicationException
     {
         if ( dto == null || oldPassword == null || newPassword == null )
             throw new InvalidParameterException( "Nenhum parametro pode ser nulo" );
@@ -65,7 +66,7 @@ public class LoginLocator extends BusinessDelegate
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception InvalidParameterException
      */
-    public void makeNewPasssword ( UserDocumentDTO dto )
+    public void makeNewPasssword ( UserDocumentDTO dto ) throws ApplicationException
     {
         if ( dto == null )
             throw new InvalidParameterException( "Nenhum parametro pode ser nulo ou vazio" );
@@ -85,7 +86,7 @@ public class LoginLocator extends BusinessDelegate
      * @param password Senha de validação. Este é a senha informada pelo usuário no ato do cadstro
      * @exception InvalidParameterException
      */
-    public void validateEmail ( String token, String password )
+    public void validateEmail ( String token, String password ) throws ApplicationException
     {
         if ( SysUtils.isEmpty( token ) || SysUtils.isEmpty( password ) )
             throw new InvalidParameterException( "Nenhum parametro pode ser nulo ou vazio" );
@@ -100,7 +101,7 @@ public class LoginLocator extends BusinessDelegate
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception InvalidParameterException
      */
-    public void sendValidationEmail ( UserDocumentDTO dto )
+    public void sendValidationEmail ( UserDocumentDTO dto ) throws ApplicationException
     {
         if ( dto == null )
             throw new InvalidParameterException( "Nenhum parametro pode ser nulo ou vazio" );

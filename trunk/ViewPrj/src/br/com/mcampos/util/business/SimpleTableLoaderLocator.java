@@ -21,6 +21,8 @@ import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.ejb.facade.BasicTableSession;
 
+import br.com.mcampos.exception.ApplicationException;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -49,7 +51,7 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
 		return getSessionBean().getAllAddressType ();
 	}
     
-    public void addAddressType ( AddressTypeDTO newRecord )
+    public void addAddressType ( AddressTypeDTO newRecord ) throws ApplicationException
     {
         getSessionBean().addAddressType( newRecord );        
     }
@@ -59,17 +61,17 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return getSessionBean().getAddressTypeMaxPKValue();
     }
 
-    public void updateAddressType ( AddressTypeDTO updateRecord )
+    public void updateAddressType ( AddressTypeDTO updateRecord ) throws ApplicationException
     {
         getSessionBean().updateAddressType( updateRecord );        
     }
 
-    public void deleteAddressType ( Integer id )
+    public void deleteAddressType ( Integer id ) throws ApplicationException
     {
         getSessionBean().deleteAddressType( id );
     }
 
-    public AddressTypeDTO getAddressType( Integer id)
+    public AddressTypeDTO getAddressType( Integer id) throws ApplicationException
     {
         return getSessionBean().getAddressType( id );
     }
@@ -109,7 +111,7 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
     }
     
 
-    public void addCivilState ( CivilStateDTO newRecord )
+    public void addCivilState ( CivilStateDTO newRecord ) throws ApplicationException
     {
         getSessionBean().addCivilState( newRecord );        
     }
@@ -124,22 +126,22 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return getSessionBean().getCivilStateMaxPKValue();
     }
 
-    public void updateCivilState ( CivilStateDTO record )
+    public void updateCivilState ( CivilStateDTO record ) throws ApplicationException
     {
         getSessionBean().updateCivilState( record );        
     }
 
-    public void deleteCivilState ( Integer id )
+    public void deleteCivilState ( Integer id ) throws ApplicationException
     {
         getSessionBean().deleteCivilState( id );
     }
 
-    public CivilStateDTO getCivilState( Integer id)
+    public CivilStateDTO getCivilState( Integer id) throws ApplicationException
     {
         return getSessionBean().getCivilState( id );
     }
 
-    public void addContactType ( ContactTypeDTO newRecord )
+    public void addContactType ( ContactTypeDTO newRecord ) throws ApplicationException
     {
         getSessionBean().addContactType( newRecord );        
     }
@@ -149,17 +151,17 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return getSessionBean().getContactTypeMaxPKValue();
     }
 
-    public void updateContactType ( ContactTypeDTO updateRecord )
+    public void updateContactType ( ContactTypeDTO updateRecord ) throws ApplicationException
     {
         getSessionBean().updateContactType( updateRecord );        
     }
 
-    public void deleteContactType ( Integer id )
+    public void deleteContactType ( Integer id ) throws ApplicationException
     {
         getSessionBean().deleteContactType( id );
     }
 
-    public ContactTypeDTO getContactType( Integer id)
+    public ContactTypeDTO getContactType( Integer id) throws ApplicationException
     {
         return getSessionBean().getContactType( id );
     }
@@ -171,7 +173,7 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return getSessionBean().getAllUserType();
     }
 
-    public void addUserType ( UserTypeDTO newRecord )
+    public void addUserType ( UserTypeDTO newRecord ) throws ApplicationException
     {
         getSessionBean().addUserType( newRecord );        
     }
@@ -181,17 +183,17 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return getSessionBean().getUserTypeMaxPKValue();
     }
 
-    public void updateUserType ( UserTypeDTO updateRecord )
+    public void updateUserType ( UserTypeDTO updateRecord ) throws ApplicationException
     {
         getSessionBean().updateUserType( updateRecord );        
     }
 
-    public void deleteUserType ( Integer id  )
+    public void deleteUserType ( Integer id  ) throws ApplicationException
     {
         getSessionBean().deleteUserType( id );
     }
 
-    public UserTypeDTO getUserType( Integer id)
+    public UserTypeDTO getUserType( Integer id) throws ApplicationException
     {
         return getSessionBean().getUserType( id );
     }
@@ -204,7 +206,7 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
     }
 
 
-    public void addGender ( GenderDTO newRecord )
+    public void addGender ( GenderDTO newRecord ) throws ApplicationException
     {
         getSessionBean().addGender( newRecord );        
     }
@@ -214,17 +216,17 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return getSessionBean().getGenderMaxPKValue();
     }
 
-    public void updateGender ( GenderDTO updateRecord )
+    public void updateGender ( GenderDTO updateRecord ) throws ApplicationException
     {
         getSessionBean().updateGender( updateRecord );        
     }
 
-    public void deleteGender ( Integer id )
+    public void deleteGender ( Integer id ) throws ApplicationException
     {
         getSessionBean().deleteGender( id );
     }
 
-    public GenderDTO getGender( Integer id )
+    public GenderDTO getGender( Integer id ) throws ApplicationException
     {
         return getSessionBean().getGender( id );
     }
@@ -236,7 +238,7 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
     }
 
 
-    public void addDocumentType ( DocumentTypeDTO newRecord )
+    public void addDocumentType ( DocumentTypeDTO newRecord ) throws ApplicationException
     {
         getSessionBean().addDocumentType( newRecord );        
     }
@@ -246,17 +248,17 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return getSessionBean().getDocumentTypeMaxPKValue();
     }
 
-    public void updateDocumentType ( DocumentTypeDTO updateRecord )
+    public void updateDocumentType ( DocumentTypeDTO updateRecord ) throws ApplicationException
     {
         getSessionBean().updateDocumentType( updateRecord );        
     }
 
-    public void deleteDocumentType ( Integer id )
+    public void deleteDocumentType ( Integer id ) throws ApplicationException
     {
         getSessionBean().deleteDocumentType( id );
     }
 
-    public DocumentTypeDTO getDocumentType( Integer id )
+    public DocumentTypeDTO getDocumentType( Integer id ) throws ApplicationException
     {
         return getSessionBean().getDocumentType( id );
     }
@@ -271,7 +273,7 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
     }
 
 
-    public void addTitle ( TitleDTO newRecord )
+    public void addTitle ( TitleDTO newRecord ) throws ApplicationException
     {
         getSessionBean().addTitle( newRecord );        
     }
@@ -281,17 +283,17 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return getSessionBean().getTitleMaxPKValue();
     }
 
-    public void updateTitle ( TitleDTO updateRecord )
+    public void updateTitle ( TitleDTO updateRecord ) throws ApplicationException
     {
         getSessionBean().updateTitle( updateRecord );        
     }
 
-    public void deleteTitle ( Integer id )
+    public void deleteTitle ( Integer id ) throws ApplicationException
     {
         getSessionBean().deleteTitle( id );
     }
 
-    public TitleDTO getTitle( Integer id)
+    public TitleDTO getTitle( Integer id) throws ApplicationException
     {
         return getSessionBean().getTitle( id );
     }
@@ -306,7 +308,7 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
     }
 
 
-    public void addUserStatus ( UserStatusDTO newRecord )
+    public void addUserStatus ( UserStatusDTO newRecord ) throws ApplicationException
     {
         getSessionBean().addUserStatus( newRecord );        
     }
@@ -316,17 +318,17 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return getSessionBean().getUserStatusMaxPKValue();
     }
 
-    public void updateUserStatus ( UserStatusDTO updateRecord )
+    public void updateUserStatus ( UserStatusDTO updateRecord ) throws ApplicationException
     {
         getSessionBean().updateUserStatus( updateRecord );        
     }
 
-    public void deleteUserStatus ( Integer id )
+    public void deleteUserStatus ( Integer id ) throws ApplicationException
     {
         getSessionBean().deleteUserStatus( id );
     }
 
-    public UserStatusDTO getUserStatus( Integer id)
+    public UserStatusDTO getUserStatus( Integer id) throws ApplicationException
     {
         return getSessionBean().getUserStatus( id );
     }
@@ -340,17 +342,17 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return ((List<SystemParametersDTO>)getSessionBean().getAllSystemParameters());
     }
 
-    public void addSystemParameters ( SystemParametersDTO newRecord )
+    public void addSystemParameters ( SystemParametersDTO newRecord ) throws ApplicationException
     {
         getSessionBean().addSystemParameters( newRecord );        
     }
 
-    public void updateSystemParameters ( SystemParametersDTO updateRecord )
+    public void updateSystemParameters ( SystemParametersDTO updateRecord ) throws ApplicationException
     {
         getSessionBean().updateSystemParameters( updateRecord );        
     }
 
-    public SystemParametersDTO getSystemParameters( String id)
+    public SystemParametersDTO getSystemParameters( String id) throws ApplicationException
     {
         return getSessionBean().getSystemParameters( id );
     }
@@ -363,7 +365,7 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
     }
 
 
-    public void addCountry ( CountryDTO newRecord )
+    public void addCountry ( CountryDTO newRecord ) throws ApplicationException
     {
         getSessionBean().addCountry( newRecord );        
     }
@@ -373,17 +375,17 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return getSessionBean().getCountryMaxPKValue();
     }
 
-    public void updateCountry ( CountryDTO updateRecord )
+    public void updateCountry ( CountryDTO updateRecord ) throws ApplicationException
     {
         getSessionBean().updateCountry( updateRecord );        
     }
 
-    public void deleteCountry ( Integer id )
+    public void deleteCountry ( Integer id ) throws ApplicationException
     {
         getSessionBean().deleteCountry( id );
     }
 
-    public CountryDTO getCountry( Integer id)
+    public CountryDTO getCountry( Integer id) throws ApplicationException
     {
         return getSessionBean().getCountry( id );
     }
@@ -394,22 +396,22 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return ((List<AccessLogTypeDTO>)getSessionBean().getAllAccessLogType());
     }
 
-    public void addAccessLogType ( AccessLogTypeDTO newRecord )
+    public void addAccessLogType ( AccessLogTypeDTO newRecord ) throws ApplicationException
     {
         getSessionBean().add( newRecord );        
     }
 
-    public void updateAccessLogType ( AccessLogTypeDTO updateRecord )
+    public void updateAccessLogType ( AccessLogTypeDTO updateRecord ) throws ApplicationException
     {
         getSessionBean().updateAccessLogType( updateRecord );        
     }
 
-    public AccessLogTypeDTO getAccessLogType( Integer id)
+    public AccessLogTypeDTO getAccessLogType( Integer id) throws ApplicationException
     {
         return getSessionBean().getAccessLogType( id );
     }
     
-    public void deleteAccessLogType ( Integer id )
+    public void deleteAccessLogType ( Integer id ) throws ApplicationException
     {
         getSessionBean().deleteAccessLogType( id );
     }
@@ -428,22 +430,22 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return ((List<CompanyPositionDTO>)getSessionBean().getAllCompanyPosition());
     }
 
-    public void addCompanyPosition ( CompanyPositionDTO newRecord )
+    public void addCompanyPosition ( CompanyPositionDTO newRecord ) throws ApplicationException
     {
         getSessionBean().add( newRecord );        
     }
 
-    public void updateCompanyPosition ( CompanyPositionDTO updateRecord )
+    public void updateCompanyPosition ( CompanyPositionDTO updateRecord ) throws ApplicationException
     {
         getSessionBean().updateCompanyPosition( updateRecord );        
     }
 
-    public CompanyPositionDTO getCompanyPosition( Integer id)
+    public CompanyPositionDTO getCompanyPosition( Integer id) throws ApplicationException
     {
         return getSessionBean().getCompanyPosition( id );
     }
     
-    public void deleteCompanyPosition ( Integer id )
+    public void deleteCompanyPosition ( Integer id ) throws ApplicationException
     {
         getSessionBean().deleteCompanyPosition( id );
     }
@@ -462,22 +464,22 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
         return ((List<CompanyTypeDTO>)getSessionBean().getAllCompanyType());
     }
 
-    public void addCompanyType ( CompanyTypeDTO newRecord )
+    public void addCompanyType ( CompanyTypeDTO newRecord ) throws ApplicationException
     {
         getSessionBean().add( newRecord );        
     }
 
-    public void updateCompanyType ( CompanyTypeDTO updateRecord )
+    public void updateCompanyType ( CompanyTypeDTO updateRecord ) throws ApplicationException
     {
         getSessionBean().updateCompanyType( updateRecord );        
     }
 
-    public CompanyTypeDTO getCompanyType( Integer id)
+    public CompanyTypeDTO getCompanyType( Integer id) throws ApplicationException
     {
         return getSessionBean().getCompanyType( id );
     }
     
-    public void deleteCompanyType ( Integer id )
+    public void deleteCompanyType ( Integer id ) throws ApplicationException
     {
         getSessionBean().deleteCompanyType( id );
     }

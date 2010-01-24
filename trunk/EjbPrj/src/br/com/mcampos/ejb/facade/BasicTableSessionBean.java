@@ -29,21 +29,17 @@ import br.com.mcampos.ejb.session.user.attributes.TitleSessionLocal;
 import br.com.mcampos.ejb.session.user.attributes.UserStatusSessionLocal;
 import br.com.mcampos.ejb.session.user.attributes.UserTypeSessionLocal;
 
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 
 @Stateless( name = "BasicTableSession", mappedName = "CloudSystems-EjbPrj-BasicTableSession" )
-@Remote
-@Local
-public class BasicTableSessionBean implements BasicTableSession,
-                                              BasicTableSessionLocal
+public class BasicTableSessionBean implements BasicTableSession
 {
     @EJB CivilStateSessionLocal civilState;
     @EJB AddressTypeSessionLocal addressType;
@@ -56,6 +52,8 @@ public class BasicTableSessionBean implements BasicTableSession,
     @EJB CountrySessionLocal country;
     @EJB TableManagerSessionLocal tableManager;
     @EJB SystemMessagesSessionLocal systemMessage;
+    
+    private static final Integer systemMessageTypeId = 2;
 
     public BasicTableSessionBean()
     {
@@ -115,25 +113,25 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * CIVIL STATE***************************************
      */
-    public CivilStateDTO getCivilState ( Integer id )
+    public CivilStateDTO getCivilState ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         return getCivilState ().get( id );
     }
     
-    public void addCivilState ( CivilStateDTO newRecord )
+    public void addCivilState ( CivilStateDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getCivilState ().add( newRecord );
     }
     
-    public void updateCivilState ( CivilStateDTO newRecord )
+    public void updateCivilState ( CivilStateDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getCivilState ().update( newRecord );
     }
 
-    public void deleteCivilState ( Integer id )
+    public void deleteCivilState ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         getCivilState ().delete( id );
@@ -153,25 +151,25 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * ADDRESS TYPE***************************************
      */
-    public AddressTypeDTO getAddressType ( Integer id )
+    public AddressTypeDTO getAddressType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         return getAddressType ().get( id );
     }
     
-    public void addAddressType ( AddressTypeDTO newRecord )
+    public void addAddressType ( AddressTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getAddressType ().add( newRecord );
     }
     
-    public void updateAddressType ( AddressTypeDTO newRecord )
+    public void updateAddressType ( AddressTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getAddressType ().update( newRecord );
     }
 
-    public void deleteAddressType ( Integer id )
+    public void deleteAddressType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         getAddressType ().delete( id );
@@ -192,25 +190,25 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * CONTACT TYPE***************************************
      */
-    public ContactTypeDTO getContactType ( Integer id )
+    public ContactTypeDTO getContactType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         return getContactType ().get( id );
     }
     
-    public void addContactType ( ContactTypeDTO newRecord )
+    public void addContactType ( ContactTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getContactType ().add( newRecord );
     }
     
-    public void updateContactType ( ContactTypeDTO newRecord )
+    public void updateContactType ( ContactTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getContactType ().update( newRecord );
     }
 
-    public void deleteContactType ( Integer id )
+    public void deleteContactType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         getContactType ().delete( id );
@@ -231,25 +229,25 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * DOCUMENT TYPE***************************************
      */
-    public DocumentTypeDTO getDocumentType ( Integer id )
+    public DocumentTypeDTO getDocumentType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         return getDocumentType ().get( id );
     }
     
-    public void addDocumentType ( DocumentTypeDTO newRecord )
+    public void addDocumentType ( DocumentTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getDocumentType ().add( newRecord );
     }
     
-    public void updateDocumentType ( DocumentTypeDTO newRecord )
+    public void updateDocumentType ( DocumentTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getDocumentType ().update( newRecord );
     }
 
-    public void deleteDocumentType ( Integer id )
+    public void deleteDocumentType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         getDocumentType ().delete( id );
@@ -269,25 +267,25 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * GENDER ***************************************
      */
-    public GenderDTO getGender ( Integer id )
+    public GenderDTO getGender ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         return getGender ().get( id );
     }
     
-    public void addGender ( GenderDTO newRecord )
+    public void addGender ( GenderDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getGender ().add( newRecord );
     }
     
-    public void updateGender ( GenderDTO newRecord )
+    public void updateGender ( GenderDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getGender ().update( newRecord );
     }
 
-    public void deleteGender ( Integer id )
+    public void deleteGender ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         getGender ().delete( id );
@@ -306,25 +304,25 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * TITLE ***************************************
      */
-    public TitleDTO getTitle ( Integer id )
+    public TitleDTO getTitle ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         return getTitle ().get( id );
     }
     
-    public void addTitle ( TitleDTO newRecord )
+    public void addTitle ( TitleDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getTitle ().add( newRecord );
     }
     
-    public void updateTitle ( TitleDTO newRecord )
+    public void updateTitle ( TitleDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getTitle ().update( newRecord );
     }
 
-    public void deleteTitle ( Integer id )
+    public void deleteTitle ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         getTitle ().delete( id );
@@ -344,25 +342,25 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * USER STATUS***************************************
      */
-    public UserStatusDTO getUserStatus ( Integer id )
+    public UserStatusDTO getUserStatus ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         return getUserStatus ().get( id );
     }
     
-    public void addUserStatus ( UserStatusDTO newRecord )
+    public void addUserStatus ( UserStatusDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getUserStatus ().add( newRecord );
     }
     
-    public void updateUserStatus ( UserStatusDTO newRecord )
+    public void updateUserStatus ( UserStatusDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getUserStatus ().update( newRecord );
     }
 
-    public void deleteUserStatus ( Integer id )
+    public void deleteUserStatus ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         getUserStatus ().delete( id );
@@ -383,25 +381,25 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * User TYPE***************************************
      */
-    public UserTypeDTO getUserType ( Integer id )
+    public UserTypeDTO getUserType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         return getUserType ().get( id );
     }
     
-    public void addUserType ( UserTypeDTO newRecord )
+    public void addUserType ( UserTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getUserType ().add( newRecord );
     }
     
-    public void updateUserType ( UserTypeDTO newRecord )
+    public void updateUserType ( UserTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getUserType ().update( newRecord );
     }
 
-    public void deleteUserType ( Integer id )
+    public void deleteUserType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         getUserType ().delete( id );
@@ -421,25 +419,25 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * User TYPE***************************************
      */
-    public CountryDTO getCountry ( Integer id )
+    public CountryDTO getCountry ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         return getCountry ().get( id );
     }
     
-    public void addCountry ( CountryDTO newRecord )
+    public void addCountry ( CountryDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getCountry ().add( newRecord );
     }
     
-    public void updateCountry ( CountryDTO newRecord )
+    public void updateCountry ( CountryDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getCountry ().update( newRecord );
     }
 
-    public void deleteCountry ( Integer id )
+    public void deleteCountry ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         getCountry ().delete( id );
@@ -459,19 +457,19 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * SystemParameters***************************************
      */
-    public SystemParametersDTO getSystemParameters ( String id )
+    public SystemParametersDTO getSystemParameters ( String id ) throws ApplicationException
     {
         testParam ( id );
         return getTableManager ().getSystemParameter( id );
     }
     
-    public void addSystemParameters ( SystemParametersDTO newRecord )
+    public void addSystemParameters ( SystemParametersDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getTableManager ().add( newRecord );
     }
     
-    public void updateSystemParameters ( SystemParametersDTO newRecord )
+    public void updateSystemParameters ( SystemParametersDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getTableManager ().update( newRecord );
@@ -487,19 +485,19 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * AccessLogType***************************************
      */
-    public AccessLogTypeDTO getAccessLogType( Integer id )
+    public AccessLogTypeDTO getAccessLogType( Integer id ) throws ApplicationException
     {
         testParam ( id );
         return getTableManager ().getAccessLogType( id );
     }
     
-    public void add ( AccessLogTypeDTO newRecord )
+    public void add ( AccessLogTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getTableManager ().add( newRecord );
     }
     
-    public void updateAccessLogType ( AccessLogTypeDTO newRecord )
+    public void updateAccessLogType ( AccessLogTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getTableManager ().update( newRecord );
@@ -510,7 +508,7 @@ public class BasicTableSessionBean implements BasicTableSession,
         return getTableManager().getAllAccessLogType();
     }
 
-    public void deleteAccessLogType ( Integer id )
+    public void deleteAccessLogType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         getTableManager ().deleteAccessLogType( id );
@@ -527,19 +525,19 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * CompanyPosition***************************************
      */
-    public CompanyPositionDTO getCompanyPosition( Integer id )
+    public CompanyPositionDTO getCompanyPosition( Integer id ) throws ApplicationException
     {
         testParam ( id );
         return getTableManager ().getCompanyPosition( id );
     }
     
-    public void add ( CompanyPositionDTO newRecord )
+    public void add ( CompanyPositionDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getTableManager ().add( newRecord );
     }
     
-    public void updateCompanyPosition ( CompanyPositionDTO newRecord )
+    public void updateCompanyPosition ( CompanyPositionDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getTableManager ().update( newRecord );
@@ -550,7 +548,7 @@ public class BasicTableSessionBean implements BasicTableSession,
         return getTableManager().getAllCompanyPosition();
     }
 
-    public void deleteCompanyPosition ( Integer id )
+    public void deleteCompanyPosition ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         getTableManager ().deleteCompanyPosition( id );
@@ -566,19 +564,19 @@ public class BasicTableSessionBean implements BasicTableSession,
     /*
      * CompanyType***************************************
      */
-    public CompanyTypeDTO getCompanyType( Integer id )
+    public CompanyTypeDTO getCompanyType( Integer id ) throws ApplicationException
     {
         testParam ( id );
         return getTableManager ().getCompanyType( id );
     }
     
-    public void add ( CompanyTypeDTO newRecord )
+    public void add ( CompanyTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getTableManager ().add( newRecord );
     }
     
-    public void updateCompanyType ( CompanyTypeDTO newRecord )
+    public void updateCompanyType ( CompanyTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
         getTableManager ().update( newRecord );
@@ -589,7 +587,7 @@ public class BasicTableSessionBean implements BasicTableSession,
         return getTableManager().getAllCompanyType();
     }
 
-    public void deleteCompanyType ( Integer id )
+    public void deleteCompanyType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
         getTableManager ().deleteCompanyType( id );
@@ -600,23 +598,23 @@ public class BasicTableSessionBean implements BasicTableSession,
         return getTableManager().getCompanyTypeMaxValue();
     }
     
-    protected void testParam ( Integer param )
+    protected void testParam ( Integer param ) throws ApplicationException
     {
         if ( SysUtils.isZero( param ) )
-            systemMessage.throwMessage( 26 );
+            systemMessage.throwException( systemMessageTypeId, 1 );
     }
 
-    protected void testParam ( String param )
+    protected void testParam ( String param ) throws ApplicationException
     {
         if ( SysUtils.isEmpty( param ) )
-            systemMessage.throwMessage( 26 );
+            systemMessage.throwException( systemMessageTypeId, 1 );
     }
 
 
-    protected void testParam ( DisplayNameDTO dto )
+    protected void testParam ( DisplayNameDTO dto ) throws ApplicationException
     {
         if ( dto == null )
-            systemMessage.throwMessage( 26 );
+            systemMessage.throwException( systemMessageTypeId, 1 );
     }
 
 }

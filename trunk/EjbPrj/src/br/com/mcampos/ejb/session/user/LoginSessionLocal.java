@@ -6,6 +6,8 @@ import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 
+import br.com.mcampos.exception.ApplicationException;
+
 import java.util.List;
 
 import javax.ejb.Local;
@@ -13,6 +15,7 @@ import javax.ejb.Local;
 @Local
 public interface LoginSessionLocal
 {
+    
     /**
      * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
      * observado que o mesmo depende do relacionamento com a entidade pessoa.
@@ -20,9 +23,9 @@ public interface LoginSessionLocal
      * sistema DEVE completar o registro.
      *
      * @param dto DTO com os dados básicos para inclusão.
-     * @exception InvalidParameterException
+     * @exception ApplicationException
      */
-    void add( RegisterDTO dto );
+    void add( RegisterDTO dto ) throws ApplicationException;
     void update( LoginDTO login );
     void delete( Integer id );
     LoginDTO loginUser ( LoginCredentialDTO dto );

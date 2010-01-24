@@ -1,11 +1,10 @@
 package br.com.mcampos.controller;
 
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.MultilineMessageBox;
 
 import br.com.mcampos.util.business.LoginLocator;
-
-import javax.ejb.EJBException;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Captcha;
@@ -105,8 +104,8 @@ public class ForgotPasswordController extends BaseLoginOptionsController
                 getLocator().makeNewPasssword( UserDocumentDTO.createUserDocumentEmail( csIdentification ) );
                 gotoPage( "/validate_email_sent.zul" );
             }
-            catch ( EJBException ejbException ) {
-                showErrorMessage( ejbException.getMessage() );
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage() );
             }
         }
     }

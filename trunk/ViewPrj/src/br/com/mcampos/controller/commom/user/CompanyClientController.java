@@ -9,6 +9,7 @@ import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.attributes.CompanyTypeDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.CNPJ;
 
 import org.zkoss.zk.ui.Component;
@@ -130,7 +131,12 @@ public class CompanyClientController extends UserClientController
             //getUserLocator().addBusinessEntity( dto, getLoggedInUser() );
         }
         else {
-            getUserLocator().add( dto );
+            try {
+                getUserLocator().add( dto );
+            }
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage() );
+            }
         }
         return true;
     }

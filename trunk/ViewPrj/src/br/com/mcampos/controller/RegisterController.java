@@ -2,6 +2,7 @@ package br.com.mcampos.controller;
 
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.CPF;
 import br.com.mcampos.util.MultilineMessageBox;
 import br.com.mcampos.util.business.LoginLocator;
@@ -64,6 +65,10 @@ public class RegisterController extends BaseLoginOptionsController
             HtmlBasedComponent base = ( HtmlBasedComponent )e.getComponent();
             showErrorMessage( e.getMessage() );
             base.setFocus( true );
+        }
+        catch ( EJBException e ) 
+        {
+            showErrorMessage ( e.getMessage() );
         }
     }
 
@@ -152,13 +157,11 @@ public class RegisterController extends BaseLoginOptionsController
         newLogin.addDocument( DocumentTypeDTO.createDocumentTypeEmail(), email.getValue() );
         try {
             getLocator().create( newLogin );
-            return true;
         }
-        catch ( EJBException ejbException ) {
-            showErrorMessage( ejbException.getMessage() );
-            return false;
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
         }
-
+        return true;
     }
 
     protected void showErrorMessage( String msg )
