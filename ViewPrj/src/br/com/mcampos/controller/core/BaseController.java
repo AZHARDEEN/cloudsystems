@@ -126,9 +126,12 @@ public abstract class BaseController extends GenericForwardComposer
     protected void gotoPage( String uri, Component parent, Map parameters )
     {
         //Executions.getCurrent().sendRedirect( uri );
-        if ( parent != null )
+        if ( parent != null ) {
             parent.getChildren().clear();
-        Executions.getCurrent().createComponents( uri, parent, parameters );
+            Executions.getCurrent().createComponents( uri, parent, parameters );
+        }
+        else
+            Executions.getCurrent().sendRedirect( uri );
     }
 
     protected void gotoPage( String uri, Map parameters )
