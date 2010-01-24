@@ -97,6 +97,7 @@
                <list n="classPath">
                   <url path="../../../../Library/PostgreSQL/postgresql-8.3-605.jdbc4.jar" jar-entry=""/>
                </list>
+               <value n="deployedByDefault" v="true"/>
                <value n="description" v="PostgreSQL"/>
                <value n="id" v="PostgreSQL"/>
             </hash>
@@ -106,6 +107,7 @@
                   <url path="../../../../Library/jasypt-1.5/lib/commons-lang-2.1.jar" jar-entry=""/>
                   <url path="../../../../Library/jasypt-1.5/lib/jasypt-1.5.jar" jar-entry=""/>
                </list>
+               <value n="deployedByDefault" v="true"/>
                <value n="description" v="jasypt-1.5.jar"/>
                <value n="id" v="jasypt-1.5.jar"/>
             </hash>
