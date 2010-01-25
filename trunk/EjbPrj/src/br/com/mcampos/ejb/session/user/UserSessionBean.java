@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 
 import javax.ejb.TransactionAttribute;
@@ -30,6 +31,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "UserSession", mappedName = "CloudSystems-EjbPrj-UserSession" )
+@Local
 public class UserSessionBean implements UserSessionLocal
 {
 

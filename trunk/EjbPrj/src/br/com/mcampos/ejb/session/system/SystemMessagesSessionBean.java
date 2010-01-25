@@ -9,6 +9,7 @@ import br.com.mcampos.exception.ApplicationRuntimeException;
 
 import java.util.List;
 
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 
 import javax.persistence.EntityManager;
@@ -16,6 +17,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "SystemMessagesSession", mappedName = "CloudSystems-EjbPrj-SystemMessagesSession" )
+@Local
 public class SystemMessagesSessionBean implements SystemMessagesSessionLocal
 {
     @PersistenceContext( unitName="EjbPrj" )

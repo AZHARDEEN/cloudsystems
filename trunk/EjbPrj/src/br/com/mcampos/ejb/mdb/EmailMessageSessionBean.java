@@ -22,8 +22,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-@MessageDriven( mappedName = "jms/CloudSystemQueue",
-                activationConfig = {
+@MessageDriven( mappedName = "weblogic.wsee.DefaultQueue", activationConfig = {
                     @ActivationConfigProperty(
                         propertyName="destinationType",
                         propertyValue="javax.jms.Queue"

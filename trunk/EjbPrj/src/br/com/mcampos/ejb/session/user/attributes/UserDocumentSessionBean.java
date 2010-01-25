@@ -8,6 +8,7 @@ import br.com.mcampos.sysutils.SysUtils;
 import java.security.InvalidParameterException;
 
 
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 @Stateless( name = "UserDocumentSession", mappedName = "CloudSystems-EjbPrj-UserDocumentSession" )
+@Local
 public class UserDocumentSessionBean implements UserDocumentSessionLocal
 {
     @PersistenceContext( unitName="EjbPrj" )
