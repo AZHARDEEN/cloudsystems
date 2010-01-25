@@ -142,16 +142,4 @@
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-    <weblogic-enterprise-bean>
-        <ejb-name>MailSessionBean</ejb-name>
-        <message-driven-descriptor>
-            <pool>
-                <max-beans-in-free-pool>1</max-beans-in-free-pool>
-                <initial-beans-in-free-pool>2</initial-beans-in-free-pool>
-            </pool>
-            <destination-jndi-name>jms/CloudSystemQueue</destination-jndi-name>
-            <connection-factory-jndi-name>jms/CloudSystemsCF</connection-factory-jndi-name>
-        </message-driven-descriptor>
-        <enable-call-by-reference>true</enable-call-by-reference>
-    </weblogic-enterprise-bean>
 </weblogic-ejb-jar>
