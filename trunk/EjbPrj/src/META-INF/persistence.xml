@@ -36,8 +36,15 @@
     <class>br.com.mcampos.ejb.entity.system.SystemMessageType</class>
     <class>br.com.mcampos.ejb.entity.system.SystemMessage</class>
     <properties>
-        <property name="eclipselink.target-server" value="WebLogic_10"/>
+        <property name="eclipselink.target-server" value="WebLogic 10"/>
         <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/CloudDS"/>
+      <property name="javax.persistence.jdbc.user" value="cloud"/>
+      <property name="javax.persistence.jdbc.password"
+                value="7262A3B2F02512DD110B2821B0B16BC1"/>
+      <property name="javax.persistence.jdbc.driver"
+                value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.url"
+                value="jdbc:postgresql://localhost:5432/db_cloud"/>
     </properties>
   </persistence-unit>
 </persistence>

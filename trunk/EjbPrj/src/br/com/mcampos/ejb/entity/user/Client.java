@@ -31,6 +31,8 @@ import javax.persistence.Table;
 @IdClass( ClientsPK.class )
 public class Client implements Serializable
 {
+    
+    
     private Integer userId;
     private Integer clientId;
     private Timestamp fromDate;

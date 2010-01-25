@@ -1,5 +1,9 @@
 package br.com.mcampos.ejb.session.system;
 
+import br.com.mcampos.dto.system.SendMailDTO;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
 import javax.ejb.Local;
@@ -20,24 +24,65 @@ public class SendMailSessionBean implements SendMailSessionLocal
 {
     @Resource(mappedName="jms/CloudSystemsCF")  private ConnectionFactory cf;
     @Resource(mappedName="jms/CloudSystemQueue") private Queue queue;
+    private Connection connection;
+    private Session session;
     
     public SendMailSessionBean()
     {
     }
     
-    public void sendMail ( )
+    
+    @PostConstruct
+    protected void init ()
     {
-        Connection conn;
 
         try {
-            conn = cf.createConnection();
-            Session sess = conn.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            MessageProducer mp = sess.createProducer(queue);
-            TextMessage objmsg = sess.createTextMessage("Este é o meu primeiro teste de envio de mes");
-            mp.send(objmsg);
-            conn.close();        
+            connection = cf.createConnection();
+            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         }
         catch ( JMSException e ) {
+            connection = null;
+            session = null;
         }
+    }
+    
+    @PreDestroy
+    protected void destroy ()
+    {
+        if ( connection != null ) {
+            try {
+                session.close();
+                connection.close ();
+            }
+            catch ( JMSException e ) {
+                e = null;
+            }
+        }
+    }
+    
+    
+    public void sendMail ( SendMailDTO dto )
+    {
+        try {
+            if ( getConnection() != null ) {
+                MessageProducer mp = getSession().createProducer(queue);
+                ObjectMessage objmsg = getSession().createObjectMessage( dto);
+                mp.send(objmsg);
+                mp.close();
+            }
+        }
+        catch ( JMSException e ) {
+            e = null;
+        }
+    }
+
+    protected Connection getConnection ()
+    {
+        return connection;
+    }
+
+    public Session getSession ()
+    {
+        return session;
     }
 }
