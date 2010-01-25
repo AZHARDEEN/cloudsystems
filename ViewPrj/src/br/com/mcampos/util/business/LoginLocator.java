@@ -9,6 +9,8 @@ import br.com.mcampos.sysutils.SysUtils;
 
 import java.security.InvalidParameterException;
 
+import org.zkoss.util.InvalidValueException;
+
 public class LoginLocator extends BusinessDelegate
 {
     public LoginLocator ()
@@ -19,7 +21,12 @@ public class LoginLocator extends BusinessDelegate
 
     protected LoginFacadeSession getFacade ()
     {
-        return ( LoginFacadeSession )getEJBSession( LoginFacadeSession.class );
+        Object obj;
+        
+        obj = getEJBSession( LoginFacadeSession.class );
+        if ( obj == null )
+            throw new InvalidParameterException ( "Ejb Session is null" );
+        return ( LoginFacadeSession )obj;
     }
 
 

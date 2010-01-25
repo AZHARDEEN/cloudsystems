@@ -79,7 +79,7 @@ public class RegisterController extends BaseLoginOptionsController
         email.setValue( "marcelodecampos@uol.com.br" );
         repassword.setValue( "123456" );
         password.setValue( "123456" );
-        cpf.setValue( "XXXXXXX" );
+        cpf.setValue( "59469390415" );
     }
 
     public void doAfterCompose( Component c ) throws Exception
@@ -87,6 +87,7 @@ public class RegisterController extends BaseLoginOptionsController
         super.doAfterCompose( c );
         if ( name != null )
             name.setFocus( true );
+        debugData ();
         Clients.evalJavaScript( "$('input:text').setMask();" );
     }
 
