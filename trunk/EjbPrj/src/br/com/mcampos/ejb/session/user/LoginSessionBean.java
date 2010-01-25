@@ -22,6 +22,7 @@ import br.com.mcampos.ejb.entity.user.UserDocument;
 import br.com.mcampos.ejb.entity.user.Users;
 import br.com.mcampos.ejb.entity.user.attributes.UserStatus;
 
+import br.com.mcampos.ejb.session.system.SendMailSessionLocal;
 import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -67,6 +68,8 @@ public class LoginSessionBean implements LoginSessionLocal
     @EJB UserSessionLocal userSession;
     
     @EJB SystemMessagesSessionLocal systemMessage;
+    
+    @EJB SendMailSessionLocal sendMail;
     
     private static final Integer systemMessageTypeId = 1;
     
@@ -130,6 +133,7 @@ public class LoginSessionBean implements LoginSessionLocal
         /*
          * TODO: SEND EMAIL
          */
+        sendMail.sendMail();
     }
 
     protected void setPasswordExpirationDate ( Login login )
