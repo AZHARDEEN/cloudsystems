@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.session.user;
 
 import br.com.mcampos.dto.RegisterDTO;
+import br.com.mcampos.dto.system.SendMailDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
@@ -33,7 +34,6 @@ import java.sql.Timestamp;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -93,26 +93,37 @@ public class LoginSessionBean implements LoginSessionLocal
          * Verificar os parametros novamente. Pois nao podemos confiar no controller.
          */
         Person person;
-
-        if ( dto == null )
-            getSystemMessage().throwException( systemMessageTypeId, 1 );
-        if ( SysUtils.isEmpty( dto.getName() ) )
-            getSystemMessage().throwException( systemMessageTypeId, 2 );
-        if ( dto.getDocuments().size() < 1 )
-            getSystemMessage().throwException( systemMessageTypeId, 3 );
-        /*
-         * TODO: testar explicitamente a existência do email e do cpf
-         */
-        if ( SysUtils.isEmpty( dto.getPassword() ) )
-            getSystemMessage().throwException( systemMessageTypeId, 4 );
-
-        person = (Person) getUserSession().findByDocumentList( dto.getDocuments() );
-        if ( person == null ) {
-            person = getPersonSession().add( DTOFactory.copy ( dto ) );
+            
+        if ( false ) {
+            if ( dto == null )
+                getSystemMessage().throwException( systemMessageTypeId, 1 );
+            if ( SysUtils.isEmpty( dto.getName() ) )
+                getSystemMessage().throwException( systemMessageTypeId, 2 );
+            if ( dto.getDocuments().size() < 1 )
+                getSystemMessage().throwException( systemMessageTypeId, 3 );
+            /*
+             * TODO: testar explicitamente a existência do email e do cpf
+             */
+            if ( SysUtils.isEmpty( dto.getPassword() ) )
+                getSystemMessage().throwException( systemMessageTypeId, 4 );
+    
+            person = (Person) getUserSession().findByDocumentList( dto.getDocuments() );
+            if ( person == null ) {
+                person = getPersonSession().add( DTOFactory.copy ( dto ) );
+            }
+            if ( person.getLogin() != null )
+                getSystemMessage().throwException( systemMessageTypeId, 5 );
+            add ( dto, person );
         }
-        if ( person.getLogin() != null )
-            getSystemMessage().throwException( systemMessageTypeId, 5 );
-        add ( dto, person );
+        SendMailDTO emailDTO = new SendMailDTO();
+        
+        for ( UserDocumentDTO item: dto.getDocuments() ) {
+            if ( item.getDocumentType().getId().equals( UserDocumentDTO.typeEmail ) )
+                emailDTO.addRecipient( item.getCode() );
+        }
+        emailDTO.setSubject( "Validação de Email" );
+        emailDTO.setBody( "Este email deverá ser validado" );
+        sendMail.sendMail( emailDTO );
     }
     
     protected void add ( RegisterDTO dto, Person person )
@@ -133,7 +144,6 @@ public class LoginSessionBean implements LoginSessionLocal
         /*
          * TODO: SEND EMAIL
          */
-        sendMail.sendMail();
     }
 
     protected void setPasswordExpirationDate ( Login login )
@@ -301,7 +311,8 @@ public class LoginSessionBean implements LoginSessionLocal
         List<Collaborator> business = collaborator.getCompanies( login.getUserId() );
         if ( SysUtils.isEmpty( business ) == false ) {
             for ( Collaborator col : business ) {
-                loginDTO.addBusinessEntity( ( UserDTO )DTOFactory.copy( col.getCompany() ) );
+                UserDTO userDTO = DTOFactory.copy( col.getCompany() );
+                loginDTO.addBusinessEntity( userDTO );
             }
         }
         return loginDTO;
@@ -433,7 +444,10 @@ public class LoginSessionBean implements LoginSessionLocal
         BasicPasswordEncryptor passwordEncryptor;
 
         try {
-            list = em.createNamedQuery( "LastUsedPassword.findAll" ).setParameter( "id", login.getUserId() ).getResultList();
+            List retList;
+            
+            retList = em.createNamedQuery( "LastUsedPassword.findAll" ).setParameter( "id", login.getUserId() ).getResultList();
+            list = ( List<LastUsedPassword> ) retList;
             passwordEncryptor = new BasicPasswordEncryptor();
             for ( LastUsedPassword password : list ) {
                 if ( passwordEncryptor.checkPassword( newPassword, password.getPassword() ) )
@@ -500,6 +514,7 @@ public class LoginSessionBean implements LoginSessionLocal
 
 
     /** <code>select o from Users o</code> */
+    @SuppressWarnings ("unckecked")
     public List<ListLoginDTO> getLoginByRange ( int firstResult, int maxResults )
     {
         Query query = em.createNamedQuery( "Login.findAll" );
