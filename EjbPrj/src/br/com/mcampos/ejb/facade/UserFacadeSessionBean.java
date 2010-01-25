@@ -29,10 +29,12 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 
 @Stateless( name = "UserFacadeSession", mappedName = "CloudSystems-EjbPrj-UserFacadeSession" )
+@Remote
 public class UserFacadeSessionBean implements UserFacadeSession
 {
 

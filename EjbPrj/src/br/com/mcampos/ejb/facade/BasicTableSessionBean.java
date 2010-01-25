@@ -35,10 +35,12 @@ import br.com.mcampos.sysutils.SysUtils;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 
 @Stateless( name = "BasicTableSession", mappedName = "CloudSystems-EjbPrj-BasicTableSession" )
+@Remote
 public class BasicTableSessionBean implements BasicTableSession
 {
     @EJB CivilStateSessionLocal civilState;

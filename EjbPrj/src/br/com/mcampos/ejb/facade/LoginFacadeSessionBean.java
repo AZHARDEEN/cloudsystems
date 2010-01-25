@@ -12,9 +12,11 @@ import br.com.mcampos.sysutils.SysUtils;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 @Stateless( name = "LoginFacadeSession", mappedName = "CloudSystems-EjbPrj-LoginFacadeSession" )
+@Remote
 public class LoginFacadeSessionBean implements LoginFacadeSession
 {
     @EJB

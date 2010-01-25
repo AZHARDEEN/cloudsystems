@@ -27,6 +27,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 
 import javax.ejb.TransactionAttribute;
@@ -41,6 +42,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "PersonSession", mappedName = "CloudSystems-EjbPrj-PersonSession" )
+@Local
 public class PersonSessionBean implements PersonSessionLocal
 {
 	@PersistenceContext( unitName = "EjbPrj" )
