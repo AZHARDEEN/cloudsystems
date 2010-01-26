@@ -80,6 +80,7 @@ public class RegisterController extends BaseLoginOptionsController
         repassword.setValue( "123456" );
         password.setValue( "123456" );
         cpf.setValue( "59469390415" );
+        recapctcha.setValue( captcha.getValue() );
     }
 
     public void doAfterCompose( Component c ) throws Exception
