@@ -8,6 +8,10 @@ import com.sun.mail.smtp.SMTPSSLTransport;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.annotation.PostConstruct;
+
+import javax.annotation.PreDestroy;
+
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 
@@ -23,6 +27,7 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MailDateFormat;
 import javax.mail.internet.MimeMessage;
 
 @MessageDriven( mappedName = "jms/CloudSystemQueue", activationConfig = { @ActivationConfigProperty( propertyName = "destinationType", propertyValue = "javax.jms.Queue" ), @ActivationConfigProperty( propertyName = "destinationName", propertyValue = "jms/CloudSystemQueue" ) } )
@@ -34,8 +39,64 @@ public class EmailMessageSessionBean implements MessageListener
     private static final String SMTP_FROM = "cloudsystems@uol.com.br";
     private static final String SMTP_PASSWORD = "lvsu132";
 
+    private Session mailSession;
+    Transport transport;
 
-    public void onMessage( Message message )
+    @PostConstruct
+    public void init ()
+    {
+        Properties props = new Properties();
+        Authenticator auth = new SMTPAuthenticator();
+
+        configureProperties( props );
+        mailSession = Session.getDefaultInstance( props, auth );
+        getMailSession().setDebug( true );
+        try {
+            transport = mailSession.getTransport( "smtp" );
+            getTransport().connect( SMTP_SERVER_ADDRESS, SMTP_SERVER_PORT, SMTP_USENAME, SMTP_PASSWORD );
+        }
+        catch ( NoSuchProviderException e ) {
+            e = null;
+        }
+        catch ( MessagingException e ) {
+            e = null;
+        }
+    }
+
+    @PreDestroy
+    protected void destroy ()
+    {
+        try {
+            if ( transport != null )
+                transport.close();
+            transport = null;
+        }
+        catch ( MessagingException e ) {
+            e = null;
+        }
+        mailSession = null;
+    }
+
+    protected void configureProperties ( Properties props )
+    {
+        java.security.Security.addProvider( new com.sun.net.ssl.internal.ssl.Provider() );
+        props.put( "mail.transport.protocol", "smtp" );
+        props.put( "mail.smtp.auth", "true" );
+        props.put( "mail.smtp.host", SMTP_SERVER_ADDRESS );
+        props.put( "mail.debug", "true" );
+        props.put( "mail.smtp.debug", "true" );
+        props.put( "mail.smtp.port", "587" );
+        props.put( "mail.smtp.starttls.enable", "false" );
+        props.put( "mail.smtp.ssl.enable", "false" );
+        props.put( "mail.smtp.socketFactory.port", "587" );
+        props.put( "mail.user", SMTP_USENAME );
+        props.put( "mail.host", "smtps.uol.com.br" );
+        props.put( "mail.transport.protocol", "smtp" );
+        props.put( "mail.from", SMTP_FROM );
+    }
+
+
+    public void onMessage ( Message message )
     {
         if ( message instanceof ObjectMessage ) {
             ObjectMessage objMessage = ( ObjectMessage )message;
@@ -47,6 +108,7 @@ public class EmailMessageSessionBean implements MessageListener
                     SendMailDTO dto = ( SendMailDTO )object;
                     sendMail( dto );
                 }
+                message.acknowledge();
             }
             catch ( JMSException e ) {
                 e = null;
@@ -54,50 +116,39 @@ public class EmailMessageSessionBean implements MessageListener
         }
     }
 
-    protected void sendMail( SendMailDTO dto )
+    protected void sendMail ( SendMailDTO dto )
     {
-        Properties props = new Properties();
-
-        java.security.Security.addProvider( new com.sun.net.ssl.internal.ssl.Provider() );
-        props.put( "mail.transport.protocol", "smtp" );
-        props.put( "mail.smtp.auth", "true" );
-        props.put( "mail.smtp.host", SMTP_SERVER_ADDRESS );
-        props.put( "mail.debug", "true" );
-        props.put( "mail.smtp.debug", "true" );
-        props.put( "mail.smtp.port", "587" );
-        props.put( "mail.smtp.starttls.enable", "true" );
-        props.put( "mail.smtp.ssl.enable", "true" );
-        props.put( "mail.smtp.socketFactory.port", "587" );
-        /*         props.put ( "mail.user", SMTP_USENAME );
-        props.put ( "mail.host", "smtps.uol.com.br" );
-        props.put ( "mail.transport.protocol", "smtp" );
-        props.put ( "mail.from", SMTP_FROM ); */
-
+        MimeMessage message = new MimeMessage( getMailSession() );
 
         try {
-            Transport transport;
-            Authenticator auth = new SMTPAuthenticator( );
-            Session mailSession = Session.getDefaultInstance( props, auth );
-
-            mailSession.setDebug( true );
-
-            transport = mailSession.getTransport( "smtp" );
-            transport.connect( SMTP_SERVER_ADDRESS, SMTP_SERVER_PORT, SMTP_USENAME, SMTP_PASSWORD );
-            transport.close();
-        }
-        catch ( NoSuchProviderException e ) {
-            e = null;
+            message.setSubject( dto.getSubject() );
+            for ( String to : dto.getRecipients() ) {
+                message.addRecipient( MimeMessage.RecipientType.TO, new InternetAddress( to ) );
+            }
+            message.setFrom( new InternetAddress( SMTP_FROM ) );
+            message.setContent( dto.getBody(), "text/plain" );
+            getTransport().send( message );
         }
         catch ( MessagingException e ) {
-            e.getStackTrace();
             e = null;
         }
     }
 
+    public Session getMailSession ()
+    {
+        return mailSession;
+    }
+
+    public Transport getTransport ()
+    {
+        return transport;
+    }
+
+
     private class SMTPAuthenticator extends javax.mail.Authenticator
     {
 
-        public PasswordAuthentication getPasswordAuthentication()
+        public PasswordAuthentication getPasswordAuthentication ()
         {
             String username = SMTP_USENAME;
             String password = SMTP_PASSWORD;
