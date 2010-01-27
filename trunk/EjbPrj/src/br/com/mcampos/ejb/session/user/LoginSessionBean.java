@@ -63,19 +63,24 @@ public class LoginSessionBean implements LoginSessionLocal
     private EntityManager em;
     @EJB
     CollaboratorSessionLocal collaborator;
-    
-    @EJB PersonSessionLocal personSession;
-    
-    @EJB UserSessionLocal userSession;
-    
-    @EJB SystemMessagesSessionLocal systemMessage;
-    
-    @EJB SendMailSessionLocal sendMail;
-    
-    @EJB SystemParametersSessionLocal sysParam;
-    
+
+    @EJB
+    PersonSessionLocal personSession;
+
+    @EJB
+    UserSessionLocal userSession;
+
+    @EJB
+    SystemMessagesSessionLocal systemMessage;
+
+    @EJB
+    SendMailSessionLocal sendMail;
+
+    @EJB
+    SystemParametersSessionLocal sysParam;
+
     private static final Integer systemMessageTypeId = 1;
-    
+
 
     public LoginSessionBean ()
     {
@@ -84,7 +89,7 @@ public class LoginSessionBean implements LoginSessionLocal
     /**
      * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
      * observado que o mesmo depende do relacionamento com a entidade pessoa.
-     * Após incluido o login com os dados mais básicos necessários, o novo usuário do 
+     * Após incluido o login com os dados mais básicos necessários, o novo usuário do
      * sistema DEVE completar o registro.
      *
      * @param dto DTO com os dados básicos para inclusão.
@@ -96,74 +101,85 @@ public class LoginSessionBean implements LoginSessionLocal
          * Verificar os parametros novamente. Pois nao podemos confiar no controller.
          */
         Person person;
-            
-        if ( false ) {
-            if ( dto == null )
-                getSystemMessage().throwException( systemMessageTypeId, 1 );
-            if ( SysUtils.isEmpty( dto.getName() ) )
-                getSystemMessage().throwException( systemMessageTypeId, 2 );
-            if ( dto.getDocuments().size() < 1 )
-                getSystemMessage().throwException( systemMessageTypeId, 3 );
-            /*
-             * TODO: testar explicitamente a existência do email e do cpf
-             */
-            if ( SysUtils.isEmpty( dto.getPassword() ) )
-                getSystemMessage().throwException( systemMessageTypeId, 4 );
-    
-            person = (Person) getUserSession().findByDocumentList( dto.getDocuments() );
-            if ( person == null ) {
-                person = getPersonSession().add( DTOFactory.copy ( dto ) );
-            }
-            if ( person.getLogin() != null )
-                getSystemMessage().throwException( systemMessageTypeId, 5 );
-            add ( dto, person );
-        }
+
         /*
-         * TODO: Mudar a funcao de enviar email 
+         * Validação dos parâmetros recebidos
          */
-        sendMail ( dto );
+        if ( dto == null )
+            throwRuntimeException( 1 );
+        if ( SysUtils.isEmpty( dto.getName() ) )
+            throwRuntimeException( 2 );
+        if ( dto.getDocuments().size() < 1 )
+            throwRuntimeException( 3 );
+        if ( SysUtils.isEmpty( dto.getPassword() ) )
+            throwRuntimeException( 4 );
+        if ( verifyDocuments( dto.getDocuments() ) == false ) 
+            throwRuntimeException( 10 );
+
+        person = ( Person )getUserSession().findByDocumentList( dto.getDocuments() );
+        if ( person == null ) {
+            person = getPersonSession().add( DTOFactory.copy( dto ) );
+        }
+        if ( person.getLogin() != null )
+            throwRuntimeException( 5 );
+        add( dto, person );
     }
-    
-    protected void sendMail ( RegisterDTO dto ) throws ApplicationException
+
+    protected boolean verifyDocuments ( List<UserDocumentDTO> list )
     {
-        SendMailDTO emailDTO = new SendMailDTO();
+        boolean bCPF = false, bEmail = false;
+        
+        if ( list == null )
+            return false;
+        for ( UserDocumentDTO item : list ) {
+            if ( item.getDocumentType().getId().equals( UserDocumentDTO.typeEmail ) ) {
+                bEmail = true;
+            }
+            else if ( item.getDocumentType().getId().equals( UserDocumentDTO.typeCPF ) ) {
+                bCPF = true;
+            }
+        }
+        return ( bEmail && bCPF );
+    }
+
+    protected void sendMail ( RegisterDTO dto, String token ) throws ApplicationException
+    {
         String messageBody;
         
-        for ( UserDocumentDTO item: dto.getDocuments() ) {
-            if ( item.getDocumentType().getId().equals( UserDocumentDTO.typeEmail ) ) {
+        if ( dto == null || dto.getDocuments() == null )
+            throwRuntimeException( 1 );
+        if ( SysUtils.isEmpty( token  ) )
+            throwRuntimeException( 11 );
+        messageBody = getSysParam().getValue( "TemplateEmailConfirmation" );
+        if ( messageBody == null ) 
+            getSystemMessage().throwRuntimeException( systemMessageTypeId, 5 );
+        messageBody = translateMessageTokens( messageBody, dto, token );
+        
+        
+        SendMailDTO emailDTO = new SendMailDTO();
+        for ( UserDocumentDTO item : dto.getDocuments() ) {
+            if ( item.getDocumentType().getId().equals( UserDocumentDTO.typeEmail ) ) 
                 emailDTO.addRecipient( item.getCode() );
-            }
         }
         emailDTO.setSubject( "Validação de Email para uso no sistema CloudSystems" );
-        messageBody = getSysParam().getValue( "TemplateEmailConfirmation" );
-        if ( messageBody == null ) {
-            em.getTransaction().setRollbackOnly();
-            getSystemMessage().throwException( systemMessageTypeId, 5 );
-        }
-        messageBody = translateMessageTokens ( messageBody, dto );
         emailDTO.setBody( messageBody );
         sendMail.sendMail( emailDTO );
     }
-    
-    protected String translateMessageTokens ( String msg,  RegisterDTO dto )
+
+    protected String translateMessageTokens ( String msg, RegisterDTO dto, String token )
     {
-        String[] tokens= { "<<@@LOGIN_NAME@@>>", "<<@@EMAIL@@>>", "<<@@TOKEN@@>>" };
-        
         msg = msg.replaceAll( "<<@@LOGIN_NAME@@>>", dto.getName() );
-        for ( UserDocumentDTO item: dto.getDocuments() ) {
+        for ( UserDocumentDTO item : dto.getDocuments() ) {
             if ( item.getDocumentType().getId().equals( UserDocumentDTO.typeEmail ) ) {
                 msg = msg.replaceAll( "<<@@EMAIL@@>>", item.getCode() );
                 break;
             }
         }
-        /*
-         * TODO: alterar o codigo abaixo para o token correto.
-         */
-        msg = msg.replaceAll( "<<@@TOKEN@@>>", "AAABBBCCCDDD" );
+        msg = msg.replaceAll( "<<@@TOKEN@@>>", token );
         return msg;
     }
-    
-    protected void add ( RegisterDTO dto, Person person )
+
+    protected void add ( RegisterDTO dto, Person person ) throws ApplicationException
     {
         String encryptedPassword;
         BasicPasswordEncryptor passwordEncryptor;
@@ -175,12 +191,12 @@ public class LoginSessionBean implements LoginSessionLocal
         setPasswordExpirationDate( login );
         login.setPassword( encryptedPassword );
         login.setToken( RandomString.randomstring() );
+        if ( SysUtils.isEmpty( login.getToken() ) )
+            throwRuntimeException( 11 );
         em.persist( login );
         storeOldPassword( login );
         storeAccessLog( login, dto, 2 );
-        /*
-         * TODO: SEND EMAIL
-         */
+        sendMail( dto, login.getToken() );
     }
 
     protected void setPasswordExpirationDate ( Login login )
@@ -269,8 +285,6 @@ public class LoginSessionBean implements LoginSessionLocal
     }
 
 
-
-
     public void logoutUser ( LoginDTO dto )
     {
         if ( dto == null || dto.getUserId() == null )
@@ -282,26 +296,25 @@ public class LoginSessionBean implements LoginSessionLocal
 
     }
 
-    protected Login getLoginByDocument( UserDocumentDTO document )
-     {
-         Login login;
-         Query query;
-         UserDocument userDocument;
+    protected Login getLoginByDocument ( UserDocumentDTO document )
+    {
+        Login login;
+        Query query;
+        UserDocument userDocument;
 
-         try {
+        try {
 
-             query = em.createNamedQuery( "UserDocument.findByDocument" );
-             query.setParameter( "document", document.getCode() );
-             query.setParameter( "docType", document.getDocumentType().getId() );
-             userDocument = ( UserDocument )query.getSingleResult();
-             login = em.find( Login.class, userDocument.getUserId() );
-         }
-         catch ( Exception e ) {
-             throw new EJBException( "Usuário inválido, não foi possível realizar o login.", e );
-         }
-         return login;
-     }
-
+            query = em.createNamedQuery( "UserDocument.findByDocument" );
+            query.setParameter( "document", document.getCode() );
+            query.setParameter( "docType", document.getDocumentType().getId() );
+            userDocument = ( UserDocument )query.getSingleResult();
+            login = em.find( Login.class, userDocument.getUserId() );
+        }
+        catch ( Exception e ) {
+            throw new EJBException( "Usuário inválido, não foi possível realizar o login.", e );
+        }
+        return login;
+    }
 
 
     public LoginDTO loginUser ( LoginCredentialDTO dto )
@@ -482,9 +495,9 @@ public class LoginSessionBean implements LoginSessionLocal
 
         try {
             List retList;
-            
+
             retList = em.createNamedQuery( "LastUsedPassword.findAll" ).setParameter( "id", login.getUserId() ).getResultList();
-            list = ( List<LastUsedPassword> ) retList;
+            list = ( List<LastUsedPassword> )retList;
             passwordEncryptor = new BasicPasswordEncryptor();
             for ( LastUsedPassword password : list ) {
                 if ( passwordEncryptor.checkPassword( newPassword, password.getPassword() ) )
@@ -551,7 +564,7 @@ public class LoginSessionBean implements LoginSessionLocal
 
 
     /** <code>select o from Users o</code> */
-    @SuppressWarnings ("unckecked")
+    @SuppressWarnings( "unckecked" )
     public List<ListLoginDTO> getLoginByRange ( int firstResult, int maxResults )
     {
         Query query = em.createNamedQuery( "Login.findAll" );
@@ -593,23 +606,48 @@ public class LoginSessionBean implements LoginSessionLocal
 
     }
 
-    protected PersonSessionLocal getPersonSession()
+    protected PersonSessionLocal getPersonSession ()
     {
         return personSession;
     }
 
-    protected UserSessionLocal getUserSession()
+    protected UserSessionLocal getUserSession ()
     {
         return userSession;
     }
 
-    protected SystemMessagesSessionLocal getSystemMessage()
+    protected SystemMessagesSessionLocal getSystemMessage ()
     {
         return systemMessage;
     }
 
-    public SystemParametersSessionLocal getSysParam()
+    protected SystemParametersSessionLocal getSysParam ()
     {
         return sysParam;
+    }
+
+    /**
+     * Lança uma exceção que NÃO causa rollback da transação, ou seja, 
+     * NÃO É derivada de runtime-excpetion
+     * 
+     * @param id - id da mensagem a ser exibida. Cadastrada na tabela SystemMessages
+     * @throws ApplicationException
+     */
+    protected void throwException ( int id ) throws ApplicationException
+    {
+        getSystemMessage().throwException( systemMessageTypeId, id );
+    }
+
+
+    /**
+     * Lança uma exceção que PROVOCA rollback da transação, ou seja, 
+     * E derivada de runtime-excpetion
+     * 
+     * @param id - id da mensagem a ser exibida. Cadastrada na tabela SystemMessages
+     * @throws ApplicationException
+     */
+    protected void throwRuntimeException ( int id ) throws ApplicationException
+    {
+        getSystemMessage().throwRuntimeException( systemMessageTypeId, id );
     }
 }
