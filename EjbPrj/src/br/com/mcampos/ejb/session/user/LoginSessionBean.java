@@ -25,6 +25,7 @@ import br.com.mcampos.ejb.entity.user.attributes.UserStatus;
 
 import br.com.mcampos.ejb.session.system.SendMailSessionLocal;
 import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
+import br.com.mcampos.ejb.session.system.SystemParametersSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -71,6 +72,8 @@ public class LoginSessionBean implements LoginSessionLocal
     
     @EJB SendMailSessionLocal sendMail;
     
+    @EJB SystemParametersSessionLocal sysParam;
+    
     private static final Integer systemMessageTypeId = 1;
     
 
@@ -115,15 +118,49 @@ public class LoginSessionBean implements LoginSessionLocal
                 getSystemMessage().throwException( systemMessageTypeId, 5 );
             add ( dto, person );
         }
+        /*
+         * TODO: Mudar a funcao de enviar email 
+         */
+        sendMail ( dto );
+    }
+    
+    protected void sendMail ( RegisterDTO dto ) throws ApplicationException
+    {
         SendMailDTO emailDTO = new SendMailDTO();
+        String messageBody;
         
         for ( UserDocumentDTO item: dto.getDocuments() ) {
-            if ( item.getDocumentType().getId().equals( UserDocumentDTO.typeEmail ) )
+            if ( item.getDocumentType().getId().equals( UserDocumentDTO.typeEmail ) ) {
                 emailDTO.addRecipient( item.getCode() );
+            }
         }
-        emailDTO.setSubject( "Validação de Email" );
-        emailDTO.setBody( "Este email deverá ser validado" );
+        emailDTO.setSubject( "Validação de Email para uso no sistema CloudSystems" );
+        messageBody = getSysParam().getValue( "TemplateEmailConfirmation" );
+        if ( messageBody == null ) {
+            em.getTransaction().setRollbackOnly();
+            getSystemMessage().throwException( systemMessageTypeId, 5 );
+        }
+        messageBody = translateMessageTokens ( messageBody, dto );
+        emailDTO.setBody( messageBody );
         sendMail.sendMail( emailDTO );
+    }
+    
+    protected String translateMessageTokens ( String msg,  RegisterDTO dto )
+    {
+        String[] tokens= { "<<@@LOGIN_NAME@@>>", "<<@@EMAIL@@>>", "<<@@TOKEN@@>>" };
+        
+        msg = msg.replaceAll( "<<@@LOGIN_NAME@@>>", dto.getName() );
+        for ( UserDocumentDTO item: dto.getDocuments() ) {
+            if ( item.getDocumentType().getId().equals( UserDocumentDTO.typeEmail ) ) {
+                msg = msg.replaceAll( "<<@@EMAIL@@>>", item.getCode() );
+                break;
+            }
+        }
+        /*
+         * TODO: alterar o codigo abaixo para o token correto.
+         */
+        msg = msg.replaceAll( "<<@@TOKEN@@>>", "AAABBBCCCDDD" );
+        return msg;
     }
     
     protected void add ( RegisterDTO dto, Person person )
@@ -569,5 +606,10 @@ public class LoginSessionBean implements LoginSessionLocal
     protected SystemMessagesSessionLocal getSystemMessage()
     {
         return systemMessage;
+    }
+
+    public SystemParametersSessionLocal getSysParam()
+    {
+        return sysParam;
     }
 }

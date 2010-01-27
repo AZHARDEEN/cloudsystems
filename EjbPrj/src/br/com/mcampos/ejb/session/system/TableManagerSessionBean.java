@@ -127,7 +127,10 @@ public class TableManagerSessionBean implements TableManagerSession, TableManage
         SystemParameters systemParameter;
         
         systemParameter = em.find ( SystemParameters.class, id );
-        return DTOFactory.copy ( systemParameter );
+        if ( systemParameter != null )
+            return DTOFactory.copy ( systemParameter );
+        else
+            return null;
     }
     
 

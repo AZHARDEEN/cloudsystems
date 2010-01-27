@@ -62,8 +62,29 @@
    <value n="defaultPackage" v="ejbprj"/>
    <hash n="ejbModuleContainer">
       <value n="cmpProvider" v="EJB 3.0"/>
+      <value n="dbConnection" v="CloudSystemsDS"/>
       <value n="ejbVersion" v="3.0"/>
       <url n="weblogicEjbJarNodeURL" path="src/META-INF/weblogic-ejb-jar.xml"/>
+   </hash>
+   <hash n="oracle.adfdtinternal.model.ide.settings.ADFMSettings">
+      <hash n="adfmContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="adfmsrc/"/>
+         </list>
+      </hash>
+   </hash>
+   <hash n="oracle.bm.commonIde.data.project.ModelerProjectSettings">
+      <hash n="modelersContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="model/"/>
+         </list>
+      </hash>
    </hash>
    <hash n="oracle.ide.model.DependencyConfiguration">
       <list n="dependencyList">
@@ -77,6 +98,15 @@
             <url n="sourceOwnerURL" path="../CloudSystems.jws"/>
             <url n="sourceURL" path="../SysUtils/SysUtils.jpr"/>
          </hash>
+      </list>
+   </hash>
+   <hash n="oracle.ide.model.TechnologyScopeConfiguration">
+      <list n="technologyScope">
+         <string v="EJB"/>
+         <string v="Java"/>
+         <string v="TopLink"/>
+         <string v="Database"/>
+         <string v="JavaBeans"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.compiler.OjcConfiguration">
@@ -223,11 +253,38 @@
    <hash n="oracle.jdevimpl.config.JProjectPaths">
       <url n="outputDirectory" path="classes/"/>
    </hash>
+   <hash n="oracle.jdevimpl.sqlj.config.SqljConfiguration">
+      <hash n="contextConnectionMap">
+         <value n="&lt;none>" v="CloudSystemsDS"/>
+      </hash>
+   </hash>
+   <hash n="oracle.mds.internal.dt.ide.MDSLibraryCustCSProvider">
+      <hash n="mdsContentSet">
+         <list n="pattern-filters">
+            <string v="+**/mdssys/cust/**"/>
+            <string v="+mdssys/cust/**"/>
+         </list>
+         <list n="url-path">
+            <url path="libraryCustomizations/"/>
+         </list>
+      </hash>
+   </hash>
    <hash n="oracle.toplink.workbench.addin">
       <hash n="persistence-list">
          <hash n="src$META-INF$persistence.xml">
-            <value n="development-database" v="Cloud"/>
+            <value n="development-database" v="CloudSystem"/>
          </hash>
       </hash>
+      <hash n="toplinkContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="toplink/"/>
+         </list>
+      </hash>
+   </hash>
+   <hash n="ResourceBundleOptions">
+      <list n="RegisteredResourceBundles"/>
    </hash>
 </jpr:project>

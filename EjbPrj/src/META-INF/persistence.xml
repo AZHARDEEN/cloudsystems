@@ -2,49 +2,49 @@
 <persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
              xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
-  <persistence-unit name="EjbPrj">
+  <persistence-unit name="EjbPrj" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>jdbc/CloudDS</jta-data-source>
-    <class>br.com.mcampos.ejb.entity.address.AddressType</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.Title</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.CivilState</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.Gender</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.ContactType</class>
-    <class>br.com.mcampos.ejb.entity.address.City</class>
-    <class>br.com.mcampos.ejb.entity.address.Country</class>
-    <class>br.com.mcampos.ejb.entity.address.Region</class>
-    <class>br.com.mcampos.ejb.entity.address.State</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.DocumentType</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.UserStatus</class>
+    <jta-data-source>CloudSystemsDSDS</jta-data-source>
     <class>br.com.mcampos.ejb.entity.user.attributes.UserType</class>
-    <class>br.com.mcampos.ejb.entity.user.Users</class>
-    <class>br.com.mcampos.ejb.entity.user.Address</class>
-    <class>br.com.mcampos.ejb.entity.user.UserContact</class>
-    <class>br.com.mcampos.ejb.entity.user.UserDocument</class>
-    <class>br.com.mcampos.ejb.entity.user.Person</class>
-    <class>br.com.mcampos.ejb.entity.login.Login</class>
+    <class>br.com.mcampos.ejb.entity.address.City</class>
+    <class>br.com.mcampos.ejb.entity.user.Collaborator</class>
     <class>br.com.mcampos.ejb.entity.system.SystemParameters</class>
-    <class>br.com.mcampos.ejb.entity.login.LastUsedPassword</class>
+    <class>br.com.mcampos.ejb.entity.user.attributes.DocumentType</class>
+    <class>br.com.mcampos.ejb.entity.user.attributes.ContactType</class>
+    <class>br.com.mcampos.ejb.entity.user.Users</class>
+    <class>br.com.mcampos.ejb.entity.address.Region</class>
+    <class>br.com.mcampos.ejb.entity.address.AddressType</class>
+    <class>br.com.mcampos.ejb.entity.user.Company</class>
+    <class>br.com.mcampos.ejb.entity.user.Client</class>
+    <class>br.com.mcampos.ejb.entity.user.UserDocument</class>
+    <class>br.com.mcampos.ejb.entity.user.UserContact</class>
+    <class>br.com.mcampos.ejb.entity.user.attributes.Title</class>
     <class>br.com.mcampos.ejb.entity.login.AccessLog</class>
     <class>br.com.mcampos.ejb.entity.login.AccessLogType</class>
-    <class>br.com.mcampos.ejb.entity.user.Company</class>
     <class>br.com.mcampos.ejb.entity.user.attributes.CompanyPosition</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.CompanyType</class>
-    <class>br.com.mcampos.ejb.entity.user.Collaborator</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.CollaboratorType</class>
-    <class>br.com.mcampos.ejb.entity.user.Client</class>
+    <class>br.com.mcampos.ejb.entity.user.attributes.Gender</class>
     <class>br.com.mcampos.ejb.entity.system.SystemMessageType</class>
+    <class>br.com.mcampos.ejb.entity.user.attributes.CollaboratorType</class>
+    <class>br.com.mcampos.ejb.entity.address.Country</class>
+    <class>br.com.mcampos.ejb.entity.address.State</class>
+    <class>br.com.mcampos.ejb.entity.user.attributes.CivilState</class>
+    <class>br.com.mcampos.ejb.entity.login.Login</class>
+    <class>br.com.mcampos.ejb.entity.user.attributes.CompanyType</class>
     <class>br.com.mcampos.ejb.entity.system.SystemMessage</class>
+    <class>br.com.mcampos.ejb.entity.user.Person</class>
+    <class>br.com.mcampos.ejb.entity.user.Address</class>
+    <class>br.com.mcampos.ejb.entity.login.LastUsedPassword</class>
+    <class>br.com.mcampos.ejb.entity.user.attributes.UserStatus</class>
     <properties>
-        <property name="eclipselink.target-server" value="WebLogic 10"/>
-        <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/CloudDS"/>
-      <property name="javax.persistence.jdbc.user" value="cloud"/>
-      <property name="javax.persistence.jdbc.password"
-                value="7262A3B2F02512DD110B2821B0B16BC1"/>
+      <property name="eclipselink.target-server" value="WebLogic 10"/>
+      <property name="eclipselink.target-database" value="PostgreSQL"/>
       <property name="javax.persistence.jdbc.driver"
                 value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.password"
+                value="7262A3B2F02512DD110B2821B0B16BC1"/>
       <property name="javax.persistence.jdbc.url"
-                value="jdbc:postgresql://localhost:5432/db_cloud"/>
+                value="jdbc:postgresql://127.0.0.1:5432/db_cloud"/>
+      <property name="javax.persistence.jdbc.user" value="cloud"/>
     </properties>
   </persistence-unit>
 </persistence>
