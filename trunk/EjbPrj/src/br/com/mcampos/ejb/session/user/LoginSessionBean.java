@@ -23,6 +23,7 @@ import br.com.mcampos.ejb.entity.user.UserDocument;
 import br.com.mcampos.ejb.entity.user.Users;
 import br.com.mcampos.ejb.entity.user.attributes.UserStatus;
 
+import br.com.mcampos.ejb.session.system.EmailSessionLocal;
 import br.com.mcampos.ejb.session.system.SendMailSessionLocal;
 import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
 import br.com.mcampos.ejb.session.system.SystemParametersSessionLocal;
@@ -78,6 +79,8 @@ public class LoginSessionBean implements LoginSessionLocal
 
     @EJB
     SystemParametersSessionLocal sysParam;
+    
+    @EJB EmailSessionLocal emailTemplate;
 
     private static final Integer systemMessageTypeId = 1;
 
@@ -125,6 +128,27 @@ public class LoginSessionBean implements LoginSessionLocal
         add( dto, person );
     }
 
+    protected void add ( RegisterDTO dto, Person person ) throws ApplicationException
+    {
+        String encryptedPassword;
+        BasicPasswordEncryptor passwordEncryptor;
+
+        Login login = new Login( null, dto.getPassword(), new UserStatus( UserStatus.statusEmailNotValidated ) );
+        login.setPerson( person );
+        passwordEncryptor = new BasicPasswordEncryptor();
+        encryptedPassword = passwordEncryptor.encryptPassword( login.getPassword() );
+        setPasswordExpirationDate( login );
+        login.setPassword( encryptedPassword );
+        login.setToken( RandomString.randomstring() );
+        if ( SysUtils.isEmpty( login.getToken() ) )
+            throwRuntimeException( 11 );
+        em.persist( login );
+        storeOldPassword( login );
+        storeAccessLog( login, dto, 2 );
+        sendMail( dto, login.getToken() );
+    }
+
+
     protected boolean verifyDocuments ( List<UserDocumentDTO> list )
     {
         boolean bCPF = false, bEmail = false;
@@ -144,26 +168,30 @@ public class LoginSessionBean implements LoginSessionLocal
 
     protected void sendMail ( RegisterDTO dto, String token ) throws ApplicationException
     {
-        String messageBody;
+        String templateId;
         
         if ( dto == null || dto.getDocuments() == null )
             throwRuntimeException( 1 );
         if ( SysUtils.isEmpty( token  ) )
             throwRuntimeException( 11 );
-        messageBody = getSysParam().getValue( "TemplateEmailConfirmation" );
-        if ( messageBody == null ) 
-            getSystemMessage().throwRuntimeException( systemMessageTypeId, 5 );
-        messageBody = translateMessageTokens( messageBody, dto, token );
-        
-        
-        SendMailDTO emailDTO = new SendMailDTO();
+        templateId = getSysParam().getValue( "TemplateEmailConfirmation" );
+        if ( templateId == null ) 
+            throwRuntimeException( 5 );
+        SendMailDTO emailDTO = createTemplate ( Integer.parseInt( templateId ) );
+        emailDTO.setBody( translateMessageTokens( emailDTO.getBody(), dto, token ) );
         for ( UserDocumentDTO item : dto.getDocuments() ) {
             if ( item.getDocumentType().getId().equals( UserDocumentDTO.typeEmail ) ) 
                 emailDTO.addRecipient( item.getCode() );
         }
-        emailDTO.setSubject( "Validação de Email para uso no sistema CloudSystems" );
-        emailDTO.setBody( messageBody );
         sendMail.sendMail( emailDTO );
+    }
+    
+    protected SendMailDTO createTemplate ( Integer templateID ) throws ApplicationException
+    {
+        SendMailDTO dto = getEmailTemplate().get(  templateID  );
+        if ( dto == null )
+            throwRuntimeException( 11 );
+        return dto;
     }
 
     protected String translateMessageTokens ( String msg, RegisterDTO dto, String token )
@@ -177,26 +205,6 @@ public class LoginSessionBean implements LoginSessionLocal
         }
         msg = msg.replaceAll( "<<@@TOKEN@@>>", token );
         return msg;
-    }
-
-    protected void add ( RegisterDTO dto, Person person ) throws ApplicationException
-    {
-        String encryptedPassword;
-        BasicPasswordEncryptor passwordEncryptor;
-
-        Login login = new Login( null, dto.getPassword(), new UserStatus( UserStatus.statusEmailNotValidated ) );
-        login.setPerson( person );
-        passwordEncryptor = new BasicPasswordEncryptor();
-        encryptedPassword = passwordEncryptor.encryptPassword( login.getPassword() );
-        setPasswordExpirationDate( login );
-        login.setPassword( encryptedPassword );
-        login.setToken( RandomString.randomstring() );
-        if ( SysUtils.isEmpty( login.getToken() ) )
-            throwRuntimeException( 11 );
-        em.persist( login );
-        storeOldPassword( login );
-        storeAccessLog( login, dto, 2 );
-        sendMail( dto, login.getToken() );
     }
 
     protected void setPasswordExpirationDate ( Login login )
@@ -649,5 +657,10 @@ public class LoginSessionBean implements LoginSessionLocal
     protected void throwRuntimeException ( int id ) throws ApplicationException
     {
         getSystemMessage().throwRuntimeException( systemMessageTypeId, id );
+    }
+
+    public EmailSessionLocal getEmailTemplate()
+    {
+        return emailTemplate;
     }
 }
