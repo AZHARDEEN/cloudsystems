@@ -272,7 +272,7 @@
    <hash n="oracle.toplink.workbench.addin">
       <hash n="persistence-list">
          <hash n="src$META-INF$persistence.xml">
-            <value n="development-database" v="CloudSystem"/>
+            <value n="development-database" v="CloudSystemsDS"/>
          </hash>
       </hash>
       <hash n="toplinkContentSet">
