@@ -29,7 +29,7 @@ public interface PersonSessionLocal
     Person add( Person entity );
     
     
-	Person createPersonForLogin( RegisterDTO dto );
+    
     Person update( PersonDTO person );
     void delete( Integer id );
     List<PersonDTO> getAll();

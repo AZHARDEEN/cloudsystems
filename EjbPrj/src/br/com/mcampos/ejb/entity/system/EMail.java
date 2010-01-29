@@ -57,7 +57,7 @@ public class EMail implements Serializable
         this.id = eml_id_in;
     }
 
-    @OneToMany( mappedBy = "EMail" )
+    @OneToMany( mappedBy = "email" )
     public List<EMailPart> getEMailPartList()
     {
         if ( EMailPartList == null )
@@ -73,14 +73,14 @@ public class EMail implements Serializable
     public EMailPart addEMailPart( EMailPart EMailPart )
     {
         getEMailPartList().add(EMailPart);
-        EMailPart.setEMail(this);
+        EMailPart.setEmail(this);
         return EMailPart;
     }
 
     public EMailPart removeEMailPart( EMailPart EMailPart )
     {
         getEMailPartList().remove(EMailPart);
-        EMailPart.setEMail(null);
+        EMailPart.setEmail(null);
         return EMailPart;
     }
 }
