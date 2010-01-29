@@ -6,6 +6,8 @@ import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.ejb.entity.user.UserDocument;
 import br.com.mcampos.ejb.entity.user.Users;
 
+import br.com.mcampos.exception.ApplicationException;
+
 import java.util.List;
 
 import javax.ejb.Local;
@@ -31,12 +33,12 @@ public interface UserSessionLocal
      * @param list Lista de documentos a serem procurados, pois um usuário pode ter mais
      * de um documento.
      * 
-     * @exception InvalidParameterException
+     * @exception ApplicationException
      * @return Users - Entity de usuario
      * @see br.com.mcampos.ejb.entity.user.Users
      *
      */
-    Users findByDocumentList ( List<UserDocumentDTO> list );
+    Users findByDocumentList ( List<UserDocumentDTO> list ) throws ApplicationException;
     
     
     /**

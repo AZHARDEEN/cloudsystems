@@ -120,7 +120,7 @@ public class PersonSessionBean implements PersonSessionLocal
         return splitted;
     }
     
-
+    /*
 	public Person createPersonForLogin( RegisterDTO dto )
 	{
 		Person person;
@@ -130,7 +130,6 @@ public class PersonSessionBean implements PersonSessionLocal
 			person = add ( DTOFactory.copy( dto ) );
 		}
 		else {
-			/*Lazy load documents*/
 			if ( person.getLogin() != null )
 				throw new EJBException ( "Este cadastro já possui login" );
 			if ( person.getName().equalsIgnoreCase( dto.getName() ) == false ) {
@@ -150,14 +149,13 @@ public class PersonSessionBean implements PersonSessionLocal
 				}
 				if ( bFound == false ) 
 				{
-					/*Add User Document*/
 					person.addDocument( DTOFactory.copy ( documentDTO ) );
 				}
 			}
 		}
 		return person;
 	}
-
+*/
 
 	protected void verifyDocuments( Person person )
 	{

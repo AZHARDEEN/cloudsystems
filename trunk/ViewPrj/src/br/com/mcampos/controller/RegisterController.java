@@ -3,6 +3,7 @@ package br.com.mcampos.controller;
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.exception.ApplicationRuntimeException;
 import br.com.mcampos.util.CPF;
 import br.com.mcampos.util.MultilineMessageBox;
 import br.com.mcampos.util.business.LoginLocator;
@@ -66,9 +67,14 @@ public class RegisterController extends BaseLoginOptionsController
             showErrorMessage( e.getMessage() );
             base.setFocus( true );
         }
-        catch ( EJBException e ) 
+        catch ( EJBException e )
         {
-            showErrorMessage ( e.getMessage() );
+            if ( e.getCause().getCause() instanceof ApplicationRuntimeException ) {
+                ApplicationRuntimeException cause = (ApplicationRuntimeException) e.getCause().getCause();
+                showErrorMessage( cause.getMessage() );
+            }
+            else
+                showErrorMessage( e.getMessage() );
         }
     }
 

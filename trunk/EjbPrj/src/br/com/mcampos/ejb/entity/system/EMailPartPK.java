@@ -4,24 +4,24 @@ import java.io.Serializable;
 
 public class EMailPartPK implements Serializable
 {
-    private Integer eml_id_in;
-    private Integer emp_seq_in;
+    private Integer id;
+    private Integer sequencial;
 
     public EMailPartPK()
     {
     }
 
-    public EMailPartPK( Integer eml_id_in, Integer emp_seq_in )
+    public EMailPartPK( Integer id, Integer sequencial )
     {
-        this.eml_id_in = eml_id_in;
-        this.emp_seq_in = emp_seq_in;
+        this.id = id;
+        this.sequencial = sequencial;
     }
 
     public boolean equals( Object other )
     {
         if (other instanceof EMailPartPK) {
             final EMailPartPK otherEMailPartPK = (EMailPartPK) other;
-            final boolean areEqual = (otherEMailPartPK.eml_id_in.equals(eml_id_in) && otherEMailPartPK.emp_seq_in.equals(emp_seq_in));
+            final boolean areEqual = (otherEMailPartPK.id.equals(id) && otherEMailPartPK.sequencial.equals(sequencial));
             return areEqual;
         }
         return false;
@@ -32,23 +32,23 @@ public class EMailPartPK implements Serializable
         return super.hashCode();
     }
 
-    Integer getEml_id_in()
+    Integer getId()
     {
-        return eml_id_in;
+        return id;
     }
 
-    void setEml_id_in( Integer eml_id_in )
+    void setId( Integer id )
     {
-        this.eml_id_in = eml_id_in;
+        this.id = id;
     }
 
-    Integer getEmp_seq_in()
+    Integer getSequencial()
     {
-        return emp_seq_in;
+        return sequencial;
     }
 
-    void setEmp_seq_in( Integer emp_seq_in )
+    void setSequencial( Integer sequencial )
     {
-        this.emp_seq_in = emp_seq_in;
+        this.sequencial = sequencial;
     }
 }

@@ -24,7 +24,7 @@ public class EMailPart implements Serializable
     private Integer sequencial;
     private String content;
     private EMailPartType partType;
-    private EMail EMail;
+    private EMail email;
 
     public EMailPart()
     {
@@ -32,7 +32,7 @@ public class EMailPart implements Serializable
 
     public EMailPart( EMail EMail, EMailPartType EMailPartType, Integer emp_seq_in, String emp_text_tx )
     {
-        this.EMail = EMail;
+        this.email = EMail;
         this.partType = EMailPartType;
         this.sequencial = emp_seq_in;
         this.content = emp_text_tx;
@@ -88,14 +88,14 @@ public class EMailPart implements Serializable
 
     @ManyToOne
     @JoinColumn( name = "eml_id_in" )
-    public EMail getEMail()
+    public EMail getEmail()
     {
-        return EMail;
+        return email;
     }
 
-    public void setEMail( EMail EMail )
+    public void setEmail( EMail EMail )
     {
-        this.EMail = EMail;
+        this.email = EMail;
         if (EMail != null) {
             this.id = EMail.getId();
         }

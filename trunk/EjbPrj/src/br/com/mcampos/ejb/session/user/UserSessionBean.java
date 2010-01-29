@@ -10,9 +10,10 @@ import br.com.mcampos.ejb.entity.user.UserDocument;
 import br.com.mcampos.ejb.entity.user.Users;
 
 
+import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
 import br.com.mcampos.ejb.session.user.attributes.UserDocumentSessionLocal;
 
-import java.security.InvalidParameterException;
+import br.com.mcampos.exception.ApplicationException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +40,12 @@ public class UserSessionBean implements UserSessionLocal
     private EntityManager em;
 
     @EJB UserDocumentSessionLocal userDocumentoSession;
+    
+    @EJB
+    SystemMessagesSessionLocal systemMessage;
+
+    private static final Integer systemMessageTypeId = 3;
+    
 
     public UserSessionBean ()
     {
@@ -137,7 +144,7 @@ public class UserSessionBean implements UserSessionLocal
      *
      */
     @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
-    public Users findByDocumentList ( List<UserDocumentDTO> list )
+    public Users findByDocumentList ( List<UserDocumentDTO> list ) throws ApplicationException
     {
         Users user = null, foundUser = null;
         for ( UserDocumentDTO dto : list ) {
@@ -145,7 +152,7 @@ public class UserSessionBean implements UserSessionLocal
             if ( user != null ) {
                 if ( foundUser != null ) {
                     if ( foundUser.getId().equals( user.getId() ) == false )
-                        throw new InvalidParameterException ("Os dados fornecidos não pertencem ao um mesmo usuario");
+                        throwRuntimeException( 1 );
                 }
                 foundUser = user;
             }
@@ -190,4 +197,32 @@ public class UserSessionBean implements UserSessionLocal
     }
 
 
+    /**
+     * Lança uma exceção que NÃO causa rollback da transação, ou seja, 
+     * NÃO É derivada de runtime-excpetion
+     * 
+     * @param id - id da mensagem a ser exibida. Cadastrada na tabela SystemMessages
+     * @throws ApplicationException
+     */
+    protected void throwException ( int id ) throws ApplicationException
+    {
+        getSystemMessage().throwException( systemMessageTypeId, id );
+    }
+
+    /**
+     * Lança uma exceção que PROVOCA rollback da transação, ou seja, 
+     * E derivada de runtime-excpetion
+     * 
+     * @param id - id da mensagem a ser exibida. Cadastrada na tabela SystemMessages
+     * @throws ApplicationException
+     */
+    protected void throwRuntimeException ( int id ) throws ApplicationException
+    {
+        getSystemMessage().throwRuntimeException( systemMessageTypeId, id );
+    }
+
+    protected SystemMessagesSessionLocal getSystemMessage()
+    {
+        return systemMessage;
+    }
 }
