@@ -59,7 +59,6 @@ public class AddressTypeSessionBean implements AddressTypeSession,
         em.remove(addressType);
     }
 
-    @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public List<AddressTypeDTO> getAll() {
         List<AddressType> list;
         List<AddressTypeDTO> dtos = null;
@@ -75,7 +74,6 @@ public class AddressTypeSessionBean implements AddressTypeSession,
 
 
     /** <code>select o from AddressType o where o.id = :id </code> */
-    @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public AddressTypeDTO get( Integer id )
     {
         AddressType record = ( AddressType ) getEntityManager().createNamedQuery("AddressType.find").setParameter("id", id).getSingleResult();
@@ -83,7 +81,6 @@ public class AddressTypeSessionBean implements AddressTypeSession,
         else return null;
     }
     
-    @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public Integer getIdMaxValue ()
     {
         Query query = getEntityManager().createNativeQuery( "Select max( coalesce ( adt_id_in, 0 ) ) + 1 as adt_id_in from address_type" );

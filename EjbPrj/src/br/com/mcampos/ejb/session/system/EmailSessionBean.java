@@ -6,8 +6,10 @@ import br.com.mcampos.ejb.entity.system.EMail;
 
 import br.com.mcampos.ejb.entity.system.EMailPart;
 import br.com.mcampos.ejb.entity.system.EMailPartType;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 
@@ -21,12 +23,16 @@ public class EmailSessionBean implements EmailSessionLocal
     @PersistenceContext( unitName="EjbPrj" )
     private EntityManager em;
     
+    @EJB
+    SystemMessagesSessionLocal systemMessage;
+    
+    protected static final Integer systemMessageTypeId = 4;
     
     public EmailSessionBean()
     {
     }
     
-    public SendMailDTO get ( Integer emailId )
+    public SendMailDTO get ( Integer emailId ) throws ApplicationException
     {
         if ( SysUtils.isZero( emailId ) )
             return null;
@@ -36,7 +42,7 @@ public class EmailSessionBean implements EmailSessionLocal
                 
         template = em.find( EMail.class, emailId );
         if ( template == null )
-            return null;
+            throwRuntimeException( 1 );
         
         SendMailDTO dto = new SendMailDTO();
         for ( EMailPart part: template.getEMailPartList() ) 
@@ -52,5 +58,20 @@ public class EmailSessionBean implements EmailSessionLocal
             }
         }
         return dto;        
+    }
+
+    protected void throwRuntimeException ( int id ) throws ApplicationException
+    {
+        getSystemMessage().throwRuntimeException( systemMessageTypeId, id );
+    }
+
+    public void setSystemMessage ( SystemMessagesSessionLocal systemMessage )
+    {
+        this.systemMessage = systemMessage;
+    }
+
+    protected SystemMessagesSessionLocal getSystemMessage ()
+    {
+        return systemMessage;
     }
 }

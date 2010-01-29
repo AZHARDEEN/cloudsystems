@@ -95,7 +95,7 @@ public class RegisterController extends BaseLoginOptionsController
         if ( name != null )
             name.setFocus( true );
         debugData ();
-        Clients.evalJavaScript( "$('input:text').setMask();" );
+        //Clients.evalJavaScript( "$('input:text').setMask();" );
     }
 
     protected Boolean validate()

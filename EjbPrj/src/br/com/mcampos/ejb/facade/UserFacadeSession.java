@@ -43,7 +43,7 @@ public interface UserFacadeSession
 
     UserDTO getUser ( Integer userId );
 
-    LoginDTO loginUser ( LoginCredentialDTO dto );
+    LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException;
 
     void logoutUser ( LoginDTO dto );
 

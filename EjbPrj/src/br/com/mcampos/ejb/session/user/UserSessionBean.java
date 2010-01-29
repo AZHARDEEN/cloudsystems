@@ -23,9 +23,6 @@ import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -52,7 +49,7 @@ public class UserSessionBean implements UserSessionLocal
     }
 
     /**************************************************************************************
-     * PUBLIC FUNCTIONS
+     * PROTECTED FUNCTIONS
      *************************************************************************************/
     protected UserDocumentSessionLocal getUserDocumentoSession ()
     {
@@ -64,7 +61,6 @@ public class UserSessionBean implements UserSessionLocal
      * PUBLIC FUNCTIONS
      *************************************************************************************/
 
-    @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public Long getRecordCount ()
     {
         Long recordCount;
@@ -75,7 +71,6 @@ public class UserSessionBean implements UserSessionLocal
 
 
     /** <code>select o from Users o</code> */
-    @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public List<ListUserDTO> getUsersByRange ( int firstResult, int maxResults )
     {
         Query query = em.createNamedQuery( "Users.findAll" );
@@ -109,7 +104,6 @@ public class UserSessionBean implements UserSessionLocal
 
     }
 
-    @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public UserDTO get ( Integer id )
     {
         Users entity;
@@ -143,7 +137,6 @@ public class UserSessionBean implements UserSessionLocal
      * @see br.com.mcampos.ejb.entity.user.Users
      *
      */
-    @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public Users findByDocumentList ( List<UserDocumentDTO> list ) throws ApplicationException
     {
         Users user = null, foundUser = null;
@@ -166,7 +159,6 @@ public class UserSessionBean implements UserSessionLocal
      * @param dto DocumentTypeDTO
      * @return Users - Entity userSession.
      */
-    @TransactionAttribute( value = TransactionAttributeType.NOT_SUPPORTED )
     public Users getUserByDocument ( UserDocumentDTO dto )
     {
         UserDocument userDocument;
@@ -185,7 +177,6 @@ public class UserSessionBean implements UserSessionLocal
      * @param entity DocumentTypeDTO
      * @return Users - Entity userSession.
      */
-    @TransactionAttribute( value = TransactionAttributeType.NOT_SUPPORTED )
     public Users getUserByDocument ( UserDocument entity )
     {
         UserDocument userDocument;
