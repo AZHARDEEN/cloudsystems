@@ -34,15 +34,17 @@ public class TextboxExt extends Textbox
     }
 
 
-    @Override
     public String getInnerAttrs ()
     {
-        final String attrs = super.getInnerAttrs();
+        /*
+        final String attrs = super.getAttribu
         if ( SysUtils.isEmpty ( getAlt() ) )
             return attrs;
         final StringBuffer sb = new StringBuffer(64).append(attrs);
         HTMLs.appendAttribute(sb, "alt",  getAlt());
         return sb.toString();
+*/
+        return "";
     }
 }
 

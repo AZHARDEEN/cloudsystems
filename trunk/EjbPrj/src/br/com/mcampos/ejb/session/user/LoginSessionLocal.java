@@ -28,7 +28,7 @@ public interface LoginSessionLocal
     void add( RegisterDTO dto ) throws ApplicationException;
     void update( LoginDTO login );
     void delete( Integer id );
-    LoginDTO loginUser ( LoginCredentialDTO dto );
+    LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException;
     public void logoutUser ( LoginDTO dto );
     Long getRecordCount ();
     void delete( Integer[] logins );
@@ -44,7 +44,7 @@ public interface LoginSessionLocal
      * @param newPassword - A nova senha
      * @exception InvalidParameterException
      */
-    void changePassword ( UserDocumentDTO document, String oldPassword, String newPassword );
+    void changePassword ( UserDocumentDTO document, String oldPassword, String newPassword ) throws ApplicationException;
 
 
     /**
@@ -54,7 +54,7 @@ public interface LoginSessionLocal
      * @param document UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception InvalidParameterException
      */
-    void makeNewPassword ( UserDocumentDTO document );
+    void makeNewPassword ( UserDocumentDTO document ) throws ApplicationException;
     
     /**
      * Valida o email informado no ato do cadastro. Quando o usuario se cadastra no sistema,
@@ -67,7 +67,7 @@ public interface LoginSessionLocal
      * @param password Senha de validação. Este é a senha informada pelo usuário no ato do cadstro
      * @exception InvalidParameterException
      */
-    void validateEmail ( String token, String password );
+    void validateEmail ( String token, String password ) throws ApplicationException;
     
     
     /**
@@ -77,6 +77,6 @@ public interface LoginSessionLocal
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception InvalidParameterException
      */
-    void sendValidationEmail ( UserDocumentDTO dto );
+    void sendValidationEmail ( UserDocumentDTO dto ) throws ApplicationException;
     
 }

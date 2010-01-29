@@ -11,8 +11,6 @@ import br.com.mcampos.exception.ApplicationException;
 import java.util.List;
 
 import javax.ejb.Local;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 
 @Local
 public interface UserSessionLocal

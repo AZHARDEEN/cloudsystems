@@ -237,10 +237,6 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="ZKoss3"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
             <value n="id" v="JPS Designtime"/>
             <value n="isJDK" v="false"/>
          </hash>
@@ -250,6 +246,10 @@
          </hash>
          <hash>
             <value n="id" v="WebLogic 10.3 Thin-Client"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" protocol="file" path="/C:/Users/Marcelo/AppData/Roaming/JDeveloper/system11.1.1.2.36.55.36/o.jdeveloper/ZKoss5.library"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
@@ -271,46 +271,6 @@
                   <url path="../../../../Library/jasypt-1.5/dist/jasypt-1.5-sources.jar" jar-entry=""/>
                </list>
             </hash>
-            <hash>
-               <list n="classPath">
-                  <url path="../../../../Library/zkoss/dist/lib/ext/bsh.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/commons-collections.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/commons-fileupload.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/commons-io.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/commons-logging.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/Filters.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/groovy.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/itext.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/jasperreports.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/jcommon.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/jfreechart.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/jruby.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/js.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/jxl.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/jython.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/mvel.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/ognl.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/ext/poi.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zcommon.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zcommons-el.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zhtml.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zk.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zkex.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zkforge/"/>
-                  <url path="../../../../Library/zkoss/dist/lib/zkforge/fckez.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zkforge/gmapsz.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zkforge/timelinez.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zkforge/timeplotz.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zkmax.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zkplus.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zml.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zul.jar" jar-entry=""/>
-                  <url path="../../../../Library/zkoss/dist/lib/zweb.jar" jar-entry=""/>
-               </list>
-               <value n="deployedByDefault" v="true"/>
-               <value n="description" v="ZKoss3"/>
-               <value n="id" v="ZKoss3"/>
-            </hash>
          </list>
       </hash>
       <list n="libraryReferences">
@@ -327,10 +287,6 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="ZKoss3"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
             <value n="id" v="JPS Designtime"/>
             <value n="isJDK" v="false"/>
          </hash>
@@ -340,6 +296,10 @@
          </hash>
          <hash>
             <value n="id" v="WebLogic 10.3 Thin-Client"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" protocol="file" path="/C:/Users/Marcelo/AppData/Roaming/JDeveloper/system11.1.1.2.36.55.36/o.jdeveloper/ZKoss5.library"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>

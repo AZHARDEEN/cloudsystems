@@ -3,6 +3,7 @@ package br.com.mcampos.controller;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.MultilineMessageBox;
 
 
@@ -68,6 +69,11 @@ public class LoginController extends BaseLoginOptionsController {
             }
             catch ( EJBException ejbException ) {
                 showErrorMessage( ejbException.getCause().getMessage() );
+            }
+            catch ( ApplicationException e ) 
+            {
+                showErrorMessage( e.getMessage() );
+                e = null;
             }
         }
     }

@@ -1,5 +1,8 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <jpr:project xmlns:jpr="http://xmlns.oracle.com/ide/project">
+   <hash n="be.cronos.jdev.libsforant.options">
+      <value n="output.file.location" v=""/>
+   </hash>
    <hash n="component-versions">
       <value n="oracle.adfdt.controller.adfc.source.migration.AdfControllerSchemaMigrator" v="11.1.1.1.0"/>
       <value n="oracle.adfdt.controller.common.migrator.ProjectMigrator" v="11.1.1.1.0"/>
@@ -62,7 +65,7 @@
    <value n="defaultPackage" v="ejbprj"/>
    <hash n="ejbModuleContainer">
       <value n="cmpProvider" v="EJB 3.0"/>
-      <value n="dbConnection" v="CloudSystemsDS"/>
+      <value n="dbConnection" v="PostgreSQL"/>
       <value n="ejbVersion" v="3.0"/>
       <url n="weblogicEjbJarNodeURL" path="src/META-INF/weblogic-ejb-jar.xml"/>
    </hash>
@@ -104,12 +107,30 @@
       <list n="technologyScope">
          <string v="EJB"/>
          <string v="Java"/>
-         <string v="TopLink"/>
-         <string v="Database"/>
-         <string v="JavaBeans"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.compiler.OjcConfiguration">
+      <list n="copyRes">
+         <string v=".gif"/>
+         <string v=".jpg"/>
+         <string v=".jpeg"/>
+         <string v=".png"/>
+         <string v=".properties"/>
+         <string v=".xml"/>
+         <string v=".ejx"/>
+         <string v=".xcfg"/>
+         <string v=".cpx"/>
+         <string v=".dcx"/>
+         <string v=".sva"/>
+         <string v=".wsdl"/>
+         <string v=".ini"/>
+         <string v=".tld"/>
+         <string v=".tag"/>
+         <string v=".xlf"/>
+         <string v=".xsl"/>
+         <string v=".xsd"/>
+         <string v=".jpx"/>
+      </list>
       <value n="internalEncoding" v="UTF-8"/>
       <list n="Javac.commandline.optionlist">
          <string v="-g"/>
@@ -118,12 +139,28 @@
          <string v="-Xlint:-empty"/>
          <string v="-Xlint:-fallthrough"/>
          <string v="-Xlint:-path"/>
+         <string v="-Xlint:-serial"/>
          <string v="-Xlint:-unchecked"/>
       </list>
-      <value n="Javac.-Xlint:-serial" v="false"/>
       <value n="source" v="Default"/>
       <value n="target" v="Default"/>
       <value n="webIANAEncoding" v="UTF-8"/>
+   </hash>
+   <hash n="oracle.jdeveloper.maven.compiler.MavenRunConfiguration">
+      <list n="repositoryLocations">
+         <url protocol="http" host="repo1.maven.org" path="/maven2/"/>
+         <url protocol="http" host="repository.codehaus.org" path=""/>
+         <url protocol="http" host="download.java.net" path="/maven/2/"/>
+         <url protocol="http" host="repository.jboss.org" path="/maven2/"/>
+         <url protocol="http" host="repo.open.iona.com" path="/maven2/"/>
+      </list>
+      <list n="repositoryNames">
+         <string v="Maven Central"/>
+         <string v="Codehaus"/>
+         <string v="Java.net"/>
+         <string v="JBoss"/>
+         <string v="FUSE"/>
+      </list>
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">
       <value n="j2eeWebAppName" v="EjbPrj"/>
@@ -176,24 +213,12 @@
             <value n="id" v="jasypt-1.5.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
-         <hash>
-            <value n="id" v="JPS Designtime"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <value n="id" v="AQJMS"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <value n="id" v="WebLogic 10.3 Thin-Client"/>
-            <value n="isJDK" v="false"/>
-         </hash>
       </list>
       <hash n="internalDefinitions">
          <list n="libraryDefinitions">
             <hash>
                <list n="classPath">
-                  <url path="../../../../Library/PostgreSQL/postgresql-8.3-605.jdbc4.jar" jar-entry=""/>
+                  <url path="../../../../Library/PostgreSQL/postgresql-8.4-701.jdbc4.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="PostgreSQL"/>
@@ -236,18 +261,6 @@
             <value n="id" v="jasypt-1.5.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
-         <hash>
-            <value n="id" v="JPS Designtime"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <value n="id" v="AQJMS"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <value n="id" v="WebLogic 10.3 Thin-Client"/>
-            <value n="isJDK" v="false"/>
-         </hash>
       </list>
    </hash>
    <hash n="oracle.jdevimpl.config.JProjectPaths">
@@ -255,7 +268,7 @@
    </hash>
    <hash n="oracle.jdevimpl.sqlj.config.SqljConfiguration">
       <hash n="contextConnectionMap">
-         <value n="&lt;none>" v="CloudSystemsDS"/>
+         <value n="&lt;none>" v="PostgreSQL"/>
       </hash>
    </hash>
    <hash n="oracle.mds.internal.dt.ide.MDSLibraryCustCSProvider">
@@ -272,7 +285,7 @@
    <hash n="oracle.toplink.workbench.addin">
       <hash n="persistence-list">
          <hash n="src$META-INF$persistence.xml">
-            <value n="development-database" v="CloudSystemsDS"/>
+            <value n="development-database" v="Cloud"/>
          </hash>
       </hash>
       <hash n="toplinkContentSet">
@@ -285,6 +298,7 @@
       </hash>
    </hash>
    <hash n="ResourceBundleOptions">
+      <value n="ADFRestricted" v="true"/>
       <list n="RegisteredResourceBundles"/>
    </hash>
 </jpr:project>

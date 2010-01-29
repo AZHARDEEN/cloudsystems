@@ -44,9 +44,6 @@ import javax.ejb.EJBException;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -83,6 +80,7 @@ public class LoginSessionBean implements LoginSessionLocal
     @EJB EmailSessionLocal emailTemplate;
 
     private static final Integer systemMessageTypeId = 1;
+    private static final Integer templateEmailValidation = 1;
 
 
     public LoginSessionBean ()
@@ -123,6 +121,7 @@ public class LoginSessionBean implements LoginSessionLocal
         if ( person == null ) {
             person = getPersonSession().add( DTOFactory.copy( dto ) );
         }
+        em.merge( person );
         if ( person.getLogin() != null )
             throwRuntimeException( 5 );
         add( dto, person );
@@ -141,11 +140,13 @@ public class LoginSessionBean implements LoginSessionLocal
         login.setPassword( encryptedPassword );
         login.setToken( RandomString.randomstring() );
         if ( SysUtils.isEmpty( login.getToken() ) )
-            throwRuntimeException( 11 );
+            throwRuntimeException( 8 );
         em.persist( login );
         storeOldPassword( login );
         storeAccessLog( login, dto, 2 );
-        sendMail( dto, login.getToken() );
+        sendMail( login, templateEmailValidation );
+        em.merge( login );
+        em.flush();
     }
 
 
@@ -166,21 +167,12 @@ public class LoginSessionBean implements LoginSessionLocal
         return ( bEmail && bCPF );
     }
 
-    protected void sendMail ( RegisterDTO dto, String token ) throws ApplicationException
+    protected void sendMail ( Login login, Integer templateId ) throws ApplicationException
     {
-        String templateId;
-        
-        if ( dto == null || dto.getDocuments() == null )
-            throwRuntimeException( 1 );
-        if ( SysUtils.isEmpty( token  ) )
-            throwRuntimeException( 11 );
-        templateId = getSysParam().getValue( "TemplateEmailConfirmation" );
-        if ( templateId == null ) 
-            throwRuntimeException( 5 );
-        SendMailDTO emailDTO = createTemplate ( Integer.parseInt( templateId ) );
-        emailDTO.setBody( translateMessageTokens( emailDTO.getBody(), dto, token ) );
-        for ( UserDocumentDTO item : dto.getDocuments() ) {
-            if ( item.getDocumentType().getId().equals( UserDocumentDTO.typeEmail ) ) 
+        SendMailDTO emailDTO = createTemplate ( templateId );
+        emailDTO.setBody( translateMessageTokens( emailDTO.getBody(), login ) );
+        for ( UserDocument item : login.getPerson().getDocuments() ) {
+            if ( item.getDocumentType().getId().equals( UserDocument.typeEmail ) ) 
                 emailDTO.addRecipient( item.getCode() );
         }
         sendMail.sendMail( emailDTO );
@@ -194,16 +186,16 @@ public class LoginSessionBean implements LoginSessionLocal
         return dto;
     }
 
-    protected String translateMessageTokens ( String msg, RegisterDTO dto, String token )
+    protected String translateMessageTokens ( String msg, Login login )
     {
-        msg = msg.replaceAll( "<<@@LOGIN_NAME@@>>", dto.getName() );
-        for ( UserDocumentDTO item : dto.getDocuments() ) {
-            if ( item.getDocumentType().getId().equals( UserDocumentDTO.typeEmail ) ) {
+        msg = msg.replaceAll( "<<@@LOGIN_NAME@@>>", login.getPerson().getName() );
+        for ( UserDocument item : login.getPerson().getDocuments() ) {
+            if ( item.getDocumentType().getId().equals( UserDocument.typeEmail ) ) {
                 msg = msg.replaceAll( "<<@@EMAIL@@>>", item.getCode() );
                 break;
             }
         }
-        msg = msg.replaceAll( "<<@@TOKEN@@>>", token );
+        msg = msg.replaceAll( "<<@@TOKEN@@>>", login.getToken() );
         return msg;
     }
 
@@ -303,41 +295,36 @@ public class LoginSessionBean implements LoginSessionLocal
         storeAccessLog( login, null, AccessLogType.accessLogTypeLogout );
 
     }
-
-    protected Login getLoginByDocument ( UserDocumentDTO document )
+    
+    protected Login getLogin ( List<UserDocumentDTO> list ) throws ApplicationException
     {
-        Login login;
-        Query query;
-        UserDocument userDocument;
-
-        try {
-
-            query = em.createNamedQuery( "UserDocument.findByDocument" );
-            query.setParameter( "document", document.getCode() );
-            query.setParameter( "docType", document.getDocumentType().getId() );
-            userDocument = ( UserDocument )query.getSingleResult();
-            login = em.find( Login.class, userDocument.getUserId() );
-        }
-        catch ( Exception e ) {
-            throw new EJBException( "Usuário inválido, não foi possível realizar o login.", e );
-        }
+        Person person = ( Person )getUserSession().findByDocumentList( list );
+        if ( person == null )
+            throwException( 14 );
+        Login login = person.getLogin();
+        if ( login != null )
+            throwException( 14 );
         return login;
     }
+    
+    protected Login getLogin ( UserDocumentDTO dto ) throws ApplicationException
+    {
+        Person person = ( Person )getUserSession().getUserByDocument( dto );
+        if ( person == null )
+            throwException( 14 );
+        if ( person.getLogin() == null )
+            throwException( 14 );
+        return person.getLogin();
+    }
+    
 
-
-    public LoginDTO loginUser ( LoginCredentialDTO dto )
+    public LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException
     {
         Login login = null;
         BasicPasswordEncryptor passwordEncryptor;
         SystemParameters sysParam = null;
 
-        for ( UserDocumentDTO doc : dto.getDocuments() ) {
-            login = getLoginByDocument( doc );
-            if ( login != null )
-                break;
-        }
-        if ( login == null )
-            throw new EJBException( "Usuário o senha inválida." );
+        login = getLogin ( dto.getDocuments() );
         verifyUserStatus( login );
         passwordEncryptor = new BasicPasswordEncryptor();
         if ( passwordEncryptor.checkPassword( dto.getPassword(), login.getPassword() ) == false ) {
@@ -397,13 +384,13 @@ public class LoginSessionBean implements LoginSessionLocal
      * @param document UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception InvalidParameterException
      */
-    public void makeNewPassword ( UserDocumentDTO document )
+    public void makeNewPassword ( UserDocumentDTO document ) throws ApplicationException
     {
         Login login;
         BasicPasswordEncryptor passwordEncryptor;
         String password;
 
-        login = getLoginByDocument( document );
+        login = getLogin( document );
         if ( login == null )
             throw new EJBException( "Usuário o senha inválida." );
         verifyUserStatus( login );
@@ -469,12 +456,12 @@ public class LoginSessionBean implements LoginSessionLocal
      * @param newPassword - A nova senha
      * @exception InvalidParameterException
      */
-    public void changePassword ( UserDocumentDTO document, String oldPassword, String newPassword )
+    public void changePassword ( UserDocumentDTO document, String oldPassword, String newPassword ) throws ApplicationException
     {
         Login login;
         BasicPasswordEncryptor passwordEncryptor;
 
-        login = getLoginByDocument( document );
+        login = getLogin( document );
         if ( login == null )
             throw new EJBException( "Usuário o senha inválida." );
         verifyUserStatus( login );
@@ -518,7 +505,6 @@ public class LoginSessionBean implements LoginSessionLocal
         return false;
     }
 
-    @TransactionAttribute( value = TransactionAttributeType.REQUIRES_NEW )
     protected void incrementTryCount ( Login login )
     {
         em.merge( login );
@@ -537,28 +523,44 @@ public class LoginSessionBean implements LoginSessionLocal
      * @param password Senha de validação. Este é a senha informada pelo usuário no ato do cadstro
      * @exception InvalidParameterException
      */
-    public void validateEmail ( String token, String password )
+    public void validateEmail ( String token, String password ) throws ApplicationException
     {
+        BasicPasswordEncryptor passwordEncryptor;
         Login login;
-        BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
+        
+        if ( SysUtils.isEmpty( token ) )
+            throwException( 8 );
+        if ( SysUtils.isEmpty( password ) )
+            throwException( 6 );
+        
 
-        try {
-            login = ( Login )em.createNamedQuery( "Login.findToken" ).setParameter( "token", token ).getSingleResult();
-        }
-        catch ( Exception e ) {
-            throw new EJBException( "Token de validação não identificado.", e );
-        }
-        if ( login == null )
-            throw new EJBException( "Token de segurança não identificado." );
+        login = findLoginByToken( token );
         if ( login.getUserStatus().getId() != UserStatus.statusEmailNotValidated )
-            throw new EJBException( "Usuário não pode validar o email." );
+            throwException( 12 );
+        passwordEncryptor = new BasicPasswordEncryptor();
         if ( passwordEncryptor.checkPassword( password, login.getPassword() ) == false ) {
             incrementTryCount( login );
-            throw new EJBException( "A senha atual está inválida." );
+            throwException( 13 );
         }
         login.setTryCount( 0 );
         login.setUserStatus( em.find( UserStatus.class, UserStatus.statusFullfillRecord ) );
         login.setToken( null );
+        
+        sendMail( login, 2 );
+    }
+    
+    protected Login findLoginByToken ( String token ) throws ApplicationException
+    {
+        Login login = null;
+
+        try {
+            login = ( Login )em.createNamedQuery( "Login.findToken" ).setParameter( "token", token ).getSingleResult();
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            throwException( 11 );
+        }
+        return login;
     }
 
 
@@ -609,9 +611,15 @@ public class LoginSessionBean implements LoginSessionLocal
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception InvalidParameterException
      */
-    public void sendValidationEmail ( UserDocumentDTO dto )
+    public void sendValidationEmail ( UserDocumentDTO dto ) throws ApplicationException
     {
-
+        Login login;
+        
+        login = getLogin ( dto );
+        login.getUserStatus();
+        if ( login.getUserStatus().getId() != UserStatus.statusEmailNotValidated )
+            throwException( 12 );
+        sendMail( login, 1 );
     }
 
     protected PersonSessionLocal getPersonSession ()

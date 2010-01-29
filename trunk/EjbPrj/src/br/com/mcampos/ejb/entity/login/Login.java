@@ -109,7 +109,7 @@ public class Login implements Serializable
             this.userId = person.getId();
     }
 
-    @OneToOne
+    @OneToOne ( fetch = FetchType.EAGER )
     @JoinColumn ( name="usr_id_in", nullable = false, referencedColumnName = "usr_id_in", columnDefinition = "Integer" )
     public Person getPerson()
     {

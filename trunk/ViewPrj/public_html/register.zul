@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<?component name="textbox" class="br.com.mcampos.util.components.TextboxExt" extends="textbox" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul" >
     <div id="rootParent" apply="br.com.mcampos.controller.RegisterController" align="center" width="100%">
         <panel border="normal" title="Registrar" width="500px" > 
@@ -26,7 +25,7 @@
                             </row>
                             <row>
                                 <label value="CPF"  />        
-                                <textbox id="cpf" width="195px" maxlength="14" alt="cpf" />
+                                <textbox id="cpf" width="195px" maxlength="14" />
                             </row>
                             <row>
                                 <label value="Senha" />

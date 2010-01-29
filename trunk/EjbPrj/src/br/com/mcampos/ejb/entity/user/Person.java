@@ -231,7 +231,10 @@ public class Person extends Users implements Serializable
         this.login = login;
     }
 
-    @OneToOne(mappedBy="person")    
+    /*
+     * DO NOT change fetch type.
+     */
+    @OneToOne( mappedBy="person", fetch = FetchType.EAGER )    
     public Login getLogin()
     {
         return login;

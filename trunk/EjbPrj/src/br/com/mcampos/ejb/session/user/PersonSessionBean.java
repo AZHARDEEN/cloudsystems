@@ -1,6 +1,5 @@
 package br.com.mcampos.ejb.session.user;
 
-import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserContactDTO;
@@ -29,12 +28,6 @@ import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-
-import javax.ejb.TransactionAttribute;
-
-import javax.ejb.TransactionAttributeType;
-
-import javax.interceptor.Interceptors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -85,7 +78,7 @@ public class PersonSessionBean implements PersonSessionLocal
         entity.setFirstName ( splitted[0] );
         entity.setMiddleName( splitted[1] );
         entity.setLastName  ( splitted[2] );
-        applyRules( entity, true );
+        applyRules( entity );
         verifyDocuments( entity );
         em.persist( entity );
         return entity;
@@ -159,9 +152,6 @@ public class PersonSessionBean implements PersonSessionLocal
 
 	protected void verifyDocuments( Person person )
 	{
-		UserDocument doc;
-
-
 		if ( person.getDocuments() != null ) {
 			for ( UserDocument item : person.getDocuments() ) {
                 if ( getUserSession().getUserByDocument( item  ) != null )
@@ -185,7 +175,7 @@ public class PersonSessionBean implements PersonSessionLocal
 		return fieldValue.toLowerCase();
 	}
 
-	protected void applyRules( Person person, Boolean bAdding )
+	protected void applyRules( Person person )
 	{
 		person.setFatherName( toUpperCase( person.getFatherName() ) );
 		person.setFirstName( toUpperCase( person.getFirstName() ) );
@@ -209,7 +199,7 @@ public class PersonSessionBean implements PersonSessionLocal
             {
                 Address merged = person.getAddresses().get ( nIndex );
                 DTOFactory.copy( merged, addressDTO );
-                merged.setCity( (City) em.find ( City.class, addressDTO.getCity().getId() ) );
+                merged.setCity( em.find ( City.class, addressDTO.getCity().getId() ) );
                 merged.setAddressType( em.find ( AddressType.class, merged.getAddressType().getId() ) );
             }
             else
@@ -327,7 +317,7 @@ public class PersonSessionBean implements PersonSessionLocal
         if ( person == null ) 
             throw new EJBException ( "Não existe usuario para atualizar" );
 		person = DTOFactory.copy( person, dto ); 
-		applyRules( person, false );
+		applyRules( person );
         mergeAddress ( person, dto.getAddressList() );
         mergeDocuments ( person, dto.getDocumentList() );
         mergeContacts ( person, dto.getContactList() );
@@ -353,14 +343,12 @@ public class PersonSessionBean implements PersonSessionLocal
 		em.remove( person );
 	}
 
-	@TransactionAttribute( value = TransactionAttributeType.NOT_SUPPORTED )
 	public List<PersonDTO> getAll()
 	{
-		return getDTOList( ( List<Person> )em.createNamedQuery( "Person.findAll" ).getResultList() );
+		return getDTOList( ( ( List<Person> )em.createNamedQuery( "Person.findAll" ).getResultList() ) );
 	}
 
 
-	@TransactionAttribute( value = TransactionAttributeType.NOT_SUPPORTED )
 	protected List<PersonDTO> getDTOList( List<Person> list )
 	{
 		List<PersonDTO> dtos;
@@ -373,7 +361,6 @@ public class PersonSessionBean implements PersonSessionLocal
 		return dtos;
 	}
 
-	@TransactionAttribute( value = TransactionAttributeType.NOT_SUPPORTED )
 	public PersonDTO getByDocument( String document )
 	{
 		Query query;
@@ -387,7 +374,7 @@ public class PersonSessionBean implements PersonSessionLocal
 			userDocument = ( UserDocument )query.getSingleResult();
 			if ( userDocument == null )
 				return null;
-			person = ( Person )em.find( Person.class, userDocument.getUserId() );
+			person = em.find( Person.class, userDocument.getUserId() );
 			if ( person != null )
 				dto = DTOFactory.copy( person, true );
 			return dto;

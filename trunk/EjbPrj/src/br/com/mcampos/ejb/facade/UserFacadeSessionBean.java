@@ -171,7 +171,7 @@ public class UserFacadeSessionBean implements UserFacadeSession
         }
     }
 
-    public LoginDTO loginUser( LoginCredentialDTO dto )
+    public LoginDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException
     {
         LoginDTO loginDTO;
 

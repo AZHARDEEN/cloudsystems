@@ -99,7 +99,8 @@ public class UsersLocator extends BusinessDelegate
         getSessionBean().add( dto );
     }
     
-    public LoginDTO loginUser ( LoginCredentialDTO dto ) {
+    public LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException
+    {
         return getSessionBean().loginUser( dto );
     }
 
