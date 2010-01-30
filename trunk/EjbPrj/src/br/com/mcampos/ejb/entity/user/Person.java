@@ -229,6 +229,8 @@ public class Person extends Users implements Serializable
     public void setLogin( Login login )
     {
         this.login = login;
+        if ( login != null )
+            login.setUserId( getId() );
     }
 
     /*

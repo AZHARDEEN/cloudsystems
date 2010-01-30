@@ -105,8 +105,9 @@ public class Login implements Serializable
     public void setPerson( Person person )
     {
         this.person = person;
-        if ( person != null )
-            this.userId = person.getId();
+        if ( getPerson () != null ) {
+            person.setLogin( this );
+        }
     }
 
     @OneToOne ( fetch = FetchType.EAGER )

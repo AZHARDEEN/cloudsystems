@@ -50,7 +50,6 @@ public class EmailMessageSessionBean implements MessageListener
 
         configureProperties( props );
         mailSession = Session.getDefaultInstance( props, auth );
-        getMailSession().setDebug( true );
         try {
             transport = mailSession.getTransport( "smtp" );
             getTransport().connect( SMTP_SERVER_ADDRESS, SMTP_SERVER_PORT, SMTP_USENAME, SMTP_PASSWORD );
@@ -83,8 +82,6 @@ public class EmailMessageSessionBean implements MessageListener
         props.put( "mail.transport.protocol", "smtp" );
         props.put( "mail.smtp.auth", "true" );
         props.put( "mail.smtp.host", SMTP_SERVER_ADDRESS );
-        props.put( "mail.debug", "true" );
-        props.put( "mail.smtp.debug", "true" );
         props.put( "mail.smtp.port", "587" );
         props.put( "mail.smtp.starttls.enable", "false" );
         props.put( "mail.smtp.ssl.enable", "false" );
