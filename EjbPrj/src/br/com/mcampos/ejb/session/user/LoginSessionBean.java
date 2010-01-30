@@ -121,7 +121,6 @@ public class LoginSessionBean implements LoginSessionLocal
         if ( person == null ) {
             person = getPersonSession().add( DTOFactory.copy( dto ) );
         }
-        em.merge( person );
         if ( person.getLogin() != null )
             throwRuntimeException( 5 );
         add( dto, person );
@@ -133,6 +132,12 @@ public class LoginSessionBean implements LoginSessionLocal
         BasicPasswordEncryptor passwordEncryptor;
 
         Login login = new Login( null, dto.getPassword(), new UserStatus( UserStatus.statusEmailNotValidated ) );
+        /*
+         * Nunca esquecer de vincular os objetos. Quando um objeto é instanciado 
+         * ele mantem suas características. Neste exemplo: foi instanciado uma
+         * pessoa, que neste momento não possuia login. Ainda que o login seja 
+         * inserido no banco de dados, fica a situação inicial - sem login.
+         */
         login.setPerson( person );
         passwordEncryptor = new BasicPasswordEncryptor();
         encryptedPassword = passwordEncryptor.encryptPassword( login.getPassword() );
@@ -145,8 +150,6 @@ public class LoginSessionBean implements LoginSessionLocal
         storeOldPassword( login );
         storeAccessLog( login, dto, 2 );
         sendMail( login, templateEmailValidation );
-        em.merge( login );
-        em.flush();
     }
 
 
@@ -373,7 +376,6 @@ public class LoginSessionBean implements LoginSessionLocal
         log.setLoginType( em.find( AccessLogType.class, accessLogType ) );
         log.setIp( dto != null ? dto.getRemoteAddr() : "127.1.1.1" );
         log.setComputer( dto != null ? dto.getRemoteHost() : null );
-
         em.persist( log );
     }
 

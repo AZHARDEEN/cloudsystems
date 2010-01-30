@@ -12,7 +12,7 @@
 				<hbox >
 					<captcha id="captcha" length="7" width="160px" height="45px" />
 					<vbox >
-						<textbox width="118px" id="recapctcha" maxlength="7" constraint="no empty: Por favor, entre com a validação (Captcha)" />
+						<textbox width="118px" id="recapctcha" maxlength="7" />
 						<button width="118px" label="Regerar Captcha" onClick="captcha.randomValue(); val.value=captcha.value;" />
 					</vbox>
 				</hbox>

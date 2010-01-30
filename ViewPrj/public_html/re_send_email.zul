@@ -13,7 +13,7 @@
                             <row spans="2" align="center">Informe o seu email</row>
                             <row>
                                 <label value="Email" />
-                                <textbox id="identification" width="98%" maxlength="128" constraint="no empty: Por favor, entre com a sua identificação." />
+                                <textbox id="identification" width="98%" maxlength="128" />
                             </row>
                         </rows>
                     </grid>
@@ -25,9 +25,6 @@
                     </div>        
                 </div>
                 <separator />
-                <div align="right">
-                    <toolbarbutton label="Esqueceu a senha?" href="/forgot_password.zul" />
-                </div>
             </panelchildren>
         </panel>
     </div>

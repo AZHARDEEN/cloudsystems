@@ -102,7 +102,7 @@ public class ResendPasswordController extends BaseLoginOptionsController
             csIdentification = identification.getValue();
             try {
                 getLocator().sendValidationEmail ( UserDocumentDTO.createUserDocumentEmail( csIdentification ) );
-                gotoPage ("/forgot_password_sent.zul");
+                gotoPage ("/registered.zul");
             }
             catch ( ApplicationException e ) {
                 showErrorMessage( e.getMessage() );
