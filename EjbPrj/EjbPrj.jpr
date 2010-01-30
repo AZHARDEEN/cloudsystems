@@ -210,7 +210,7 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="jasypt-1.5.jar"/>
+            <value n="id" v="jasypt"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
@@ -218,7 +218,7 @@
          <list n="libraryDefinitions">
             <hash>
                <list n="classPath">
-                  <url path="../../../../Library/PostgreSQL/postgresql-8.4-701.jdbc4.jar" jar-entry=""/>
+                  <url protocol="jar" path="file:/Library/PostgreSQL/postgresql-8.4-701.jdbc4.jar!/"/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="PostgreSQL"/>
@@ -226,13 +226,19 @@
             </hash>
             <hash>
                <list n="classPath">
-                  <url path="../../../../Library/jasypt-1.5/lib/commons-codec-1.1.jar" jar-entry=""/>
-                  <url path="../../../../Library/jasypt-1.5/lib/commons-lang-2.1.jar" jar-entry=""/>
-                  <url path="../../../../Library/jasypt-1.5/lib/jasypt-1.5.jar" jar-entry=""/>
+                  <url path="../../../library/jasypt/lib/commons-codec-1.1.jar" jar-entry=""/>
+                  <url path="../../../library/jasypt/lib/commons-lang-2.1.jar" jar-entry=""/>
+                  <url path="../../../library/jasypt/lib/jasypt-1.6.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
-               <value n="description" v="jasypt-1.5.jar"/>
-               <value n="id" v="jasypt-1.5.jar"/>
+               <value n="description" v="jasypt"/>
+               <list n="docPath">
+                  <url path="../../../library/jasypt/dist/jasypt-1.6-javadoc.jar" jar-entry=""/>
+               </list>
+               <value n="id" v="jasypt"/>
+               <list n="sourcePath">
+                  <url path="../../../library/jasypt/dist/jasypt-1.6-sources.jar" jar-entry=""/>
+               </list>
             </hash>
          </list>
       </hash>
@@ -258,7 +264,7 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="jasypt-1.5.jar"/>
+            <value n="id" v="jasypt"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
