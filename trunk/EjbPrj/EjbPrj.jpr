@@ -226,18 +226,18 @@
             </hash>
             <hash>
                <list n="classPath">
-                  <url path="../../../library/jasypt/lib/commons-codec-1.1.jar" jar-entry=""/>
-                  <url path="../../../library/jasypt/lib/commons-lang-2.1.jar" jar-entry=""/>
-                  <url path="../../../library/jasypt/lib/jasypt-1.6.jar" jar-entry=""/>
+                  <url path="../../../../Library/jasypt/lib/commons-codec-1.1.jar" jar-entry=""/>
+                  <url path="../../../../Library/jasypt/lib/commons-lang-2.1.jar" jar-entry=""/>
+                  <url path="../../../../Library/jasypt/lib/jasypt-1.6.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="jasypt"/>
                <list n="docPath">
-                  <url path="../../../library/jasypt/dist/jasypt-1.6-javadoc.jar" jar-entry=""/>
+                  <url path="../../../../Library/jasypt/dist/jasypt-1.6-javadoc.jar" jar-entry=""/>
                </list>
                <value n="id" v="jasypt"/>
                <list n="sourcePath">
-                  <url path="../../../library/jasypt/dist/jasypt-1.6-sources.jar" jar-entry=""/>
+                  <url path="../../../../Library/jasypt/dist/jasypt-1.6-sources.jar" jar-entry=""/>
                </list>
             </hash>
          </list>

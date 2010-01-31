@@ -305,7 +305,7 @@ public class LoginSessionBean implements LoginSessionLocal
         if ( person == null )
             throwException( 14 );
         Login login = person.getLogin();
-        if ( login != null )
+        if ( login == null )
             throwException( 14 );
         return login;
     }
@@ -344,7 +344,7 @@ public class LoginSessionBean implements LoginSessionLocal
             if ( login.getTryCount() > tryCount ) {
                 login.setUserStatus( em.find( UserStatus.class, UserStatus.statusMaxLoginTryCount ) );
             }
-            return null;
+            throwException( 13 );
         }
         login.setTryCount( 0 );
         storeAccessLog( login, dto, AccessLogType.accessLogTypeNormalLogin );
@@ -353,16 +353,11 @@ public class LoginSessionBean implements LoginSessionLocal
          * but we'll denied every operation that depends on this login.
          */
         Date now = new Date();
-        if ( login.getPasswordExpirationDate().compareTo( new Timestamp( now.getTime() ) ) < 0 )
+        if ( login.getPasswordExpirationDate().compareTo( new Timestamp( now.getTime() ) ) < 0 ) {
             login.setUserStatus( em.find( UserStatus.class, UserStatus.statusExpiredPassword ) );
-        LoginDTO loginDTO = DTOFactory.copy( login, false );
-        List<Collaborator> business = collaborator.getCompanies( login.getUserId() );
-        if ( SysUtils.isEmpty( business ) == false ) {
-            for ( Collaborator col : business ) {
-                UserDTO userDTO = DTOFactory.copy( col.getCompany() );
-                loginDTO.addBusinessEntity( userDTO );
-            }
+            throwException ( 19 );
         }
+        LoginDTO loginDTO = DTOFactory.copy( login, false );
         return loginDTO;
     }
 
@@ -431,20 +426,20 @@ public class LoginSessionBean implements LoginSessionLocal
     }
 
 
-    protected void verifyUserStatus ( Login login )
+    protected void verifyUserStatus ( Login login ) throws ApplicationException
     {
         if ( login.getUserStatus().getAllowLogin() == true )
             return;
 
         switch ( ( int )( login.getUserStatus().getId() ) ) {
         case UserStatus.statusMaxLoginTryCount:
-            throw new EJBException( "Usuário bloqueado por excesso de tentativas de login." );
+            throwException( 15 );
         case UserStatus.statusInativo:
-            throw new EJBException( "Usuário está inativo." );
+            throwException( 16 );
         case UserStatus.statusEmailNotValidated:
-            throw new EJBException( "O email ainda não foi validado. Valide o email antes." );
+            throwException( 17 );
         default:
-            throw new EJBException( "Usuário não pode usar o sistema." );
+            throwException( 18 );
         }
     }
 
