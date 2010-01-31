@@ -35,7 +35,8 @@ public class UserStatusController extends TableController
 
     protected List getList()
     {
-        return getLocator().getUserStatusList();
+        //return getLocator().getUserStatusList();
+        return null;
     }
 
     protected void insertIntoListbox( Listbox listbox, Object e )
@@ -71,6 +72,7 @@ public class UserStatusController extends TableController
 
     protected Object getSingleRecord( Object id )
     {
+        /*
         Integer wishedId;
         UserStatusDTO record;
         
@@ -83,6 +85,9 @@ public class UserStatusController extends TableController
             showErrorMessage( e.getMessage(), "Error" );
             return null;
         }
+        */
+        return null;
+        
     }
 
     protected void showRecord( Object obj )

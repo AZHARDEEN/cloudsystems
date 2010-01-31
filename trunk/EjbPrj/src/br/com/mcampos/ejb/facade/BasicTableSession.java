@@ -1,7 +1,9 @@
 package br.com.mcampos.ejb.facade;
 
 import br.com.mcampos.dto.address.AddressTypeDTO;
+import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
+import br.com.mcampos.dto.address.StateDTO;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 
 import br.com.mcampos.dto.system.SystemParametersDTO;
@@ -142,4 +144,9 @@ public interface BasicTableSession
     public List getAllCompanyPosition ();
     public void deleteCompanyPosition ( Integer id ) throws ApplicationException;
     public Integer getCompanyPositionMaxPKValue ();
+    
+    
+    
+    List<StateDTO> getAllStates ( );
+    List<CityDTO> getAllStateCities ( Integer countryId, Integer stateId ) throws ApplicationException;
 }
