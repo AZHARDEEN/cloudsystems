@@ -219,7 +219,6 @@ public abstract class UserClientController extends LoggedBaseController
 
     protected void showAddresses( List<AddressDTO> dto )
     {
-        
         for ( AddressDTO item : dto )
         {
             findAddresTypeComboitem( item.getAddressType() );
