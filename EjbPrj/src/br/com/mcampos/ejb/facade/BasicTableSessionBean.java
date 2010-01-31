@@ -1,7 +1,9 @@
 package br.com.mcampos.ejb.facade;
 
 import br.com.mcampos.dto.address.AddressTypeDTO;
+import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
+import br.com.mcampos.dto.address.StateDTO;
 import br.com.mcampos.dto.core.DisplayNameDTO;
 import br.com.mcampos.dto.system.SystemParametersDTO;
 import br.com.mcampos.dto.user.attributes.CivilStateDTO;
@@ -15,7 +17,9 @@ import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.ejb.session.address.AddressTypeSessionLocal;
+import br.com.mcampos.ejb.session.address.CitySessionLocal;
 import br.com.mcampos.ejb.session.address.CountrySessionLocal;
+import br.com.mcampos.ejb.session.address.StateSessionLocal;
 import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
 import br.com.mcampos.ejb.session.system.TableManagerSessionLocal;
 import br.com.mcampos.ejb.session.user.attributes.CivilStateSessionLocal;
@@ -54,6 +58,8 @@ public class BasicTableSessionBean implements BasicTableSession
     @EJB CountrySessionLocal country;
     @EJB TableManagerSessionLocal tableManager;
     @EJB SystemMessagesSessionLocal systemMessage;
+    @EJB StateSessionLocal state;
+    @EJB CitySessionLocal city;
     
     private static final Integer systemMessageTypeId = 2;
 
@@ -62,50 +68,63 @@ public class BasicTableSessionBean implements BasicTableSession
         
     }
 
-    protected CivilStateSessionLocal getCivilState()
+    protected CivilStateSessionLocal getCivilStateSession()
     {
         return civilState;
     }
 
-    protected AddressTypeSessionLocal getAddressType()
+    protected AddressTypeSessionLocal getAddressTypeSession()
     {
         return addressType;
     }
 
-    protected ContactTypeSessionLocal getContactType()
+    protected ContactTypeSessionLocal getContactTypeSession()
     {
         return contactType;
     }
 
-    protected DocumentTypeSessionLocal getDocumentType()
+    protected DocumentTypeSessionLocal getDocumentTypeSession()
     {
         return documentType;
     }
 
-    protected GenderSessionLocal getGender()
+    protected GenderSessionLocal getGenderSession()
     {
         return gender;
     }
 
-    protected TitleSessionLocal getTitle()
+    protected TitleSessionLocal getTitleSession()
     {
         return title;
     }
 
-    protected UserStatusSessionLocal getUserStatus()
+    protected UserStatusSessionLocal getUserStatusSession()
     {
         return userStatus;
     }
 
-    protected UserTypeSessionLocal getUserType()
+    protected UserTypeSessionLocal getUserTypeSession()
     {
         return userType;
     }
 
-    protected CountrySessionLocal getCountry()
+    protected CountrySessionLocal getCountrySession()
     {
         return country;
     }
+
+
+    protected StateSessionLocal getStateSession()
+    {
+        return state;
+    }
+
+    protected CitySessionLocal getCitySession()
+    {
+        return city;
+    }
+
+
     
     protected TableManagerSessionLocal getTableManager()
     {
@@ -118,35 +137,35 @@ public class BasicTableSessionBean implements BasicTableSession
     public CivilStateDTO getCivilState ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        return getCivilState ().get( id );
+        return getCivilStateSession ().get( id );
     }
     
     public void addCivilState ( CivilStateDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getCivilState ().add( newRecord );
+        getCivilStateSession ().add( newRecord );
     }
     
     public void updateCivilState ( CivilStateDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getCivilState ().update( newRecord );
+        getCivilStateSession ().update( newRecord );
     }
 
     public void deleteCivilState ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        getCivilState ().delete( id );
+        getCivilStateSession ().delete( id );
     }
     
     public Integer getCivilStateMaxPKValue ()
     {
-        return getCivilState().getMaxPKValue();
+        return getCivilStateSession().getMaxPKValue();
     }
     
     public List getAllCivilState ()
     {
-        return getCivilState().getAll();
+        return getCivilStateSession().getAll();
     }
 
 
@@ -156,35 +175,35 @@ public class BasicTableSessionBean implements BasicTableSession
     public AddressTypeDTO getAddressType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        return getAddressType ().get( id );
+        return getAddressTypeSession ().get( id );
     }
     
     public void addAddressType ( AddressTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getAddressType ().add( newRecord );
+        getAddressTypeSession ().add( newRecord );
     }
     
     public void updateAddressType ( AddressTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getAddressType ().update( newRecord );
+        getAddressTypeSession ().update( newRecord );
     }
 
     public void deleteAddressType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        getAddressType ().delete( id );
+        getAddressTypeSession ().delete( id );
     }
     
     public Integer getAddressTypeMaxPKValue ()
     {
-        return getAddressType().getIdMaxValue();
+        return getAddressTypeSession().getIdMaxValue();
     }
     
     public List getAllAddressType ()
     {
-        return getAddressType().getAll();
+        return getAddressTypeSession().getAll();
     }
 
 
@@ -195,35 +214,35 @@ public class BasicTableSessionBean implements BasicTableSession
     public ContactTypeDTO getContactType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        return getContactType ().get( id );
+        return getContactTypeSession ().get( id );
     }
     
     public void addContactType ( ContactTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getContactType ().add( newRecord );
+        getContactTypeSession ().add( newRecord );
     }
     
     public void updateContactType ( ContactTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getContactType ().update( newRecord );
+        getContactTypeSession ().update( newRecord );
     }
 
     public void deleteContactType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        getContactType ().delete( id );
+        getContactTypeSession ().delete( id );
     }
     
     public Integer getContactTypeMaxPKValue ()
     {
-        return getContactType().getIdMaxValue();
+        return getContactTypeSession().getIdMaxValue();
     }
     
     public List getAllContactType ()
     {
-        return getContactType().getAll();
+        return getContactTypeSession().getAll();
     }
 
 
@@ -234,35 +253,35 @@ public class BasicTableSessionBean implements BasicTableSession
     public DocumentTypeDTO getDocumentType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        return getDocumentType ().get( id );
+        return getDocumentTypeSession ().get( id );
     }
     
     public void addDocumentType ( DocumentTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getDocumentType ().add( newRecord );
+        getDocumentTypeSession ().add( newRecord );
     }
     
     public void updateDocumentType ( DocumentTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getDocumentType ().update( newRecord );
+        getDocumentTypeSession ().update( newRecord );
     }
 
     public void deleteDocumentType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        getDocumentType ().delete( id );
+        getDocumentTypeSession ().delete( id );
     }
     
     public Integer getDocumentTypeMaxPKValue ()
     {
-        return getDocumentType().getIdMaxValue();
+        return getDocumentTypeSession().getIdMaxValue();
     }
     
     public List getAllDocumentType ()
     {
-        return getDocumentType().getAll();
+        return getDocumentTypeSession().getAll();
     }
 
 
@@ -272,35 +291,35 @@ public class BasicTableSessionBean implements BasicTableSession
     public GenderDTO getGender ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        return getGender ().get( id );
+        return getGenderSession ().get( id );
     }
     
     public void addGender ( GenderDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getGender ().add( newRecord );
+        getGenderSession ().add( newRecord );
     }
     
     public void updateGender ( GenderDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getGender ().update( newRecord );
+        getGenderSession ().update( newRecord );
     }
 
     public void deleteGender ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        getGender ().delete( id );
+        getGenderSession ().delete( id );
     }
     
     public Integer getGenderMaxPKValue ()
     {
-        return getGender().getIdMaxValue();
+        return getGenderSession().getIdMaxValue();
     }
     
     public List getAllGender ()
     {
-        return getGender().getAll();
+        return getGenderSession().getAll();
     }
 
     /*
@@ -309,35 +328,35 @@ public class BasicTableSessionBean implements BasicTableSession
     public TitleDTO getTitle ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        return getTitle ().get( id );
+        return getTitleSession ().get( id );
     }
     
     public void addTitle ( TitleDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getTitle ().add( newRecord );
+        getTitleSession ().add( newRecord );
     }
     
     public void updateTitle ( TitleDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getTitle ().update( newRecord );
+        getTitleSession ().update( newRecord );
     }
 
     public void deleteTitle ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        getTitle ().delete( id );
+        getTitleSession ().delete( id );
     }
     
     public Integer getTitleMaxPKValue ()
     {
-        return getTitle().getIdMaxValue();
+        return getTitleSession().getIdMaxValue();
     }
     
     public List getAllTitle ()
     {
-        return getTitle().getAll();
+        return getTitleSession().getAll();
     }
 
 
@@ -347,35 +366,35 @@ public class BasicTableSessionBean implements BasicTableSession
     public UserStatusDTO getUserStatus ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        return getUserStatus ().get( id );
+        return getUserStatusSession ().get( id );
     }
     
     public void addUserStatus ( UserStatusDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getUserStatus ().add( newRecord );
+        getUserStatusSession ().add( newRecord );
     }
     
     public void updateUserStatus ( UserStatusDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getUserStatus ().update( newRecord );
+        getUserStatusSession ().update( newRecord );
     }
 
     public void deleteUserStatus ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        getUserStatus ().delete( id );
+        getUserStatusSession ().delete( id );
     }
     
     public Integer getUserStatusMaxPKValue ()
     {
-        return getUserStatus().getIdMaxValue();
+        return getUserStatusSession().getIdMaxValue();
     }
     
     public List getAllUserStatus ()
     {
-        return getUserStatus().getAll();
+        return getUserStatusSession().getAll();
     }
 
 
@@ -386,35 +405,35 @@ public class BasicTableSessionBean implements BasicTableSession
     public UserTypeDTO getUserType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        return getUserType ().get( id );
+        return getUserTypeSession ().get( id );
     }
     
     public void addUserType ( UserTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getUserType ().add( newRecord );
+        getUserTypeSession ().add( newRecord );
     }
     
     public void updateUserType ( UserTypeDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getUserType ().update( newRecord );
+        getUserTypeSession ().update( newRecord );
     }
 
     public void deleteUserType ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        getUserType ().delete( id );
+        getUserTypeSession ().delete( id );
     }
     
     public Integer getUserTypeMaxPKValue ()
     {
-        return getUserType().getIdMaxValue();
+        return getUserTypeSession().getIdMaxValue();
     }
     
     public List getAllUserType ()
     {
-        return getUserType().getAll();
+        return getUserTypeSession().getAll();
     }
 
 
@@ -424,35 +443,35 @@ public class BasicTableSessionBean implements BasicTableSession
     public CountryDTO getCountry ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        return getCountry ().get( id );
+        return getCountrySession ().get( id );
     }
     
     public void addCountry ( CountryDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getCountry ().add( newRecord );
+        getCountrySession ().add( newRecord );
     }
     
     public void updateCountry ( CountryDTO newRecord ) throws ApplicationException
     {
         testParam ( newRecord );
-        getCountry ().update( newRecord );
+        getCountrySession ().update( newRecord );
     }
 
     public void deleteCountry ( Integer id ) throws ApplicationException
     {
         testParam ( id );
-        getCountry ().delete( id );
+        getCountrySession ().delete( id );
     }
     
     public Integer getCountryMaxPKValue ()
     {
-        return getCountry().getIdMaxValue();
+        return getCountrySession().getIdMaxValue();
     }
     
     public List getAllCountry ()
     {
-        return getCountry().getAll();
+        return getCountrySession().getAll();
     }
 
 
@@ -617,6 +636,19 @@ public class BasicTableSessionBean implements BasicTableSession
     {
         if ( dto == null )
             systemMessage.throwException( systemMessageTypeId, 1 );
+    }
+    
+    
+    public List<StateDTO> getAllStates ( )
+    {
+        return getStateSession().getAll( 33 );
+    }
+    
+    public List<CityDTO> getAllStateCities ( Integer countryId, Integer stateId ) throws ApplicationException
+    {
+        testParam( countryId );
+        testParam( stateId );
+        return getCitySession().getAll( stateId, countryId );
     }
 
 }

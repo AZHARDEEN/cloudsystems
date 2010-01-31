@@ -10,6 +10,7 @@ import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.attributes.ContactTypeDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.MultilineMessageBox;
 import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 import br.com.mcampos.util.business.UsersLocator;
@@ -58,22 +59,20 @@ public abstract class UserClientController extends LoggedBaseController
     protected abstract Boolean persist ();
     
 
-    protected Object getLoaderLocator()
+    protected SimpleTableLoaderLocator getLoaderLocator()
     {
-        return null;
+        return simpleLoader;
     }
 
     protected void preparePage ()
     {
-        /*
 		if ( addressType != null )
-			getLoaderLocator().loadAddressType( addressType );
+			getLoaderLocator().getAddressesType( addressType );
 		if ( state != null ) {
-			getLoaderLocator().loadState( state );
+			getLoaderLocator().getStates( state );
 			if ( state.getSelectedIndex() > 0 )
 				onSelect$state();
 		}
-        */
     }
 
 
@@ -86,7 +85,12 @@ public abstract class UserClientController extends LoggedBaseController
             return;
         StateDTO dto = ( StateDTO ) item.getValue();
         if ( dto != null ) {
-            //getLoaderLocator().loadCity( city, dto.getCountryId(), dto.getId() );
+            try {
+                getLoaderLocator().loadCities( city, dto.getCountryId(), dto.getId() );
+            }
+            catch ( ApplicationException e ) {
+                e = null;
+            }
         }
     }
 
