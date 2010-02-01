@@ -57,7 +57,8 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
     
     public void getAddressesType ( Combobox target )
     {
-        loadSimpleDTO( target, getSessionBean().getAllAddressType(), true );
+        List lista = getSessionBean().getAllAddressType();
+        loadSimpleDTO( target, lista, true );
     }
     
     public void getStates ( Combobox target )

@@ -34,7 +34,7 @@ public class GenderController extends TableController
 
     protected List getList()
     {
-        return getLocator().getGenderList();
+        return /* getLocator().getGenderList() */null;
     }
 
     protected void insertIntoListbox( Listbox listbox, Object e )
@@ -74,12 +74,12 @@ public class GenderController extends TableController
         GenderDTO record = null;
         
         wishedId = (Integer) id;
-        try {
+/*         try {
             record = getLocator().getGender ( wishedId );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Error" );
-        }
+        } */
         return record;
     }
 
@@ -94,7 +94,7 @@ public class GenderController extends TableController
     protected Object saveRecord( SimpleTableLoaderLocator loc )
     {
         GenderDTO record = new GenderDTO ( editId.getValue(), editDescription.getValue(), null );
-        try {
+/*         try {
             if ( isAddNewOperation() ) {
                 locator.addGender( record );
             }
@@ -103,7 +103,7 @@ public class GenderController extends TableController
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Error" );
-        }
+        } */
         return record;
     }
 
@@ -112,7 +112,7 @@ public class GenderController extends TableController
     {
         if ( item == null ) {
             if ( locator != null )
-                editId.setRawValue( locator.getMaxGenderId() );
+                editId.setRawValue( /* locator.getMaxGenderId() */0 );
             else
                 editId.setRawValue( new Integer (0) );
             editDescription.setRawValue( "" );
@@ -134,11 +134,11 @@ public class GenderController extends TableController
 
     protected void deleteRecord( SimpleTableLoaderLocator locator, Listitem item )
     {
-        try {
+/*         try {
             locator.deleteGender( (Integer)item.getValue() );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Error" );
-        }
+        } */
     }
 }

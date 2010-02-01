@@ -35,7 +35,7 @@ public class AddressTypeController extends TableController
  
     protected List getList ()
     {
-        return getLocator().getAddressTypeList();
+        return /* getLocator().getAddressTypeList() */null;
     }
     
     protected void updateListboxItem ( Listitem row, Object o, Boolean bNew )
@@ -72,10 +72,10 @@ public class AddressTypeController extends TableController
     protected Object getSingleRecord ( Object id ) throws ApplicationException
     {
         Integer wishedId;
-        AddressTypeDTO record;
+        AddressTypeDTO record = null;
         
         wishedId = (Integer) id;
-        record = getLocator().getAddressType ( wishedId );
+        /* record = getLocator().getAddressType ( wishedId ); */
         return record;
     }
     
@@ -91,7 +91,7 @@ public class AddressTypeController extends TableController
     {
         if ( updateItem == null ) {
             if ( locator != null )
-                editId.setRawValue( locator.getMaxAddressTypeId() );
+                editId.setRawValue( /* locator.getMaxAddressTypeId() */0 );
             else
                 editId.setRawValue( new Integer (0) );
             editDescription.setRawValue( "" );
@@ -114,17 +114,17 @@ public class AddressTypeController extends TableController
     protected Object saveRecord ( SimpleTableLoaderLocator locator ) throws ApplicationException
     {
         AddressTypeDTO record = new AddressTypeDTO ( editId.getValue(), editDescription.getValue() );
-        if ( isAddNewOperation() )
+/*         if ( isAddNewOperation() )
             locator.addAddressType( record );        
         else
-            locator.updateAddressType( record );
+            locator.updateAddressType( record ); */
         return record;
     }
 
 
     protected void deleteRecord ( SimpleTableLoaderLocator locator, Listitem item ) throws ApplicationException
     {
-        locator.deleteAddressType( (Integer)item.getValue() );
+        /* locator.deleteAddressType( (Integer)item.getValue() ); */
     }
 }
 

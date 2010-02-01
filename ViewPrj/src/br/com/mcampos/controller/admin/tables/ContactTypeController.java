@@ -44,7 +44,7 @@ public class ContactTypeController extends TableController
 
     protected List getList()
     {
-        return getLocator().getContactTypeList();
+        return /* getLocator().getContactTypeList() */null;
     }
 
     protected void insertIntoListbox( Listbox listbox, Object o )
@@ -85,10 +85,10 @@ public class ContactTypeController extends TableController
     protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
-        ContactTypeDTO record;
+        ContactTypeDTO record = null;
         
         wishedId = (Integer) id;
-        record = getLocator().getContactType ( wishedId );
+        /* record = getLocator().getContactType ( wishedId ); */
         return record;
     }
 
@@ -106,10 +106,10 @@ public class ContactTypeController extends TableController
     {
         ContactTypeDTO record = new ContactTypeDTO ( editId.getValue(), editDescription.getValue(), 
                                                editMask.getValue(),  editDuplicate.isChecked() );
-        if ( isAddNewOperation() )
+/*         if ( isAddNewOperation() )
             locator.addContactType( record );        
         else
-            locator.updateContactType( record );
+            locator.updateContactType( record ); */
         return record;
     }
 
@@ -118,7 +118,7 @@ public class ContactTypeController extends TableController
     {
         if ( item == null ) {
             if ( locator != null )
-                editId.setRawValue( locator.getMaxContactTypeId() );
+                editId.setRawValue( /* locator.getMaxContactTypeId() */0 );
             else
                 editId.setRawValue( new Integer (0) );
             editDescription.setRawValue( "" );
@@ -145,6 +145,6 @@ public class ContactTypeController extends TableController
     protected void deleteRecord( SimpleTableLoaderLocator locator,
                                  Listitem item ) throws ApplicationException
     {
-        locator.deleteContactType( (Integer)item.getValue() );
+        /* locator.deleteContactType( (Integer)item.getValue() ); */
     }
 }

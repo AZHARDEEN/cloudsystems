@@ -38,7 +38,7 @@ public class TitleController extends TableController
 
     protected List getList()
     {
-        return getLocator().getTitleList();
+        return /* getLocator().getTitleList() */null;
     }
 
     protected void insertIntoListbox( Listbox listbox, Object e )
@@ -79,10 +79,10 @@ public class TitleController extends TableController
     protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
-        TitleDTO record;
+        TitleDTO record = null;
         
         wishedId = (Integer) id;
-        record = getLocator().getTitle ( wishedId );
+        /* record = getLocator().getTitle ( wishedId ); */
         return record;
     }
 
@@ -99,10 +99,10 @@ public class TitleController extends TableController
     {
         TitleDTO record = new TitleDTO ( editId.getValue(), editDescription.getValue(), 
                                                editMask.getValue() );
-        if ( isAddNewOperation() )
+/*         if ( isAddNewOperation() )
             locator.addTitle( record );        
         else
-            locator.updateTitle( record );
+            locator.updateTitle( record ); */
         return record;
     }
 
@@ -111,7 +111,7 @@ public class TitleController extends TableController
     {
         if ( item == null ) {
             if ( locator != null )
-                editId.setRawValue( locator.getMaxTitleId() );
+                editId.setRawValue( /* locator.getMaxTitleId() */0 );
             else
                 editId.setRawValue( new Integer (0) );
             editDescription.setRawValue( "" );
@@ -136,7 +136,7 @@ public class TitleController extends TableController
     protected void deleteRecord( SimpleTableLoaderLocator locator,
                                  Listitem item ) throws ApplicationException
     {
-        locator.deleteTitle( (Integer)item.getValue() );
+        /* locator.deleteTitle( (Integer)item.getValue() ); */
     }
 
 }

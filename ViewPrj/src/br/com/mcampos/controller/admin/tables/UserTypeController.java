@@ -32,7 +32,7 @@ public class UserTypeController extends TableController
 
     protected List getList()
     {
-        return getLocator().getUserTypeList();
+        return /* getLocator().getUserTypeList() */null;
     }
 
     protected void insertIntoListbox( Listbox listbox, Object e )
@@ -69,10 +69,10 @@ public class UserTypeController extends TableController
     protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
-        UserTypeDTO record;
+        UserTypeDTO record = null;
         
         wishedId = (Integer) id;
-        record = getLocator().getUserType ( wishedId );
+        /* record = getLocator().getUserType ( wishedId ); */
         return record;
     }
 

@@ -35,7 +35,7 @@ public class AccessLogTypeController extends TableController
 
     protected List getList()
     {
-        return getLocator().getAccessLogTypeList();
+        return /* getLocator().getAccessLogTypeList() */null;
     }
 
     protected void insertIntoListbox( Listbox listbox, Object e )
@@ -73,10 +73,10 @@ public class AccessLogTypeController extends TableController
     protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
-        AccessLogTypeDTO record;
+        AccessLogTypeDTO record = null;
         
         wishedId = (Integer) id;
-        record = getLocator().getAccessLogType( wishedId );
+        /* record = getLocator().getAccessLogType( wishedId ); */
         return record;
     }
 
@@ -91,10 +91,10 @@ public class AccessLogTypeController extends TableController
     protected Object saveRecord( SimpleTableLoaderLocator loc ) throws ApplicationException
     {
         AccessLogTypeDTO record = new AccessLogTypeDTO ( editId.getValue(), editDescription.getValue() );
-        if ( isAddNewOperation() )
+/*         if ( isAddNewOperation() )
             locator.addAccessLogType( record );        
         else
-            locator.updateAccessLogType( record );
+            locator.updateAccessLogType( record ); */
         return record;
     }
 
@@ -103,7 +103,7 @@ public class AccessLogTypeController extends TableController
     {
         if ( item == null ) {
             if ( locator != null )
-                editId.setRawValue( locator.getMaxAccessLogTypeId() );
+                editId.setRawValue( /* locator.getMaxAccessLogTypeId() */0 );
             else
                 editId.setRawValue( new Integer (0) );
             editDescription.setRawValue( "" );
@@ -126,6 +126,6 @@ public class AccessLogTypeController extends TableController
     protected void deleteRecord( SimpleTableLoaderLocator locator,
                                  Listitem item ) throws ApplicationException
     {
-        locator.deleteAccessLogType( (Integer)item.getValue() );
+        /* locator.deleteAccessLogType( (Integer)item.getValue() ); */
     }
 }

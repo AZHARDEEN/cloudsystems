@@ -37,7 +37,7 @@ public class CivilStateController extends TableController
  
     protected List getList ()
     {
-        return getLocator().getCivilStateList();
+        return /* getLocator().getCivilStateList(); */ null;
     }
     
     protected void updateListboxItem ( Listitem row, Object o, Boolean bNew )
@@ -74,10 +74,10 @@ public class CivilStateController extends TableController
     protected Object getSingleRecord ( Object id ) throws ApplicationException
     {
         Integer wishedId;
-        CivilStateDTO record;
+        CivilStateDTO record = null;
         
         wishedId = (Integer) id;
-        record = getLocator().getCivilState ( wishedId );
+        /* record = getLocator().getCivilState ( wishedId ); */
         return record;
     }
     
@@ -93,7 +93,7 @@ public class CivilStateController extends TableController
     {
         if ( updateItem == null ) {
             if ( locator != null )
-                editId.setRawValue( locator.getMaxCivilStateId() );
+                editId.setRawValue( /* locator.getMaxCivilStateId() */0 );
             else
                 editId.setRawValue( new Integer (0) );
             editDescription.setRawValue( "" );
@@ -115,18 +115,18 @@ public class CivilStateController extends TableController
     
     protected Object saveRecord ( SimpleTableLoaderLocator locator ) throws ApplicationException
     {
-        CivilStateDTO record = new CivilStateDTO ( editId.getValue(), editDescription.getValue() );
-        if ( isAddNewOperation() )
+         CivilStateDTO record = new CivilStateDTO ( editId.getValue(), editDescription.getValue() );
+/*         if ( isAddNewOperation() )
             locator.addCivilState( record );        
         else
-            locator.updateCivilState( record );
-        return record;
+            locator.updateCivilState( record ); */
+        return record; 
     }
 
 
     protected void deleteRecord ( SimpleTableLoaderLocator locator, Listitem item ) throws ApplicationException
     {
-        locator.deleteCivilState( (Integer)item.getValue() );
+        /* locator.deleteCivilState( (Integer)item.getValue() ); */
     }
 }
 
