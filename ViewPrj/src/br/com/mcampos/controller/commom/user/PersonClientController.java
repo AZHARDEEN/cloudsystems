@@ -98,25 +98,25 @@ public class PersonClientController extends UserClientController
     {
         super.preparePage();         
         
-		//getLoaderLocator().loadState ( bornState );
+		getSimpleLoader().loadStates ( bornState );
         if ( bornState.getSelectedIndex() > 0 )
             onSelect$bornState();
-        //getLoaderLocator().loadContactType( contactType );
-        //getLoaderLocator().loadGender ( gender );
+        //getSimpleLoader().loadContactType( contactType );
+        getSimpleLoader().loadGenders ( gender );
         if ( gender.getSelectedIndex() >= 0 ) {
             onSelect$gender();
         }
-        //getLoaderLocator().loadCivilState( maritalStatus );
+        getSimpleLoader().loadCivilStates( maritalStatus );
     }
     
-    protected void showInfo ( Integer id )
+    protected void showInfo ( Integer id ) throws ApplicationException
     {
         PersonDTO dto = getUserLocator().getPerson( id );
         if ( dto != null )
             showInfo ( dto );
     }
     
-    protected void showInfo ( PersonDTO dto )
+    protected void showInfo ( PersonDTO dto ) throws ApplicationException
     {
         setCurrentDTO( dto );
         getCmdSubmit().setLabel( "Atualizar" );
@@ -233,7 +233,7 @@ public class PersonClientController extends UserClientController
         
         GenderDTO dto = ( GenderDTO ) item.getValue();
         if ( dto != null ) {
-            //getLoaderLocator().loadSimpleDTO( title, dto.getTitles(), true );
+            getSimpleLoader().loadSimpleDTO( title, dto.getTitles(), true );
             title.setFocus( true );
         }
     }
@@ -248,7 +248,12 @@ public class PersonClientController extends UserClientController
             return;
         StateDTO dto = ( StateDTO ) item.getValue();
         if ( dto != null ) {
-            //getLoaderLocator().loadCity( bornCity, dto.getCountryId(), dto.getId() );
+            try {
+                getSimpleLoader().loadCities( bornCity, dto.getCountryId(), dto.getId() );
+            }
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage() );
+            }
         }
     }
     
@@ -266,7 +271,7 @@ public class PersonClientController extends UserClientController
             item = ( GenderDTO ) comboItem.getValue();
             if ( item.compareTo( targetDTO ) == 0 ) {
                 gender.setSelectedItem( comboItem );
-                //getLoaderLocator().loadSimpleDTO( title, item.getTitles(), false );
+                getSimpleLoader().loadSimpleDTO( title, item.getTitles(), false );
                 break;
             }
         }
@@ -309,7 +314,7 @@ public class PersonClientController extends UserClientController
     }
 
     
-    protected void findBithCityComboitem ( CityDTO dto )
+    protected void findBithCityComboitem ( CityDTO dto ) throws ApplicationException
     {
         if ( dto != null ) {
             findStateComboitem ( dto.getState(), bornState, bornCity );

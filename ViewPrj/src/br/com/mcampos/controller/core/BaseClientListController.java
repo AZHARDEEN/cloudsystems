@@ -1,11 +1,15 @@
 package br.com.mcampos.controller.core;
 
 
+import br.com.mcampos.util.business.SimpleTableLoaderLocator;
+
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Listbox;
 
 public class BaseClientListController extends GenericForwardComposer
 {
+    private SimpleTableLoaderLocator simpleTableLoaderLocator = null;
+    
     
     public BaseClientListController( char c )
     {
@@ -18,14 +22,11 @@ public class BaseClientListController extends GenericForwardComposer
     }
 
 
-    public Object getLoaderLocator()
+    public SimpleTableLoaderLocator getLocator()
     {
-        /*
-        if ( this.loaderLocator == null )
-            this.loaderLocator = new RegisterLocator ();
-        return loaderLocator;
-        */
-        return null;
+        if ( this.simpleTableLoaderLocator == null )
+            this.simpleTableLoaderLocator = new SimpleTableLoaderLocator ();
+        return simpleTableLoaderLocator;
     }
 
     

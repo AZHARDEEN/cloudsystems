@@ -29,7 +29,7 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
     }
 
 
-    protected void loadSimpleDTO ( Combobox target, List l, Boolean bDefaultSelected )
+    public static void loadSimpleDTO ( Combobox target, List l, Boolean bDefaultSelected )
     {
         Comboitem comboItem;
         List<DisplayNameDTO> list = l;
@@ -71,6 +71,35 @@ public class SimpleTableLoaderLocator extends BusinessDelegate
     {
         loadSimpleDTO( target, getSessionBean().getAllStateCities ( countryID, stateID), true );
     }
+    
+    
+    public void loadStates ( Combobox target )
+    {
+        loadSimpleDTO( target, getSessionBean().getAllStates(), true );
+    }
+    
+    public void loadContactType ( Combobox target )
+    {
+        loadSimpleDTO( target, getSessionBean().getAllContactType(), true );
+    }
+    
+
+    public void loadGenders ( Combobox target )
+    {
+        loadSimpleDTO( target, getSessionBean().getAllGender(), true );
+    }
+
+
+    public void loadCivilStates ( Combobox target )
+    {
+        loadSimpleDTO( target, getSessionBean().getAllCivilState(), true );
+    }
+    
+    public void loadDocumentType ( Combobox target )
+    {
+        loadSimpleDTO( target, getSessionBean().getAllDocumentType(), true );
+    }
+
 }
 
 

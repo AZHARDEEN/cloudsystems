@@ -331,7 +331,7 @@ public abstract class UserClientController extends LoggedBaseController
     }
 
 
-    public void setSimpleLoader( SimpleTableLoaderLocator simpleLoader )
+    protected void setSimpleLoader( SimpleTableLoaderLocator simpleLoader )
     {
         this.simpleLoader = simpleLoader;
     }
