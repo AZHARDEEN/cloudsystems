@@ -34,7 +34,7 @@ public class CompanyTypeController extends TableController
 
     protected List getList()
     {
-        return getLocator().getCompanyTypeList();
+        return /* getLocator().getCompanyTypeList() */null;
     }
 
     protected void insertIntoListbox( Listbox listbox, Object e )
@@ -71,10 +71,10 @@ public class CompanyTypeController extends TableController
     protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
-        CompanyTypeDTO record;
+        CompanyTypeDTO record = null;
         
         wishedId = (Integer) id;
-        record = getLocator().getCompanyType ( wishedId );
+        /* record = getLocator().getCompanyType ( wishedId ); */
         return record;
     }
 
@@ -89,10 +89,10 @@ public class CompanyTypeController extends TableController
     protected Object saveRecord( SimpleTableLoaderLocator loc ) throws ApplicationException
     {
         CompanyTypeDTO record = new CompanyTypeDTO ( editId.getValue(), editDescription.getValue() );
-        if ( isAddNewOperation() )
+/*         if ( isAddNewOperation() )
             locator.addCompanyType( record );        
         else
-            locator.updateCompanyType( record );
+            locator.updateCompanyType( record ); */
         return record;
     }
 
@@ -101,7 +101,7 @@ public class CompanyTypeController extends TableController
     {
         if ( item == null ) {
             if ( locator != null )
-                editId.setRawValue( locator.getMaxCompanyTypeId() );
+                editId.setRawValue( /* locator.getMaxCompanyTypeId() */0 );
             else
                 editId.setRawValue( new Integer (0) );
             editDescription.setRawValue( "" );
@@ -124,6 +124,6 @@ public class CompanyTypeController extends TableController
     protected void deleteRecord( SimpleTableLoaderLocator locator,
                                  Listitem item ) throws ApplicationException
     {
-        locator.deleteCompanyType( (Integer)item.getValue() );
+        /* locator.deleteCompanyType( (Integer)item.getValue() ); */
     }
 }

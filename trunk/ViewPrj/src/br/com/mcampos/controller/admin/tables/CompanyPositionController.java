@@ -34,7 +34,7 @@ public class CompanyPositionController extends TableController
 
     protected List getList()
     {
-        return getLocator().getCompanyPositionList();
+        return /* getLocator().getCompanyPositionList() */null;
     }
 
     protected void insertIntoListbox( Listbox listbox, Object e )
@@ -71,10 +71,10 @@ public class CompanyPositionController extends TableController
     protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
-        CompanyPositionDTO record;
+        CompanyPositionDTO record = null;
         
         wishedId = (Integer) id;
-        record = getLocator().getCompanyPosition ( wishedId );
+        /* record = getLocator().getCompanyPosition ( wishedId ); */
         return record;
     }
 
@@ -89,10 +89,10 @@ public class CompanyPositionController extends TableController
     protected Object saveRecord( SimpleTableLoaderLocator loc ) throws ApplicationException
     {
         CompanyPositionDTO record = new CompanyPositionDTO ( editId.getValue(), editDescription.getValue() );
-        if ( isAddNewOperation() )
+/*         if ( isAddNewOperation() )
             locator.addCompanyPosition( record );        
         else
-            locator.updateCompanyPosition( record );
+            locator.updateCompanyPosition( record ); */
         return record;
     }
 
@@ -101,7 +101,7 @@ public class CompanyPositionController extends TableController
     {
         if ( item == null ) {
             if ( locator != null )
-                editId.setRawValue( locator.getMaxCompanyPositionId() );
+                editId.setRawValue( /* locator.getMaxCompanyPositionId() */0 );
             else
                 editId.setRawValue( new Integer (0) );
             editDescription.setRawValue( "" );
@@ -124,6 +124,6 @@ public class CompanyPositionController extends TableController
     protected void deleteRecord( SimpleTableLoaderLocator locator,
                                  Listitem item ) throws ApplicationException
     {
-        locator.deleteCompanyPosition( (Integer)item.getValue() );
+        /* locator.deleteCompanyPosition( (Integer)item.getValue() ); */
     }
 }

@@ -100,7 +100,7 @@ public class UserStatusController extends TableController
 
     protected Object saveRecord( SimpleTableLoaderLocator loc )
     {
-        UserStatusDTO record = new UserStatusDTO ( editId.getValue(), editDescription.getValue() );
+/*          UserStatusDTO record = new UserStatusDTO ( editId.getValue(), editDescription.getValue() );
         try {
             if ( isAddNewOperation() )
                 locator.addUserStatus( record );        
@@ -112,7 +112,8 @@ public class UserStatusController extends TableController
         {
             showErrorMessage( e.getMessage(), "Error" );
             return null;
-        }
+        }  */
+        return null;
     }
 
     protected void updateEditableRecords( SimpleTableLoaderLocator locator,
@@ -120,7 +121,7 @@ public class UserStatusController extends TableController
     {
         if ( item == null ) {
             if ( locator != null )
-                editId.setRawValue( locator.getMaxUserStatusId() );
+                editId.setRawValue( /* locator.getMaxUserStatusId() */0 );
             else
                 editId.setRawValue( new Integer (0) );
             editDescription.setRawValue( "" );
@@ -143,11 +144,11 @@ public class UserStatusController extends TableController
     protected void deleteRecord( SimpleTableLoaderLocator locator,
                                  Listitem item )
     {
-        try {
+/*         try {
             locator.deleteUserStatus( (Integer)item.getValue() );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Error" );
-        }
+        } */
     }
 }

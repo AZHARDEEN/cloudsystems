@@ -59,17 +59,12 @@ public abstract class UserClientController extends LoggedBaseController
     protected abstract Boolean persist ();
     
 
-    protected SimpleTableLoaderLocator getLoaderLocator()
-    {
-        return simpleLoader;
-    }
-
     protected void preparePage ()
     {
 		if ( addressType != null )
-			getLoaderLocator().getAddressesType( addressType );
+			getSimpleLoader().getAddressesType( addressType );
 		if ( state != null ) {
-			getLoaderLocator().getStates( state );
+			getSimpleLoader().getStates( state );
 			if ( state.getSelectedIndex() > 0 )
 				onSelect$state();
 		}
@@ -86,7 +81,7 @@ public abstract class UserClientController extends LoggedBaseController
         StateDTO dto = ( StateDTO ) item.getValue();
         if ( dto != null ) {
             try {
-                getLoaderLocator().loadCities( city, dto.getCountryId(), dto.getId() );
+                getSimpleLoader().loadCities( city, dto.getCountryId(), dto.getId() );
             }
             catch ( ApplicationException e ) {
                 e = null;
@@ -230,7 +225,12 @@ public abstract class UserClientController extends LoggedBaseController
             address.setValue( item.getAddress() );
             hood.setValue( item.getDistrict() );
             addressComment.setValue( item.getComment() );
-            findStateComboitem( item.getCity().getState(), getState(), getCity() );
+            try {
+                findStateComboitem( item.getCity().getState(), getState(), getCity() );
+            }
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage() );
+            }
             findCityComboitem( item.getCity(), getCity() ); 
             break; /*Just now, There must be only One!!!! Teoria do highlander*/
         }
@@ -255,7 +255,7 @@ public abstract class UserClientController extends LoggedBaseController
     }
 
     @SuppressWarnings( "unchecked" )
-    protected void findStateComboitem ( StateDTO targetDTO, Combobox comboState, Combobox comboCity )
+    protected void findStateComboitem ( StateDTO targetDTO, Combobox comboState, Combobox comboCity ) throws ApplicationException
     {
         List<Comboitem> comboList;
         StateDTO item;
@@ -269,7 +269,7 @@ public abstract class UserClientController extends LoggedBaseController
             item = ( StateDTO ) comboItem.getValue();
             if ( item.compareTo( targetDTO ) == 0 ) {
                 comboState.setSelectedItem( comboItem );
-                //getLoaderLocator().loadCity( comboCity, item.getCountryId(), item.getId() );
+                getSimpleLoader().loadCities( comboCity, item.getCountryId(), item.getId() );
                 break;
             }
         }

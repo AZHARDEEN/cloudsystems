@@ -38,7 +38,7 @@ public class CountryController extends TableController
 
     protected List getList()
     {
-        return getLocator().getCountryList();
+        return /* getLocator().getCountryList() */null;
     }
 
     protected void insertIntoListbox( Listbox listbox, Object e )
@@ -83,10 +83,10 @@ public class CountryController extends TableController
     protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
-        CountryDTO record;
+        CountryDTO record = null;
         
         wishedId = (Integer) id;
-        record = getLocator().getCountry ( wishedId );
+        /* record = getLocator().getCountry ( wishedId ); */
         return record;
     }
 
@@ -107,10 +107,10 @@ public class CountryController extends TableController
         record.setCode( editCode.getValue() );
         record.setCode3( editCode3.getValue() );
         record.setNumericCode( editNumCode.getValue() );
-        if ( isAddNewOperation() )
+/*         if ( isAddNewOperation() )
             locator.addCountry( record );        
         else
-            locator.updateCountry( record );
+            locator.updateCountry( record ); */
         return record;
     }
 
@@ -119,7 +119,7 @@ public class CountryController extends TableController
     {
         if ( item == null ) {
             if ( locator != null )
-                editId.setRawValue( locator.getMaxCountryId() );
+                editId.setRawValue( /* locator.getMaxCountryId() */0 );
             else
                 editId.setRawValue( new Integer (0) );
             editCode.setRawValue( "" );
@@ -146,6 +146,6 @@ public class CountryController extends TableController
     protected void deleteRecord( SimpleTableLoaderLocator locator,
                                  Listitem item ) throws ApplicationException
     {
-        locator.deleteUserType( (Integer)item.getValue() );
+        /* locator.deleteUserType( (Integer)item.getValue() ); */
     }
 }

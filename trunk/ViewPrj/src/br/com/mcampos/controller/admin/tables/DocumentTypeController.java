@@ -36,7 +36,7 @@ public class DocumentTypeController extends TableController
 
     protected List getList()
     {
-        return getLocator().getDocumentTypeList();
+        return /* getLocator().getDocumentTypeList() */null;
     }
 
     protected void insertIntoListbox( Listbox listbox, Object e )
@@ -77,10 +77,10 @@ public class DocumentTypeController extends TableController
     protected Object getSingleRecord( Object id ) throws ApplicationException
     {
         Integer wishedId;
-        DocumentTypeDTO record;
+        DocumentTypeDTO record = null;
         
         wishedId = (Integer) id;
-        record = getLocator().getDocumentType ( wishedId );
+        /* record = getLocator().getDocumentType ( wishedId ); */
         return record;
     }
 
@@ -97,10 +97,10 @@ public class DocumentTypeController extends TableController
     {
         DocumentTypeDTO record = new DocumentTypeDTO ( editId.getValue(), editDescription.getValue(), 
                                                editMask.getValue() );
-        if ( isAddNewOperation() )
+/*         if ( isAddNewOperation() )
             locator.addDocumentType( record );        
         else
-            locator.updateDocumentType( record );
+            locator.updateDocumentType( record ); */
         return record;
     }
 
@@ -109,7 +109,7 @@ public class DocumentTypeController extends TableController
     {
         if ( item == null ) {
             if ( locator != null )
-                editId.setRawValue( locator.getMaxDocumentTypeId() );
+                editId.setRawValue( /* locator.getMaxDocumentTypeId() */0 );
             else
                 editId.setRawValue( new Integer (0) );
             editDescription.setRawValue( "" );
@@ -134,6 +134,6 @@ public class DocumentTypeController extends TableController
     protected void deleteRecord( SimpleTableLoaderLocator locator,
                                  Listitem item ) throws ApplicationException
     {
-        locator.deleteDocumentType( (Integer)item.getValue() );
+        /* locator.deleteDocumentType( (Integer)item.getValue() ); */
     }
 }
