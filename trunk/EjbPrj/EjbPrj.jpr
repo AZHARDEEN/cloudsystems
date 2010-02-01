@@ -206,41 +206,16 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="PostgreSQL"/>
+            <url n="id" protocol="file" path="/C:/Users/Marcelo/AppData/Roaming/JDeveloper/system11.1.1.2.36.55.36/o.jdeveloper/Jasypt.library"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="jasypt"/>
+            <url n="id" protocol="file" path="/C:/Users/Marcelo/AppData/Roaming/JDeveloper/system11.1.1.2.36.55.36/o.jdeveloper/PostgreSQL.library"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
       <hash n="internalDefinitions">
-         <list n="libraryDefinitions">
-            <hash>
-               <list n="classPath">
-                  <url protocol="jar" path="file:/Library/PostgreSQL/postgresql-8.4-701.jdbc4.jar!/"/>
-               </list>
-               <value n="deployedByDefault" v="true"/>
-               <value n="description" v="PostgreSQL"/>
-               <value n="id" v="PostgreSQL"/>
-            </hash>
-            <hash>
-               <list n="classPath">
-                  <url path="../../../../Library/jasypt/lib/commons-codec-1.1.jar" jar-entry=""/>
-                  <url path="../../../../Library/jasypt/lib/commons-lang-2.1.jar" jar-entry=""/>
-                  <url path="../../../../Library/jasypt/lib/jasypt-1.6.jar" jar-entry=""/>
-               </list>
-               <value n="deployedByDefault" v="true"/>
-               <value n="description" v="jasypt"/>
-               <list n="docPath">
-                  <url path="../../../../Library/jasypt/dist/jasypt-1.6-javadoc.jar" jar-entry=""/>
-               </list>
-               <value n="id" v="jasypt"/>
-               <list n="sourcePath">
-                  <url path="../../../../Library/jasypt/dist/jasypt-1.6-sources.jar" jar-entry=""/>
-               </list>
-            </hash>
-         </list>
+         <list n="libraryDefinitions"/>
       </hash>
       <list n="libraryReferences">
          <hash>
@@ -260,11 +235,11 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="PostgreSQL"/>
+            <url n="id" protocol="file" path="/C:/Users/Marcelo/AppData/Roaming/JDeveloper/system11.1.1.2.36.55.36/o.jdeveloper/Jasypt.library"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="jasypt"/>
+            <url n="id" protocol="file" path="/C:/Users/Marcelo/AppData/Roaming/JDeveloper/system11.1.1.2.36.55.36/o.jdeveloper/PostgreSQL.library"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>

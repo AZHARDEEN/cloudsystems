@@ -60,7 +60,7 @@ public class ContactListController extends BaseClientListController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
-        //getLoaderLocator().loadContactType( contactType );
+        getLocator().loadContactType( contactType );
     }
 
 

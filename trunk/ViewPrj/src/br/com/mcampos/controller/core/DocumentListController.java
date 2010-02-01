@@ -179,7 +179,10 @@ public class DocumentListController extends BaseClientListController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
-        //getLoaderLocator().loadDocumentType( documentType );
+        /*
+         * TODO: selecionar o tipo de documento pelo tipo de usuário (Pessoa Física ou Jurídica)
+         */
+        getLocator().loadDocumentType( documentType );
     }
 
 }

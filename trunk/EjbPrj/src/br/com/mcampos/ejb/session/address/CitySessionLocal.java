@@ -14,5 +14,5 @@ public interface CitySessionLocal
     void delete( Integer id );
     List<CityDTO> getAll();
     CityDTO get ( Integer id);
-    List<CityDTO> getAll( Integer stateId, Integer countryId );
+    List<CityDTO> getAll( Integer countryId, Integer stateId );
 }

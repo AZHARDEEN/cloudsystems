@@ -648,7 +648,7 @@ public class BasicTableSessionBean implements BasicTableSession
     {
         testParam( countryId );
         testParam( stateId );
-        return getCitySession().getAll( stateId, countryId );
+        return getCitySession().getAll( countryId, stateId );
     }
 
 }
