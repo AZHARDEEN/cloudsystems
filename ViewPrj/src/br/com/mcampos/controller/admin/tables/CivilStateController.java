@@ -7,7 +7,7 @@ import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
 import java.util.List;
 
-import org.zkoss.zkex.zul.api.Borderlayout;
+import org.zkoss.zul.api.Borderlayout;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;

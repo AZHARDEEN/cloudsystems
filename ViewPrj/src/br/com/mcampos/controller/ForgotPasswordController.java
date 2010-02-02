@@ -6,8 +6,9 @@ import br.com.mcampos.util.MultilineMessageBox;
 
 import br.com.mcampos.util.business.LoginLocator;
 
+import org.zkforge.bwcaptcha.Captcha;
+
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zul.Captcha;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 

@@ -13,12 +13,12 @@ import java.text.ParseException;
 
 import javax.ejb.EJBException;
 
+import org.zkforge.bwcaptcha.Captcha;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.HtmlBasedComponent;
 import org.zkoss.zk.ui.WrongValueException;
-import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zul.Captcha;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 

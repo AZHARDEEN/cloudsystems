@@ -4,7 +4,7 @@ import br.com.mcampos.controller.core.BaseController;
 
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zkex.zul.Center;
+import org.zkoss.zul.api.Center;
 
 public class IndexController extends BaseController 
 {
