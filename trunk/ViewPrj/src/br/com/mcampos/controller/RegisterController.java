@@ -5,21 +5,16 @@ import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.exception.ApplicationRuntimeException;
 import br.com.mcampos.util.CPF;
-import br.com.mcampos.util.MultilineMessageBox;
-import br.com.mcampos.util.business.LoginLocator;
 
 
 import java.text.ParseException;
 
 import javax.ejb.EJBException;
 
-import org.zkforge.bwcaptcha.Captcha;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.HtmlBasedComponent;
 import org.zkoss.zk.ui.WrongValueException;
-import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 
 public class RegisterController extends BaseLoginOptionsController
@@ -32,30 +27,24 @@ public class RegisterController extends BaseLoginOptionsController
     protected static final int identityDocumentId = 2;
     protected static final int emailDocumentId = 6;
 
-    protected LoginLocator locator;
-
     private Textbox name;
     private Textbox email;
     private Textbox re_email;
     private Textbox password;
     private Textbox repassword;
-    private Textbox recapctcha;
-    private Captcha captcha;
     private Textbox cpf;
 
-    public RegisterController( char c )
+    public RegisterController ( char c )
     {
         super( c );
-        this.locator = new LoginLocator();
     }
 
-    public RegisterController()
+    public RegisterController ()
     {
         super();
-        this.locator = new LoginLocator();
     }
 
-    public void onClick$cmdSubmit()
+    public void onClick$cmdSubmit ()
     {
         try {
             if ( validate() && addNewUser() ) {
@@ -67,10 +56,9 @@ public class RegisterController extends BaseLoginOptionsController
             showErrorMessage( e.getMessage() );
             base.setFocus( true );
         }
-        catch ( EJBException e )
-        {
+        catch ( EJBException e ) {
             if ( e.getCause().getCause() instanceof ApplicationRuntimeException ) {
-                ApplicationRuntimeException cause = (ApplicationRuntimeException) e.getCause().getCause();
+                ApplicationRuntimeException cause = ( ApplicationRuntimeException )e.getCause().getCause();
                 showErrorMessage( cause.getMessage() );
             }
             else
@@ -78,7 +66,7 @@ public class RegisterController extends BaseLoginOptionsController
         }
     }
 
-    public void debugData() throws ParseException
+    public void debugData () throws ParseException
     {
         name.setValue( "Marcelo de Campos" );
         re_email.setValue( "marcelodecampos@uol.com.br" );
@@ -89,16 +77,14 @@ public class RegisterController extends BaseLoginOptionsController
         recapctcha.setValue( captcha.getValue() );
     }
 
-    public void doAfterCompose( Component c ) throws Exception
+    public void doAfterCompose ( Component c ) throws Exception
     {
         super.doAfterCompose( c );
         if ( name != null )
             name.setFocus( true );
-        debugData ();
-        //Clients.evalJavaScript( "$('input:text').setMask();" );
     }
 
-    protected Boolean validate()
+    protected Boolean validate ()
     {
         String sName, sEmail, sReEmail, sPassword, sRePassword;
 
@@ -131,12 +117,7 @@ public class RegisterController extends BaseLoginOptionsController
         return true;
     }
 
-    protected void onOK$recapctcha()
-    {
-        onClick$cmdSubmit();
-    }
-    
-    protected boolean validateCPF()
+    protected boolean validateCPF ()
     {
         String sCPF;
         boolean bRet;
@@ -152,11 +133,11 @@ public class RegisterController extends BaseLoginOptionsController
     }
 
 
-    protected boolean addNewUser()
+    protected boolean addNewUser ()
     {
         RegisterDTO newLogin;
 
-        newLogin = new RegisterDTO( );
+        newLogin = new RegisterDTO();
         newLogin.setName( name.getValue() );
         newLogin.setPassword( password.getValue() );
         newLogin.setRemoteAddr( Executions.getCurrent().getRemoteAddr() );
@@ -171,46 +152,4 @@ public class RegisterController extends BaseLoginOptionsController
         }
         return true;
     }
-
-    protected void showErrorMessage( String msg )
-    {
-        try {
-            MultilineMessageBox.doSetTemplate();
-            MultilineMessageBox.show( msg, "Validação", Messagebox.OK, Messagebox.ERROR, true );
-        }
-        catch ( Exception e ) {
-            e = null;
-        }
-    }
-
-    protected Boolean validateCaptcha()
-    {
-        String sCaptcha = null, sRecaptcha = null;
-
-        try {
-            sCaptcha = captcha.getValue();
-            sRecaptcha = recapctcha.getValue();
-        }
-        catch ( Exception e ) {
-            if ( sRecaptcha == null || sRecaptcha.length() <= 0 ) {
-                showErrorMessage( "A validação captcha não está " + "preenchida. Por favor tente de novo" );
-                recapctcha.focus();
-                return false;
-            }
-        }
-
-        if ( sCaptcha == null || sCaptcha.equalsIgnoreCase( sRecaptcha ) == false ) {
-            showErrorMessage( "A validação captcha não confere. Por favor tente de novo" );
-            recapctcha.focus();
-            return false;
-        }
-        return true;
-    }
-
-
-    public LoginLocator getLocator()
-    {
-        return locator;
-    }
-
 }

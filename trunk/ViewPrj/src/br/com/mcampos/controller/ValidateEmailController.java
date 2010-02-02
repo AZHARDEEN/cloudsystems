@@ -1,8 +1,6 @@
 package br.com.mcampos.controller;
 
 import br.com.mcampos.exception.ApplicationException;
-import br.com.mcampos.util.MultilineMessageBox;
-import br.com.mcampos.util.business.LoginLocator;
 
 
 import org.zkforge.bwcaptcha.Captcha;
@@ -10,7 +8,6 @@ import org.zkforge.bwcaptcha.Captcha;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
@@ -27,55 +24,19 @@ public class ValidateEmailController extends BaseLoginOptionsController
     protected static String loginCookieName = "LoginCookieName";
 
 
-    protected LoginLocator locator = null;
-    
-    public ValidateEmailController()
+    public ValidateEmailController ()
     {
         super();
     }
 
-    public ValidateEmailController( char c )
+    public ValidateEmailController ( char c )
     {
         super( c );
     }
 
 
-    protected Boolean validateCaptcha()
-    {
-        String sCaptcha = null, sRecaptcha = null;
-
-        try {
-            sCaptcha = captcha.getValue();
-            sRecaptcha = recapctcha.getValue();
-        }
-        catch ( Exception e ) {
-            if ( sRecaptcha == null || sRecaptcha.length() <= 0 ) {
-                showErrorMessage( "A validação captcha não está " + "preenchida. Por favor tente de novo" );
-                recapctcha.focus();
-                return false;
-            }
-        }
-
-        if ( sCaptcha == null || sCaptcha.equalsIgnoreCase( sRecaptcha ) == false ) {
-            showErrorMessage( "A validação captcha não confere. Por favor tente de novo" );
-            recapctcha.focus();
-            return false;
-        }
-        return true;
-    }
-
-    protected void showErrorMessage( String msg )
-    {
-        try {
-            MultilineMessageBox.show( msg, "Validação", Messagebox.OK, Messagebox.ERROR, true );
-        }
-        catch ( Exception e ) {
-            e = null;
-        }
-    }
-
     @Override
-    public void doAfterCompose( Component comp ) throws Exception
+    public void doAfterCompose ( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
 
@@ -91,15 +52,8 @@ public class ValidateEmailController extends BaseLoginOptionsController
             token.setFocus( true );
     }
 
-    public LoginLocator getLocator()
-    {
-        if ( this.locator == null )
-            this.locator = new LoginLocator();
-        return locator;
-    }
 
-
-    public void onClick$cmdSubmit()
+    public void onClick$cmdSubmit ()
     {
         String csIdentification;
         String csPassword;

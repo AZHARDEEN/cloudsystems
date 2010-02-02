@@ -2,6 +2,7 @@ package br.com.mcampos.util.system;
 
 import br.com.mcampos.dto.user.login.LoginDTO;
 
+import br.com.mcampos.util.business.LoginLocator;
 import br.com.mcampos.util.business.UsersLocator;
 
 import javax.servlet.http.HttpSessionEvent;
@@ -12,7 +13,7 @@ public class CloudSystemSessionListener extends HttpSessionListener
 {
     public static String userSessionId="userSessionID";
     
-    protected UsersLocator locator;
+    protected LoginLocator locator;
     
     
     public CloudSystemSessionListener()
@@ -31,10 +32,10 @@ public class CloudSystemSessionListener extends HttpSessionListener
         super.sessionDestroyed( httpSessionEvent );
     }
 
-    protected UsersLocator getLocator()
+    protected LoginLocator getLocator()
     {
         if ( locator == null )
-            locator = new UsersLocator();
+            locator = new LoginLocator();
         return locator;
     }
 }

@@ -9,7 +9,7 @@
 		Once turned on, the uncompressed JavaScript files will be loaded.
 	-->
 	<client-config>
-		<debug-js>false</debug-js>
+		<debug-js>true</debug-js>
 	</client-config>
     
 	<session-config>

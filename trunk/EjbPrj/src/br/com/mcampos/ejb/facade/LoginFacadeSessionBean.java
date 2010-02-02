@@ -3,6 +3,8 @@ package br.com.mcampos.ejb.facade;
 import br.com.mcampos.dto.RegisterDTO;
 
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.dto.user.login.LoginCredentialDTO;
+import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
 
 import br.com.mcampos.ejb.session.user.LoginSessionLocal;
@@ -119,4 +121,19 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
             systemMessage.throwException( systemMessageTypeId, 1 );
         getLogin().sendValidationEmail( dto );
     }
+    
+    
+    public LoginDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException
+    {
+        LoginDTO loginDTO;
+
+        loginDTO = getLogin().loginUser( dto );
+        return loginDTO;
+    }
+
+    public void logoutUser( LoginDTO dto )
+    {
+        getLogin().logoutUser( dto );
+    }
+    
 }

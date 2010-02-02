@@ -4,6 +4,7 @@ import br.com.mcampos.dto.RegisterDTO;
 
 import br.com.mcampos.dto.user.UserDocumentDTO;
 
+import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -65,6 +66,12 @@ public interface LoginFacadeSession
      * @exception EJBException
      */
     void sendValidationEmail ( UserDocumentDTO dto ) throws ApplicationException;
+
+
+    LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException;
+
+    void logoutUser ( LoginDTO dto );
+
 }
 
 

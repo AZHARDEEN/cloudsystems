@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <div align="center" width="100%" apply="br.com.mcampos.controller.commom.user.PersonClientController" id="rootParent">
+        <script type="text/JavaScript" defer="true">
+            <![CDATA[
+                jq(document).ready(
+                    function()
+                    {
+                        jq('@cpf').setMask ( 'cpf' );
+                        jq('@zip').setMask ( 'cep' );
+                        jq('@birthdate').setMask ('date');
+                    }
+                );
+            ]]>
+        </script>
         <panel border="normal" title="Cadastro" width="100%" id="main"> 
             <panelchildren>
                 <div align="left" >

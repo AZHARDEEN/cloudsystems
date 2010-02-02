@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?page id="index" title="Home" cacheable="false" 
 	language="xul/html" contentType="text/html;charset=UTF-8"?>
-<?script type="text/javascript" src="/js/jquery.js"?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <?component name="textbox" class="br.com.mcampos.util.components.TextboxExt" extends="textbox" ?>
 
