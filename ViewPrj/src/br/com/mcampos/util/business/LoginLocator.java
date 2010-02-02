@@ -2,6 +2,8 @@ package br.com.mcampos.util.business;
 
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.dto.user.login.LoginCredentialDTO;
+import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.facade.LoginFacadeSession;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -115,4 +117,15 @@ public class LoginLocator extends BusinessDelegate
         
         getFacade().sendValidationEmail( dto );
     }
+    
+    
+    public LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException
+    {
+        return getFacade().loginUser( dto );
+    }
+
+    public void logoutUser ( LoginDTO dto ) {
+        getFacade().logoutUser( dto );
+    }
+    
 }

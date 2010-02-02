@@ -2,12 +2,10 @@ package br.com.mcampos.ejb.facade;
 
 import br.com.mcampos.dto.core.BasicDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
-import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.user.Company;
@@ -17,14 +15,12 @@ import br.com.mcampos.ejb.entity.user.attributes.CollaboratorType;
 import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
 import br.com.mcampos.ejb.session.user.CollaboratorSessionLocal;
 import br.com.mcampos.ejb.session.user.CompanySessionLocal;
-import br.com.mcampos.ejb.session.user.LoginSessionLocal;
 import br.com.mcampos.ejb.session.user.PersonSessionLocal;
 
 import br.com.mcampos.ejb.session.user.UserSessionLocal;
 
 import br.com.mcampos.exception.ApplicationException;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -40,8 +36,6 @@ public class UserFacadeSessionBean implements UserFacadeSession
 
     @EJB
     UserSessionLocal user;
-    @EJB
-    LoginSessionLocal login;
     @EJB
     PersonSessionLocal person;
     @EJB
@@ -73,21 +67,6 @@ public class UserFacadeSessionBean implements UserFacadeSession
         return user.getUsersByRange( firstResult, maxResults );
     }
 
-    public List<ListLoginDTO> getLoginList()
-    {
-        return Collections.EMPTY_LIST;
-    }
-
-    public Long getLoginRecordCount()
-    {
-        return login.getRecordCount();
-    }
-
-    public List<ListLoginDTO> getLoginByRange( Integer firstResult, Integer maxResults )
-    {
-        return Collections.EMPTY_LIST;
-    }
-
     public PersonDTO getPerson( Integer userId )
     {
         return person.get( userId );
@@ -96,14 +75,6 @@ public class UserFacadeSessionBean implements UserFacadeSession
     public UserDTO getUser( Integer userId )
     {
         return user.get( userId );
-    }
-
-
-    public void deleteLogin( Integer[] logins )
-    {
-        if ( logins == null || logins.length == 0 )
-            return;
-        login.delete( logins );
     }
 
 
@@ -169,24 +140,6 @@ public class UserFacadeSessionBean implements UserFacadeSession
         catch ( Exception e ) {
             throw new EJBException( "Erro ao incluir cadastro de pessoa", e );
         }
-    }
-
-    public LoginDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException
-    {
-        LoginDTO loginDTO;
-
-        loginDTO = login.loginUser( dto );
-        return loginDTO;
-    }
-
-    public void logoutUser( LoginDTO dto )
-    {
-        login.logoutUser( dto );
-    }
-
-    public void updateLoginStatus( Integer id, Integer newStatus )
-    {
-        login.updateLoginStatus( id, newStatus );
     }
 
     public UserDTO getUserByDocument( UserDocumentDTO dto )

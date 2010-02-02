@@ -2,13 +2,10 @@ package br.com.mcampos.util.business;
 
 
 import br.com.mcampos.dto.user.CompanyDTO;
-import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.dto.user.login.LoginCredentialDTO;
-import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.facade.UserFacadeSession;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -43,11 +40,6 @@ public class UsersLocator extends BusinessDelegate
     }
 
 
-    public Long getLoginRecordCount ()
-    {
-        return getSessionBean().getLoginRecordCount();
-    }
-
     
     public List<ListUserDTO> getUsersByRange ( Integer firstResult, Integer maxResults )
     {
@@ -55,16 +47,7 @@ public class UsersLocator extends BusinessDelegate
     }
     
  
-    List<ListLoginDTO> getLoginList()
-    {
-        return getSessionBean().getLoginList();
-    }
-    
-    public List<ListLoginDTO> getLoginByRange ( Integer firstResult, Integer maxResults )
-    {
-        return getSessionBean().getLoginByRange( firstResult, maxResults );
-    }
-    
+   
     public PersonDTO getPerson ( Integer userId )
     {
         return getSessionBean().getPerson( userId );
@@ -78,13 +61,6 @@ public class UsersLocator extends BusinessDelegate
 
     
     
-    public void deleteLogins ( Integer[] logins ) {
-        if ( logins == null || logins.length == 0 )
-            return;
-        
-        getSessionBean().deleteLogin( logins );
-    }
-    
     public void add ( PersonDTO dto ) throws ApplicationException
     {
         if ( dto == null )
@@ -97,21 +73,6 @@ public class UsersLocator extends BusinessDelegate
         if ( dto == null )
             throw new InvalidParameterException ( "Parâmetro dto não pode ser nulo." );
         getSessionBean().add( dto );
-    }
-    
-    public LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException
-    {
-        return getSessionBean().loginUser( dto );
-    }
-
-    public void logoutUser ( LoginDTO dto ) {
-        getSessionBean().logoutUser( dto );
-    }
-    
-    
-    public void updateLoginStatus ( Integer id, Integer newStatus )
-    {
-        getSessionBean().updateLoginStatus( id, newStatus );
     }
     
     public UserDTO getUserByDocument ( UserDocumentDTO dto )

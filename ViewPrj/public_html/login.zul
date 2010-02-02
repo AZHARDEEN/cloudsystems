@@ -29,7 +29,7 @@
                     </div>
                     <separator />
                     <div align="right">
-                        <toolbarbutton label="Esqueceu a senha?" href="/forgot_password.zul" />
+                        <toolbarbutton label="Esqueceu a senha?" id = "cmdForgotPassword" />
                     </div>
                 </div>
             </panelchildren>

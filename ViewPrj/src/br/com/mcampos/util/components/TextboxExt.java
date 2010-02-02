@@ -2,7 +2,10 @@ package br.com.mcampos.util.components;
 
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.io.IOException;
+
 import org.zkoss.xml.HTMLs;
+import org.zkoss.zk.ui.sys.ContentRenderer;
 import org.zkoss.zul.Textbox;
 
 public class TextboxExt extends Textbox
@@ -24,7 +27,7 @@ public class TextboxExt extends Textbox
     {
         if ( !this.alt.equalsIgnoreCase( altText )) {
             this.alt = altText;
-            invalidate();
+            smartUpdate( "alt", getAlt() );
         }
     }
     
@@ -33,21 +36,13 @@ public class TextboxExt extends Textbox
         return this.alt;
     }
 
-
-    public String getInnerAttrs ()
+    @Override
+    protected void renderProperties ( ContentRenderer renderer ) throws IOException
     {
-        /*
-        final String attrs = super.getAttribu
-        if ( SysUtils.isEmpty ( getAlt() ) )
-            return attrs;
-        final StringBuffer sb = new StringBuffer(64).append(attrs);
-        HTMLs.appendAttribute(sb, "alt",  getAlt());
-        return sb.toString();
-*/
-        return "";
+        super.renderProperties( renderer );
+        if ( SysUtils.isEmpty( getAlt() ) == false )
+            render(renderer, "alt", getAlt() );
     }
 }
-
-
 
 

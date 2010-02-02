@@ -18,15 +18,15 @@ public class LoginPagingListModel extends BaseListModel<ListLoginDTO>
 
     public int getTotalSize()
     {
-        Long nRecords;
+        Long nRecords = Long.valueOf( 0 );
         
-        nRecords = getLocator ().getLoginRecordCount();
+        //nRecords = getLocator ().getLoginRecordCount();
         return nRecords.intValue();
     }
 
     protected List getPageData( int itemStartNumber, int pageSize )
     {
-        return getLocator().getLoginByRange( itemStartNumber, pageSize );
+        return /* getLocator().getLoginByRange( itemStartNumber, pageSize ) */null;
     }
 
 }

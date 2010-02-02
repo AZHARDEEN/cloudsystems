@@ -83,7 +83,7 @@ public class ListLoginController extends BaseUserListController
             if ( dto != null )
             logins[ nIndex ++ ] = dto.getId();
         }
-        getLocator().deleteLogins( logins );
+        //getLocator().deleteLogins( logins );
         refreshModel( getStartPageNumber() );
     }
 

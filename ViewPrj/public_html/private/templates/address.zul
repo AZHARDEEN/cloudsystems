@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk>
 <div xmlns="http://www.zkoss.org/2005/zul" >
     <grid fixedLayout="true">
         <columns>
@@ -46,3 +48,4 @@
         </rows>
     </grid>
 </div>
+</zk>

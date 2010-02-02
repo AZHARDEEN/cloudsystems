@@ -23,8 +23,6 @@ public class ChangePasswordController extends BaseLoginOptionsController {
     protected Textbox old_password; 
     protected Textbox password;
     protected Textbox re_password;
-    protected Textbox recapctcha; 
-    protected Captcha captcha;
     
     protected static String loginCookieName = "LoginCookieName";
     
@@ -41,48 +39,10 @@ public class ChangePasswordController extends BaseLoginOptionsController {
     }
 
 
-    protected Boolean validateCaptcha ( )
-    {
-        String sCaptcha = null, sRecaptcha = null;
-        
-        try {
-            sCaptcha = captcha.getValue();
-            sRecaptcha = recapctcha.getValue();
-        }
-        catch ( Exception e )
-        {
-            if ( sRecaptcha == null || sRecaptcha.length() <= 0 )
-            {
-                showErrorMessage ( "A validação captcha não está " +
-                                   "preenchida. Por favor tente de novo" );
-                recapctcha.focus ();
-                return false;
-            }
-        }
-        
-        if ( sCaptcha == null || sCaptcha.equalsIgnoreCase( sRecaptcha) == false ) {
-            showErrorMessage ( "A validação captcha não confere. Por favor tente de novo" );
-            recapctcha.focus ();
-            return false;
-        }
-        return true;
-    }
-
-    protected void showErrorMessage ( String msg )
-    {
-        try {
-            MultilineMessageBox.show( msg, "Validação", Messagebox.OK, Messagebox.ERROR, true );
-        }
-        catch ( Exception e ) {
-            e = null;
-        }
-    }
-
     @Override
     public void doAfterCompose( Component comp ) throws Exception {
         super.doAfterCompose( comp );
         
-        this.locator = new LoginLocator ();
         String csLogin = getCookie( loginCookieName );
         if ( csLogin != null && csLogin.isEmpty() == false ) {
             identity.setValue( csLogin );
@@ -93,15 +53,6 @@ public class ChangePasswordController extends BaseLoginOptionsController {
         }   
     }
     
-    public void setLocator( LoginLocator locator ) {
-        this.locator = locator;
-    }
-
-    public LoginLocator getLocator() {
-        return locator;
-    }
-    
-
     public void onClick$cmdSubmit () {
         String csIdentification;
         String csPassword, csRePassword, csOldPassword;
@@ -125,10 +76,5 @@ public class ChangePasswordController extends BaseLoginOptionsController {
                 showErrorMessage( e.getMessage() );
             }
         }
-    }
-    
-    public void onOK$recapctcha ()
-    {
-        onClick$cmdSubmit ();
     }
 }

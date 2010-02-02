@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<zk xmlns="http://www.zkoss.org/2005/zul" >
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk 
+    xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native"
+    xmlns:w="http://www.zkoss.org/2005/zk/client" >
     <div id="rootParent" apply="br.com.mcampos.controller.RegisterController" align="center" width="100%">
+        <script type="text/JavaScript" defer="true">
+            <![CDATA[
+                jq(document).ready(
+                    function()
+                    {
+                        jq('@cpf').setMask ( 'cpf' );
+                    }
+                );
+            ]]>
+        </script>
         <panel border="normal" title="Registrar" width="500px" > 
             <panelchildren>
                 <div align="left" >
@@ -13,27 +26,27 @@
                             <row spans="2" align="center">Informe os seus dados para o cadastro básico</row>
                             <row>
                                 <label value="Nome completo" />
-                                <textbox id="name" width="99%" maxlength="128"/>
+                                <textbox id="name" width="99%" maxlength="128" tabindex="1" />
                             </row>
                             <row>
                                 <label value="E-mail" />
-                                <textbox id="email" width="99%" maxlength="128" />
+                                <textbox id="email" width="99%" maxlength="128" tabindex="2"/>
                             </row>
                             <row>
                                 <label value="Confirme o email" />
-                                <textbox id="re_email" width="99%" maxlength="128" />
+                                <textbox id="re_email" width="99%" maxlength="128" tabindex="3"/>
                             </row>
                             <row>
                                 <label value="CPF"  />        
-                                <textbox id="cpf" width="195px" maxlength="14" />
+                                <textbox id="cpf" width="195px" maxlength="14" tabindex="4"/>
                             </row>
                             <row>
                                 <label value="Senha" />
-                                <textbox type="password" id="password" width="195px" maxlength="16" />
+                                <textbox type="password" id="password" width="195px" maxlength="16" tabindex="5"/>
                             </row>
                             <row>
                                 <label value="Confirme a senha" />
-                                <textbox type="password" id="repassword" width="195px" maxlength="16" />
+                                <textbox type="password" id="repassword" width="195px" maxlength="16" tabindex="6"/>
                             </row>
                         </rows>
                     </grid>

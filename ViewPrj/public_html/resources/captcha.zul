@@ -10,15 +10,26 @@
 			<row>
 				<label value="Validação" />
 				<hbox >
-					<bw.captcha id="captcha" length="7" width="160px" height="60px">
-                        <attribute name="onCreate"><![CDATA[
-                            captcha.setBgColor(0x999999);
-                        ]]></attribute>
-                    </bw.captcha>
-					<vbox >
-						<textbox width="130px" id="recapctcha" maxlength="7" />
-						<button width="130px" label="Regerar Captcha" onClick="captcha.randomValue(); val.value=captcha.value;" />
-					</vbox>
+                    <div width="50%" >
+                        <zscript>
+                        <![CDATA[
+                            char[] captchars = new char[]{'1','2','3','4','5','6','7','8','9','A','B','C','D','F','G','H','J','K','L','M','N','P','Q','R','S','T','U','V','W','X','Y','a','b','c','d','e','f','g','h','j','k','l','m','n','p','q','r','s','t','u','v','w','x','y','z'};
+                        ]]>
+                        </zscript>
+                        <bw.captcha id="captcha" length="7" width="160px" height="60px" captchars="${captchars}">
+                            <attribute name="onCreate">
+                                <![CDATA[
+                                    captcha.setBgColor(0xe0e0e0);
+                                ]]>
+                                </attribute>
+                        </bw.captcha>
+                    </div>
+                    <div align="center" width="50%" >
+                        <vbox align="center" width="100%">
+                            <textbox width="130px" id="recapctcha" maxlength="7" />
+                            <button width="130px" label="Regerar Captcha" onClick="captcha.randomValue(); val.value=captcha.value;" />
+                        </vbox>
+                    </div>
 				</hbox>
 			</row>
 		</rows>

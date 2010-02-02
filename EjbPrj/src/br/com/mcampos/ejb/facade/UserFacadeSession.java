@@ -27,27 +27,13 @@ public interface UserFacadeSession
 
     List<ListUserDTO> getUsersByRange ( Integer firstResult, Integer maxResults );
 
-    List<ListLoginDTO> getLoginList ();
-
-    Long getLoginRecordCount ();
-
-    List<ListLoginDTO> getLoginByRange ( Integer firstResult, Integer maxResults );
-
     PersonDTO getPerson ( Integer userId );
-
-    void deleteLogin ( Integer[] logins );
 
     void add ( PersonDTO dto ) throws ApplicationException;
 
     void add ( CompanyDTO dto ) throws ApplicationException;
 
     UserDTO getUser ( Integer userId );
-
-    LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException;
-
-    void logoutUser ( LoginDTO dto );
-
-    void updateLoginStatus ( Integer id, Integer newStatus );
 
     UserDTO getUserByDocument ( UserDocumentDTO dto );
 }
