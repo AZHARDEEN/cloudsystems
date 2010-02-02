@@ -10,10 +10,14 @@
 			<row>
 				<label value="Validação" />
 				<hbox >
-					<captcha id="captcha" length="7" width="160px" height="45px" />
+					<bw.captcha id="captcha" length="7" width="160px" height="60px">
+                        <attribute name="onCreate"><![CDATA[
+                            captcha.setBgColor(0x999999);
+                        ]]></attribute>
+                    </bw.captcha>
 					<vbox >
-						<textbox width="118px" id="recapctcha" maxlength="7" />
-						<button width="118px" label="Regerar Captcha" onClick="captcha.randomValue(); val.value=captcha.value;" />
+						<textbox width="130px" id="recapctcha" maxlength="7" />
+						<button width="130px" label="Regerar Captcha" onClick="captcha.randomValue(); val.value=captcha.value;" />
 					</vbox>
 				</hbox>
 			</row>
