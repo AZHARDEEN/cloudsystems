@@ -47,7 +47,7 @@ public class ForgotPasswordController extends BaseLoginOptionsController
         if ( validateCaptcha() ) {
             try {
                 getLocator().makeNewPasssword( UserDocumentDTO.createUserDocumentEmail( csIdentification ) );
-                gotoPage( "/validate_email_sent.zul" );
+                gotoPage( "/forgot_password_sent.zul" );
             }
             catch ( ApplicationException e ) {
                 showErrorMessage( e.getMessage() );

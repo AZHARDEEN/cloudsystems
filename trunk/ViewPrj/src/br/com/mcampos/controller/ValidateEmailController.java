@@ -17,8 +17,6 @@ public class ValidateEmailController extends BaseLoginOptionsController
 
     protected Textbox token;
     protected Textbox password;
-    protected Textbox recapctcha;
-    protected Captcha captcha;
     protected Row tokenRow;
 
     protected static String loginCookieName = "LoginCookieName";

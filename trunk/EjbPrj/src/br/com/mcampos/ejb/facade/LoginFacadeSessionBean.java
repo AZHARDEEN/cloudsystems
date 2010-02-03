@@ -125,13 +125,16 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
     
     public LoginDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException
     {
-        LoginDTO loginDTO;
-
-        loginDTO = getLogin().loginUser( dto );
-        return loginDTO;
+        if ( dto == null )
+            systemMessage.throwException( systemMessageTypeId, 1 );
+        if ( SysUtils.isEmpty( dto.getPassword() ) )
+            systemMessage.throwException( systemMessageTypeId, 6 );
+        if ( SysUtils.isEmpty( dto.getDocuments() ) )
+            systemMessage.throwException( systemMessageTypeId, 3 );
+        return  getLogin().loginUser( dto );
     }
 
-    public void logoutUser( LoginDTO dto )
+    public void logoutUser( LoginDTO dto ) throws ApplicationException
     {
         getLogin().logoutUser( dto );
     }

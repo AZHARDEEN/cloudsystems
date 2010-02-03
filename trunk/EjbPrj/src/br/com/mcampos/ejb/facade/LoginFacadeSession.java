@@ -70,7 +70,7 @@ public interface LoginFacadeSession
 
     LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException;
 
-    void logoutUser ( LoginDTO dto );
+    void logoutUser ( LoginDTO dto ) throws ApplicationException;
 
 }
 
