@@ -71,14 +71,14 @@ public abstract class BaseLoginOptionsController extends BaseController
         }
         catch ( Exception e ) {
             if ( sRecaptcha == null || sRecaptcha.length() <= 0 ) {
-                showErrorMessage( "A validação captcha não está " + "preenchida. Por favor tente de novo" );
+                showErrorMessage( "A validação captcha não está preenchida. Por favor tente de novo" );
                 recapctcha.focus();
                 return false;
             }
         }
 
         if ( SysUtils.isEmpty( sRecaptcha ) ) {
-            showErrorMessage( "A validação captcha não está " + "preenchida. Por favor tente de novo" );
+            showErrorMessage( "A validação captcha não está preenchida. Por favor tente de novo" );
             recapctcha.focus();
             return false;
         }

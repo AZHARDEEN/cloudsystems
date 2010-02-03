@@ -26,10 +26,9 @@ public interface LoginSessionLocal
      * @exception ApplicationException
      */
     void add( RegisterDTO dto ) throws ApplicationException;
-    void update( LoginDTO login );
     void delete( Integer id );
     LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException;
-    public void logoutUser ( LoginDTO dto );
+    public void logoutUser ( LoginDTO dto ) throws ApplicationException;
     Long getRecordCount ();
     void delete( Integer[] logins );
     void updateLoginStatus ( Integer id, Integer newStatus );

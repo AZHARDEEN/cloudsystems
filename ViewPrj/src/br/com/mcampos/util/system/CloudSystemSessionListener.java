@@ -11,11 +11,11 @@ import org.zkoss.zk.ui.http.HttpSessionListener;
 
 public class CloudSystemSessionListener extends HttpSessionListener
 {
-    public static String userSessionId="userSessionID";
-    
+    public static String userSessionId = "userSessionID";
+
     protected LoginLocator locator;
-    
-    
+
+
     public CloudSystemSessionListener()
     {
         super();
@@ -25,10 +25,15 @@ public class CloudSystemSessionListener extends HttpSessionListener
     public void sessionDestroyed( HttpSessionEvent httpSessionEvent )
     {
         LoginDTO user;
-        
-        user = ( (LoginDTO) httpSessionEvent.getSession().getAttribute( userSessionId ) );
-        if ( user != null ) 
-            getLocator().logoutUser( user );
+
+        try {
+            user = ( ( LoginDTO )httpSessionEvent.getSession().getAttribute( userSessionId ) );
+            if ( user != null )
+                getLocator().logoutUser( user );
+        }
+        catch ( Exception e ) {
+            e = null;
+        }
         super.sessionDestroyed( httpSessionEvent );
     }
 

@@ -124,7 +124,8 @@ public class LoginLocator extends BusinessDelegate
         return getFacade().loginUser( dto );
     }
 
-    public void logoutUser ( LoginDTO dto ) {
+    public void logoutUser ( LoginDTO dto ) throws ApplicationException
+    {
         getFacade().logoutUser( dto );
     }
     
