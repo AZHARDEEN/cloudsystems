@@ -71,7 +71,11 @@
                    
     <weblogic-enterprise-bean>
         <ejb-name>LoginSession</ejb-name>
-        <stateless-session-descriptor/>
+        <stateless-session-descriptor>
+            <pool>
+                <idle-timeout-seconds>600</idle-timeout-seconds>
+            </pool>
+        </stateless-session-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
  
