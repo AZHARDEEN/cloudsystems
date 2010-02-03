@@ -330,6 +330,7 @@ public class LoginSessionBean implements LoginSessionLocal
             systemMessage.throwException( systemMessageTypeId, 3 );
         
         login = getLogin ( dto.getDocuments() );
+        em.refresh( login );
         verifyUserStatus( login );
         passwordEncryptor = new BasicPasswordEncryptor();
         if ( passwordEncryptor.checkPassword( dto.getPassword(), login.getPassword() ) == false ) {
