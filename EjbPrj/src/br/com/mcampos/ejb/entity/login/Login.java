@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +30,6 @@ import javax.persistence.Table;
   ,@NamedQuery(name = "Login.findToken", query = "select o from Login o where o.token = :token")
 })
 @Table( name = "\"login\"" )
-@Cacheable ( value = false )
 public class Login implements Serializable
 {
     private Integer userId;

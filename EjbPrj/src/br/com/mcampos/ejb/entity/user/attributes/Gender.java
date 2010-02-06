@@ -3,7 +3,6 @@ package br.com.mcampos.ejb.entity.user.attributes;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
