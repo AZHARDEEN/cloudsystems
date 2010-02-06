@@ -382,7 +382,7 @@ public class LoginSessionBean implements LoginSessionLocal
 
         log.setLogin( login );
         log.setLoginType( em.find( AccessLogType.class, accessLogType ) );
-        log.setIp( dto != null ? dto.getRemoteAddr() : "127.1.1.1" );
+        log.setIp( dto != null ? dto.getRemoteAddr() : "127.0.0.1" );
         log.setComputer( dto != null ? dto.getRemoteHost() : null );
         em.persist( log );
     }

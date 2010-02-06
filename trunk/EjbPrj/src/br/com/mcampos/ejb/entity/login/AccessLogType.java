@@ -16,9 +16,9 @@ import javax.persistence.Table;
 @Table( name = "\"access_log_type\"" )
 public class AccessLogType implements Serializable
 {
-    public static int accessLogTypeNormalLogin = 1;
-    public static int accessLogTypeCreateLogin = 2;
-    public static int accessLogTypeLogout = 3;
+    public static final int accessLogTypeNormalLogin = 1;
+    public static final int accessLogTypeCreateLogin = 2;
+    public static final int accessLogTypeLogout = 3;
     
     
     @Column( name="alt_description_ch", nullable = false )
