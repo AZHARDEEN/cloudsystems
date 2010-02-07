@@ -16,23 +16,29 @@ import javax.ejb.Local;
 @Local
 public interface LoginSessionLocal
 {
-    
+
     /**
      * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
      * observado que o mesmo depende do relacionamento com a entidade pessoa.
-     * Após incluido o login com os dados mais básicos necessários, o novo usuário do 
+     * Após incluido o login com os dados mais básicos necessários, o novo usuário do
      * sistema DEVE completar o registro.
      *
      * @param dto DTO com os dados básicos para inclusão.
      * @exception ApplicationException
      */
     void add( RegisterDTO dto ) throws ApplicationException;
+
     void delete( Integer id );
-    AuthenticationDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException;
-    public void logoutUser ( LoginDTO dto ) throws ApplicationException;
-    Long getRecordCount ();
+
+    AuthenticationDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException;
+
+    public void logoutUser( LoginDTO dto ) throws ApplicationException;
+
+    Long getRecordCount();
+
     void delete( Integer[] logins );
-    void updateLoginStatus ( Integer id, Integer newStatus );
+
+    void updateLoginStatus( Integer id, Integer newStatus );
 
 
     /**
@@ -44,67 +50,67 @@ public interface LoginSessionLocal
      * @param newPassword - A nova senha
      * @exception InvalidParameterException
      */
-    void changePassword ( UserDocumentDTO document, String oldPassword, String newPassword ) throws ApplicationException;
+    void changePassword( UserDocumentDTO document, String oldPassword, String newPassword ) throws ApplicationException;
 
 
     /**
      * Cria uma nova senha para o usuario logar no sistema e envia esta senha via email.
-     * 
-     * 
+     *
+     *
      * @param document UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception InvalidParameterException
      */
-    void makeNewPassword ( UserDocumentDTO document ) throws ApplicationException;
-    
+    void makeNewPassword( UserDocumentDTO document ) throws ApplicationException;
+
     /**
      * Valida o email informado no ato do cadastro. Quando o usuario se cadastra no sistema,
      * deve obrigatóriamente informar um email válido e único no sistema. Este será a 'identidade'
      * do usuário no sistema, e, portanto, este email deve ser validado.
-     * 
-     * 
+     *
+     *
      * @param token Código gerado pelo sistema e enviado ao email do novo cadastro.
      *              Este token deve ser único no sistema.
      * @param password Senha de validação. Este é a senha informada pelo usuário no ato do cadstro
      * @exception InvalidParameterException
      */
-    void validateEmail ( String token, String password ) throws ApplicationException;
-    
-    
+    void validateEmail( String token, String password ) throws ApplicationException;
+
+
     /**
      * Reenvia um email de confirmação de cadastro de login.
-     * 
-     * 
+     *
+     *
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception InvalidParameterException
      */
-    void sendValidationEmail ( UserDocumentDTO dto ) throws ApplicationException;
+    void sendValidationEmail( UserDocumentDTO dto ) throws ApplicationException;
 
 
     /**
      * Obtem o status do login do usuário corrente (autenticado).
-     * 
+     *
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
      */
-    Integer getStatus ( AuthenticationDTO currentUser );
+    Integer getStatus( AuthenticationDTO currentUser );
 
 
     /**
      * Altera o status do usuário no banco de dados.
-     * 
+     *
      * @param currentUser Usuário autenticado.
      * @param newStatus Novo status a ser alterado no banco de dados.
      */
-    void setStatus ( AuthenticationDTO currentUser, Integer newStatus );
-    
+    void setStatus( AuthenticationDTO currentUser, Integer newStatus );
+
     /**
      * Autentica o usuário. Esta será a função mais usada de todas.
      * Para QUALQUER operacao, esta função deverá ser chamada antes.
-     * 
-     * 
+     *
+     *
      * @param currentUser
      * @return boolean true para usuário autenticado ou false
      */
-    public Boolean authenticate ( AuthenticationDTO currentUser );
-    
+    public void authenticate( AuthenticationDTO currentUser );
+
 }

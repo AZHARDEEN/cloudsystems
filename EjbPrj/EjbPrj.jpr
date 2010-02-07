@@ -207,11 +207,11 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" protocol="file" path="/C:/Users/Marcelo/AppData/Roaming/JDeveloper/system11.1.1.2.36.55.36/o.jdeveloper/Jasypt.library"/>
+            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jasypt.library"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" protocol="file" path="/C:/Users/Marcelo/AppData/Roaming/JDeveloper/system11.1.1.2.36.55.36/o.jdeveloper/PostgreSQL.library"/>
+            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/postgresql.library"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
@@ -236,11 +236,11 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" protocol="file" path="/C:/Users/Marcelo/AppData/Roaming/JDeveloper/system11.1.1.2.36.55.36/o.jdeveloper/Jasypt.library"/>
+            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jasypt.library"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" protocol="file" path="/C:/Users/Marcelo/AppData/Roaming/JDeveloper/system11.1.1.2.36.55.36/o.jdeveloper/PostgreSQL.library"/>
+            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/postgresql.library"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
