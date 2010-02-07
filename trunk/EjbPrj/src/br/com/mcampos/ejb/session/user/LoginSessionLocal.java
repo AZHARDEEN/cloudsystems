@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.session.user;
 
 import br.com.mcampos.dto.RegisterDTO;
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
@@ -27,7 +28,7 @@ public interface LoginSessionLocal
      */
     void add( RegisterDTO dto ) throws ApplicationException;
     void delete( Integer id );
-    LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException;
+    AuthenticationDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException;
     public void logoutUser ( LoginDTO dto ) throws ApplicationException;
     Long getRecordCount ();
     void delete( Integer[] logins );
@@ -77,5 +78,33 @@ public interface LoginSessionLocal
      * @exception InvalidParameterException
      */
     void sendValidationEmail ( UserDocumentDTO dto ) throws ApplicationException;
+
+
+    /**
+     * Obtem o status do login do usuário corrente (autenticado).
+     * 
+     * @param currentUser AuthenticationDTO do usuário autenticado
+     * @return Id do status do usuário
+     */
+    Integer getStatus ( AuthenticationDTO currentUser );
+
+
+    /**
+     * Altera o status do usuário no banco de dados.
+     * 
+     * @param currentUser Usuário autenticado.
+     * @param newStatus Novo status a ser alterado no banco de dados.
+     */
+    void setStatus ( AuthenticationDTO currentUser, Integer newStatus );
+    
+    /**
+     * Autentica o usuário. Esta será a função mais usada de todas.
+     * Para QUALQUER operacao, esta função deverá ser chamada antes.
+     * 
+     * 
+     * @param currentUser
+     * @return boolean true para usuário autenticado ou false
+     */
+    public Boolean authenticate ( AuthenticationDTO currentUser );
     
 }

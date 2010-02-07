@@ -1,6 +1,7 @@
 package br.com.mcampos.util.business;
 
 import br.com.mcampos.dto.RegisterDTO;
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
@@ -119,7 +120,7 @@ public class LoginLocator extends BusinessDelegate
     }
     
     
-    public LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException
+    public AuthenticationDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException
     {
         return getFacade().loginUser( dto );
     }
@@ -129,4 +130,26 @@ public class LoginLocator extends BusinessDelegate
         getFacade().logoutUser( dto );
     }
     
+    /**
+     * Obtem o status do login do usuário corrente (autenticado).
+     * 
+     * @param currentUser AuthenticationDTO do usuário autenticado
+     * @return Id do status do usuário
+     */
+    public Integer getStatus ( AuthenticationDTO currentUser )
+    {
+        return getFacade().getStatus( currentUser );
+    }
+    
+    
+    /**
+     * Altera o status do usuário no banco de dados.
+     * 
+     * @param currentUser Usuário autenticado.
+     * @param newStatus Novo status a ser alterado no banco de dados.
+     */
+    public void setStatus ( AuthenticationDTO currentUser, Integer newStatus )
+    {
+        getFacade().setStatus( currentUser, newStatus );
+    }
 }

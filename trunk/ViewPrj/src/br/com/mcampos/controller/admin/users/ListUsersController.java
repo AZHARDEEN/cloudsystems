@@ -40,7 +40,7 @@ public class ListUsersController extends BaseUserListController
     protected void showInformation( Object obj )
     {
         ListUserDTO dto = ( ListUserDTO ) obj;
-        PersonDTO person = getLocator().getPerson( dto.getId() );
+        PersonDTO person = getUserLocator().getPerson( dto.getId() );
         
         if ( person != null ) {
             showPersonInfo( person );

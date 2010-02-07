@@ -6,6 +6,7 @@ import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.facade.UserFacadeSession;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -78,5 +79,20 @@ public class UsersLocator extends BusinessDelegate
     public UserDTO getUserByDocument ( UserDocumentDTO dto )
     {
         return getSessionBean().getUserByDocument( dto );
+    }
+    
+    
+    
+    /*
+     * Estas funcoes abaixo são para o uso das minhas empresas
+     */
+    
+    public UserDTO getMyCompany ( Integer userID, LoginDTO dto ) 
+    {
+        return getSessionBean().getMyCompany(userID, dto);
+    }
+    
+    public Integer getMyCompanyCount( Integer userId ) {
+        return getSessionBean().getMyCompanyCount( userId);
     }
 }

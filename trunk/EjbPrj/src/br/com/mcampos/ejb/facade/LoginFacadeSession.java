@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.facade;
 
 import br.com.mcampos.dto.RegisterDTO;
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
@@ -68,10 +69,39 @@ public interface LoginFacadeSession
     void sendValidationEmail ( UserDocumentDTO dto ) throws ApplicationException;
 
 
-    LoginDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException;
+    /**
+     * Executa o login no aplicativo se possível.
+     * 
+     * @param dto Credenciais para realização do login
+     * @return AuthenticationDTO dados do usuário autenticado
+     * @throws ApplicationException
+     */
+    AuthenticationDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException;
 
+    /**
+     * Finaliza a sessão (não confundir com a sessão do browser) do usuário.
+     * 
+     * @param dto LoginDTO
+     * @throws ApplicationException
+     */
     void logoutUser ( LoginDTO dto ) throws ApplicationException;
 
+    /**
+     * Obtem o status do login do usuário corrente (autenticado).
+     * 
+     * @param currentUser AuthenticationDTO do usuário autenticado
+     * @return Id do status do usuário
+     */
+    Integer getStatus ( AuthenticationDTO currentUser );
+    
+    /**
+     * Altera o status do usuário no banco de dados.
+     * 
+     * @param currentUser Usuário autenticado.
+     * @param newStatus Novo status a ser alterado no banco de dados.
+     */
+    void setStatus ( AuthenticationDTO currentUser, Integer newStatus );
+    
 }
 
 

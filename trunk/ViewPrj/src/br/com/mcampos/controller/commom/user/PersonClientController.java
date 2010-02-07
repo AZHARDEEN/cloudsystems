@@ -3,6 +3,7 @@ package br.com.mcampos.controller.commom.user;
 import br.com.mcampos.controller.admin.clients.UserClientController;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.StateDTO;
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
@@ -178,7 +179,7 @@ public class PersonClientController extends UserClientController
     
     protected Boolean persist ( )
     {
-        LoginDTO currentUser;
+        AuthenticationDTO currentUser;
         PersonDTO dto = getCurrentDTO();
         
         
@@ -202,8 +203,8 @@ public class PersonClientController extends UserClientController
             showErrorMessage( e.getMessage() );
         }
         currentUser = getLoggedInUser();
-        if ( currentUser.getUserStatus().getId() == UserStatusDTO.statusFullfillRecord ) {
-            currentUser.setUserStatus( new UserStatusDTO ( UserStatusDTO.statusOk ) );
+        if ( getLoginLocator().getStatus( currentUser ) == UserStatusDTO.statusFullfillRecord ) {
+            getLoginLocator().setStatus( currentUser, UserStatusDTO.statusOk );
             setLoggedInUser( currentUser );
             Executions.sendRedirect( "/private/index.zul" );
             return false;

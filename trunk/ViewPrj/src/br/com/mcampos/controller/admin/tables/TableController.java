@@ -112,7 +112,7 @@ public abstract class TableController extends LoggedBaseController
         enableOperationsButtons ( false );
         setAddNewOperation ( true );
         try {
-            updateEditableRecords ( getLocator(), null );
+            updateEditableRecords ( getTableLocator(), null );
         }
         catch ( Exception e )
         {
@@ -130,7 +130,7 @@ public abstract class TableController extends LoggedBaseController
             enableOperationsButtons ( false );
             setAddNewOperation ( false );
             try {
-                updateEditableRecords ( getLocator (), updatableItem );
+                updateEditableRecords ( getTableLocator (), updatableItem );
             }
             catch ( Exception e )
             {
@@ -149,7 +149,7 @@ public abstract class TableController extends LoggedBaseController
         deleteItem = listboxRecord.getSelectedItem();
         if ( deleteItem != null ) {
             try {
-                deleteRecord ( getLocator(), deleteItem );
+                deleteRecord ( getTableLocator(), deleteItem );
                 listboxRecord.removeChild( deleteItem );
             }
             catch ( ApplicationException e ) {
@@ -208,7 +208,7 @@ public abstract class TableController extends LoggedBaseController
         showEditPanel( false );
         enableOperationsButtons ( true );
         try {
-            record = saveRecord ( getLocator() );
+            record = saveRecord ( getTableLocator() );
             if ( isAddNewOperation() )
                 insertIntoListbox( listboxRecord, record );
             else
@@ -220,7 +220,7 @@ public abstract class TableController extends LoggedBaseController
         setAddNewOperation ( false );
     }
 
-    protected SimpleTableLoaderLocator getLocator()
+    protected SimpleTableLoaderLocator getTableLocator()
     {
         return locator;
     }

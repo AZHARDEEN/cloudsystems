@@ -1,13 +1,10 @@
 package br.com.mcampos.controller.admin.users;
 
 import br.com.mcampos.controller.admin.users.model.BaseListModel;
-import br.com.mcampos.controller.admin.users.model.PagingListModel;
-import br.com.mcampos.controller.admin.users.renderer.LoginListRenderer;
 import br.com.mcampos.controller.core.LoggedBaseController;
 
 import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
-import br.com.mcampos.dto.user.login.ListLoginDTO;
 
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserContactDTO;
@@ -211,7 +208,7 @@ public abstract class BaseUserListController extends LoggedBaseController
     {
         super.doAfterCompose( comp );
 
-
+        showInfo ( false );
         getDataList().setItemRenderer( getRenderer () );
         refreshModel( getStartPageNumber() );        
     }
@@ -399,7 +396,7 @@ public abstract class BaseUserListController extends LoggedBaseController
         this.locator = locator;
     }
 
-    public UsersLocator getLocator()
+    public UsersLocator getUserLocator()
     {
         if ( locator == null )
             locator = new UsersLocator();
@@ -477,19 +474,22 @@ public abstract class BaseUserListController extends LoggedBaseController
         }
     }
     
+    protected void showInfo ( boolean bPerson ) {
+        rowFirstName.setVisible( bPerson );
+        rowLastName.setVisible( bPerson );
+        rowBirthDate.setVisible( bPerson );
+        rowFatherName.setVisible( bPerson );
+        rowMotherName.setVisible( bPerson );
+        rowCivilState.setVisible( bPerson );
+        rowGender.setVisible( bPerson );
+        rowTitle.setVisible( bPerson );
+        rowBornCity.setVisible( bPerson );
+    }
+    
     protected void showCompanyInfo ( CompanyDTO dto )
     {
         showUserInfo ( dto );
-        
-        rowFirstName.setVisible( false );
-        rowLastName.setVisible( false );
-        rowBirthDate.setVisible( false );
-        rowFatherName.setVisible( false );
-        rowMotherName.setVisible( false );
-        rowCivilState.setVisible( false );
-        rowGender.setVisible( false );
-        rowTitle.setVisible( false );
-        rowBornCity.setVisible( false );
+        showInfo ( false );
     }
     
     
@@ -513,16 +513,7 @@ public abstract class BaseUserListController extends LoggedBaseController
             bornCity.setValue( dto.getBornCity().getDisplayName()  );
         else
             bornCity.setValue( "" );
-
-        rowFirstName.setVisible( true );
-        rowLastName.setVisible( true );
-        rowBirthDate.setVisible( true );
-        rowFatherName.setVisible( true );
-        rowMotherName.setVisible( true );
-        rowCivilState.setVisible( true );
-        rowGender.setVisible( true );
-        rowTitle.setVisible( true );
-        rowBornCity.setVisible( true );
+        showInfo ( true );
     }
     
     protected void showAddressInfo ( AddressDTO dto )

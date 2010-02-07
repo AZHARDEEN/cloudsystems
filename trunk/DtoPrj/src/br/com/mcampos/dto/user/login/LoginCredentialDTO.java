@@ -14,6 +14,7 @@ public class LoginCredentialDTO implements Serializable {
     protected String remoteAddr;
     protected String remoteHost;
     protected ArrayList<UserDocumentDTO> documents;
+    protected String sessionId;
     
     public LoginCredentialDTO() {
         super();
@@ -69,5 +70,13 @@ public class LoginCredentialDTO implements Serializable {
         dto.setDocumentType( type );
         dto.setCode( document );
         getDocuments().add( dto );
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public String getSessionId() {
+        return sessionId;
     }
 }

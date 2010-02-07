@@ -51,7 +51,7 @@ public class ListClientsController extends BaseUserListController
     protected void showInformation( Object obj )
     {
         ListUserDTO dto = ( ListUserDTO ) obj;
-        UserDTO user = getLocator().getUser( dto.getId() );
+        UserDTO user = getUserLocator().getUser( dto.getId() );
         
         if ( user != null ) {
             if ( user instanceof PersonDTO )

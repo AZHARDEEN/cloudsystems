@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.facade;
 
 import br.com.mcampos.dto.RegisterDTO;
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
@@ -121,9 +122,16 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
             systemMessage.throwException( systemMessageTypeId, 1 );
         getLogin().sendValidationEmail( dto );
     }
-    
-    
-    public LoginDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException
+
+
+    /**
+     * Executa o login no aplicativo se possível.
+     * 
+     * @param dto Credenciais para realização do login
+     * @return LoginDTO dados do usuário autenticado
+     * @throws ApplicationException
+     */
+    public AuthenticationDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException
     {
         if ( dto == null )
             systemMessage.throwException( systemMessageTypeId, 1 );
@@ -134,9 +142,39 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
         return  getLogin().loginUser( dto );
     }
 
+
+    /**
+     * Finaliza a sessão (não confundir com a sessão do browser) do usuário.
+     * 
+     * @param dto LoginDTO
+     * @throws ApplicationException
+     */
     public void logoutUser( LoginDTO dto ) throws ApplicationException
     {
         getLogin().logoutUser( dto );
     }
     
+
+    /**
+     * Obtem o status do login do usuário corrente (autenticado).
+     * 
+     * @param currentUser AuthenticationDTO do usuário autenticado
+     * @return Id do status do usuário
+     */
+    public Integer getStatus ( AuthenticationDTO currentUser )
+    {
+        return getLogin().getStatus( currentUser );
+    }
+
+
+    /**
+     * Altera o status do usuário no banco de dados.
+     * 
+     * @param currentUser Usuário autenticado.
+     * @param newStatus Novo status a ser alterado no banco de dados.
+     */
+    public void setStatus ( AuthenticationDTO currentUser, Integer newStatus )
+    {
+        getLogin().setStatus( currentUser, newStatus );
+    }
 }
