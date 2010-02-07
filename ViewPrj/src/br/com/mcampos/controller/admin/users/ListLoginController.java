@@ -10,6 +10,8 @@ import br.com.mcampos.dto.user.login.ListLoginDTO;
 
 import br.com.mcampos.dto.user.PersonDTO;
 
+import br.com.mcampos.exception.ApplicationException;
+
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
@@ -29,7 +31,7 @@ import org.zkoss.zul.event.PagingEvent;
 public class ListLoginController extends BaseUserListController
 {
     protected Button cmdDelete;
-    
+
     public ListLoginController( char c )
     {
         super( c );
@@ -49,39 +51,41 @@ public class ListLoginController extends BaseUserListController
     @Override
     protected ListitemRenderer getRenderer()
     {
-        return new LoginListRenderer(); 
+        return new LoginListRenderer();
     }
 
     @Override
-    protected void showInformation( Object obj )
+    protected void showInformation( Object obj ) throws ApplicationException
     {
         if ( obj == null )
             return;
-        
-        ListLoginDTO dto = ( ListLoginDTO ) obj;
-        
-        setUserStatus ( dto.getUserStatus().getDisplayName() );
-        PersonDTO person = getUserLocator().getPerson( dto.getId() );
-        
+
+        ListLoginDTO dto = ( ListLoginDTO )obj;
+
+        setUserStatus( dto.getUserStatus().getDisplayName() );
+        PersonDTO person;
+
+        person = getUserLocator().getPerson( getLoggedInUser(), dto.getId() );
         if ( person != null ) {
             showPersonInfo( person );
         }
     }
-    
-    public void onClick$cmdDelete () {
+
+    public void onClick$cmdDelete()
+    {
         Set<Listitem> items;
-        Integer []logins;
+        Integer[] logins;
         int nIndex = 0;
         ListLoginDTO dto;
-            
+
         items = getDataList().getSelectedItems();
         if ( items == null || items.size() == 0 )
             return;
         logins = new Integer[ items.size() ];
-        for ( Listitem item: items ) {
-            dto = ( ListLoginDTO ) item.getValue();
+        for ( Listitem item : items ) {
+            dto = ( ListLoginDTO )item.getValue();
             if ( dto != null )
-            logins[ nIndex ++ ] = dto.getId();
+                logins[ nIndex++ ] = dto.getId();
         }
         //getLocator().deleteLogins( logins );
         refreshModel( getStartPageNumber() );

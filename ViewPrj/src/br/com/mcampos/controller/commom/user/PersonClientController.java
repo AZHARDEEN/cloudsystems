@@ -33,7 +33,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Textbox;
 
-@SuppressWarnings({ "unchecked", "Unnecessary" } )
+@SuppressWarnings( { "unchecked", "Unnecessary" } )
 public class PersonClientController extends UserClientController
 {
     private Textbox name;
@@ -46,14 +46,14 @@ public class PersonClientController extends UserClientController
     private Textbox motherName;
     private Combobox bornState;
     private Combobox bornCity;
-    
+
     private PersonDTO currentDTO;
 
-    
+
     /*
      * TODO: implementar dependentes ao cadastro.
      */
-    
+
     public PersonClientController( char c )
     {
         super( c );
@@ -72,132 +72,129 @@ public class PersonClientController extends UserClientController
         Map map = Executions.getCurrent().getArg();
 
         if ( map != null )
-            action = (String) map.get("who");
+            action = ( String )map.get( "who" );
         if ( SysUtils.isEmpty( action ) )
             action = Executions.getCurrent().getParameter( "who" );
         if ( action != null ) {
-            if ( action.equals( "myself" ) ) 
-            {
+            if ( action.equals( "myself" ) ) {
                 showInfo( getLoggedInUser().getUserId() );
             }
-            else if ( action.equals( "new" ) )
-            {
+            else if ( action.equals( "new" ) ) {
                 clearParameter( "client_id" );
             }
         }
         else {
-            Integer id= (Integer) getSessionAttribute( "client_id" );
+            Integer id = ( Integer )getSessionAttribute( "client_id" );
             if ( id != null ) {
                 clearParameter( "client_id" );
                 showInfo( id );
-            } 
+            }
         }
     }
-    
-    
-    protected void preparePage ()
+
+
+    protected void preparePage()
     {
-        super.preparePage();         
-        
-		getSimpleLoader().loadStates ( bornState );
+        super.preparePage();
+
+        getSimpleLoader().loadStates( bornState );
         if ( bornState.getSelectedIndex() > 0 )
             onSelect$bornState();
         //getSimpleLoader().loadContactType( contactType );
-        getSimpleLoader().loadGenders ( gender );
+        getSimpleLoader().loadGenders( gender );
         if ( gender.getSelectedIndex() >= 0 ) {
             onSelect$gender();
         }
         getSimpleLoader().loadCivilStates( maritalStatus );
     }
-    
-    protected void showInfo ( Integer id ) throws ApplicationException
+
+    protected void showInfo( Integer id ) throws ApplicationException
     {
-        PersonDTO dto = getUserLocator().getPerson( id );
+        PersonDTO dto = getUserLocator().getPerson( getLoggedInUser(), id );
         if ( dto != null )
-            showInfo ( dto );
+            showInfo( dto );
     }
-    
-    protected void showInfo ( PersonDTO dto ) throws ApplicationException
+
+    protected void showInfo( PersonDTO dto ) throws ApplicationException
     {
         setCurrentDTO( dto );
         getCmdSubmit().setLabel( "Atualizar" );
-        
-        
+
+
         name.setValue( dto.getName() );
         if ( dto.getBirthDate() != null ) {
             Date birth = new Date();
             birth.setTime( dto.getBirthDate().getTime() );
             birthdate.setValue( birth );
         }
-        showDocuments ( dto.getDocumentList() );
-        showAddresses ( dto.getAddressList() );
-        showContacts ( dto.getContactList() );
+        showDocuments( dto.getDocumentList() );
+        showAddresses( dto.getAddressList() );
+        showContacts( dto.getContactList() );
         findGenderComboitem( dto.getGender() );
         findTitleComboitem( dto.getTitle() );
         findCivilStateComboitem( dto.getCivilState() );
-        findBithCityComboitem ( dto.getBornCity() );
+        findBithCityComboitem( dto.getBornCity() );
         fatherName.setValue( dto.getFatherName() );
         motherName.setValue( dto.getMotherName() );
     }
-    
-    
-    
-    protected void addDocuments ( UserDTO user )
+
+
+    protected void addDocuments( UserDTO user )
     {
         super.addDocuments( user );
-        
+
         UserDocumentDTO dto;
-                
-        
-        dto = new UserDocumentDTO ( );
-        dto.setDocumentType( new DocumentTypeDTO ( DocumentTypeDTO.typeCPF, null, null ) );
+
+
+        dto = new UserDocumentDTO();
+        dto.setDocumentType( new DocumentTypeDTO( DocumentTypeDTO.typeCPF, null, null ) );
         dto.setCode( cpf.getValue() );
-        user.add ( dto );
+        user.add( dto );
     }
 
 
-    protected Boolean validate ()
+    protected Boolean validate()
     {
-        
+
         if ( super.validate() == false )
             return false;
-        
+
         String sName;
-        
-        
+
+
         sName = name.getValue();
         if ( sName.isEmpty() ) {
             showErrorMessage( "O nome completo deve estar preenchido obrigatoriamente." );
             name.focus();
             return false;
         }
-        if ( validateCPF () == false )
+        if ( validateCPF() == false )
             return false;
         return true;
     }
-            
-    
-    protected Boolean persist ( )
+
+
+    protected Boolean persist()
     {
         AuthenticationDTO currentUser;
         PersonDTO dto = getCurrentDTO();
-        
-        
+
+
         dto.setName( name.getValue() );
-        dto.setBirthDate( new Timestamp ( birthdate.getValue().getTime() ) );
-        dto.setBornCity( bornCity.getSelectedItem() != null ? ( CityDTO ) bornCity.getSelectedItem().getValue() : null );
-        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO ) maritalStatus.getSelectedItem().getValue() : null );
+        dto.setBirthDate( new Timestamp( birthdate.getValue().getTime() ) );
+        dto.setBornCity( bornCity.getSelectedItem() != null ? ( CityDTO )bornCity.getSelectedItem().getValue() : null );
+        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() : null );
         dto.setFatherName( fatherName.getValue() );
-        dto.setGender( gender.getSelectedItem() != null ? ( GenderDTO ) gender.getSelectedItem().getValue() : null );
+        dto.setGender( gender.getSelectedItem() != null ? ( GenderDTO )gender.getSelectedItem().getValue() : null );
         dto.setMotherName( motherName.getValue() );
         dto.setNickName( name.getName() );
-        dto.setTitle( title.getSelectedItem() != null ? ( TitleDTO ) title.getSelectedItem().getValue() : null );
+        dto.setTitle( title.getSelectedItem() != null ? ( TitleDTO )title.getSelectedItem().getValue() : null );
         addAddresses( dto );
         addContacts( dto );
         addDocuments( dto );
 
         try {
-            getUserLocator().add( dto );
+            getUserLocator().add( getLoggedInUser(), dto );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage() );
@@ -211,7 +208,7 @@ public class PersonClientController extends UserClientController
         }
         return true;
     }
-    
+
     public void setMaritalStatus( Combobox maritalStatus )
     {
         this.maritalStatus = maritalStatus;
@@ -223,16 +220,15 @@ public class PersonClientController extends UserClientController
     }
 
 
-
-    public void onSelect$gender ()
+    public void onSelect$gender()
     {
         Comboitem item;
-        
+
         item = gender.getSelectedItem();
         if ( item == null )
             return;
-        
-        GenderDTO dto = ( GenderDTO ) item.getValue();
+
+        GenderDTO dto = ( GenderDTO )item.getValue();
         if ( dto != null ) {
             getSimpleLoader().loadSimpleDTO( title, dto.getTitles(), true );
             title.setFocus( true );
@@ -240,14 +236,14 @@ public class PersonClientController extends UserClientController
     }
 
 
-    public void onSelect$bornState ()
+    public void onSelect$bornState()
     {
         Comboitem item;
-        
+
         item = bornState.getSelectedItem();
         if ( item == null )
             return;
-        StateDTO dto = ( StateDTO ) item.getValue();
+        StateDTO dto = ( StateDTO )item.getValue();
         if ( dto != null ) {
             try {
                 getSimpleLoader().loadCities( bornCity, dto.getCountryId(), dto.getId() );
@@ -257,19 +253,18 @@ public class PersonClientController extends UserClientController
             }
         }
     }
-    
 
-    protected void findGenderComboitem ( GenderDTO targetDTO )
+
+    protected void findGenderComboitem( GenderDTO targetDTO )
     {
         List<Comboitem> comboList;
         GenderDTO item;
-        
+
         if ( targetDTO == null )
             return;
-        comboList = ( List<Comboitem> ) gender.getItems();
-        for ( Comboitem comboItem : comboList )
-        {
-            item = ( GenderDTO ) comboItem.getValue();
+        comboList = ( List<Comboitem> )gender.getItems();
+        for ( Comboitem comboItem : comboList ) {
+            item = ( GenderDTO )comboItem.getValue();
             if ( item.compareTo( targetDTO ) == 0 ) {
                 gender.setSelectedItem( comboItem );
                 getSimpleLoader().loadSimpleDTO( title, item.getTitles(), false );
@@ -278,17 +273,16 @@ public class PersonClientController extends UserClientController
         }
     }
 
-    protected void findTitleComboitem ( TitleDTO targetDTO )
+    protected void findTitleComboitem( TitleDTO targetDTO )
     {
         List<Comboitem> comboList;
         TitleDTO item;
-        
+
         if ( targetDTO == null )
             return;
-        comboList = ( List<Comboitem> ) title.getItems();
-        for ( Comboitem comboItem : comboList )
-        {
-            item = ( TitleDTO ) comboItem.getValue();
+        comboList = ( List<Comboitem> )title.getItems();
+        for ( Comboitem comboItem : comboList ) {
+            item = ( TitleDTO )comboItem.getValue();
             if ( item.compareTo( targetDTO ) == 0 ) {
                 title.setSelectedItem( comboItem );
                 break;
@@ -296,17 +290,16 @@ public class PersonClientController extends UserClientController
         }
     }
 
-    protected void findCivilStateComboitem ( CivilStateDTO targetDTO )
+    protected void findCivilStateComboitem( CivilStateDTO targetDTO )
     {
         List<Comboitem> comboList;
         CivilStateDTO item;
-        
+
         if ( targetDTO == null )
             return;
-        comboList = ( List<Comboitem> ) maritalStatus.getItems();
-        for ( Comboitem comboItem : comboList )
-        {
-            item = ( CivilStateDTO ) comboItem.getValue();
+        comboList = ( List<Comboitem> )maritalStatus.getItems();
+        for ( Comboitem comboItem : comboList ) {
+            item = ( CivilStateDTO )comboItem.getValue();
             if ( item.compareTo( targetDTO ) == 0 ) {
                 maritalStatus.setSelectedItem( comboItem );
                 break;
@@ -314,11 +307,11 @@ public class PersonClientController extends UserClientController
         }
     }
 
-    
-    protected void findBithCityComboitem ( CityDTO dto ) throws ApplicationException
+
+    protected void findBithCityComboitem( CityDTO dto ) throws ApplicationException
     {
         if ( dto != null ) {
-            findStateComboitem ( dto.getState(), bornState, bornCity );
+            findStateComboitem( dto.getState(), bornState, bornCity );
             findCityComboitem( dto, bornCity );
         }
     }
@@ -326,9 +319,8 @@ public class PersonClientController extends UserClientController
 
     protected void showDocuments( List<UserDocumentDTO> dto )
     {
-        getDocumentList().getItems().clear ();
-        for ( UserDocumentDTO item : dto )
-        {
+        getDocumentList().getItems().clear();
+        for ( UserDocumentDTO item : dto ) {
             if ( item.getDocumentType().getId().equals( DocumentTypeDTO.typeCPF ) )
                 cpf.setValue( item.getCode() );
             else {
@@ -350,17 +342,15 @@ public class PersonClientController extends UserClientController
     }
 
 
-
-    protected boolean validateCPF ()
+    protected boolean validateCPF()
     {
         String sCPF;
         boolean bRet;
-        
+
         sCPF = cpf.getValue();
         sCPF = sCPF.replaceAll( "[.,\\- ]", "" );
         bRet = CPF.isValid( sCPF );
-        if ( bRet == false )    
-        {
+        if ( bRet == false ) {
             showErrorMessage( "O CPF está inválido" );
             cpf.setFocus( true );
         }

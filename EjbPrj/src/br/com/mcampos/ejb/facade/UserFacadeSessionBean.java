@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.facade;
 
 import br.com.mcampos.dto.core.BasicDTO;
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
@@ -46,41 +47,51 @@ public class UserFacadeSessionBean implements UserFacadeSession
     CollaboratorSessionLocal collaborator;
 
     private static final Integer systemMessageTypeId = 3;
-    
+
 
     public UserFacadeSessionBean()
     {
     }
 
-    public Long getUserRecordCount()
+    public Integer getUserRecordCount( AuthenticationDTO auth ) throws ApplicationException
     {
-        return user.getRecordCount();
+        if ( auth == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
+        return user.getRecordCount( auth );
     }
 
-    public Long getClientRecordCount( Integer owner )
+    public Integer getClientRecordCount( AuthenticationDTO auth, Integer owner ) throws ApplicationException
     {
+        if ( auth == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
         return null;
     }
 
-    public List<ListUserDTO> getUsersByRange( Integer firstResult, Integer maxResults )
+    public List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, Integer firstResult, Integer maxResults ) throws ApplicationException
     {
-        return user.getUsersByRange( firstResult, maxResults );
+        if ( auth == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
+        return user.getUsersByRange( auth, firstResult, maxResults );
     }
 
-    public PersonDTO getPerson( Integer userId )
+    public PersonDTO getPerson( AuthenticationDTO auth, Integer userId ) throws ApplicationException
     {
+        if ( auth == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
         return person.get( userId );
     }
 
-    public UserDTO getUser( Integer userId )
+    public UserDTO getUser( AuthenticationDTO auth, Integer userId ) throws ApplicationException
     {
-        return user.get( userId );
+        if ( auth == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
+        return user.get( auth, userId );
     }
 
 
-    public void add( PersonDTO dto ) throws ApplicationException
+    public void add( AuthenticationDTO auth, PersonDTO dto ) throws ApplicationException
     {
-        testParam( dto );
+        testParam( auth, dto );
         try {
             if ( dto.getId() != null && dto.getId() > 0 )
                 person.update( dto );
@@ -92,9 +103,9 @@ public class UserFacadeSessionBean implements UserFacadeSession
         }
     }
 
-    public void add( CompanyDTO dto ) throws ApplicationException
+    public void add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException
     {
-        testParam( dto );
+        testParam( auth, dto );
         try {
             if ( dto.getId() != null && dto.getId() > 0 )
                 company.update( dto );
@@ -106,9 +117,9 @@ public class UserFacadeSessionBean implements UserFacadeSession
         }
     }
 
-    public void addBusinessEntity( UserDTO dto, LoginDTO loginDTO ) throws ApplicationException
+    public void addBusinessEntity( AuthenticationDTO auth, UserDTO dto, LoginDTO loginDTO ) throws ApplicationException
     {
-        testParam( dto );
+        testParam( auth, dto );
         testParam( loginDTO );
         try {
             Users entity;
@@ -119,9 +130,9 @@ public class UserFacadeSessionBean implements UserFacadeSession
                 if ( dto instanceof CompanyDTO ) {
                     if ( company.hasManagers( dto.getId() ) ) {
                         if ( company.isManager( dto.getId(), loginDTO.getUserId() ) == false )
-                            systemMessage.throwException(systemMessageTypeId, 27 );
+                            systemMessage.throwException( systemMessageTypeId, 27 );
                     }
-                    entity = company.updateBusinessEntity ( ( CompanyDTO )dto, loginDTO );
+                    entity = company.updateBusinessEntity( ( CompanyDTO )dto, loginDTO );
                 }
                 else {
                     entity = person.update( ( PersonDTO )dto );
@@ -131,9 +142,8 @@ public class UserFacadeSessionBean implements UserFacadeSession
                 /*this is a new entity!*/
                 entity = ( dto instanceof CompanyDTO ) ? company.addBusinessEntity( ( CompanyDTO )dto, loginDTO ) : person.add( ( PersonDTO )dto );
             }
-            
-            if ( entity instanceof Company ) 
-            {
+
+            if ( entity instanceof Company ) {
                 company.addCollaborator( entity.getId(), loginDTO.getUserId(), CollaboratorType.typeManager );
             }
         }
@@ -142,10 +152,12 @@ public class UserFacadeSessionBean implements UserFacadeSession
         }
     }
 
-    public UserDTO getUserByDocument( UserDocumentDTO dto )
+    public UserDTO getUserByDocument( AuthenticationDTO auth, UserDocumentDTO dto ) throws ApplicationException
     {
+        if ( auth == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
         Users entity;
-        
+
         entity = user.getUserByDocument( dto );
         if ( user != null ) {
             if ( user instanceof Person )
@@ -161,14 +173,28 @@ public class UserFacadeSessionBean implements UserFacadeSession
         if ( dto == null )
             systemMessage.throwException( systemMessageTypeId, 26 );
     }
-    
-    
-    public UserDTO getMyCompany ( Integer userID, LoginDTO dto ) {
-        return collaborator.getBusinessEntity(userID, dto.getUserId() );
+
+    protected void testParam( AuthenticationDTO auth, BasicDTO dto ) throws ApplicationException
+    {
+        if ( auth == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
+        if ( dto == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
     }
 
-    public Integer getMyCompanyCount ( Integer currentUserID ) {
-        return collaborator.getBusinessEntityCount( currentUserID );
+
+    public UserDTO getMyCompany( AuthenticationDTO auth, Integer businessId ) throws ApplicationException
+    {
+        if ( auth == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
+        return collaborator.getBusinessEntity( auth, businessId );
+    }
+
+    public Integer getMyCompanyCount( AuthenticationDTO auth ) throws ApplicationException
+    {
+        if ( auth == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
+        return collaborator.getBusinessEntityCount( auth );
     }
 
 }

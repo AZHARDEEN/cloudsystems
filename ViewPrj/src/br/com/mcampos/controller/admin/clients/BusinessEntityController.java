@@ -9,6 +9,8 @@ import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 
 
+import br.com.mcampos.exception.ApplicationException;
+
 import java.util.HashMap;
 
 import java.util.Map;
@@ -35,7 +37,7 @@ public class BusinessEntityController extends BaseUserListController
 
     protected BaseListModel getModel( int activePage, int pageSize )
     {
-        BusinessEntityListModel model = new BusinessEntityListModel( getLoggedInUser().getUserId() );
+        BusinessEntityListModel model = new BusinessEntityListModel( getLoggedInUser() );
         model.loadPage( activePage, pageSize );
         return model;
     }
@@ -45,10 +47,10 @@ public class BusinessEntityController extends BaseUserListController
         return new BusinessEntityListRenderer();
     }
 
-    protected void showInformation( Object obj )
+    protected void showInformation( Object obj ) throws ApplicationException
     {
         ListUserDTO dto = ( ListUserDTO )obj;
-        UserDTO user = getUserLocator().getMyCompany( dto.getId(), getLoggedInUser() );
+        UserDTO user = getUserLocator().getMyCompany( getLoggedInUser(), dto.getId() );
 
         if ( user != null ) {
             if ( user instanceof PersonDTO )
@@ -66,9 +68,7 @@ public class BusinessEntityController extends BaseUserListController
         root = getRootParent();
         args = new HashMap<String, Object>();
         args.put( "who", "businessEntity" );
-        args.put( PageBrowseHistory.historyParamName, 
-                  new PageBrowseHistory ( "/private/user/business_entity_list.zul", root.getParent(), execution.getArg() ) 
-                );
+        args.put( PageBrowseHistory.historyParamName, new PageBrowseHistory( "/private/user/business_entity_list.zul", root.getParent(), execution.getArg() ) );
         gotoPage( "/private/user/company.zul", root != null ? root.getParent() : null, args );
     }
 
@@ -87,9 +87,7 @@ public class BusinessEntityController extends BaseUserListController
                 root = getRootParent();
                 args = new HashMap<String, Object>();
                 args.put( "who", "businessEntity" );
-                args.put( PageBrowseHistory.historyParamName, 
-                          new PageBrowseHistory ( "/private/user/business_entity_list.zul", root.getParent(), execution.getArg() ) 
-                        );
+                args.put( PageBrowseHistory.historyParamName, new PageBrowseHistory( "/private/user/business_entity_list.zul", root.getParent(), execution.getArg() ) );
                 args.put( "userId", dto.getId() );
                 gotoPage( "/private/user/company.zul", root != null ? root.getParent() : null, args );
             }

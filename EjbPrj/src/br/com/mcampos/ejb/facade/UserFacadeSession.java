@@ -22,25 +22,25 @@ import javax.ejb.Remote;
 @Remote
 public interface UserFacadeSession
 {
-    Long getUserRecordCount ();
+    Integer getUserRecordCount( AuthenticationDTO auth ) throws ApplicationException;
 
-    Long getClientRecordCount ( Integer owner );
+    Integer getClientRecordCount( AuthenticationDTO auth, Integer owner ) throws ApplicationException;
 
-    List<ListUserDTO> getUsersByRange ( Integer firstResult, Integer maxResults );
+    List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, Integer firstResult, Integer maxResults ) throws ApplicationException;
 
-    PersonDTO getPerson ( Integer userId );
+    PersonDTO getPerson( AuthenticationDTO auth, Integer userId ) throws ApplicationException;
 
-    void add ( PersonDTO dto ) throws ApplicationException;
+    void add( AuthenticationDTO auth, PersonDTO dto ) throws ApplicationException;
 
-    void add ( CompanyDTO dto ) throws ApplicationException;
+    void add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException;
 
-    UserDTO getUser ( Integer userId );
+    UserDTO getUser( AuthenticationDTO auth, Integer userId ) throws ApplicationException;
 
-    UserDTO getUserByDocument ( UserDocumentDTO dto );
-    
-    UserDTO getMyCompany ( Integer userID, LoginDTO dto );
+    UserDTO getUserByDocument( AuthenticationDTO auth, UserDocumentDTO dto ) throws ApplicationException;
 
-    Integer getMyCompanyCount ( Integer currentUserID );
+    UserDTO getMyCompany( AuthenticationDTO auth, Integer userID ) throws ApplicationException;
 
-    
+    Integer getMyCompanyCount( AuthenticationDTO auth ) throws ApplicationException;
+
+
 }

@@ -9,11 +9,13 @@ import br.com.mcampos.dto.user.ListUserDTO;
 
 import br.com.mcampos.dto.user.PersonDTO;
 
+import br.com.mcampos.exception.ApplicationException;
+
 import org.zkoss.zul.ListitemRenderer;
 
 public class ListUsersController extends BaseUserListController
 {
-    
+
     public ListUsersController( char c )
     {
         super( c );
@@ -27,7 +29,7 @@ public class ListUsersController extends BaseUserListController
     @Override
     protected BaseListModel getModel( int activePage, int pageSize )
     {
-        return new PagingListModel ( activePage, pageSize );
+        return new PagingListModel( getLoggedInUser(), activePage, pageSize );
     }
 
     @Override
@@ -37,11 +39,11 @@ public class ListUsersController extends BaseUserListController
     }
 
     @Override
-    protected void showInformation( Object obj )
+    protected void showInformation( Object obj ) throws ApplicationException
     {
-        ListUserDTO dto = ( ListUserDTO ) obj;
-        PersonDTO person = getUserLocator().getPerson( dto.getId() );
-        
+        ListUserDTO dto = ( ListUserDTO )obj;
+        PersonDTO person = getUserLocator().getPerson( getLoggedInUser(), dto.getId() );
+
         if ( person != null ) {
             showPersonInfo( person );
         }

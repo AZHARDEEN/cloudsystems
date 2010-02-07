@@ -2,31 +2,39 @@ package br.com.mcampos.controller.admin.clients;
 
 import br.com.mcampos.controller.admin.users.model.BaseListModel;
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
+
+import br.com.mcampos.exception.ApplicationException;
 
 import java.util.Collections;
 import java.util.List;
 
 public class BusinessEntityListModel extends BaseListModel<ListUserDTO>
 {
-    protected Integer curentUserId;
-    
-    
-    public BusinessEntityListModel( Integer user )
+    private AuthenticationDTO auth;
+
+
+    public BusinessEntityListModel( AuthenticationDTO auth )
     {
         super();
-        setCurentUserId(user);
+        setAuth( auth );
     }
 
-    public BusinessEntityListModel( Integer user, int activePage, int pageSize )
+    public BusinessEntityListModel( AuthenticationDTO auth, int activePage, int pageSize )
     {
-        super ( activePage, pageSize );
-        setCurentUserId( user );
+        super( activePage, pageSize );
+        setAuth( auth );
     }
 
     public int getTotalSize()
     {
-        return getLocator ().getMyCompanyCount( getCurentUserId() );
+        try {
+            return getLocator().getMyCompanyCount( getAuth() );
+        }
+        catch ( ApplicationException e ) {
+            return 0;
+        }
     }
 
     protected List getPageData( int itemStartNumber, int pageSize )
@@ -35,13 +43,13 @@ public class BusinessEntityListModel extends BaseListModel<ListUserDTO>
         return Collections.EMPTY_LIST;
     }
 
-    public void setCurentUserId( Integer curentUserId )
+    protected void setAuth( AuthenticationDTO auth )
     {
-        this.curentUserId = curentUserId;
+        this.auth = auth;
     }
 
-    public Integer getCurentUserId()
+    protected AuthenticationDTO getAuth()
     {
-        return curentUserId;
+        return auth;
     }
 }
