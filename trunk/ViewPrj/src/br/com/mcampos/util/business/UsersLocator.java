@@ -1,12 +1,12 @@
 package br.com.mcampos.util.business;
 
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.facade.UserFacadeSession;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -23,76 +23,73 @@ public class UsersLocator extends BusinessDelegate
     }
 
 
-    protected UserFacadeSession getSessionBean ()
+    protected UserFacadeSession getSessionBean()
     {
-        return ( UserFacadeSession ) getEJBSession( UserFacadeSession.class );
+        return ( UserFacadeSession )getEJBSession( UserFacadeSession.class );
     }
 
 
-    public Long getUserRecordCount ()
+    public Integer getUserRecordCount( AuthenticationDTO auth ) throws ApplicationException
     {
-        return getSessionBean().getUserRecordCount();
+        return getSessionBean().getUserRecordCount( auth );
     }
 
 
-    public Long getClientRecordCount ( Integer owner )
+    public Integer getClientRecordCount( AuthenticationDTO auth, Integer owner ) throws ApplicationException
     {
-        return getSessionBean().getClientRecordCount( owner );
+        return getSessionBean().getClientRecordCount( auth, owner );
     }
 
 
-    
-    public List<ListUserDTO> getUsersByRange ( Integer firstResult, Integer maxResults )
+    public List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, Integer firstResult, Integer maxResults ) throws ApplicationException
     {
-        return getSessionBean().getUsersByRange( firstResult, maxResults );
-    }
-    
- 
-   
-    public PersonDTO getPerson ( Integer userId )
-    {
-        return getSessionBean().getPerson( userId );
+        return getSessionBean().getUsersByRange( auth, firstResult, maxResults );
     }
 
 
-    public UserDTO getUser ( Integer userId )
+    public PersonDTO getPerson( AuthenticationDTO auth, Integer userId ) throws ApplicationException
     {
-        return getSessionBean().getUser( userId );
+        return getSessionBean().getPerson( auth, userId );
     }
 
-    
-    
-    public void add ( PersonDTO dto ) throws ApplicationException
+
+    public UserDTO getUser( AuthenticationDTO auth, Integer userId ) throws ApplicationException
+    {
+        return getSessionBean().getUser( auth, userId );
+    }
+
+
+    public void add( AuthenticationDTO auth, PersonDTO dto ) throws ApplicationException
     {
         if ( dto == null )
-            throw new InvalidParameterException ( "Parâmetro dto não pode ser nulo." );
-        getSessionBean().add( dto );
+            throw new InvalidParameterException( "Parâmetro dto não pode ser nulo." );
+        getSessionBean().add( auth, dto );
     }
-    
-    public void add ( CompanyDTO dto ) throws ApplicationException
+
+    public void add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException
     {
         if ( dto == null )
-            throw new InvalidParameterException ( "Parâmetro dto não pode ser nulo." );
-        getSessionBean().add( dto );
+            throw new InvalidParameterException( "Parâmetro dto não pode ser nulo." );
+        getSessionBean().add( auth, dto );
     }
-    
-    public UserDTO getUserByDocument ( UserDocumentDTO dto )
+
+    public UserDTO getUserByDocument( AuthenticationDTO auth, UserDocumentDTO dto ) throws ApplicationException
     {
-        return getSessionBean().getUserByDocument( dto );
+        return getSessionBean().getUserByDocument( auth, dto );
     }
-    
-    
-    
+
+
     /*
      * Estas funcoes abaixo são para o uso das minhas empresas
      */
-    
-    public UserDTO getMyCompany ( Integer userID, LoginDTO dto ) 
+
+    public UserDTO getMyCompany( AuthenticationDTO dto, Integer companyId ) throws ApplicationException
     {
-        return getSessionBean().getMyCompany(userID, dto);
+        return getSessionBean().getMyCompany( dto, companyId );
     }
-    
-    public Integer getMyCompanyCount( Integer userId ) {
-        return getSessionBean().getMyCompanyCount( userId);
+
+    public Integer getMyCompanyCount( AuthenticationDTO dto ) throws ApplicationException
+    {
+        return getSessionBean().getMyCompanyCount( dto );
     }
 }

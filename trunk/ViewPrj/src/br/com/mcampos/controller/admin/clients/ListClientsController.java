@@ -10,6 +10,8 @@ import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 
+import br.com.mcampos.exception.ApplicationException;
+
 import com.sun.java.swing.plaf.windows.resources.windows;
 
 import java.io.IOException;
@@ -27,7 +29,7 @@ public class ListClientsController extends BaseUserListController
 {
     protected static final String personZulPage = "/private/user/person.zul";
     protected static final String companyZulPage = "/private/user/person.zul";
-    
+
     public ListClientsController()
     {
         super();
@@ -40,7 +42,7 @@ public class ListClientsController extends BaseUserListController
 
     protected BaseListModel getModel( int activePage, int pageSize )
     {
-        return new ClientListModel( activePage, pageSize );
+        return new ClientListModel( getLoggedInUser(), activePage, pageSize );
     }
 
     protected ListitemRenderer getRenderer()
@@ -48,42 +50,42 @@ public class ListClientsController extends BaseUserListController
         return new ClientsListRenderer();
     }
 
-    protected void showInformation( Object obj )
+    protected void showInformation( Object obj ) throws ApplicationException
     {
-        ListUserDTO dto = ( ListUserDTO ) obj;
-        UserDTO user = getUserLocator().getUser( dto.getId() );
-        
+        ListUserDTO dto = ( ListUserDTO )obj;
+        UserDTO user = getUserLocator().getUser( getLoggedInUser(), dto.getId() );
+
         if ( user != null ) {
             if ( user instanceof PersonDTO )
-                showPersonInfo( (PersonDTO) user );
+                showPersonInfo( ( PersonDTO )user );
             else
-                showCompanyInfo ( (CompanyDTO ) user );
+                showCompanyInfo( ( CompanyDTO )user );
         }
     }
-    
-    public void onClick$addPerson ()
+
+    public void onClick$addPerson()
     {
-        gotoPage ( personZulPage + "?who=newClient" );
+        gotoPage( personZulPage + "?who=newClient" );
     }
 
-    public void onClick$addCompany ()
+    public void onClick$addCompany()
     {
-        gotoPage ( companyZulPage + "?who=newClient" );
+        gotoPage( companyZulPage + "?who=newClient" );
     }
 
 
-    public void onClick$updateClient () throws IOException
+    public void onClick$updateClient() throws IOException
     {
         Listitem item = getDataList().getSelectedItem();
         ListUserDTO dto;
-        
+
         if ( item == null )
             return;
-        dto = (ListUserDTO)item.getValue();
-        if ( dto != null )  {
+        dto = ( ListUserDTO )item.getValue();
+        if ( dto != null ) {
             setParameter( "client_id", dto.getId() );
             if ( dto.getUserType().getId() == 1 )
-                gotoPage ( personZulPage + "?who=updateClient" );
+                gotoPage( personZulPage + "?who=updateClient" );
             else
                 gotoPage( companyZulPage + "?who=updateClient" );
         }

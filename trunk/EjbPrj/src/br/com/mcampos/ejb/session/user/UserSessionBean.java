@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.session.user;
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
@@ -36,22 +37,26 @@ public class UserSessionBean implements UserSessionLocal
     @PersistenceContext( unitName = "EjbPrj" )
     private EntityManager em;
 
-    @EJB UserDocumentSessionLocal userDocumentoSession;
-    
+    @EJB
+    UserDocumentSessionLocal userDocumentoSession;
+
     @EJB
     SystemMessagesSessionLocal systemMessage;
 
-    private static final Integer systemMessageTypeId = 3;
-    
+    @EJB
+    LoginSessionLocal login;
 
-    public UserSessionBean ()
+    private static final Integer systemMessageTypeId = 3;
+
+
+    public UserSessionBean()
     {
     }
 
     /**************************************************************************************
      * PROTECTED FUNCTIONS
      *************************************************************************************/
-    protected UserDocumentSessionLocal getUserDocumentoSession ()
+    protected UserDocumentSessionLocal getUserDocumentoSession()
     {
         return userDocumentoSession;
     }
@@ -61,18 +66,26 @@ public class UserSessionBean implements UserSessionLocal
      * PUBLIC FUNCTIONS
      *************************************************************************************/
 
-    public Long getRecordCount ()
+    public Integer getRecordCount( AuthenticationDTO auth )
     {
         Long recordCount;
 
-        recordCount = ( Long )em.createNativeQuery( "SELECT COUNT(*) FROM USERS" ).getSingleResult();
-        return recordCount;
+        getLogin().authenticate( auth );
+        try {
+            recordCount = ( Long )em.createNativeQuery( "SELECT COUNT(*) FROM USERS" ).getSingleResult();
+            return recordCount.intValue();
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            return null;
+        }
     }
 
 
     /** <code>select o from Users o</code> */
-    public List<ListUserDTO> getUsersByRange ( int firstResult, int maxResults )
+    public List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, int firstResult, int maxResults )
     {
+        getLogin().authenticate( auth );
         Query query = em.createNamedQuery( "Users.findAll" );
         if ( firstResult > 0 ) {
             query = query.setFirstResult( firstResult );
@@ -83,15 +96,14 @@ public class UserSessionBean implements UserSessionLocal
         try {
             return copy( query.getResultList() );
         }
-        catch ( NoResultException e ) 
-        {
+        catch ( NoResultException e ) {
             e = null;
             return Collections.EMPTY_LIST;
         }
     }
 
 
-    protected List<ListUserDTO> copy ( List<Users> list )
+    protected List<ListUserDTO> copy( List<Users> list )
     {
         List<ListUserDTO> dtos = null;
 
@@ -104,10 +116,11 @@ public class UserSessionBean implements UserSessionLocal
 
     }
 
-    public UserDTO get ( Integer id )
+    public UserDTO get( AuthenticationDTO auth, Integer id )
     {
         Users entity;
 
+        getLogin().authenticate( auth );
         entity = em.find( Users.class, id );
         if ( entity != null ) {
             if ( entity.getUserType() != null )
@@ -123,21 +136,22 @@ public class UserSessionBean implements UserSessionLocal
 
     /*
      * Procura por um registro na tabela de documentos de usuarios (userdocuments).
-     * O único truque desta funcao é testar se o mesmo usuario é o dono de todos os 
-     * documentos. Por exemplo: cpf x, identidade y e email z: x, y e z devem ser do mesmo usuário ou 
+     * O único truque desta funcao é testar se o mesmo usuario é o dono de todos os
+     * documentos. Por exemplo: cpf x, identidade y e email z: x, y e z devem ser do mesmo usuário ou
      * uma exceção será lancada.
-     * A interface para esta função é somente local, isto significa que somente dentro do 
+     * A interface para esta função é somente local, isto significa que somente dentro do
      * container poderá ser usada.
-     * 
+     *
      * @param list Lista de documentos a serem procurados, pois um usuário pode ter mais
      * de um documento.
-     * 
+     *
      * @exception InvalidParameterException
      * @return Users - Entity de usuario
      * @see br.com.mcampos.ejb.entity.user.Users
      *
      */
-    public Users findByDocumentList ( List<UserDocumentDTO> list ) throws ApplicationException
+
+    public Users findByDocumentList( List<UserDocumentDTO> list ) throws ApplicationException
     {
         Users user = null, foundUser = null;
         for ( UserDocumentDTO dto : list ) {
@@ -159,7 +173,7 @@ public class UserSessionBean implements UserSessionLocal
      * @param dto DocumentTypeDTO
      * @return Users - Entity userSession.
      */
-    public Users getUserByDocument ( UserDocumentDTO dto )
+    public Users getUserByDocument( UserDocumentDTO dto )
     {
         UserDocument userDocument;
 
@@ -170,14 +184,13 @@ public class UserSessionBean implements UserSessionLocal
     }
 
 
-
     /**
      * Procura por um usuario baseado em um documento do usuário ( CPF, ID...) específico
      *
      * @param entity DocumentTypeDTO
      * @return Users - Entity userSession.
      */
-    public Users getUserByDocument ( UserDocument entity )
+    public Users getUserByDocument( UserDocument entity )
     {
         UserDocument userDocument;
 
@@ -189,25 +202,25 @@ public class UserSessionBean implements UserSessionLocal
 
 
     /**
-     * Lança uma exceção que NÃO causa rollback da transação, ou seja, 
+     * Lança uma exceção que NÃO causa rollback da transação, ou seja,
      * NÃO É derivada de runtime-excpetion
-     * 
+     *
      * @param id - id da mensagem a ser exibida. Cadastrada na tabela SystemMessages
      * @throws ApplicationException
      */
-    protected void throwException ( int id ) throws ApplicationException
+    protected void throwException( int id ) throws ApplicationException
     {
         getSystemMessage().throwException( systemMessageTypeId, id );
     }
 
     /**
-     * Lança uma exceção que PROVOCA rollback da transação, ou seja, 
+     * Lança uma exceção que PROVOCA rollback da transação, ou seja,
      * E derivada de runtime-excpetion
-     * 
+     *
      * @param id - id da mensagem a ser exibida. Cadastrada na tabela SystemMessages
      * @throws ApplicationException
      */
-    protected void throwRuntimeException ( int id ) throws ApplicationException
+    protected void throwRuntimeException( int id ) throws ApplicationException
     {
         getSystemMessage().throwRuntimeException( systemMessageTypeId, id );
     }
@@ -215,5 +228,10 @@ public class UserSessionBean implements UserSessionLocal
     protected SystemMessagesSessionLocal getSystemMessage()
     {
         return systemMessage;
+    }
+
+    protected LoginSessionLocal getLogin()
+    {
+        return login;
     }
 }

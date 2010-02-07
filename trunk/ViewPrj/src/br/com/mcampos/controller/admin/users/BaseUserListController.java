@@ -10,6 +10,7 @@ import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserContactDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.business.UsersLocator;
 
@@ -40,12 +41,11 @@ public abstract class BaseUserListController extends LoggedBaseController
     private final Integer _pageSize = 50;
     private Integer _totalSize = 0;
     private Boolean _needsTotalSizeUpdate = true;
-    
+
     private UsersLocator locator;
-    
-    
-    
-    /*Non editable fields*/    
+
+
+    /*Non editable fields*/
     Label userId;
     Label name;
     Label firstName;
@@ -60,8 +60,8 @@ public abstract class BaseUserListController extends LoggedBaseController
     Label title;
     Label bornCity;
     Label nickName;
-    
-    
+
+
     Label addressType;
     Label address;
     Label hood;
@@ -70,8 +70,8 @@ public abstract class BaseUserListController extends LoggedBaseController
     Label zip;
     Label labelNickName;
     Label labelName;
-    
-    
+
+
     Row rowId;
     Row rowName;
     Row rowFirstName;
@@ -85,7 +85,6 @@ public abstract class BaseUserListController extends LoggedBaseController
     Row rowTitle;
     Row rowBornCity;
     Row rowNickName;
-    
 
 
     Grid documentGrid;
@@ -101,26 +100,28 @@ public abstract class BaseUserListController extends LoggedBaseController
     {
         super();
     }
-    
-    protected abstract BaseListModel getModel ( int activePage, int pageSize );
-    protected abstract ListitemRenderer getRenderer ();
-    protected abstract void showInformation ( Object obj );
+
+    protected abstract BaseListModel getModel( int activePage, int pageSize );
+
+    protected abstract ListitemRenderer getRenderer();
+
+    protected abstract void showInformation( Object obj ) throws ApplicationException;
 
 
-    protected void setPageSize ( Integer pageSize )
+    protected void setPageSize( Integer pageSize )
     {
         if ( getUserUpperPaging() != null )
-            getUserUpperPaging().setPageSize(pageSize); 
+            getUserUpperPaging().setPageSize( pageSize );
         if ( getUserLowerPaging() != null )
-            getUserLowerPaging().setPageSize(pageSize);
+            getUserLowerPaging().setPageSize( pageSize );
     }
-    
-    protected void setTotalSize ( Integer size )
+
+    protected void setTotalSize( Integer size )
     {
         if ( getUserUpperPaging() != null )
-            getUserUpperPaging().setTotalSize(size);
+            getUserUpperPaging().setTotalSize( size );
         if ( getUserLowerPaging() != null )
-            getUserLowerPaging().setTotalSize(size);
+            getUserLowerPaging().setTotalSize( size );
     }
 
     public void setUserUpperPaging( Paging userUpperPaging )
@@ -144,12 +145,12 @@ public abstract class BaseUserListController extends LoggedBaseController
     }
 
 
-    protected void setPageInfo ( ForwardEvent event )
+    protected void setPageInfo( ForwardEvent event )
     {
-        final PagingEvent pe = (PagingEvent) event.getOrigin();
-        
-        
-        setStartPageNumber ( pe.getActivePage() );
+        final PagingEvent pe = ( PagingEvent )event.getOrigin();
+
+
+        setStartPageNumber( pe.getActivePage() );
         refreshModel( getStartPageNumber() );
     }
 
@@ -157,8 +158,8 @@ public abstract class BaseUserListController extends LoggedBaseController
     {
         return _startPageNumber;
     }
-    
-    public void setStartPageNumber ( Integer pageNumber )
+
+    public void setStartPageNumber( Integer pageNumber )
     {
         _startPageNumber = pageNumber;
     }
@@ -180,49 +181,55 @@ public abstract class BaseUserListController extends LoggedBaseController
     }
 
 
-    public void onPaging$userUpperPaging(ForwardEvent event){
-        setPageInfo ( event );
-    }
-    
-    public void onPaging$userLowerPaging(ForwardEvent event){
-        setPageInfo ( event );
+    public void onPaging$userUpperPaging( ForwardEvent event )
+    {
+        setPageInfo( event );
     }
 
-    protected void refreshModel(int activePage)
+    public void onPaging$userLowerPaging( ForwardEvent event )
+    {
+        setPageInfo( event );
+    }
+
+    protected void refreshModel( int activePage )
     {
         BaseListModel model;
-        
-        
+
+
         setPageSize( getPageSize() );
-        model = getModel (activePage, getPageSize() );
-        if(_needsTotalSizeUpdate) {
+        model = getModel( activePage, getPageSize() );
+        if ( _needsTotalSizeUpdate ) {
             _totalSize = model.getTotalSize();
             _needsTotalSizeUpdate = false;
         }
-        setTotalSize(_totalSize);
-        dataList.setModel(model);   
-    }   
-    
+        setTotalSize( _totalSize );
+        dataList.setModel( model );
+    }
+
     @Override
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
 
-        showInfo ( false );
-        getDataList().setItemRenderer( getRenderer () );
-        refreshModel( getStartPageNumber() );        
+        showInfo( false );
+        getDataList().setItemRenderer( getRenderer() );
+        refreshModel( getStartPageNumber() );
     }
-    
-    
-    public void onSelect$dataList ()
+
+
+    public void onSelect$dataList()
     {
         Listitem item = getDataList().getSelectedItem();
-        
-        if ( item != null )
-        {
+
+        if ( item != null ) {
             Object obj = item.getValue();
             if ( obj != null )
-                showInformation( obj );
+                try {
+                    showInformation( obj );
+                }
+                catch ( ApplicationException e ) {
+                    e = null;
+                }
         }
     }
 
@@ -245,7 +252,7 @@ public abstract class BaseUserListController extends LoggedBaseController
     {
         return _needsTotalSizeUpdate;
     }
-    
+
     public void setUserId( Integer id )
     {
         getUserId().setValue( id.toString() );
@@ -313,7 +320,7 @@ public abstract class BaseUserListController extends LoggedBaseController
 
     public void setUserStatus( String userStatus )
     {
-        getUserStatus ().setValue( userStatus );
+        getUserStatus().setValue( userStatus );
     }
 
     public Label getUserStatus()
@@ -402,45 +409,41 @@ public abstract class BaseUserListController extends LoggedBaseController
             locator = new UsersLocator();
         return locator;
     }
-    
-    protected void showUserInfo ( UserDTO dto )
+
+    protected void showUserInfo( UserDTO dto )
     {
         setName( dto.getName() );
-        setUserId ( dto.getId() );
+        setUserId( dto.getId() );
         if ( dto.getUserType() != null )
-            userType.setValue( dto.getUserType().getDisplayName()  );
+            userType.setValue( dto.getUserType().getDisplayName() );
         else
-            userType.setValue ( "" );
-        
+            userType.setValue( "" );
+
         if ( labelNickName != null )
             labelNickName.setValue( ( dto instanceof PersonDTO ) ? "Apelido" : "Nome Fantasia" );
         if ( labelName != null )
             labelNickName.setValue( ( dto instanceof PersonDTO ) ? "Nome" : "Razão Social" );
-        
-        
+
+
         if ( SysUtils.isNull( rowNickName ) == false ) {
-            if ( dto.getNickName() != null && dto.getNickName().equals( dto.getName() ) == false )
-            {
+            if ( dto.getNickName() != null && dto.getNickName().equals( dto.getName() ) == false ) {
                 rowNickName.setVisible( true );
                 nickName.setValue( dto.getNickName() );
             }
-            else 
-            {
+            else {
                 rowNickName.setVisible( false );
             }
         }
-        
-        if ( dto.getAddressList().size() == 0 )
-        {
-            addressType.setValue ( "" );
+
+        if ( dto.getAddressList().size() == 0 ) {
+            addressType.setValue( "" );
             address.setValue( "" );
             hood.setValue( "" );
             city.setValue( "" );
             state.setValue( "" );
             zip.setValue( "" );
         }
-        for ( AddressDTO address : dto.getAddressList() ) 
-        {
+        for ( AddressDTO address : dto.getAddressList() ) {
             showAddressInfo( address );
             /*
              * TODO verificar como fazer para mostrar mais de um endereço
@@ -454,9 +457,8 @@ public abstract class BaseUserListController extends LoggedBaseController
             if ( contactGrid.getRows() == null )
                 contactGrid.appendChild( new Rows() );
             contactGrid.getRows().getChildren().clear();
-            for ( UserContactDTO item : dto.getContactList() ) 
-            {
-                newRow = new Row ();
+            for ( UserContactDTO item : dto.getContactList() ) {
+                newRow = new Row();
                 showContactInfo( newRow, item );
                 contactGrid.getRows().appendChild( newRow );
             }
@@ -465,16 +467,16 @@ public abstract class BaseUserListController extends LoggedBaseController
             if ( documentGrid.getRows() == null )
                 documentGrid.appendChild( new Rows() );
             documentGrid.getRows().getChildren().clear();
-            for ( UserDocumentDTO item : dto.getDocumentList() ) 
-            {
-                newRow = new Row ();
+            for ( UserDocumentDTO item : dto.getDocumentList() ) {
+                newRow = new Row();
                 showDocumentInfo( newRow, item );
                 documentGrid.getRows().appendChild( newRow );
             }
         }
     }
-    
-    protected void showInfo ( boolean bPerson ) {
+
+    protected void showInfo( boolean bPerson )
+    {
         rowFirstName.setVisible( bPerson );
         rowLastName.setVisible( bPerson );
         rowBirthDate.setVisible( bPerson );
@@ -485,40 +487,40 @@ public abstract class BaseUserListController extends LoggedBaseController
         rowTitle.setVisible( bPerson );
         rowBornCity.setVisible( bPerson );
     }
-    
-    protected void showCompanyInfo ( CompanyDTO dto )
+
+    protected void showCompanyInfo( CompanyDTO dto )
     {
-        showUserInfo ( dto );
-        showInfo ( false );
+        showUserInfo( dto );
+        showInfo( false );
     }
-    
-    
-    protected void showPersonInfo ( PersonDTO dto )
+
+
+    protected void showPersonInfo( PersonDTO dto )
     {
-        showUserInfo ( dto );
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat ( "dd/MM/yyyy" );
-        
-        firstName.setValue( dto.getFirstName()  );
-        lastName.setValue( dto.getLastName()  );
+        showUserInfo( dto );
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "dd/MM/yyyy" );
+
+        firstName.setValue( dto.getFirstName() );
+        lastName.setValue( dto.getLastName() );
         if ( dto.getBirthDate() != null )
-            birthDate.setValue( simpleDateFormat.format( new Date ( dto.getBirthDate().getTime() ) ) );
-        else 
-            birthDate.setValue ( "" );
-        fatherName.setValue( dto.getFatherName()  );
-        motherName.setValue( dto.getMotherName()  );
+            birthDate.setValue( simpleDateFormat.format( new Date( dto.getBirthDate().getTime() ) ) );
+        else
+            birthDate.setValue( "" );
+        fatherName.setValue( dto.getFatherName() );
+        motherName.setValue( dto.getMotherName() );
         civilState.setValue( ( dto.getCivilState() != null ) ? dto.getCivilState().getDisplayName() : "" );
         gender.setValue( ( dto.getGender() != null ) ? dto.getGender().getDisplayName() : "" );
         title.setValue( ( dto.getTitle() != null ) ? dto.getTitle().getDisplayName() : "" );
-        if ( dto.getBornCity() != null  )
-            bornCity.setValue( dto.getBornCity().getDisplayName()  );
+        if ( dto.getBornCity() != null )
+            bornCity.setValue( dto.getBornCity().getDisplayName() );
         else
             bornCity.setValue( "" );
-        showInfo ( true );
+        showInfo( true );
     }
-    
-    protected void showAddressInfo ( AddressDTO dto )
+
+    protected void showAddressInfo( AddressDTO dto )
     {
-        addressType.setValue ( ( dto.getAddressType() != null ) ? dto.getAddressType().getDescription() : "" );
+        addressType.setValue( ( dto.getAddressType() != null ) ? dto.getAddressType().getDescription() : "" );
         address.setValue( dto.getAddress() );
         hood.setValue( dto.getDistrict() );
         city.setValue( dto.getCity() != null ? dto.getCity().getDisplayName() : "" );
@@ -527,22 +529,22 @@ public abstract class BaseUserListController extends LoggedBaseController
     }
 
 
-    protected void showContactInfo ( Row row, UserContactDTO dto )
+    protected void showContactInfo( Row row, UserContactDTO dto )
     {
         if ( row == null )
             return;
-        
-        row.appendChild( new Label ( (dto.getContactType() != null ) ? dto.getContactType().getDisplayName() : "" ) );
-        row.appendChild( new Label ( dto.getDescription() ) );
+
+        row.appendChild( new Label( ( dto.getContactType() != null ) ? dto.getContactType().getDisplayName() : "" ) );
+        row.appendChild( new Label( dto.getDescription() ) );
     }
 
 
-    protected void showDocumentInfo ( Row row, UserDocumentDTO dto )
+    protected void showDocumentInfo( Row row, UserDocumentDTO dto )
     {
         if ( row == null )
             return;
-        
-        row.appendChild( new Label ( ( dto.getDocumentType() != null ) ? dto.getDocumentType().getDisplayName() : "" ) );
-        row.appendChild( new Label ( dto.getCode() ) );
+
+        row.appendChild( new Label( ( dto.getDocumentType() != null ) ? dto.getDocumentType().getDisplayName() : "" ) );
+        row.appendChild( new Label( dto.getCode() ) );
     }
 }

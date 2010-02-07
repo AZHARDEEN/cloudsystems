@@ -1,7 +1,6 @@
 package br.com.mcampos.controller.commom.user;
 
 
-
 import br.com.mcampos.controller.admin.clients.UserClientController;
 import br.com.mcampos.controller.core.PageBrowseHistory;
 import br.com.mcampos.dto.user.CompanyDTO;
@@ -18,7 +17,6 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Textbox;
 
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -31,8 +29,7 @@ public class CompanyClientController extends UserClientController
     protected CompanyDTO currentDTO;
     private Textbox name;
     private Textbox nickName;
-    
-    
+
 
     public CompanyClientController()
     {
@@ -49,19 +46,19 @@ public class CompanyClientController extends UserClientController
     {
         super.doAfterCompose( comp );
         Map args = execution.getArg();
-        
+
         if ( args != null ) {
-            setActionParam( (String) args.get( "who" ) );
-            setBroseHistory( (PageBrowseHistory) args.get ( PageBrowseHistory.historyParamName ) );
-            Integer userId = ( Integer ) args.get( "userId" );
+            setActionParam( ( String )args.get( "who" ) );
+            setBroseHistory( ( PageBrowseHistory )args.get( PageBrowseHistory.historyParamName ) );
+            Integer userId = ( Integer )args.get( "userId" );
             if ( userId != null )
                 showInfo( userId );
         }
     }
 
-    protected void showInfo( Integer id )
+    protected void showInfo( Integer id ) throws ApplicationException
     {
-        showInfo( ( CompanyDTO )getUserLocator().getUser( id ) );
+        showInfo( ( CompanyDTO )getUserLocator().getUser( getLoggedInUser(), id ) );
     }
 
     public void setCurrentDTO( CompanyDTO currentDTO )
@@ -132,7 +129,7 @@ public class CompanyClientController extends UserClientController
         }
         else {
             try {
-                getUserLocator().add( dto );
+                getUserLocator().add( getLoggedInUser(), dto );
             }
             catch ( ApplicationException e ) {
                 showErrorMessage( e.getMessage() );
@@ -232,8 +229,15 @@ public class CompanyClientController extends UserClientController
         document = cnpj.getValue();
 
         if ( ( document != null ) && ( document.isEmpty() == false ) ) {
-            UserDTO dto = getUserLocator().getUserByDocument( UserDocumentDTO.createUserDocumentCNPJ( document ) );
+            UserDTO dto;
 
+            try {
+                dto = getUserLocator().getUserByDocument( getLoggedInUser(), UserDocumentDTO.createUserDocumentCNPJ( document ) );
+            }
+            catch ( ApplicationException e ) {
+                e = null;
+                dto = null;
+            }
             if ( ( dto != null ) && ( dto instanceof CompanyDTO ) ) {
                 showInfo( ( CompanyDTO )dto );
             }

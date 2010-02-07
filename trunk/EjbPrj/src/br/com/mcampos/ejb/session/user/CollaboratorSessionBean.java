@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.session.user;
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
@@ -11,6 +12,7 @@ import br.com.mcampos.ejb.entity.user.attributes.CollaboratorType;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import javax.persistence.EntityManager;
@@ -21,8 +23,11 @@ import javax.persistence.Query;
 @Stateless( name = "CollaboratorSession", mappedName = "CloudSystems-EjbPrj-CollaboratorSession" )
 public class CollaboratorSessionBean implements CollaboratorSessionLocal
 {
-    @PersistenceContext( unitName="EjbPrj" )
+    @PersistenceContext( unitName = "EjbPrj" )
     private EntityManager em;
+
+    @EJB
+    LoginSessionLocal login;
 
     public CollaboratorSessionBean()
     {
@@ -30,29 +35,29 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
 
     public CollaboratorType persistCollaboratorType( CollaboratorType collaboratorType )
     {
-        em.persist(collaboratorType);
+        em.persist( collaboratorType );
         return collaboratorType;
     }
 
     public CollaboratorType mergeCollaboratorType( CollaboratorType collaboratorType )
     {
-        return em.merge(collaboratorType);
+        return em.merge( collaboratorType );
     }
 
     public void removeCollaboratorType( CollaboratorType collaboratorType )
     {
-        collaboratorType = em.find(CollaboratorType.class, collaboratorType.getId());
-        em.remove(collaboratorType);
+        collaboratorType = em.find( CollaboratorType.class, collaboratorType.getId() );
+        em.remove( collaboratorType );
     }
 
     public List<CollaboratorType> getCollaboratorTypeByCriteria( String jpqlStmt, int firstResult, int maxResults )
     {
-        Query query = em.createQuery(jpqlStmt);
-        if (firstResult > 0) {
-            query = query.setFirstResult(firstResult);
+        Query query = em.createQuery( jpqlStmt );
+        if ( firstResult > 0 ) {
+            query = query.setFirstResult( firstResult );
         }
-        if (maxResults > 0) {
-            query = query.setMaxResults(maxResults);
+        if ( maxResults > 0 ) {
+            query = query.setMaxResults( maxResults );
         }
         return query.getResultList();
     }
@@ -60,47 +65,47 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
     /** <code>select o from CollaboratorType o</code> */
     public List<CollaboratorType> getCollaboratorTypeFindAll()
     {
-        return em.createNamedQuery("CollaboratorType.findAll").getResultList();
+        return em.createNamedQuery( "CollaboratorType.findAll" ).getResultList();
     }
 
     /** <code>select o from CollaboratorType o</code> */
     public List<CollaboratorType> getCollaboratorTypeFindAllByRange( int firstResult, int maxResults )
     {
-        Query query = em.createNamedQuery("CollaboratorType.findAll");
-        if (firstResult > 0) {
-            query = query.setFirstResult(firstResult);
+        Query query = em.createNamedQuery( "CollaboratorType.findAll" );
+        if ( firstResult > 0 ) {
+            query = query.setFirstResult( firstResult );
         }
-        if (maxResults > 0) {
-            query = query.setMaxResults(maxResults);
+        if ( maxResults > 0 ) {
+            query = query.setMaxResults( maxResults );
         }
         return query.getResultList();
     }
 
     public Collaborator persistCollaborator( Collaborator collaborator )
     {
-        em.persist(collaborator);
+        em.persist( collaborator );
         return collaborator;
     }
 
     public Collaborator mergeCollaborator( Collaborator collaborator )
     {
-        return em.merge(collaborator);
+        return em.merge( collaborator );
     }
 
     public void removeCollaborator( Collaborator collaborator )
     {
-        collaborator = em.find(Collaborator.class, new CollaboratorPK(collaborator.getCollaboratorId(), collaborator.getCompanyId(), collaborator.getFromDate()));
-        em.remove(collaborator);
+        collaborator = em.find( Collaborator.class, new CollaboratorPK( collaborator.getCollaboratorId(), collaborator.getCompanyId(), collaborator.getFromDate() ) );
+        em.remove( collaborator );
     }
 
     public List<Collaborator> getCollaboratorByCriteria( String jpqlStmt, int firstResult, int maxResults )
     {
-        Query query = em.createQuery(jpqlStmt);
-        if (firstResult > 0) {
-            query = query.setFirstResult(firstResult);
+        Query query = em.createQuery( jpqlStmt );
+        if ( firstResult > 0 ) {
+            query = query.setFirstResult( firstResult );
         }
-        if (maxResults > 0) {
-            query = query.setMaxResults(maxResults);
+        if ( maxResults > 0 ) {
+            query = query.setMaxResults( maxResults );
         }
         return query.getResultList();
     }
@@ -108,18 +113,18 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
     /** <code>select o from Collaborator o where o.toDate is null </code> */
     public List<Collaborator> getCollaboratorFindAll()
     {
-        return em.createNamedQuery("Collaborator.findAll").getResultList();
+        return em.createNamedQuery( "Collaborator.findAll" ).getResultList();
     }
 
     /** <code>select o from Collaborator o where o.toDate is null </code> */
     public List<Collaborator> getCollaboratorFindAllByRange( int firstResult, int maxResults )
     {
-        Query query = em.createNamedQuery("Collaborator.findAll");
-        if (firstResult > 0) {
-            query = query.setFirstResult(firstResult);
+        Query query = em.createNamedQuery( "Collaborator.findAll" );
+        if ( firstResult > 0 ) {
+            query = query.setFirstResult( firstResult );
         }
-        if (maxResults > 0) {
-            query = query.setMaxResults(maxResults);
+        if ( maxResults > 0 ) {
+            query = query.setMaxResults( maxResults );
         }
         return query.getResultList();
     }
@@ -127,40 +132,35 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
     /** <code>select count(o) from Collaborator o where o.toDate is null and o.company.id = :companyId and o.collaboratorType.id = 1</code> */
     public Integer getCollaboratorHasManager( Object companyId )
     {
-        return (Integer ) em.createNamedQuery("Collaborator.hasManager")
-            .setParameter("companyId", companyId)
-            .getSingleResult();
+        return ( Integer )em.createNamedQuery( "Collaborator.hasManager" ).setParameter( "companyId", companyId ).getSingleResult();
     }
 
     /** <code>select o.collaboratorId from Collaborator o where o.toDate is null and o.company.id = :companyId and o.collaboratorType.id = 1 and o.person.id = :personId</code> */
     public Boolean getCollaboratorIsManager( Object companyId, Object personId )
     {
-        return (Boolean) em.createNamedQuery("Collaborator.isManager")
-            .setParameter("companyId", companyId)
-            .setParameter("personId", personId).getSingleResult();
+        return ( Boolean )em.createNamedQuery( "Collaborator.isManager" ).setParameter( "companyId", companyId ).setParameter( "personId", personId ).getSingleResult();
     }
 
     /** <code>select o from Collaborator o where o.company.id = :companyId and o.person.id = :personId and o.toDate is null</code> */
     public List<Collaborator> getCollaboratorHasCollaborator( Object companyId, Object personId )
     {
-        return em.createNamedQuery("Collaborator.hasCollaborator").setParameter("companyId", companyId).setParameter("personId", personId).getResultList();
+        return em.createNamedQuery( "Collaborator.hasCollaborator" ).setParameter( "companyId", companyId ).setParameter( "personId", personId ).getResultList();
     }
 
 
     /** <code>select o from Collaborator o where o.person.id = :personId and o.toDate is null</code> */
     public List<Collaborator> getCompanies( Integer personId )
     {
-        return em.createNamedQuery("Collaborator.findCompanies")
-            .setParameter("personId", personId).getResultList();
+        return em.createNamedQuery( "Collaborator.findCompanies" ).setParameter( "personId", personId ).getResultList();
     }
 
-    public Integer getBusinessEntityCount( Integer personId )
+    public Integer getBusinessEntityCount( AuthenticationDTO auth )
     {
         Long count;
-        
+
+        getLogin().authenticate( auth );
         try {
-            count = (Long)em.createNamedQuery("Collaborator.countBusinessEntity")
-                .setParameter("personId", personId).getSingleResult();
+            count = ( Long )em.createNamedQuery( "Collaborator.countBusinessEntity" ).setParameter( "personId", auth.getUserId() ).getSingleResult();
             return count.intValue();
         }
         catch ( NoResultException e ) {
@@ -169,14 +169,12 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
         }
     }
 
-    public UserDTO getBusinessEntity( Integer businessId, Integer currentUserId )
+    public UserDTO getBusinessEntity( AuthenticationDTO auth, Integer businessId )
     {
+        getLogin().authenticate( auth );
         try {
-            Collaborator col = (Collaborator)em.createNamedQuery("Collaborator.getBusiness")
-                .setParameter("companyId", businessId)
-                .setParameter("personId", currentUserId)
-                .getSingleResult();
-            return DTOFactory.copy ( col.getCompany() );
+            Collaborator col = ( Collaborator )em.createNamedQuery( "Collaborator.getBusiness" ).setParameter( "companyId", businessId ).setParameter( "personId", auth.getUserId() ).getSingleResult();
+            return DTOFactory.copy( col.getCompany() );
         }
         catch ( NoResultException e ) {
             e = null;
@@ -185,21 +183,26 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
     }
 
 
-    public List<ListUserDTO> getBusinessEntityByRange( Integer currentUserId, int firstResult, int maxResults )
+    public List<ListUserDTO> getBusinessEntityByRange( AuthenticationDTO auth, int firstResult, int maxResults )
     {
-        Query query = em.createNamedQuery("Collaborator.getBusinessList")
-            .setParameter("personId", currentUserId);
-        if (firstResult > 0) {
-            query = query.setFirstResult(firstResult);
+        getLogin().authenticate( auth );
+        Query query = em.createNamedQuery( "Collaborator.getBusinessList" ).setParameter( "personId", auth.getUserId() );
+        if ( firstResult > 0 ) {
+            query = query.setFirstResult( firstResult );
         }
-        if (maxResults > 0) {
-            query = query.setMaxResults(maxResults);
+        if ( maxResults > 0 ) {
+            query = query.setMaxResults( maxResults );
         }
-        List<Collaborator> businessList = ( List<Collaborator>) query.getResultList();
-        List<ListUserDTO> list = new ArrayList<ListUserDTO> ();
+        List<Collaborator> businessList = ( List<Collaborator> )query.getResultList();
+        List<ListUserDTO> list = new ArrayList<ListUserDTO>();
         for ( Collaborator item : businessList ) {
-            list.add ( DTOFactory.copy ( (Users) item.getCompany() ) );
+            list.add( DTOFactory.copy( ( Users )item.getCompany() ) );
         }
         return list;
+    }
+
+    protected LoginSessionLocal getLogin()
+    {
+        return login;
     }
 }

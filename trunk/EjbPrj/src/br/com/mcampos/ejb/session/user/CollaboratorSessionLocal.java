@@ -1,9 +1,12 @@
 package br.com.mcampos.ejb.session.user;
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.ejb.entity.user.Collaborator;
 import br.com.mcampos.ejb.entity.user.attributes.CollaboratorType;
+
+import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
 
@@ -41,12 +44,12 @@ public interface CollaboratorSessionLocal
     Boolean getCollaboratorIsManager( Object companyId, Object personId );
 
     List<Collaborator> getCollaboratorHasCollaborator( Object companyId, Object personId );
-    
+
     List<Collaborator> getCompanies( Integer personId );
-    
-    Integer getBusinessEntityCount( Integer personId );
-    
-    UserDTO getBusinessEntity( Integer businessId, Integer currentUserId );
-    
-    List<ListUserDTO> getBusinessEntityByRange( Integer currentUserId, int firstResult, int maxResults );
+
+    Integer getBusinessEntityCount( AuthenticationDTO auth ) throws ApplicationException;
+
+    UserDTO getBusinessEntity( AuthenticationDTO auth, Integer businessId ) throws ApplicationException;
+
+    List<ListUserDTO> getBusinessEntityByRange( AuthenticationDTO auth, int firstResult, int maxResults );
 }
