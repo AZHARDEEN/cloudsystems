@@ -21,7 +21,8 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries({
-  @NamedQuery(name = "AccessLog.findAll", query = "select o from AccessLog o")
+  @NamedQuery(name = "AccessLog.findAll", query = "select o from AccessLog o"),
+  @NamedQuery(name = "AccessLog.findToken", query = "select o from AccessLog o where o.authenticationId = :token and o.login.userId = :userId ")
 })
 @Table( name = "\"access_log\"" )
 public class AccessLog implements Serializable {
@@ -34,6 +35,9 @@ public class AccessLog implements Serializable {
     private String program;
     private Login login;
     private AccessLogType loginType;
+    private String sessionId;
+    private String authenticationId;
+    
 
     public AccessLog() {
         this.loginDateTime = new Timestamp ( ( new Date() ).getTime() );
@@ -117,5 +121,27 @@ public class AccessLog implements Serializable {
     public AccessLogType getLoginType()
     {
         return loginType;
+    }
+
+    public void setSessionId( String sessionId )
+    {
+        this.sessionId = sessionId;
+    }
+
+    @Column( name="alg_session_id_ch", nullable = false )
+    public String getSessionId()
+    {
+        return sessionId;
+    }
+
+    public void setAuthenticationId( String authenticationId )
+    {
+        this.authenticationId = authenticationId;
+    }
+
+    @Column( name="alg_auth_id_ch", nullable = false )
+    public String getAuthenticationId()
+    {
+        return authenticationId;
     }
 }

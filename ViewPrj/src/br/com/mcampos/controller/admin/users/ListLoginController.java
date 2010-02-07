@@ -61,7 +61,7 @@ public class ListLoginController extends BaseUserListController
         ListLoginDTO dto = ( ListLoginDTO ) obj;
         
         setUserStatus ( dto.getUserStatus().getDisplayName() );
-        PersonDTO person = getLocator().getPerson( dto.getId() );
+        PersonDTO person = getUserLocator().getPerson( dto.getId() );
         
         if ( person != null ) {
             showPersonInfo( person );

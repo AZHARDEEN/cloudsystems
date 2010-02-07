@@ -1,5 +1,6 @@
 package br.com.mcampos.controller;
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.dto.user.login.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
@@ -48,8 +49,9 @@ public class LoginController extends BaseLoginOptionsController
                  * TODO: regra: permitir o login por qualquer tipo de documento, nao apenas com o email.
                  */
                 credential = new LoginCredentialDTO( csPassword, exec.getRemoteAddr(), exec.getRemoteHost() );
+                credential.setSessionId( getSessionID() );
                 credential.addDocument( DocumentTypeDTO.createDocumentTypeEmail(), csIdentification );
-                LoginDTO user = getLocator().loginUser( credential );
+                AuthenticationDTO user = getLocator().loginUser( credential );
                 if ( user != null ) {
                     csLogin = identification.getValue();
                     setCookie( loginCookieName, csLogin, 5 );

@@ -1,9 +1,10 @@
 package br.com.mcampos.controller.core;
 
 import br.com.mcampos.controller.commom.user.PersonClientController;
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 
-import br.com.mcampos.dto.user.login.LoginDTO;
+import br.com.mcampos.util.business.LoginLocator;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
@@ -12,7 +13,7 @@ import org.zkoss.zk.ui.metainfo.ComponentInfo;
 public class LoggedBaseController extends BaseController
 {
     protected static String alternativePath = "/private/index.zul";
-
+    protected LoginLocator loginLocator;
 
     public LoggedBaseController()
     {
@@ -33,9 +34,9 @@ public class LoggedBaseController extends BaseController
             return null;
         }
         else {
-            LoginDTO user = getLoggedInUser();
+            AuthenticationDTO user = getLoggedInUser();
 
-            switch ( user.getUserStatus().getId() ) {
+            switch ( getLoginLocator().getStatus( user ) ) {
                 case UserStatusDTO.statusFullfillRecord:
                     String path = page.getRequestPath();
                     if ( path.endsWith( "person.zul" ) == false || ( this instanceof PersonClientController ) == false ) {
@@ -52,5 +53,12 @@ public class LoggedBaseController extends BaseController
             }
         }
         return null;
+    }
+
+    public LoginLocator getLoginLocator()
+    {
+        if ( loginLocator == null )
+            loginLocator = new LoginLocator ();
+        return loginLocator;
     }
 }

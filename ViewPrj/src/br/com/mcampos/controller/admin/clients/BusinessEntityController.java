@@ -1,6 +1,5 @@
 package br.com.mcampos.controller.admin.clients;
 
-import br.com.mcampos.controller.admin.tables.TableController;
 import br.com.mcampos.controller.admin.users.BaseUserListController;
 import br.com.mcampos.controller.admin.users.model.BaseListModel;
 import br.com.mcampos.controller.core.PageBrowseHistory;
@@ -8,27 +7,15 @@ import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
-import br.com.mcampos.dto.user.attributes.UserTypeDTO;
-import br.com.mcampos.util.business.SimpleTableLoaderLocator;
 
-import br.com.mcampos.util.business.UsersLocator;
 
 import java.util.HashMap;
-import java.util.List;
 
 import java.util.Map;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Desktop;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Page;
-import org.zkoss.zul.Intbox;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
-import org.zkoss.zul.Textbox;
 
 public class BusinessEntityController extends BaseUserListController
 {
@@ -60,9 +47,8 @@ public class BusinessEntityController extends BaseUserListController
 
     protected void showInformation( Object obj )
     {
-        /*
         ListUserDTO dto = ( ListUserDTO )obj;
-        UserDTO user = getLocator().getBusinessEntity( dto.getId(), getLoggedInUser() );
+        UserDTO user = getUserLocator().getMyCompany( dto.getId(), getLoggedInUser() );
 
         if ( user != null ) {
             if ( user instanceof PersonDTO )
@@ -70,7 +56,6 @@ public class BusinessEntityController extends BaseUserListController
             else
                 showCompanyInfo( ( CompanyDTO )user );
         }
-        */
     }
 
     public void onClick$cmdCreate()

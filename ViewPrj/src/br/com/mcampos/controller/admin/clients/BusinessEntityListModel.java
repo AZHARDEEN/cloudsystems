@@ -26,9 +26,7 @@ public class BusinessEntityListModel extends BaseListModel<ListUserDTO>
 
     public int getTotalSize()
     {
-        //Long nRecords;
-        //nRecords = getLocator ().getBusinessEntityCount( getCurentUserId() );
-        return 0; //nRecords.intValue();
+        return getLocator ().getMyCompanyCount( getCurentUserId() );
     }
 
     protected List getPageData( int itemStartNumber, int pageSize )

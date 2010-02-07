@@ -30,6 +30,13 @@ import javax.persistence.Table;
   ,@NamedQuery(name = "Login.findToken", query = "select o from Login o where o.token = :token")
 })
 @Table( name = "\"login\"" )
+
+/** Entity bean Login. Esta é a classe que mapeia a tabela Login.
+ *
+ * @author Marcelo de Campos
+ * @version 1.0
+ */
+
 public class Login implements Serializable
 {
     private Integer userId;

@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.facade;
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
@@ -36,4 +37,10 @@ public interface UserFacadeSession
     UserDTO getUser ( Integer userId );
 
     UserDTO getUserByDocument ( UserDocumentDTO dto );
+    
+    UserDTO getMyCompany ( Integer userID, LoginDTO dto );
+
+    Integer getMyCompanyCount ( Integer currentUserID );
+
+    
 }

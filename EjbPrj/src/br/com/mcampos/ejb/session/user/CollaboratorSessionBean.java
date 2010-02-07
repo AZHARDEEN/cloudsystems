@@ -11,18 +11,15 @@ import br.com.mcampos.ejb.entity.user.attributes.CollaboratorType;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "CollaboratorSession", mappedName = "CloudSystems-EjbPrj-CollaboratorSession" )
-@Remote
-@Local
-public class CollaboratorSessionBean implements CollaboratorSession, CollaboratorSessionLocal
+public class CollaboratorSessionBean implements CollaboratorSessionLocal
 {
     @PersistenceContext( unitName="EjbPrj" )
     private EntityManager em;
@@ -157,22 +154,34 @@ public class CollaboratorSessionBean implements CollaboratorSession, Collaborato
             .setParameter("personId", personId).getResultList();
     }
 
-    public Long getBusinessEntityCount( Integer personId )
+    public Integer getBusinessEntityCount( Integer personId )
     {
         Long count;
         
-        count = (Long)em.createNamedQuery("Collaborator.countBusinessEntity")
-            .setParameter("personId", personId).getSingleResult();
-        return count;
+        try {
+            count = (Long)em.createNamedQuery("Collaborator.countBusinessEntity")
+                .setParameter("personId", personId).getSingleResult();
+            return count.intValue();
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            return 0;
+        }
     }
 
     public UserDTO getBusinessEntity( Integer businessId, Integer currentUserId )
     {
-        Collaborator col = (Collaborator)em.createNamedQuery("Collaborator.getBusiness")
-            .setParameter("companyId", businessId)
-            .setParameter("personId", currentUserId)
-            .getSingleResult();
-        return DTOFactory.copy ( col.getCompany() );
+        try {
+            Collaborator col = (Collaborator)em.createNamedQuery("Collaborator.getBusiness")
+                .setParameter("companyId", businessId)
+                .setParameter("personId", currentUserId)
+                .getSingleResult();
+            return DTOFactory.copy ( col.getCompany() );
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            return null;
+        }
     }
 
 

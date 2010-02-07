@@ -44,7 +44,7 @@ public interface CollaboratorSessionLocal
     
     List<Collaborator> getCompanies( Integer personId );
     
-    Long getBusinessEntityCount( Integer personId );
+    Integer getBusinessEntityCount( Integer personId );
     
     UserDTO getBusinessEntity( Integer businessId, Integer currentUserId );
     

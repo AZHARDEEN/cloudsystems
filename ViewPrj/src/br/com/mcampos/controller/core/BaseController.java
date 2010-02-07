@@ -1,5 +1,6 @@
 package br.com.mcampos.controller.core;
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 
 import br.com.mcampos.sysutils.SysUtils;
@@ -13,6 +14,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
+
+import javax.servlet.http.HttpSession;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -64,6 +67,20 @@ public abstract class BaseController extends GenericForwardComposer
         userCookie.setMaxAge( ( days * 24 ) * ( 3600 ) );
         response.addCookie( userCookie );
     }
+    
+    public String getSessionID ( ) {
+        Object obj;
+        
+        obj = Sessions.getCurrent().getNativeSession();
+        if ( obj instanceof HttpSession ) {
+            HttpSession httpSession;
+            
+            httpSession = ( HttpSession ) obj;
+            return httpSession.getId();
+        }
+        else
+            return null;
+    }
 
 
     public Object getSessionAttribute( String name )
@@ -77,14 +94,14 @@ public abstract class BaseController extends GenericForwardComposer
             Sessions.getCurrent().setAttribute( name, value );
     }
 
-    public void setLoggedInUser( LoginDTO user )
+    public void setLoggedInUser( AuthenticationDTO user )
     {
         setSessionAttribute( CloudSystemSessionListener.userSessionId, user );
     }
 
-    public LoginDTO getLoggedInUser()
+    public AuthenticationDTO getLoggedInUser()
     {
-        return ( LoginDTO )getSessionAttribute( CloudSystemSessionListener.userSessionId );
+        return ( AuthenticationDTO )getSessionAttribute( CloudSystemSessionListener.userSessionId );
     }
 
     public Boolean isUserLogged()

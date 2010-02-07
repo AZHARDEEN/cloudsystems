@@ -16,9 +16,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "ClientSession", mappedName = "CloudSystems-EjbPrj-ClientSession" )
-@Remote
-@Local
-public class ClientSessionBean implements ClientSession, ClientSessionLocal
+public class ClientSessionBean implements ClientSessionLocal
 {
     @PersistenceContext( unitName="EjbPrj" )
     private EntityManager em;

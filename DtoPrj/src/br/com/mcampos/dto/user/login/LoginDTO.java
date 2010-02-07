@@ -21,6 +21,7 @@ public class LoginDTO extends BasicDTO
     protected Timestamp passwordExpirationDate;
     protected String password;
     protected List<UserDTO> businessEntities;
+    protected String sessionId;
 
 
 
@@ -114,6 +115,14 @@ public class LoginDTO extends BasicDTO
     public void addBusinessEntity ( UserDTO dto )
     {
         getBusinessEntities().add( dto );
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public String getSessionId() {
+        return sessionId;
     }
 }
 

@@ -161,4 +161,14 @@ public class UserFacadeSessionBean implements UserFacadeSession
         if ( dto == null )
             systemMessage.throwException( systemMessageTypeId, 26 );
     }
+    
+    
+    public UserDTO getMyCompany ( Integer userID, LoginDTO dto ) {
+        return collaborator.getBusinessEntity(userID, dto.getUserId() );
+    }
+
+    public Integer getMyCompanyCount ( Integer currentUserID ) {
+        return collaborator.getBusinessEntityCount( currentUserID );
+    }
+
 }
