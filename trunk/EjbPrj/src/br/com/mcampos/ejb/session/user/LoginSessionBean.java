@@ -58,6 +58,8 @@ import org.jasypt.util.text.BasicTextEncryptor;
 @Local
 public class LoginSessionBean implements LoginSessionLocal
 {
+    private static final String encprytPassword = "Nj9nQ6jz6Bt3";
+
     @PersistenceContext( unitName = "EjbPrj" )
     private EntityManager em;
     @EJB
@@ -77,14 +79,15 @@ public class LoginSessionBean implements LoginSessionLocal
 
     @EJB
     SystemParametersSessionLocal sysParam;
-    
-    @EJB EmailSessionLocal emailTemplate;
+
+    @EJB
+    EmailSessionLocal emailTemplate;
 
     private static final Integer systemMessageTypeId = 1;
     private static final Integer templateEmailValidation = 1;
 
 
-    public LoginSessionBean ()
+    public LoginSessionBean()
     {
     }
 
@@ -97,7 +100,7 @@ public class LoginSessionBean implements LoginSessionLocal
      * @param dto DTO com os dados básicos para inclusão.
      * @exception InvalidParameterException
      */
-    public void add ( RegisterDTO dto ) throws ApplicationException
+    public void add( RegisterDTO dto ) throws ApplicationException
     {
         /*
          * Verificar os parametros novamente. Pois nao podemos confiar no controller.
@@ -115,7 +118,7 @@ public class LoginSessionBean implements LoginSessionLocal
             throwRuntimeException( 3 );
         if ( SysUtils.isEmpty( dto.getPassword() ) )
             throwRuntimeException( 4 );
-        if ( verifyDocuments( dto.getDocuments() ) == false ) 
+        if ( verifyDocuments( dto.getDocuments() ) == false )
             throwRuntimeException( 10 );
 
         person = ( Person )getUserSession().findByDocumentList( dto.getDocuments() );
@@ -132,21 +135,21 @@ public class LoginSessionBean implements LoginSessionLocal
      * observado que o mesmo depende do relacionamento com a entidade pessoa.
      * Após incluido o login com os dados mais básicos necessários, o novo usuário do
      * sistema DEVE completar o registro.
-     * 
+     *
      * @param dto
      * @param person
      * @throws ApplicationException
      */
-    protected void add ( RegisterDTO dto, Person person ) throws ApplicationException
+    protected void add( RegisterDTO dto, Person person ) throws ApplicationException
     {
         String encryptedPassword;
         BasicPasswordEncryptor passwordEncryptor;
 
         Login login = new Login( null, dto.getPassword(), new UserStatus( UserStatus.statusEmailNotValidated ) );
         /*
-         * Nunca esquecer de vincular os objetos. Quando um objeto é instanciado 
+         * Nunca esquecer de vincular os objetos. Quando um objeto é instanciado
          * ele mantem suas características. Neste exemplo: foi instanciado uma
-         * pessoa, que neste momento não possuia login. Ainda que o login seja 
+         * pessoa, que neste momento não possuia login. Ainda que o login seja
          * inserido no banco de dados, fica a situação inicial - sem login.
          */
         login.setPerson( person );
@@ -165,16 +168,16 @@ public class LoginSessionBean implements LoginSessionLocal
 
 
     /**
-     * Verifica se a lista de documentos inforamada é suficiente para o cadastramento 
+     * Verifica se a lista de documentos inforamada é suficiente para o cadastramento
      * do novo login. Neste momento, devem existir ao menos um email e um cpf
-     * 
+     *
      * @param list Lista de documentos
-     * @return boolean 
+     * @return boolean
      */
-    protected boolean verifyDocuments ( List<UserDocumentDTO> list )
+    protected boolean verifyDocuments( List<UserDocumentDTO> list )
     {
         boolean bCPF = false, bEmail = false;
-        
+
         if ( list == null )
             return false;
         for ( UserDocumentDTO item : list ) {
@@ -193,18 +196,18 @@ public class LoginSessionBean implements LoginSessionLocal
      * Rotina responsável por obter o template de email, configurar os metacampos
      * e enviar o email. Fica claro que este rotina serve somente para os emails
      * vinculados as rotinas de cadastramento, validação e confirmação de login.
-     * 
+     *
      * @param login Entity Login
      * @param templateId id do template no banco de dados
      * @param flatPassword senha (Este senha é a senha gerada pelo sistema)
      * @throws ApplicationException
      */
-    protected void sendMail ( Login login, Integer templateId, String flatPassword ) throws ApplicationException
+    protected void sendMail( Login login, Integer templateId, String flatPassword ) throws ApplicationException
     {
-        SendMailDTO emailDTO = createTemplate ( templateId );
+        SendMailDTO emailDTO = createTemplate( templateId );
         emailDTO.setBody( translateMessageTokens( emailDTO.getBody(), login, flatPassword ) );
         for ( UserDocument item : login.getPerson().getDocuments() ) {
-            if ( item.getDocumentType().getId().equals( UserDocument.typeEmail ) ) 
+            if ( item.getDocumentType().getId().equals( UserDocument.typeEmail ) )
                 emailDTO.addRecipient( item.getCode() );
         }
         sendMail.sendMail( emailDTO );
@@ -213,14 +216,14 @@ public class LoginSessionBean implements LoginSessionLocal
 
     /**
      * Cria um template de email baseado no template cadastrado no banco de dados
-     * 
+     *
      * @param templateID
      * @return
      * @throws ApplicationException
      */
-    protected SendMailDTO createTemplate ( Integer templateID ) throws ApplicationException
+    protected SendMailDTO createTemplate( Integer templateID ) throws ApplicationException
     {
-        SendMailDTO dto = getEmailTemplate().get(  templateID  );
+        SendMailDTO dto = getEmailTemplate().get( templateID );
         if ( dto == null )
             throwRuntimeException( 11 );
         return dto;
@@ -228,12 +231,12 @@ public class LoginSessionBean implements LoginSessionLocal
 
     /**
      * Traduz uma string baseda em tokens iniciados com '<<@@' e finalizado com '@@>>'
-     * 
+     *
      * @param msg A string a ser traduzida
      * @param login Entity Login
      * @return A string traduzida
      */
-    protected String translateMessageTokens ( String msg, Login login, String flatPassword )
+    protected String translateMessageTokens( String msg, Login login, String flatPassword )
     {
         msg = msg.replaceAll( "<<@@LOGIN_NAME@@>>", login.getPerson().getName() );
         for ( UserDocument item : login.getPerson().getDocuments() ) {
@@ -254,7 +257,7 @@ public class LoginSessionBean implements LoginSessionLocal
      * @param login Entity Login
      * @see #Login
      */
-    protected void setPasswordExpirationDate ( Login login )
+    protected void setPasswordExpirationDate( Login login )
     {
         Integer days;
         SystemParameters sysParam = null;
@@ -276,10 +279,10 @@ public class LoginSessionBean implements LoginSessionLocal
     /**
      * Exclui um login ativo no banco de dados. Um login não deve ser excluído
      * fisicamente do banco de dados. Estou pensando somente em fechar (Data fim).
-     * 
+     *
      * @param id Person Id a ser excluído.
      */
-    public void delete ( Integer id )
+    public void delete( Integer id )
     {
         Login login;
 
@@ -302,10 +305,10 @@ public class LoginSessionBean implements LoginSessionLocal
 
     /**
      * Exclui uma lista de logins.
-     * 
+     *
      * @param logins
      */
-    public void delete ( Integer[] logins )
+    public void delete( Integer[] logins )
     {
         if ( logins == null || logins.length == 0 )
             throw new IllegalArgumentException( "Logins cannot be null or empty" );
@@ -317,11 +320,11 @@ public class LoginSessionBean implements LoginSessionLocal
 
     /**
      * Atualiza o status do login.
-     * 
+     *
      * @param id
      * @param newStatus
      */
-    public void updateLoginStatus ( Integer id, Integer newStatus )
+    public void updateLoginStatus( Integer id, Integer newStatus )
     {
         Login login = em.find( Login.class, id );
         if ( login == null || newStatus == null )
@@ -331,12 +334,12 @@ public class LoginSessionBean implements LoginSessionLocal
 
 
     /**
-     * Finaliza a sessão do usuário (no banco de dados). Este função tem como 
+     * Finaliza a sessão do usuário (no banco de dados). Este função tem como
      * finalidade incluir um registro no banco de dados finalizando o login.
-     * 
+     *
      * @param dto LoginDTO
      */
-    public void logoutUser ( LoginDTO dto ) throws ApplicationException
+    public void logoutUser( LoginDTO dto ) throws ApplicationException
     {
         if ( dto == null || dto.getUserId() == null )
             return;
@@ -350,12 +353,12 @@ public class LoginSessionBean implements LoginSessionLocal
     /**
      * Dado uma lista de documentos, obter o login associado aos documentos.
      * Uma regra: todos os documentos DEVEM pertencer a um e somente um login.
-     * 
+     *
      * @param list
      * @return
      * @throws ApplicationException
      */
-    protected Login getLogin ( List<UserDocumentDTO> list ) throws ApplicationException
+    protected Login getLogin( List<UserDocumentDTO> list ) throws ApplicationException
     {
         Person person = ( Person )getUserSession().findByDocumentList( list );
         if ( person == null )
@@ -368,12 +371,12 @@ public class LoginSessionBean implements LoginSessionLocal
 
     /**
      * Obtem um login através de um documento.
-     * 
+     *
      * @param dto
      * @return
      * @throws ApplicationException
      */
-    protected Login getLogin ( UserDocumentDTO dto ) throws ApplicationException
+    protected Login getLogin( UserDocumentDTO dto ) throws ApplicationException
     {
         Person person = ( Person )getUserSession().getUserByDocument( dto );
         if ( person == null )
@@ -386,12 +389,12 @@ public class LoginSessionBean implements LoginSessionLocal
 
     /**
      * Autentica o usuário no sistema.
-     * 
+     *
      * @param dto Credenciais para efetivar a autenticação.
      * @return LoginDTO dto básico autenticado.
      * @throws ApplicationException
      */
-    public AuthenticationDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException
+    public AuthenticationDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException
     {
         Login login = null;
         BasicPasswordEncryptor passwordEncryptor;
@@ -405,8 +408,8 @@ public class LoginSessionBean implements LoginSessionLocal
             throwException( 3 );
         if ( SysUtils.isEmpty( dto.getSessionId() ) )
             throwException( 20 );
-        
-        login = getLogin ( dto.getDocuments() );
+
+        login = getLogin( dto.getDocuments() );
         em.refresh( login );
         verifyUserStatus( login );
         passwordEncryptor = new BasicPasswordEncryptor();
@@ -435,23 +438,23 @@ public class LoginSessionBean implements LoginSessionLocal
         Date now = new Date();
         if ( login.getPasswordExpirationDate().compareTo( new Timestamp( now.getTime() ) ) < 0 ) {
             login.setUserStatus( em.find( UserStatus.class, UserStatus.statusExpiredPassword ) );
-            throwException ( 19 );
+            throwException( 19 );
         }
-        return new AuthenticationDTO ( login.getUserId(), dto.getSessionId(), authToken );
+        return new AuthenticationDTO( login.getUserId(), dto.getSessionId(), authToken );
     }
 
     /**
-     * Para todo o acesso ao sistema ( Login, Logout, troca de senha, etc) 
+     * Para todo o acesso ao sistema ( Login, Logout, troca de senha, etc)
      * um registro de log será gravado.
-     * 
+     *
      * @param login Entity Login.
      * @param dto Credenciais de login.
      * @param accessLogType Tipo de log a ser armazenado.
      */
-    protected String storeAccessLog ( Login login, LoginCredentialDTO dto, Integer accessLogType ) throws ApplicationException
+    protected String storeAccessLog( Login login, LoginCredentialDTO dto, Integer accessLogType ) throws ApplicationException
     {
         AccessLog log;
-        
+
         if ( login == null )
             throwException( 1 );
 
@@ -462,13 +465,15 @@ public class LoginSessionBean implements LoginSessionLocal
         log.setIp( dto != null ? dto.getRemoteAddr() : "127.0.0.1" );
         log.setComputer( dto != null ? dto.getRemoteHost() : null );
         log.setSessionId( dto.getSessionId() );
-        em.persist( log );
         if ( dto != null ) {
-            BasicTextEncryptor encrypt = new BasicTextEncryptor ();
-            return encrypt.encrypt( dto.getSessionId() );
+            BasicTextEncryptor encrypt = new BasicTextEncryptor();
+            encrypt.setPassword( "Nj9nQ6jz6Bt3" );
+            log.setAuthenticationId( encrypt.encrypt( dto.getSessionId() ) );
         }
         else
             return null;
+        em.persist( log );
+        return log.getAuthenticationId();
     }
 
     /**
@@ -478,7 +483,7 @@ public class LoginSessionBean implements LoginSessionLocal
      * @param document UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception InvalidParameterException
      */
-    public void makeNewPassword ( UserDocumentDTO document ) throws ApplicationException
+    public void makeNewPassword( UserDocumentDTO document ) throws ApplicationException
     {
         Login login;
         BasicPasswordEncryptor passwordEncryptor;
@@ -487,7 +492,7 @@ public class LoginSessionBean implements LoginSessionLocal
 
         if ( document == null )
             throwException( 1 );
-        
+
         login = getLogin( document );
         if ( login == null )
             throwException( 14 );
@@ -505,11 +510,11 @@ public class LoginSessionBean implements LoginSessionLocal
     /**
      * Quando uma senha é alterada, a senha antiga é armazenada no banco de dados
      * e o sistema não permite que esta senha seja usada novamente pelo mesmo login.
-     * 
-     * 
+     *
+     *
      * @param login
      */
-    protected void storeOldPassword ( Login login )
+    protected void storeOldPassword( Login login )
     {
         LastUsedPassword lastUsedPassword;
         Timestamp now;
@@ -534,11 +539,11 @@ public class LoginSessionBean implements LoginSessionLocal
 
     /**
      * Valida o status do usuário de acordo com a operação.
-     * 
+     *
      * @param login
      * @throws ApplicationException
      */
-    protected void verifyUserStatus ( Login login ) throws ApplicationException
+    protected void verifyUserStatus( Login login ) throws ApplicationException
     {
         if ( login.getUserStatus().getAllowLogin() == true )
             return;
@@ -565,7 +570,7 @@ public class LoginSessionBean implements LoginSessionLocal
      * @param newPassword - A nova senha
      * @exception InvalidParameterException
      */
-    public void changePassword ( UserDocumentDTO document, String oldPassword, String newPassword ) throws ApplicationException
+    public void changePassword( UserDocumentDTO document, String oldPassword, String newPassword ) throws ApplicationException
     {
         Login login;
         BasicPasswordEncryptor passwordEncryptor;
@@ -591,15 +596,15 @@ public class LoginSessionBean implements LoginSessionLocal
 
 
     /**
-     * O sistema não permite que uma senha seja usada mais de uma vez. Assim, 
+     * O sistema não permite que uma senha seja usada mais de uma vez. Assim,
      * esta função verifica a existência de uma senha usada anteriormente por
      * um mesmo usuário.
-     * 
+     *
      * @param login Entity Login
      * @param newPassword Nova senha a ser verificada
      * @return Boolean
      */
-    protected Boolean isPasswordUsed ( Login login, String newPassword )
+    protected Boolean isPasswordUsed( Login login, String newPassword )
     {
         List<LastUsedPassword> list;
         BasicPasswordEncryptor passwordEncryptor;
@@ -623,12 +628,12 @@ public class LoginSessionBean implements LoginSessionLocal
 
     /**
      * Quando o usuário erra a senha ao acessar o site, é incrementado um contador
-     * de erros. Quando este valor ultrapassa o máximo de número de tentativas, 
+     * de erros. Quando este valor ultrapassa o máximo de número de tentativas,
      * o usuário é automaticamente bloqueado pelo sistema.
-     * 
+     *
      * @param login Entity Login
      */
-    protected void incrementTryCount ( Login login )
+    protected void incrementTryCount( Login login )
     {
         em.merge( login );
         login.incrementTryCount();
@@ -646,16 +651,16 @@ public class LoginSessionBean implements LoginSessionLocal
      * @param password Senha de validação. Este é a senha informada pelo usuário no ato do cadstro
      * @exception InvalidParameterException
      */
-    public void validateEmail ( String token, String password ) throws ApplicationException
+    public void validateEmail( String token, String password ) throws ApplicationException
     {
         BasicPasswordEncryptor passwordEncryptor;
         Login login;
-        
+
         if ( SysUtils.isEmpty( token ) )
             throwException( 8 );
         if ( SysUtils.isEmpty( password ) )
             throwException( 6 );
-        
+
 
         login = findLoginByToken( token );
         if ( login.getUserStatus().getId() != UserStatus.statusEmailNotValidated )
@@ -668,21 +673,21 @@ public class LoginSessionBean implements LoginSessionLocal
         login.setTryCount( 0 );
         login.setUserStatus( em.find( UserStatus.class, UserStatus.statusFullfillRecord ) );
         login.setToken( null );
-        
+
         sendMail( login, 2, null );
     }
 
     /**
      * Quando um novo usuário se cadastra no sistema, é enviado um email de confirmação
-     * com um código de acesso (token). Este código é usado para validar o email dentro 
+     * com um código de acesso (token). Este código é usado para validar o email dentro
      * do sistema. Esta função localiza o novo login através deste token - que por sua
      * vez deve ser único no sistema.
-     * 
+     *
      * @param token - Um string gerado aleatoreamente pelo sistema.
      * @return Entity Login
      * @throws ApplicationException
      */
-    protected Login findLoginByToken ( String token ) throws ApplicationException
+    protected Login findLoginByToken( String token ) throws ApplicationException
     {
         Login login = null;
 
@@ -697,7 +702,7 @@ public class LoginSessionBean implements LoginSessionLocal
     }
 
 
-    public Long getRecordCount ()
+    public Long getRecordCount()
     {
         Long recordCount;
 
@@ -708,7 +713,7 @@ public class LoginSessionBean implements LoginSessionLocal
 
     /** <code>select o from Users o</code> */
     @SuppressWarnings( "unckecked" )
-    public List<ListLoginDTO> getLoginByRange ( int firstResult, int maxResults )
+    public List<ListLoginDTO> getLoginByRange( int firstResult, int maxResults )
     {
         Query query = em.createNamedQuery( "Login.findAll" );
         if ( firstResult > 0 ) {
@@ -721,7 +726,7 @@ public class LoginSessionBean implements LoginSessionLocal
     }
 
 
-    protected List<ListLoginDTO> copy ( List<Login> list )
+    protected List<ListLoginDTO> copy( List<Login> list )
     {
         List<ListLoginDTO> dtos = null;
 
@@ -744,58 +749,58 @@ public class LoginSessionBean implements LoginSessionLocal
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception InvalidParameterException
      */
-    public void sendValidationEmail ( UserDocumentDTO dto ) throws ApplicationException
+    public void sendValidationEmail( UserDocumentDTO dto ) throws ApplicationException
     {
         Login login;
-        
-        login = getLogin ( dto );
+
+        login = getLogin( dto );
         login.getUserStatus();
         if ( login.getUserStatus().getId() != UserStatus.statusEmailNotValidated )
             throwException( 12 );
         sendMail( login, 1, null );
     }
 
-    protected PersonSessionLocal getPersonSession ()
+    protected PersonSessionLocal getPersonSession()
     {
         return personSession;
     }
 
-    protected UserSessionLocal getUserSession ()
+    protected UserSessionLocal getUserSession()
     {
         return userSession;
     }
 
-    protected SystemMessagesSessionLocal getSystemMessage ()
+    protected SystemMessagesSessionLocal getSystemMessage()
     {
         return systemMessage;
     }
 
-    protected SystemParametersSessionLocal getSysParam ()
+    protected SystemParametersSessionLocal getSysParam()
     {
         return sysParam;
     }
 
     /**
-     * Lança uma exceção que NÃO causa rollback da transação, ou seja, 
+     * Lança uma exceção que NÃO causa rollback da transação, ou seja,
      * NÃO É derivada de runtime-excpetion
-     * 
+     *
      * @param id - id da mensagem a ser exibida. Cadastrada na tabela SystemMessages
      * @throws ApplicationException
      */
-    protected void throwException ( int id ) throws ApplicationException
+    protected void throwException( int id ) throws ApplicationException
     {
         getSystemMessage().throwException( systemMessageTypeId, id );
     }
 
 
     /**
-     * Lança uma exceção que PROVOCA rollback da transação, ou seja, 
+     * Lança uma exceção que PROVOCA rollback da transação, ou seja,
      * E derivada de runtime-excpetion
-     * 
+     *
      * @param id - id da mensagem a ser exibida. Cadastrada na tabela SystemMessages
      * @throws ApplicationException
      */
-    protected void throwRuntimeException ( int id ) throws ApplicationException
+    protected void throwRuntimeException( int id ) throws ApplicationException
     {
         getSystemMessage().throwRuntimeException( systemMessageTypeId, id );
     }
@@ -804,69 +809,69 @@ public class LoginSessionBean implements LoginSessionLocal
     {
         return emailTemplate;
     }
-    
-    
+
+
     /**
      * Obtem o status do login do usuário corrente (autenticado).
-     * 
+     *
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
      */
-    public Integer getStatus ( AuthenticationDTO currentUser )
+    public Integer getStatus( AuthenticationDTO currentUser )
     {
         authenticate( currentUser );
         Integer status = 0;
-        
+
         Login login = em.find( Login.class, currentUser.getUserId() );
-                
+
         return login.getUserStatus().getId();
     }
 
 
     /**
      * Altera o status do usuário no banco de dados.
-     * 
+     *
      * @param currentUser Usuário autenticado.
      * @param newStatus Novo status a ser alterado no banco de dados.
      */
-    public void setStatus ( AuthenticationDTO currentUser, Integer newStatus )
+    public void setStatus( AuthenticationDTO currentUser, Integer newStatus )
     {
         authenticate( currentUser );
         if ( SysUtils.isZero( newStatus ) )
             systemMessage.throwRuntimeException( SystemMessagesSessionBean.systemCommomMessageTypeId, 3 );
-            
+
         Login login = em.find( Login.class, currentUser.getUserId() );
-                
+
         login.setUserStatus( em.find( UserStatus.class, newStatus ) );
     }
 
 
     /**
      * Autentica o usuário. Esta será a função mais usada de todas.
-     * Para QUALQUER operacao, esta função deverá ser chamada antes. Entre os 
+     * Para QUALQUER operacao, esta função deverá ser chamada antes. Entre os
      * testes a serem executados podemos listar:
      * 1) Existe um login no banco de dados com o UserId passado?
      * 2) Existe algum token no banco de dados igual ao token passado?
      *    O log existe? O log localizado é igual ao usuário corrente?
      * 3) O Token passado é valido?
-     * 
+     *
      * @param currentUser
      * @return boolean true para usuário autenticado ou false
      */
-    public void authenticate ( AuthenticationDTO currentUser )
+    public void authenticate( AuthenticationDTO currentUser )
     {
         if ( currentUser == null || SysUtils.isZero( currentUser.getUserId() ) )
             systemMessage.throwRuntimeException( SystemMessagesSessionBean.systemCommomMessageTypeId, 3 );
-        
-        
+
+
         AccessLog log = null;
         /*
          * Existe um login no banco de dados com o UserId passado?
          */
-        Login login = em.find ( Login.class, currentUser.getUserId() );
+        Login login = em.find( Login.class, currentUser.getUserId() );
         if ( login == null )
             systemMessage.throwRuntimeException( SystemMessagesSessionBean.systemCommomMessageTypeId, 2 );
-        
+
         /*
          * Existe algum token no banco de dados igual ao token passado?
          * O log existe? O log localizado é igual ao usuário corrente?
@@ -874,23 +879,20 @@ public class LoginSessionBean implements LoginSessionLocal
         if ( SysUtils.isEmpty( currentUser.getAuthenticationId() ) )
             systemMessage.throwRuntimeException( SystemMessagesSessionBean.systemCommomMessageTypeId, 3 );
         try {
-            log = (AccessLog) em.createNamedQuery( "AccessLog.findToken" )
-                .setParameter( "token", currentUser.getAuthenticationId() )
-                .setParameter( "userId", currentUser.getUserId() )
-                .getSingleResult();
+            log = ( AccessLog )em.createNamedQuery( "AccessLog.findToken" ).setParameter( "token", currentUser.getAuthenticationId() ).setParameter( "userId", currentUser.getUserId() ).getSingleResult();
         }
-        catch ( NoResultException e ) 
-        {
+        catch ( NoResultException e ) {
             /*
              * O log não existe. Não existe este usuário com o token corrente...
              */
             systemMessage.throwRuntimeException( SystemMessagesSessionBean.systemCommomMessageTypeId, 2 );
         }
-        
+
         /*
          * O Token passado é valido?
          */
-        BasicTextEncryptor encryptor = new BasicTextEncryptor ();
+        BasicTextEncryptor encryptor = new BasicTextEncryptor();
+        encryptor.setPassword( "Nj9nQ6jz6Bt3" );
         String descryptedId = encryptor.decrypt( log.getAuthenticationId() );
         if ( descryptedId.equals( currentUser.getSessionId() ) == false )
             systemMessage.throwRuntimeException( SystemMessagesSessionBean.systemCommomMessageTypeId, 2 );
