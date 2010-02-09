@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.session.user;
 
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.security.BasicSecurityDTO;
 import br.com.mcampos.dto.system.SendMailDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
@@ -346,10 +347,7 @@ public class LoginSessionBean implements LoginSessionLocal
         Login login = em.find( Login.class, dto.getUserId() );
         if ( login == null )
             return;
-        LoginCredentialDTO credential = new LoginCredentialDTO();
-
-        credential.setSessionId( dto.getSessionId() );
-        storeAccessLog( login, credential, AccessLogType.accessLogTypeLogout );
+        storeAccessLog( login, dto, AccessLogType.accessLogTypeLogout );
 
     }
 
@@ -460,7 +458,7 @@ public class LoginSessionBean implements LoginSessionLocal
      * @param dto Credenciais de login.
      * @param accessLogType Tipo de log a ser armazenado.
      */
-    protected String storeAccessLog( Login login, LoginCredentialDTO dto, Integer accessLogType ) throws ApplicationException
+    protected String storeAccessLog( Login login, BasicSecurityDTO dto, Integer accessLogType ) throws ApplicationException
     {
         AccessLog log;
 
@@ -558,14 +556,10 @@ public class LoginSessionBean implements LoginSessionLocal
             return;
 
         switch ( ( int )( login.getUserStatus().getId() ) ) {
-        case UserStatus.statusMaxLoginTryCount:
-            throwException( 15 );
-        case UserStatus.statusInativo:
-            throwException( 16 );
-        case UserStatus.statusEmailNotValidated:
-            throwException( 17 );
-        default:
-            throwException( 18 );
+        case UserStatus.statusMaxLoginTryCount: throwException( 15 );
+        case UserStatus.statusInativo: throwException( 16 );
+        case UserStatus.statusEmailNotValidated: throwException( 17 );
+        default: throwException( 18 );
         }
     }
 

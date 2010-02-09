@@ -42,5 +42,7 @@ public interface UserFacadeSession
 
     Integer getMyCompanyCount( AuthenticationDTO auth ) throws ApplicationException;
 
+    List<ListUserDTO> getMyCompaniesByRange( AuthenticationDTO dto, Integer startNumber, Integer pageSize ) throws ApplicationException;
+
 
 }
