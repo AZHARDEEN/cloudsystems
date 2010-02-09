@@ -5,7 +5,7 @@ import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 
-import br.com.mcampos.dto.user.login.LoginCredentialDTO;
+import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -19,12 +19,12 @@ public interface LoginFacadeSession
     /**
      * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
      * observado que o mesmo depende do relacionamento com a entidade pessoa.
-     * 
+     *
      * @param dto
      * @exception EJBException
      */
-    void add(RegisterDTO dto) throws ApplicationException;
-    
+    void add( RegisterDTO dto ) throws ApplicationException;
+
     /**
      * Altera a senha do usuário. Deve-se imaginar que o usuario não está logado no sistema
      * para alterar a sua senha.
@@ -34,74 +34,74 @@ public interface LoginFacadeSession
      * @param newPassword - A nova senha
      * @exception EJBException
      */
-    void changePassword ( UserDocumentDTO document, String oldPassword, String newPassword ) throws ApplicationException;
-    
+    void changePassword( UserDocumentDTO document, String oldPassword, String newPassword ) throws ApplicationException;
+
     /**
      * Valida o email informado no ato do cadastro. Quando o usuario se cadastra no sistema,
      * deve obrigatóriamente informar um email válido e único no sistema. Este será a 'identidade'
      * do usuário no sistema, e, portanto, este email deve ser validado.
-     * 
-     * 
+     *
+     *
      * @param token Código gerado pelo sistema e enviado ao email do novo cadastro.
      *              Este token deve ser único no sistema.
      * @param password Senha de validação. Este é a senha informada pelo usuário no ato do cadstro
      * @exception EJBException
      */
-    void validateEmail ( String token, String password ) throws ApplicationException;
-    
+    void validateEmail( String token, String password ) throws ApplicationException;
+
     /**
      * Cria uma nova senha para o usuario logar no sistema e envia esta senha via email.
-     * 
-     * 
+     *
+     *
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception EJBException
      */
-    void makeNewPassword ( UserDocumentDTO dto ) throws ApplicationException;
-    
-    
+    void makeNewPassword( UserDocumentDTO dto ) throws ApplicationException;
+
+
     /**
      * Reenvia um email de confirmação de cadastro de login.
-     * 
-     * 
+     *
+     *
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
      * @exception EJBException
      */
-    void sendValidationEmail ( UserDocumentDTO dto ) throws ApplicationException;
+    void sendValidationEmail( UserDocumentDTO dto ) throws ApplicationException;
 
 
     /**
      * Executa o login no aplicativo se possível.
-     * 
+     *
      * @param dto Credenciais para realização do login
      * @return AuthenticationDTO dados do usuário autenticado
      * @throws ApplicationException
      */
-    AuthenticationDTO loginUser ( LoginCredentialDTO dto ) throws ApplicationException;
+    AuthenticationDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException;
 
     /**
      * Finaliza a sessão (não confundir com a sessão do browser) do usuário.
-     * 
+     *
      * @param dto LoginDTO
      * @throws ApplicationException
      */
-    void logoutUser ( LoginDTO dto ) throws ApplicationException;
+    void logoutUser( AuthenticationDTO dto ) throws ApplicationException;
 
     /**
      * Obtem o status do login do usuário corrente (autenticado).
-     * 
+     *
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
      */
-    Integer getStatus ( AuthenticationDTO currentUser );
-    
+    Integer getStatus( AuthenticationDTO currentUser );
+
     /**
      * Altera o status do usuário no banco de dados.
-     * 
+     *
      * @param currentUser Usuário autenticado.
      * @param newStatus Novo status a ser alterado no banco de dados.
      */
-    void setStatus ( AuthenticationDTO currentUser, Integer newStatus );
-    
+    void setStatus( AuthenticationDTO currentUser, Integer newStatus );
+
 }
 
 

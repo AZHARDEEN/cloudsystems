@@ -3,7 +3,7 @@ package br.com.mcampos.dto;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 
-import br.com.mcampos.dto.user.login.LoginCredentialDTO;
+import br.com.mcampos.dto.security.LoginCredentialDTO;
 
 import java.io.Serializable;
 

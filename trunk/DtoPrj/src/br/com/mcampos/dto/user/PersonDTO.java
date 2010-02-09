@@ -17,7 +17,7 @@ import java.util.Date;
 public class PersonDTO extends UserDTO
 {
     public static final Integer userTypeIdentification = 1;
-    
+
     private Timestamp birthDate;
     private String fatherName;
     private String firstName;
@@ -29,15 +29,15 @@ public class PersonDTO extends UserDTO
     private CivilStateDTO civilState;
     private GenderDTO gender;
     private TitleDTO title;
-    
+
     private CityDTO bornCity;
-    
+
     private LoginDTO login;
-    
+
     public PersonDTO()
     {
         super();
-        setUserType( new UserTypeDTO ( userTypeIdentification ) );
+        setUserType( new UserTypeDTO( userTypeIdentification ) );
     }
 
     public static Integer getUserTypeIdentification()
@@ -49,10 +49,10 @@ public class PersonDTO extends UserDTO
     {
         this.birthDate = birthDate;
     }
-    
-    public void setBirthDate ( java.util.Date birthdate )
+
+    public void setBirthDate( java.util.Date birthdate )
     {
-        setBirthDate( ( ( birthdate != null ) ? new Timestamp ( birthDate.getTime() ) : null ) );
+        setBirthDate( ( ( birthdate != null ) ? new Timestamp( birthDate.getTime() ) : null ) );
     }
 
     public Timestamp getBirthDate()

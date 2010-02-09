@@ -4,7 +4,7 @@ import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
-import br.com.mcampos.dto.user.login.LoginCredentialDTO;
+import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -32,7 +32,7 @@ public interface LoginSessionLocal
 
     AuthenticationDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException;
 
-    public void logoutUser( LoginDTO dto ) throws ApplicationException;
+    public void logoutUser( AuthenticationDTO dto ) throws ApplicationException;
 
     Long getRecordCount();
 

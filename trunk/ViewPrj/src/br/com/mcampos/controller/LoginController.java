@@ -1,9 +1,8 @@
 package br.com.mcampos.controller;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
-import br.com.mcampos.dto.user.login.LoginCredentialDTO;
-import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.exception.ApplicationException;
 
 
@@ -22,17 +21,17 @@ public class LoginController extends BaseLoginOptionsController
 
     protected static String loginCookieName = "LoginCookieName";
 
-    public LoginController ( char c )
+    public LoginController( char c )
     {
         super( c );
     }
 
-    public LoginController ()
+    public LoginController()
     {
         super();
     }
 
-    public void onClick$cmdSubmit ()
+    public void onClick$cmdSubmit()
     {
         String csLogin;
         String csIdentification;
@@ -73,7 +72,7 @@ public class LoginController extends BaseLoginOptionsController
 
 
     @Override
-    public void doAfterCompose ( Component comp ) throws Exception
+    public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
 
