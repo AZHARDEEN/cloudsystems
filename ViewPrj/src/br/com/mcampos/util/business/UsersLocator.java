@@ -11,8 +11,11 @@ import br.com.mcampos.ejb.facade.UserFacadeSession;
 
 import br.com.mcampos.exception.ApplicationException;
 
+import br.com.mcampos.sysutils.SysUtils;
+
 import java.security.InvalidParameterException;
 
+import java.util.Collections;
 import java.util.List;
 
 public class UsersLocator extends BusinessDelegate
@@ -85,11 +88,23 @@ public class UsersLocator extends BusinessDelegate
 
     public UserDTO getMyCompany( AuthenticationDTO dto, Integer companyId ) throws ApplicationException
     {
+        if ( dto == null )
+            return null;
         return getSessionBean().getMyCompany( dto, companyId );
     }
 
     public Integer getMyCompanyCount( AuthenticationDTO dto ) throws ApplicationException
     {
+        if ( dto == null )
+            return 0;
         return getSessionBean().getMyCompanyCount( dto );
     }
+
+    public List<ListUserDTO> getMyCompaniesByRange( AuthenticationDTO dto, Integer startNumber, Integer pageSize ) throws ApplicationException
+    {
+        if ( dto == null )
+            return Collections.EMPTY_LIST;
+        return getSessionBean().getMyCompaniesByRange( dto, startNumber, pageSize );
+    }
+
 }

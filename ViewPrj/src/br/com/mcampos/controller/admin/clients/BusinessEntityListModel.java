@@ -30,7 +30,9 @@ public class BusinessEntityListModel extends BaseListModel<ListUserDTO>
     public int getTotalSize()
     {
         try {
-            return getLocator().getMyCompanyCount( getAuth() );
+            Integer count;
+            count = getLocator().getMyCompanyCount( getAuth() );
+            return count;
         }
         catch ( ApplicationException e ) {
             return 0;
@@ -39,8 +41,13 @@ public class BusinessEntityListModel extends BaseListModel<ListUserDTO>
 
     protected List getPageData( int itemStartNumber, int pageSize )
     {
-        //return getLocator().getBusinessEntityByRange ( getCurentUserId(), itemStartNumber, pageSize );
-        return Collections.EMPTY_LIST;
+        try {
+            return getLocator().getMyCompaniesByRange( getAuth(), itemStartNumber, pageSize );
+        }
+        catch ( ApplicationException e ) {
+            e = null;
+            return Collections.EMPTY_LIST;
+        }
     }
 
     protected void setAuth( AuthenticationDTO auth )

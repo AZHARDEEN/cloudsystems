@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<zk xmlns="http://www.zkoss.org/2005/zul" >
-<div width="100%" apply="br.com.mcampos.controller.MenuController" align="center" id="divMainMenu">
-    <menubar id = "mainMenu" width="100%">
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" apply="br.com.mcampos.controller.MenuController" align="center" id="divMainMenu">
+        <menubar id="mainMenu" width="100%">
+            <!--<![CDATA[
         <menu label="Empresas" id="myCompany" >
             <menupopup>
                 <menuitem label="Minhas Empresas" id="mnuBusinessEntity" />
@@ -16,6 +17,7 @@
                 <menuitem label="Logout" id="mnuLogout" image="/img/logout_16x16.png" />
             </menupopup>
         </menu>
-    </menubar>
-</div>
+            ]]>-->
+        </menubar>
+    </div>
 </zk>

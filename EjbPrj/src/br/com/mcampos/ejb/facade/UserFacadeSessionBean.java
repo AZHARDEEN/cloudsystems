@@ -197,4 +197,12 @@ public class UserFacadeSessionBean implements UserFacadeSession
         return collaborator.getBusinessEntityCount( auth );
     }
 
+
+    public List<ListUserDTO> getMyCompaniesByRange( AuthenticationDTO auth, Integer startNumber, Integer pageSize ) throws ApplicationException
+    {
+        if ( auth == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
+        return collaborator.getBusinessEntityByRange( auth, startNumber, pageSize );
+    }
+
 }
