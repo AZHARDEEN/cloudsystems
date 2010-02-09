@@ -6,13 +6,16 @@ import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 
-import java.io.Serializable;
-
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Esta classe representa o DTO da entidade Login.
+ *
+ *
+ */
 public class LoginDTO extends BasicDTO
 {
     Integer userId;
@@ -21,8 +24,6 @@ public class LoginDTO extends BasicDTO
     protected Timestamp passwordExpirationDate;
     protected String password;
     protected List<UserDTO> businessEntities;
-    protected String sessionId;
-
 
 
     public LoginDTO()
@@ -30,22 +31,20 @@ public class LoginDTO extends BasicDTO
         super();
     }
 
-    public LoginDTO( UserStatusDTO userStatus,
-                     String usr_password_ch )
+    public LoginDTO( UserStatusDTO userStatus, String usr_password_ch )
     {
         super();
-        init ( userStatus, usr_password_ch );
+        init( userStatus, usr_password_ch );
     }
-    
+
 
     protected void init( UserStatusDTO userStatus, String usr_password_ch )
     {
-        setPerson (null);
+        setPerson( null );
         this.userStatus = userStatus;
         this.passwordExpirationDate = null;
         this.password = usr_password_ch;
     }
-    
 
 
     public void setPasswordExpirationDate( Timestamp usr_passwd_exp_dt )
@@ -92,11 +91,13 @@ public class LoginDTO extends BasicDTO
         return userStatus;
     }
 
-    public void setUserId( Integer userId ) {
+    public void setUserId( Integer userId )
+    {
         this.userId = userId;
     }
 
-    public Integer getUserId() {
+    public Integer getUserId()
+    {
         return userId;
     }
 
@@ -108,21 +109,13 @@ public class LoginDTO extends BasicDTO
     public List<UserDTO> getBusinessEntities()
     {
         if ( businessEntities == null )
-            businessEntities = new ArrayList<UserDTO>( );
+            businessEntities = new ArrayList<UserDTO>();
         return businessEntities;
     }
-    
-    public void addBusinessEntity ( UserDTO dto )
+
+    public void addBusinessEntity( UserDTO dto )
     {
         getBusinessEntities().add( dto );
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public String getSessionId() {
-        return sessionId;
     }
 }
 

@@ -10,7 +10,7 @@ import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.dto.user.login.LoginCredentialDTO;
+import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 
 import br.com.mcampos.exception.ApplicationException;

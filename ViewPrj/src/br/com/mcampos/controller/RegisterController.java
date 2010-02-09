@@ -34,17 +34,17 @@ public class RegisterController extends BaseLoginOptionsController
     private Textbox repassword;
     private Textbox cpf;
 
-    public RegisterController ( char c )
+    public RegisterController( char c )
     {
         super( c );
     }
 
-    public RegisterController ()
+    public RegisterController()
     {
         super();
     }
 
-    public void onClick$cmdSubmit ()
+    public void onClick$cmdSubmit()
     {
         try {
             if ( validate() && addNewUser() ) {
@@ -66,7 +66,7 @@ public class RegisterController extends BaseLoginOptionsController
         }
     }
 
-    public void debugData () throws ParseException
+    public void debugData() throws ParseException
     {
         name.setValue( "Marcelo de Campos" );
         re_email.setValue( "marcelodecampos@uol.com.br" );
@@ -77,14 +77,14 @@ public class RegisterController extends BaseLoginOptionsController
         recapctcha.setValue( captcha.getValue() );
     }
 
-    public void doAfterCompose ( Component c ) throws Exception
+    public void doAfterCompose( Component c ) throws Exception
     {
         super.doAfterCompose( c );
         if ( name != null )
             name.setFocus( true );
     }
 
-    protected Boolean validate ()
+    protected Boolean validate()
     {
         String sName, sEmail, sReEmail, sPassword, sRePassword;
 
@@ -117,7 +117,7 @@ public class RegisterController extends BaseLoginOptionsController
         return true;
     }
 
-    protected boolean validateCPF ()
+    protected boolean validateCPF()
     {
         String sCPF;
         boolean bRet;
@@ -133,7 +133,7 @@ public class RegisterController extends BaseLoginOptionsController
     }
 
 
-    protected boolean addNewUser ()
+    protected boolean addNewUser()
     {
         RegisterDTO newLogin;
 
@@ -144,6 +144,7 @@ public class RegisterController extends BaseLoginOptionsController
         newLogin.setRemoteHost( Executions.getCurrent().getRemoteHost() );
         newLogin.addDocument( DocumentTypeDTO.createDocumentTypeCPF(), cpf.getValue() );
         newLogin.addDocument( DocumentTypeDTO.createDocumentTypeEmail(), email.getValue() );
+        newLogin.setSessionId( getSessionID() );
         try {
             getLocator().create( newLogin );
         }

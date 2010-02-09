@@ -6,7 +6,7 @@ import br.com.mcampos.dto.system.SendMailDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
-import br.com.mcampos.dto.user.login.LoginCredentialDTO;
+import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.core.util.RandomString;
 import br.com.mcampos.ejb.entity.login.AccessLog;
@@ -337,16 +337,19 @@ public class LoginSessionBean implements LoginSessionLocal
      * Finaliza a sessão do usuário (no banco de dados). Este função tem como
      * finalidade incluir um registro no banco de dados finalizando o login.
      *
-     * @param dto LoginDTO
+     * @param dto AuthenticationDTO
      */
-    public void logoutUser( LoginDTO dto ) throws ApplicationException
+    public void logoutUser( AuthenticationDTO dto ) throws ApplicationException
     {
         if ( dto == null || dto.getUserId() == null )
             return;
         Login login = em.find( Login.class, dto.getUserId() );
         if ( login == null )
             return;
-        storeAccessLog( login, null, AccessLogType.accessLogTypeLogout );
+        LoginCredentialDTO credential = new LoginCredentialDTO();
+
+        credential.setSessionId( dto.getSessionId() );
+        storeAccessLog( login, credential, AccessLogType.accessLogTypeLogout );
 
     }
 
@@ -440,7 +443,13 @@ public class LoginSessionBean implements LoginSessionLocal
             login.setUserStatus( em.find( UserStatus.class, UserStatus.statusExpiredPassword ) );
             throwException( 19 );
         }
-        return new AuthenticationDTO( login.getUserId(), dto.getSessionId(), authToken );
+        AuthenticationDTO retDTO = new AuthenticationDTO();
+        retDTO.setUserId( login.getUserId() );
+        retDTO.setSessionId( dto.getSessionId() );
+        retDTO.setAuthenticationId( authToken );
+        retDTO.setRemoteAddr( dto.getRemoteAddr() );
+        retDTO.setRemoteHost( dto.getRemoteHost() );
+        return retDTO;
     }
 
     /**

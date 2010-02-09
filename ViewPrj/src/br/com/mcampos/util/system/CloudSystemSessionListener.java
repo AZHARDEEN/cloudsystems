@@ -1,5 +1,6 @@
 package br.com.mcampos.util.system;
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 
 import br.com.mcampos.util.business.LoginLocator;
@@ -24,10 +25,10 @@ public class CloudSystemSessionListener extends HttpSessionListener
     @Override
     public void sessionDestroyed( HttpSessionEvent httpSessionEvent )
     {
-        LoginDTO user;
+        AuthenticationDTO user;
 
         try {
-            user = ( ( LoginDTO )httpSessionEvent.getSession().getAttribute( userSessionId ) );
+            user = ( ( AuthenticationDTO )httpSessionEvent.getSession().getAttribute( userSessionId ) );
             if ( user != null )
                 getLocator().logoutUser( user );
         }

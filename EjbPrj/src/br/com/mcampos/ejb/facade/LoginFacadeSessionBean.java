@@ -4,7 +4,7 @@ import br.com.mcampos.dto.RegisterDTO;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.dto.user.login.LoginCredentialDTO;
+import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
 
@@ -26,7 +26,7 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
     SystemMessagesSessionLocal systemMessage;
     @EJB
     LoginSessionLocal login;
-    
+
     private static final Integer systemMessageTypeId = 1;
 
     public LoginFacadeSessionBean()
@@ -104,7 +104,7 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
     {
         if ( SysUtils.isEmpty( password ) )
             systemMessage.throwException( systemMessageTypeId, 6 );
-        if ( SysUtils.isEmpty( token )  )
+        if ( SysUtils.isEmpty( token ) )
             systemMessage.throwException( systemMessageTypeId, 7 );
         getLogin().validateEmail( token, password );
     }
@@ -126,7 +126,7 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
 
     /**
      * Executa o login no aplicativo se possível.
-     * 
+     *
      * @param dto Credenciais para realização do login
      * @return LoginDTO dados do usuário autenticado
      * @throws ApplicationException
@@ -139,29 +139,29 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
             systemMessage.throwException( systemMessageTypeId, 6 );
         if ( SysUtils.isEmpty( dto.getDocuments() ) )
             systemMessage.throwException( systemMessageTypeId, 3 );
-        return  getLogin().loginUser( dto );
+        return getLogin().loginUser( dto );
     }
 
 
     /**
      * Finaliza a sessão (não confundir com a sessão do browser) do usuário.
-     * 
+     *
      * @param dto LoginDTO
      * @throws ApplicationException
      */
-    public void logoutUser( LoginDTO dto ) throws ApplicationException
+    public void logoutUser( AuthenticationDTO dto ) throws ApplicationException
     {
         getLogin().logoutUser( dto );
     }
-    
+
 
     /**
      * Obtem o status do login do usuário corrente (autenticado).
-     * 
+     *
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
      */
-    public Integer getStatus ( AuthenticationDTO currentUser )
+    public Integer getStatus( AuthenticationDTO currentUser )
     {
         return getLogin().getStatus( currentUser );
     }
@@ -169,11 +169,11 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
 
     /**
      * Altera o status do usuário no banco de dados.
-     * 
+     *
      * @param currentUser Usuário autenticado.
      * @param newStatus Novo status a ser alterado no banco de dados.
      */
-    public void setStatus ( AuthenticationDTO currentUser, Integer newStatus )
+    public void setStatus( AuthenticationDTO currentUser, Integer newStatus )
     {
         getLogin().setStatus( currentUser, newStatus );
     }

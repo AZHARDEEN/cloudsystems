@@ -181,7 +181,7 @@
          <hash n="Default">
             <value n="custom" v="false"/>
             <value n="name" v="Default"/>
-            <url n="targetURL" path="../ViewPrj/public_html/index.zul"/>
+            <value n="targetURL"/>
          </hash>
       </hash>
       <list n="runConfigurationList">
