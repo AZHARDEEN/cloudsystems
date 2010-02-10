@@ -65,7 +65,6 @@
    <value n="defaultPackage" v="ejbprj"/>
    <hash n="ejbModuleContainer">
       <value n="cmpProvider" v="EJB 3.0"/>
-      <value n="dbConnection" v="PostgreSQL"/>
       <value n="ejbVersion" v="3.0"/>
       <url n="weblogicEjbJarNodeURL" path="src/META-INF/weblogic-ejb-jar.xml"/>
    </hash>
@@ -267,7 +266,7 @@
    <hash n="oracle.toplink.workbench.addin">
       <hash n="persistence-list">
          <hash n="src$META-INF$persistence.xml">
-            <value n="development-database" v="Cloud"/>
+            <value n="development-database" v="PostgreSQL"/>
          </hash>
       </hash>
       <hash n="toplinkContentSet">

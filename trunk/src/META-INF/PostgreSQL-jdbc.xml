@@ -16,7 +16,7 @@
                 <value>cloud</value>
             </property>
         </properties>
-        <use-password-indirection>true</use-password-indirection>
+        <password-encrypted>7262A3B2F02512DD110B2821B0B16BC1</password-encrypted>
     </jdbc-driver-params>
     <jdbc-connection-pool-params>
         <initial-capacity>10</initial-capacity>

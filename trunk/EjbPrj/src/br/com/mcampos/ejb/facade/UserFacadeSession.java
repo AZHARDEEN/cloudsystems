@@ -11,8 +11,10 @@ import br.com.mcampos.dto.user.UserDTO;
 
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.security.LoginCredentialDTO;
+import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 
+import br.com.mcampos.ejb.entity.security.Role;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -26,7 +28,8 @@ public interface UserFacadeSession
 
     Integer getClientRecordCount( AuthenticationDTO auth, Integer owner ) throws ApplicationException;
 
-    List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, Integer firstResult, Integer maxResults ) throws ApplicationException;
+    List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, Integer firstResult,
+                                       Integer maxResults ) throws ApplicationException;
 
     PersonDTO getPerson( AuthenticationDTO auth, Integer userId ) throws ApplicationException;
 
@@ -42,7 +45,19 @@ public interface UserFacadeSession
 
     Integer getMyCompanyCount( AuthenticationDTO auth ) throws ApplicationException;
 
-    List<ListUserDTO> getMyCompaniesByRange( AuthenticationDTO dto, Integer startNumber, Integer pageSize ) throws ApplicationException;
+    List<ListUserDTO> getMyCompaniesByRange( AuthenticationDTO dto, Integer startNumber,
+                                             Integer pageSize ) throws ApplicationException;
 
 
+    /**
+     * Obtem todas as roles do usuário autenticado.
+     * As roles são a base para todo o esquema de segurança do sistema.
+     * Inclusive para obter o menu de acesso ao sistema.
+     *
+     * @param auth DTO do usuário autenticado.
+     * @return A lista de roles do usuário ou null.
+     */
+    List<Role> getRoles( AuthenticationDTO auth ) throws ApplicationException;
+
+    List<MenuDTO> getMenuList( AuthenticationDTO auth ) throws ApplicationException;
 }

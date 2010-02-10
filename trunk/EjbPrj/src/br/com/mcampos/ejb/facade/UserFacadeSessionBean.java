@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.facade;
 
 import br.com.mcampos.dto.core.BasicDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
@@ -9,6 +10,7 @@ import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
+import br.com.mcampos.ejb.entity.security.Role;
 import br.com.mcampos.ejb.entity.user.Company;
 import br.com.mcampos.ejb.entity.user.Person;
 import br.com.mcampos.ejb.entity.user.Users;
@@ -67,7 +69,8 @@ public class UserFacadeSessionBean implements UserFacadeSession
         return null;
     }
 
-    public List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, Integer firstResult, Integer maxResults ) throws ApplicationException
+    public List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, Integer firstResult,
+                                              Integer maxResults ) throws ApplicationException
     {
         if ( auth == null )
             systemMessage.throwException( systemMessageTypeId, 26 );
@@ -140,7 +143,8 @@ public class UserFacadeSessionBean implements UserFacadeSession
             }
             else {
                 /*this is a new entity!*/
-                entity = ( dto instanceof CompanyDTO ) ? company.addBusinessEntity( ( CompanyDTO )dto, loginDTO ) : person.add( ( PersonDTO )dto );
+                entity = ( dto instanceof CompanyDTO ) ? company.addBusinessEntity( ( CompanyDTO )dto, loginDTO ) :
+                         person.add( ( PersonDTO )dto );
             }
 
             if ( entity instanceof Company ) {
@@ -198,11 +202,34 @@ public class UserFacadeSessionBean implements UserFacadeSession
     }
 
 
-    public List<ListUserDTO> getMyCompaniesByRange( AuthenticationDTO auth, Integer startNumber, Integer pageSize ) throws ApplicationException
+    public List<ListUserDTO> getMyCompaniesByRange( AuthenticationDTO auth, Integer startNumber,
+                                                    Integer pageSize ) throws ApplicationException
     {
         if ( auth == null )
             systemMessage.throwException( systemMessageTypeId, 26 );
         return collaborator.getBusinessEntityByRange( auth, startNumber, pageSize );
     }
 
+
+    /**
+     * Obtem todas as roles do usuário autenticado.
+     * As roles são a base para todo o esquema de segurança do sistema.
+     * Inclusive para obter o menu de acesso ao sistema.
+     *
+     * @param auth DTO do usuário autenticado.
+     * @return A lista de roles do usuário ou null.
+     */
+    public List<Role> getRoles( AuthenticationDTO auth ) throws ApplicationException
+    {
+        if ( auth == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
+        return collaborator.getRoles( auth );
+    }
+
+    public List<MenuDTO> getMenuList( AuthenticationDTO auth ) throws ApplicationException
+    {
+        if ( auth == null )
+            systemMessage.throwException( systemMessageTypeId, 26 );
+        return collaborator.getMenuList( auth );
+    }
 }
