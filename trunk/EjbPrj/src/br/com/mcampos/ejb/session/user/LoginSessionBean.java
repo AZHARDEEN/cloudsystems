@@ -161,6 +161,10 @@ public class LoginSessionBean implements LoginSessionLocal
         login.setToken( RandomString.randomstring() );
         if ( SysUtils.isEmpty( login.getToken() ) )
             throwRuntimeException( 8 );
+        /*
+         * TODO - Vincular o novo login a empresa master (Neste caso MCampos Consultoria!!!!);
+         * como usuario (empregado). Atribuir uma role de usuario do sistema.
+         */
         em.persist( login );
         storeOldPassword( login );
         storeAccessLog( login, dto, 2 );
@@ -882,7 +886,9 @@ public class LoginSessionBean implements LoginSessionLocal
         if ( SysUtils.isEmpty( currentUser.getAuthenticationId() ) )
             systemMessage.throwRuntimeException( SystemMessagesSessionBean.systemCommomMessageTypeId, 3 );
         try {
-            log = ( AccessLog )em.createNamedQuery( "AccessLog.findToken" ).setParameter( "token", currentUser.getAuthenticationId() ).setParameter( "userId", currentUser.getUserId() ).getSingleResult();
+            log =
+( AccessLog )em.createNamedQuery( "AccessLog.findToken" ).setParameter( "token", currentUser.getAuthenticationId() )
+  .setParameter( "userId", currentUser.getUserId() ).getSingleResult();
         }
         catch ( NoResultException e ) {
             /*
