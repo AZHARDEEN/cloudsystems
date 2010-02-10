@@ -2,6 +2,7 @@ package br.com.mcampos.util.business;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
@@ -118,10 +119,10 @@ public class UsersLocator extends BusinessDelegate
      * @param auth DTO do usuário autenticado.
      * @return A lista de roles do usuário ou null.
      */
-    public List<Role> getRoles( AuthenticationDTO auth )
+    public List<MenuDTO> getRoles( AuthenticationDTO auth ) throws ApplicationException
     {
         if ( auth == null )
             return Collections.EMPTY_LIST;
-        return getSessionBean().getRoles( auth );
+        return getSessionBean().getMenuList( auth );
     }
 }

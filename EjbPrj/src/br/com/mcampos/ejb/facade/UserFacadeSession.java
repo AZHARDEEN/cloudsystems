@@ -49,15 +49,5 @@ public interface UserFacadeSession
                                              Integer pageSize ) throws ApplicationException;
 
 
-    /**
-     * Obtem todas as roles do usuário autenticado.
-     * As roles são a base para todo o esquema de segurança do sistema.
-     * Inclusive para obter o menu de acesso ao sistema.
-     *
-     * @param auth DTO do usuário autenticado.
-     * @return A lista de roles do usuário ou null.
-     */
-    List<Role> getRoles( AuthenticationDTO auth ) throws ApplicationException;
-
     List<MenuDTO> getMenuList( AuthenticationDTO auth ) throws ApplicationException;
 }

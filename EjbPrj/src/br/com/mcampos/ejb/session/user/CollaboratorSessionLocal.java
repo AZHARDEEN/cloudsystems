@@ -47,29 +47,11 @@ public interface CollaboratorSessionLocal
 
     List<Collaborator> getCollaboratorHasCollaborator( Object companyId, Object personId );
 
-    List<Collaborator> getCompanies( Integer personId );
-
     Integer getBusinessEntityCount( AuthenticationDTO auth ) throws ApplicationException;
 
     UserDTO getBusinessEntity( AuthenticationDTO auth, Integer businessId ) throws ApplicationException;
 
     List<ListUserDTO> getBusinessEntityByRange( AuthenticationDTO auth, int firstResult, int maxResults );
 
-
-    /*
-     * Esta funcao foi adicionada manualmente.
-     * Não existe a necessidade de apagá-la (Refactor)
-     */
-
-    /**
-     * Obtem todas as roles do usuário autenticado.
-     * As roles são a base para todo o esquema de segurança do sistema.
-     * Inclusive para obter o menu de acesso ao sistema.
-     *
-     * @param auth DTO do usuário autenticado.
-     * @return A lista de roles do usuário ou null.
-     */
-    List<Role> getRoles( AuthenticationDTO auth );
-
-    List<MenuDTO> getMenuList( AuthenticationDTO auth, Integer companyId );
+    List<MenuDTO> getMenuList( AuthenticationDTO auth );
 }

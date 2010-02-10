@@ -3,6 +3,7 @@ package br.com.mcampos.controller.logged;
 
 import br.com.mcampos.controller.core.LoggedBaseController;
 
+import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.ejb.entity.security.Role;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -42,14 +43,30 @@ public class PrivateIndexController extends LoggedBaseController
     {
         super.doAfterCompose( comp );
 
-        List<Role> roles = getUserLocator().getRoles( getLoggedInUser() );
-        for ( Role role : roles ) {
+        List<MenuDTO> menus = getUserLocator().getRoles( getLoggedInUser() );
+        for ( MenuDTO menu : menus ) {
             if ( mainMenu != null ) {
                 Menuitem item;
 
-                item = new Menuitem( role.getDescription() );
+                item = new Menuitem( menu.getDescription() );
                 mainMenu.appendChild( item );
+                if ( menu.getSubMenu().size() != 0 ) {
+                    addSubMenu( item, menu.getSubMenu() );
+                }
             }
+        }
+    }
+
+    protected void addSubMenu( Menuitem menu, List<MenuDTO> submenu )
+    {
+        Menubar bar = new Menubar();
+
+        menu.appendChild( bar );
+        for ( MenuDTO sm : submenu ) {
+            Menuitem item = new Menuitem( sm.getDescription() );
+            bar.appendChild( item );
+            if ( sm.getSubMenu().size() > 0 )
+                addSubMenu( item, sm.getSubMenu() );
         }
     }
 

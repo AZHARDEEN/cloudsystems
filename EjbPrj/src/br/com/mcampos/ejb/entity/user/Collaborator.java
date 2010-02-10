@@ -31,7 +31,7 @@ import javax.persistence.Table;
                  @NamedQuery( name = "Collaborator.hasCollaborator",
                               query = "select o from Collaborator o where o.company.id = :companyId and o.person.id = :personId and ( o.toDate is null or o.toDate >= CURRENT_TIMESTAMP )" ),
                  @NamedQuery( name = "Collaborator.findCompanies",
-                              query = "select o from Collaborator o where o.person.id = :personId and o.toDate is null" ),
+                              query = "select o from Collaborator o where o.person.id = :personId and o.collaboratorType.id = 1 and ( o.toDate is null or o.toDate >= CURRENT_TIMESTAMP )" ),
                  @NamedQuery( name = "Collaborator.countBusinessEntity",
                               query = "select count(o) from Collaborator o where o.person.id = :personId and o.collaboratorType.id = 1 and ( o.toDate is null or o.toDate >= CURRENT_TIMESTAMP ) " ),
                  @NamedQuery( name = "Collaborator.getBusinessList",

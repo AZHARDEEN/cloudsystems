@@ -221,11 +221,9 @@ public final class DTOFactory implements Serializable
 
         code = document.trim();
         switch ( type ) {
-        case UserDocument.typeCPF:
-            code = code.replaceAll( "[\\-.\\/]", "" );
+        case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
             break;
-        case UserDocument.typeEmail:
-            code = code.toLowerCase();
+        case UserDocument.typeEmail: code = code.toLowerCase();
             break;
         }
         return code;
@@ -662,6 +660,7 @@ public final class DTOFactory implements Serializable
         dto.setDescription( entity.getDescription() );
         dto.setSequence( entity.getSequence() );
         dto.setUrl( dto.getUrl() );
+        return dto;
     }
 
 }

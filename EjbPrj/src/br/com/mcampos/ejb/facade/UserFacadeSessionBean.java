@@ -143,8 +143,8 @@ public class UserFacadeSessionBean implements UserFacadeSession
             }
             else {
                 /*this is a new entity!*/
-                entity = ( dto instanceof CompanyDTO ) ? company.addBusinessEntity( ( CompanyDTO )dto, loginDTO ) :
-                         person.add( ( PersonDTO )dto );
+                entity =
+                        ( dto instanceof CompanyDTO ) ? company.addBusinessEntity( ( CompanyDTO )dto, loginDTO ) : person.add( ( PersonDTO )dto );
             }
 
             if ( entity instanceof Company ) {
@@ -210,21 +210,6 @@ public class UserFacadeSessionBean implements UserFacadeSession
         return collaborator.getBusinessEntityByRange( auth, startNumber, pageSize );
     }
 
-
-    /**
-     * Obtem todas as roles do usuário autenticado.
-     * As roles são a base para todo o esquema de segurança do sistema.
-     * Inclusive para obter o menu de acesso ao sistema.
-     *
-     * @param auth DTO do usuário autenticado.
-     * @return A lista de roles do usuário ou null.
-     */
-    public List<Role> getRoles( AuthenticationDTO auth ) throws ApplicationException
-    {
-        if ( auth == null )
-            systemMessage.throwException( systemMessageTypeId, 26 );
-        return collaborator.getRoles( auth );
-    }
 
     public List<MenuDTO> getMenuList( AuthenticationDTO auth ) throws ApplicationException
     {
