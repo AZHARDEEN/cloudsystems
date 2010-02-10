@@ -1,15 +1,19 @@
 package br.com.mcampos.ejb.session.user;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
+import br.com.mcampos.ejb.entity.security.Role;
+import br.com.mcampos.ejb.entity.security.SubjectRole;
 import br.com.mcampos.ejb.entity.user.Collaborator;
 import br.com.mcampos.ejb.entity.user.Users;
 import br.com.mcampos.ejb.entity.user.pk.CollaboratorPK;
 import br.com.mcampos.ejb.entity.user.attributes.CollaboratorType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -94,7 +98,9 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
 
     public void removeCollaborator( Collaborator collaborator )
     {
-        collaborator = em.find( Collaborator.class, new CollaboratorPK( collaborator.getCollaboratorId(), collaborator.getCompanyId(), collaborator.getFromDate() ) );
+        collaborator = em.find( Collaborator.class,
+                                new CollaboratorPK( collaborator.getCollaboratorId(), collaborator.getCompanyId(),
+                                                    collaborator.getFromDate() ) );
         em.remove( collaborator );
     }
 
@@ -132,19 +138,22 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
     /** <code>select count(o) from Collaborator o where o.toDate is null and o.company.id = :companyId and o.collaboratorType.id = 1</code> */
     public Integer getCollaboratorHasManager( Object companyId )
     {
-        return ( Integer )em.createNamedQuery( "Collaborator.hasManager" ).setParameter( "companyId", companyId ).getSingleResult();
+        return ( Integer )em.createNamedQuery( "Collaborator.hasManager" ).setParameter( "companyId", companyId )
+            .getSingleResult();
     }
 
     /** <code>select o.collaboratorId from Collaborator o where o.toDate is null and o.company.id = :companyId and o.collaboratorType.id = 1 and o.person.id = :personId</code> */
     public Boolean getCollaboratorIsManager( Object companyId, Object personId )
     {
-        return ( Boolean )em.createNamedQuery( "Collaborator.isManager" ).setParameter( "companyId", companyId ).setParameter( "personId", personId ).getSingleResult();
+        return ( Boolean )em.createNamedQuery( "Collaborator.isManager" ).setParameter( "companyId", companyId )
+            .setParameter( "personId", personId ).getSingleResult();
     }
 
     /** <code>select o from Collaborator o where o.company.id = :companyId and o.person.id = :personId and o.toDate is null</code> */
     public List<Collaborator> getCollaboratorHasCollaborator( Object companyId, Object personId )
     {
-        return em.createNamedQuery( "Collaborator.hasCollaborator" ).setParameter( "companyId", companyId ).setParameter( "personId", personId ).getResultList();
+        return em.createNamedQuery( "Collaborator.hasCollaborator" ).setParameter( "companyId", companyId )
+            .setParameter( "personId", personId ).getResultList();
     }
 
 
@@ -160,7 +169,8 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
 
         getLogin().authenticate( auth );
         try {
-            count = ( Long )em.createNamedQuery( "Collaborator.countBusinessEntity" ).setParameter( "personId", auth.getUserId() ).getSingleResult();
+            count = ( Long )em.createNamedQuery( "Collaborator.countBusinessEntity" ).setParameter( "personId", auth.getUserId() )
+                    .getSingleResult();
             return count.intValue();
         }
         catch ( NoResultException e ) {
@@ -169,11 +179,26 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
         }
     }
 
+
+    protected Collaborator getCollaborator( AuthenticationDTO auth, Integer businessId )
+    {
+        try {
+            Collaborator col = ( Collaborator )em.createNamedQuery( "Collaborator.getBusiness" )
+                .setParameter( "companyId", businessId ).setParameter( "personId", auth.getUserId() ).getSingleResult();
+            return col;
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            return null;
+        }
+
+    }
+
     public UserDTO getBusinessEntity( AuthenticationDTO auth, Integer businessId )
     {
         getLogin().authenticate( auth );
         try {
-            Collaborator col = ( Collaborator )em.createNamedQuery( "Collaborator.getBusiness" ).setParameter( "companyId", businessId ).setParameter( "personId", auth.getUserId() ).getSingleResult();
+            Collaborator col = getCollaborator( auth, businessId );
             return DTOFactory.copy( col.getCompany() );
         }
         catch ( NoResultException e ) {
@@ -204,5 +229,51 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
     protected LoginSessionLocal getLogin()
     {
         return login;
+    }
+
+
+    /**
+     * Obtem todas as roles do usuário autenticado.
+     * As roles são a base para todo o esquema de segurança do sistema.
+     * Inclusive para obter o menu de acesso ao sistema.
+     *
+     * @param auth DTO do usuário autenticado.
+     * @return A lista de roles do usuário ou null.
+     */
+    public List<Role> getRoles( AuthenticationDTO auth )
+    {
+        getLogin().authenticate( auth );
+
+        List resultList;
+        ArrayList<Role> roles = null;
+
+        try {
+            resultList = em.createNamedQuery( "SubjectRole.findCollaboratorRoles" ).setParameter( "id", auth.getUserId() )
+                    .getResultList();
+            if ( resultList.size() > 0 ) {
+                roles = new ArrayList<Role>( resultList.size() );
+                for ( SubjectRole sr : ( List<SubjectRole> )resultList ) {
+                    roles.add( sr.getRole() );
+                }
+            }
+            return roles;
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            return Collections.EMPTY_LIST;
+        }
+    }
+
+
+    public List<MenuDTO> getMenuList( AuthenticationDTO auth, Integer companyId )
+    {
+        getLogin().authenticate( auth );
+
+        Collaborator collaborator;
+
+        collaborator = getCollaborator( auth, companyId );
+
+
+        return menuList;
     }
 }

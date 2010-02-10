@@ -1,8 +1,10 @@
 package br.com.mcampos.ejb.session.user;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
+import br.com.mcampos.ejb.entity.security.Role;
 import br.com.mcampos.ejb.entity.user.Collaborator;
 import br.com.mcampos.ejb.entity.user.attributes.CollaboratorType;
 
@@ -52,4 +54,22 @@ public interface CollaboratorSessionLocal
     UserDTO getBusinessEntity( AuthenticationDTO auth, Integer businessId ) throws ApplicationException;
 
     List<ListUserDTO> getBusinessEntityByRange( AuthenticationDTO auth, int firstResult, int maxResults );
+
+
+    /*
+     * Esta funcao foi adicionada manualmente.
+     * Não existe a necessidade de apagá-la (Refactor)
+     */
+
+    /**
+     * Obtem todas as roles do usuário autenticado.
+     * As roles são a base para todo o esquema de segurança do sistema.
+     * Inclusive para obter o menu de acesso ao sistema.
+     *
+     * @param auth DTO do usuário autenticado.
+     * @return A lista de roles do usuário ou null.
+     */
+    List<Role> getRoles( AuthenticationDTO auth );
+
+    List<MenuDTO> getMenuList( AuthenticationDTO auth, Integer companyId );
 }

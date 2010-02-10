@@ -7,6 +7,7 @@ import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.ejb.entity.security.Role;
 import br.com.mcampos.ejb.facade.UserFacadeSession;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -44,7 +45,8 @@ public class UsersLocator extends BusinessDelegate
     }
 
 
-    public List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, Integer firstResult, Integer maxResults ) throws ApplicationException
+    public List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, Integer firstResult,
+                                              Integer maxResults ) throws ApplicationException
     {
         return getSessionBean().getUsersByRange( auth, firstResult, maxResults );
     }
@@ -100,11 +102,26 @@ public class UsersLocator extends BusinessDelegate
         return getSessionBean().getMyCompanyCount( dto );
     }
 
-    public List<ListUserDTO> getMyCompaniesByRange( AuthenticationDTO dto, Integer startNumber, Integer pageSize ) throws ApplicationException
+    public List<ListUserDTO> getMyCompaniesByRange( AuthenticationDTO dto, Integer startNumber,
+                                                    Integer pageSize ) throws ApplicationException
     {
         if ( dto == null )
             return Collections.EMPTY_LIST;
         return getSessionBean().getMyCompaniesByRange( dto, startNumber, pageSize );
     }
 
+    /**
+     * Obtem todas as roles do usuário autenticado.
+     * As roles são a base para todo o esquema de segurança do sistema.
+     * Inclusive para obter o menu de acesso ao sistema.
+     *
+     * @param auth DTO do usuário autenticado.
+     * @return A lista de roles do usuário ou null.
+     */
+    public List<Role> getRoles( AuthenticationDTO auth )
+    {
+        if ( auth == null )
+            return Collections.EMPTY_LIST;
+        return getSessionBean().getRoles( auth );
+    }
 }

@@ -2,7 +2,7 @@
 <persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
              xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
-  <persistence-unit name="EjbPrj"> 
+  <persistence-unit name="EjbPrj">
     <description>Descrição do conector CloudSystems</description>
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>java:/app/jdbc/jdbc/PostgreSQLDS</jta-data-source>
@@ -39,10 +39,16 @@
     <class>br.com.mcampos.ejb.entity.system.EMail</class>
     <class>br.com.mcampos.ejb.entity.system.EMailPart</class>
     <class>br.com.mcampos.ejb.entity.system.EMailPartType</class>
+    <class>br.com.mcampos.ejb.entity.security.Role</class>
+    <class>br.com.mcampos.ejb.entity.system.Menu</class>
+    <class>br.com.mcampos.ejb.entity.security.SubjectRole</class>
+    <class>br.com.mcampos.ejb.entity.security.PermissionAssignment</class>
+    <class>br.com.mcampos.ejb.entity.security.Subtask</class>
+    <class>br.com.mcampos.ejb.entity.security.Task</class>
+    <class>br.com.mcampos.ejb.entity.security.TaskMenu</class>
     <properties>
       <property name="eclipselink.target-server" value="WebLogic 10"/>
-      <property name="javax.persistence.jtaDataSource"
-                value="java:/app/jdbc/jdbc/PostgreSQLDS"/>
+      <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/PostgreSQLDS"/>
       <property name="eclipselink.target-database" value="PostgreSQL"/>
       <property name="eclipselink.jdbc.native-sql" value="true"/>
       <property name="eclipselink.jdbc.uppercase-columns" value="true"/>

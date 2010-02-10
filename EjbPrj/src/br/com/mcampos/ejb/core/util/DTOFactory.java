@@ -6,6 +6,7 @@ import br.com.mcampos.dto.address.AddressTypeDTO;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
+import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.system.SystemParametersDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
@@ -34,6 +35,7 @@ import br.com.mcampos.ejb.entity.login.AccessLogType;
 import br.com.mcampos.ejb.entity.system.SystemParameters;
 import br.com.mcampos.ejb.entity.user.Address;
 import br.com.mcampos.ejb.entity.login.Login;
+import br.com.mcampos.ejb.entity.system.Menu;
 import br.com.mcampos.ejb.entity.user.Company;
 import br.com.mcampos.ejb.entity.user.Person;
 import br.com.mcampos.ejb.entity.user.UserContact;
@@ -153,25 +155,25 @@ public final class DTOFactory implements Serializable
 
     public static AddressDTO copy( Address entity )
     {
-        
-        AddressDTO addr = new AddressDTO( );
-        
+
+        AddressDTO addr = new AddressDTO();
+
         addr.setAddress( entity.getAddress() );
-        addr.setAddressType( copy ( entity.getAddressType() ) );
-        addr.setCity( copy ( entity.getCity() ) );
+        addr.setAddressType( copy( entity.getAddressType() ) );
+        addr.setCity( copy( entity.getCity() ) );
         addr.setComment( entity.getComment() );
         addr.setDistrict( entity.getDistrict() );
         addr.setZip( entity.getZip() );
-        
+
         return addr;
     }
 
 
     public static UserDocumentDTO copy( UserDocument entity )
     {
-        UserDocumentDTO dto =  new UserDocumentDTO( );
+        UserDocumentDTO dto = new UserDocumentDTO();
         dto.setDocumentType( copy( entity.getDocumentType() ) );
-        dto.setCode( entity.getCode () );
+        dto.setCode( entity.getCode() );
         dto.setAdditionalInfo( entity.getAdditionalInfo() );
         return dto;
     }
@@ -179,7 +181,7 @@ public final class DTOFactory implements Serializable
 
     public static UserContactDTO copy( UserContact entity )
     {
-        UserContactDTO dto = new UserContactDTO( );
+        UserContactDTO dto = new UserContactDTO();
         dto.setContactType( copy( entity.getContactType() ) );
         dto.setDescription( entity.getDescription() );
         dto.setComment( entity.getComment() );
@@ -189,9 +191,9 @@ public final class DTOFactory implements Serializable
 
     public static Address copy( AddressDTO dto )
     {
-        
-        Address entity =  new Address( );
-        entity.setAddress( dto.getAddress () );
+
+        Address entity = new Address();
+        entity.setAddress( dto.getAddress() );
         entity.setDistrict( dto.getDistrict() );
         entity.setComment( dto.getComment() );
         entity.setZip( dto.getZip() );
@@ -219,17 +221,19 @@ public final class DTOFactory implements Serializable
 
         code = document.trim();
         switch ( type ) {
-            case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
-                break;
-            case UserDocument.typeEmail: code = code.toLowerCase();
-                break;
+        case UserDocument.typeCPF:
+            code = code.replaceAll( "[\\-.\\/]", "" );
+            break;
+        case UserDocument.typeEmail:
+            code = code.toLowerCase();
+            break;
         }
         return code;
     }
 
     public static UserDocument copy( UserDocumentDTO dto )
     {
-        UserDocument entity = new UserDocument( );
+        UserDocument entity = new UserDocument();
         entity.setCode( applyDocumentRules( dto.getCode(), dto.getDocumentType().getId() ) );
         entity.setAdditionalInfo( dto.getAdditionalInfo() );
         entity.setDocumentType( copy( dto.getDocumentType() ) );
@@ -248,7 +252,7 @@ public final class DTOFactory implements Serializable
 
     public static UserContact copy( UserContactDTO dto )
     {
-        UserContact entity = new UserContact( );
+        UserContact entity = new UserContact();
         entity.setContactType( copy( dto.getContactType() ) );
         entity.setDescription( dto.getDescription() );
         entity.setComment( dto.getComment() );
@@ -283,10 +287,10 @@ public final class DTOFactory implements Serializable
 
         if ( entity == null )
             return null;
-        city = new CityDTO( );
+        city = new CityDTO();
         city.setId( entity.getId() );
         city.setName( entity.getName() );
-        city.setCountryCapital(entity.isCountryCapital() );
+        city.setCountryCapital( entity.isCountryCapital() );
         city.setStateCapital( entity.isStateCapital() );
         city.setState( copy( entity.getState() ) );
         return city;
@@ -313,10 +317,10 @@ public final class DTOFactory implements Serializable
 
     public static CountryDTO copy( Country entity )
     {
-        CountryDTO dto =  new CountryDTO( );
-        dto.setId( entity.getId () );
+        CountryDTO dto = new CountryDTO();
+        dto.setId( entity.getId() );
         dto.setCode3( entity.getCode3() );
-        dto.setCode(  entity.getCode() );
+        dto.setCode( entity.getCode() );
         dto.setNumericCode( entity.getNumericCode() );
         return dto;
     }
@@ -341,7 +345,7 @@ public final class DTOFactory implements Serializable
         if ( entity == null )
             return null;
 
-        dto = new StateDTO( );
+        dto = new StateDTO();
         dto.setCountryId( entity.getCountryId() );
         dto.setRegionId( entity.getRegionId() );
         dto.setId( entity.getId() );
@@ -509,9 +513,9 @@ public final class DTOFactory implements Serializable
 
     public static ListUserDTO copy( Users entity )
     {
-        ListUserDTO dto = new ListUserDTO( );
-        
-        
+        ListUserDTO dto = new ListUserDTO();
+
+
         dto.setName( entity.getName() );
         dto.setNickName( entity.getNickName() );
         dto.setId( entity.getId() );
@@ -645,6 +649,19 @@ public final class DTOFactory implements Serializable
         for ( AddressDTO item : list ) {
             user.addAddress( copy( item ) );
         }
+    }
+
+    public static MenuDTO copy( Menu entity )
+    {
+        if ( entity == null )
+            return null;
+
+        MenuDTO dto = new MenuDTO();
+
+        dto.setId( entity.getId() );
+        dto.setDescription( entity.getDescription() );
+        dto.setSequence( entity.getSequence() );
+        dto.setUrl( dto.getUrl() );
     }
 
 }
