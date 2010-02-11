@@ -659,7 +659,12 @@ public final class DTOFactory implements Serializable
         dto.setId( entity.getId() );
         dto.setDescription( entity.getDescription() );
         dto.setSequence( entity.getSequence() );
-        dto.setUrl( dto.getUrl() );
+        dto.setTargetURL( entity.getTargetURL() );
+        dto.setAutocheck( entity.getAutocheck() );
+        dto.setChecked( entity.getChecked() );
+        dto.setCheckmark( entity.getCheckmark() );
+        dto.setDisabled( entity.getDisabled() );
+        dto.setSeparatorBefore( entity.getSeparatorBefore() );
         return dto;
     }
 

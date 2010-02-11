@@ -4,29 +4,30 @@ package br.com.mcampos.controller.logged;
 import br.com.mcampos.controller.core.LoggedBaseController;
 
 import br.com.mcampos.dto.system.MenuDTO;
-import br.com.mcampos.ejb.entity.security.Role;
 import br.com.mcampos.sysutils.SysUtils;
 
 import br.com.mcampos.util.business.UsersLocator;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.BookmarkEvent;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Menu;
 import org.zkoss.zul.Menubar;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
+import org.zkoss.zul.Menuseparator;
 import org.zkoss.zul.api.Center;
 
 public class PrivateIndexController extends LoggedBaseController
 {
-    private Center mdiApplication;
-    private Component divMenu;
-    private Menubar mainMenu;
+    protected Center mdiApplication;
+    protected Menubar mainMenu;
 
-    private UsersLocator userLocator;
+    protected UsersLocator userLocator;
 
     public PrivateIndexController()
     {
@@ -44,68 +45,53 @@ public class PrivateIndexController extends LoggedBaseController
         super.doAfterCompose( comp );
 
         List<MenuDTO> menus = getUserLocator().getRoles( getLoggedInUser() );
-        for ( MenuDTO menu : menus ) {
-            if ( mainMenu != null ) {
-                Menuitem item;
+        for ( MenuDTO item : menus ) {
+            addMenu( item, mainMenu );
+        }
+    }
 
-                item = new Menuitem( menu.getDescription() );
-                mainMenu.appendChild( item );
-                if ( menu.getSubMenu().size() != 0 ) {
-                    addSubMenu( item, menu.getSubMenu() );
-                }
+    protected Component addMenu( MenuDTO item, Component parent )
+    {
+
+        if ( item.getSubMenu().size() > 0 ) {
+            Menu menuItem;
+            Menupopup menuBar;
+
+            menuItem = new Menu( item.getDescription() );
+            menuBar = new Menupopup();
+            menuBar.setParent( menuItem );
+            menuItem.appendChild( menuBar );
+            menuItem.setParent( parent );
+            parent.appendChild( menuItem );
+            for ( MenuDTO submenu : item.getSubMenu() ) {
+                addMenu( submenu, menuBar );
             }
+            return menuBar;
         }
-    }
+        else {
+            Menuitem menuItem;
 
-    protected void addSubMenu( Menuitem menu, List<MenuDTO> submenu )
-    {
-        Menubar bar = new Menubar();
-
-        menu.appendChild( bar );
-        for ( MenuDTO sm : submenu ) {
-            Menuitem item = new Menuitem( sm.getDescription() );
-            bar.appendChild( item );
-            if ( sm.getSubMenu().size() > 0 )
-                addSubMenu( item, sm.getSubMenu() );
+            menuItem = new Menuitem( item.getDescription() );
+            menuItem.setId( "mnu" + item.getId() );
+            menuItem.setAttribute( "menu_target_url", item.getTargetURL() );
+            if ( item.getSeparatorBefore() )
+                parent.appendChild( new Menuseparator() );
+            parent.appendChild( menuItem );
+            menuItem.setParent( parent );
+            menuItem.addEventListener( Events.ON_CLICK, new EventListener()
+                {
+                    public void onEvent( Event event ) throws Exception
+                    {
+                        PrivateIndexController.this.onMenuClick( event );
+                    }
+                } );
+            return parent;
         }
-    }
-
-    public void onClick$mnuChangePasswod()
-    {
-        gotoPage( "/private/change_password.zul", mdiApplication );
-    }
-
-    public void onClick$mnuMyRecord()
-    {
-        Map map = new LinkedHashMap();
-        map.put( "who", "myself" );
-        gotoPage( "/private/user/person.zul", mdiApplication, map );
-    }
-
-    public void onClick$mnuChangeBusinessEntity()
-    {
-        gotoPage( "/private/change_business_entity.zul", mdiApplication );
-    }
-
-    public void onClick$mnuBusinessEntity()
-    {
-        gotoPage( "/private/user/business_entity_list.zul", mdiApplication );
-    }
-
-    public void onClick$mnuClientList()
-    {
-        gotoPage( "/private/admin/clients/list_clients.zul", mdiApplication );
-    }
-
-    public void onClick$mnuLogout()
-    {
-        redirect( "/logout.zul" );
     }
 
 
     public void onBookmarkChanged( BookmarkEvent event )
     {
-        String pID = null;
         String iID = event.getBookmark();
         if ( SysUtils.isEmpty( iID ) || iID.equals( "index" ) )
             mdiApplication.getChildren().clear();
@@ -116,5 +102,19 @@ public class PrivateIndexController extends LoggedBaseController
         if ( userLocator == null )
             userLocator = new UsersLocator();
         return userLocator;
+    }
+
+    public void onMenuClick( Event evt ) throws Exception
+    {
+        Menuitem item;
+
+        if ( evt.getTarget() instanceof Menuitem ) {
+            item = ( Menuitem )evt.getTarget();
+            String url = ( String )item.getAttribute( "menu_target_url" );
+
+            if ( SysUtils.isEmpty( url ) == false )
+                gotoPage( url, mdiApplication );
+            evt.stopPropagation();
+        }
     }
 }

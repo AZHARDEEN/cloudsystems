@@ -8,8 +8,15 @@ import java.util.List;
 public class MenuDTO extends SimpleTableDTO
 {
     private Integer sequence;
-    private String url;
+    private String targetURL;
     private List<MenuDTO> subMenu;
+
+    private Boolean separatorBefore;
+    private Boolean autocheck;
+    private Boolean checked;
+    private Boolean checkmark;
+    private Boolean disabled;
+
 
     public MenuDTO()
     {
@@ -26,14 +33,14 @@ public class MenuDTO extends SimpleTableDTO
         return sequence;
     }
 
-    public void setUrl( String url )
+    public void setTargetURL( String url )
     {
-        this.url = url;
+        this.targetURL = url;
     }
 
-    public String getUrl()
+    public String getTargetURL()
     {
-        return url;
+        return targetURL;
     }
 
     public void setSubMenu( List<MenuDTO> subMenu )
@@ -52,5 +59,55 @@ public class MenuDTO extends SimpleTableDTO
     {
         if ( getSubMenu().contains( subMenu ) == false )
             getSubMenu().add( subMenu );
+    }
+
+    public void setSeparatorBefore( Boolean separatorBefore )
+    {
+        this.separatorBefore = separatorBefore;
+    }
+
+    public Boolean getSeparatorBefore()
+    {
+        return separatorBefore;
+    }
+
+    public void setAutocheck( Boolean autocheck )
+    {
+        this.autocheck = autocheck;
+    }
+
+    public Boolean getAutocheck()
+    {
+        return autocheck;
+    }
+
+    public void setChecked( Boolean checked )
+    {
+        this.checked = checked;
+    }
+
+    public Boolean getChecked()
+    {
+        return checked;
+    }
+
+    public void setCheckmark( Boolean checkmark )
+    {
+        this.checkmark = checkmark;
+    }
+
+    public Boolean getCheckmark()
+    {
+        return checkmark;
+    }
+
+    public void setDisabled( Boolean disabled )
+    {
+        this.disabled = disabled;
+    }
+
+    public Boolean getDisabled()
+    {
+        return disabled;
     }
 }
