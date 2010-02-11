@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,11 +23,18 @@ public class Menu implements Serializable
 {
     private String description;
     private Integer id;
-    private String image;
     private Integer sequence;
-    private String url;
+    private String targetURL;
     private Menu menu;
     private List<Menu> menuList;
+    private Media media;
+
+    private Boolean separatorBefore;
+    private Boolean autocheck;
+    private Boolean checked;
+    private Boolean checkmark;
+    private Boolean disabled;
+
 
     public Menu()
     {
@@ -55,18 +63,6 @@ public class Menu implements Serializable
         this.id = mnu_id_in;
     }
 
-    @Column( name = "mnu_image_bin" )
-    public String getImage()
-    {
-        return image;
-    }
-
-    public void setImage( String mnu_image_bin )
-    {
-        this.image = mnu_image_bin;
-    }
-
-
     @Column( name = "mnu_sequence_in", nullable = false )
     public Integer getSequence()
     {
@@ -79,14 +75,14 @@ public class Menu implements Serializable
     }
 
     @Column( name = "mnu_url_ch" )
-    public String getUrl()
+    public String getTargetURL()
     {
-        return url;
+        return targetURL;
     }
 
-    public void setUrl( String mnu_url_ch )
+    public void setTargetURL( String mnu_url_ch )
     {
-        this.url = mnu_url_ch;
+        this.targetURL = mnu_url_ch;
     }
 
     @ManyToOne
@@ -126,5 +122,72 @@ public class Menu implements Serializable
         getMenuList().remove( menu );
         menu.setMenu( null );
         return menu;
+    }
+
+    public void setMedia( Media media )
+    {
+        this.media = media;
+    }
+
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JoinColumn( name = "med_id_in" )
+    public Media getMedia()
+    {
+        return media;
+    }
+
+    public void setSeparatorBefore( Boolean mnu_separator_before_bt )
+    {
+        this.separatorBefore = mnu_separator_before_bt;
+    }
+
+    @Column( name = "mnu_separator_before_bt" )
+    public Boolean getSeparatorBefore()
+    {
+        return separatorBefore;
+    }
+
+    public void setAutocheck( Boolean mnu_autocheck_bt )
+    {
+        this.autocheck = mnu_autocheck_bt;
+    }
+
+    @Column( name = "mnu_autocheck_bt" )
+    public Boolean getAutocheck()
+    {
+        return autocheck;
+    }
+
+    public void setChecked( Boolean mnu_checked_bt )
+    {
+        this.checked = mnu_checked_bt;
+    }
+
+    @Column( name = "mnu_checked_bt" )
+    public Boolean getChecked()
+    {
+        return checked;
+    }
+
+    public void setCheckmark( Boolean mnu_checkmark_bt )
+    {
+        this.checkmark = mnu_checkmark_bt;
+    }
+
+    @Column( name = "mnu_checkmark_bt" )
+    public Boolean getCheckmark()
+    {
+        return checkmark;
+    }
+
+    public void setDisabled( Boolean mnu_disabled_bt )
+    {
+        this.disabled = mnu_disabled_bt;
+    }
+
+    @Column( name = "mnu_disabled_bt" )
+    public Boolean getDisabled()
+    {
+        return disabled;
     }
 }

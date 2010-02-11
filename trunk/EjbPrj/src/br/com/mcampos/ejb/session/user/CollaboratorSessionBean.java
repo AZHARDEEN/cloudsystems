@@ -359,20 +359,45 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
         int nIndex;
 
         if ( newMenu.getMenu() != null ) {
-            parentDTO = addMenu( menuList, newMenu.getMenu() );
-        }
-        /*
-         * Do we have this menu on the list.
-         */
-        dto = DTOFactory.copy( newMenu );
-        if ( parentDTO == null ) {
-            if ( menuList.contains( dto ) == false )
-                menuList.add( dto );
+            //this menu has a parent menu.
+            parentDTO = DTOFactory.copy( newMenu.getMenu() );
+            nIndex = menuList.indexOf( parentDTO );
+            if ( nIndex == -1 ) {
+                //parent is not in list. Must Add.
+                parentDTO = addMenu( menuList, newMenu.getMenu() );
+            }
+            else {
+                parentDTO = ( MenuDTO )menuList.get( nIndex );
+            }
+            dto = DTOFactory.copy( newMenu );
+            return addMenu( parentDTO.getSubMenu(), dto );
         }
         else {
-            parentDTO.addSubMenu( dto );
+            dto = DTOFactory.copy( newMenu );
+            return addMenu( menuList, dto );
         }
-        return dto;
+    }
+
+    protected MenuDTO addMenu( List menuList, MenuDTO dto )
+    {
+        int nIndex;
+
+        nIndex = menuList.indexOf( dto );
+        if ( nIndex == -1 ) {
+            for ( MenuDTO sibling : ( List<MenuDTO> )menuList ) {
+                if ( dto.getSequence() > sibling.getSequence() )
+                    continue;
+                nIndex = menuList.indexOf( sibling );
+                break;
+            }
+            if ( nIndex == -1 )
+                menuList.add( dto );
+            else
+                menuList.add( nIndex, dto );
+            return dto;
+        }
+        else
+            return ( MenuDTO )menuList.get( nIndex );
     }
 
     /**

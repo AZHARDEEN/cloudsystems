@@ -3,8 +3,6 @@ package br.com.mcampos.controller;
 import br.com.mcampos.exception.ApplicationException;
 
 
-import org.zkforge.bwcaptcha.Captcha;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
@@ -22,19 +20,19 @@ public class ValidateEmailController extends BaseLoginOptionsController
     protected static String loginCookieName = "LoginCookieName";
 
 
-    public ValidateEmailController ()
+    public ValidateEmailController()
     {
         super();
     }
 
-    public ValidateEmailController ( char c )
+    public ValidateEmailController( char c )
     {
         super( c );
     }
 
 
     @Override
-    public void doAfterCompose ( Component comp ) throws Exception
+    public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
 
@@ -51,7 +49,7 @@ public class ValidateEmailController extends BaseLoginOptionsController
     }
 
 
-    public void onClick$cmdSubmit ()
+    public void onClick$cmdSubmit()
     {
         String csIdentification;
         String csPassword;

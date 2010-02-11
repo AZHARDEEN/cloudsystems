@@ -67,15 +67,16 @@ public abstract class BaseController extends GenericForwardComposer
         userCookie.setMaxAge( ( days * 24 ) * ( 3600 ) );
         response.addCookie( userCookie );
     }
-    
-    public String getSessionID ( ) {
+
+    public String getSessionID()
+    {
         Object obj;
-        
+
         obj = Sessions.getCurrent().getNativeSession();
         if ( obj instanceof HttpSession ) {
             HttpSession httpSession;
-            
-            httpSession = ( HttpSession ) obj;
+
+            httpSession = ( HttpSession )obj;
             return httpSession.getId();
         }
         else
@@ -144,7 +145,8 @@ public abstract class BaseController extends GenericForwardComposer
     {
         //Executions.getCurrent().sendRedirect( uri );
         if ( parent != null ) {
-            parent.getChildren().clear();
+            if ( SysUtils.isEmpty( parent.getChildren() ) == false )
+                parent.getChildren().clear();
             Executions.getCurrent().createComponents( uri, parent, parameters );
         }
         else
@@ -165,8 +167,8 @@ public abstract class BaseController extends GenericForwardComposer
     {
         return rootParent;
     }
-    
-    protected void redirect ( String uri )
+
+    protected void redirect( String uri )
     {
         Executions.getCurrent().sendRedirect( uri );
     }
@@ -180,8 +182,8 @@ public abstract class BaseController extends GenericForwardComposer
     {
         return broseHistory;
     }
-    
-    protected void removeMe ()
+
+    protected void removeMe()
     {
         if ( rootParent != null ) {
             Component parent;
