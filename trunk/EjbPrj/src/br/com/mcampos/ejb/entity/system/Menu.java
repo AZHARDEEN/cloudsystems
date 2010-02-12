@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Menu.findAll", query = "select o from Menu o" ) } )
+@NamedQueries( { @NamedQuery( name = "Menu.findAll", query = "select o from Menu o where o.menu is null" ) } )
 @Table( name = "\"menu\"" )
 public class Menu implements Serializable
 {

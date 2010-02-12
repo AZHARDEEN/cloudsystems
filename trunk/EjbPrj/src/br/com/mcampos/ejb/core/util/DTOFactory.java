@@ -221,9 +221,11 @@ public final class DTOFactory implements Serializable
 
         code = document.trim();
         switch ( type ) {
-        case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
+        case UserDocument.typeCPF:
+            code = code.replaceAll( "[\\-.\\/]", "" );
             break;
-        case UserDocument.typeEmail: code = code.toLowerCase();
+        case UserDocument.typeEmail:
+            code = code.toLowerCase();
             break;
         }
         return code;
@@ -665,6 +667,11 @@ public final class DTOFactory implements Serializable
         dto.setCheckmark( entity.getCheckmark() );
         dto.setDisabled( entity.getDisabled() );
         dto.setSeparatorBefore( entity.getSeparatorBefore() );
+        if ( entity.getMenuList().size() > 0 ) {
+            for ( Menu sm : entity.getMenuList() ) {
+                dto.addSubMenu( copy( sm ) );
+            }
+        }
         return dto;
     }
 

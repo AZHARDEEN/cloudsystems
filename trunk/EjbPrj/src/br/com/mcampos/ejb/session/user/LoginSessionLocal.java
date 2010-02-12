@@ -109,8 +109,18 @@ public interface LoginSessionLocal
      *
      *
      * @param currentUser
-     * @return boolean true para usuário autenticado ou false
      */
-    public void authenticate( AuthenticationDTO currentUser );
+    void authenticate( AuthenticationDTO currentUser );
+
+
+    /**
+     * Autentica o usuário. Esta será a função mais usada de todas.
+     * Para QUALQUER operacao, esta função deverá ser chamada antes.
+     *
+     *
+     * @param currentUser - usuario autenticado
+     * @param authorizedRole Id da role autorizada.
+     */
+    void authenticate( AuthenticationDTO currentUser, Integer authorizedRole );
 
 }

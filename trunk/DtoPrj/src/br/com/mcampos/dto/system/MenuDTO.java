@@ -2,7 +2,7 @@ package br.com.mcampos.dto.system;
 
 import br.com.mcampos.dto.core.SimpleTableDTO;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MenuDTO extends SimpleTableDTO
@@ -51,7 +51,7 @@ public class MenuDTO extends SimpleTableDTO
     public List<MenuDTO> getSubMenu()
     {
         if ( subMenu == null )
-            subMenu = new LinkedList<MenuDTO>();
+            subMenu = new ArrayList<MenuDTO>();
         return subMenu;
     }
 
@@ -109,5 +109,11 @@ public class MenuDTO extends SimpleTableDTO
     public Boolean getDisabled()
     {
         return disabled;
+    }
+
+    @Override
+    public String toString()
+    {
+        return getDescription();
     }
 }
