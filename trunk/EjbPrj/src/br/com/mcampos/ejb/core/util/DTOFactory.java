@@ -85,6 +85,7 @@ public final class DTOFactory implements Serializable
         person.setMotherName( dto.getMotherName() );
         person.setBornCity( copy( dto.getBornCity() ) );
 
+
         return person;
     }
 
@@ -221,11 +222,9 @@ public final class DTOFactory implements Serializable
 
         code = document.trim();
         switch ( type ) {
-        case UserDocument.typeCPF:
-            code = code.replaceAll( "[\\-.\\/]", "" );
+        case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
             break;
-        case UserDocument.typeEmail:
-            code = code.toLowerCase();
+        case UserDocument.typeEmail: code = code.toLowerCase();
             break;
         }
         return code;
@@ -651,28 +650,48 @@ public final class DTOFactory implements Serializable
         }
     }
 
-    public static MenuDTO copy( Menu entity )
+    public static MenuDTO copy( Menu source, Boolean copySubMenu )
     {
-        if ( entity == null )
+        if ( source == null )
             return null;
 
-        MenuDTO dto = new MenuDTO();
+        MenuDTO target = new MenuDTO();
 
-        dto.setId( entity.getId() );
-        dto.setDescription( entity.getDescription() );
-        dto.setSequence( entity.getSequence() );
-        dto.setTargetURL( entity.getTargetURL() );
-        dto.setAutocheck( entity.getAutocheck() );
-        dto.setChecked( entity.getChecked() );
-        dto.setCheckmark( entity.getCheckmark() );
-        dto.setDisabled( entity.getDisabled() );
-        dto.setSeparatorBefore( entity.getSeparatorBefore() );
-        if ( entity.getMenuList().size() > 0 ) {
-            for ( Menu sm : entity.getMenuList() ) {
-                dto.addSubMenu( copy( sm ) );
+        target.setId( source.getId() );
+        target.setDescription( source.getDescription() );
+        target.setSequence( source.getSequence() );
+        target.setTargetURL( source.getTargetURL() );
+        target.setAutocheck( source.getAutocheck() );
+        target.setChecked( source.getChecked() );
+        target.setCheckmark( source.getCheckmark() );
+        target.setDisabled( source.getDisabled() );
+        target.setSeparatorBefore( source.getSeparatorBefore() );
+        if ( ( source.getMenuList().size() > 0 ) && copySubMenu ) {
+            for ( Menu sm : source.getMenuList() ) {
+                target.addSubMenu( copy( sm, true ) );
             }
         }
-        return dto;
+        if ( source.getMenu() != null )
+            target.setParent( copy( source.getMenu(), false ) );
+        return target;
+    }
+
+
+    public static Menu copy( Menu target, MenuDTO source )
+    {
+        if ( source == null || target == null )
+            return null;
+
+        target.setId( source.getId() );
+        target.setDescription( source.getDescription() );
+        target.setSequence( source.getSequence() );
+        target.setTargetURL( source.getTargetURL() );
+        target.setAutocheck( source.getAutocheck() );
+        target.setChecked( source.getChecked() );
+        target.setCheckmark( source.getCheckmark() );
+        target.setDisabled( source.getDisabled() );
+        target.setSeparatorBefore( source.getSeparatorBefore() );
+        return target;
     }
 
 }

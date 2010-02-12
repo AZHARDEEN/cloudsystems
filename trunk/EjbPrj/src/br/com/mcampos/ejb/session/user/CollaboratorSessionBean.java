@@ -360,7 +360,7 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
 
         if ( newMenu.getMenu() != null ) {
             //this menu has a parent menu.
-            parentDTO = DTOFactory.copy( newMenu.getMenu() );
+            parentDTO = DTOFactory.copy( newMenu.getMenu(), false );
             nIndex = menuList.indexOf( parentDTO );
             if ( nIndex == -1 ) {
                 //parent is not in list. Must Add.
@@ -369,11 +369,11 @@ public class CollaboratorSessionBean implements CollaboratorSessionLocal
             else {
                 parentDTO = ( MenuDTO )menuList.get( nIndex );
             }
-            dto = DTOFactory.copy( newMenu );
+            dto = DTOFactory.copy( newMenu, false );
             return addMenu( parentDTO.getSubMenu(), dto );
         }
         else {
-            dto = DTOFactory.copy( newMenu );
+            dto = DTOFactory.copy( newMenu, false );
             return addMenu( menuList, dto );
         }
     }

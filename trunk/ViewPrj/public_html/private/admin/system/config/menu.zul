@@ -8,44 +8,135 @@
                     <label style="font-size:30px;color:#0C7A9A" value="Manutenção - Menu do Sistema"/>
                 </vbox>
             </north>
-            <west size="50%" splittable="true" flex="true">
+            <west size="30%" splittable="true" flex="true">
                 <borderlayout>
-                    <center>
-                        <!-- Por favor, nao mude o id desta listbox -->
+                    <center flex="true" autoscroll="true">
+                        <!-- Por favor, nao mude o id deste TreeControl -->
                         <tree fixedLayout="true" id="treeList" width="100%" height="100%" zclass="z-dottree">
-                            <treechildren id="rootTree">
-                                <treeitem>
-                                    <treerow draggable="true" droppable="true">
-                                        <treecell label="item1"/>
-                                    </treerow>
-                                    <treechildren>
-                                        <treeitem>
-                                            <treerow draggable="true" droppable="true">
-                                                <treecell label="item1.1"/>
-                                            </treerow>
-                                        </treeitem>
-                                        <treeitem>
-                                            <treerow draggable="true" droppable="true">
-                                                <treecell label="item2.2"/>
-                                            </treerow>
-                                        </treeitem>
-                                    </treechildren>
-                                </treeitem>
-                                <treeitem>
-                                    <treerow draggable="true" droppable="true">
-                                        <treecell label="item2"/>
-                                    </treerow>
-                                </treeitem>
-                            </treechildren>
+                            <treechildren id="rootTree"></treechildren>
                         </tree>
                     </center>
                 </borderlayout>
             </west>
-            <center>
+            <center autoscroll="true" flex="true">
                 <!-- Por favor, nao mude o id desta div -->
                 <div id="recordDetail">
                     <!-- view mode -->
-                    <div id="recordView" width="100%"></div>
+                    <div id="recordView" width="100%">
+                        <grid width="100%">
+                            <columns>
+                                <column align="left" width="30%"/>
+                                <column align="left"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    Código
+                                    <label id="recordId"/>
+                                </row>
+                                <row>
+                                    Descrição
+                                    <label id="recordDescription"/>
+                                </row>
+                                <row>
+                                    Menu Pai
+                                    <label id="recordParent"/>
+                                </row>
+                                <row>
+                                    URL
+                                    <label id="recordURL"/>
+                                </row>
+                                <row>
+                                    Seqüencia
+                                    <label id="recordSequence"/>
+                                </row>
+                                <row>
+                                    Propriedades do Menu
+                                    <div align="center">
+                                        Separador Antes
+                                        <checkbox id="recordSeparator" disabled="true"/>
+                                        Autocheck
+                                        <checkbox id="recordAutocheck" disabled="true"/>
+                                        Checked
+                                        <checkbox id="recordChecked" disabled="true"/>
+                                        Checkmark
+                                        <checkbox id="recordCheckmark" disabled="true"/>
+                                        Desabilitado
+                                        <checkbox id="recordDisabled" disabled="true"/>
+                                    </div>
+                                </row>
+                            </rows>
+                        </grid>
+                        <separator/>
+                        <div align="center">
+                            <hbox>
+                                <!-- Por favor, nao mude o id dos botoes -->
+                                <button id="cmdCreate" label="Novo" image="/img/icontexto-webdev-add-032x032.png"
+                                        tooltiptext="Adiciona um novo registro"/>
+                                <button id="cmdUpdate" label="Editar" image="/img/icontexto-webdev-alert-032x032.png"
+                                        tooltiptext="Altera o registro selecionado"/>
+                                <button id="cmdDelete" label="Apagar" image="/img/icontexto-webdev-remove-032x032.png"
+                                        tooltiptext="Exclui o registro selecionado"/>
+                                <separator/>
+                                <button id="cmdRefresh" label="Atualizar" image="/img/icontexto-webdev-reload-032x032.png"
+                                        tooltiptext="Atualiza a lista de registros"/>
+                            </hbox>
+                        </div>
+                        <separator/>
+                        <!-- Por favor, nao mude o id desta div -->
+                        <div id="recordEdit" visible="false">
+                            <grid width="100%" fixedLayout="true">
+                                <columns>
+                                    <column align="right" width="20%"/>
+                                    <column align="left" width="80%"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        Código
+                                        <intbox id="editId" width="100px" constraint="no negative, no zero"/>
+                                    </row>
+                                    <row>
+                                        Descrição
+                                        <textbox id="editDescription" width="99%"/>
+                                    </row>
+                                    <row>
+                                        Menu Pai
+                                        <intbox id="editParent" width="100px" constraint="no negative, no zero" droppable="true"/>
+                                    </row>
+                                    <row>
+                                        URL
+                                        <textbox id="editURL" width="99%"/>
+                                    </row>
+                                    <row>
+                                        Seqüencia
+                                        <intbox id="editSequence" width="100px" constraint="no negative, no zero"/>
+                                    </row>
+                                    <row>
+                                        Propriedades do Menu
+                                        <div align="center">
+                                            Separador Antes
+                                            <checkbox id="editSeparator" width="99%"/>
+                                            Autocheck
+                                            <checkbox id="editAutocheck" width="99%"/>
+                                            Checked
+                                            <checkbox id="editChecked" width="99%"/>
+                                            Checkmark
+                                            <checkbox id="editCheckmark" width="99%"/>
+                                            Desabilitado
+                                            <checkbox id="editDisabled" width="99%"/>
+                                        </div>
+                                    </row>
+                                </rows>
+                            </grid>
+                            <separator/>
+                            <div align="center">
+                                <hbox>
+                                    <!-- Por favor, nao mude o id dos botoes -->
+                                    <button id="cmdSave" label="Salvar" image="/img/icontexto-webdev-ok-032x032.png"/>
+                                    <button id="cmdCancel" label="Cancelar" image="/img/icontexto-webdev-cancel-032x032.png"/>
+                                </hbox>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </center>
         </borderlayout>

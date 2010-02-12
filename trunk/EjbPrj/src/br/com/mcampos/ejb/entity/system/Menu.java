@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries( { @NamedQuery( name = "Menu.findAll", query = "select o from Menu o where o.menu is null" ) } )
 @Table( name = "\"menu\"" )
-public class Menu implements Serializable
+public class Menu implements Serializable, Comparable<Menu>
 {
     private String description;
     private Integer id;
@@ -95,6 +95,10 @@ public class Menu implements Serializable
     public void setMenu( Menu menu )
     {
         this.menu = menu;
+        if ( menu != null ) {
+            if ( menu.getMenuList().contains( this ) == false )
+                menu.addMenu( this );
+        }
     }
 
     @OneToMany( mappedBy = "menu" )
@@ -120,7 +124,6 @@ public class Menu implements Serializable
     public Menu removeMenu( Menu menu )
     {
         getMenuList().remove( menu );
-        menu.setMenu( null );
         return menu;
     }
 
@@ -189,5 +192,25 @@ public class Menu implements Serializable
     public Boolean getDisabled()
     {
         return disabled;
+    }
+
+    public int compareTo( Menu o )
+    {
+        if ( o == null )
+            return -1;
+        else if ( this.getId() == null )
+            return 1;
+        else
+            return this.getId().compareTo( o.getId() );
+    }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( obj == null )
+            return false;
+        if ( this.getId() == null )
+            return false;
+        return this.getId().equals( ( ( Menu )obj ).getId() );
     }
 }

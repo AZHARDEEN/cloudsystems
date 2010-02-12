@@ -18,4 +18,14 @@ public interface SystemFacade
      * @return lista com os menus
      */
     List<MenuDTO> getMenuList( AuthenticationDTO auth );
+
+
+    /**
+     * Atualiza o menu.
+     * Esta função é usada para atualizar um dto (persistir) no banco de dados.
+     *
+     * @param auth - dto do usuário autenticado no sistema.
+     * @param dto - o item a ser atualizado.
+     */
+    void updateMenu( AuthenticationDTO auth, MenuDTO dto );
 }

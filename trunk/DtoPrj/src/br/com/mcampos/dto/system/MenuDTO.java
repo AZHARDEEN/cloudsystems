@@ -17,6 +17,8 @@ public class MenuDTO extends SimpleTableDTO
     private Boolean checkmark;
     private Boolean disabled;
 
+    private MenuDTO parent;
+
 
     public MenuDTO()
     {
@@ -114,6 +116,16 @@ public class MenuDTO extends SimpleTableDTO
     @Override
     public String toString()
     {
-        return getDescription();
+        return getDisplayName();
+    }
+
+    public void setParent( MenuDTO parent )
+    {
+        this.parent = parent;
+    }
+
+    public MenuDTO getParent()
+    {
+        return parent;
     }
 }

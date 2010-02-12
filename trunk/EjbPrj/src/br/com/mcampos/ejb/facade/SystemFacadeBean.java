@@ -41,4 +41,19 @@ public class SystemFacadeBean implements SystemFacade
 
         return getSystemSession().getMenuList( auth );
     }
+
+    /**
+     * Atualiza o menu.
+     * Esta função é usada para atualizar um dto (persistir) no banco de dados.
+     *
+     * @param auth - dto do usuário autenticado no sistema.
+     * @param dto - o item a ser atualizado.
+     */
+    public void updateMenu( AuthenticationDTO auth, MenuDTO dto )
+    {
+        if ( auth == null || dto == null )
+            return;
+        getSystemSession().updateMenu( auth, dto );
+    }
+
 }
