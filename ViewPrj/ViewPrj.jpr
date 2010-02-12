@@ -86,17 +86,17 @@
          <hash>
             <value n="class" v="oracle.jdeveloper.library.ProjectLibrary"/>
             <url n="sourceOwnerURL" path="../CloudSystems.jws"/>
-            <url n="sourceURL" path="../EjbPrj/EjbPrj.jpr"/>
-         </hash>
-         <hash>
-            <value n="class" v="oracle.jdeveloper.library.ProjectLibrary"/>
-            <url n="sourceOwnerURL" path="../CloudSystems.jws"/>
-            <url n="sourceURL" path="../DTOPrj/DTOPrj.jpr"/>
-         </hash>
-         <hash>
-            <value n="class" v="oracle.jdeveloper.library.ProjectLibrary"/>
-            <url n="sourceOwnerURL" path="../CloudSystems.jws"/>
             <url n="sourceURL" path="../SysUtils/SysUtils.jpr"/>
+         </hash>
+         <hash>
+            <value n="class" v="oracle.jdeveloper.library.ProjectLibrary"/>
+            <url n="sourceOwnerURL" path="../CloudSystems.jws"/>
+            <url n="sourceURL" path="../DtoPrj/DTOPrj.jpr"/>
+         </hash>
+         <hash>
+            <value n="class" v="oracle.jdeveloper.library.ProjectLibrary"/>
+            <url n="sourceOwnerURL" path="../CloudSystems.jws"/>
+            <url n="sourceURL" path="../EjbPrj/EjbPrj.jpr"/>
          </hash>
       </list>
    </hash>

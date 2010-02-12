@@ -9,6 +9,7 @@ import br.com.mcampos.util.business.LoginLocator;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
+import org.zkoss.zul.Messagebox;
 
 public class LoggedBaseController extends BaseController
 {
@@ -37,19 +38,16 @@ public class LoggedBaseController extends BaseController
             AuthenticationDTO user = getLoggedInUser();
 
             switch ( getLoginLocator().getStatus( user ) ) {
-                case UserStatusDTO.statusFullfillRecord:
-                    String path = page.getRequestPath();
-                    if ( path.endsWith( "person.zul" ) == false || ( this instanceof PersonClientController ) == false ) {
-                        redirect( "/private/user/person.zul?who=myself" );
-                    }
-                    else
-                        return super.doBeforeCompose( page, parent, compInfo );
-                    break;
-                case UserStatusDTO.statusExpiredPassword:
-                    redirect( "/private/change_password.zul" );
-                    break;
-                default:
+            case UserStatusDTO.statusFullfillRecord: String path = page.getRequestPath();
+                if ( path.endsWith( "person.zul" ) == false || ( this instanceof PersonClientController ) == false ) {
+                    redirect( "/private/user/person.zul?who=myself" );
+                }
+                else
                     return super.doBeforeCompose( page, parent, compInfo );
+                break;
+            case UserStatusDTO.statusExpiredPassword: redirect( "/private/change_password.zul" );
+                break;
+            default: return super.doBeforeCompose( page, parent, compInfo );
             }
         }
         return null;
@@ -58,7 +56,18 @@ public class LoggedBaseController extends BaseController
     public LoginLocator getLoginLocator()
     {
         if ( loginLocator == null )
-            loginLocator = new LoginLocator ();
+            loginLocator = new LoginLocator();
         return loginLocator;
+    }
+
+    protected void showErrorMessage( String description, String title )
+    {
+        try {
+            Messagebox.show( description, title, Messagebox.OK, Messagebox.ERROR );
+        }
+        catch ( InterruptedException e ) {
+            /*Just ignore it!!!*/
+            e = null;
+        }
     }
 }
