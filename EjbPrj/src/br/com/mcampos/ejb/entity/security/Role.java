@@ -20,6 +20,9 @@ import javax.persistence.Table;
 @Table( name = "\"role\"" )
 public class Role implements Serializable
 {
+    public static final Integer systemAdmimRoleLevel = 1;
+
+
     private String description;
     private Integer id;
     private Role parentRole;

@@ -10,7 +10,6 @@ import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.entity.security.Role;
 import br.com.mcampos.ejb.entity.user.Company;
 import br.com.mcampos.ejb.entity.user.Person;
 import br.com.mcampos.ejb.entity.user.Users;
@@ -28,12 +27,10 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 
 @Stateless( name = "UserFacadeSession", mappedName = "CloudSystems-EjbPrj-UserFacadeSession" )
-@Remote
 public class UserFacadeSessionBean implements UserFacadeSession
 {
 
@@ -143,8 +140,8 @@ public class UserFacadeSessionBean implements UserFacadeSession
             }
             else {
                 /*this is a new entity!*/
-                entity =
-                        ( dto instanceof CompanyDTO ) ? company.addBusinessEntity( ( CompanyDTO )dto, loginDTO ) : person.add( ( PersonDTO )dto );
+                entity = ( dto instanceof CompanyDTO ) ? company.addBusinessEntity( ( CompanyDTO )dto, loginDTO ) :
+                         person.add( ( PersonDTO )dto );
             }
 
             if ( entity instanceof Company ) {

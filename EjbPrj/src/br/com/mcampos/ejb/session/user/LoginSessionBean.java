@@ -560,10 +560,14 @@ public class LoginSessionBean implements LoginSessionLocal
             return;
 
         switch ( ( int )( login.getUserStatus().getId() ) ) {
-        case UserStatus.statusMaxLoginTryCount: throwException( 15 );
-        case UserStatus.statusInativo: throwException( 16 );
-        case UserStatus.statusEmailNotValidated: throwException( 17 );
-        default: throwException( 18 );
+        case UserStatus.statusMaxLoginTryCount:
+            throwException( 15 );
+        case UserStatus.statusInativo:
+            throwException( 16 );
+        case UserStatus.statusEmailNotValidated:
+            throwException( 17 );
+        default:
+            throwException( 18 );
         }
     }
 
@@ -886,9 +890,9 @@ public class LoginSessionBean implements LoginSessionLocal
         if ( SysUtils.isEmpty( currentUser.getAuthenticationId() ) )
             systemMessage.throwRuntimeException( SystemMessagesSessionBean.systemCommomMessageTypeId, 3 );
         try {
-            log =
-( AccessLog )em.createNamedQuery( "AccessLog.findToken" ).setParameter( "token", currentUser.getAuthenticationId() )
-  .setParameter( "userId", currentUser.getUserId() ).getSingleResult();
+            log = ( AccessLog )em.createNamedQuery( "AccessLog.findToken" )
+                    .setParameter( "token", currentUser.getAuthenticationId() ).setParameter( "userId", currentUser.getUserId() )
+                    .getSingleResult();
         }
         catch ( NoResultException e ) {
             /*
@@ -907,5 +911,24 @@ public class LoginSessionBean implements LoginSessionLocal
             systemMessage.throwRuntimeException( SystemMessagesSessionBean.systemCommomMessageTypeId, 2 );
         if ( log.getSessionId().equals( currentUser.getSessionId() ) == false )
             systemMessage.throwRuntimeException( SystemMessagesSessionBean.systemCommomMessageTypeId, 2 );
+    }
+
+
+    /**
+     * Autentica o usuário. Esta será a função mais usada de todas.
+     * Para QUALQUER operacao, esta função deverá ser chamada antes.
+     *
+     *
+     * @param currentUser - usuario autenticado
+     * @param authorizedRole Id da role autorizada.
+     */
+    public void authenticate( AuthenticationDTO currentUser, Integer authorizedRole )
+    {
+        authenticate( currentUser );
+
+        /*
+         * TODO implementar a busca pela role do usuário.
+         * Lembrar que uma role pode possui um relacionamento entre as roles.
+         */
     }
 }
