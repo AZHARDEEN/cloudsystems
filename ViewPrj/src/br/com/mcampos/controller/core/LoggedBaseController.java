@@ -4,6 +4,7 @@ import br.com.mcampos.controller.commom.user.PersonClientController;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.LoginLocator;
 
 import org.zkoss.zk.ui.Component;
@@ -36,18 +37,29 @@ public class LoggedBaseController extends BaseController
         }
         else {
             AuthenticationDTO user = getLoggedInUser();
+            int status;
 
-            switch ( getLoginLocator().getStatus( user ) ) {
-            case UserStatusDTO.statusFullfillRecord: String path = page.getRequestPath();
-                if ( path.endsWith( "person.zul" ) == false || ( this instanceof PersonClientController ) == false ) {
-                    redirect( "/private/user/person.zul?who=myself" );
-                }
-                else
+            try {
+                status = getLoginLocator().getStatus( user );
+                switch ( status ) {
+                case UserStatusDTO.statusFullfillRecord:
+                    String path = page.getRequestPath();
+                    if ( path.endsWith( "person.zul" ) == false || ( this instanceof PersonClientController ) == false ) {
+                        redirect( "/private/user/person.zul?who=myself" );
+                    }
+                    else
+                        return super.doBeforeCompose( page, parent, compInfo );
+                    break;
+                case UserStatusDTO.statusExpiredPassword:
+                    redirect( "/private/change_password.zul" );
+                    break;
+                default:
                     return super.doBeforeCompose( page, parent, compInfo );
-                break;
-            case UserStatusDTO.statusExpiredPassword: redirect( "/private/change_password.zul" );
-                break;
-            default: return super.doBeforeCompose( page, parent, compInfo );
+                }
+            }
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage(), "Erro ao obter status do usuário" );
+                redirect( "/login.zul" );
             }
         }
         return null;

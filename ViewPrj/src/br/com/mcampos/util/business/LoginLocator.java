@@ -132,7 +132,7 @@ public class LoginLocator extends BusinessDelegate
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
      */
-    public Integer getStatus( AuthenticationDTO currentUser )
+    public Integer getStatus( AuthenticationDTO currentUser ) throws ApplicationException
     {
         return getFacade().getStatus( currentUser );
     }
@@ -144,7 +144,7 @@ public class LoginLocator extends BusinessDelegate
      * @param currentUser Usuário autenticado.
      * @param newStatus Novo status a ser alterado no banco de dados.
      */
-    public void setStatus( AuthenticationDTO currentUser, Integer newStatus )
+    public void setStatus( AuthenticationDTO currentUser, Integer newStatus ) throws ApplicationException
     {
         getFacade().setStatus( currentUser, newStatus );
     }

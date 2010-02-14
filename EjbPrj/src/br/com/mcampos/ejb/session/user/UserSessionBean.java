@@ -4,6 +4,7 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.user.Company;
 import br.com.mcampos.ejb.entity.user.Person;
@@ -11,7 +12,7 @@ import br.com.mcampos.ejb.entity.user.UserDocument;
 import br.com.mcampos.ejb.entity.user.Users;
 
 
-import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
+import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
 import br.com.mcampos.ejb.session.user.attributes.UserDocumentSessionLocal;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -31,7 +32,7 @@ import javax.persistence.Query;
 
 @Stateless( name = "UserSession", mappedName = "CloudSystems-EjbPrj-UserSession" )
 @Local
-public class UserSessionBean implements UserSessionLocal
+public class UserSessionBean extends AbstractSecurity implements UserSessionLocal
 {
 
     @PersistenceContext( unitName = "EjbPrj" )
@@ -39,12 +40,6 @@ public class UserSessionBean implements UserSessionLocal
 
     @EJB
     UserDocumentSessionLocal userDocumentoSession;
-
-    @EJB
-    SystemMessagesSessionLocal systemMessage;
-
-    @EJB
-    LoginSessionLocal login;
 
     private static final Integer systemMessageTypeId = 3;
 
@@ -66,13 +61,13 @@ public class UserSessionBean implements UserSessionLocal
      * PUBLIC FUNCTIONS
      *************************************************************************************/
 
-    public Integer getRecordCount( AuthenticationDTO auth )
+    public Integer getRecordCount( AuthenticationDTO auth ) throws ApplicationException
     {
         Long recordCount;
 
-        getLogin().authenticate( auth );
+        authenticate( auth );
         try {
-            recordCount = ( Long )em.createNativeQuery( "SELECT COUNT(*) FROM USERS" ).getSingleResult();
+            recordCount = ( Long )getEntityManager().createNativeQuery( "SELECT COUNT(*) FROM USERS" ).getSingleResult();
             return recordCount.intValue();
         }
         catch ( NoResultException e ) {
@@ -83,10 +78,10 @@ public class UserSessionBean implements UserSessionLocal
 
 
     /** <code>select o from Users o</code> */
-    public List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, int firstResult, int maxResults )
+    public List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, int firstResult, int maxResults ) throws ApplicationException
     {
-        getLogin().authenticate( auth );
-        Query query = em.createNamedQuery( "Users.findAll" );
+        authenticate( auth );
+        Query query = getEntityManager().createNamedQuery( "Users.findAll" );
         if ( firstResult > 0 ) {
             query = query.setFirstResult( firstResult );
         }
@@ -116,15 +111,15 @@ public class UserSessionBean implements UserSessionLocal
 
     }
 
-    public UserDTO get( AuthenticationDTO auth, Integer id )
+    public UserDTO get( AuthenticationDTO auth, Integer id ) throws ApplicationException
     {
         Users entity;
 
-        getLogin().authenticate( auth );
-        entity = em.find( Users.class, id );
+        authenticate( auth );
+        entity = getEntityManager().find( Users.class, id );
         if ( entity != null ) {
             if ( entity.getUserType() != null )
-                em.refresh( entity.getUserType() );
+                getEntityManager().refresh( entity.getUserType() );
             if ( entity instanceof Person )
                 return DTOFactory.copy( ( Person )entity, true );
             else
@@ -180,7 +175,7 @@ public class UserSessionBean implements UserSessionLocal
         userDocument = getUserDocumentoSession().find( dto );
         if ( userDocument == null )
             return null;
-        return em.find( Users.class, userDocument.getUserId() );
+        return getEntityManager().find( Users.class, userDocument.getUserId() );
     }
 
 
@@ -197,41 +192,16 @@ public class UserSessionBean implements UserSessionLocal
         userDocument = getUserDocumentoSession().find( entity );
         if ( userDocument == null )
             return null;
-        return em.find( Users.class, userDocument.getUserId() );
+        return getEntityManager().find( Users.class, userDocument.getUserId() );
     }
 
-
-    /**
-     * Lança uma exceção que NÃO causa rollback da transação, ou seja,
-     * NÃO É derivada de runtime-excpetion
-     *
-     * @param id - id da mensagem a ser exibida. Cadastrada na tabela SystemMessages
-     * @throws ApplicationException
-     */
-    protected void throwException( int id ) throws ApplicationException
+    public Integer getMessageTypeId()
     {
-        getSystemMessage().throwException( systemMessageTypeId, id );
+        return systemMessageTypeId;
     }
 
-    /**
-     * Lança uma exceção que PROVOCA rollback da transação, ou seja,
-     * E derivada de runtime-excpetion
-     *
-     * @param id - id da mensagem a ser exibida. Cadastrada na tabela SystemMessages
-     * @throws ApplicationException
-     */
-    protected void throwRuntimeException( int id ) throws ApplicationException
+    public EntityManager getEntityManager()
     {
-        getSystemMessage().throwRuntimeException( systemMessageTypeId, id );
-    }
-
-    protected SystemMessagesSessionLocal getSystemMessage()
-    {
-        return systemMessage;
-    }
-
-    protected LoginSessionLocal getLogin()
-    {
-        return login;
+        return em;
     }
 }

@@ -6,6 +6,7 @@ import br.com.mcampos.ejb.entity.system.EMail;
 
 import br.com.mcampos.ejb.entity.system.EMailPart;
 import br.com.mcampos.ejb.entity.system.EMailPartType;
+import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 

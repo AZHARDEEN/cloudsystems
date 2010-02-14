@@ -2,6 +2,8 @@ package br.com.mcampos.util.system.tree;
 
 import br.com.mcampos.dto.core.SimpleTableDTO;
 
+import br.com.mcampos.exception.ApplicationException;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -11,14 +13,14 @@ public abstract class SimpleTreeNode implements Serializable
 {
     protected List children = null;
 
-    public abstract void readChildren();
+    public abstract void readChildren() throws ApplicationException;
 
     public List getChildren()
     {
         return children;
     }
 
-    public Object getChild( int arg1 )
+    public Object getChild( int arg1 ) throws ApplicationException
     {
         Object child = null;
 
@@ -31,7 +33,7 @@ public abstract class SimpleTreeNode implements Serializable
         return child;
     }
 
-    public int getChildCount()
+    public int getChildCount() throws ApplicationException
     {
         if ( children == null )
             readChildren();
@@ -42,7 +44,7 @@ public abstract class SimpleTreeNode implements Serializable
         return 0;
     }
 
-    public boolean isLeaf()
+    public boolean isLeaf() throws ApplicationException
     {
         return ( getChildCount() == 0 );
     }
