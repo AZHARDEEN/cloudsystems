@@ -222,9 +222,11 @@ public final class DTOFactory implements Serializable
 
         code = document.trim();
         switch ( type ) {
-        case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
+        case UserDocument.typeCPF:
+            code = code.replaceAll( "[\\-.\\/]", "" );
             break;
-        case UserDocument.typeEmail: code = code.toLowerCase();
+        case UserDocument.typeEmail:
+            code = code.toLowerCase();
             break;
         }
         return code;
@@ -666,13 +668,15 @@ public final class DTOFactory implements Serializable
         target.setCheckmark( source.getCheckmark() );
         target.setDisabled( source.getDisabled() );
         target.setSeparatorBefore( source.getSeparatorBefore() );
-        if ( ( source.getMenuList().size() > 0 ) && copySubMenu ) {
-            for ( Menu sm : source.getMenuList() ) {
+        if ( ( source.getSubMenus().size() > 0 ) && copySubMenu ) {
+            for ( Menu sm : source.getSubMenus() ) {
                 target.addSubMenu( copy( sm, true ) );
             }
         }
-        if ( source.getMenu() != null )
-            target.setParent( copy( source.getMenu(), false ) );
+        if ( source.getParentMenu() != null ) {
+            target.setParent( copy( source.getParentMenu(), false ) );
+            target.setParentId( source.getParentMenu().getId() );
+        }
         return target;
     }
 
@@ -681,6 +685,24 @@ public final class DTOFactory implements Serializable
     {
         if ( source == null || target == null )
             return null;
+
+        target.setId( source.getId() );
+        target.setDescription( source.getDescription() );
+        target.setSequence( source.getSequence() );
+        target.setTargetURL( source.getTargetURL() );
+        target.setAutocheck( source.getAutocheck() );
+        target.setChecked( source.getChecked() );
+        target.setCheckmark( source.getCheckmark() );
+        target.setDisabled( source.getDisabled() );
+        target.setSeparatorBefore( source.getSeparatorBefore() );
+        return target;
+    }
+
+    public static Menu copy( MenuDTO source )
+    {
+        if ( source == null )
+            return null;
+        Menu target = new Menu();
 
         target.setId( source.getId() );
         target.setDescription( source.getDescription() );

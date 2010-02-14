@@ -11,13 +11,16 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Menu.findAll", query = "select o from Menu o where o.menu is null" ) } )
+@NamedQueries( { @NamedQuery( name = "Menu.findAll", query = "select o from Menu o where o.parentMenu is null" ) } )
+@NamedNativeQueries( { @NamedNativeQuery( name = "Menu.nexSequence", query = "select coalesce ( max (  mnu_sequence_in ), 0 ) + 1 from menu where coalesce ( mnu_parent_id, 0 ) = ?" ) } )
 @Table( name = "\"menu\"" )
 public class Menu implements Serializable, Comparable<Menu>
 {
@@ -25,8 +28,8 @@ public class Menu implements Serializable, Comparable<Menu>
     private Integer id;
     private Integer sequence;
     private String targetURL;
-    private Menu menu;
-    private List<Menu> menuList;
+    private Menu parentMenu;
+    private List<Menu> subMenus;
     private Media media;
 
     private Boolean separatorBefore;
@@ -87,44 +90,51 @@ public class Menu implements Serializable, Comparable<Menu>
 
     @ManyToOne
     @JoinColumn( name = "mnu_parent_id" )
-    public Menu getMenu()
+    public Menu getParentMenu()
     {
-        return menu;
+        return parentMenu;
     }
 
-    public void setMenu( Menu menu )
+    protected boolean isMyParentMenu( Menu parentMenu )
     {
-        this.menu = menu;
-        if ( menu != null ) {
-            if ( menu.getMenuList().contains( this ) == false )
-                menu.addMenu( this );
+        return ( getParentMenu() != null && getParentMenu().equals( parentMenu ) );
+    }
+
+    public void setParentMenu( Menu parentMenu )
+    {
+        if ( isMyParentMenu( parentMenu ) == false ) {
+            this.parentMenu = parentMenu;
+            if ( parentMenu != null )
+                parentMenu.addMenu( this );
         }
     }
 
-    @OneToMany( mappedBy = "menu" )
-    public List<Menu> getMenuList()
+    @OneToMany( mappedBy = "parentMenu" )
+    public List<Menu> getSubMenus()
     {
-        if ( menuList == null )
-            menuList = new ArrayList<Menu>();
-        return menuList;
+        if ( subMenus == null )
+            subMenus = new ArrayList<Menu>();
+        return subMenus;
     }
 
-    public void setMenuList( List<Menu> menuList )
+    public void setSubMenus( List<Menu> menuList )
     {
-        this.menuList = menuList;
+        this.subMenus = menuList;
     }
 
-    public Menu addMenu( Menu menu )
+    public Menu addMenu( Menu childMenu )
     {
-        getMenuList().add( menu );
-        menu.setMenu( this );
-        return menu;
+        if ( getSubMenus().contains( childMenu ) )
+            return childMenu;
+        getSubMenus().add( childMenu );
+        childMenu.setParentMenu( this );
+        return childMenu;
     }
 
-    public Menu removeMenu( Menu menu )
+    public Menu removeMenu( Menu childMenu )
     {
-        getMenuList().remove( menu );
-        return menu;
+        getSubMenus().remove( childMenu );
+        return childMenu;
     }
 
     public void setMedia( Media media )

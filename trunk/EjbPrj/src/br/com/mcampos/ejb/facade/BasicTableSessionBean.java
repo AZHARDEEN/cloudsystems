@@ -20,7 +20,7 @@ import br.com.mcampos.ejb.session.address.AddressTypeSessionLocal;
 import br.com.mcampos.ejb.session.address.CitySessionLocal;
 import br.com.mcampos.ejb.session.address.CountrySessionLocal;
 import br.com.mcampos.ejb.session.address.StateSessionLocal;
-import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
+import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
 import br.com.mcampos.ejb.session.system.TableManagerSessionLocal;
 import br.com.mcampos.ejb.session.user.attributes.CivilStateSessionLocal;
 

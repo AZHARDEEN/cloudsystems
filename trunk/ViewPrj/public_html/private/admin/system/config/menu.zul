@@ -67,20 +67,7 @@
                             </rows>
                         </grid>
                         <separator/>
-                        <div align="center">
-                            <hbox>
-                                <!-- Por favor, nao mude o id dos botoes -->
-                                <button id="cmdCreate" label="Novo" image="/img/icontexto-webdev-add-032x032.png"
-                                        tooltiptext="Adiciona um novo registro"/>
-                                <button id="cmdUpdate" label="Editar" image="/img/icontexto-webdev-alert-032x032.png"
-                                        tooltiptext="Altera o registro selecionado"/>
-                                <button id="cmdDelete" label="Apagar" image="/img/icontexto-webdev-remove-032x032.png"
-                                        tooltiptext="Exclui o registro selecionado"/>
-                                <separator/>
-                                <button id="cmdRefresh" label="Atualizar" image="/img/icontexto-webdev-reload-032x032.png"
-                                        tooltiptext="Atualiza a lista de registros"/>
-                            </hbox>
-                        </div>
+                        <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
                         <separator/>
                         <!-- Por favor, nao mude o id desta div -->
                         <div id="recordEdit" visible="false">
@@ -100,7 +87,7 @@
                                     </row>
                                     <row>
                                         Menu Pai
-                                        <intbox id="editParent" width="100px" constraint="no negative, no zero" droppable="true"/>
+                                        <intbox id="editParent" width="100px" droppable="true"/>
                                     </row>
                                     <row>
                                         URL
@@ -108,7 +95,7 @@
                                     </row>
                                     <row>
                                         Seqüencia
-                                        <intbox id="editSequence" width="100px" constraint="no negative, no zero"/>
+                                        <intbox id="editSequence" width="100px"/>
                                     </row>
                                     <row>
                                         Propriedades do Menu
@@ -128,13 +115,7 @@
                                 </rows>
                             </grid>
                             <separator/>
-                            <div align="center">
-                                <hbox>
-                                    <!-- Por favor, nao mude o id dos botoes -->
-                                    <button id="cmdSave" label="Salvar" image="/img/icontexto-webdev-ok-032x032.png"/>
-                                    <button id="cmdCancel" label="Cancelar" image="/img/icontexto-webdev-cancel-032x032.png"/>
-                                </hbox>
-                            </div>
+                            <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
                         </div>
                     </div>
                 </div>

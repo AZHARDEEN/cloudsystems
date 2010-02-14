@@ -28,7 +28,7 @@ public interface LoginSessionLocal
      */
     void add( RegisterDTO dto ) throws ApplicationException;
 
-    void delete( Integer id );
+    void delete( Integer id ) throws ApplicationException;
 
     AuthenticationDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException;
 
@@ -36,9 +36,7 @@ public interface LoginSessionLocal
 
     Long getRecordCount();
 
-    void delete( Integer[] logins );
-
-    void updateLoginStatus( Integer id, Integer newStatus );
+    void updateLoginStatus( Integer id, Integer newStatus ) throws ApplicationException;
 
 
     /**
@@ -48,7 +46,7 @@ public interface LoginSessionLocal
      * @param document UserDocumentDTO - identificado do usuario via documento (Email)
      * @param oldPassword - A senha antiga a ser alterada
      * @param newPassword - A nova senha
-     * @exception InvalidParameterException
+     * @exception ApplicationException
      */
     void changePassword( UserDocumentDTO document, String oldPassword, String newPassword ) throws ApplicationException;
 
@@ -92,7 +90,7 @@ public interface LoginSessionLocal
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
      */
-    Integer getStatus( AuthenticationDTO currentUser );
+    Integer getStatus( AuthenticationDTO currentUser ) throws ApplicationException;
 
 
     /**
@@ -101,26 +99,6 @@ public interface LoginSessionLocal
      * @param currentUser Usuário autenticado.
      * @param newStatus Novo status a ser alterado no banco de dados.
      */
-    void setStatus( AuthenticationDTO currentUser, Integer newStatus );
-
-    /**
-     * Autentica o usuário. Esta será a função mais usada de todas.
-     * Para QUALQUER operacao, esta função deverá ser chamada antes.
-     *
-     *
-     * @param currentUser
-     */
-    void authenticate( AuthenticationDTO currentUser );
-
-
-    /**
-     * Autentica o usuário. Esta será a função mais usada de todas.
-     * Para QUALQUER operacao, esta função deverá ser chamada antes.
-     *
-     *
-     * @param currentUser - usuario autenticado
-     * @param authorizedRole Id da role autorizada.
-     */
-    void authenticate( AuthenticationDTO currentUser, Integer authorizedRole );
+    void setStatus( AuthenticationDTO currentUser, Integer newStatus ) throws ApplicationException;
 
 }

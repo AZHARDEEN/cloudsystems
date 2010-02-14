@@ -16,11 +16,11 @@ import javax.ejb.Local;
 @Local
 public interface UserSessionLocal
 {
-    Integer getRecordCount( AuthenticationDTO auth );
+    Integer getRecordCount( AuthenticationDTO auth ) throws ApplicationException;
 
-    List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, int firstResult, int maxResults );
+    List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, int firstResult, int maxResults ) throws ApplicationException;
 
-    UserDTO get( AuthenticationDTO auth, Integer id );
+    UserDTO get( AuthenticationDTO auth, Integer id ) throws ApplicationException;
 
     /*
      * Procura por um registro na tabela de documentos de usuarios (userdocuments).

@@ -92,7 +92,7 @@ public interface LoginFacadeSession
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
      */
-    Integer getStatus( AuthenticationDTO currentUser );
+    Integer getStatus( AuthenticationDTO currentUser ) throws ApplicationException;
 
     /**
      * Altera o status do usuário no banco de dados.
@@ -100,7 +100,7 @@ public interface LoginFacadeSession
      * @param currentUser Usuário autenticado.
      * @param newStatus Novo status a ser alterado no banco de dados.
      */
-    void setStatus( AuthenticationDTO currentUser, Integer newStatus );
+    void setStatus( AuthenticationDTO currentUser, Integer newStatus ) throws ApplicationException;
 
 }
 

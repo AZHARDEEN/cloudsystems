@@ -1,6 +1,8 @@
 package br.com.mcampos.controller.admin.system.config.menu;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.util.business.MenuLocator;
 import br.com.mcampos.util.business.SystemLocator;
 import br.com.mcampos.util.system.tree.SimpleTreeNode;
 
@@ -8,7 +10,7 @@ import java.io.Serializable;
 
 public class MenuTreeRootNode extends SimpleTreeNode implements Serializable
 {
-    SystemLocator locator;
+    MenuLocator locator;
     AuthenticationDTO currentUser;
 
     public MenuTreeRootNode( AuthenticationDTO currentUser )
@@ -17,10 +19,10 @@ public class MenuTreeRootNode extends SimpleTreeNode implements Serializable
         setCurrentUser( currentUser );
     }
 
-    public SystemLocator getLocator()
+    public MenuLocator getLocator()
     {
         if ( locator == null )
-            locator = new SystemLocator();
+            locator = new MenuLocator();
         return locator;
     }
 
@@ -34,8 +36,8 @@ public class MenuTreeRootNode extends SimpleTreeNode implements Serializable
         return currentUser;
     }
 
-    public void readChildren()
+    public void readChildren() throws ApplicationException
     {
-        children = getLocator().getMenuList( getCurrentUser() );
+        children = getLocator().get( getCurrentUser() );
     }
 }

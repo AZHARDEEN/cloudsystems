@@ -6,7 +6,7 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
-import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
+import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
 
 import br.com.mcampos.ejb.session.user.LoginSessionLocal;
 
@@ -161,7 +161,7 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
      */
-    public Integer getStatus( AuthenticationDTO currentUser )
+    public Integer getStatus( AuthenticationDTO currentUser ) throws ApplicationException
     {
         return getLogin().getStatus( currentUser );
     }
@@ -173,7 +173,7 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
      * @param currentUser Usuário autenticado.
      * @param newStatus Novo status a ser alterado no banco de dados.
      */
-    public void setStatus( AuthenticationDTO currentUser, Integer newStatus )
+    public void setStatus( AuthenticationDTO currentUser, Integer newStatus ) throws ApplicationException
     {
         getLogin().setStatus( currentUser, newStatus );
     }

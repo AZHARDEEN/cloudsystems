@@ -78,6 +78,10 @@ public class PrivateIndexController extends LoggedBaseController
                 parent.appendChild( new Menuseparator() );
             parent.appendChild( menuItem );
             menuItem.setParent( parent );
+            menuItem.setAutocheck( item.getAutocheck() );
+            menuItem.setChecked( item.getChecked() );
+            menuItem.setCheckmark( item.getCheckmark() );
+            menuItem.setDisabled( item.getDisabled() );
             menuItem.addEventListener( Events.ON_CLICK, new EventListener()
                 {
                     public void onEvent( Event event ) throws Exception

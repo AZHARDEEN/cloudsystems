@@ -1,9 +1,9 @@
-package br.com.mcampos.ejb.facade;
+package br.com.mcampos.util.business;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MenuDTO;
-import br.com.mcampos.ejb.session.system.SystemSessionLocal;
 
+import br.com.mcampos.ejb.core.MenuInterface;
 import br.com.mcampos.exception.ApplicationException;
 
 import br.com.mcampos.sysutils.SysUtils;
@@ -11,24 +11,11 @@ import br.com.mcampos.sysutils.SysUtils;
 import java.util.Collections;
 import java.util.List;
 
-import javax.ejb.EJB;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-
-@Stateless( name = "SystemFacade", mappedName = "CloudSystems-EjbPrj-SystemFacade" )
-@Remote
-public class SystemFacadeBean implements SystemFacade
+public class MenuLocator extends SystemLocator implements MenuInterface
 {
-    @EJB
-    SystemSessionLocal systemSession;
-
-    public SystemFacadeBean()
+    public MenuLocator()
     {
-    }
-
-    public SystemSessionLocal getSystemSession()
-    {
-        return systemSession;
+        super();
     }
 
     /**
@@ -36,13 +23,13 @@ public class SystemFacadeBean implements SystemFacade
      * aqueles menus que não possuem nenhum parentMenu pai.
      *
      * @param auth - dto do usuário autenticado no sistema.
-     * @return Lista com os menus
+     * @return List<MenuDTO> - Lista dos menus
      */
     public List<MenuDTO> get( AuthenticationDTO auth ) throws ApplicationException
     {
         if ( auth == null )
             return Collections.EMPTY_LIST;
-        return getSystemSession().get( auth );
+        return getSessionBean().get( auth );
     }
 
     /**
@@ -54,11 +41,11 @@ public class SystemFacadeBean implements SystemFacade
      */
     public void update( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
     {
-        if ( auth == null )
+        if ( auth == null || validate( dto, false ) == false )
             return;
-        if ( validate( dto, false ) )
-            getSystemSession().update( auth, dto );
+        getSessionBean().update( auth, dto );
     }
+
 
     /**
      * Obtém o próximo id disponível.
@@ -73,7 +60,7 @@ public class SystemFacadeBean implements SystemFacade
     {
         if ( auth == null )
             return 0;
-        return getSystemSession().getNextId( auth );
+        return getSessionBean().getNextId( auth );
     }
 
     /**
@@ -85,23 +72,9 @@ public class SystemFacadeBean implements SystemFacade
      */
     public void add( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
     {
-        if ( auth == null )
+        if ( auth == null || validate( dto, true ) == false )
             return;
-        if ( validate( dto, true ) )
-            getSystemSession().add( auth, dto );
-    }
-
-    public Boolean validate( MenuDTO dto, Boolean isNew ) throws ApplicationException
-    {
-        if ( dto == null )
-            return false;
-        if ( SysUtils.isEmpty( dto.getDescription() ) )
-            return false;
-        if ( !isNew ) {
-            if ( SysUtils.isZero( dto.getId() ) )
-                return false;
-        }
-        return true;
+        getSessionBean().add( auth, dto );
     }
 
     /**
@@ -117,13 +90,20 @@ public class SystemFacadeBean implements SystemFacade
     {
         if ( auth == null )
             return 0;
-        return getSystemSession().getNextSequence( auth, parentId );
+        return getSessionBean().getNextSequence( auth, parentId );
+    }
+
+    public Boolean validate( MenuDTO dto, Boolean isNew )
+    {
+        if ( dto == null )
+            return false;
+        return true;
     }
 
     public void delete( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
     {
         if ( auth == null || SysUtils.isZero( menuId ) )
             return;
-        getSystemSession().delete( auth, menuId );
+        getSessionBean().delete( auth, menuId );
     }
 }

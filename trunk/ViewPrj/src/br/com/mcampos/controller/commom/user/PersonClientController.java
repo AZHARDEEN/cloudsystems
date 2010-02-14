@@ -183,7 +183,8 @@ public class PersonClientController extends UserClientController
         dto.setName( name.getValue() );
         dto.setBirthDate( new Timestamp( birthdate.getValue().getTime() ) );
         dto.setBornCity( bornCity.getSelectedItem() != null ? ( CityDTO )bornCity.getSelectedItem().getValue() : null );
-        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() : null );
+        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() :
+                           null );
         dto.setFatherName( fatherName.getValue() );
         dto.setGender( gender.getSelectedItem() != null ? ( GenderDTO )gender.getSelectedItem().getValue() : null );
         dto.setMotherName( motherName.getValue() );
@@ -200,13 +201,19 @@ public class PersonClientController extends UserClientController
             showErrorMessage( e.getMessage() );
         }
         currentUser = getLoggedInUser();
-        if ( getLoginLocator().getStatus( currentUser ) == UserStatusDTO.statusFullfillRecord ) {
-            getLoginLocator().setStatus( currentUser, UserStatusDTO.statusOk );
-            setLoggedInUser( currentUser );
-            Executions.sendRedirect( "/private/index.zul" );
+        try {
+            if ( getLoginLocator().getStatus( currentUser ) == UserStatusDTO.statusFullfillRecord ) {
+                getLoginLocator().setStatus( currentUser, UserStatusDTO.statusOk );
+                setLoggedInUser( currentUser );
+                Executions.sendRedirect( "/private/index.zul" );
+                return false;
+            }
+            return true;
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
             return false;
         }
-        return true;
     }
 
     public void setMaritalStatus( Combobox maritalStatus )

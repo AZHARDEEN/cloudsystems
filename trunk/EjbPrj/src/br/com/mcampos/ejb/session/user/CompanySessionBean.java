@@ -11,7 +11,7 @@ import br.com.mcampos.ejb.entity.user.Company;
 import br.com.mcampos.ejb.entity.user.Person;
 
 import br.com.mcampos.ejb.entity.user.attributes.CollaboratorType;
-import br.com.mcampos.ejb.session.system.SystemMessagesSessionLocal;
+import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
 
 import br.com.mcampos.sysutils.SysUtils;
 

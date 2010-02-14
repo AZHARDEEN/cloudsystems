@@ -18,6 +18,7 @@ public class MenuDTO extends SimpleTableDTO
     private Boolean disabled;
 
     private MenuDTO parent;
+    private Integer parentId;
 
 
     public MenuDTO()
@@ -61,6 +62,11 @@ public class MenuDTO extends SimpleTableDTO
     {
         if ( getSubMenu().contains( subMenu ) == false )
             getSubMenu().add( subMenu );
+    }
+
+    public void removeSubMenu( MenuDTO subMenu )
+    {
+        getSubMenu().remove( subMenu );
     }
 
     public void setSeparatorBefore( Boolean separatorBefore )
@@ -122,10 +128,21 @@ public class MenuDTO extends SimpleTableDTO
     public void setParent( MenuDTO parent )
     {
         this.parent = parent;
+        this.setParentId( parent != null ? parent.getId() : 0 );
     }
 
     public MenuDTO getParent()
     {
         return parent;
+    }
+
+    public void setParentId( Integer parentId )
+    {
+        this.parentId = parentId;
+    }
+
+    public Integer getParentId()
+    {
+        return parentId;
     }
 }

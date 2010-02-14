@@ -114,7 +114,7 @@ public class UsersLocator extends BusinessDelegate
     /**
      * Obtem todas as roles do usuário autenticado.
      * As roles são a base para todo o esquema de segurança do sistema.
-     * Inclusive para obter o menu de acesso ao sistema.
+     * Inclusive para obter o parentMenu de acesso ao sistema.
      *
      * @param auth DTO do usuário autenticado.
      * @return A lista de roles do usuário ou null.
