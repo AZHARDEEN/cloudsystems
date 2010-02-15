@@ -50,11 +50,14 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         authenticate( auth, Role.systemAdmimRoleLevel );
 
         try {
+            getEntityManager().clear();
+            getEntityManager().flush();
             list = ( List<Menu> )getEntityManager().createNamedQuery( "Menu.findAll" ).getResultList();
             if ( list == null || list.size() == 0 )
                 return Collections.EMPTY_LIST;
             ArrayList<MenuDTO> listDTO = new ArrayList<MenuDTO>( list.size() );
             for ( Menu m : list ) {
+                getEntityManager().refresh( m );
                 listDTO.add( DTOFactory.copy( m, true ) );
             }
             return listDTO;
@@ -108,7 +111,6 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
             /*A parent menu cannot have a target url! I guess!!!*/
             entity.setTargetURL( null );
         }
-        getEntityManager().merge( entity );
     }
 
     protected void changeParent( Menu entity, MenuDTO dto ) throws ApplicationException
@@ -117,15 +119,17 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
 
         /*Get old parent and new parent, if any*/
         oldParent = entity.getParentMenu();
-        if ( SysUtils.isZero( dto.getParentId() ) == false ) {
-            newParent = getEntityManager().find( Menu.class, dto.getParentId() );
-            if ( newParent == null ) /*does not exists*/
-                throwRuntimeException( 3 );
-        }
         if ( oldParent != null && oldParent.equals( newParent ) == false ) {
             oldParent.removeMenu( entity );
         }
+        if ( SysUtils.isZero( dto.getParentId() ) == false ) {
+            newParent = getEntityManager().find( Menu.class, dto.getParentId() );
+            if ( newParent == null )
+                throwRuntimeException( 3 );
+        }
         entity.setParentMenu( newParent );
+        if ( oldParent != null )
+            getEntityManager().merge( oldParent );
     }
 
     /**

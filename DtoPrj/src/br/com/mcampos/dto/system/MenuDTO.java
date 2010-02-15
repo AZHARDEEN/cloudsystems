@@ -26,6 +26,13 @@ public class MenuDTO extends SimpleTableDTO
         super();
     }
 
+    public MenuDTO( Integer id )
+    {
+        super();
+        setId( id );
+    }
+
+
     public void setSequence( Integer sequence )
     {
         this.sequence = sequence;

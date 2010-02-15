@@ -5,22 +5,46 @@ import br.com.mcampos.exception.ApplicationException;
 
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.TreeitemRenderer;
+import org.zkoss.zul.Treerow;
+import org.zkoss.zul.impl.XulElement;
 
+/**
+ * Classe base para CRUD em uma tree.
+ * Neste modelo de desenvolvimento optou-se pelo uso do pattern DTO.
+ * @param <DTO>
+ */
 public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController<Treeitem> implements TreeitemRenderer
 {
     protected Tree treeList;
+    protected TreeMap treeMap;
 
-
+    /**
+     * Quando um item da tree é selecionado, o implementador desta função abstrata deve mostrar todas as informações
+     * pertinentes ao registro. Em alguns casos pode-se recorrer ao banco de dados para obter mais informações.
+     *
+     * @param record Indica o registro selecionado. Neste caso não é repassado o treeitem, mas o seu value associado.
+     * @throws ApplicationException
+     */
     protected abstract void showRecord( DTO record ) throws ApplicationException;
+
 
     protected abstract void copyTo( DTO dto );
 
     protected abstract DTO createDTO();
+
+    protected abstract void configureTreeitem( Treeitem item );
+
+    protected abstract Treeitem getParent( Treeitem newChild );
 
     public BasicTreeCRUDController()
     {
@@ -73,32 +97,65 @@ public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController<T
     {
         if ( currentRecord == null )
             return;
-        currentRecord.detach();
-
+        removeNode( currentRecord );
     }
 
     @Override
     public void afterEdit( Treeitem record )
     {
+        DTO dto = getValue( record );
         if ( isAddNewOperation() == false ) {
-            DTO dto = getValue( record );
             Treecell cell = ( Treecell )record.getTreerow().getFirstChild();
             if ( cell != null )
                 cell.setLabel( dto.toString() );
         }
+        else {
+            getTreeMap().put( dto, record );
+        }
     }
+
+
+    protected void addNode( XulElement parent, Treeitem child )
+    {
+        if ( parent == null || child == null )
+            return;
+
+        Treechildren tc;
+        if ( parent instanceof Tree )
+            tc = ( ( Tree )parent ).getTreechildren();
+        else if ( parent instanceof Treeitem )
+            tc = ( ( Treeitem )parent ).getTreechildren();
+        else
+            return;
+        if ( tc == null ) {
+            tc = new Treechildren();
+            parent.appendChild( tc );
+        }
+        tc.appendChild( child );
+    }
+
+
+    protected void removeNode( Treeitem child )
+    {
+        Treeitem parentItem = child.getParentItem();
+
+        child.detach();
+        if ( parentItem != null && parentItem.getTreechildren() != null ) {
+            if ( parentItem.getTreechildren().getChildren().isEmpty() ) {
+                Treechildren tc = parentItem.getTreechildren();
+
+                tc.detach();
+                parentItem.invalidate();
+            }
+        }
+
+    }
+
 
     protected void moveTreeItem( Treeitem target, Treeitem child )
     {
-        Treechildren parent;
-
-        child.detach();
-        parent = target.getTreechildren();
-        if ( parent == null ) {
-            parent = new Treechildren();
-            target.appendChild( parent );
-        }
-        parent.appendChild( child );
+        removeNode( child );
+        addNode( target, child );
     }
 
     protected void updateRow( Treeitem item )
@@ -138,7 +195,10 @@ public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController<T
         try {
             render( newItem, dto );
             Treeitem parent = getParent( newItem );
-            parent.getTreechildren().appendChild( newItem );
+            if ( parent != null )
+                addNode( parent, newItem );
+            else
+                addNode( getTreeList(), newItem );
             return newItem;
         }
         catch ( Exception e ) {
@@ -146,23 +206,29 @@ public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController<T
         }
     }
 
-
-    protected Treeitem getParent( Treeitem child )
+    public void render( Treeitem item, Object data ) throws Exception
     {
-        Treechildren root = treeList.getTreechildren();
-        MenuDTO dto, childDTO;
+        Treerow tr = null;
 
-        childDTO = ( ( MenuDTO )getValue( child ) );
-        if ( SysUtils.isZero( childDTO.getParentId() ) ) {
-            return ( Treeitem )root.getFirstChild();
+
+        item.setValue( data );
+        if ( item.getTreerow() == null ) {
+            tr = new Treerow();
+            tr.setParent( item );
         }
-        for ( Treeitem item : root.getChildren() ) {
-            dto = ( MenuDTO )getValue( item );
-            if ( dto != null ) {
-                if ( dto.getId().equals( childDTO.getParentId() ) )
-                    return item;
-            }
+        else {
+            tr = item.getTreerow();
+            tr.getChildren().clear();
         }
-        return ( Treeitem )root.getFirstChild();
+        configureTreeitem( item );
+        getTreeMap().put( data, item );
+    }
+
+
+    public TreeMap getTreeMap()
+    {
+        if ( treeMap == null )
+            treeMap = new TreeMap();
+        return treeMap;
     }
 }

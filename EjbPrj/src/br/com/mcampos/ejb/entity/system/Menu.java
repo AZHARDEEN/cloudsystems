@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -109,7 +110,7 @@ public class Menu implements Serializable, Comparable<Menu>
         }
     }
 
-    @OneToMany( mappedBy = "parentMenu" )
+    @OneToMany( mappedBy = "parentMenu", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.REFRESH } )
     public List<Menu> getSubMenus()
     {
         if ( subMenus == null )
@@ -133,7 +134,13 @@ public class Menu implements Serializable, Comparable<Menu>
 
     public Menu removeMenu( Menu childMenu )
     {
-        getSubMenus().remove( childMenu );
+        Integer nIndex;
+
+        nIndex = getSubMenus().indexOf( childMenu );
+        if ( nIndex >= 0 ) {
+            getSubMenus().remove( nIndex );
+            childMenu.setParentMenu( null );
+        }
         return childMenu;
     }
 
