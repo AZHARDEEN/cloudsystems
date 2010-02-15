@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.facade;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MenuDTO;
+import br.com.mcampos.dto.system.TaskDTO;
 import br.com.mcampos.ejb.session.system.SystemSessionLocal;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -41,7 +42,7 @@ public class SystemFacadeBean implements SystemFacade
     public List<MenuDTO> get( AuthenticationDTO auth ) throws ApplicationException
     {
         if ( auth == null )
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         return getSystemSession().get( auth );
     }
 
@@ -125,5 +126,12 @@ public class SystemFacadeBean implements SystemFacade
         if ( auth == null || SysUtils.isZero( menuId ) )
             return;
         getSystemSession().delete( auth, menuId );
+    }
+
+    public List<TaskDTO> getTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
+    {
+        if ( auth == null || SysUtils.isZero( menuId ) )
+            return Collections.emptyList();
+        return getSystemSession().getTasks( auth, menuId );
     }
 }

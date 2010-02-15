@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.core;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 
+import br.com.mcampos.dto.system.TaskDTO;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -17,6 +18,19 @@ public interface MenuInterface
      * @return Lista de menus.
      */
     List<MenuDTO> get( AuthenticationDTO auth ) throws ApplicationException;
+
+
+    /**
+     * Obtém a lista de tarefas associadas ao menu.
+     * Um menu deve ser associada a um tarefa, para que este, por sua vez, seja associada a uma role.
+     * Somente faz sentido associar um menu de último nível a alguma tarefa.
+     *
+     * @param auth - dto do usuário autenticado no sistema.
+     * @param menuId - Chave primária do menu.
+     * @return Lista de tarefas associadas ao menu.
+     * @throws ApplicationException
+     */
+    List<TaskDTO> getTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException;
 
 
     /**

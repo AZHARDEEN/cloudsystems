@@ -3,6 +3,7 @@ package br.com.mcampos.util.business;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 
+import br.com.mcampos.dto.system.TaskDTO;
 import br.com.mcampos.ejb.core.MenuInterface;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -105,5 +106,12 @@ public class MenuLocator extends SystemLocator implements MenuInterface
         if ( auth == null || SysUtils.isZero( menuId ) )
             return;
         getSessionBean().delete( auth, menuId );
+    }
+
+    public List<TaskDTO> getTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
+    {
+        if ( auth == null || SysUtils.isZero( menuId ) )
+            return Collections.emptyList();
+        return getSessionBean().getTasks( auth, menuId );
     }
 }
