@@ -4,6 +4,7 @@ import br.com.mcampos.controller.core.BasicTreeCRUDController;
 
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.business.MenuLocator;
 
 import org.zkoss.zk.ui.Component;
@@ -12,6 +13,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Div;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
@@ -64,6 +66,13 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO>
     {
         super.doAfterCompose( comp );
         editParent.addEventListener( Events.ON_DROP, new EventListener()
+            {
+                public void onEvent( Event event ) throws Exception
+                {
+                    onDrop( event );
+                }
+            } );
+        recordEdit.addEventListener( Events.ON_DROP, new EventListener()
             {
                 public void onEvent( Event event ) throws Exception
                 {
@@ -177,25 +186,20 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO>
                 fromDTO.setParent( toDTO );
                 try {
                     getLocator().update( getLoggedInUser(), fromDTO );
+                    moveTreeItem( ( ( Treeitem )de.getTarget().getParent() ), ( ( Treeitem )de.getDragged().getParent() ) );
+                    MenuDTO parentDTO = toDTO.getParent();
+                    if ( parentDTO != null )
+                        parentDTO.removeSubMenu( fromDTO );
+                    toDTO.addSubMenu( fromDTO );
+                    showRecord( fromDTO );
                 }
                 catch ( ApplicationException e ) {
                     showErrorMessage( e.getMessage(), "OnDrop Error" );
                 }
-                moveTreeItem( ( ( Treeitem )de.getTarget().getParent() ), ( ( Treeitem )de.getDragged().getParent() ) );
-                MenuDTO parentDTO = toDTO.getParent();
-                if ( parentDTO != null )
-                    parentDTO.removeSubMenu( fromDTO );
-                toDTO.addSubMenu( fromDTO );
-                try {
-                    showRecord( fromDTO );
-                }
-                catch ( ApplicationException e ) {
-                    showErrorMessage( e.getMessage(), "Show Value" );
-                }
             }
         }
-        else if ( de.getTarget() instanceof Intbox ) {
-            ( ( Intbox )de.getTarget() ).setValue( fromDTO.getId() );
+        else if ( de.getTarget() instanceof Intbox || de.getTarget() instanceof Div ) {
+            editParent.setValue( fromDTO.getId() );
             loadSequence();
         }
     }
@@ -279,33 +283,39 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO>
         dto.setDisabled( editDisabled.isChecked() );
     }
 
-    public void render( Treeitem item, Object data ) throws Exception
+    protected void configureTreeitem( Treeitem item )
     {
-        item.setValue( data );
+        MenuDTO data = getValue( item );
+        Treerow row;
 
-        // Construct treecells
         Treecell tcNamn = new Treecell( data.toString() );
-        Treerow tr = null;
-
-        if ( item.getTreerow() == null ) {
-            tr = new Treerow();
-            tr.setDraggable( "true" );
-            tr.setDroppable( "true" );
-            tr.setParent( item );
-            tr.addEventListener( Events.ON_DROP, new EventListener()
-                {
-                    public void onEvent( Event event ) throws Exception
-                    {
-                        onDrop( event );
-                    }
-                } );
-        }
-        else {
-            tr = item.getTreerow();
-            tr.getChildren().clear();
-        }
-        // Attach treecells to treerow
-        tcNamn.setParent( tr );
+        row = item.getTreerow();
+        tcNamn.setParent( row );
         item.setOpen( true );
+        row.setDraggable( "true" );
+        row.setDroppable( "true" );
+        row.addEventListener( Events.ON_DROP, new EventListener()
+            {
+                public void onEvent( Event event ) throws Exception
+                {
+                    onDrop( event );
+                }
+            } );
+
+    }
+
+    protected Treeitem getParent( Treeitem child )
+    {
+        MenuDTO value;
+        Treeitem item;
+
+        value = ( MenuDTO )child.getValue();
+        if ( value == null )
+            return null;
+        if ( SysUtils.isZero( value.getParentId() ) )
+            return null;
+        MenuDTO parent = new MenuDTO( value.getParentId() );
+        item = ( Treeitem )getTreeMap().get( parent );
+        return item;
     }
 }

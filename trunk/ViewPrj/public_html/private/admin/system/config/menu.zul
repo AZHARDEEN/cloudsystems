@@ -70,7 +70,7 @@
                         <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
                         <separator/>
                         <!-- Por favor, nao mude o id desta div -->
-                        <div id="recordEdit" visible="false">
+                        <div id="recordEdit" visible="false" droppable="true">
                             <grid width="100%" fixedLayout="true">
                                 <columns>
                                     <column align="right" width="20%"/>
