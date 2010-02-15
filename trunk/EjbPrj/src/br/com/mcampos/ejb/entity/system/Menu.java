@@ -1,5 +1,11 @@
 package br.com.mcampos.ejb.entity.system;
 
+import br.com.mcampos.ejb.entity.security.Task;
+
+import br.com.mcampos.ejb.entity.security.TaskMenu;
+
+import com.sun.jmx.snmp.tasks.TaskServer;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -21,7 +27,8 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "Menu.findAll", query = "select o from Menu o where o.parentMenu is null" ) } )
-@NamedNativeQueries( { @NamedNativeQuery( name = "Menu.nexSequence", query = "select coalesce ( max (  mnu_sequence_in ), 0 ) + 1 from menu where coalesce ( mnu_parent_id, 0 ) = ?" ) } )
+@NamedNativeQueries( { @NamedNativeQuery( name = "Menu.nexSequence",
+                                          query = "select coalesce ( max (  mnu_sequence_in ), 0 ) + 1 from menu where coalesce ( mnu_parent_id, 0 ) = ?" ) } )
 @Table( name = "\"menu\"" )
 public class Menu implements Serializable, Comparable<Menu>
 {
@@ -38,6 +45,8 @@ public class Menu implements Serializable, Comparable<Menu>
     private Boolean checked;
     private Boolean checkmark;
     private Boolean disabled;
+
+    private List<TaskMenu> tasks;
 
 
     public Menu()
@@ -229,5 +238,18 @@ public class Menu implements Serializable, Comparable<Menu>
         if ( this.getId() == null )
             return false;
         return this.getId().equals( ( ( Menu )obj ).getId() );
+    }
+
+    public void setTasks( List<TaskMenu> tasks )
+    {
+        this.tasks = tasks;
+    }
+
+    @OneToMany( mappedBy = "menu", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.REFRESH } )
+    public List<TaskMenu> getTasks()
+    {
+        if ( tasks == null )
+            tasks = new ArrayList<TaskMenu>();
+        return tasks;
     }
 }

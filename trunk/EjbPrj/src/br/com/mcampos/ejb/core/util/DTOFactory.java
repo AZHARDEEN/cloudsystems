@@ -6,6 +6,7 @@ import br.com.mcampos.dto.address.AddressTypeDTO;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
+import br.com.mcampos.dto.system.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.system.SystemParametersDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
@@ -35,6 +36,7 @@ import br.com.mcampos.ejb.entity.login.AccessLogType;
 import br.com.mcampos.ejb.entity.system.SystemParameters;
 import br.com.mcampos.ejb.entity.user.Address;
 import br.com.mcampos.ejb.entity.login.Login;
+import br.com.mcampos.ejb.entity.security.Task;
 import br.com.mcampos.ejb.entity.system.Menu;
 import br.com.mcampos.ejb.entity.user.Company;
 import br.com.mcampos.ejb.entity.user.Person;
@@ -222,11 +224,9 @@ public final class DTOFactory implements Serializable
 
         code = document.trim();
         switch ( type ) {
-        case UserDocument.typeCPF:
-            code = code.replaceAll( "[\\-.\\/]", "" );
+        case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
             break;
-        case UserDocument.typeEmail:
-            code = code.toLowerCase();
+        case UserDocument.typeEmail: code = code.toLowerCase();
             break;
         }
         return code;
@@ -713,6 +713,16 @@ public final class DTOFactory implements Serializable
         target.setCheckmark( source.getCheckmark() );
         target.setDisabled( source.getDisabled() );
         target.setSeparatorBefore( source.getSeparatorBefore() );
+        return target;
+    }
+
+
+    public static TaskDTO copy( Task source )
+    {
+        if ( source == null )
+            return null;
+        TaskDTO target = new TaskDTO( source.getId(), source.getDescription() );
+
         return target;
     }
 

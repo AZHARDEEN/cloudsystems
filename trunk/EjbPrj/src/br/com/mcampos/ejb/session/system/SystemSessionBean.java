@@ -4,9 +4,11 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 
 import br.com.mcampos.dto.system.MenuDTO;
 
+import br.com.mcampos.dto.system.TaskDTO;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.security.Role;
+import br.com.mcampos.ejb.entity.security.TaskMenu;
 import br.com.mcampos.ejb.entity.system.Menu;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -54,7 +56,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
             getEntityManager().flush();
             list = ( List<Menu> )getEntityManager().createNamedQuery( "Menu.findAll" ).getResultList();
             if ( list == null || list.size() == 0 )
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             ArrayList<MenuDTO> listDTO = new ArrayList<MenuDTO>( list.size() );
             for ( Menu m : list ) {
                 getEntityManager().refresh( m );
@@ -64,7 +66,30 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         }
         catch ( NoResultException e ) {
             e = null;
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
+        }
+    }
+
+
+    public List<TaskDTO> getTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+
+        if ( SysUtils.isZero( menuId ) )
+            throwException( 4 );
+
+        try {
+            Menu menu = em.find( Menu.class, menuId );
+            ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( menu.getTasks().size() );
+            for ( TaskMenu m : menu.getTasks() ) {
+                getEntityManager().refresh( m );
+                listDTO.add( DTOFactory.copy( m.getTask() ) );
+            }
+            return listDTO;
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            return Collections.emptyList();
         }
     }
 
@@ -252,5 +277,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
             throwException( 4 );
         getEntityManager().remove( entity );
     }
+
+
 }
 

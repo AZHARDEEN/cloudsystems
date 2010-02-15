@@ -5,16 +5,33 @@
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:30px;color:#0C7A9A" value="Manutenção - Menu do Sistema"/>
+                    <label style="font-size:20px;color:#0C7A9A" value="Manutenção - Menu do Sistema"/>
                 </vbox>
             </north>
-            <west size="30%" splittable="true" flex="true">
+            <west size="50%" splittable="true" flex="true">
                 <borderlayout>
                     <center flex="true" autoscroll="true">
                         <!-- Por favor, nao mude o id deste TreeControl -->
-                        <tree fixedLayout="true" id="treeList" width="100%" height="100%" zclass="z-dottree">
-                            <treechildren id="rootTree"></treechildren>
-                        </tree>
+                        <borderlayout>
+                            <north title="Lista" size="60%" splittable="true" flex="true">
+                                <tree fixedLayout="true" id="treeList" width="100%" height="100%" zclass="z-dottree">
+                                    <treecols sizable="true">
+                                        <treecol label="Menu" width="40%"/>
+                                        <treecol label="Seq" width="10%"/>
+                                        <treecol label="URL" width="50%"/>
+                                    </treecols>
+                                    <treechildren id="rootTree"></treechildren>
+                                </tree>
+                            </north>
+                            <south title="Tarefas Associadas" size="40%" splittable="true" flex="true">
+                                <listbox fixedLayout="true" id="listboxRecord">
+                                    <listhead sizable="true">
+                                        <listheader id="recordListIdSort" align="left" label="Código" sort="auto" width="10%"/>
+                                        <listheader id="recordListDescSort" align="left" label="Descrição" sort="auto" width="55%"/>
+                                    </listhead>
+                                </listbox>
+                            </south>
+                        </borderlayout>
                     </center>
                 </borderlayout>
             </west>
@@ -22,7 +39,7 @@
                 <!-- Por favor, nao mude o id desta div -->
                 <div id="recordDetail">
                     <!-- view mode -->
-                    <div id="recordView" width="100%">
+                    <div id="recordView" width="1">
                         <grid width="100%">
                             <columns>
                                 <column align="left" width="30%"/>

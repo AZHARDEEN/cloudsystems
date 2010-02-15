@@ -3,6 +3,8 @@ package br.com.mcampos.controller.admin.system.config.menu;
 import br.com.mcampos.controller.core.BasicTreeCRUDController;
 
 import br.com.mcampos.dto.system.MenuDTO;
+import br.com.mcampos.dto.system.TaskDTO;
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.business.MenuLocator;
@@ -16,12 +18,16 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listitem;
+import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
-public class MenuController extends BasicTreeCRUDController<MenuDTO>
+public class MenuController extends BasicTreeCRUDController<MenuDTO> implements ListitemRenderer
 {
 
     protected MenuLocator locator;
@@ -49,6 +55,8 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO>
     Checkbox editChecked;
     Checkbox editCheckmark;
     Checkbox editDisabled;
+
+    Listbox listboxRecord;
 
 
     public MenuController( char c )
@@ -80,6 +88,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO>
                 }
             } );
         getTreeList().setTreeitemRenderer( this );
+        getListboxRecord().setItemRenderer( this );
         refresh();
     }
 
@@ -116,6 +125,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO>
         recordChecked.setChecked( dto.getChecked() );
         recordCheckmark.setChecked( dto.getCheckmark() );
         recordDisabled.setChecked( dto.getDisabled() );
+        refreshTasks( dto.getId() );
     }
 
     protected int getNextId()
@@ -288,9 +298,11 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO>
         MenuDTO data = getValue( item );
         Treerow row;
 
-        Treecell tcNamn = new Treecell( data.toString() );
         row = item.getTreerow();
-        tcNamn.setParent( row );
+        row.appendChild( new Treecell( data.toString() ) );
+        row.appendChild( new Treecell( data.getSequence().toString() ) );
+        if ( SysUtils.isEmpty( data.getTargetURL() ) == false )
+            row.appendChild( new Treecell( data.getTargetURL() ) );
         item.setOpen( true );
         row.setDraggable( "true" );
         row.setDroppable( "true" );
@@ -317,5 +329,24 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO>
         MenuDTO parent = new MenuDTO( value.getParentId() );
         item = ( Treeitem )getTreeMap().get( parent );
         return item;
+    }
+
+    public void render( Listitem item, Object data )
+    {
+        TaskDTO dto = ( TaskDTO )data;
+
+        item.setValue( dto );
+        item.getChildren().add( new Listcell( dto.getId().toString() ) );
+        item.getChildren().add( new Listcell( dto.getDescription() ) );
+    }
+
+    protected void refreshTasks( Integer menuId )
+    {
+        getListboxRecord().setModel( new TaskListModel( getLoggedInUser(), menuId ) );
+    }
+
+    public Listbox getListboxRecord()
+    {
+        return listboxRecord;
     }
 }
