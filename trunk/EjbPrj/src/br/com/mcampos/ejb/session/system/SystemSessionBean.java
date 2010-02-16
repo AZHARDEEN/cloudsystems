@@ -102,11 +102,24 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
             /*this is an insert operation*/
             if ( SysUtils.isZero( dto.getId() ) )
                 dto.setId( getNextId() );
+            if ( existsSequence( dto.getParentId(), dto.getSequence() ) )
+                dto.setSequence( getNextSequence( dto.getParentId() ) );
         }
         else {
             /*this is an update operation. Must have an id*/
             if ( SysUtils.isZero( dto.getId() ) )
                 throwCommomException( 4 );
+            Menu entity = getEntityManager().find( Menu.class, dto.getId() );
+            if ( entity == null )
+                throwCommomRuntimeException( 4 );
+            if ( entity.getSequence() != dto.getSequence() || entity.getParentMenu().getId() != dto.getParentId() ) {
+                /*
+                 * ou a sequence foi alterada ou o menu pai foi alterado.
+                 * Em ambos os casos, deve-se verificar a existencia do para (parent_id + sequence)
+                 */
+                if ( existsSequence( dto.getParentId(), dto.getSequence() ) )
+                    dto.setSequence( getNextSequence( dto.getParentId() ) );
+            }
         }
         if ( SysUtils.isEmpty( dto.getDescription() ) )
             throwException( 6 );
@@ -120,7 +133,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
      * @param auth - dto do usuário autenticado no sistema.
      * @param dto - o item a ser atualizado.
      */
-    public void update( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
+    public MenuDTO update( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         validate( dto, false );
@@ -128,14 +141,13 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         Menu entity;
 
         entity = getEntityManager().find( Menu.class, dto.getId() );
-        if ( entity == null )
-            throwCommomRuntimeException( 4 );
         changeParent( entity, dto ); /*this line MUST be before DTOFactory.copy*/
         DTOFactory.copy( entity, dto );
         if ( entity.getSubMenus().size() > 0 ) {
             /*A parent menu cannot have a target url! I guess!!!*/
             entity.setTargetURL( null );
         }
+        return DTOFactory.copy( entity, true );
     }
 
     protected void changeParent( Menu entity, MenuDTO dto ) throws ApplicationException
@@ -204,7 +216,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
      * SHOULD NEVER BE PULIC
      * @return next free id number.
      */
-    private Integer getNextSequence( Integer parentId ) throws ApplicationException
+    private Integer getNextSequence( int parentId ) throws ApplicationException
     {
         if ( SysUtils.isZero( parentId ) )
             return 0;
@@ -235,7 +247,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
      * @param auth.
      * @param dto - DTO com os dados no novo menu.
      */
-    public void add( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
+    public MenuDTO add( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         validate( dto, true );
@@ -255,6 +267,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         entity = DTOFactory.copy( dto );
         entity.setParentMenu( parentMenu );
         getEntityManager().persist( entity );
+        return DTOFactory.copy( entity, true );
     }
 
     public Integer getMessageTypeId()
@@ -278,6 +291,35 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         getEntityManager().remove( entity );
     }
 
+
+    /**
+     * Verifica a existência de alguma sequence do menu no banco de dados.
+     * Existe uma chave única na tabela de menu que garante a unicidade do par (parent_id + sequence).
+     * Se existir tal combinação, o sistema deverá gerar outra.
+     *
+     * @param parent Id do menu pai (mnu_parent_id_in)
+     * @param sequence A sequencia que deseja pesquisar (mnu_sequence_in)
+     * @return Menu se existir ou null.
+     */
+    protected boolean existsSequence( int parent, int sequence )
+    {
+        Integer menu;
+
+        try {
+            Query q;
+
+            q = em.createNamedQuery( "Menu.findSequence" );
+            q.setParameter( 1, parent );
+            q.setParameter( 2, sequence );
+            menu = ( Integer )q.getSingleResult();
+            return ( menu == null || menu == 0 ? false : true );
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            menu = null;
+        }
+        return false;
+    }
 
 }
 

@@ -2,9 +2,9 @@
 <zk>
     <div align="center" xmlns="http://www.zkoss.org/2005/zul">
         <hbox>
-            <button id="cmdSave" label="Salvar" image="/img/icontexto-webdev-ok-032x032.png"/>
+            <button id="cmdSave" label="Salvar" image="/img/icontexto-webdev-ok-016x016.png"/>
             <separator/>
-            <button id="cmdCancel" label="Cancelar" image="/img/icontexto-webdev-cancel-032x032.png"/>
+            <button id="cmdCancel" label="Cancelar" image="/img/icontexto-webdev-cancel-016x016.png"/>
         </hbox>
     </div>
 </zk>

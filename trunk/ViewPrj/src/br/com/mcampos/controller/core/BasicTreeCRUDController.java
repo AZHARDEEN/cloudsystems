@@ -1,17 +1,10 @@
 package br.com.mcampos.controller.core;
 
-import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.exception.ApplicationException;
 
-import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.TreeMap;
-import java.util.TreeSet;
 
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treechildren;
@@ -105,15 +98,14 @@ public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController<T
     @Override
     public void afterEdit( Treeitem record )
     {
-        DTO dto = getValue( record );
+        Object dto = getValue( record );
         if ( isAddNewOperation() == false ) {
             Treecell cell = ( Treecell )record.getTreerow().getFirstChild();
             if ( cell != null )
                 cell.setLabel( dto.toString() );
+            getTreeMap().remove( dto );
         }
-        else {
-            getTreeMap().put( dto, record );
-        }
+        getTreeMap().put( dto, record );
     }
 
 
@@ -145,12 +137,14 @@ public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController<T
         if ( parentItem != null && parentItem.getTreechildren() != null ) {
             if ( parentItem.getTreechildren().getChildren().isEmpty() ) {
                 Treechildren tc = parentItem.getTreechildren();
-
-                tc.detach();
-                parentItem.invalidate();
+                if ( tc != null )
+                    tc.detach();
             }
         }
-
+        if ( parentItem != null )
+            parentItem.invalidate();
+        else
+            getTreeList().invalidate();
     }
 
 
@@ -164,7 +158,7 @@ public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController<T
     {
         if ( item == null )
             return;
-        DTO dto = getValue( item );
+        Object dto = getValue( item );
         Treecell cell = ( Treecell )item.getTreerow().getFirstChild();
         if ( cell != null )
             cell.setLabel( dto.toString() );
@@ -174,8 +168,7 @@ public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController<T
     {
         if ( selecteItem == null )
             return null;
-        DTO value = ( DTO )selecteItem.getValue();
-        return value;
+        return ( ( DTO )selecteItem.getValue() );
     }
 
     protected Treeitem saveRecord( Treeitem selectedItem )

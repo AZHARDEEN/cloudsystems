@@ -26,6 +26,7 @@ public class PrivateIndexController extends LoggedBaseController
 {
     protected Center mdiApplication;
     protected Menubar mainMenu;
+    protected static final String attrMenu = "dto";
 
     protected UsersLocator userLocator;
 
@@ -73,7 +74,6 @@ public class PrivateIndexController extends LoggedBaseController
 
             menuItem = new Menuitem( item.getDescription() );
             menuItem.setId( "mnu" + item.getId() );
-            menuItem.setAttribute( "menu_target_url", item.getTargetURL() );
             if ( item.getSeparatorBefore() )
                 parent.appendChild( new Menuseparator() );
             parent.appendChild( menuItem );
@@ -82,6 +82,7 @@ public class PrivateIndexController extends LoggedBaseController
             menuItem.setChecked( item.getChecked() );
             menuItem.setCheckmark( item.getCheckmark() );
             menuItem.setDisabled( item.getDisabled() );
+            menuItem.setAttribute( attrMenu, item );
             menuItem.addEventListener( Events.ON_CLICK, new EventListener()
                 {
                     public void onEvent( Event event ) throws Exception
@@ -114,11 +115,14 @@ public class PrivateIndexController extends LoggedBaseController
 
         if ( evt.getTarget() instanceof Menuitem ) {
             item = ( Menuitem )evt.getTarget();
-            String url = ( String )item.getAttribute( "menu_target_url" );
+            Object obj = item.getAttribute( attrMenu );
 
-            if ( SysUtils.isEmpty( url ) == false )
-                gotoPage( url, mdiApplication );
-            evt.stopPropagation();
+            if ( obj != null && obj instanceof MenuDTO ) {
+                MenuDTO dto = ( MenuDTO )obj;
+                if ( SysUtils.isEmpty( dto.getTargetURL() ) == false )
+                    gotoPage( dto.getTargetURL(), mdiApplication );
+                evt.stopPropagation();
+            }
         }
     }
 }

@@ -65,10 +65,6 @@ public abstract class TableController extends LoggedBaseController
         super.doAfterCompose( c );
         isAddNewOperation = false;
         locator = new SimpleTableLoaderLocator();
-        if ( recordListIdSort != null ) {
-            recordListIdSort.setSortAscending( new IntegerComparator( true ) );
-            recordListIdSort.setSortDescending( new IntegerComparator( false ) );
-        }
         loadList( listboxRecord );
     }
 
@@ -107,8 +103,7 @@ public abstract class TableController extends LoggedBaseController
             updateEditableRecords( getTableLocator(), null );
         }
         catch ( Exception e ) {
-            showErrorMessage( "Ocorreu um erro ao processar a solicitação de inclusão. Não foi possível obter o valor do campo Chave",
-                              "Criar Novo Registro" );
+            showErrorMessage( "Ocorreu um erro ao processar a solicitação de inclusão. Não foi possível obter o valor do campo Chave", "Criar Novo Registro" );
             onClick$cmdCancel();
         }
     }
@@ -125,8 +120,7 @@ public abstract class TableController extends LoggedBaseController
                 updateEditableRecords( getTableLocator(), updatableItem );
             }
             catch ( Exception e ) {
-                showErrorMessage( "Ocorreu um erro ao processar a solicitação de atualizar o registro",
-                                  "Atualizar Registro Corrente" );
+                showErrorMessage( "Ocorreu um erro ao processar a solicitação de atualizar o registro", "Atualizar Registro Corrente" );
                 onClick$cmdCancel();
             }
         }

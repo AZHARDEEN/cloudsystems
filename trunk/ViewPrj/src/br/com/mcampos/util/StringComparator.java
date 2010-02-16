@@ -1,9 +1,16 @@
 package br.com.mcampos.util;
 
+import java.util.Comparator;
+
 import org.zkoss.zul.Listitem;
 
-public class IntegerComparator extends BaseComparator
+public class StringComparator extends BaseComparator
 {
+    public StringComparator( boolean bAsc )
+    {
+        super();
+    }
+
     public int compare( Object o1, Object o2 )
     {
         Integer i1, i2;

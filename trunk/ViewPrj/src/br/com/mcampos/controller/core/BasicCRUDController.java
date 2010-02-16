@@ -35,8 +35,15 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
     protected Button cmdRefresh;
 
     /**
-     * Mapeamento do div recordEdit. O nome deste div NÃO pode ser alterado no formulário WEB.
+     * Mapeamento do div recordView. O nome deste div NÃO pode ser alterado no formulário WEB.
      * O div recordEdit é mostrado somente quando uma ação de inclusão ou alteração é executado
+     */
+    protected Div recordView;
+
+    /**
+     * Mapeamento do div recordDetail. O nome deste div NÃO pode ser alterado no formulário WEB.
+     * O div recordDetail é mostrado somente quando o usuário seleciona um objeto e o sistema entende que
+     * existem mais informações para serem exibidas.
      */
     protected Div recordEdit;
 
@@ -258,10 +265,14 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
     protected void showEditPanel( Boolean bShow )
     {
         if ( bShow ) {
+            if ( recordView.isVisible() == true )
+                recordView.setVisible( false );
             if ( recordEdit.isVisible() == false )
                 recordEdit.setVisible( true );
         }
         else {
+            if ( recordView.isVisible() == false )
+                recordView.setVisible( true );
             if ( recordEdit.isVisible() == true )
                 recordEdit.setVisible( false );
         }

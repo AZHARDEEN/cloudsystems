@@ -53,12 +53,14 @@ public class SystemFacadeBean implements SystemFacade
      * @param auth - dto do usuário autenticado no sistema.
      * @param dto - o item a ser atualizado.
      */
-    public void update( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
+    public MenuDTO update( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
     {
         if ( auth == null )
-            return;
+            return null;
         if ( validate( dto, false ) )
-            getSystemSession().update( auth, dto );
+            return getSystemSession().update( auth, dto );
+        else
+            return null;
     }
 
     /**
@@ -84,12 +86,14 @@ public class SystemFacadeBean implements SystemFacade
      * @param auth.
      * @param dto - DTO com os dados no novo menu.
      */
-    public void add( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
+    public MenuDTO add( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
     {
         if ( auth == null )
-            return;
+            return null;
         if ( validate( dto, true ) )
-            getSystemSession().add( auth, dto );
+            return getSystemSession().add( auth, dto );
+        else
+            return null;
     }
 
     public Boolean validate( MenuDTO dto, Boolean isNew ) throws ApplicationException

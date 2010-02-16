@@ -26,7 +26,6 @@
                             <south title="Tarefas Associadas" size="40%" splittable="true" flex="true">
                                 <listbox fixedLayout="true" id="listboxRecord">
                                     <listhead sizable="true">
-                                        <listheader id="recordListIdSort" align="left" label="Código" sort="auto" width="10%"/>
                                         <listheader id="recordListDescSort" align="left" label="Descrição" sort="auto" width="55%"/>
                                     </listhead>
                                 </listbox>
@@ -35,14 +34,14 @@
                     </center>
                 </borderlayout>
             </west>
-            <center autoscroll="true" flex="true">
+            <center autoscroll="true" flex="true" title="Detalhes do Registro">
                 <!-- Por favor, nao mude o id desta div -->
                 <div id="recordDetail">
                     <!-- view mode -->
                     <div id="recordView" width="1">
                         <grid width="100%">
                             <columns>
-                                <column align="left" width="30%"/>
+                                <column align="right" width="30%"/>
                                 <column align="left"/>
                             </columns>
                             <rows>
@@ -83,57 +82,55 @@
                                 </row>
                             </rows>
                         </grid>
-                        <separator/>
                         <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
+                    </div>
+                    <!-- Por favor, nao mude o id desta div -->
+                    <div id="recordEdit" visible="false" droppable="true">
+                        <grid width="100%" fixedLayout="true">
+                            <columns>
+                                <column align="right" width="30%"/>
+                                <column align="left" width="70%"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    Código
+                                    <intbox id="editId" width="100px" constraint="no negative, no zero"/>
+                                </row>
+                                <row>
+                                    Descrição
+                                    <textbox id="editDescription" width="99%"/>
+                                </row>
+                                <row>
+                                    Menu Pai
+                                    <intbox id="editParent" width="100px" droppable="true"/>
+                                </row>
+                                <row>
+                                    URL
+                                    <textbox id="editURL" width="99%"/>
+                                </row>
+                                <row>
+                                    Seqüencia
+                                    <intbox id="editSequence" width="100px"/>
+                                </row>
+                                <row>
+                                    Propriedades do Menu
+                                    <div align="center">
+                                        Separador Antes
+                                        <checkbox id="editSeparator" width="99%"/>
+                                        Autocheck
+                                        <checkbox id="editAutocheck" width="99%"/>
+                                        Checked
+                                        <checkbox id="editChecked" width="99%"/>
+                                        Checkmark
+                                        <checkbox id="editCheckmark" width="99%"/>
+                                        Desabilitado
+                                        <checkbox id="editDisabled" width="99%"/>
+                                    </div>
+                                </row>
+                            </rows>
+                        </grid>
                         <separator/>
-                        <!-- Por favor, nao mude o id desta div -->
-                        <div id="recordEdit" visible="false" droppable="true">
-                            <grid width="100%" fixedLayout="true">
-                                <columns>
-                                    <column align="right" width="20%"/>
-                                    <column align="left" width="80%"/>
-                                </columns>
-                                <rows>
-                                    <row>
-                                        Código
-                                        <intbox id="editId" width="100px" constraint="no negative, no zero"/>
-                                    </row>
-                                    <row>
-                                        Descrição
-                                        <textbox id="editDescription" width="99%"/>
-                                    </row>
-                                    <row>
-                                        Menu Pai
-                                        <intbox id="editParent" width="100px" droppable="true"/>
-                                    </row>
-                                    <row>
-                                        URL
-                                        <textbox id="editURL" width="99%"/>
-                                    </row>
-                                    <row>
-                                        Seqüencia
-                                        <intbox id="editSequence" width="100px"/>
-                                    </row>
-                                    <row>
-                                        Propriedades do Menu
-                                        <div align="center">
-                                            Separador Antes
-                                            <checkbox id="editSeparator" width="99%"/>
-                                            Autocheck
-                                            <checkbox id="editAutocheck" width="99%"/>
-                                            Checked
-                                            <checkbox id="editChecked" width="99%"/>
-                                            Checkmark
-                                            <checkbox id="editCheckmark" width="99%"/>
-                                            Desabilitado
-                                            <checkbox id="editDisabled" width="99%"/>
-                                        </div>
-                                    </row>
-                                </rows>
-                            </grid>
-                            <separator/>
-                            <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
-                        </div>
+                        <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
                     </div>
                 </div>
             </center>
