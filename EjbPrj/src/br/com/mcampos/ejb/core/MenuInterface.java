@@ -40,7 +40,7 @@ public interface MenuInterface
      * @param auth - dto do usuário autenticado no sistema.
      * @param dto - o item a ser atualizado.
      */
-    void update( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException;
+    MenuDTO update( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException;
 
 
     /**
@@ -74,7 +74,7 @@ public interface MenuInterface
      * @param auth.
      * @param dto - DTO com os dados no novo menu.
      */
-    void add( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException;
+    MenuDTO add( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException;
 
 
     /**

@@ -32,7 +32,7 @@ public class LoggedBaseController extends BaseController
     public ComponentInfo doBeforeCompose( Page page, Component parent, ComponentInfo compInfo )
     {
         if ( isUserLogged() == false ) {
-            redirect( "/login.zul" );
+            redirect( "/index.zul" );
             return null;
         }
         else {
@@ -59,7 +59,7 @@ public class LoggedBaseController extends BaseController
             }
             catch ( ApplicationException e ) {
                 showErrorMessage( e.getMessage(), "Erro ao obter status do usuário" );
-                redirect( "/login.zul" );
+                redirect( "/index.zul" );
             }
         }
         return null;

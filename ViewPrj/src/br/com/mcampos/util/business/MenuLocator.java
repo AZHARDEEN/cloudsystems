@@ -40,11 +40,11 @@ public class MenuLocator extends SystemLocator implements MenuInterface
      * @param auth - dto do usuário autenticado no sistema.
      * @param dto - o item a ser atualizado.
      */
-    public void update( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
+    public MenuDTO update( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
     {
         if ( auth == null || validate( dto, false ) == false )
-            return;
-        getSessionBean().update( auth, dto );
+            return null;
+        return getSessionBean().update( auth, dto );
     }
 
 
@@ -71,11 +71,11 @@ public class MenuLocator extends SystemLocator implements MenuInterface
      * @param auth.
      * @param dto - DTO com os dados no novo menu.
      */
-    public void add( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
+    public MenuDTO add( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
     {
         if ( auth == null || validate( dto, true ) == false )
-            return;
-        getSessionBean().add( auth, dto );
+            return null;
+        return getSessionBean().add( auth, dto );
     }
 
     /**

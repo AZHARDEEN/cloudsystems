@@ -4,7 +4,6 @@ import br.com.mcampos.controller.core.BasicTreeCRUDController;
 
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.system.TaskDTO;
-import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.business.MenuLocator;
@@ -20,6 +19,7 @@ import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
@@ -57,6 +57,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     Checkbox editDisabled;
 
     Listbox listboxRecord;
+    protected Listheader recordListDescSort;
 
 
     public MenuController( char c )
@@ -154,6 +155,8 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         editChecked.setChecked( false );
         editCheckmark.setChecked( false );
         editDisabled.setChecked( false );
+        getTreeList().clearSelection();
+        getListboxRecord().getItems().clear();
     }
 
     protected void prepareToUpdate( Treeitem currentRecord )
@@ -233,7 +236,9 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     protected void insertItem( Treeitem treeItem )
     {
         try {
-            getLocator().add( getLoggedInUser(), getValue( treeItem ) );
+            MenuDTO dto = getLocator().add( getLoggedInUser(), getValue( treeItem ) );
+            if ( dto != null )
+                treeItem.setValue( dto );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Inserir Menu" );
@@ -243,7 +248,9 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     protected void updateItem( Treeitem treeItem )
     {
         try {
-            getLocator().update( getLoggedInUser(), getValue( treeItem ) );
+            MenuDTO dto = getLocator().update( getLoggedInUser(), getValue( treeItem ) );
+            if ( dto != null )
+                treeItem.setValue( dto );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Atualizar Menu" );
@@ -336,7 +343,6 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         TaskDTO dto = ( TaskDTO )data;
 
         item.setValue( dto );
-        item.getChildren().add( new Listcell( dto.getId().toString() ) );
         item.getChildren().add( new Listcell( dto.getDescription() ) );
     }
 

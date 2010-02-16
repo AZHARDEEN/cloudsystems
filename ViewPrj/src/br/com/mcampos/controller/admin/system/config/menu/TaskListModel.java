@@ -2,19 +2,27 @@ package br.com.mcampos.controller.admin.system.config.menu;
 
 import br.com.mcampos.controller.admin.users.model.AbstractPagingListModel;
 
+import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.TaskDTO;
 
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.util.BaseComparator;
 import br.com.mcampos.util.business.MenuLocator;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class TaskListModel extends AbstractPagingListModel<TaskDTO>
+import org.zkoss.zul.ListModelExt;
+import org.zkoss.zul.event.ListDataEvent;
+
+public class TaskListModel extends AbstractPagingListModel<TaskDTO> implements ListModelExt
 {
     private Integer menuId;
     protected static MenuLocator locator;
     private AuthenticationDTO auth;
+    List items = null;
 
 
     public TaskListModel( AuthenticationDTO auth, Integer menuId, int i, int i1 )
@@ -33,8 +41,6 @@ public class TaskListModel extends AbstractPagingListModel<TaskDTO>
 
     public int getTotalSize()
     {
-        List items;
-
         try {
             items = getLocator().getTasks( getAuth(), getMenuId() );
         }
@@ -47,8 +53,6 @@ public class TaskListModel extends AbstractPagingListModel<TaskDTO>
 
     protected List getPageData( int itemStartNumber, int pageSize )
     {
-        List items = null;
-
         try {
             items = getLocator().getTasks( getAuth(), getMenuId() );
         }
@@ -83,5 +87,23 @@ public class TaskListModel extends AbstractPagingListModel<TaskDTO>
     protected AuthenticationDTO getAuth()
     {
         return auth;
+    }
+
+    public void sort( Comparator cmpr, boolean ascending )
+    {
+        Collections.sort( items, new BaseComparator( ascending )
+            {
+                public int compare( Object o1, Object o2 )
+                {
+                    if ( o1 instanceof SimpleTableDTO ) {
+                        SimpleTableDTO d1 = ( SimpleTableDTO )o1;
+                        SimpleTableDTO d2 = ( SimpleTableDTO )o2;
+                        int direction = ( d1.getDescription().compareToIgnoreCase( d2.getDescription() ) );
+                        return isAscending() ? direction : -direction;
+                    }
+                    return 0;
+                }
+            } );
+        fireEvent( ListDataEvent.CONTENTS_CHANGED, -1, -1 );
     }
 }
