@@ -4,11 +4,10 @@ import br.com.mcampos.controller.admin.users.model.AbstractPagingListModel;
 
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
-import br.com.mcampos.dto.system.TaskDTO;
 
+import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.BaseComparator;
-import br.com.mcampos.util.business.MenuLocator;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,7 +41,7 @@ public class TaskListModel extends AbstractPagingListModel<TaskDTO> implements L
     public int getTotalSize()
     {
         try {
-            items = getLocator().getTasks( getAuth(), getMenuId() );
+            items = getLocator().getMenuTasks( getAuth(), getMenuId() );
         }
         catch ( ApplicationException e ) {
             e = null;
@@ -54,7 +53,7 @@ public class TaskListModel extends AbstractPagingListModel<TaskDTO> implements L
     protected List getPageData( int itemStartNumber, int pageSize )
     {
         try {
-            items = getLocator().getTasks( getAuth(), getMenuId() );
+            items = getLocator().getMenuTasks( getAuth(), getMenuId() );
         }
         catch ( ApplicationException e ) {
             e = null;

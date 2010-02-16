@@ -1,13 +1,15 @@
-package br.com.mcampos.util.business;
+package br.com.mcampos.controller.admin.system.config.menu;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 
-import br.com.mcampos.dto.system.TaskDTO;
 import br.com.mcampos.ejb.core.MenuInterface;
 import br.com.mcampos.exception.ApplicationException;
 
 import br.com.mcampos.sysutils.SysUtils;
+
+import br.com.mcampos.util.business.SystemLocator;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,11 +28,11 @@ public class MenuLocator extends SystemLocator implements MenuInterface
      * @param auth - dto do usuário autenticado no sistema.
      * @return List<MenuDTO> - Lista dos menus
      */
-    public List<MenuDTO> get( AuthenticationDTO auth ) throws ApplicationException
+    public List<MenuDTO> getMenus( AuthenticationDTO auth ) throws ApplicationException
     {
         if ( auth == null )
             return Collections.EMPTY_LIST;
-        return getSessionBean().get( auth );
+        return getSessionBean().getMenus( auth );
     }
 
     /**
@@ -57,11 +59,11 @@ public class MenuLocator extends SystemLocator implements MenuInterface
      * @param auth.
      * @return O próximo id disponível.
      */
-    public Integer getNextId( AuthenticationDTO auth ) throws ApplicationException
+    public Integer getNextMenuId( AuthenticationDTO auth ) throws ApplicationException
     {
         if ( auth == null )
             return 0;
-        return getSessionBean().getNextId( auth );
+        return getSessionBean().getNextMenuId( auth );
     }
 
     /**
@@ -101,17 +103,17 @@ public class MenuLocator extends SystemLocator implements MenuInterface
         return true;
     }
 
-    public void delete( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
+    public void delete( AuthenticationDTO auth, MenuDTO menuId ) throws ApplicationException
     {
-        if ( auth == null || SysUtils.isZero( menuId ) )
+        if ( auth == null || menuId == null )
             return;
         getSessionBean().delete( auth, menuId );
     }
 
-    public List<TaskDTO> getTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
+    public List<TaskDTO> getMenuTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
     {
         if ( auth == null || SysUtils.isZero( menuId ) )
             return Collections.emptyList();
-        return getSessionBean().getTasks( auth, menuId );
+        return getSessionBean().getMenuTasks( auth, menuId );
     }
 }

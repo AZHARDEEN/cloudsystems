@@ -1,13 +1,16 @@
 package br.com.mcampos.controller.logged;
 
 
+import br.com.mcampos.controller.core.BookmarkHelper;
 import br.com.mcampos.controller.core.LoggedBaseController;
 
+import br.com.mcampos.controller.core.PageBrowseHistory;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.sysutils.SysUtils;
 
 import br.com.mcampos.util.business.UsersLocator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
@@ -49,6 +52,44 @@ public class PrivateIndexController extends LoggedBaseController
         for ( MenuDTO item : menus ) {
             addMenu( item, mainMenu );
         }
+        AddBookmarkEventListener();
+    }
+
+    protected void AddBookmarkEventListener()
+    {
+        page.addEventListener( Events.ON_BOOKMARK_CHANGE, new EventListener()
+            {
+                public void onEvent( Event event ) throws Exception
+                {
+                    if ( event != null && event instanceof BookmarkEvent )
+                        PrivateIndexController.this.onBookmarkChange( ( BookmarkEvent )event );
+                }
+            } );
+    }
+
+    protected void onBookmarkChange( BookmarkEvent evt )
+    {
+        BookmarkHelper history;
+        String bookmark;
+        PageBrowseHistory target = null;
+
+
+        bookmark = evt.getBookmark().replaceAll( bookmarkId, "" );
+        if ( SysUtils.isEmpty( bookmark ) )
+            return;
+        try {
+            int index = Integer.parseInt( bookmark );
+            history = getHistory();
+            if ( index < 0 || index >= history.get().size() )
+                return;
+            target = history.get( index );
+        }
+        catch ( NumberFormatException e ) {
+            e = null;
+            return;
+        }
+        gotoPage( target );
+        evt.stopPropagation();
     }
 
     protected Component addMenu( MenuDTO item, Component parent )

@@ -1,13 +1,15 @@
 package br.com.mcampos.controller.core;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
-import br.com.mcampos.dto.user.login.LoginDTO;
 
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.system.CloudSystemSessionListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import java.util.Stack;
 
 import javax.servlet.http.Cookie;
 
@@ -18,15 +20,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.ComponentNotFoundException;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.UiException;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 
 public abstract class BaseController extends GenericForwardComposer
 {
     public static final String browseHistoryParameterName = "browseHistory";
     protected Component rootParent;
-    protected PageBrowseHistory broseHistory;
+    public static final String bookmarkId = "bookmark";
 
     public BaseController( char c )
     {
@@ -95,6 +101,18 @@ public abstract class BaseController extends GenericForwardComposer
             Sessions.getCurrent().setAttribute( name, value );
     }
 
+    protected BookmarkHelper getHistory()
+    {
+        BookmarkHelper bookmarkHelper;
+
+        bookmarkHelper = ( BookmarkHelper )getSessionAttribute( browseHistoryParameterName );
+        if ( bookmarkHelper == null ) {
+            bookmarkHelper = new BookmarkHelper();
+            setSessionAttribute( browseHistoryParameterName, bookmarkHelper );
+        }
+        return bookmarkHelper;
+    }
+
     public void setLoggedInUser( AuthenticationDTO user )
     {
         setSessionAttribute( CloudSystemSessionListener.userSessionId, user );
@@ -148,9 +166,24 @@ public abstract class BaseController extends GenericForwardComposer
             if ( SysUtils.isEmpty( parent.getChildren() ) == false )
                 parent.getChildren().clear();
             Executions.getCurrent().createComponents( uri, parent, parameters );
+            setBookmark( uri, parent, parameters );
         }
         else
             Executions.getCurrent().sendRedirect( uri );
+    }
+
+    protected void gotoPage( PageBrowseHistory history )
+    {
+        if ( history == null )
+            return;
+        if ( history.getRoot() != null ) {
+            if ( SysUtils.isEmpty( history.getRoot().getChildren() ) == false )
+                history.getRoot().getChildren().clear();
+            Executions.getCurrent().createComponents( history.getUri(), history.getRoot(), history.getParameter() );
+        }
+        else
+            Executions.getCurrent().sendRedirect( history.getUri() );
+
     }
 
     protected void gotoPage( String uri, Map parameters )
@@ -173,16 +206,6 @@ public abstract class BaseController extends GenericForwardComposer
         Executions.getCurrent().sendRedirect( uri );
     }
 
-    public void setBroseHistory( PageBrowseHistory broseHistory )
-    {
-        this.broseHistory = broseHistory;
-    }
-
-    public PageBrowseHistory getBroseHistory()
-    {
-        return broseHistory;
-    }
-
     protected void removeMe()
     {
         if ( rootParent != null ) {
@@ -200,12 +223,17 @@ public abstract class BaseController extends GenericForwardComposer
 
     public void onClick$cmdCancel()
     {
-
-        PageBrowseHistory history = getBroseHistory();
-        if ( history != null )
-            gotoPage( history.getUri(), history.getRoot(), history.getParameter() );
-        else
-            removeMe();
+        removeMe();
     }
 
+    protected void setBookmark( String uri, Component parent, Map parameters )
+    {
+        String strBookmark;
+        BookmarkHelper bookmarkHelper;
+
+        bookmarkHelper = getHistory();
+        bookmarkHelper.add( uri, parent, parameters );
+        strBookmark = String.format( "%s%d", bookmarkId, bookmarkHelper.get().size() - 1 );
+        desktop.setBookmark( strBookmark );
+    }
 }

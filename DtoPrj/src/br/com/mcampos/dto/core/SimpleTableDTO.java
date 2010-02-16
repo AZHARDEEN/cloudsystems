@@ -3,9 +3,9 @@ package br.com.mcampos.dto.core;
 public abstract class SimpleTableDTO extends DisplayNameDTO implements SimpleTable, Comparable<SimpleTableDTO>
 {
     protected Integer id;
-    protected String  description;
-    
-    
+    protected String description;
+
+
     public SimpleTableDTO()
     {
         super();
@@ -16,20 +16,20 @@ public abstract class SimpleTableDTO extends DisplayNameDTO implements SimpleTab
         super();
         this.id = id;
     }
-    
+
     public SimpleTableDTO( Integer id, String description )
     {
         super();
-        init ( id, description );
-    }
-    
-    public SimpleTableDTO ( SimpleTableDTO fromObj )
-    {
-        super ();
-        init ( fromObj.getId(),  fromObj.getDescription() );
+        init( id, description );
     }
 
-    protected void init ( Integer id, String description )
+    public SimpleTableDTO( SimpleTableDTO fromObj )
+    {
+        super();
+        init( fromObj.getId(), fromObj.getDescription() );
+    }
+
+    protected void init( Integer id, String description )
     {
         this.id = id;
         this.description = description;
@@ -75,10 +75,17 @@ public abstract class SimpleTableDTO extends DisplayNameDTO implements SimpleTab
         if ( obj == null )
             return false;
         if ( obj instanceof SimpleTableDTO ) {
-            SimpleTableDTO o = ( SimpleTableDTO ) obj;
-            
+            SimpleTableDTO o = ( SimpleTableDTO )obj;
+
             return getId().equals( o.getId() );
         }
-        else return false;
+        else
+            return false;
+    }
+
+    @Override
+    public String toString()
+    {
+        return getDescription();
     }
 }

@@ -2,12 +2,13 @@ package br.com.mcampos.ejb.session.system;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 
+import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 
-import br.com.mcampos.dto.system.TaskDTO;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.security.Role;
+import br.com.mcampos.ejb.entity.security.Task;
 import br.com.mcampos.ejb.entity.security.TaskMenu;
 import br.com.mcampos.ejb.entity.system.Menu;
 
@@ -45,7 +46,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
      * @param auth - dto do usuário autenticado no sistema.
      * @return a lista de menus
      */
-    public List<MenuDTO> get( AuthenticationDTO auth ) throws ApplicationException
+    public List<MenuDTO> getMenus( AuthenticationDTO auth ) throws ApplicationException
     {
         List<Menu> list;
 
@@ -71,7 +72,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
     }
 
 
-    public List<TaskDTO> getTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
+    public List<TaskDTO> getMenuTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
 
@@ -83,7 +84,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
             ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( menu.getTasks().size() );
             for ( TaskMenu m : menu.getTasks() ) {
                 getEntityManager().refresh( m );
-                listDTO.add( DTOFactory.copy( m.getTask() ) );
+                listDTO.add( DTOFactory.copy( m.getTask(), false ) );
             }
             return listDTO;
         }
@@ -101,7 +102,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         if ( isNew ) {
             /*this is an insert operation*/
             if ( SysUtils.isZero( dto.getId() ) )
-                dto.setId( getNextId() );
+                dto.setId( getNextMenuId() );
             if ( existsSequence( dto.getParentId(), dto.getSequence() ) )
                 dto.setSequence( getNextSequence( dto.getParentId() ) );
         }
@@ -178,10 +179,10 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
      * @param auth.
      * @return O próximo id disponível.
      */
-    public Integer getNextId( AuthenticationDTO auth ) throws ApplicationException
+    public Integer getNextMenuId( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        return getNextId();
+        return getNextMenuId();
     }
 
     /**
@@ -189,7 +190,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
      * SHOULD NEVER BE PULIC
      * @return next free id number.
      */
-    private Integer getNextId()
+    private Integer getNextMenuId()
     {
         int id;
 
@@ -280,12 +281,15 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         return em;
     }
 
-    public void delete( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
+    public void delete( AuthenticationDTO auth, MenuDTO menuId ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        if ( SysUtils.isZero( menuId ) )
+        if ( menuId == null )
+            return;
+
+        if ( SysUtils.isZero( menuId.getId() ) )
             throwException( 4 );
-        Menu entity = em.find( Menu.class, menuId );
+        Menu entity = em.find( Menu.class, menuId.getId() );
         if ( entity == null )
             throwException( 4 );
         getEntityManager().remove( entity );
@@ -321,5 +325,54 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         return false;
     }
 
+
+    public List<TaskDTO> getTasks( AuthenticationDTO auth ) throws ApplicationException
+    {
+        List<Task> list;
+
+        authenticate( auth, Role.systemAdmimRoleLevel );
+
+        try {
+            getEntityManager().clear();
+            getEntityManager().flush();
+            list = ( List<Task> )getEntityManager().createNamedQuery( "Task.findAll" ).getResultList();
+            if ( list == null || list.size() == 0 )
+                return Collections.emptyList();
+            ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( list.size() );
+            for ( Task m : list ) {
+                getEntityManager().refresh( m );
+                listDTO.add( DTOFactory.copy( m, true ) );
+            }
+            return listDTO;
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            return Collections.emptyList();
+        }
+    }
+
+    public TaskDTO update( AuthenticationDTO auth, TaskDTO dto )
+    {
+        return null;
+    }
+
+    public TaskDTO add( AuthenticationDTO auth, TaskDTO dto )
+    {
+        return null;
+    }
+
+    public Boolean validate( TaskDTO dto, Boolean isNew )
+    {
+        return null;
+    }
+
+    public void delete( AuthenticationDTO auth, TaskDTO id )
+    {
+    }
+
+    public Integer getNextTaskId( AuthenticationDTO auth )
+    {
+        return 0;
+    }
 }
 

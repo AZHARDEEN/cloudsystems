@@ -1,8 +1,8 @@
 package br.com.mcampos.ejb.facade;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
-import br.com.mcampos.dto.system.TaskDTO;
 import br.com.mcampos.ejb.session.system.SystemSessionLocal;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -39,11 +39,11 @@ public class SystemFacadeBean implements SystemFacade
      * @param auth - dto do usuário autenticado no sistema.
      * @return Lista com os menus
      */
-    public List<MenuDTO> get( AuthenticationDTO auth ) throws ApplicationException
+    public List<MenuDTO> getMenus( AuthenticationDTO auth ) throws ApplicationException
     {
         if ( auth == null )
             return Collections.emptyList();
-        return getSystemSession().get( auth );
+        return getSystemSession().getMenus( auth );
     }
 
     /**
@@ -72,11 +72,11 @@ public class SystemFacadeBean implements SystemFacade
      * @param auth.
      * @return O próximo id disponível.
      */
-    public Integer getNextId( AuthenticationDTO auth ) throws ApplicationException
+    public Integer getNextMenuId( AuthenticationDTO auth ) throws ApplicationException
     {
         if ( auth == null )
             return 0;
-        return getSystemSession().getNextId( auth );
+        return getSystemSession().getNextMenuId( auth );
     }
 
     /**
@@ -125,17 +125,47 @@ public class SystemFacadeBean implements SystemFacade
         return getSystemSession().getNextSequence( auth, parentId );
     }
 
-    public void delete( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
+    public void delete( AuthenticationDTO auth, MenuDTO menuId ) throws ApplicationException
     {
-        if ( auth == null || SysUtils.isZero( menuId ) )
+        if ( auth == null || menuId == null )
             return;
         getSystemSession().delete( auth, menuId );
     }
 
-    public List<TaskDTO> getTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
+    public List<TaskDTO> getMenuTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
     {
         if ( auth == null || SysUtils.isZero( menuId ) )
             return Collections.emptyList();
-        return getSystemSession().getTasks( auth, menuId );
+        return getSystemSession().getMenuTasks( auth, menuId );
+    }
+
+    public List<TaskDTO> getTasks( AuthenticationDTO auth ) throws ApplicationException
+    {
+        return getSystemSession().getTasks( auth );
+    }
+
+    public TaskDTO update( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException
+    {
+        return getSystemSession().update( auth, dto );
+    }
+
+    public TaskDTO add( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException
+    {
+        return getSystemSession().add( auth, dto );
+    }
+
+    public Boolean validate( TaskDTO dto, Boolean isNew ) throws ApplicationException
+    {
+        return getSystemSession().validate( dto, isNew );
+    }
+
+    public void delete( AuthenticationDTO auth, TaskDTO id ) throws ApplicationException
+    {
+        getSystemSession().delete( auth, id );
+    }
+
+    public Integer getNextTaskId( AuthenticationDTO auth ) throws ApplicationException
+    {
+        return getSystemSession().getNextTaskId( auth );
     }
 }

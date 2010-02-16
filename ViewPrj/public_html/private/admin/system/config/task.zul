@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <div width="100%" height="100%" id="rootParent">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.admin.system.config.task.TaskController">
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
@@ -16,9 +16,7 @@
                             <north title="Lista" size="60%" splittable="true" flex="true">
                                 <tree fixedLayout="true" id="treeList" width="100%" height="100%" zclass="z-dottree">
                                     <treecols sizable="true">
-                                        <treecol label="Menu" width="40%"/>
-                                        <treecol label="Seq" width="10%"/>
-                                        <treecol label="URL" width="50%"/>
+                                        <treecol label="Tarefa" width="1"/>
                                     </treecols>
                                     <treechildren id="rootTree"></treechildren>
                                 </tree>
@@ -82,31 +80,8 @@
                                     <label id="recordDescription"/>
                                 </row>
                                 <row>
-                                    Menu Pai
+                                    Tarefa Associada
                                     <label id="recordParent"/>
-                                </row>
-                                <row>
-                                    URL
-                                    <label id="recordURL"/>
-                                </row>
-                                <row>
-                                    Seqüencia
-                                    <label id="recordSequence"/>
-                                </row>
-                                <row>
-                                    Propriedades do Menu
-                                    <div align="center">
-                                        Separador Antes
-                                        <checkbox id="recordSeparator" disabled="true"/>
-                                        Autocheck
-                                        <checkbox id="recordAutocheck" disabled="true"/>
-                                        Checked
-                                        <checkbox id="recordChecked" disabled="true"/>
-                                        Checkmark
-                                        <checkbox id="recordCheckmark" disabled="true"/>
-                                        Desabilitado
-                                        <checkbox id="recordDisabled" disabled="true"/>
-                                    </div>
                                 </row>
                             </rows>
                         </grid>
@@ -122,38 +97,15 @@
                             <rows>
                                 <row>
                                     Código
-                                    <intbox id="editId" width="100px" constraint="no negative, no zero"/>
+                                    <intbox id="editId" width="100px" constraint="no negative"/>
                                 </row>
                                 <row>
                                     Descrição
                                     <textbox id="editDescription" width="99%"/>
                                 </row>
                                 <row>
-                                    Menu Pai
+                                    Tarefa Associada
                                     <intbox id="editParent" width="100px" droppable="true"/>
-                                </row>
-                                <row>
-                                    URL
-                                    <textbox id="editURL" width="99%"/>
-                                </row>
-                                <row>
-                                    Seqüencia
-                                    <intbox id="editSequence" width="100px"/>
-                                </row>
-                                <row>
-                                    Propriedades do Menu
-                                    <div align="center">
-                                        Separador Antes
-                                        <checkbox id="editSeparator" width="99%"/>
-                                        Autocheck
-                                        <checkbox id="editAutocheck" width="99%"/>
-                                        Checked
-                                        <checkbox id="editChecked" width="99%"/>
-                                        Checkmark
-                                        <checkbox id="editCheckmark" width="99%"/>
-                                        Desabilitado
-                                        <checkbox id="editDisabled" width="99%"/>
-                                    </div>
                                 </row>
                             </rows>
                         </grid>

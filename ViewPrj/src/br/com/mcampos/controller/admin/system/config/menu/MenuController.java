@@ -2,11 +2,10 @@ package br.com.mcampos.controller.admin.system.config.menu;
 
 import br.com.mcampos.controller.core.BasicTreeCRUDController;
 
+import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
-import br.com.mcampos.dto.system.TaskDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.util.business.MenuLocator;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.DropEvent;
@@ -104,7 +103,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     protected void refresh()
     {
         try {
-            getTreeList().setModel( new MenuTreeModel( getLocator().get( getLoggedInUser() ) ) );
+            getTreeList().setModel( new MenuTreeModel( getLocator().getMenus( getLoggedInUser() ) ) );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Refresh Menu" );
@@ -132,7 +131,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     protected int getNextId()
     {
         try {
-            return getLocator().getNextId( getLoggedInUser() );
+            return getLocator().getNextMenuId( getLoggedInUser() );
         }
         catch ( ApplicationException e ) {
             e = null;
@@ -225,7 +224,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         MenuDTO dto = getValue( treeItem );
         if ( dto != null ) {
             try {
-                getLocator().delete( getLoggedInUser(), dto.getId() );
+                getLocator().delete( getLoggedInUser(), dto );
             }
             catch ( ApplicationException e ) {
                 showErrorMessage( e.getMessage(), "Exclur Menu" );
