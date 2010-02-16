@@ -176,7 +176,7 @@ public class CollaboratorSessionBean extends AbstractSecurity implements Collabo
             menuList.add( tm.getMenu() );
 
         }
-        for ( Subtask childTask : entity.getSubtaskList() ) {
+        for ( Subtask childTask : entity.getSubtasks() ) {
             getMenuList( menuList, childTask.getSubTask() );
         }
     }

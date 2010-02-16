@@ -47,13 +47,13 @@ public class CompanyClientController extends UserClientController
         super.doAfterCompose( comp );
         Map args = execution.getArg();
 
-        if ( args != null ) {
+        /*         if ( args != null ) {
             setActionParam( ( String )args.get( "who" ) );
             setBroseHistory( ( PageBrowseHistory )args.get( PageBrowseHistory.historyParamName ) );
             Integer userId = ( Integer )args.get( "userId" );
             if ( userId != null )
                 showInfo( userId );
-        }
+        } */
     }
 
     protected void showInfo( Integer id ) throws ApplicationException

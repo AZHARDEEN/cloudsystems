@@ -13,13 +13,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Task.findAll", query = "select o from Task o" ) } )
+@NamedQueries( { @NamedQuery( name = "Task.findAll", query = "select o from Task o where o.masterTaskList is EMPTY" ) } )
 @Table( name = "\"task\"" )
 public class Task implements Serializable
 {
     private String description;
     private Integer id;
-    private List<Subtask> subtaskList;
+    private List<Subtask> subtasks;
     private List<PermissionAssignment> permissionAssignmentList;
     private List<TaskMenu> taskMenuList;
     private List<Subtask> masterTaskList;
@@ -58,26 +58,26 @@ public class Task implements Serializable
     }
 
     @OneToMany( mappedBy = "task" )
-    public List<Subtask> getSubtaskList()
+    public List<Subtask> getSubtasks()
     {
-        return subtaskList;
+        return subtasks;
     }
 
-    public void setSubtaskList( List<Subtask> subtaskList )
+    public void setSubtasks( List<Subtask> subtaskList )
     {
-        this.subtaskList = subtaskList;
+        this.subtasks = subtaskList;
     }
 
     public Subtask addSubtask( Subtask subtask )
     {
-        getSubtaskList().add( subtask );
+        getSubtasks().add( subtask );
         subtask.setSubTask( this );
         return subtask;
     }
 
     public Subtask removeSubtask( Subtask subtask )
     {
-        getSubtaskList().remove( subtask );
+        getSubtasks().remove( subtask );
         subtask.setSubTask( null );
         return subtask;
     }

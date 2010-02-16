@@ -2,7 +2,6 @@ package br.com.mcampos.controller.admin.system.config.menu;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.exception.ApplicationException;
-import br.com.mcampos.util.business.MenuLocator;
 import br.com.mcampos.util.business.SystemLocator;
 import br.com.mcampos.util.system.tree.SimpleTreeNode;
 
@@ -38,6 +37,6 @@ public class MenuTreeRootNode extends SimpleTreeNode implements Serializable
 
     public void readChildren() throws ApplicationException
     {
-        children = getLocator().get( getCurrentUser() );
+        children = getLocator().getMenus( getCurrentUser() );
     }
 }

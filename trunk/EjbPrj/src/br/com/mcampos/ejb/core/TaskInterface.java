@@ -2,39 +2,12 @@ package br.com.mcampos.ejb.core;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.TaskDTO;
-import br.com.mcampos.dto.system.MenuDTO;
-
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
 
-public interface MenuInterface
+public interface TaskInterface
 {
-    /**
-     * Obtém a lista de tarefas associadas ao menu.
-     * Um menu deve ser associada a um tarefa, para que este, por sua vez, seja associada a uma role.
-     * Somente faz sentido associar um menu de último nível a alguma tarefa.
-     *
-     * @param auth - dto do usuário autenticado no sistema.
-     * @param menuId - Chave primária do menu.
-     * @return Lista de tarefas associadas ao menu.
-     * @throws ApplicationException
-     */
-    List<TaskDTO> getMenuTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException;
-
-
-    /**
-     * Each menu is configured to show in a especific order, and this is the order.
-     *
-     *
-     * @param auth
-     * @param parentId
-     * @return next available sequence.
-     * @throws ApplicationException
-     */
-    Integer getNextSequence( AuthenticationDTO auth, Integer parentId ) throws ApplicationException;
-
-
     /**
      * Obtem a lista dos objetos.
      *
@@ -42,7 +15,7 @@ public interface MenuInterface
      * @return Lista de objetos.
      * @throws ApplicationException
      */
-    List<MenuDTO> getMenus( AuthenticationDTO auth ) throws ApplicationException;
+    List<TaskDTO> getTasks( AuthenticationDTO auth ) throws ApplicationException;
 
 
     /**
@@ -53,7 +26,7 @@ public interface MenuInterface
      * @param dto - O objeto a ser atualizado
      * @throws ApplicationException
      */
-    MenuDTO update( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException;
+    TaskDTO update( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException;
 
 
     /**
@@ -66,7 +39,7 @@ public interface MenuInterface
      * @return O próximo id disponível.
      * @throws ApplicationException
      */
-    Integer getNextMenuId( AuthenticationDTO auth ) throws ApplicationException;
+    Integer getNextTaskId( AuthenticationDTO auth ) throws ApplicationException;
 
 
     /**
@@ -77,7 +50,7 @@ public interface MenuInterface
      * @param dto - DTO com os dados no novo menu.
      * @throws ApplicationException
      */
-    MenuDTO add( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException;
+    TaskDTO add( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException;
 
 
     /**
@@ -88,7 +61,7 @@ public interface MenuInterface
      * @return true or false. If this is a valid dto then return true
      * @throws ApplicationException
      */
-    Boolean validate( MenuDTO dto, Boolean isNew ) throws ApplicationException;
+    Boolean validate( TaskDTO dto, Boolean isNew ) throws ApplicationException;
 
 
     /**
@@ -98,7 +71,5 @@ public interface MenuInterface
      * @param id - menu id.
      * @throws ApplicationException
      */
-    void delete( AuthenticationDTO auth, MenuDTO id ) throws ApplicationException;
-
-
+    void delete( AuthenticationDTO auth, TaskDTO id ) throws ApplicationException;
 }
