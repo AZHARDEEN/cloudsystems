@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.admin.system.config.menu.MenuController">
+    <div width="100%" height="100%" id="rootParent">
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:20px;color:#0C7A9A" value="Manutenção - Menu do Sistema"/>
+                    <label style="font-size:20px;color:#0C7A9A" value="Manutenção - Tarefas do Sistema"/>
                 </vbox>
             </north>
             <west size="50%" splittable="true" flex="true">
@@ -23,12 +23,40 @@
                                     <treechildren id="rootTree"></treechildren>
                                 </tree>
                             </north>
-                            <south title="Tarefas Associadas" size="40%" splittable="true" flex="true">
-                                <listbox fixedLayout="true" id="listboxRecord">
-                                    <listhead sizable="true">
-                                        <listheader id="recordListDescSort" align="left" label="Descrição" sort="auto" width="1"/>
-                                    </listhead>
-                                </listbox>
+                            <south title="Associações" size="40%" splittable="true" flex="true">
+                                <tabbox id="associationTab">
+                                    <tabs>
+                                        <tab label="Menu"/>
+                                        <tab label="Permissão"/>
+                                        <tab label="Subtarefas"/>
+                                    </tabs>
+                                    <tabpanels>
+                                        <tabpanel>
+                                            <listbox fixedLayout="true" id="listMenu">
+                                                <listhead sizable="true">
+                                                    <listheader id="listHeaderMenu" align="left" label="Descrição" sort="auto"
+                                                                width="1"/>
+                                                </listhead>
+                                            </listbox>
+                                        </tabpanel>
+                                        <tabpanel>
+                                            <listbox fixedLayout="true" id="listPermission">
+                                                <listhead sizable="true">
+                                                    <listheader id="listHeaderPermision" align="left" label="Descrição" sort="auto"
+                                                                width="1"/>
+                                                </listhead>
+                                            </listbox>
+                                        </tabpanel>
+                                        <tabpanel>
+                                            <listbox fixedLayout="true" id="listSubtask">
+                                                <listhead sizable="true">
+                                                    <listheader id="listHeadetSubtask" align="left" label="Descrição" sort="auto"
+                                                                width="1"/>
+                                                </listhead>
+                                            </listbox>
+                                        </tabpanel>
+                                    </tabpanels>
+                                </tabbox>
                             </south>
                         </borderlayout>
                     </center>
