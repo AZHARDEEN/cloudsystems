@@ -33,7 +33,7 @@ public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController<T
     protected abstract void showRecord( DTO record ) throws ApplicationException;
 
 
-    protected abstract void copyTo( DTO dto );
+    protected abstract DTO copyTo( DTO dto );
 
     protected abstract DTO createDTO();
 

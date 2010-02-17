@@ -19,4 +19,9 @@ public class SystemLocator extends BusinessDelegate
     {
         return ( SystemFacade )getEJBSession( SystemFacade.class );
     }
+
+    protected SystemFacade get()
+    {
+        return getSessionBean();
+    }
 }

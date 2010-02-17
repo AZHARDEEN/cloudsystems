@@ -13,7 +13,7 @@
                     <center flex="true" autoscroll="true">
                         <!-- Por favor, nao mude o id deste TreeControl -->
                         <borderlayout>
-                            <north title="Lista" size="60%" splittable="true" flex="true">
+                            <north size="60%" splittable="true" flex="true">
                                 <tree fixedLayout="true" id="treeList" width="100%" height="100%" zclass="z-dottree">
                                     <treecols sizable="true">
                                         <treecol label="Menu" width="40%"/>

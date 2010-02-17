@@ -1,0 +1,49 @@
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <!-- Por favor, nao mude o id desta div -->
+    <div id="recordDetail">
+        <!-- view mode -->
+        <div id="recordView" width="100%">
+            <grid width="100%">
+                <columns>
+                    <column align="left" width="15%"/>
+                    <column align="left"/>
+                </columns>
+                <rows>
+                    <row>
+                        Código
+                        <label id="recordId"/>
+                    </row>
+                    <row>
+                        Descrição
+                        <label id="recordDescription"/>
+                    </row>
+                </rows>
+            </grid>
+            <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
+        </div>
+        <!-- Por favor, nao mude o id desta div -->
+        <div id="recordEdit" visible="false">
+            <grid width="100%" fixedLayout="true">
+                <columns>
+                    <column align="right" width="15%"/>
+                    <column align="left"/>
+                </columns>
+                <rows>
+                    <row>
+                        Código
+                        <intbox id="editId" width="99%" value="1"/>
+                    </row>
+                    <row>
+                        Descrição
+                        <textbox id="editDescription" width="99%" value=""/>
+                    </row>
+                </rows>
+            </grid>
+            <separator/>
+            <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
+        </div>
+    </div>
+</zk>
+
+
+

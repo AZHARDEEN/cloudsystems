@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.facade;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
+import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.ejb.session.system.SystemSessionLocal;
 
 import br.com.mcampos.exception.ApplicationException;
@@ -167,5 +168,35 @@ public class SystemFacadeBean implements SystemFacade
     public Integer getNextTaskId( AuthenticationDTO auth ) throws ApplicationException
     {
         return getSystemSession().getNextTaskId( auth );
+    }
+
+    public List<AccessLogTypeDTO> getAccessLogTypes( AuthenticationDTO auth ) throws ApplicationException
+    {
+        return getSystemSession().getAccessLogTypes( auth );
+    }
+
+    public Integer getNextAccessLogTypeId( AuthenticationDTO auth ) throws ApplicationException
+    {
+        return getSystemSession().getNextAccessLogTypeId( auth );
+    }
+
+    public AccessLogTypeDTO update( AuthenticationDTO auth, AccessLogTypeDTO dto ) throws ApplicationException
+    {
+        return getSystemSession().update( auth, dto );
+    }
+
+    public AccessLogTypeDTO add( AuthenticationDTO auth, AccessLogTypeDTO dto ) throws ApplicationException
+    {
+        return getSystemSession().add( auth, dto );
+    }
+
+    public Boolean validate( AccessLogTypeDTO dto, Boolean isNew ) throws ApplicationException
+    {
+        return getSystemSession().validate( dto, isNew );
+    }
+
+    public void delete( AuthenticationDTO auth, AccessLogTypeDTO id ) throws ApplicationException
+    {
+        getSystemSession().delete( auth, id );
     }
 }

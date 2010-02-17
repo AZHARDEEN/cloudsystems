@@ -48,11 +48,12 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
             recordParent.setValue( "" );
     }
 
-    protected void copyTo( TaskDTO dto )
+    protected TaskDTO copyTo( TaskDTO dto )
     {
         dto.setId( editId.getValue() );
         dto.setDescription( editDescription.getValue() );
         dto.setParentId( editParent.getValue() );
+        return dto;
     }
 
     protected TaskDTO createDTO()
