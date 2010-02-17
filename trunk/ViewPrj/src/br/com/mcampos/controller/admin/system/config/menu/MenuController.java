@@ -285,7 +285,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         return new MenuDTO();
     }
 
-    protected void copyTo( MenuDTO dto )
+    protected MenuDTO copyTo( MenuDTO dto )
     {
         dto.setId( editId.getValue() );
         dto.setDescription( editDescription.getValue() );
@@ -297,6 +297,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         dto.setChecked( editChecked.isChecked() );
         dto.setCheckmark( editCheckmark.isChecked() );
         dto.setDisabled( editDisabled.isChecked() );
+        return dto;
     }
 
     protected void configureTreeitem( Treeitem item )

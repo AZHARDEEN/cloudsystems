@@ -5,6 +5,7 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 
+import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.security.Role;
@@ -373,6 +374,35 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
     public Integer getNextTaskId( AuthenticationDTO auth )
     {
         return 0;
+    }
+
+    public List<AccessLogTypeDTO> getAccessLogTypes( AuthenticationDTO auth )
+    {
+        return Collections.emptyList();
+    }
+
+    public Integer getNextAccessLogTypeId( AuthenticationDTO auth )
+    {
+        return null;
+    }
+
+    public AccessLogTypeDTO update( AuthenticationDTO auth, AccessLogTypeDTO dto )
+    {
+        return null;
+    }
+
+    public AccessLogTypeDTO add( AuthenticationDTO auth, AccessLogTypeDTO dto )
+    {
+        return null;
+    }
+
+    public Boolean validate( AccessLogTypeDTO dto, Boolean isNew )
+    {
+        return null;
+    }
+
+    public void delete( AuthenticationDTO auth, AccessLogTypeDTO id )
+    {
     }
 }
 
