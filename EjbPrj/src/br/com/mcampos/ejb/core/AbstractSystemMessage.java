@@ -1,12 +1,13 @@
 package br.com.mcampos.ejb.core;
 
+import br.com.mcampos.ejb.core.BasicSessionBean.BasicSessionBean;
 import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionBean;
 import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 
 import javax.ejb.EJB;
 
-public abstract class AbstractSystemMessage implements SystemMessageInterface
+public abstract class AbstractSystemMessage extends BasicSessionBean implements SystemMessageInterface
 {
 
     @EJB

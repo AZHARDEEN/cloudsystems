@@ -26,19 +26,6 @@ public class AccessLogTypeController extends SimpleTableController<AccessLogType
         getLocator().delete( getLoggedInUser(), getValue( currentRecord ) );
     }
 
-    protected void afterDelete( Listitem currentRecord )
-    {
-    }
-
-    protected void afterEdit( Listitem currentRecord )
-    {
-    }
-
-    protected Listitem saveRecord( Listitem getCurrentRecord )
-    {
-        return null;
-    }
-
     protected void insertItem( Listitem e ) throws ApplicationException
     {
         getLocator().add( getLoggedInUser(), getValue( e ) );
@@ -60,5 +47,16 @@ public class AccessLogTypeController extends SimpleTableController<AccessLogType
     protected AccessLogTypeDTO getValue( Listitem selecteItem )
     {
         return ( AccessLogTypeDTO )super.getValue( selecteItem );
+    }
+
+    protected Integer getNextId()
+    {
+        try {
+            return getLocator().getNextAccessLogTypeId( getLoggedInUser() );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Próximo ID" );
+            return 0;
+        }
     }
 }

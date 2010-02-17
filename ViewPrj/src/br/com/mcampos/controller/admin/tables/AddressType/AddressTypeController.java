@@ -1,4 +1,4 @@
-package br.com.mcampos.controller.admin.tables;
+package br.com.mcampos.controller.admin.tables.AddressType;
 
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.address.AddressTypeDTO;
