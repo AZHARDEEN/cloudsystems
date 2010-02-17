@@ -33,8 +33,9 @@ public class SystemMessagesSessionBean implements SystemMessagesSessionLocal
     public void throwException( Integer typeId, Integer id ) throws ApplicationException
     {
         SystemMessage msg = em.find( SystemMessage.class, new SystemMessagePK( id, typeId ) );
-        if ( msg != null )
+        if ( msg != null ) {
             throw new ApplicationException( id, msg.getMessage() );
+        }
         else
             throw new ApplicationException( id, "SystemMessage [" + id.toString() + "] não está definida" );
     }

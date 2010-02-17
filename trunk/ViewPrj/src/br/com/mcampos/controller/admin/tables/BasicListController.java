@@ -99,8 +99,10 @@ public abstract class BasicListController<DTO> extends BasicCRUDController<Listi
 
     public void render( Listitem item, Object data )
     {
-        item.setValue( data );
-        configure( item );
+        if ( item != null ) {
+            item.setValue( data );
+            configure( item );
+        }
     }
 
     @Override

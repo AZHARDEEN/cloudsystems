@@ -21,7 +21,11 @@ public class SimpleTableListModel extends AbstractListModel
 
     public Object getElementAt( int index )
     {
-        return ( list != null ) ? list.get( index ) : null;
+        if ( list == null )
+            return null;
+        if ( index >= list.size() )
+            return null;
+        return list.get( index );
     }
 
     public int getSize()

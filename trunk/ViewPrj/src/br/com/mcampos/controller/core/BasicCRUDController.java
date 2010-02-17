@@ -148,16 +148,18 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
      * pois todo o resto já foi tratado por outras funçãoes. Quando esta função é chamada, pode afirmar com certeza
      * que o registro foi corretamente inserido no banco de dados.
      * @param e Novo objeto.
+     * @throws ApplicationException
      */
-    protected abstract void insertItem( T e );
+    protected abstract void insertItem( T e ) throws ApplicationException;
 
     /**
      * Autaliza o registro no formulário. O implementador deve preocupar-se SOMENTE com os componetes visuais,
      * pois todo o resto já foi tratado por outras funçãoes. Quando esta função é chamada, pode afirmar com certeza
      * que o registro foi corretamente alterado no banco de dados.
      * @param e Novo objeto.
+     * @throws ApplicationException
      */
-    protected abstract void updateItem( T e );
+    protected abstract void updateItem( T e ) throws ApplicationException;
 
 
     /**
@@ -218,7 +220,8 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
         }
         catch ( Exception e ) {
             onClick$cmdCancel();
-            showErrorMessage( "Ocorreu um erro ao processar a solicitação de inclusão. Não foi possível obter o valor do campo Chave", "Criar Novo Registro" );
+            showErrorMessage( "Ocorreu um erro ao processar a solicitação de inclusão. Não foi possível obter o valor do campo Chave",
+                              "Criar Novo Registro" );
         }
     }
 
@@ -234,7 +237,8 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
             }
             catch ( Exception e ) {
                 onClick$cmdCancel();
-                showErrorMessage( "Ocorreu um erro ao processar a solicitação de atualizar o registro", "Atualizar Registro Corrente" );
+                showErrorMessage( "Ocorreu um erro ao processar a solicitação de atualizar o registro",
+                                  "Atualizar Registro Corrente" );
             }
         }
     }
@@ -307,7 +311,8 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
             }
             else {
                 record = saveRecord( getCurrentRecord() );
-                updateItem( record );
+                if ( record != null )
+                    updateItem( record );
             }
             afterEdit( record );
         }

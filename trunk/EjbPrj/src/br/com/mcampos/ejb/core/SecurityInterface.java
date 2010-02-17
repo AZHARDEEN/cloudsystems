@@ -1,24 +1,11 @@
 package br.com.mcampos.ejb.core;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.ejb.core.BasicSessionBean.BasicSessionBean;
 import br.com.mcampos.exception.ApplicationException;
-
-import javax.persistence.EntityManager;
 
 public interface SecurityInterface
 {
-
-
-    /**
-     * EntityManager Getter. Every SessionBean should have one!, just like this:
-     *      public EntityManager getEm()
-     *      {
-     *          return em;
-     *      }
-     *
-     * @return EntityManager
-     */
-    EntityManager getEntityManager();
 
     /**
      * Autentica o usuário. Esta será a função mais usada de todas.

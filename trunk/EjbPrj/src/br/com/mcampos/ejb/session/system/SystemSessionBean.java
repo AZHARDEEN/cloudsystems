@@ -8,6 +8,7 @@ import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
+import br.com.mcampos.ejb.entity.login.AccessLogType;
 import br.com.mcampos.ejb.entity.security.Role;
 import br.com.mcampos.ejb.entity.security.Task;
 import br.com.mcampos.ejb.entity.security.TaskMenu;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 
 import javax.persistence.EntityManager;
@@ -352,57 +354,132 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         }
     }
 
-    public TaskDTO update( AuthenticationDTO auth, TaskDTO dto )
+    public TaskDTO update( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        return null;
+    }
+
+    public TaskDTO add( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        return null;
+    }
+
+    public Boolean validate( TaskDTO dto, Boolean isNew ) throws ApplicationException
     {
         return null;
     }
 
-    public TaskDTO add( AuthenticationDTO auth, TaskDTO dto )
+    public void delete( AuthenticationDTO auth, TaskDTO id ) throws ApplicationException
     {
-        return null;
+        authenticate( auth, Role.systemAdmimRoleLevel );
     }
 
-    public Boolean validate( TaskDTO dto, Boolean isNew )
+    public Integer getNextTaskId( AuthenticationDTO auth ) throws ApplicationException
     {
-        return null;
-    }
-
-    public void delete( AuthenticationDTO auth, TaskDTO id )
-    {
-    }
-
-    public Integer getNextTaskId( AuthenticationDTO auth )
-    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
         return 0;
     }
 
-    public List<AccessLogTypeDTO> getAccessLogTypes( AuthenticationDTO auth )
+    public List<AccessLogTypeDTO> getAccessLogTypes( AuthenticationDTO auth ) throws ApplicationException
     {
-        return Collections.emptyList();
+        /*Não existe a necessidade de ser mais que um usuário autenticado para obter a lista de access log type*/
+        authenticate( auth );
+        try {
+            return copyList( ( List<AccessLogType> )em.createNamedQuery( "AccessLogType.findAll" ).getResultList() );
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            return Collections.emptyList();
+        }
     }
 
-    public Integer getNextAccessLogTypeId( AuthenticationDTO auth )
+    protected List<AccessLogTypeDTO> copyList( List<AccessLogType> list )
     {
-        return null;
+        List<AccessLogTypeDTO> dtos = null;
+
+        if ( list == null || list.size() == 0 )
+            return Collections.emptyList();
+        dtos = new ArrayList<AccessLogTypeDTO>( list.size() );
+        for ( AccessLogType item : list )
+            dtos.add( DTOFactory.copy( item ) );
+        return dtos;
     }
 
-    public AccessLogTypeDTO update( AuthenticationDTO auth, AccessLogTypeDTO dto )
+
+    public Integer getNextAccessLogTypeId( AuthenticationDTO auth ) throws ApplicationException
     {
-        return null;
+        authenticate( auth, Role.systemAdmimRoleLevel );
+
+        return ( Integer )nativeQuerySingleResult( "Select max( coalesce ( alt_id_in, 0 ) ) + 1 as idMax from access_log_type" );
     }
 
-    public AccessLogTypeDTO add( AuthenticationDTO auth, AccessLogTypeDTO dto )
+    public AccessLogTypeDTO update( AuthenticationDTO auth, AccessLogTypeDTO dto ) throws ApplicationException
     {
-        return null;
+        authenticate( auth, Role.systemAdmimRoleLevel );
+
+        if ( validate( dto, false ) ) {
+            AccessLogType entity;
+            entity = DTOFactory.copy( dto );
+            em.merge( entity );
+            return DTOFactory.copy( entity );
+        }
+        else
+            return null;
     }
 
-    public Boolean validate( AccessLogTypeDTO dto, Boolean isNew )
+    public AccessLogTypeDTO add( AuthenticationDTO auth, AccessLogTypeDTO dto ) throws ApplicationException
     {
-        return null;
+        authenticate( auth, Role.systemAdmimRoleLevel );
+
+        if ( validate( dto, true ) ) {
+            AccessLogType entity;
+            entity = DTOFactory.copy( dto );
+            em.persist( entity );
+            return DTOFactory.copy( entity );
+        }
+        else
+            return null;
     }
 
-    public void delete( AuthenticationDTO auth, AccessLogTypeDTO id )
+    public Boolean validate( AccessLogTypeDTO dto, Boolean isNew ) throws ApplicationException
     {
+        if ( dto == null )
+            throwCommomException( 3 );
+        AccessLogType entity = ( AccessLogType )get( AccessLogType.class, dto.getId() );
+        if ( isNew ) {
+            if ( entity != null )
+                throwCommomException( 5 );
+        }
+        else {
+            if ( entity == null )
+                throwCommomException( 6 );
+        }
+        if ( SysUtils.isEmpty( dto.getDescription() ) )
+            throwCommomException( 7 );
+        return true;
+    }
+
+    public void delete( AuthenticationDTO auth, AccessLogTypeDTO id ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        if ( id == null || SysUtils.isZero( id.getId() ) )
+            throwCommomException( 3 );
+        AccessLogType entity = ( AccessLogType )get( AccessLogType.class, id.getId() );
+        if ( entity == null )
+            throwCommomException( 8 );
+        try {
+            getEntityManager().remove( entity );
+        }
+        catch ( EJBException e ) {
+            throwCommomRuntimeException( 9 );
+        }
+    }
+
+    protected AccessLogType getAccessLogType( Integer id )
+    {
+        return ( AccessLogType )get( AccessLogType.class, id );
     }
 }
 
