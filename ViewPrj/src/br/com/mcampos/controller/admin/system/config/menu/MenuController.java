@@ -158,24 +158,27 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         getListboxRecord().getItems().clear();
     }
 
-    protected void prepareToUpdate( Treeitem currentRecord )
+    protected MenuDTO prepareToUpdate( Treeitem currentRecord )
     {
         MenuDTO dto = null;
 
         dto = getValue( currentRecord );
 
-        editId.setValue( dto.getId() );
-        editId.setReadonly( true );
-        editDescription.setValue( dto.getDescription() );
-        editDescription.setFocus( true );
-        editParent.setValue( dto.getParent() == null ? 0 : dto.getParent().getId() );
-        editURL.setValue( dto.getTargetURL() );
-        editSequence.setValue( dto.getSequence() );
-        editSeparator.setChecked( dto.getSeparatorBefore() );
-        editAutocheck.setChecked( dto.getAutocheck() );
-        editChecked.setChecked( dto.getChecked() );
-        editCheckmark.setChecked( dto.getCheckmark() );
-        editDisabled.setChecked( dto.getDisabled() );
+        if ( dto != null ) {
+            editId.setValue( dto.getId() );
+            editId.setReadonly( true );
+            editDescription.setValue( dto.getDescription() );
+            editDescription.setFocus( true );
+            editParent.setValue( dto.getParent() == null ? 0 : dto.getParent().getId() );
+            editURL.setValue( dto.getTargetURL() );
+            editSequence.setValue( dto.getSequence() );
+            editSeparator.setChecked( dto.getSeparatorBefore() );
+            editAutocheck.setChecked( dto.getAutocheck() );
+            editChecked.setChecked( dto.getChecked() );
+            editCheckmark.setChecked( dto.getCheckmark() );
+            editDisabled.setChecked( dto.getDisabled() );
+        }
+        return dto;
     }
 
     /*

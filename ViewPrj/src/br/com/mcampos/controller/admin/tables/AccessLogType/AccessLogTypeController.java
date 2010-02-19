@@ -5,6 +5,9 @@ import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 
 import br.com.mcampos.exception.ApplicationException;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.zkoss.zul.Listitem;
 
 public class AccessLogTypeController extends SimpleTableController<AccessLogTypeDTO>
@@ -58,5 +61,10 @@ public class AccessLogTypeController extends SimpleTableController<AccessLogType
             showErrorMessage( e.getMessage(), "Próximo ID" );
             return 0;
         }
+    }
+
+    protected List getRecordList()
+    {
+        return getLocator().getList( getLoggedInUser() );
     }
 }

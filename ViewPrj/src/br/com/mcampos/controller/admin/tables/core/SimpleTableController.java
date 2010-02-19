@@ -35,7 +35,7 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
         editDescription.setRawValue( "" );
     }
 
-    protected void prepareToUpdate( Listitem currentRecord )
+    protected SimpleTableDTO prepareToUpdate( Listitem currentRecord )
     {
         SimpleTableDTO dto = null;
 
@@ -44,6 +44,7 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
         editId.setValue( dto.getId() );
         editId.setReadonly( true );
         editDescription.setValue( dto.getDescription() );
+        return dto;
     }
 
     protected void showRecord( SimpleTableDTO record )
