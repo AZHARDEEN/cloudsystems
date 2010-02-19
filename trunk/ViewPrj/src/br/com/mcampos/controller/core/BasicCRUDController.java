@@ -134,7 +134,7 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
      *
      * @param currentRecord O registro corrente(selecionado).
      */
-    protected abstract void prepareToUpdate( T currentRecord );
+    protected abstract Object prepareToUpdate( T currentRecord );
 
 
     /**

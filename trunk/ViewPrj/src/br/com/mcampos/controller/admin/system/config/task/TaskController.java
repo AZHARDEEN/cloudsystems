@@ -133,17 +133,19 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
     }
 
 
-    protected void prepareToUpdate( Treeitem currentRecord )
+    protected TaskDTO prepareToUpdate( Treeitem currentRecord )
     {
         TaskDTO dto = null;
 
         dto = getValue( currentRecord );
-
-        editId.setValue( dto.getId() );
-        editId.setReadonly( true );
-        editDescription.setValue( dto.getDescription() );
-        editDescription.setFocus( true );
-        editParent.setValue( dto.getParent() == null ? 0 : dto.getParent().getId() );
+        if ( dto != null ) {
+            editId.setValue( dto.getId() );
+            editId.setReadonly( true );
+            editDescription.setValue( dto.getDescription() );
+            editDescription.setFocus( true );
+            editParent.setValue( dto.getParent() == null ? 0 : dto.getParent().getId() );
+        }
+        return dto;
     }
 
     protected void insertItem( Treeitem e )

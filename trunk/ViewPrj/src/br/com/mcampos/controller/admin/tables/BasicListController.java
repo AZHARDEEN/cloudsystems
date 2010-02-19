@@ -7,6 +7,10 @@ import br.com.mcampos.controller.core.BasicCRUDController;
 
 import br.com.mcampos.exception.ApplicationException;
 
+import java.util.List;
+
+import javax.persistence.NoResultException;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
@@ -34,7 +38,7 @@ public abstract class BasicListController<DTO> extends BasicCRUDController<Listi
 
     protected abstract void configure( Listitem item );
 
-    protected abstract SimpleTableLocator getLocator();
+    protected abstract List getRecordList() throws ApplicationException;
 
 
     public BasicListController( char c )
@@ -115,6 +119,11 @@ public abstract class BasicListController<DTO> extends BasicCRUDController<Listi
 
     protected void refresh()
     {
-        getListboxRecord().setModel( new SimpleTableListModel( getLocator().getList( getLoggedInUser() ) ) );
+        try {
+            getListboxRecord().setModel( new SimpleTableListModel( getRecordList() ) );
+        }
+        catch ( ApplicationException e ) {
+            e = null;
+        }
     }
 }

@@ -3,13 +3,12 @@ package br.com.mcampos.controller.core;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.util.locator.ServiceLocator;
+import br.com.mcampos.util.locator.ServiceLocatorException;
 import br.com.mcampos.util.system.CloudSystemSessionListener;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import java.util.Stack;
 
 import javax.servlet.http.Cookie;
 
@@ -20,12 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.ComponentNotFoundException;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.UiException;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 
 public abstract class BaseController extends GenericForwardComposer
@@ -235,5 +230,16 @@ public abstract class BaseController extends GenericForwardComposer
         bookmarkHelper.add( uri, parent, parameters );
         strBookmark = String.format( "%s%d", bookmarkId, bookmarkHelper.get().size() - 1 );
         desktop.setBookmark( strBookmark );
+    }
+
+
+    protected Object getRemoteSession( Class remoteClass )
+    {
+        try {
+            return ServiceLocator.getInstance().getRemoteSession( remoteClass );
+        }
+        catch ( ServiceLocatorException e ) {
+            throw new NullPointerException( "Invalid EJB Session (possible null)" );
+        }
     }
 }

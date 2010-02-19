@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import javax.ejb.EJBObject;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -18,6 +16,7 @@ public class ServiceLocator
     private static ServiceLocator myServiceLocator;
     private InitialContext context = null;
     private Map<String, Object> cache;
+    protected static final String ejbPrefix = "CloudSystems-EjbPrj-";
 
 
     private ServiceLocator() throws ServiceLocatorException
@@ -66,4 +65,24 @@ public class ServiceLocator
     {
         return "CloudSystemsServiceLocator";
     }
+
+    protected String makeEJBSessionNameLocator( Class cls )
+    {
+        String name;
+        int firstChar;
+
+        /*get class name without package name, if any!!*/
+        name = cls.getName();
+        firstChar = name.lastIndexOf( '.' ) + 1;
+        if ( firstChar > 0 )
+            name = name.substring( firstChar );
+        name = ejbPrefix + name + "#" + cls.getName();
+        return name;
+    }
+
+    public Object getRemoteSession( Class cls ) throws ServiceLocatorException
+    {
+        return getHome( makeEJBSessionNameLocator( cls ) );
+    }
+
 }
