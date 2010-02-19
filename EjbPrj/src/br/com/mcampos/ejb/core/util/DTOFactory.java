@@ -6,6 +6,7 @@ import br.com.mcampos.dto.address.AddressTypeDTO;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
+import br.com.mcampos.dto.anode.FormDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.system.SystemParametersDTO;
@@ -27,6 +28,7 @@ import br.com.mcampos.dto.user.attributes.TitleDTO;
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Form;
 import br.com.mcampos.ejb.entity.address.AddressType;
 import br.com.mcampos.ejb.entity.address.City;
 import br.com.mcampos.ejb.entity.address.Country;
@@ -225,11 +227,9 @@ public final class DTOFactory implements Serializable
 
         code = document.trim();
         switch ( type ) {
-        case UserDocument.typeCPF:
-            code = code.replaceAll( "[\\-.\\/]", "" );
+        case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
             break;
-        case UserDocument.typeEmail:
-            code = code.toLowerCase();
+        case UserDocument.typeEmail: code = code.toLowerCase();
             break;
         }
         return code;
@@ -734,6 +734,29 @@ public final class DTOFactory implements Serializable
                 target.add( copy( sm.getSubTask(), true ) );
             }
         }
+        return target;
+    }
+
+
+    public static FormDTO copy( Form source )
+    {
+        if ( source == null )
+            return null;
+
+        FormDTO target = new FormDTO( source.getId(), source.getDescription() );
+
+        target.setIp( source.getIp() );
+        return target;
+    }
+
+
+    public static Form copy( FormDTO source )
+    {
+        if ( source == null )
+            return null;
+
+        Form target = new Form( source.getId(), source.getDescription(), source.getIp() );
+
         return target;
     }
 

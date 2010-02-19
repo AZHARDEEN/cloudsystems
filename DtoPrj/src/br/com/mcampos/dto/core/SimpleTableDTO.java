@@ -1,5 +1,9 @@
 package br.com.mcampos.dto.core;
 
+import br.com.mcampos.sysutils.SysUtils;
+
+import java.security.InvalidParameterException;
+
 public abstract class SimpleTableDTO extends DisplayNameDTO implements SimpleTable, Comparable<SimpleTableDTO>
 {
     protected Integer id;
@@ -35,9 +39,12 @@ public abstract class SimpleTableDTO extends DisplayNameDTO implements SimpleTab
         this.description = description;
     }
 
-    public void setId( Integer id )
+    public SimpleTableDTO setId( Integer id )
     {
+        if ( SysUtils.isZero( id ) )
+            throw new InvalidParameterException( "O id não pode ser nulo ou zero" );
         this.id = id;
+        return this;
     }
 
     public Integer getId()
@@ -45,9 +52,10 @@ public abstract class SimpleTableDTO extends DisplayNameDTO implements SimpleTab
         return id;
     }
 
-    public void setDescription( String description )
+    public SimpleTableDTO setDescription( String description )
     {
         this.description = description;
+        return this;
     }
 
     public String getDescription()
@@ -87,5 +95,11 @@ public abstract class SimpleTableDTO extends DisplayNameDTO implements SimpleTab
     public String toString()
     {
         return getDescription();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return SysUtils.isZero( getId() ) ? 0 : getId().hashCode();
     }
 }
