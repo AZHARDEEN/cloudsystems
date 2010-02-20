@@ -4,6 +4,8 @@ import br.com.mcampos.ejb.entity.security.Task;
 
 import br.com.mcampos.ejb.entity.security.TaskMenu;
 
+import br.com.mcampos.ejb.entity.cloudsystem.media.entity.Media;
+
 import com.sun.jmx.snmp.tasks.TaskServer;
 
 import java.io.Serializable;

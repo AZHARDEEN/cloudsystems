@@ -17,7 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Form.findAll", query = "select o from Form o" ) } )
+@NamedQueries( { @NamedQuery( name = "Form.findAll", query = "select o from Form o" ),
+                 @NamedQuery( name = "Form.nextId", query = "select MAX(o.id) from Form o" ) } )
 @Table( name = "\"form\"" )
 public class Form implements Serializable, EntityCopyInterface<FormDTO>
 {
@@ -127,6 +128,6 @@ public class Form implements Serializable, EntityCopyInterface<FormDTO>
         FormDTO dto = new FormDTO( this.getId(), this.getDescription() );
 
         dto.setIp( this.getIp() );
-        return null;
+        return dto;
     }
 }

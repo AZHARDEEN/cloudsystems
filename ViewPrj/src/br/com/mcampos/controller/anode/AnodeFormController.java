@@ -1,19 +1,22 @@
 package br.com.mcampos.controller.anode;
 
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
-import br.com.mcampos.controller.admin.tables.core.SimpleTableLocator;
-import br.com.mcampos.controller.core.BaseController;
 import br.com.mcampos.dto.anode.FormDTO;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 
 import br.com.mcampos.exception.ApplicationException;
 
-import java.util.Collections;
+import br.com.mcampos.sysutils.SysUtils;
+
 import java.util.List;
 
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
@@ -21,6 +24,9 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
 {
     private AnodeFacade session;
     protected Textbox editIP;
+    protected Label recordIP;
+    Button btnAddAttach;
+    Button btnRemoveAttach;
 
     public AnodeFormController()
     {
@@ -36,7 +42,13 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
 
     protected Integer getNextId()
     {
-        return 0;
+        try {
+            return session.nextFormId( getLoggedInUser() );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Próximo id" );
+            return 0;
+        }
     }
 
     protected SimpleTableDTO createDTO()
@@ -70,7 +82,12 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
 
     protected List getRecordList() throws ApplicationException
     {
-        return getSession().getAll( getLoggedInUser() );
+        List list = super.getRecordList();
+        btnAddAttach.setDisabled( true );
+        btnRemoveAttach.setDisabled( true );
+        if ( SysUtils.isEmpty( list ) )
+            list = getSession().getAll( getLoggedInUser() );
+        return list;
     }
 
     @Override
@@ -78,6 +95,8 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
     {
         super.prepareToInsert();
         editIP.setValue( "" );
+        editIP.setFocus( true );
+        btnRemoveAttach.setDisabled( true );
     }
 
     @Override
@@ -86,6 +105,7 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
         FormDTO dto = ( FormDTO )super.prepareToUpdate( currentRecord );
         if ( dto != null )
             editIP.setValue( dto.getIp() );
+        editIP.setFocus( true );
         return dto;
     }
 
@@ -106,5 +126,35 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
         }
         contentType = media.getContentType();
         evt.stopPropagation();
+    }
+
+    @Override
+    protected SimpleTableDTO copyTo( SimpleTableDTO dto )
+    {
+        FormDTO d = ( FormDTO )super.copyTo( dto );
+        if ( d != null )
+            d.setIp( editIP.getValue() );
+        return d;
+    }
+
+    @Override
+    protected void configure( Listitem item )
+    {
+        if ( item == null )
+            return;
+        FormDTO dto = getValue( item );
+
+        if ( dto != null ) {
+            item.getChildren().add( new Listcell( dto.getIp() ) );
+            item.getChildren().add( new Listcell( dto.getDescription() ) );
+        }
+    }
+
+    @Override
+    protected void showRecord( SimpleTableDTO record )
+    {
+        super.showRecord( record );
+        recordIP.setValue( record != null ? ( ( FormDTO )record ).getIp() : "" );
+        btnAddAttach.setDisabled( record == null );
     }
 }

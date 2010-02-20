@@ -189,24 +189,16 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
     protected void enableOperationsButtons( Boolean bEnable )
     {
         if ( bEnable ) {
-            if ( cmdCreate.isDisabled() )
-                cmdCreate.setDisabled( false );
-            if ( cmdUpdate.isDisabled() )
-                cmdUpdate.setDisabled( false );
-            if ( cmdDelete.isDisabled() )
-                cmdDelete.setDisabled( false );
-            if ( cmdRefresh.isDisabled() )
-                cmdRefresh.setDisabled( false );
+            cmdCreate.setDisabled( false );
+            cmdUpdate.setDisabled( false );
+            cmdDelete.setDisabled( false );
+            cmdRefresh.setDisabled( false );
         }
         else {
-            if ( cmdCreate.isDisabled() == false )
-                cmdCreate.setDisabled( true );
-            if ( cmdUpdate.isDisabled() == false )
-                cmdUpdate.setDisabled( true );
-            if ( cmdDelete.isDisabled() == false )
-                cmdDelete.setDisabled( true );
-            if ( cmdRefresh.isDisabled() == false )
-                cmdRefresh.setDisabled( true );
+            cmdCreate.setDisabled( true );
+            cmdUpdate.setDisabled( true );
+            cmdDelete.setDisabled( true );
+            cmdRefresh.setDisabled( true );
         }
         showEditPanel( !bEnable );
     }
@@ -220,8 +212,7 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
         }
         catch ( Exception e ) {
             onClick$cmdCancel();
-            showErrorMessage( "Ocorreu um erro ao processar a solicitação de inclusão. Não foi possível obter o valor do campo Chave",
-                              "Criar Novo Registro" );
+            showErrorMessage( "Ocorreu um erro ao processar a solicitação de inclusão. Não foi possível obter o valor do campo Chave", "Criar Novo Registro" );
         }
     }
 
@@ -237,8 +228,7 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
             }
             catch ( Exception e ) {
                 onClick$cmdCancel();
-                showErrorMessage( "Ocorreu um erro ao processar a solicitação de atualizar o registro",
-                                  "Atualizar Registro Corrente" );
+                showErrorMessage( "Ocorreu um erro ao processar a solicitação de atualizar o registro", "Atualizar Registro Corrente" );
             }
         }
     }
@@ -247,7 +237,7 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
     {
         T currentRecord;
 
-        showEditPanel( false );
+        //showEditPanel( false );
         currentRecord = getCurrentRecord();
         if ( currentRecord != null ) {
             try {
@@ -262,7 +252,7 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
 
     public void onClick$cmdRefresh()
     {
-        showEditPanel( false );
+        //showEditPanel( false );
         refresh();
     }
 
@@ -302,7 +292,6 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
     {
         T record;
 
-        showEditPanel( false );
         enableOperationsButtons( true );
         try {
             if ( isAddNewOperation() ) {
@@ -328,7 +317,6 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
      */
     public void onClick$cmdCancel()
     {
-        showEditPanel( false );
         enableOperationsButtons( true );
         setAddNewOperation( false );
     }

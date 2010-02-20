@@ -16,4 +16,6 @@ public interface CrudInterface<KEY, ENTITY>
 
     List<ENTITY> getAll( String namedQuery ) throws ApplicationException;
 
+    Object getSingleResult( String namedQuery ) throws ApplicationException;
+
 }
