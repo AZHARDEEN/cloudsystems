@@ -24,4 +24,6 @@ public interface AnodeFacade
     public List<FormDTO> getAll( AuthenticationDTO auth ) throws ApplicationException;
 
     public FormDTO update( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
+
+    public Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException;
 }

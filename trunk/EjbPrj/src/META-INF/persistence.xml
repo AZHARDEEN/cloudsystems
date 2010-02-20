@@ -46,7 +46,7 @@
     <class>br.com.mcampos.ejb.entity.security.Subtask</class>
     <class>br.com.mcampos.ejb.entity.security.Task</class>
     <class>br.com.mcampos.ejb.entity.security.TaskMenu</class>
-    <class>br.com.mcampos.ejb.entity.system.Media</class>
+    <class>br.com.mcampos.ejb.entity.cloudsystem.media.entity.Media</class>
     <class>br.com.mcampos.ejb.cloudsystem.entity.entity.Form</class>
     <class>br.com.mcampos.ejb.cloudsystem.entity.entity.FormMedia</class>
     <class>br.com.mcampos.ejb.cloudsystem.entity.entity.FormPen</class>

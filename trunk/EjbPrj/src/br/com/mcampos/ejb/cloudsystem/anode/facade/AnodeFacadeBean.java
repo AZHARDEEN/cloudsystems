@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.facade;
 
 import br.com.mcampos.dto.anode.FormDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Form;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodeFormSessionLocal;
 
 
@@ -10,6 +11,9 @@ import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
 
+import br.com.mcampos.sysutils.SysUtils;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,7 +59,14 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public List<FormDTO> getAll( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
-        return Collections.emptyList();
+        List<Form> list = form.getAll();
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<FormDTO> dtoList = new ArrayList<FormDTO>( list.size() );
+        for ( Form f : list ) {
+            dtoList.add( f.toDTO() );
+        }
+        return dtoList;
     }
 
     public FormDTO update( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
@@ -72,5 +83,10 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public Integer getMessageTypeId()
     {
         return 7;
+    }
+
+    public Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException
+    {
+        return form.nextId();
     }
 }

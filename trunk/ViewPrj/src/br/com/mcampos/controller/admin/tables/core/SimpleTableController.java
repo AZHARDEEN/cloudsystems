@@ -5,6 +5,11 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 
+import br.com.mcampos.exception.ApplicationException;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
@@ -26,6 +31,7 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
     {
         super();
     }
+
 
     protected void prepareToInsert()
     {
@@ -49,8 +55,14 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
 
     protected void showRecord( SimpleTableDTO record )
     {
-        recordId.setValue( record.getId().toString() );
-        recordDescription.setValue( record.getDescription() );
+        if ( record != null ) {
+            recordId.setValue( record.getId().toString() );
+            recordDescription.setValue( record.getDescription() );
+        }
+        else {
+            recordId.setValue( "" );
+            recordDescription.setValue( "" );
+        }
     }
 
     protected SimpleTableDTO copyTo( SimpleTableDTO dto )
@@ -103,4 +115,10 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
         }
     }
 
+    @Override
+    protected List getRecordList() throws ApplicationException
+    {
+        showRecord( null );
+        return Collections.emptyList();
+    }
 }

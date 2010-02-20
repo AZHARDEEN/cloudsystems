@@ -21,4 +21,6 @@ public interface AnodeFormSessionLocal
     public List<Form> getAll() throws ApplicationException;
 
     public Form update( Form entity ) throws ApplicationException;
+
+    public Integer nextId() throws ApplicationException;
 }

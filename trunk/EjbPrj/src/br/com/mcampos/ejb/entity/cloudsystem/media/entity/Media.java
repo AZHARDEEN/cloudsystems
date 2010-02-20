@@ -1,12 +1,20 @@
-package br.com.mcampos.ejb.entity.system;
+package br.com.mcampos.ejb.entity.cloudsystem.media.entity;
+
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.io.Serializable;
 
+import java.security.InvalidParameterException;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +27,7 @@ public class Media implements Serializable
     private Integer id;
     private String mimeType;
     private String name;
-    private String object;
+    private Byte[] object;
     private String url;
 
     public Media()
@@ -32,9 +40,9 @@ public class Media implements Serializable
         return description;
     }
 
-    public void setDescription( String med_description_tx )
+    public void setDescription( String description )
     {
-        this.description = med_description_tx;
+        this.description = description;
     }
 
     @Column( name = "med_embedded_code_tx" )
@@ -43,21 +51,25 @@ public class Media implements Serializable
         return embeddedCode;
     }
 
-    public void setEmbeddedCode( String med_embedded_code_tx )
+    public void setEmbeddedCode( String embeddedCode )
     {
-        this.embeddedCode = med_embedded_code_tx;
+        this.embeddedCode = embeddedCode;
     }
 
     @Id
     @Column( name = "med_id_in", nullable = false )
+    @SequenceGenerator( name = "mediaIdGenerator", sequenceName = "seq_media", allocationSize = 1 )
+    @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "mediaIdGenerator" )
     public Integer getId()
     {
         return id;
     }
 
-    public void setId( Integer med_id_in )
+    public void setId( Integer id )
     {
-        this.id = med_id_in;
+        if ( SysUtils.isZero( id ) )
+            throw new InvalidParameterException( "Media ID could not be null" );
+        this.id = id;
     }
 
     @Column( name = "med_mime_ch" )
@@ -66,9 +78,9 @@ public class Media implements Serializable
         return mimeType;
     }
 
-    public void setMimeType( String med_mime_ch )
+    public void setMimeType( String mime )
     {
-        this.mimeType = med_mime_ch;
+        this.mimeType = mime;
     }
 
     @Column( name = "med_name_ch", nullable = false )
@@ -77,20 +89,23 @@ public class Media implements Serializable
         return name;
     }
 
-    public void setName( String med_name_ch )
+    public void setName( String name )
     {
-        this.name = med_name_ch;
+        if ( SysUtils.isEmpty( name ) )
+            throw new InvalidParameterException( "Media name could not be null" );
+        this.name = name;
     }
 
+    @Lob
     @Column( name = "med_object_bin" )
-    public String getObject()
+    public Byte[] getObject()
     {
         return object;
     }
 
-    public void setObject( String med_object_bin )
+    public void setObject( Byte[] object )
     {
-        this.object = med_object_bin;
+        this.object = object;
     }
 
     @Column( name = "med_url_ch" )
@@ -99,8 +114,8 @@ public class Media implements Serializable
         return url;
     }
 
-    public void setUrl( String med_url_ch )
+    public void setUrl( String url )
     {
-        this.url = med_url_ch;
+        this.url = url;
     }
 }

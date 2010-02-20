@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.NoResultException;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Div;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
@@ -125,5 +126,13 @@ public abstract class BasicListController<DTO> extends BasicCRUDController<Listi
         catch ( ApplicationException e ) {
             e = null;
         }
+    }
+
+    @Override
+    protected void showEditPanel( Boolean bShow )
+    {
+        super.showEditPanel( bShow );
+        for ( Object item : getListboxRecord().getItems() )
+            ( ( Listitem )item ).setDisabled( bShow );
     }
 }

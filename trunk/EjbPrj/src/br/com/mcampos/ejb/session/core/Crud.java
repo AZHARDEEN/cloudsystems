@@ -1,5 +1,7 @@
 package br.com.mcampos.ejb.session.core;
 
+import br.com.mcampos.exception.ApplicationException;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -71,5 +73,15 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
     protected EntityManager getEntityManager()
     {
         return em;
+    }
+
+    public Object getSingleResult( String namedQuery ) throws ApplicationException
+    {
+        try {
+            return getEntityManager().createNamedQuery( namedQuery ).getSingleResult();
+        }
+        catch ( NoResultException e ) {
+            return null;
+        }
     }
 }
