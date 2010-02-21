@@ -2,6 +2,8 @@ package br.com.mcampos.ejb.session.core;
 
 import br.com.mcampos.exception.ApplicationException;
 
+import br.com.mcampos.sysutils.SysUtils;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -83,5 +85,15 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         catch ( NoResultException e ) {
             return null;
         }
+    }
+
+
+    public Integer nextIntegerId( String namedQuery ) throws ApplicationException
+    {
+        Integer id = ( Integer )getSingleResult( namedQuery );
+        if ( SysUtils.isZero( id ) )
+            id = 0;
+        id++;
+        return id;
     }
 }

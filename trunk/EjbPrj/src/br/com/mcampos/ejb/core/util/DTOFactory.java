@@ -7,6 +7,7 @@ import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
 import br.com.mcampos.dto.anode.FormDTO;
+import br.com.mcampos.dto.anode.PenDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.system.MenuDTO;
@@ -30,6 +31,7 @@ import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Form;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Pen;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.entity.address.AddressType;
 import br.com.mcampos.ejb.entity.address.City;
@@ -780,4 +782,10 @@ public final class DTOFactory implements Serializable
 
     }
 
+    public static Pen copy( PenDTO entity )
+    {
+        if ( entity == null )
+            return null;
+        return new Pen( entity.getId() );
+    }
 }

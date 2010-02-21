@@ -39,7 +39,7 @@ public class Pen implements Serializable, EntityCopyInterface<PenDTO>
     }
 
     @Id
-    @Column( name = "pen_id_in", nullable = false )
+    @Column( name = "pen_id_ch", nullable = false )
     public String getId()
     {
         return id;
