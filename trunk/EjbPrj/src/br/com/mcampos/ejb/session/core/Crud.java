@@ -7,6 +7,10 @@ import br.com.mcampos.sysutils.SysUtils;
 import java.util.Collections;
 import java.util.List;
 
+import java.util.Map;
+
+import java.util.Properties;
+
 import javax.ejb.TransactionAttribute;
 
 import javax.ejb.TransactionAttributeType;
@@ -14,6 +18,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 @TransactionAttribute( TransactionAttributeType.SUPPORTS )
 public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
@@ -79,11 +84,49 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
 
     public Object getSingleResult( String namedQuery ) throws ApplicationException
     {
+        return getSingleResult( namedQuery, Collections.emptyList() );
+    }
+
+    public Object getSingleResult( String namedQuery, List<Object> list ) throws ApplicationException
+    {
         try {
-            return getEntityManager().createNamedQuery( namedQuery ).getSingleResult();
+            Query query = getEntityManager().createNamedQuery( namedQuery );
+            if ( SysUtils.isEmpty( list ) == false ) {
+                int nIndex = 1;
+                for ( Object obj : list ) {
+                    query.setParameter( nIndex, obj );
+                    nIndex++;
+                }
+            }
+            return query.getSingleResult();
+
         }
         catch ( NoResultException e ) {
             return null;
+        }
+    }
+
+    public List getResultList( String namedQuery ) throws ApplicationException
+    {
+        return getResultList( namedQuery, Collections.emptyList() );
+    }
+
+    public List getResultList( String namedQuery, List<Object> list ) throws ApplicationException
+    {
+        try {
+            Query query = getEntityManager().createNamedQuery( namedQuery );
+            if ( SysUtils.isEmpty( list ) == false ) {
+                int nIndex = 1;
+                for ( Object obj : list ) {
+                    query.setParameter( nIndex, obj );
+                    nIndex++;
+                }
+            }
+            return query.getResultList();
+
+        }
+        catch ( NoResultException e ) {
+            return Collections.emptyList();
         }
     }
 

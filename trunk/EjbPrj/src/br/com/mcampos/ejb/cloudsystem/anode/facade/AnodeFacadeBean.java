@@ -5,6 +5,7 @@ import br.com.mcampos.dto.anode.FormDTO;
 import br.com.mcampos.dto.anode.PenDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Form;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.FormPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pen;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodeFormSessionLocal;
 
@@ -141,5 +142,18 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     {
         authenticate( auth );
         return pen.update( DTOFactory.copy( entity ) ).toDTO();
+    }
+
+    public List<FormDTO> getAvailableForms( AuthenticationDTO auth, PenDTO dto ) throws ApplicationException
+    {
+        authenticate( auth );
+        List<Form> list = pen.getAvailableForms( dto.getId() );
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<FormDTO> dtoList = new ArrayList<FormDTO>( list.size() );
+        for ( Form f : list ) {
+            dtoList.add( f.toDTO() );
+        }
+        return dtoList;
     }
 }
