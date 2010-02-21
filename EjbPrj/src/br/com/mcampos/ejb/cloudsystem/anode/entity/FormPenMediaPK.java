@@ -4,28 +4,26 @@ import java.io.Serializable;
 
 public class FormPenMediaPK implements Serializable
 {
-    private Integer form_id;
-    private Integer media_id;
-    private Integer pen_id;
+    private Integer formId;
+    private Integer mediaId;
+    private String penId;
 
     public FormPenMediaPK()
     {
     }
 
-    public FormPenMediaPK( Integer frm_id_in, Integer med_id_in, Integer pen_id_in )
+    public FormPenMediaPK( Integer frm_id_in, Integer med_id_in, String pen_id_in )
     {
-        this.form_id = frm_id_in;
-        this.media_id = med_id_in;
-        this.pen_id = pen_id_in;
+        this.formId = frm_id_in;
+        this.mediaId = med_id_in;
+        this.penId = pen_id_in;
     }
 
     public boolean equals( Object other )
     {
         if ( other instanceof FormPenMediaPK ) {
             final FormPenMediaPK otherFormPenMediaPK = ( FormPenMediaPK )other;
-            final boolean areEqual =
-                ( otherFormPenMediaPK.form_id.equals( form_id ) && otherFormPenMediaPK.media_id.equals( media_id ) &&
-                  otherFormPenMediaPK.pen_id.equals( pen_id ) );
+            final boolean areEqual = ( otherFormPenMediaPK.formId.equals( formId ) && otherFormPenMediaPK.mediaId.equals( mediaId ) && otherFormPenMediaPK.penId.equals( penId ) );
             return areEqual;
         }
         return false;
@@ -36,33 +34,33 @@ public class FormPenMediaPK implements Serializable
         return super.hashCode();
     }
 
-    Integer getForm_id()
+    Integer getFormId()
     {
-        return form_id;
+        return formId;
     }
 
-    void setForm_id( Integer frm_id_in )
+    void setFormId( Integer frm_id_in )
     {
-        this.form_id = frm_id_in;
+        this.formId = frm_id_in;
     }
 
-    Integer getMedia_id()
+    Integer getMediaId()
     {
-        return media_id;
+        return mediaId;
     }
 
-    void setMedia_id( Integer med_id_in )
+    void setMediaId( Integer med_id_in )
     {
-        this.media_id = med_id_in;
+        this.mediaId = med_id_in;
     }
 
-    Integer getPen_id()
+    String getPenId()
     {
-        return pen_id;
+        return penId;
     }
 
-    void setPen_id( Integer pen_id_in )
+    void setPenId( String pen_id_in )
     {
-        this.pen_id = pen_id_in;
+        this.penId = pen_id_in;
     }
 }

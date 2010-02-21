@@ -21,8 +21,8 @@ import javax.persistence.Table;
 @IdClass( FormPenPK.class )
 public class FormPen implements Serializable
 {
-    private Integer form_id;
-    private Integer pen_id;
+    private Integer formId;
+    private String penId;
     private Pen pen;
     private Form form;
     private List<FormPenMedia> medias;
@@ -33,26 +33,26 @@ public class FormPen implements Serializable
 
     @Id
     @Column( name = "frm_id_in", nullable = false, insertable = false, updatable = false )
-    public Integer getForm_id()
+    public Integer getFormId()
     {
-        return form_id;
+        return formId;
     }
 
-    public void setForm_id( Integer frm_id_in )
+    public void setFormId( Integer frm_id_in )
     {
-        this.form_id = frm_id_in;
+        this.formId = frm_id_in;
     }
 
     @Id
     @Column( name = "pen_id_in", nullable = false, insertable = false, updatable = false )
-    public Integer getPen_id()
+    public String getPenId()
     {
-        return pen_id;
+        return penId;
     }
 
-    public void setPen_id( Integer pen_id_in )
+    public void setPenId( String pen_id_in )
     {
-        this.pen_id = pen_id_in;
+        this.penId = pen_id_in;
     }
 
     @ManyToOne
@@ -66,7 +66,7 @@ public class FormPen implements Serializable
     {
         this.pen = pen;
         if ( pen != null ) {
-            this.pen_id = pen.getId();
+            this.penId = pen.getId();
         }
     }
 
@@ -81,7 +81,7 @@ public class FormPen implements Serializable
     {
         this.form = form;
         if ( form != null ) {
-            this.form_id = form.getId();
+            this.formId = form.getId();
         }
     }
 

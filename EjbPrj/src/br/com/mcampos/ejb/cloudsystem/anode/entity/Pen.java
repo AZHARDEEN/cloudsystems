@@ -1,11 +1,20 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
+import br.com.mcampos.dto.anode.PenDTO;
+import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
+
+import br.com.mcampos.sysutils.SysUtils;
+
 import java.io.Serializable;
+
+import java.security.InvalidParameterException;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -15,46 +24,35 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries( { @NamedQuery( name = "Pen.findAll", query = "select o from Pen o" ) } )
 @Table( name = "\"pen\"" )
-public class Pen implements Serializable
+public class Pen implements Serializable, EntityCopyInterface<PenDTO>
 {
-    private String description;
-    private Integer id;
+    private String id;
     private List<FormPen> forms;
 
     public Pen()
     {
     }
 
-    public Pen( String pen_description_ch, Integer pen_id_in )
+    public Pen( String pen_id_in )
     {
-        this.description = pen_description_ch;
-        this.id = pen_id_in;
-    }
-
-    @Column( name = "pen_description_ch" )
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription( String pen_description_ch )
-    {
-        this.description = pen_description_ch;
+        setId( pen_id_in );
     }
 
     @Id
     @Column( name = "pen_id_in", nullable = false )
-    public Integer getId()
+    public String getId()
     {
         return id;
     }
 
-    public void setId( Integer pen_id_in )
+    public void setId( String pen_id_in )
     {
+        if ( SysUtils.isEmpty( pen_id_in ) )
+            throw new InvalidParameterException( "Pen description could not be null or empty." );
         this.id = pen_id_in;
     }
 
-    @OneToMany( mappedBy = "pen" )
+    @OneToMany( mappedBy = "pen", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     public List<FormPen> getForms()
     {
         return forms;
@@ -77,5 +75,10 @@ public class Pen implements Serializable
         getForms().remove( formPen );
         formPen.setPen( null );
         return formPen;
+    }
+
+    public PenDTO toDTO()
+    {
+        return new PenDTO( getId() );
     }
 }
