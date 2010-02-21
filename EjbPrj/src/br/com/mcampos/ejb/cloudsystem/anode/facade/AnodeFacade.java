@@ -14,29 +14,31 @@ public interface AnodeFacade
 {
     /*Operação em formulários*/
 
-    public FormDTO add( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
+    FormDTO add( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
 
-    public void delete( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
+    void delete( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
 
-    public FormDTO get( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
+    FormDTO get( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
 
-    public List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException;
+    List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException;
 
-    public FormDTO update( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
+    FormDTO update( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
 
-    public Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException;
+    Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException;
 
 
     /*Operação em Canetas*/
 
-    public PenDTO add( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
+    PenDTO add( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
 
-    public void delete( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
+    void delete( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
 
-    public PenDTO get( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
+    PenDTO get( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
 
-    public List<PenDTO> getPens( AuthenticationDTO auth ) throws ApplicationException;
+    List<PenDTO> getPens( AuthenticationDTO auth ) throws ApplicationException;
 
-    public PenDTO update( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
+    PenDTO update( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
+
+    List<FormDTO> getAvailableForms( AuthenticationDTO auth, PenDTO dto ) throws ApplicationException;
 
 }

@@ -3,9 +3,11 @@ package br.com.mcampos.dto.anode;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.io.Serializable;
+
 import java.security.InvalidParameterException;
 
-public class PenDTO implements Comparable<PenDTO>
+public class PenDTO implements Comparable<PenDTO>, Serializable
 {
     String id;
 

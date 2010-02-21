@@ -1,15 +1,15 @@
 package br.com.mcampos.controller.anode;
 
 import br.com.mcampos.controller.admin.tables.BasicListController;
-import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
 import br.com.mcampos.dto.anode.PenDTO;
-import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
 
-import java.util.Collections;
 import java.util.List;
 
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.AbstractListModel;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
@@ -18,6 +18,8 @@ public class AnodePenController extends BasicListController<PenDTO>
 {
     protected Textbox editId;
     private AnodeFacade session;
+    protected Listbox listAvailableForms;
+    protected Listbox listForms;
 
     public AnodePenController()
     {
@@ -33,7 +35,14 @@ public class AnodePenController extends BasicListController<PenDTO>
 
     protected void showRecord( PenDTO record )
     {
-        editId.setValue( record == null ? "" : record.getId() );
+        if ( record != null ) {
+            editId.setValue( record.getId() );
+            listAvailableForms.setModel( getAvailableFormsListModel( record ) );
+        }
+        else {
+            editId.setValue( "" );
+            listAvailableForms.getItems().clear();
+        }
     }
 
     protected PenDTO createDTO()
@@ -60,6 +69,7 @@ public class AnodePenController extends BasicListController<PenDTO>
 
     protected List getRecordList() throws ApplicationException
     {
+        showRecord( null );
         return getSession().getPens( getLoggedInUser() );
     }
 
@@ -70,7 +80,7 @@ public class AnodePenController extends BasicListController<PenDTO>
 
     protected Listitem saveRecord( Listitem getCurrentRecord )
     {
-        return null;
+        return getCurrentRecord;
     }
 
     protected void prepareToInsert()
@@ -96,5 +106,22 @@ public class AnodePenController extends BasicListController<PenDTO>
     protected void updateItem( Listitem e ) throws ApplicationException
     {
         getSession().update( getLoggedInUser(), getValue( e ) );
+    }
+
+    @Override
+    public void doAfterCompose( Component comp ) throws Exception
+    {
+        super.doAfterCompose( comp );
+        if ( listAvailableForms != null )
+            listAvailableForms.setItemRenderer( ( new FormListRenderer() ).setDraggable( true ) );
+    }
+
+
+    protected AbstractListModel getAvailableFormsListModel( PenDTO currentPen )
+    {
+        AvailablePenFormListModel model = new AvailablePenFormListModel( getSession(), getLoggedInUser(), currentPen );
+
+        model.loadPage( 1, 65535 ); /*Neste momento o model não pagina*/
+        return model;
     }
 }

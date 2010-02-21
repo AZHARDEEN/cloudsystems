@@ -20,14 +20,15 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "Form.findAll", query = "select o from Form o" ),
-                 @NamedQuery( name = "Form.nextId", query = "select MAX(o.id) from Form o" ) } )
+                 @NamedQuery( name = "Form.nextId", query = "select MAX(o.id) from Form o" ),
+                 @NamedQuery( name = "Form.findAvailableFormsForPen", query = "select o from Form o where ?1 NOT MEMBER OF o.pens" ) } )
 @Table( name = "\"form\"" )
 public class Form implements Serializable, EntityCopyInterface<FormDTO>
 {
     private String description;
     private Integer id;
     private String ip;
-    private List<FormPen> pens;
+    private List<Pen> pens;
     private List<FormMedia> medias;
 
     public Form()
@@ -78,7 +79,7 @@ public class Form implements Serializable, EntityCopyInterface<FormDTO>
     @OneToMany( mappedBy = "form" )
     public List<FormPen> getPens()
     {
-        return pens;
+        return pens; /*Implementar MANY TO MANY!!!*/
     }
 
     public void setPens( List<FormPen> formPenList )

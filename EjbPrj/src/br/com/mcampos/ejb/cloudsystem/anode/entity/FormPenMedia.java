@@ -59,7 +59,7 @@ public class FormPenMedia implements Serializable
     }
 
     @Id
-    @Column( name = "pen_id_in", nullable = false, insertable = false, updatable = false )
+    @Column( name = "pen_id_ch", nullable = false, insertable = false, updatable = false )
     public String getPenId()
     {
         return penId;
@@ -72,7 +72,7 @@ public class FormPenMedia implements Serializable
 
     @ManyToOne
     @JoinColumns( { @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in" ),
-                    @JoinColumn( name = "pen_id_in", referencedColumnName = "pen_id_in" ) } )
+                    @JoinColumn( name = "pen_id_ch", referencedColumnName = "pen_id_ch" ) } )
     public FormPen getFormPen()
     {
         return formPen;

@@ -16,7 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "FormPen.findAll", query = "select o from FormPen o" ) } )
+@NamedQueries( { @NamedQuery( name = "FormPen.findAll", query = "select o from FormPen o" ),
+                 @NamedQuery( name = "FormPen.findAvailableFormsForPen", query = "select o from FormPen o where o.pen.id <> ?1" ) } )
 @Table( name = "\"form_pen\"" )
 @IdClass( FormPenPK.class )
 public class FormPen implements Serializable
@@ -44,7 +45,7 @@ public class FormPen implements Serializable
     }
 
     @Id
-    @Column( name = "pen_id_in", nullable = false, insertable = false, updatable = false )
+    @Column( name = "pen_id_ch", nullable = false, insertable = false, updatable = false )
     public String getPenId()
     {
         return penId;
@@ -56,7 +57,7 @@ public class FormPen implements Serializable
     }
 
     @ManyToOne
-    @JoinColumn( name = "pen_id_in" )
+    @JoinColumn( name = "pen_id_ch" )
     public Pen getPen()
     {
         return pen;

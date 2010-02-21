@@ -61,7 +61,7 @@
                             <hbox>
                                 <vbox>
                                     <label value="Associados"/>
-                                    <listbox fixedLayout="true" id="listPens">
+                                    <listbox fixedLayout="true" id="listForms" droppable="true">
                                         <listhead sizable="true">
                                             <listheader align="left" label="Código"/>
                                         </listhead>
@@ -73,7 +73,7 @@
                                 </vbox>
                                 <vbox>
                                     <label value="Disponíveis"/>
-                                    <listbox fixedLayout="true" id="listAvailablePens">
+                                    <listbox fixedLayout="true" id="listAvailableForms" droppable="true">
                                         <listhead sizable="true">
                                             <listheader align="left" label="Código"/>
                                         </listhead>
