@@ -7,6 +7,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.Form;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodeFormSessionLocal;
 
 
+import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
@@ -32,7 +33,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
     @EJB
     private AnodeFormSessionLocal form;
-
 
     public AnodeFacadeBean()
     {

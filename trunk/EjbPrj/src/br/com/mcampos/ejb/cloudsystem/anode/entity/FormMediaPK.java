@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class FormMediaPK implements Serializable
 {
-    private Integer form_id;
-    private Integer media_id;
+    private Integer formId;
+    private Integer mediaId;
 
     public FormMediaPK()
     {
@@ -13,16 +13,15 @@ public class FormMediaPK implements Serializable
 
     public FormMediaPK( Integer frm_id_in, Integer med_id_in )
     {
-        this.form_id = frm_id_in;
-        this.media_id = med_id_in;
+        this.formId = frm_id_in;
+        this.mediaId = med_id_in;
     }
 
     public boolean equals( Object other )
     {
         if ( other instanceof FormMediaPK ) {
             final FormMediaPK otherFormMediaPK = ( FormMediaPK )other;
-            final boolean areEqual =
-                ( otherFormMediaPK.form_id.equals( form_id ) && otherFormMediaPK.media_id.equals( media_id ) );
+            final boolean areEqual = ( otherFormMediaPK.formId.equals( formId ) && otherFormMediaPK.mediaId.equals( mediaId ) );
             return areEqual;
         }
         return false;
@@ -33,23 +32,23 @@ public class FormMediaPK implements Serializable
         return super.hashCode();
     }
 
-    Integer getForm_id()
+    Integer getFormId()
     {
-        return form_id;
+        return formId;
     }
 
-    void setForm_id( Integer frm_id_in )
+    void setFormId( Integer frm_id_in )
     {
-        this.form_id = frm_id_in;
+        this.formId = frm_id_in;
     }
 
-    Integer getMedia_id()
+    Integer getMediaId()
     {
-        return media_id;
+        return mediaId;
     }
 
-    void setMedia_id( Integer med_id_in )
+    void setMediaId( Integer med_id_in )
     {
-        this.media_id = med_id_in;
+        this.mediaId = med_id_in;
     }
 }

@@ -8,6 +8,7 @@ import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
 import br.com.mcampos.dto.anode.FormDTO;
 import br.com.mcampos.dto.security.TaskDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.system.SystemParametersDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
@@ -29,6 +30,7 @@ import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Form;
+import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.entity.address.AddressType;
 import br.com.mcampos.ejb.entity.address.City;
 import br.com.mcampos.ejb.entity.address.Country;
@@ -227,9 +229,11 @@ public final class DTOFactory implements Serializable
 
         code = document.trim();
         switch ( type ) {
-        case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
+        case UserDocument.typeCPF:
+            code = code.replaceAll( "[\\-.\\/]", "" );
             break;
-        case UserDocument.typeEmail: code = code.toLowerCase();
+        case UserDocument.typeEmail:
+            code = code.toLowerCase();
             break;
         }
         return code;
@@ -758,6 +762,22 @@ public final class DTOFactory implements Serializable
         Form target = new Form( source.getId(), source.getDescription(), source.getIp() );
 
         return target;
+    }
+
+    public static Media copy( MediaDTO source )
+    {
+        Media target = new Media();
+
+        /*
+         * Não será retornado o objeto nesta cópia.
+         */
+        target.setId( source.getId() );
+        target.setMimeType( source.getMimeType() );
+        target.setName( source.getName() );
+        target.setObject( source.getObject() );
+        target.setFormat( source.getFormat() );
+        return target;
+
     }
 
 }

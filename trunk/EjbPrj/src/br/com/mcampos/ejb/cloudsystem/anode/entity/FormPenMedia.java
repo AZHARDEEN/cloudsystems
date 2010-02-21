@@ -19,9 +19,9 @@ import javax.persistence.Table;
 @IdClass( FormPenMediaPK.class )
 public class FormPenMedia implements Serializable
 {
-    private Integer form_id;
-    private Integer media_id;
-    private Integer pen_id;
+    private Integer formId;
+    private Integer mediaId;
+    private String penId;
     private FormPen formPen;
 
     public FormPenMedia()
@@ -31,43 +31,43 @@ public class FormPenMedia implements Serializable
     public FormPenMedia( FormPen formPen, Integer med_id_in )
     {
         this.formPen = formPen;
-        this.media_id = med_id_in;
+        this.mediaId = med_id_in;
     }
 
     @Id
     @Column( name = "frm_id_in", nullable = false, insertable = false, updatable = false )
-    public Integer getForm_id()
+    public Integer getFormId()
     {
-        return form_id;
+        return formId;
     }
 
-    public void setForm_id( Integer frm_id_in )
+    public void setFormId( Integer frm_id_in )
     {
-        this.form_id = frm_id_in;
+        this.formId = frm_id_in;
     }
 
     @Id
     @Column( name = "med_id_in", nullable = false )
-    public Integer getMedia_id()
+    public Integer getMediaId()
     {
-        return media_id;
+        return mediaId;
     }
 
-    public void setMedia_id( Integer med_id_in )
+    public void setMediaId( Integer med_id_in )
     {
-        this.media_id = med_id_in;
+        this.mediaId = med_id_in;
     }
 
     @Id
     @Column( name = "pen_id_in", nullable = false, insertable = false, updatable = false )
-    public Integer getPen_id()
+    public String getPenId()
     {
-        return pen_id;
+        return penId;
     }
 
-    public void setPen_id( Integer pen_id_in )
+    public void setPenId( String pen_id_in )
     {
-        this.pen_id = pen_id_in;
+        this.penId = pen_id_in;
     }
 
     @ManyToOne
@@ -82,8 +82,8 @@ public class FormPenMedia implements Serializable
     {
         this.formPen = formPen;
         if ( formPen != null ) {
-            this.pen_id = formPen.getPen_id();
-            this.form_id = formPen.getForm_id();
+            this.penId = formPen.getPenId();
+            this.formId = formPen.getFormId();
         }
     }
 }
