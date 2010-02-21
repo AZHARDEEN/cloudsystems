@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anode.AnodeFormController">
+        <borderlayout id="borderLayout">
+            <north flex="true" style="background: #D0DEF0">
+                <vbox align="center">
+                    <label style="font-size:20px;color:#0C7A9A" value="Anoto - Formulários"/>
+                </vbox>
+            </north>
+            <west size="50%" splittable="true" flex="true">
+                <!-- Por favor, nao mude o id desta div -->
+                <div width="100%" height="100%" id="divListBoxRecord">
+                    <!-- Por favor, nao mude o id desta listbox -->
+                    <listbox fixedLayout="true" id="listboxRecord">
+                        <listhead sizable="true">
+                            <listheader id="recordListIdSort" align="left" label="IP" sort="auto" width="140px"/>
+                            <listheader id="recordListDescSort" align="left" label="Descrição" sort="auto"/>
+                        </listhead>
+                    </listbox>
+                </div>
+            </west>
+            <center>
+                <!-- Por favor, nao mude o id desta div -->
+                <div id="recordDetail">
+                    <!-- view mode -->
+                    <div id="recordView" width="100%">
+                        <grid width="100%">
+                            <columns>
+                                <column align="left" width="100px"/>
+                                <column align="left"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    Código
+                                    <label id="recordId"/>
+                                </row>
+                                <row>
+                                    IP
+                                    <label id="recordIP"/>
+                                </row>
+                                <row>
+                                    Descrição
+                                    <label id="recordDescription"/>
+                                </row>
+                            </rows>
+                        </grid>
+                        <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
+                    </div>
+                    <!-- Por favor, nao mude o id desta div -->
+                    <div id="recordEdit" visible="false">
+                        <grid width="100%" fixedLayout="true">
+                            <columns>
+                                <column align="right" width="15%"/>
+                                <column align="left"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    Código
+                                    <intbox id="editId" width="99%" value="1"/>
+                                </row>
+                                <row>
+                                    IP
+                                    <textbox id="editIP" width="99%" value=""/>
+                                </row>
+                                <row>
+                                    Descrição
+                                    <textbox id="editDescription" width="99%" value=""/>
+                                </row>
+                            </rows>
+                        </grid>
+                        <separator/>
+                        <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
+                    </div>
+                    <separator height="30px"/>
+                    <panel id="detailDiv" title="Vínculos">
+                        <panelchildren>
+                            <tabbox id="associationTab">
+                                <tabs>
+                                    <tab label="Arquivos"/>
+                                    <tab label="Canetas"/>
+                                </tabs>
+                                <tabpanels>
+                                    <tabpanel>
+                                        <toolbar>
+                                            <toolbarbutton id="btnAddAttach" label="Adicionar" disabled="true" upload="true"/>
+                                            <toolbarbutton id="btnRemoveAttach" label="Remover" disabled="true"/>
+                                        </toolbar>
+                                        <listbox fixedLayout="true" id="listAttachs">
+                                            <listhead sizable="true">
+                                                <listheader align="left" label="Nome" width="50%"/>
+                                                <listheader align="left" label="Tipo"/>
+                                                <listheader align="left" label="Tamanho"/>
+                                            </listhead>
+                                        </listbox>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <hbox>
+                                            <vbox>
+                                                <label value="Associadas"/>
+                                                <listbox fixedLayout="true" id="listPens">
+                                                    <listhead sizable="true">
+                                                        <listheader align="left" label="Código"/>
+                                                    </listhead>
+                                                </listbox>
+                                            </vbox>
+                                            <vbox>
+                                                <button image="/img/icontexto-webdev-arrow-left-032x032.png" id="btnAddPen"/>
+                                                <button image="/img/icontexto-webdev-arrow-right-032x032.png" id="btnRemovePen"/>
+                                            </vbox>
+                                            <vbox>
+                                                <label value="Disponíveis"/>
+                                                <listbox fixedLayout="true" id="listAvailablePens">
+                                                    <listhead sizable="true">
+                                                        <listheader align="left" label="Código"/>
+                                                    </listhead>
+                                                </listbox>
+                                            </vbox>
+                                        </hbox>
+                                    </tabpanel>
+                                </tabpanels>
+                            </tabbox>
+                        </panelchildren>
+                    </panel>
+                </div>
+            </center>
+        </borderlayout>
+    </div>
+</zk>
