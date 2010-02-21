@@ -18,4 +18,5 @@ public interface CrudInterface<KEY, ENTITY>
 
     Object getSingleResult( String namedQuery ) throws ApplicationException;
 
+    Integer nextIntegerId( String namedQuery ) throws ApplicationException;
 }

@@ -48,7 +48,7 @@
                             <rows>
                                 <row>
                                     Código
-                                    <intbox id="editId" width="99%" value="1"/>
+                                    <textbox id="editId" width="1"/>
                                 </row>
                             </rows>
                         </grid>

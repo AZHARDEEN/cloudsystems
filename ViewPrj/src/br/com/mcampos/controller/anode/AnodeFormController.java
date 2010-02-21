@@ -11,11 +11,8 @@ import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.List;
 
-import org.zkoss.util.media.Media;
-import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
@@ -60,7 +57,7 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
     {
         FormDTO dto = getValue( currentRecord );
 
-        getSession().delete( getLoggedInUser(), dto.getId() );
+        getSession().delete( getLoggedInUser(), dto );
     }
 
     protected void insertItem( Listitem e ) throws ApplicationException
@@ -82,12 +79,9 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
 
     protected List getRecordList() throws ApplicationException
     {
-        List list = super.getRecordList();
         btnAddAttach.setDisabled( true );
         btnRemoveAttach.setDisabled( true );
-        if ( SysUtils.isEmpty( list ) )
-            list = getSession().getAll( getLoggedInUser() );
-        return list;
+        return getSession().getForms( getLoggedInUser() );
     }
 
     @Override
@@ -107,25 +101,6 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
             editIP.setValue( dto.getIp() );
         editIP.setFocus( true );
         return dto;
-    }
-
-    public void onUpload$btnUpload( UploadEvent evt )
-    {
-        Media media;
-        String contentType;
-
-
-        media = evt.getMedia();
-        if ( media == null )
-            return;
-        if ( media.isBinary() ) {
-            byte[] data = media.getByteData();
-
-            if ( media.getFormat() == "jpeg" )
-                data = null;
-        }
-        contentType = media.getContentType();
-        evt.stopPropagation();
     }
 
     @Override

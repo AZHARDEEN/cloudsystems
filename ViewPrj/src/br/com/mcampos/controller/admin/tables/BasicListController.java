@@ -2,21 +2,17 @@ package br.com.mcampos.controller.admin.tables;
 
 
 import br.com.mcampos.controller.admin.tables.core.SimpleTableListModel;
-import br.com.mcampos.controller.admin.tables.core.SimpleTableLocator;
 import br.com.mcampos.controller.core.BasicCRUDController;
 
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zul.Div;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
-import org.zkoss.zul.Treeitem;
 
 public abstract class BasicListController<DTO> extends BasicCRUDController<Listitem> implements ListitemRenderer
 {
@@ -121,6 +117,7 @@ public abstract class BasicListController<DTO> extends BasicCRUDController<Listi
     protected void refresh()
     {
         try {
+            showRecord( null );
             getListboxRecord().setModel( new SimpleTableListModel( getRecordList() ) );
         }
         catch ( ApplicationException e ) {
@@ -134,5 +131,30 @@ public abstract class BasicListController<DTO> extends BasicCRUDController<Listi
         super.showEditPanel( bShow );
         for ( Object item : getListboxRecord().getItems() )
             ( ( Listitem )item ).setDisabled( bShow );
+    }
+
+    protected void afterDelete( Listitem currentRecord )
+    {
+        currentRecord.detach();
+        getListboxRecord().invalidate();
+    }
+
+    protected void afterEdit( Listitem currentRecord )
+    {
+        if ( currentRecord == null )
+            return;
+
+        if ( isAddNewOperation() ) {
+            refresh();
+        }
+        else {
+            configure( currentRecord );
+        }
+    }
+
+    protected Listitem saveRecord( Listitem getCurrentRecord )
+    {
+        copyTo( getValue( getCurrentRecord ) );
+        return getCurrentRecord;
     }
 }

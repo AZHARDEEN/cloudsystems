@@ -2,12 +2,14 @@ package br.com.mcampos.ejb.cloudsystem.anode.facade;
 
 
 import br.com.mcampos.dto.anode.FormDTO;
+import br.com.mcampos.dto.anode.PenDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Form;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Pen;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodeFormSessionLocal;
 
 
-import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anode.session.AnodePenSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
@@ -34,6 +36,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     @EJB
     private AnodeFormSessionLocal form;
 
+    @EJB
+    private AnodePenSessionLocal pen;
+
     public AnodeFacadeBean()
     {
     }
@@ -44,19 +49,19 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return form.add( DTOFactory.copy( entity ) ).toDTO();
     }
 
-    public void delete( AuthenticationDTO auth, Integer key ) throws ApplicationException
+    public void delete( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
         authenticate( auth );
-        form.delete( key );
+        form.delete( entity.getId() );
     }
 
-    public FormDTO get( AuthenticationDTO auth, Integer key ) throws ApplicationException
+    public FormDTO get( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
         authenticate( auth );
-        return form.get( key ).toDTO();
+        return form.get( entity.getId() ).toDTO();
     }
 
-    public List<FormDTO> getAll( AuthenticationDTO auth ) throws ApplicationException
+    public List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
         List<Form> list = form.getAll();
@@ -88,5 +93,53 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException
     {
         return form.nextId();
+    }
+
+
+    /* *************************************************************************
+     * *************************************************************************
+     *
+     * OPERACAO EM CANETAS
+     *
+     * *************************************************************************
+     * *************************************************************************
+     */
+
+
+    public PenDTO add( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException
+    {
+        authenticate( auth );
+        return pen.add( DTOFactory.copy( entity ) ).toDTO();
+    }
+
+    public void delete( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException
+    {
+        authenticate( auth );
+        pen.delete( entity.getId() );
+    }
+
+    public PenDTO get( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException
+    {
+        authenticate( auth );
+        return pen.get( entity.getId() ).toDTO();
+    }
+
+    public List<PenDTO> getPens( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth );
+        List<Pen> list = pen.getAll();
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<PenDTO> dtoList = new ArrayList<PenDTO>( list.size() );
+        for ( Pen f : list ) {
+            dtoList.add( f.toDTO() );
+        }
+        return dtoList;
+    }
+
+    public PenDTO update( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException
+    {
+        authenticate( auth );
+        return pen.update( DTOFactory.copy( entity ) ).toDTO();
     }
 }

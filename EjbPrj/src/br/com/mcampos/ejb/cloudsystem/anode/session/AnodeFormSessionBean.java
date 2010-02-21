@@ -38,10 +38,6 @@ public class AnodeFormSessionBean extends Crud<Integer, Form> implements AnodeFo
 
     public Integer nextId() throws ApplicationException
     {
-        Integer id = ( Integer )getSingleResult( "Form.nextId" );
-        if ( SysUtils.isZero( id ) )
-            id = 1;
-        id++;
-        return id;
+        return nextIntegerId( "Form.nextId" );
     }
 }
