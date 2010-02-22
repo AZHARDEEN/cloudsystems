@@ -5,23 +5,23 @@
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:20px;color:#0C7A9A" value="Anoto - Formulários"/>
+                    <label style="font-size:20px;color:#0C7A9A" value="Anoto - Cadastro de Canetas"/>
                 </vbox>
             </north>
             <west size="50%" splittable="true" flex="true">
                 <!-- Por favor, nao mude o id desta div -->
                 <div width="100%" height="100%" id="divListBoxRecord">
                     <!-- Por favor, nao mude o id desta listbox -->
-                    <listbox fixedLayout="true" id="listboxRecord">
+                    <listbox fixedLayout="true" id="listboxRecord" vflex="true">
                         <listhead sizable="true">
                             <listheader id="recordListIdSort" align="left" label="Código" sort="auto"/>
                         </listhead>
                     </listbox>
                 </div>
             </west>
-            <center>
+            <center flex="true">
                 <!-- Por favor, nao mude o id desta div -->
-                <div id="recordDetail">
+                <div id="recordDetail" width="100%" height="100">
                     <!-- view mode -->
                     <div id="recordView" width="100%">
                         <grid width="100%">
@@ -56,32 +56,30 @@
                         <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
                     </div>
                     <separator height="30px"/>
-                    <panel id="detailDiv" title="Formulários Vinculados">
-                        <panelchildren>
-                            <hbox>
-                                <vbox>
-                                    <label value="Associados"/>
-                                    <listbox fixedLayout="true" id="listForms" droppable="true">
-                                        <listhead sizable="true">
-                                            <listheader align="left" label="Código"/>
-                                        </listhead>
-                                    </listbox>
-                                </vbox>
-                                <vbox>
-                                    <button image="/img/icontexto-webdev-arrow-left-032x032.png" id="btnAddPen"/>
-                                    <button image="/img/icontexto-webdev-arrow-right-032x032.png" id="btnRemovePen"/>
-                                </vbox>
-                                <vbox>
-                                    <label value="Disponíveis"/>
-                                    <listbox fixedLayout="true" id="listAvailableForms" droppable="true">
-                                        <listhead sizable="true">
-                                            <listheader align="left" label="Código"/>
-                                        </listhead>
-                                    </listbox>
-                                </vbox>
-                            </hbox>
-                        </panelchildren>
-                    </panel>
+                    <hbox height="100%">
+                        <vbox>
+                            <label value="Associados"/>
+                            <listbox fixedLayout="true" id="listAdded" droppable="true" height="200px" multiple="true">
+                                <listhead sizable="true">
+                                    <listheader align="left" label="Código" width="120px"/>
+                                    <listheader align="left" label="Descrição"/>
+                                </listhead>
+                            </listbox>
+                        </vbox>
+                        <vbox>
+                            <button image="/img/icontexto-webdev-arrow-left-032x032.png" id="btnAddForm"/>
+                            <button image="/img/icontexto-webdev-arrow-right-032x032.png" id="btnRemoveForm"/>
+                        </vbox>
+                        <vbox height="100%">
+                            <label value="Disponíveis"/>
+                            <listbox id="listAvailable" droppable="true" height="200px" fixedLayout="true" multiple="true">
+                                <listhead sizable="true">
+                                    <listheader align="left" label="Código" width="120px"/>
+                                    <listheader align="left" label="Descrição"/>
+                                </listhead>
+                            </listbox>
+                        </vbox>
+                    </hbox>
                 </div>
             </center>
         </borderlayout>

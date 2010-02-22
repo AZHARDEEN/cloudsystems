@@ -1,12 +1,15 @@
 package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Form;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.FormPen;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Pen;
+import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 
 import br.com.mcampos.exception.ApplicationException;
 
-import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,4 +43,69 @@ public class AnodeFormSessionBean extends Crud<Integer, Form> implements AnodeFo
     {
         return nextIntegerId( "Form.nextId" );
     }
+
+    public Media addMedia( Integer key, Media newMedia ) throws ApplicationException
+    {
+        getEntityManager().merge( newMedia );
+        Form form = get( key );
+        form.addFormMedia( newMedia );
+        return newMedia;
+    }
+
+    public Media removeMedia( Integer key, Media media ) throws ApplicationException
+    {
+        getEntityManager().merge( media );
+        Form form = get( key );
+        form.removeFormMedia( media );
+        return media;
+    }
+
+    public List<Media> getMedias( Integer key )
+    {
+        Form form = get( Form.class, key );
+        if ( form != null )
+            return form.getMedias();
+        else
+            return Collections.emptyList();
+    }
+
+    public List<Pen> getAvailablePens( Integer key ) throws ApplicationException
+    {
+
+        Form form = get( key );
+        if ( form != null ) {
+            ArrayList<Object> params = new ArrayList<Object>( 1 );
+            params.add( form );
+            return ( List<Pen> )getResultList( "Pen.findAvailablePensForForm", params );
+        }
+        else
+            return Collections.emptyList();
+    }
+
+    public Pen addPen( Integer key, Pen toInsert ) throws ApplicationException
+    {
+        Form entity = get( key );
+        getEntityManager().merge( toInsert ); /*Make it menageable*/
+        return entity.addFormPen( toInsert );
+    }
+
+
+    public Pen removePen( Integer key, Pen toRemove ) throws ApplicationException
+    {
+        Form entity = get( key );
+        getEntityManager().merge( toRemove ); /*Make it menageable*/
+        return entity.removeFormPen( toRemove );
+    }
+
+    public List<Pen> getPens( Integer key ) throws ApplicationException
+    {
+        Form entity = get( key );
+        if ( entity != null ) {
+            return entity.getPens();
+        }
+        else
+            return Collections.emptyList();
+    }
+
+
 }

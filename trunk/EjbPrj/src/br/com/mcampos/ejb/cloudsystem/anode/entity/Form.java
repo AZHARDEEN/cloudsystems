@@ -2,26 +2,26 @@ package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
 import br.com.mcampos.dto.anode.FormDTO;
 
+import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Form.findAll", query = "select o from Form o" ),
-                 @NamedQuery( name = "Form.nextId", query = "select MAX(o.id) from Form o" ),
-                 @NamedQuery( name = "Form.findAvailableFormsForPen", query = "select o from Form o where ?1 NOT MEMBER OF o.pens" ) } )
+@NamedQueries( { @NamedQuery( name = "Form.findAll", query = "select o from Form o" ), @NamedQuery( name = "Form.nextId", query = "select MAX(o.id) from Form o" ), @NamedQuery( name = "Form.findAvailableFormsForPen", query = "select o from Form o where ?1 NOT MEMBER OF o.pens" ) } )
 @Table( name = "\"form\"" )
 public class Form implements Serializable, EntityCopyInterface<FormDTO>
 {
@@ -29,7 +29,7 @@ public class Form implements Serializable, EntityCopyInterface<FormDTO>
     private Integer id;
     private String ip;
     private List<Pen> pens;
-    private List<FormMedia> medias;
+    private List<Media> medias;
 
     public Form()
     {
@@ -76,53 +76,51 @@ public class Form implements Serializable, EntityCopyInterface<FormDTO>
         this.ip = frm_ip_ch;
     }
 
-    @OneToMany( mappedBy = "form" )
-    public List<FormPen> getPens()
+    @ManyToMany( fetch = FetchType.LAZY )
+    @JoinTable( name = "form_pen", joinColumns = @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in", nullable = false ), inverseJoinColumns = @JoinColumn( name = "pen_id_ch", referencedColumnName = "pen_id_ch", nullable = false ) )
+    public List<Pen> getPens()
     {
         return pens; /*Implementar MANY TO MANY!!!*/
     }
 
-    public void setPens( List<FormPen> formPenList )
+    public void setPens( List<Pen> formPenList )
     {
         this.pens = formPenList;
     }
 
-    public FormPen addFormPen( FormPen formPen )
+    public Pen addFormPen( Pen formPen )
     {
         getPens().add( formPen );
-        formPen.setForm( this );
         return formPen;
     }
 
-    public FormPen removeFormPen( FormPen formPen )
+    public Pen removeFormPen( Pen formPen )
     {
         getPens().remove( formPen );
-        formPen.setForm( null );
         return formPen;
     }
 
-    @OneToMany( mappedBy = "form", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-    public List<FormMedia> getMedias()
+    @ManyToMany( fetch = FetchType.LAZY )
+    @JoinTable( name = "form_media", joinColumns = @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in", nullable = false ), inverseJoinColumns = @JoinColumn( name = "med_id_in", referencedColumnName = "med_id_in", nullable = false ) )
+    public List<Media> getMedias()
     {
         return medias;
     }
 
-    public void setMedias( List<FormMedia> formMediaList )
+    public void setMedias( List<Media> formMediaList )
     {
         this.medias = formMediaList;
     }
 
-    public FormMedia addFormMedia( FormMedia formMedia )
+    public Media addFormMedia( Media formMedia )
     {
         getMedias().add( formMedia );
-        formMedia.setForm( this );
         return formMedia;
     }
 
-    public FormMedia removeFormMedia( FormMedia formMedia )
+    public Media removeFormMedia( Media formMedia )
     {
         getMedias().remove( formMedia );
-        formMedia.setForm( null );
         return formMedia;
     }
 
