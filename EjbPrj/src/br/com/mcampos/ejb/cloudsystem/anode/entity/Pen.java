@@ -11,23 +11,25 @@ import java.security.InvalidParameterException;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries( { @NamedQuery( name = "Pen.findAll", query = "select o from Pen o" ) } )
+@NamedQueries( { @NamedQuery( name = "Pen.findAll", query = "select o from Pen o" ), @NamedQuery( name = "Pen.findAvailablePensForForm", query = "select o from Pen o where ?1 NOT MEMBER OF o.forms" ) } )
 @Table( name = "\"pen\"" )
 public class Pen implements Serializable, EntityCopyInterface<PenDTO>
 {
     private String id;
-    private List<FormPen> forms;
+    private List<Form> forms;
 
     public Pen()
     {
@@ -52,28 +54,27 @@ public class Pen implements Serializable, EntityCopyInterface<PenDTO>
         this.id = pen_id_in;
     }
 
-    @OneToMany( mappedBy = "pen", fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-    public List<FormPen> getForms()
+    @ManyToMany( fetch = FetchType.LAZY )
+    @JoinTable( name = "form_pen", joinColumns = @JoinColumn( name = "pen_id_ch", referencedColumnName = "pen_id_ch", nullable = false ), inverseJoinColumns = @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in", nullable = false ) )
+    public List<Form> getForms()
     {
         return forms;
     }
 
-    public void setForms( List<FormPen> formPenList )
+    public void setForms( List<Form> formPenList )
     {
         this.forms = formPenList;
     }
 
-    public FormPen addFormPen( FormPen formPen )
+    public Form addFormPen( Form formPen )
     {
         getForms().add( formPen );
-        formPen.setPen( this );
         return formPen;
     }
 
-    public FormPen removeFormPen( FormPen formPen )
+    public Form removeFormPen( Form formPen )
     {
         getForms().remove( formPen );
-        formPen.setPen( null );
         return formPen;
     }
 

@@ -78,7 +78,7 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
     }
 
     @Lob
-    @Column( name = "med_object_bin" )
+    @Column( name = "med_object_bin", nullable = false )
     public byte[] getObject()
     {
         return object;
@@ -100,6 +100,8 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
          */
         target.setMimeType( getMimeType() );
         target.setName( getName() );
+        target.setFormat( getFormat() );
+        target.setSize( getSize() );
         return target;
     }
 

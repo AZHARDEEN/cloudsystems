@@ -1,32 +1,33 @@
-package br.com.mcampos.controller.anode;
+package br.com.mcampos.controller.anode.renderer;
 
-import br.com.mcampos.dto.anode.FormDTO;
+import br.com.mcampos.dto.anode.PenDTO;
 
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
-public class FormListRenderer implements ListitemRenderer
+public class PenListRenderer implements ListitemRenderer
 {
     protected boolean draggable;
 
-    public FormListRenderer()
+    public PenListRenderer()
     {
         super();
     }
 
     public void render( Listitem item, Object data ) throws Exception
     {
-        FormDTO dto = ( FormDTO )data;
+        if ( item == null )
+            return;
+        PenDTO dto = ( PenDTO )data;
+        item.setValue( data );
 
-        item.setValue( dto );
-        item.getChildren().add( new Listcell( dto.getIp() ) );
-        item.getChildren().add( new Listcell( dto.getDescription() ) );
+        item.getChildren().add( new Listcell( dto.getId() ) );
         if ( isDraggable() )
             item.setDraggable( "true" );
     }
 
-    public FormListRenderer setDraggable( boolean draggable )
+    public PenListRenderer setDraggable( boolean draggable )
     {
         this.draggable = draggable;
         return this;

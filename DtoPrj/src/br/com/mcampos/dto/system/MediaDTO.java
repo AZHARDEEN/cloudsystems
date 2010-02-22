@@ -2,7 +2,9 @@ package br.com.mcampos.dto.system;
 
 import br.com.mcampos.dto.core.SimpleTableDTO;
 
-public class MediaDTO implements Comparable<MediaDTO>
+import java.io.Serializable;
+
+public class MediaDTO implements Comparable<MediaDTO>, Serializable
 {
     protected Integer id;
     private String mimeType;

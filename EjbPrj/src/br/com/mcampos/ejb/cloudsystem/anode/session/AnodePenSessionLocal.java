@@ -24,4 +24,10 @@ public interface AnodePenSessionLocal
 
     List<Form> getAvailableForms( String key ) throws ApplicationException;
 
+    List<Form> getForms( String key ) throws ApplicationException;
+
+    Form addForm( String penKey, Form form ) throws ApplicationException;
+
+    Form removeForm( String penKey, Form form ) throws ApplicationException;
+
 }
