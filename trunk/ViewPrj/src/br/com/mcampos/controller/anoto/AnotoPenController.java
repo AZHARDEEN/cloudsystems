@@ -1,8 +1,8 @@
-package br.com.mcampos.controller.anode;
+package br.com.mcampos.controller.anoto;
 
 import br.com.mcampos.controller.admin.tables.BasicListController;
-import br.com.mcampos.controller.anode.model.FormListModel;
-import br.com.mcampos.controller.anode.renderer.FormListRenderer;
+import br.com.mcampos.controller.anoto.model.FormListModel;
+import br.com.mcampos.controller.anoto.renderer.FormListRenderer;
 import br.com.mcampos.dto.anode.FormDTO;
 import br.com.mcampos.dto.anode.PenDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
@@ -26,7 +26,7 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
-public class AnodePenController extends BasicListController<PenDTO>
+public class AnotoPenController extends BasicListController<PenDTO>
 {
     protected Textbox editId;
     private AnodeFacade session;
@@ -35,7 +35,7 @@ public class AnodePenController extends BasicListController<PenDTO>
     protected Button btnAddForm;
     protected Button btnRemoveForm;
 
-    public AnodePenController()
+    public AnotoPenController()
     {
         super();
     }

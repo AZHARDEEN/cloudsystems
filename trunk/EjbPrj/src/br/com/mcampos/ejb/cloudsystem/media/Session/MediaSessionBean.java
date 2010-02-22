@@ -34,4 +34,13 @@ public class MediaSessionBean extends Crud<Integer, Media> implements MediaSessi
     {
         return get( Media.class, key );
     }
+
+    public byte[] getObject( Integer key )
+    {
+        Media entity = get( key );
+        if ( entity != null )
+            return entity.getObject();
+        else
+            return null;
+    }
 }

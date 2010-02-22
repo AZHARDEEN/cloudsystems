@@ -104,8 +104,8 @@ public class MediaDTO implements Comparable<MediaDTO>, Serializable
     @Override
     public boolean equals( Object obj )
     {
-        if ( obj == null || ( obj instanceof MenuDTO ) == false )
+        if ( obj == null || ( obj instanceof MediaDTO ) == false )
             return false;
-        return getId().equals( ( ( MenuDTO )obj ).getId() );
+        return getId().equals( ( ( MediaDTO )obj ).getId() );
     }
 }

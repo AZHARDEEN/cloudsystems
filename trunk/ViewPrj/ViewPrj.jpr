@@ -200,7 +200,7 @@
          <hash n="Default">
             <value n="custom" v="false"/>
             <value n="name" v="Default"/>
-            <value n="runActiveFile" v="true"/>
+            <value n="runActiveFile" v="false"/>
             <url n="targetURL" path="public_html/index.html"/>
          </hash>
          <hash n="web">
@@ -213,7 +213,7 @@
             <value n="JavaScriptRunConfigurationTransferErrors" v="true"/>
             <value n="JavaScriptRunConfigurationType"/>
             <value n="name" v="web"/>
-            <value n="runActiveFile" v="true"/>
+            <value n="runActiveFile" v="false"/>
             <url n="targetURL" path="public_html/index.html"/>
          </hash>
       </hash>

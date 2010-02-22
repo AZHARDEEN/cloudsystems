@@ -9,6 +9,12 @@ import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
 
+import br.com.mcampos.sysutils.SysUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -52,6 +58,37 @@ public class MediaFacadeBean extends AbstractSecurity implements MediaFacade
     {
         authenticate( auth );
         media.delete( key );
+    }
+
+    public byte[] getObject( AuthenticationDTO auth, Integer key ) throws ApplicationException
+    {
+        authenticate( auth );
+        return media.getObject( key );
+
+    }
+
+    public List<MediaDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth );
+        List<Media> entities = media.getAll( "Media.findAll" );
+        return toMediaListPgc( entities );
+    }
+
+
+    protected List<MediaDTO> toMediaListPgc( List<Media> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<MediaDTO> dtoList = new ArrayList<MediaDTO>( list.size() );
+        for ( Media f : list ) {
+            String name;
+
+            name = f.getName().toLowerCase();
+            if ( name.endsWith( ".pgc" ) ) {
+                dtoList.add( f.toDTO() );
+            }
+        }
+        return dtoList;
     }
 
 }

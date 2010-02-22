@@ -72,4 +72,14 @@ public interface AnodeFacade
 
     List<FormDTO> removeFromPen( AuthenticationDTO auth, PenDTO pen, List<FormDTO> forms ) throws ApplicationException;
 
+    /* *************************************************************************
+     * *************************************************************************
+     *
+     * OPERACAO EM CANETAS
+     *
+     * *************************************************************************
+     * *************************************************************************
+     */
+
+    public byte[] getObject( AuthenticationDTO auth, MediaDTO key ) throws ApplicationException;
 }
