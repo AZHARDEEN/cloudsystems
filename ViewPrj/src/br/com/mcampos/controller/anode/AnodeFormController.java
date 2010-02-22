@@ -3,7 +3,6 @@ package br.com.mcampos.controller.anode;
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
 import br.com.mcampos.controller.anode.model.MediaListModel;
 import br.com.mcampos.controller.anode.model.PenListModel;
-import br.com.mcampos.controller.anode.renderer.FormListRenderer;
 import br.com.mcampos.controller.anode.renderer.MediaListRenderer;
 import br.com.mcampos.controller.anode.renderer.PenListRenderer;
 import br.com.mcampos.dto.anode.FormDTO;
@@ -31,6 +30,7 @@ import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zul.AbstractListModel;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -155,7 +155,7 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
         btnAddAttach.setDisabled( record == null );
         listAttachs.setModel( getMediaListModel( ( FormDTO )record ) );
         if ( record != null ) {
-            listAvailable.setModel( getAvailablePensListModel( ( FormDTO )record ) );
+            refreshAttachs( ( FormDTO )record );
             listAdded.setModel( getPenModel( ( FormDTO )record ) );
         }
         else {
@@ -177,19 +177,8 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
         FormDTO form = getValue( getListboxRecord().getSelectedItem() );
 
         try {
-            MediaDTO added = getSession().addToForm( getLoggedInUser(), form, dto );
-            Listitem newMedia = new Listitem();
-            newMedia.setParent( listAttachs );
-            listAttachs.appendChild( newMedia );
-            if ( listAttachs.getItemRenderer() != null ) {
-                try {
-                    listAttachs.getItemRenderer().render( newMedia, added );
-                }
-                catch ( Exception e ) {
-                    showErrorMessage( e.getMessage(), "Render Item" );
-                }
-            }
-
+            getSession().addToForm( getLoggedInUser(), form, dto );
+            refreshAttachs( form );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Upload Error" );
@@ -206,7 +195,10 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
             dto.setName( media.getName() );
             dto.setMimeType( media.getContentType() );
             if ( media.inMemory() ) {
-                dto.setObject( media.getByteData() );
+                if ( media.isBinary() )
+                    dto.setObject( media.getByteData() );
+                else
+                    dto.setObject( media.getStringData().getBytes() );
             }
             else {
                 mediaSize = media.getStreamData().available();
@@ -338,17 +330,22 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
     protected AbstractListModel getAvailablePensListModel( FormDTO current )
     {
         List<PenDTO> list;
-        PenListModel model = null;
+        ListModelList model = null;
         try {
             list = getSession().getAvailablePens( getLoggedInUser(), current );
-            model = new PenListModel( list );
-            model.loadPage( 1, list.size() ); /*Neste momento o model não pagina*/
+            model = new ListModelList( list, true );
             return model;
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Lista de Formulários" );
             return null;
         }
+    }
+
+    protected void refreshAttachs( FormDTO current )
+    {
+        listAvailable.setModel( getAvailablePensListModel( current ) );
+        listAvailable.invalidate();
     }
 
     protected AbstractListModel getPenModel( FormDTO current )
