@@ -1,4 +1,4 @@
-package br.com.mcampos.controller.anode.renderer;
+package br.com.mcampos.controller.anoto.renderer;
 
 import br.com.mcampos.dto.anode.PenDTO;
 

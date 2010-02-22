@@ -122,7 +122,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         if ( SysUtils.isZero( media.getId() ) )
             return null;
         mediaEntity = mediaSession.get( media.getId() );
-        return formSession.removeMedia( form.getId(), mediaEntity ).toDTO();
+        mediaEntity = formSession.removeMedia( form.getId(), mediaEntity );
+        mediaSession.delete( mediaEntity.getId() );
+        return mediaEntity.toDTO();
     }
 
     public List<MediaDTO> getMedias( AuthenticationDTO auth, FormDTO dto ) throws ApplicationException
@@ -318,4 +320,20 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return toFormList( entities );
     }
 
+
+    /* *************************************************************************
+     * *************************************************************************
+     *
+     * OPERACAO EM CANETAS
+     *
+     * *************************************************************************
+     * *************************************************************************
+     */
+
+    public byte[] getObject( AuthenticationDTO auth, MediaDTO key ) throws ApplicationException
+    {
+        authenticate( auth );
+        return mediaSession.getObject( key.getId() );
+    }
 }
+

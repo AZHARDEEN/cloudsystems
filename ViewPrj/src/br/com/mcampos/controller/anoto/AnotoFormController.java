@@ -1,10 +1,9 @@
-package br.com.mcampos.controller.anode;
+package br.com.mcampos.controller.anoto;
 
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
-import br.com.mcampos.controller.anode.model.MediaListModel;
-import br.com.mcampos.controller.anode.model.PenListModel;
-import br.com.mcampos.controller.anode.renderer.MediaListRenderer;
-import br.com.mcampos.controller.anode.renderer.PenListRenderer;
+import br.com.mcampos.controller.anoto.model.PenListModel;
+import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
+import br.com.mcampos.controller.anoto.renderer.PenListRenderer;
 import br.com.mcampos.dto.anode.FormDTO;
 import br.com.mcampos.dto.anode.PenDTO;
 import br.com.mcampos.dto.core.SimpleTableDTO;
@@ -13,7 +12,19 @@ import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 
 import br.com.mcampos.exception.ApplicationException;
 
+import br.com.mcampos.sysutils.SysUtils;
+
+import com.anoto.api.FormatException;
+import com.anoto.api.IllegalValueException;
+import com.anoto.api.NotAllowedException;
+import com.anoto.api.PenHome;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+
+import java.io.InputStream;
+
+import java.io.InputStreamReader;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,7 +47,7 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
-public class AnodeFormController extends SimpleTableController<FormDTO>
+public class AnotoFormController extends SimpleTableController<FormDTO>
 {
     private AnodeFacade session;
     protected Textbox editIP;
@@ -47,7 +58,7 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
     protected Listbox listAvailable;
     protected Listbox listAdded;
 
-    public AnodeFormController()
+    public AnotoFormController()
     {
         super();
     }
@@ -151,7 +162,7 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
     protected void showRecord( SimpleTableDTO record )
     {
         super.showRecord( record );
-        editIP.setValue( record != null ? ( ( FormDTO )record ).getIp() : "" );
+        recordIP.setValue( record != null ? ( ( FormDTO )record ).getIp() : "" );
         btnAddAttach.setDisabled( record == null );
         listAttachs.setModel( getMediaListModel( ( FormDTO )record ) );
         if ( record != null ) {
@@ -177,8 +188,12 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
         FormDTO form = getValue( getListboxRecord().getSelectedItem() );
 
         try {
-            getSession().addToForm( getLoggedInUser(), form, dto );
-            refreshAttachs( form );
+            if ( isPadFile( dto ) ) {
+
+            }
+            MediaDTO addedDTO = getSession().addToForm( getLoggedInUser(), form, dto );
+            ListModelList model = ( ListModelList )listAttachs.getModel();
+            model.add( addedDTO );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Upload Error" );
@@ -249,11 +264,11 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
         if ( currentForm == null )
             return null;
         List<MediaDTO> list;
-        MediaListModel model = null;
+        ListModelList model = null;
         try {
             list = getSession().getMedias( getLoggedInUser(), currentForm );
-            model = new MediaListModel( list );
-            model.loadPage( 1, list.size() ); /*Neste momento o model não pagina*/
+            model = new ListModelList( list );
+            //model.loadPage( 1, list.size() ); /*Neste momento o model não pagina*/
             return model;
         }
         catch ( ApplicationException e ) {
@@ -364,6 +379,59 @@ public class AnodeFormController extends SimpleTableController<FormDTO>
         }
     }
 
+    public void onClick$btnRemoveAttach()
+    {
+        FormDTO currentForm = getValue( getListboxRecord().getSelectedItem() );
+        Set selected = listAttachs.getSelectedItems();
+        if ( selected.isEmpty() )
+            return;
+        List al = new ArrayList( selected );
+        try {
+            for ( Iterator it = al.iterator(); it.hasNext(); ) {
+                Listitem li = ( Listitem )it.next();
+                getSession().removeFromForm( getLoggedInUser(), currentForm, ( ( MediaDTO )li.getValue() ) );
+                ( ( ListModelList )listAttachs.getModel() ).remove( li.getValue() );
+            }
+            btnRemoveAttach.setDisabled( true );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Remover Media" );
+        }
 
+    }
+
+    public void onSelect$listAttachs()
+    {
+        btnRemoveAttach.setDisabled( false );
+    }
+
+    protected boolean isPadFile( MediaDTO media )
+    {
+        String fileExtension;
+
+        if ( media == null || SysUtils.isEmpty( media.getName() ) )
+            return false;
+        fileExtension = media.getName().toLowerCase();
+
+        if ( fileExtension.endsWith( ".pad" ) == false )
+            return false;
+        try {
+            ByteArrayInputStream is = new ByteArrayInputStream( media.getObject() );
+            PenHome.loadPad( "CloudSystems", is );
+            return true;
+        }
+        catch ( IllegalValueException e ) {
+            showErrorMessage( e.getMessage(), "IllegalValueException" );
+            return false;
+        }
+        catch ( FormatException e ) {
+            showErrorMessage( e.getMessage(), "FormatException" );
+            return false;
+        }
+        catch ( NotAllowedException e ) {
+            showErrorMessage( e.getMessage(), "NotAllowedException" );
+            return false;
+        }
+    }
 }
 

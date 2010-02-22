@@ -1,4 +1,4 @@
-package br.com.mcampos.controller.anode.model;
+package br.com.mcampos.controller.anoto.model;
 
 import br.com.mcampos.controller.admin.users.model.AbstractPagingListModel;
 
