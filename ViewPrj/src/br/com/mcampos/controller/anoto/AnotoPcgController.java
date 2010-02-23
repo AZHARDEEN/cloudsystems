@@ -1,49 +1,41 @@
 package br.com.mcampos.controller.anoto;
 
-import br.com.mcampos.controller.admin.tables.BasicListController;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
 import br.com.mcampos.controller.core.LoggedBaseController;
-import br.com.mcampos.dto.anode.FormDTO;
 import br.com.mcampos.dto.system.MediaDTO;
-import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.ejb.cloudsystem.media.facade.MediaFacade;
-import br.com.mcampos.exception.ApplicationException;
 
 import com.anoto.api.Page;
 import com.anoto.api.Pen;
 import com.anoto.api.PenData;
 import com.anoto.api.PenHome;
 
-import com.anoto.api.Renderer;
 
-import com.anoto.api.RendererFactory;
-
-import java.awt.Graphics2D;
-import java.awt.Image;
-
-import java.awt.RenderingHints;
+import com.sun.media.jai.codec.ByteArraySeekableStream;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
+
+import java.awt.image.renderable.ParameterBlock;
+
+import java.awt.image.renderable.RenderableImage;
 
 import java.io.ByteArrayInputStream;
 
 import java.io.InputStream;
 
-import java.util.Collections;
 import java.util.List;
 
-import javax.imageio.ImageIO;
+import javax.media.jai.JAI;
 
-import org.zkoss.image.AImage;
-import org.zkoss.image.Images;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderableOp;
+import javax.media.jai.RenderedOp;
+
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 
 public class AnotoPcgController extends LoggedBaseController
@@ -70,9 +62,10 @@ public class AnotoPcgController extends LoggedBaseController
     {
         MediaDTO media = ( MediaDTO )listboxRecord.getSelectedItem().getValue();
         try {
-            byte[] pad = getSession().getObject( getLoggedInUser(), 1 );
-            byte[] bkg = getSession().getObject( getLoggedInUser(), 2 );
+            byte[] pad = getSession().getObject( getLoggedInUser(), 15 );
+            byte[] bkg = getSession().getObject( getLoggedInUser(), 19 );
             byte[] pcg = getSession().getObject( getLoggedInUser(), media.getId() );
+
             ByteArrayInputStream pad_is = new ByteArrayInputStream( pad );
             PenHome.loadPad( "CloudSystems", pad_is, true );
             ByteArrayInputStream pcg_is = new ByteArrayInputStream( pcg );
@@ -81,16 +74,17 @@ public class AnotoPcgController extends LoggedBaseController
             String address = pen.getMagicBoxPage();
             // ...and then get that page.
             Page page = pen.getPage( address );
-            PenData penData = pen.getPenData();
-            InputStream in = new ByteArrayInputStream( bkg );
             /*Obtendo as duas imagems*/
-            BufferedImage fgImage = ( BufferedImage )page.render();
-            BufferedImage bgImage = ImageIO.read( in );
+            /*Get a planar image*/
+            /*Imagem de fundo - formulário*/
+            ByteArraySeekableStream bgSource = new ByteArraySeekableStream( bkg );
+            RenderedOp bgRendered = JAI.create( "stream", bgSource );
 
-            RenderedImage;
+            /*Imagem da escrita - caneta*/
+            PlanarImage fgRendered = PlanarImage.wrapRenderedImage( ( BufferedImage )page.render() );
 
-            imgTest.setContent( ( BufferedImage )fgImage );
-            imgTest.invalidate();
+
+            imgTest.setContent( mergeImages( createRenderable( bgRendered ), createRenderable( fgRendered ) ) );
         }
         catch ( Exception e ) {
             try {
@@ -100,6 +94,24 @@ public class AnotoPcgController extends LoggedBaseController
                 f = null;
             }
         }
+    }
+
+
+    protected RenderableImage createRenderable( PlanarImage image )
+    {
+        ParameterBlock pb = new ParameterBlock();
+        pb.addSource( image );
+        pb.add( null ).add( null ).add( null ).add( null ).add( null );
+        return JAI.createRenderable( "renderable", pb );
+    }
+
+    protected RenderedImage mergeImages( RenderableImage img1, RenderableImage img2 )
+    {
+        ParameterBlock pb = new ParameterBlock();
+        pb.addSource( img1 );
+        pb.addSource( img2 );
+        RenderableOp result = JAI.createRenderable( "and", pb );
+        return result.createDefaultRendering();
     }
 
     @Override
