@@ -18,17 +18,23 @@ import com.anoto.api.Renderer;
 
 import com.anoto.api.RendererFactory;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 
 import java.awt.RenderingHints;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.awt.image.RenderedImage;
 
 import java.io.ByteArrayInputStream;
 
+import java.io.InputStream;
+
 import java.util.Collections;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.zkoss.image.AImage;
 import org.zkoss.image.Images;
@@ -64,7 +70,8 @@ public class AnotoPcgController extends LoggedBaseController
     {
         MediaDTO media = ( MediaDTO )listboxRecord.getSelectedItem().getValue();
         try {
-            byte[] pad = getSession().getObject( getLoggedInUser(), 15 );
+            byte[] pad = getSession().getObject( getLoggedInUser(), 1 );
+            byte[] bkg = getSession().getObject( getLoggedInUser(), 2 );
             byte[] pcg = getSession().getObject( getLoggedInUser(), media.getId() );
             ByteArrayInputStream pad_is = new ByteArrayInputStream( pad );
             PenHome.loadPad( "CloudSystems", pad_is, true );
@@ -74,9 +81,15 @@ public class AnotoPcgController extends LoggedBaseController
             String address = pen.getMagicBoxPage();
             // ...and then get that page.
             Page page = pen.getPage( address );
-            Image img = page.render();
             PenData penData = pen.getPenData();
-            imgTest.setContent( ( BufferedImage )img );
+            InputStream in = new ByteArrayInputStream( bkg );
+            /*Obtendo as duas imagems*/
+            BufferedImage fgImage = ( BufferedImage )page.render();
+            BufferedImage bgImage = ImageIO.read( in );
+
+            RenderedImage;
+
+            imgTest.setContent( ( BufferedImage )fgImage );
             imgTest.invalidate();
         }
         catch ( Exception e ) {
