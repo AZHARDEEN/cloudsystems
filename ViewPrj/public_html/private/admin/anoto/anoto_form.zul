@@ -83,7 +83,8 @@
                                 <tabpanels>
                                     <tabpanel>
                                         <toolbar>
-                                            <toolbarbutton id="btnAddAttach" label="Adicionar" disabled="true" upload="true"/>
+                                            <toolbarbutton id="btnAddAttach" label="Adicionar" disabled="true"
+                                                           upload="true,native"/>
                                             <toolbarbutton id="btnRemoveAttach" label="Remover" disabled="true"/>
                                         </toolbar>
                                         <listbox id="listAttachs" fixedLayout="true" height="200px">

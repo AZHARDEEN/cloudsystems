@@ -417,7 +417,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             return false;
         try {
             ByteArrayInputStream is = new ByteArrayInputStream( media.getObject() );
-            PenHome.loadPad( "CloudSystems", is );
+            PenHome.loadPad( "CloudSystems", is, true );
             return true;
         }
         catch ( IllegalValueException e ) {
