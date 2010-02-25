@@ -86,7 +86,9 @@ public class AnodeFormSessionBean extends Crud<Integer, Form> implements AnodeFo
     {
         Form entity = get( key );
         getEntityManager().merge( toInsert ); /*Make it menageable*/
-        return entity.addFormPen( toInsert );
+        toInsert = entity.addFormPen( toInsert );
+        getEntityManager().refresh( toInsert );
+        return toInsert;
     }
 
 
@@ -94,7 +96,9 @@ public class AnodeFormSessionBean extends Crud<Integer, Form> implements AnodeFo
     {
         Form entity = get( key );
         getEntityManager().merge( toRemove ); /*Make it menageable*/
-        return entity.removeFormPen( toRemove );
+        toRemove = entity.removeFormPen( toRemove );
+        getEntityManager().refresh( toRemove );
+        return toRemove;
     }
 
     public List<Pen> getPens( Integer key ) throws ApplicationException

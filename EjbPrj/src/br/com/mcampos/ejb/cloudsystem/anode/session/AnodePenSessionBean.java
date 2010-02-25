@@ -62,19 +62,23 @@ public class AnodePenSessionBean extends Crud<String, Pen> implements AnodePenSe
             return Collections.emptyList();
     }
 
-    public Form addForm( String penKey, Form form ) throws ApplicationException
+    public Form addForm( String penKey, Form toInsert ) throws ApplicationException
     {
         Pen pen = get( penKey );
-        getEntityManager().merge( form ); /*Make it menageable*/
-        return pen.addFormPen( form );
+        getEntityManager().merge( toInsert ); /*Make it menageable*/
+        toInsert = pen.addFormPen( toInsert );
+        getEntityManager().refresh( toInsert );
+        return toInsert;
     }
 
 
-    public Form removeForm( String penKey, Form form ) throws ApplicationException
+    public Form removeForm( String penKey, Form toRemove ) throws ApplicationException
     {
         Pen pen = get( penKey );
-        getEntityManager().merge( form ); /*Make it menageable*/
-        return pen.removeFormPen( form );
+        getEntityManager().merge( toRemove ); /*Make it menageable*/
+        toRemove = pen.removeFormPen( toRemove );
+        getEntityManager().refresh( toRemove );
+        return toRemove;
     }
 
 }

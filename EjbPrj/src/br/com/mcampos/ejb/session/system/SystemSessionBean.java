@@ -35,7 +35,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
     @PersistenceContext( unitName = "EjbPrj" )
     private EntityManager em;
 
-    private static int systemMessageType = 6;
+    private static final int systemMessageType = 6;
 
     public SystemSessionBean()
     {
