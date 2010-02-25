@@ -199,8 +199,14 @@
       <hash n="runConfigurationDefinitions">
          <hash n="Default">
             <value n="custom" v="false"/>
+            <value n="JavaScriptRunConfigurationEnableDebugStatement" v="true"/>
+            <value n="JavaScriptRunConfigurationStopInChrome" v="true"/>
+            <value n="JavaScriptRunConfigurationStopOnError" v="true"/>
+            <value n="JavaScriptRunConfigurationStopOnException" v="false"/>
+            <value n="JavaScriptRunConfigurationTransferErrors" v="true"/>
             <value n="name" v="Default"/>
             <value n="runActiveFile" v="false"/>
+            <value n="saveAllBeforeRun" v="true"/>
             <url n="targetURL" path="public_html/index.html"/>
          </hash>
          <hash n="web">
@@ -214,6 +220,7 @@
             <value n="JavaScriptRunConfigurationType"/>
             <value n="name" v="web"/>
             <value n="runActiveFile" v="false"/>
+            <value n="saveAllBeforeRun" v="true"/>
             <url n="targetURL" path="public_html/index.html"/>
          </hash>
       </hash>

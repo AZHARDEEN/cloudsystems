@@ -21,7 +21,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Form.findAll", query = "select o from Form o" ), @NamedQuery( name = "Form.nextId", query = "select MAX(o.id) from Form o" ), @NamedQuery( name = "Form.findAvailableFormsForPen", query = "select o from Form o where ?1 NOT MEMBER OF o.pens" ) } )
+@NamedQueries( { @NamedQuery( name = "Form.findAll", query = "select o from Form o" ),
+                 @NamedQuery( name = "Form.nextId", query = "select MAX(o.id) from Form o" ),
+                 @NamedQuery( name = "Form.findAvailableFormsForPen", query = "select o from Form o where ?1 NOT MEMBER OF o.pens" ) } )
 @Table( name = "\"form\"" )
 public class Form implements Serializable, EntityCopyInterface<FormDTO>
 {
@@ -90,13 +92,17 @@ public class Form implements Serializable, EntityCopyInterface<FormDTO>
 
     public Pen addFormPen( Pen formPen )
     {
-        getPens().add( formPen );
+        if ( formPen != null && !getPens().contains( formPen ) ) {
+            getPens().add( formPen );
+        }
         return formPen;
     }
 
     public Pen removeFormPen( Pen formPen )
     {
-        getPens().remove( formPen );
+        if ( formPen != null && getPens().contains( formPen ) ) {
+            getPens().remove( formPen );
+        }
         return formPen;
     }
 
