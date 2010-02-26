@@ -30,8 +30,8 @@ import br.com.mcampos.dto.user.attributes.TitleDTO;
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.Form;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.Pen;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.entity.address.AddressType;
 import br.com.mcampos.ejb.entity.address.City;
@@ -231,11 +231,9 @@ public final class DTOFactory implements Serializable
 
         code = document.trim();
         switch ( type ) {
-        case UserDocument.typeCPF:
-            code = code.replaceAll( "[\\-.\\/]", "" );
+        case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
             break;
-        case UserDocument.typeEmail:
-            code = code.toLowerCase();
+        case UserDocument.typeEmail: code = code.toLowerCase();
             break;
         }
         return code;
@@ -744,24 +742,24 @@ public final class DTOFactory implements Serializable
     }
 
 
-    public static FormDTO copy( Form source )
+    public static FormDTO copy( AnotoForm source )
     {
         if ( source == null )
             return null;
 
         FormDTO target = new FormDTO( source.getId(), source.getDescription() );
 
-        target.setIp( source.getIp() );
+        target.setIp( source.getApplication() );
         return target;
     }
 
 
-    public static Form copy( FormDTO source )
+    public static AnotoForm copy( FormDTO source )
     {
         if ( source == null )
             return null;
 
-        Form target = new Form( source.getId(), source.getDescription(), source.getIp() );
+        AnotoForm target = new AnotoForm( source.getId(), source.getApplication(), source.getDescription() );
 
         return target;
     }
@@ -782,10 +780,10 @@ public final class DTOFactory implements Serializable
 
     }
 
-    public static Pen copy( PenDTO entity )
+    public static AnotoPen copy( PenDTO entity )
     {
         if ( entity == null )
             return null;
-        return new Pen( entity.getId() );
+        return new AnotoPen( entity.getId() );
     }
 }

@@ -1,25 +1,15 @@
 package br.com.mcampos.controller.anoto;
 
 import br.com.mcampos.controller.admin.tables.BasicListController;
-import br.com.mcampos.controller.anoto.model.FormListModel;
 import br.com.mcampos.controller.anoto.renderer.FormListRenderer;
-import br.com.mcampos.dto.anode.FormDTO;
 import br.com.mcampos.dto.anode.PenDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import java.util.Set;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.event.DropEvent;
-import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zul.AbstractListModel;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -51,8 +41,8 @@ public class AnotoPenController extends BasicListController<PenDTO>
     {
         if ( record != null ) {
             editId.setValue( record.getId() );
-            listAvailable.setModel( getAvailableFormsListModel( record ) );
-            listAdded.setModel( getFormModel( record ) );
+            //listAvailable.setModel( getAvailableFormsListModel( record ) );
+            //listAdded.setModel( getFormModel( record ) );
         }
         else {
             editId.setValue( "" );
@@ -132,6 +122,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
         cmdUpdate.setVisible( false );
         if ( listAvailable != null ) {
             listAvailable.setItemRenderer( ( new FormListRenderer() ).setDraggable( true ) );
+            /*
             listAvailable.addEventListener( Events.ON_DROP, new EventListener()
                 {
                     public void onEvent( Event event ) throws Exception
@@ -139,66 +130,22 @@ public class AnotoPenController extends BasicListController<PenDTO>
                         onDrop( ( ( DropEvent )event ) );
                     }
                 } );
+            */
         }
 
         if ( listAdded != null ) {
             listAdded.setItemRenderer( ( new FormListRenderer() ).setDraggable( true ) );
+            /*
             listAdded.addEventListener( Events.ON_DROP, new EventListener()
                 {
                     public void onEvent( Event event ) throws Exception
                     {
                         onDrop( ( ( DropEvent )event ) );
                     }
-                } );
+                } );*/
         }
     }
-
-
-    protected AbstractListModel getAvailableFormsListModel( PenDTO currentPen )
-    {
-        List<FormDTO> list;
-        FormListModel model = null;
-        try {
-            list = getSession().getAvailableForms( getLoggedInUser(), currentPen );
-            model = new FormListModel( list );
-            model.loadPage( 1, list.size() ); /*Neste momento o model não pagina*/
-            return model;
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Lista de Formulários" );
-            return null;
-        }
-    }
-
-    protected AbstractListModel getFormModel( PenDTO currentPen )
-    {
-        List<FormDTO> list;
-        FormListModel model = null;
-        try {
-            list = getSession().getForms( getLoggedInUser(), currentPen );
-            model = new FormListModel( list );
-            model.loadPage( 1, list.size() ); /*Neste momento o model não pagina*/
-            return model;
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Lista de Formulários" );
-            return null;
-        }
-    }
-
-
-    public void onClick$btnAddForm()
-    {
-        moveListitem( listAdded, listAvailable );
-    }
-
-
-    public void onClick$btnRemoveForm()
-    {
-        moveListitem( listAvailable, listAdded );
-    }
-
-
+    /*
     protected void moveListitem( Listbox toListbox, Listbox fromListbox )
     {
         if ( getListboxRecord().getSelectedCount() != 1 )
@@ -251,4 +198,5 @@ public class AnotoPenController extends BasicListController<PenDTO>
             moveListitem( listAdded, listAvailable );
         }
     }
+    */
 }

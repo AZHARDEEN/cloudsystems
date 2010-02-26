@@ -7,7 +7,7 @@ import java.security.InvalidParameterException;
 
 public class FormDTO extends SimpleTableDTO
 {
-    String ip;
+    String application;
 
 
     public FormDTO( SimpleTableDTO simpleTableDTO )
@@ -34,12 +34,12 @@ public class FormDTO extends SimpleTableDTO
     {
         if ( SysUtils.isEmpty( ip ) )
             throw new InvalidParameterException( "O ip do formulário não pode ser nulo ou vazio" );
-        this.ip = ip;
+        this.application = ip;
         return this;
     }
 
-    public String getIp()
+    public String getApplication()
     {
-        return ip;
+        return application;
     }
 }

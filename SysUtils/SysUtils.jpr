@@ -134,12 +134,26 @@
    </hash>
    <hash n="oracle.jdeveloper.model.PathsConfiguration">
       <hash n="javaContentSet">
-         <list n="pattern-filters">
-            <string v="+**"/>
+         <list n="constituent-sets">
+            <hash>
+               <list n="pattern-filters">
+                  <string v="+**"/>
+               </list>
+               <list n="url-path">
+                  <url path="src/"/>
+               </list>
+            </hash>
+            <hash>
+               <url n="content-folder-url" path="../ViewPrj/src/br/com/mcampos/controller/anoto/util/"/>
+               <list n="pattern-filters">
+                  <string v="+br/com/mcampos/controller/anoto/util/"/>
+               </list>
+               <list n="url-path">
+                  <url path="../ViewPrj/src/"/>
+               </list>
+            </hash>
          </list>
-         <list n="url-path">
-            <url path="src/"/>
-         </list>
+         <list n="url-path"/>
       </hash>
    </hash>
    <hash n="oracle.jdeveloper.offlinedb.model.OfflineDBProjectSettings">
@@ -161,6 +175,20 @@
       </hash>
       <list n="runConfigurationList">
          <string v="Default"/>
+      </list>
+   </hash>
+   <hash n="oracle.jdevimpl.config.JProjectLibraries">
+      <list n="exportedReferences">
+         <hash>
+            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jdom.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+      </list>
+      <list n="libraryReferences">
+         <hash>
+            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jdom.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
    </hash>
    <hash n="oracle.jdevimpl.config.JProjectPaths">
