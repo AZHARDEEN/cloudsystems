@@ -1,7 +1,6 @@
 package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Form;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.FormPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pen;
 import br.com.mcampos.ejb.session.core.Crud;
 
@@ -16,7 +15,6 @@ import javax.ejb.Stateless;
 
 
 @Stateless( name = "AnodePenSession", mappedName = "CloudSystems-EjbPrj-AnodePenSession" )
-@Local
 public class AnodePenSessionBean extends Crud<String, Pen> implements AnodePenSessionLocal
 {
     public AnodePenSessionBean()

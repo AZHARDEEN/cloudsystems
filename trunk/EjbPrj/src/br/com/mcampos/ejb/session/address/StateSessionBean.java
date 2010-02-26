@@ -22,8 +22,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless( name = "StateSession", mappedName = "CloudSystems-EjbPrj-StateSession" )
-@Remote
-@Local
 public class StateSessionBean implements StateSession, StateSessionLocal
 {
     @PersistenceContext( unitName="EjbPrj" )

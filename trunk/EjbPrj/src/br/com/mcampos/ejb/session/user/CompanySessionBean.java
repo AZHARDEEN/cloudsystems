@@ -28,8 +28,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 @Stateless( name = "CompanySession", mappedName = "CloudSystems-EjbPrj-CompanySession" )
-@Remote
-@Local
 public class CompanySessionBean implements CompanySession, CompanySessionLocal
 {
     @PersistenceContext( unitName="EjbPrj" )

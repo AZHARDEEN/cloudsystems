@@ -16,7 +16,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 @Stateless( name = "UserDocumentSession", mappedName = "CloudSystems-EjbPrj-UserDocumentSession" )
-@Local
 public class UserDocumentSessionBean implements UserDocumentSessionLocal
 {
     @PersistenceContext( unitName="EjbPrj" )

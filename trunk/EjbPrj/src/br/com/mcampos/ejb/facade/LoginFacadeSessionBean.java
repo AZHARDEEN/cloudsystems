@@ -19,7 +19,6 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 @Stateless( name = "LoginFacadeSession", mappedName = "CloudSystems-EjbPrj-LoginFacadeSession" )
-@Remote
 public class LoginFacadeSessionBean implements LoginFacadeSession
 {
     @EJB

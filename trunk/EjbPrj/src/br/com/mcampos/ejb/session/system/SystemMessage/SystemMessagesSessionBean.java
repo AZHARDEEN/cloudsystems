@@ -17,7 +17,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "SystemMessagesSession", mappedName = "CloudSystems-EjbPrj-SystemMessagesSession" )
-@Local
 public class SystemMessagesSessionBean implements SystemMessagesSessionLocal
 {
     @PersistenceContext( unitName = "EjbPrj" )

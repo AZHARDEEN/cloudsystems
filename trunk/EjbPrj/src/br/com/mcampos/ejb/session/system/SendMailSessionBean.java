@@ -19,7 +19,6 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 @Stateless( name = "SendMailSession", mappedName = "CloudSystems-EjbPrj-SendMailSession" )
-@Local
 public class SendMailSessionBean implements SendMailSessionLocal
 {
     @Resource(mappedName="jms/CloudSystemsCF")  private ConnectionFactory cf;

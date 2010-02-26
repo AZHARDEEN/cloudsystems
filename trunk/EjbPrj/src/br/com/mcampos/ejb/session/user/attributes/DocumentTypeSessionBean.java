@@ -20,8 +20,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "DocumentTypeSession", mappedName = "CloudSystems-EjbPrj-DocumentTypeSession" )
-@Remote
-@Local
 public class DocumentTypeSessionBean implements DocumentTypeSession,
                                                 DocumentTypeSessionLocal
 {

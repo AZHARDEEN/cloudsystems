@@ -24,8 +24,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "UserStatusSession", mappedName = "CloudSystems-EjbPrj-UserStatusSession" )
-@Remote
-@Local
 public class UserStatusSessionBean implements UserStatusSession,
                                               UserStatusSessionLocal
 {

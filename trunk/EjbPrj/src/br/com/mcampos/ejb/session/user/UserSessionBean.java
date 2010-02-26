@@ -31,7 +31,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "UserSession", mappedName = "CloudSystems-EjbPrj-UserSession" )
-@Local
 public class UserSessionBean extends AbstractSecurity implements UserSessionLocal
 {
 
