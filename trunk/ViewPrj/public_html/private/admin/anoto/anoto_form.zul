@@ -14,7 +14,7 @@
                     <!-- Por favor, nao mude o id desta listbox -->
                     <listbox id="listboxRecord" vflex="true">
                         <listhead sizable="true">
-                            <listheader id="recordListIdSort" align="left" label="IP" sort="auto" width="140px"/>
+                            <listheader id="recordListIdSort" align="left" label="Aplicação" sort="auto" width="140px"/>
                             <listheader id="recordListDescSort" align="left" label="Descrição" sort="auto"/>
                         </listhead>
                     </listbox>
@@ -36,7 +36,7 @@
                                     <label id="recordId"/>
                                 </row>
                                 <row>
-                                    IP
+                                    Aplicação
                                     <label id="recordIP"/>
                                 </row>
                                 <row>
@@ -60,8 +60,8 @@
                                     <intbox id="editId" width="99%" value="1"/>
                                 </row>
                                 <row>
-                                    IP
-                                    <textbox id="editIP" width="99%" value=""/>
+                                    Aplicação
+                                    <textbox id="editIP" width="99%" value="" maxlength="16"/>
                                 </row>
                                 <row>
                                     Descrição

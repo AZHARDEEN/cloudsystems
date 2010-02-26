@@ -178,6 +178,7 @@
    <hash n="oracle.jdeveloper.model.PathsConfiguration">
       <hash n="javaContentSet">
          <list n="pattern-filters">
+            <string v="-br/com/mcampos/controller/anoto/util/PADFile.java"/>
             <string v="+**"/>
          </list>
          <list n="url-path">
@@ -197,6 +198,10 @@
    </hash>
    <hash n="oracle.jdeveloper.runner.RunConfigurations">
       <hash n="runConfigurationDefinitions">
+         <hash n="CurrentJava">
+            <value n="custom" v="false"/>
+            <value n="name" v="CurrentJava"/>
+         </hash>
          <hash n="Default">
             <value n="custom" v="false"/>
             <value n="JavaScriptRunConfigurationEnableDebugStatement" v="true"/>
@@ -225,6 +230,7 @@
          </hash>
       </hash>
       <list n="runConfigurationList">
+         <string v="CurrentJava"/>
          <string v="Default"/>
          <string v="web"/>
       </list>
@@ -259,6 +265,10 @@
             <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jai.library"/>
             <value n="isJDK" v="false"/>
          </hash>
+         <hash>
+            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jdom.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
       <hash n="internalDefinitions">
          <list n="libraryDefinitions"/>
@@ -290,6 +300,10 @@
          </hash>
          <hash>
             <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jai.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jdom.library"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>

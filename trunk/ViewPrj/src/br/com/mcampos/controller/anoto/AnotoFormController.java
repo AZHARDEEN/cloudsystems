@@ -1,11 +1,9 @@
 package br.com.mcampos.controller.anoto;
 
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
-import br.com.mcampos.controller.anoto.model.PenListModel;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PenListRenderer;
 import br.com.mcampos.dto.anode.FormDTO;
-import br.com.mcampos.dto.anode.PenDTO;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
@@ -21,10 +19,6 @@ import com.anoto.api.PenHome;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-
-import java.io.InputStream;
-
-import java.io.InputStreamReader;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -131,7 +125,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     {
         FormDTO dto = ( FormDTO )super.prepareToUpdate( currentRecord );
         if ( dto != null )
-            editIP.setValue( dto.getIp() );
+            editIP.setValue( dto.getApplication() );
         editIP.setFocus( true );
         return dto;
     }
@@ -153,7 +147,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         FormDTO dto = getValue( item );
 
         if ( dto != null ) {
-            item.getChildren().add( new Listcell( dto.getIp() ) );
+            item.getChildren().add( new Listcell( dto.getApplication() ) );
             item.getChildren().add( new Listcell( dto.getDescription() ) );
         }
     }
@@ -162,12 +156,12 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     protected void showRecord( SimpleTableDTO record )
     {
         super.showRecord( record );
-        recordIP.setValue( record != null ? ( ( FormDTO )record ).getIp() : "" );
+        recordIP.setValue( record != null ? ( ( FormDTO )record ).getApplication() : "" );
         btnAddAttach.setDisabled( record == null );
-        listAttachs.setModel( getMediaListModel( ( FormDTO )record ) );
+        listAttachs.setModel( getMediaModel( ( FormDTO )record ) );
         if ( record != null ) {
-            refreshAttachs( ( FormDTO )record );
-            listAdded.setModel( getPenModel( ( FormDTO )record ) );
+            //refreshAttachs( ( FormDTO )record );
+            //listAdded.setModel( getPenModel( ( FormDTO )record ) );
         }
         else {
             listAvailable.getItems().clear();
@@ -187,16 +181,10 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             return;
         FormDTO form = getValue( getListboxRecord().getSelectedItem() );
 
-        try {
-            if ( isPadFile( dto ) ) {
-
-            }
+        if ( isPadFile( dto ) ) {
             MediaDTO addedDTO = getSession().addToForm( getLoggedInUser(), form, dto );
             ListModelList model = ( ListModelList )listAttachs.getModel();
             model.add( addedDTO );
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Upload Error" );
         }
     }
 
@@ -259,16 +247,15 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    protected AbstractListModel getMediaListModel( FormDTO currentForm )
+    protected AbstractListModel getMediaModel( FormDTO currentForm )
     {
         if ( currentForm == null )
             return null;
         List<MediaDTO> list;
         ListModelList model = null;
         try {
-            list = getSession().getMedias( getLoggedInUser(), currentForm );
+            list = getSession().getPADs( getLoggedInUser(), currentForm );
             model = new ListModelList( list );
-            //model.loadPage( 1, list.size() ); /*Neste momento o model não pagina*/
             return model;
         }
         catch ( ApplicationException e ) {
@@ -277,18 +264,8 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    public void onClick$btnAddForm()
-    {
-        moveListitem( listAdded, listAvailable );
-    }
 
-
-    public void onClick$btnRemoveForm()
-    {
-        moveListitem( listAvailable, listAdded );
-    }
-
-
+    /*
     protected void moveListitem( Listbox toListbox, Listbox fromListbox )
     {
         if ( getListboxRecord().getSelectedCount() != 1 )
@@ -320,6 +297,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             showErrorMessage( e.getMessage(), "Formularios Associados" );
         }
     }
+*/
 
     public void onDrop( DropEvent evt )
     {
@@ -334,14 +312,15 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         ( ( Listitem )dragged ).setSelected( true );
         if ( target.equals( listAvailable ) ) {
             //we are removing forms from this pen
-            moveListitem( listAvailable, listAdded );
+            //moveListitem( listAvailable, listAdded );
         }
         else {
             // we are adding forms into this pen
-            moveListitem( listAdded, listAvailable );
+            //moveListitem( listAdded, listAvailable );
         }
     }
 
+    /*
     protected AbstractListModel getAvailablePensListModel( FormDTO current )
     {
         List<PenDTO> list;
@@ -370,7 +349,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         try {
             list = getSession().getPens( getLoggedInUser(), current );
             model = new PenListModel( list );
-            model.loadPage( 1, list.size() ); /*Neste momento o model não pagina*/
+            model.loadPage( 1, list.size() );
             return model;
         }
         catch ( ApplicationException e ) {
@@ -378,6 +357,8 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             return null;
         }
     }
+
+    */
 
     public void onClick$btnRemoveAttach()
     {

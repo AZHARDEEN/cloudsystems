@@ -20,7 +20,7 @@ public class FormListRenderer implements ListitemRenderer
         FormDTO dto = ( FormDTO )data;
 
         item.setValue( dto );
-        item.getChildren().add( new Listcell( dto.getIp() ) );
+        item.getChildren().add( new Listcell( dto.getApplication() ) );
         item.getChildren().add( new Listcell( dto.getDescription() ) );
         if ( isDraggable() )
             item.setDraggable( "true" );

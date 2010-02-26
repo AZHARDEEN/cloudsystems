@@ -1,6 +1,6 @@
 package br.com.mcampos.ejb.cloudsystem.media.Session;
 
-import br.com.mcampos.ejb.cloudsystem.anode.entity.Form;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 
