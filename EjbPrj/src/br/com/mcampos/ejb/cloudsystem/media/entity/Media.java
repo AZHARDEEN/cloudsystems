@@ -24,7 +24,13 @@ import javax.persistence.Table;
 @Table( name = "\"media\"" )
 public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Comparable<Media>
 {
+    @Id
+    @Column( name = "med_id_in", nullable = false )
+    @SequenceGenerator( name = "mediaIdGenerator", sequenceName = "seq_media", allocationSize = 1 )
+    @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "mediaIdGenerator" )
     private Integer id;
+    
+    
     private String mimeType;
     private String name;
     private byte[] object;
@@ -36,10 +42,6 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
     }
 
 
-    @Id
-    @Column( name = "med_id_in", nullable = false )
-    @SequenceGenerator( name = "mediaIdGenerator", sequenceName = "seq_media", allocationSize = 1 )
-    @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "mediaIdGenerator" )
     public Integer getId()
     {
         return id;

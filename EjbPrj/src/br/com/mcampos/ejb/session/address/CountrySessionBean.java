@@ -20,8 +20,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "CountrySession", mappedName = "CloudSystems-EjbPrj-CountrySession" )
-@Remote
-@Local
 public class CountrySessionBean implements CountrySession, CountrySessionLocal
 {
     @PersistenceContext( unitName="EjbPrj" )

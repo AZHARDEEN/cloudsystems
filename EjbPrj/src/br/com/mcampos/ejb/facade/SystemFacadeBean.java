@@ -18,7 +18,6 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
 @Stateless( name = "SystemFacade", mappedName = "CloudSystems-EjbPrj-SystemFacade" )
-@Remote
 public class SystemFacadeBean implements SystemFacade
 {
     @EJB

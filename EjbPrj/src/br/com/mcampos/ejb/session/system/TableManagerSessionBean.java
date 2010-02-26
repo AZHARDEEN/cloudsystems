@@ -30,8 +30,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "TableManagerSession", mappedName = "CloudSystems-EjbPrj-TableManagerSession" )
-@Remote
-@Local
 public class TableManagerSessionBean implements TableManagerSession, TableManagerSessionLocal 
 {
 

@@ -1,7 +1,6 @@
 package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Form;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.FormPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pen;
 import br.com.mcampos.exception.ApplicationException;
 

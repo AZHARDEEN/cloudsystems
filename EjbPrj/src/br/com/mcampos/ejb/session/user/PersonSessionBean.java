@@ -35,7 +35,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "PersonSession", mappedName = "CloudSystems-EjbPrj-PersonSession" )
-@Local
 public class PersonSessionBean implements PersonSessionLocal
 {
 	@PersistenceContext( unitName = "EjbPrj" )

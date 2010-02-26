@@ -20,8 +20,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless( name = "GenderSession", mappedName = "CloudSystems-EjbPrj-GenderSession" )
-@Remote
-@Local
 public class GenderSessionBean implements GenderSession, GenderSessionLocal
 {
     @PersistenceContext( unitName="EjbPrj" )

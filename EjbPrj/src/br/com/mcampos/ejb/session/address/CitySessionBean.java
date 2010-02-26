@@ -22,8 +22,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless( name = "CitySession", mappedName = "CloudSystems-EjbPrj-CitySession" )
-@Remote
-@Local
 public class CitySessionBean implements CitySession, CitySessionLocal
 {
     @PersistenceContext( unitName="EjbPrj" )

@@ -18,7 +18,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless( name = "EmailSession", mappedName = "CloudSystems-EjbPrj-EmailSession" )
-@Local
 public class EmailSessionBean implements EmailSessionLocal
 {
     @PersistenceContext( unitName="EjbPrj" )
