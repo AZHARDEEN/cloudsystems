@@ -1,7 +1,7 @@
 package br.com.mcampos.controller.core;
 
-import br.com.mcampos.dto.security.AuthenticationDTO;
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.locator.ServiceLocator;
 import br.com.mcampos.util.locator.ServiceLocatorException;
@@ -11,17 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
-
 import javax.servlet.http.HttpServletRequest;
-
 import javax.servlet.http.HttpServletResponse;
-
 import javax.servlet.http.HttpSession;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
+
 
 public abstract class BaseController extends GenericForwardComposer
 {
@@ -160,8 +158,8 @@ public abstract class BaseController extends GenericForwardComposer
         if ( parent != null ) {
             if ( SysUtils.isEmpty( parent.getChildren() ) == false )
                 parent.getChildren().clear();
-            Executions.getCurrent().createComponents( uri, parent, parameters );
             setBookmark( uri, parent, parameters );
+            Executions.getCurrent().createComponents( uri, parent, parameters );
         }
         else
             Executions.getCurrent().sendRedirect( uri );
@@ -184,11 +182,6 @@ public abstract class BaseController extends GenericForwardComposer
     protected void gotoPage( String uri, Map parameters )
     {
         gotoPage( uri, null, parameters );
-    }
-
-    public void setRootParent( Component rootParent )
-    {
-        this.rootParent = rootParent;
     }
 
     public Component getRootParent()

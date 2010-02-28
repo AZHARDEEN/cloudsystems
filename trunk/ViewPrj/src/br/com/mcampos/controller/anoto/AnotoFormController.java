@@ -1,15 +1,15 @@
 package br.com.mcampos.controller.anoto;
 
+
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PenListRenderer;
-import br.com.mcampos.dto.anode.FormDTO;
+import br.com.mcampos.dto.anoto.FormDTO;
+import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
-
 import br.com.mcampos.exception.ApplicationException;
-
 import br.com.mcampos.sysutils.SysUtils;
 
 import com.anoto.api.FormatException;
@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.Properties;
 import java.util.Set;
 
 import org.zkoss.zk.ui.Component;
@@ -41,6 +41,7 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
+
 public class AnotoFormController extends SimpleTableController<FormDTO>
 {
     private AnodeFacade session;
@@ -48,6 +49,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     protected Label recordIP;
     Button btnAddAttach;
     Button btnRemoveAttach;
+    Button btnProperties;
     Listbox listAttachs;
     protected Listbox listAvailable;
     protected Listbox listAdded;
@@ -108,6 +110,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     {
         btnAddAttach.setDisabled( true );
         btnRemoveAttach.setDisabled( true );
+        btnProperties.setDisabled( true );
         return getSession().getForms( getLoggedInUser() );
     }
 
@@ -118,6 +121,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         editIP.setValue( "" );
         editIP.setFocus( true );
         btnRemoveAttach.setDisabled( true );
+        btnProperties.setDisabled( true );
     }
 
     @Override
@@ -182,9 +186,15 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         FormDTO form = getValue( getListboxRecord().getSelectedItem() );
 
         if ( isPadFile( dto ) ) {
-            MediaDTO addedDTO = getSession().addToForm( getLoggedInUser(), form, dto );
-            ListModelList model = ( ListModelList )listAttachs.getModel();
-            model.add( addedDTO );
+            MediaDTO addedDTO;
+            try {
+                addedDTO = getSession().addToForm( getLoggedInUser(), form, dto );
+                ListModelList model = ( ListModelList )listAttachs.getModel();
+                model.add( addedDTO );
+            }
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage(), "Adicinar PAD" );
+            }
         }
     }
 
@@ -374,6 +384,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
                 ( ( ListModelList )listAttachs.getModel() ).remove( li.getValue() );
             }
             btnRemoveAttach.setDisabled( true );
+            btnProperties.setDisabled( true );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Remover Media" );
@@ -384,7 +395,22 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     public void onSelect$listAttachs()
     {
         btnRemoveAttach.setDisabled( false );
+        btnProperties.setDisabled( false );
     }
+
+
+    public void onClick$btnProperties()
+    {
+        Listitem item = listAttachs.getSelectedItem();
+
+        if ( item != null && item.getValue() != null ) {
+            PadDTO pad = new PadDTO( getValue( getListboxRecord().getSelectedItem() ), ( MediaDTO )item.getValue() );
+            Properties params = new Properties();
+            params.put( AnotoPADController.padIdParameterName, pad );
+            gotoPage( "/private/admin/anoto/anoto_pad.zul", getRootParent().getParent(), params );
+        }
+    }
+
 
     protected boolean isPadFile( MediaDTO media )
     {
@@ -413,6 +439,11 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             showErrorMessage( e.getMessage(), "NotAllowedException" );
             return false;
         }
+    }
+
+    public void onDoubleClick$listAttachs()
+    {
+        onClick$btnProperties();
     }
 }
 

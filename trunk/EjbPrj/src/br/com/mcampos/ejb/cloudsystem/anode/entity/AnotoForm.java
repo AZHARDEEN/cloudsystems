@@ -1,6 +1,6 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
-import br.com.mcampos.dto.anode.FormDTO;
+import br.com.mcampos.dto.anoto.FormDTO;
 
 
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;

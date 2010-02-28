@@ -1,4 +1,4 @@
-package br.com.mcampos.dto.anode;
+package br.com.mcampos.dto.anoto;
 
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.sysutils.SysUtils;

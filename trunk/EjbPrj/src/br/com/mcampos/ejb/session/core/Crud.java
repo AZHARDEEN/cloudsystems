@@ -106,12 +106,12 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         }
     }
 
-    public List getResultList( String namedQuery ) throws ApplicationException
+    public List<?> getResultList( String namedQuery ) throws ApplicationException
     {
         return getResultList( namedQuery, Collections.emptyList() );
     }
 
-    public List getResultList( String namedQuery, List<Object> list ) throws ApplicationException
+    public List<?> getResultList( String namedQuery, List<Object> list ) throws ApplicationException
     {
         try {
             Query query = getEntityManager().createNamedQuery( namedQuery );

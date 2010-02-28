@@ -52,6 +52,8 @@
     <class>br.com.mcampos.ejb.cloudsystem.entity.entity.FormPen</class>
     <class>br.com.mcampos.ejb.cloudsystem.entity.entity.FormPenMedia</class>
     <class>br.com.mcampos.ejb.cloudsystem.entity.entity.Pen</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anode.entity.Pad</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage</class>
     <properties>
       <property name="eclipselink.target-server" value="WebLogic 10"/>
       <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/PostgreSQLDS"/>

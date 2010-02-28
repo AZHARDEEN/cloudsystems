@@ -1,22 +1,25 @@
 package br.com.mcampos.ejb.cloudsystem.anode.facade;
 
 
-import br.com.mcampos.dto.anode.FormDTO;
-import br.com.mcampos.dto.anode.PenDTO;
+import br.com.mcampos.dto.anoto.AnotoPageDTO;
+import br.com.mcampos.dto.anoto.FormDTO;
+import br.com.mcampos.dto.anoto.PadDTO;
+import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PadPK;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodeFormSessionLocal;
-
-
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodePenSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anode.session.PadSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
-
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+
 @Stateless( name = "AnodeFacade", mappedName = "CloudSystems-EjbPrj-AnodeFacade" )
 public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 {
@@ -38,11 +42,12 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
     @EJB
     private AnodeFormSessionLocal formSession;
-
     @EJB
     private AnodePenSessionLocal penSession;
     @EJB
     private MediaSessionLocal mediaSession;
+    @EJB
+    private PadSessionLocal padSession;
 
     public AnodeFacadeBean()
     {
@@ -77,6 +82,45 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         authenticate( auth );
         return formSession.update( DTOFactory.copy( entity ) ).toDTO();
     }
+
+
+    public MediaDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException
+    {
+        authenticate( auth );
+        /*
+         * As etapas para adicionar um pad:
+         * 1) Verificar a existência do formulário.
+         * 2) Inserir a mídia.
+         * 3) Vincular o formulário à midia
+         */
+        AnotoForm form = formSession.get( entity.getId() );
+        Media media = mediaSession.add( DTOFactory.copy( pad ) );
+        media = formSession.addPadFile( form, media );
+
+        return media.toDTO();
+    }
+
+    public MediaDTO removeFromForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException
+    {
+        authenticate( auth );
+        /*
+         * As etapas para adicionar um pad:
+         * 1) Verificar a existência do formulário.
+         * 2) Inserir a mídia.
+         * 3) Vincular o formulário à midia
+         */
+        AnotoForm form = formSession.get( entity.getId() );
+        Media media = mediaSession.get( pad.getId() );
+        return formSession.removePadFile( form, media ).toDTO();
+    }
+
+    public List<MediaDTO> getPADs( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoForm entity = formSession.get( form.getId() );
+        return toMediaList( formSession.getPADs( entity ) );
+    }
+
 
     protected EntityManager getEntityManager()
     {
@@ -185,5 +229,35 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         authenticate( auth );
         return mediaSession.getObject( key.getId() );
     }
+
+    /* *************************************************************************
+     * *************************************************************************
+     *
+     * OPERACAO EM Páginas
+     *
+     * *************************************************************************
+     * *************************************************************************
+     */
+
+    protected List<AnotoPageDTO> toPageList( List<AnotoPage> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<AnotoPageDTO> dtoList = new ArrayList<AnotoPageDTO>( list.size() );
+        for ( AnotoPage f : list ) {
+            dtoList.add( f.toDTO() );
+        }
+        return dtoList;
+    }
+
+    public List<AnotoPageDTO> getPages( AuthenticationDTO auth, PadDTO pad ) throws ApplicationException
+    {
+        authenticate( auth );
+        PadPK key = new PadPK( pad.getFormId(), pad.getId() );
+        Pad entity = padSession.get( key );
+
+        return toPageList( padSession.getPages( entity ) );
+    }
+
 }
 
