@@ -33,12 +33,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
-
-import javax.media.jai.RenderableOp;
-import javax.media.jai.RenderedOp;
-
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -125,47 +119,6 @@ public class AnotoPcgController extends LoggedBaseController
                 f = null;
             }
         }
-    }
-
-
-    protected RenderableImage createRenderable( RenderedImage image )
-    {
-        ParameterBlock pb = new ParameterBlock();
-
-
-        pb.addSource( image );
-        pb.add( null ).add( null ).add( null ).add( null ).add( null );
-        //RenderingHints qualityHints = new RenderingHints( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY );
-        RenderingHints qualityHints = new RenderingHints( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED );
-        RenderableImage out = JAI.createRenderable( "renderable", pb, qualityHints );
-        return out;
-    }
-
-    protected RenderedImage mergeImages( RenderableImage img1, RenderableImage img2 )
-    {
-        ParameterBlock pb = new ParameterBlock();
-        pb.addSource( img1 );
-        pb.addSource( img2 );
-        RenderingHints qualityHints = new RenderingHints( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED );
-        RenderableOp result = JAI.createRenderable( "and", pb );
-        RenderedImage image = result.createScaledRendering( 3402, 4398, qualityHints );
-        return image;
-    }
-
-    public RenderedOp scaleImage( RenderedOp image )
-    {
-        float modifier = 2F;
-
-        ParameterBlock params = new ParameterBlock();
-        params.addSource( image );
-
-        params.add( modifier ); //x scale factor
-        params.add( modifier ); //y scale factor
-        params.add( 0.0F ); //x translate
-        params.add( 0.0F ); //y translate
-        params.add( new InterpolationNearest() ); //interpolation method
-
-        return JAI.create( "scale", params );
     }
 
 

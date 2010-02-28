@@ -27,7 +27,7 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
     {
         List<Object> parameter = new ArrayList<Object>( 1 );
         parameter.add( pad );
-        List<AnotoPage> pageList = ( List<AnotoPage> )getResultList( Pad.padFindAllNamedQuery, parameter );
+        List<AnotoPage> pageList = ( List<AnotoPage> )getResultList( AnotoPage.padPagesGetAllNamedQuery, parameter );
         return pageList;
     }
 
@@ -35,4 +35,6 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
     {
         return get( Pad.class, key );
     }
+
+
 }
