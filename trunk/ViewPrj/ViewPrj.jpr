@@ -226,7 +226,7 @@
             <value n="name" v="web"/>
             <value n="runActiveFile" v="false"/>
             <value n="saveAllBeforeRun" v="true"/>
-            <url n="targetURL" path="public_html/index.html"/>
+            <value n="targetURL"/>
          </hash>
       </hash>
       <list n="runConfigurationList">
