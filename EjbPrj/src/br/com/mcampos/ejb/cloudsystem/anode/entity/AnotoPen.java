@@ -1,6 +1,6 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
-import br.com.mcampos.dto.anode.PenDTO;
+import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import br.com.mcampos.sysutils.SysUtils;

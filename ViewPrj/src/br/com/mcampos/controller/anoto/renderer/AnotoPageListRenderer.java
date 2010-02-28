@@ -1,27 +1,24 @@
 package br.com.mcampos.controller.anoto.renderer;
 
-import br.com.mcampos.dto.anoto.FormDTO;
 
-import br.com.mcampos.dto.system.MediaDTO;
-
-import java.util.List;
+import br.com.mcampos.dto.anoto.AnotoPageDTO;
 
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
-public class MediaListRenderer implements ListitemRenderer
+public class AnotoPageListRenderer implements ListitemRenderer
 {
-    public MediaListRenderer()
+    public AnotoPageListRenderer()
     {
         super();
     }
 
     public void render( Listitem item, Object data ) throws Exception
     {
-        MediaDTO dto = ( MediaDTO )data;
+        AnotoPageDTO dto = ( AnotoPageDTO )data;
 
         item.setValue( dto );
-        item.getChildren().add( new Listcell( dto.getName() ) );
+        item.getChildren().add( new Listcell( dto.getPageAddress() ) );
     }
 }

@@ -21,7 +21,7 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "Media.findAll", query = "select o from Media o" ) } )
-@Table( name = "\"media\"" )
+@Table( name = "media" )
 public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Comparable<Media>
 {
     @Id
@@ -29,12 +29,23 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
     @SequenceGenerator( name = "mediaIdGenerator", sequenceName = "seq_media", allocationSize = 1 )
     @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "mediaIdGenerator" )
     private Integer id;
-    
-    
+
+
+    @Column( name = "med_mime_ch" )
     private String mimeType;
+
+
+    @Column( name = "med_name_ch", nullable = false )
     private String name;
+
+    @Lob
+    @Column( name = "med_object_bin", nullable = false )
     private byte[] object;
+
+    @Column( name = "med_size_in" )
     private Integer size;
+
+    @Column( name = "med_format_ch" )
     private String format;
 
     public Media()
@@ -53,7 +64,6 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
         return this;
     }
 
-    @Column( name = "med_mime_ch" )
     public String getMimeType()
     {
         return mimeType;
@@ -65,7 +75,6 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
         return this;
     }
 
-    @Column( name = "med_name_ch", nullable = false )
     public String getName()
     {
         return name;
@@ -79,8 +88,6 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
         return this;
     }
 
-    @Lob
-    @Column( name = "med_object_bin", nullable = false )
     public byte[] getObject()
     {
         return object;
@@ -113,7 +120,6 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
         return this;
     }
 
-    @Column( name = "med_size_in" )
     public Integer getSize()
     {
         return size;
@@ -125,7 +131,6 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
         return this;
     }
 
-    @Column( name = "med_format_ch" )
     public String getFormat()
     {
         return format;

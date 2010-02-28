@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoFormController">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoPADController">
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:20px;color:#0C7A9A" value="Anoto - Formulários"/>
+                    <label style="font-size:20px;color:#0C7A9A" value="Anoto - Dados do Arquivo PAD"/>
                 </vbox>
             </north>
             <west size="50%" splittable="true" flex="true">

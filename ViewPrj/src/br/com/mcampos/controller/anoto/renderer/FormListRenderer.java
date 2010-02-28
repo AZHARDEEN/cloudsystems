@@ -1,6 +1,6 @@
 package br.com.mcampos.controller.anoto.renderer;
 
-import br.com.mcampos.dto.anode.FormDTO;
+import br.com.mcampos.dto.anoto.FormDTO;
 
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;

@@ -1,8 +1,8 @@
 package br.com.mcampos.controller.anoto.model;
 
 import br.com.mcampos.controller.admin.users.model.AbstractPagingListModel;
-import br.com.mcampos.dto.anode.FormDTO;
-import br.com.mcampos.dto.anode.PenDTO;
+import br.com.mcampos.dto.anoto.FormDTO;
+import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 

@@ -3,15 +3,17 @@ package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.session.core.Crud;
-
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 
 @Stateless( name = "AnodePenSession", mappedName = "CloudSystems-EjbPrj-AnodePenSession" )
+@TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class AnodePenSessionBean extends Crud<String, AnotoPen> implements AnodePenSessionLocal
 {
     public AnodePenSessionBean()
