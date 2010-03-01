@@ -18,7 +18,8 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "AnotoPenPage.findAll", query = "select o from AnotoPenPage o" ),
-                 @NamedQuery( name = AnotoPenPage.pageAvailablePensQueryName, query = "select o from AnotoPenPage o where o.page <> ?1" ),
+                 @NamedQuery( name = AnotoPenPage.pageAvailablePensQueryName,
+                              query = "select o from AnotoPenPage o where o.page <> ?1" ),
                  @NamedQuery( name = AnotoPenPage.pagePensQueryName, query = "select o from AnotoPenPage o where o.page = ?1" ) } )
 @Table( name = "anoto_pen_page" )
 @IdClass( AnotoPenPagePK.class )
@@ -56,9 +57,10 @@ public class AnotoPenPage implements Serializable
     {
     }
 
-    public AnotoPenPage( AnotoPen pen )
+    public AnotoPenPage( AnotoPen pen, AnotoPage page )
     {
         setPen( pen );
+        setPage( page );
     }
 
     public AnotoPenPage( String apg_id_ch, Integer frm_id_in, Integer pad_id_in, Timestamp pdp_insert_dt, String pen_id_ch )

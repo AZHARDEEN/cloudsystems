@@ -287,6 +287,34 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return padSession.addImage( pageEntity, imageEntity ).toDTO();
     }
 
+
+    protected List<AnotoPen> loadPenEntityList( List<PenDTO> pens ) throws ApplicationException
+    {
+        List<AnotoPen> entities = new ArrayList<AnotoPen>( pens.size() );
+        for ( PenDTO pen : pens ) {
+            entities.add( penSession.get( pen.getId() ) );
+        }
+        return entities;
+    }
+
+    public void removePens( AuthenticationDTO auth, AnotoPageDTO page, List<PenDTO> pens ) throws ApplicationException
+    {
+        authenticate( auth );
+
+        List<AnotoPen> entities = loadPenEntityList( pens );
+        AnotoPage pageEntity = padSession.getPage( new AnotoPagePK( page ) );
+        padSession.removePens( pageEntity, entities );
+    }
+
+    public void addPens( AuthenticationDTO auth, AnotoPageDTO page, List<PenDTO> pens ) throws ApplicationException
+    {
+        authenticate( auth );
+        List<AnotoPen> entities = loadPenEntityList( pens );
+        AnotoPage pageEntity = padSession.getPage( new AnotoPagePK( page ) );
+        padSession.addPens( pageEntity, entities );
+    }
+
+
     public List<PenDTO> getAvailablePens( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
     {
         authenticate( auth );
