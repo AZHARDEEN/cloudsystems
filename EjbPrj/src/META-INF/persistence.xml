@@ -54,12 +54,11 @@
     <class>br.com.mcampos.ejb.cloudsystem.entity.entity.Pen</class>
     <class>br.com.mcampos.ejb.cloudsystem.anode.entity.Pad</class>
     <class>br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anode.entity.BackgroundImage</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage</class>
     <properties>
       <property name="eclipselink.target-server" value="WebLogic 10"/>
       <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/PostgreSQLDS"/>
-      <property name="eclipselink.target-database" value="PostgreSQL"/>
-      <property name="eclipselink.jdbc.native-sql" value="true"/>
-      <property name="eclipselink.jdbc.uppercase-columns" value="true"/>
       <property name="eclipselink.cache.type.default" value="SoftWeak"/>
     </properties>
   </persistence-unit>

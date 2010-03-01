@@ -1,0 +1,486 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<table xmlns="http://xmlns.oracle.com/jdeveloper/1111/offlinedb">
+  <ID class="oracle.javatools.db.IdentifierBasedID">
+    <identifier class="java.lang.String">ed0da362-6f00-44be-8dd0-c4d889c6e91a</identifier>
+  </ID>
+  <name>anoto_pen_page</name>
+  <columns>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">9926faa0-ef9c-46e7-b91f-9d185fe19f02</identifier>
+      </ID>
+      <name>pen_id_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">d19e78fd-356c-45fd-ba64-74c8b7d0c3a8</identifier>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">16</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>pen_id_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>anoto_pen_page</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>pen_id_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>anoto_pen_page</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">0691c844-ec9a-43ec-9ca1-f854a9dd7b45</identifier>
+      </ID>
+      <name>pdp_insert_dt</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">d7bc3d30-5400-4d10-94c9-92a3bc466d16</identifier>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>DATE</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>pdp_insert_dt</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>anoto_pen_page</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <default class="java.lang.String">now()</default>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>pdp_insert_dt</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>anoto_pen_page</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">73c66826-146a-404a-8b9e-ef9506068c3a</identifier>
+      </ID>
+      <name>frm_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">b2766416-2592-4438-b291-53e972bc8063</identifier>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>frm_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>anoto_pen_page</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>frm_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>anoto_pen_page</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">d1163881-d192-479f-9b00-f1054e518e36</identifier>
+      </ID>
+      <name>apg_id_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">2950049e-aea9-4946-9832-4ddecba27077</identifier>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">16</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>apg_id_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>anoto_pen_page</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>apg_id_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>anoto_pen_page</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">a86f765c-a458-4bbc-82d0-0a29cb93ff2a</identifier>
+      </ID>
+      <name>pad_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">392b82c3-9639-4cc9-8555-66a31f53897a</identifier>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>pad_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>anoto_pen_page</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>Comment</key>
+          <value class="java.lang.String">Código sequencial da media. Este código é gerado por sequence (seq_media).</value>
+        </entry>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>pad_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>anoto_pen_page</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+  </columns>
+  <constraints>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">222afc91-baba-41f0-b91b-a0987508432a</identifier>
+      </ID>
+      <name>fk_pen_pads</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>pen_id_ch</name>
+          <identifier class="java.lang.String">9926faa0-ef9c-46e7-b91f-9d185fe19f02</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>anoto_pen_page</name>
+            <identifier class="java.lang.String">ed0da362-6f00-44be-8dd0-c4d889c6e91a</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>fk_pen_pads</name>
+            <childObjectNames>
+              <childObjectName>pen_id_ch</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>anoto_pen_page</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>xpkanoto_pens</name>
+        <identifier class="java.lang.String">4ee8434a-c489-4155-b19a-9c44aaf7d21f</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>anoto_pen</name>
+          <identifier class="java.lang.String">c0d3f1f7-9935-4d55-92ee-363ba53ab2c7</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">956389eb-fc0c-43d9-ad6c-13b4a1119a46</identifier>
+      </ID>
+      <name>r_149</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>frm_id_in</name>
+          <identifier class="java.lang.String">73c66826-146a-404a-8b9e-ef9506068c3a</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>anoto_pen_page</name>
+            <identifier class="java.lang.String">ed0da362-6f00-44be-8dd0-c4d889c6e91a</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>apg_id_ch</name>
+          <identifier class="java.lang.String">d1163881-d192-479f-9b00-f1054e518e36</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>anoto_pen_page</name>
+            <identifier class="java.lang.String">ed0da362-6f00-44be-8dd0-c4d889c6e91a</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>pad_id_in</name>
+          <identifier class="java.lang.String">a86f765c-a458-4bbc-82d0-0a29cb93ff2a</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>anoto_pen_page</name>
+            <identifier class="java.lang.String">ed0da362-6f00-44be-8dd0-c4d889c6e91a</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>r_149</name>
+            <childObjectNames>
+              <childObjectName>frm_id_in</childObjectName>
+              <childObjectName>apg_id_ch</childObjectName>
+              <childObjectName>pad_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>anoto_pen_page</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>anotopages_pk</name>
+        <identifier class="java.lang.String">d1ba56c6-aa77-4ba6-8684-f0d05eaf6eb2</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>anoto_page</name>
+          <identifier class="java.lang.String">09b9d2d6-cb72-49cb-9112-4c78a144ae14</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">68e5b6f8-e8e6-4486-b72c-c0242f4eb8e4</identifier>
+      </ID>
+      <name>formpenpad_pk</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>pen_id_ch</name>
+          <identifier class="java.lang.String">9926faa0-ef9c-46e7-b91f-9d185fe19f02</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>anoto_pen_page</name>
+            <identifier class="java.lang.String">ed0da362-6f00-44be-8dd0-c4d889c6e91a</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>frm_id_in</name>
+          <identifier class="java.lang.String">73c66826-146a-404a-8b9e-ef9506068c3a</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>anoto_pen_page</name>
+            <identifier class="java.lang.String">ed0da362-6f00-44be-8dd0-c4d889c6e91a</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>apg_id_ch</name>
+          <identifier class="java.lang.String">d1163881-d192-479f-9b00-f1054e518e36</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>anoto_pen_page</name>
+            <identifier class="java.lang.String">ed0da362-6f00-44be-8dd0-c4d889c6e91a</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>pad_id_in</name>
+          <identifier class="java.lang.String">a86f765c-a458-4bbc-82d0-0a29cb93ff2a</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>anoto_pen_page</name>
+            <identifier class="java.lang.String">ed0da362-6f00-44be-8dd0-c4d889c6e91a</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>formpenpad_pk</name>
+            <childObjectNames>
+              <childObjectName>pen_id_ch</childObjectName>
+              <childObjectName>frm_id_in</childObjectName>
+              <childObjectName>apg_id_ch</childObjectName>
+              <childObjectName>pad_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>anoto_pen_page</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>PKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+    </constraint>
+  </constraints>
+  <properties>
+    <entry>
+      <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+      <value class="oracle.javatools.db.ReferenceID">
+        <name>anoto_pen_page</name>
+        <schemaName>db_cloud</schemaName>
+        <type>TABLE</type>
+      </value>
+    </entry>
+    <entry>
+      <key>TableType</key>
+      <value class="oracle.javatools.db.Table$TableType">NORMAL</value>
+    </entry>
+  </properties>
+  <schema>
+    <name>db_cloud</name>
+  </schema>
+</table>

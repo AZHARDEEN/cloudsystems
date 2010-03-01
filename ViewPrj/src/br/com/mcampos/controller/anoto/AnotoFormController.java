@@ -47,10 +47,10 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     private AnodeFacade session;
     protected Textbox editIP;
     protected Label recordIP;
-    Button btnAddAttach;
-    Button btnRemoveAttach;
-    Button btnProperties;
-    Listbox listAttachs;
+    protected Button btnAddAttach;
+    protected Button btnRemoveAttach;
+    protected Button btnProperties;
+    protected Listbox listAttachs;
     protected Listbox listAvailable;
     protected Listbox listAdded;
 

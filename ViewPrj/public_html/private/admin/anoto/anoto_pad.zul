@@ -14,7 +14,7 @@
                     <!-- Por favor, nao mude o id desta listbox -->
                     <listbox id="listboxRecord" vflex="true">
                         <listhead sizable="true">
-                            <listheader id="recordListIdSort" align="left" label="Endereçco" sort="auto" width="140px"/>
+                            <listheader id="recordListIdSort" align="left" label="Endereço" sort="auto" width="140px"/>
                             <listheader id="recordListDescSort" align="left" label="Descrição" sort="auto"/>
                         </listhead>
                     </listbox>
@@ -65,21 +65,55 @@
                         <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
                     </div>
                     <separator height="30px"/>
-                    <panel id="detailDiv" title="Imagens de Fundo">
+                    <panel id="detailDiv" title="Vínculos">
                         <panelchildren>
-                            <toolbar>
-                                <toolbarbutton id="btnAddAttach" label="Adicionar" disabled="true" upload="true,native"
-                                               image="/img/icontexto-webdev-add-016x016.png"/>
-                                <toolbarbutton id="btnRemoveAttach" label="Remover" disabled="true"
-                                               image="/img/icontexto-webdev-remove-016x016.png"/>
-                                <toolbarbutton id="btnProperties" label="Propriedades" disabled="true"
-                                               image="/img/icontexto-webdev-alert-016x016.png"/>
-                            </toolbar>
-                            <listbox id="listAttachs" fixedLayout="true" height="200px">
-                                <listhead sizable="true">
-                                    <listheader align="left" label="Nome"/>
-                                </listhead>
-                            </listbox>
+                            <tabbox id="associationTab">
+                                <tabs>
+                                    <tab label="Arquivos"/>
+                                    <tab label="Canetas"/>
+                                </tabs>
+                                <tabpanels>
+                                    <tabpanel>
+                                        <toolbar>
+                                            <toolbarbutton id="btnAddAttach" label="Adicionar" disabled="true" upload="true,native"
+                                                           image="/img/icontexto-webdev-add-016x016.png"/>
+                                            <toolbarbutton id="btnRemoveAttach" label="Remover" disabled="true"
+                                                           image="/img/icontexto-webdev-remove-016x016.png"/>
+                                            <toolbarbutton id="btnProperties" label="Propriedades" disabled="true"
+                                                           image="/img/icontexto-webdev-alert-016x016.png"/>
+                                        </toolbar>
+                                        <listbox id="listAttachs" fixedLayout="true" height="200px">
+                                            <listhead sizable="true">
+                                                <listheader align="left" label="Nome"/>
+                                            </listhead>
+                                        </listbox>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <hbox>
+                                            <vbox>
+                                                <label value="Associadas"/>
+                                                <listbox id="listAdded" fixedLayout="true" height="200px" droppable="true">
+                                                    <listhead sizable="true">
+                                                        <listheader align="left" label="Código"/>
+                                                    </listhead>
+                                                </listbox>
+                                            </vbox>
+                                            <vbox>
+                                                <button image="/img/icontexto-webdev-arrow-left-032x032.png" id="btnAddPen"/>
+                                                <button image="/img/icontexto-webdev-arrow-right-032x032.png" id="btnRemovePen"/>
+                                            </vbox>
+                                            <vbox>
+                                                <label value="Disponíveis"/>
+                                                <listbox fixedLayout="true" id="listAvailable" height="200px" droppable="true">
+                                                    <listhead sizable="true">
+                                                        <listheader align="left" label="Código"/>
+                                                    </listhead>
+                                                </listbox>
+                                            </vbox>
+                                        </hbox>
+                                    </tabpanel>
+                                </tabpanels>
+                            </tabbox>
                         </panelchildren>
                     </panel>
                 </div>

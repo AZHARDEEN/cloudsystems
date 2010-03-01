@@ -1,9 +1,9 @@
 package br.com.mcampos.controller.anoto;
 
-import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
+import br.com.mcampos.controller.admin.tables.BasicListController;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 
-public abstract class AnotoBaseController<DTO> extends SimpleTableController<DTO>
+public abstract class AnotoBaseController<DTO> extends BasicListController<DTO>
 {
     private AnodeFacade session;
 
