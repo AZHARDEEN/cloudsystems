@@ -78,4 +78,13 @@ public interface AnodeFacade
 
     List<AnotoPageDTO> getPages( AuthenticationDTO auth, PadDTO pad ) throws ApplicationException;
 
+    List<MediaDTO> getImages( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException;
+
+    MediaDTO removeFromPage( AuthenticationDTO auth, AnotoPageDTO page, MediaDTO image ) throws ApplicationException;
+
+    MediaDTO addToPage( AuthenticationDTO auth, AnotoPageDTO page, MediaDTO image ) throws ApplicationException;
+
+    List<PenDTO> getAvailablePens( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException;
+
+    List<PenDTO> getPens( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException;
 }

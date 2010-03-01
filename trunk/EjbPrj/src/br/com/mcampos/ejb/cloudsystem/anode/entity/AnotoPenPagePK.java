@@ -1,40 +1,31 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
-
-import br.com.mcampos.dto.anoto.AnotoPageDTO;
-
 import java.io.Serializable;
 
-public class AnotoPagePK implements Serializable
+public class AnotoPenPagePK implements Serializable
 {
     private String pageAddress;
     private Integer formId;
     private Integer padId;
+    private String penId;
 
-    public AnotoPagePK()
+    public AnotoPenPagePK()
     {
     }
 
-    public AnotoPagePK( AnotoPageDTO dto )
-    {
-        setPageAddress( dto.getPageAddress() );
-        setFormId( dto.getFormId() );
-        setPadId( dto.getPadId() );
-    }
-
-
-    public AnotoPagePK( String apg_id_ch, Integer frm_id_in, Integer pad_id_in )
+    public AnotoPenPagePK( String apg_id_ch, Integer frm_id_in, Integer pad_id_in, String pen_id_ch )
     {
         this.pageAddress = apg_id_ch;
         this.formId = frm_id_in;
         this.padId = pad_id_in;
+        this.penId = pen_id_ch;
     }
 
     public boolean equals( Object other )
     {
-        if ( other instanceof AnotoPagePK ) {
-            final AnotoPagePK otherAnotoPagePK = ( AnotoPagePK )other;
-            final boolean areEqual = ( otherAnotoPagePK.pageAddress.equals( pageAddress ) && otherAnotoPagePK.formId.equals( formId ) && otherAnotoPagePK.padId.equals( padId ) );
+        if ( other instanceof AnotoPenPagePK ) {
+            final AnotoPenPagePK otherAnotoPenPagePK = ( AnotoPenPagePK )other;
+            final boolean areEqual = ( otherAnotoPenPagePK.pageAddress.equals( pageAddress ) && otherAnotoPenPagePK.formId.equals( formId ) && otherAnotoPenPagePK.padId.equals( padId ) && otherAnotoPenPagePK.penId.equals( penId ) );
             return areEqual;
         }
         return false;
@@ -73,5 +64,15 @@ public class AnotoPagePK implements Serializable
     void setPadId( Integer pad_id_in )
     {
         this.padId = pad_id_in;
+    }
+
+    String getPenId()
+    {
+        return penId;
+    }
+
+    void setPenId( String pen_id_ch )
+    {
+        this.penId = pen_id_ch;
     }
 }

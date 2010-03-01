@@ -1,24 +1,21 @@
 package br.com.mcampos.ejb.session.core;
 
-import br.com.mcampos.exception.ApplicationException;
 
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import java.util.Map;
-
-import java.util.Properties;
-
 import javax.ejb.TransactionAttribute;
-
 import javax.ejb.TransactionAttributeType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 
 @TransactionAttribute( TransactionAttributeType.SUPPORTS )
 public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
@@ -110,6 +107,14 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
     {
         return getResultList( namedQuery, Collections.emptyList() );
     }
+
+    public List<?> getResultList( String namedQuery, Object param ) throws ApplicationException
+    {
+        List<Object> parameter = new ArrayList<Object>( 1 );
+        parameter.add( param );
+        return getResultList( namedQuery, parameter );
+    }
+
 
     public List<?> getResultList( String namedQuery, List<Object> list ) throws ApplicationException
     {

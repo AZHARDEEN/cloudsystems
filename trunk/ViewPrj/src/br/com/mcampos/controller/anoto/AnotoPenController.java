@@ -1,29 +1,25 @@
 package br.com.mcampos.controller.anoto;
 
+
 import br.com.mcampos.controller.admin.tables.BasicListController;
-import br.com.mcampos.controller.anoto.renderer.FormListRenderer;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
 
-
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
+
 public class AnotoPenController extends BasicListController<PenDTO>
 {
     protected Textbox editId;
+    protected Label recordId;
     private AnodeFacade session;
-    protected Listbox listAvailable;
-    protected Listbox listAdded;
-    protected Button btnAddForm;
-    protected Button btnRemoveForm;
 
     public AnotoPenController()
     {
@@ -40,14 +36,12 @@ public class AnotoPenController extends BasicListController<PenDTO>
     protected void showRecord( PenDTO record )
     {
         if ( record != null ) {
-            editId.setValue( record.getId() );
+            recordId.setValue( record.getId() );
             //listAvailable.setModel( getAvailableFormsListModel( record ) );
             //listAdded.setModel( getFormModel( record ) );
         }
         else {
-            editId.setValue( "" );
-            listAvailable.getItems().clear();
-            listAdded.getItems().clear();
+            recordId.setValue( "" );
         }
     }
 
@@ -120,30 +114,6 @@ public class AnotoPenController extends BasicListController<PenDTO>
         super.doAfterCompose( comp );
         /*We do not need update by now*/
         cmdUpdate.setVisible( false );
-        if ( listAvailable != null ) {
-            listAvailable.setItemRenderer( ( new FormListRenderer() ).setDraggable( true ) );
-            /*
-            listAvailable.addEventListener( Events.ON_DROP, new EventListener()
-                {
-                    public void onEvent( Event event ) throws Exception
-                    {
-                        onDrop( ( ( DropEvent )event ) );
-                    }
-                } );
-            */
-        }
-
-        if ( listAdded != null ) {
-            listAdded.setItemRenderer( ( new FormListRenderer() ).setDraggable( true ) );
-            /*
-            listAdded.addEventListener( Events.ON_DROP, new EventListener()
-                {
-                    public void onEvent( Event event ) throws Exception
-                    {
-                        onDrop( ( ( DropEvent )event ) );
-                    }
-                } );*/
-        }
     }
     /*
     protected void moveListitem( Listbox toListbox, Listbox fromListbox )

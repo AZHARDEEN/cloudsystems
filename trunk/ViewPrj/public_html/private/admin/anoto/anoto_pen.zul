@@ -55,31 +55,6 @@
                         <separator/>
                         <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
                     </div>
-                    <separator height="30px"/>
-                    <hbox height="100%">
-                        <vbox>
-                            <label value="Associados"/>
-                            <listbox fixedLayout="true" id="listAdded" droppable="true" height="200px" multiple="true">
-                                <listhead sizable="true">
-                                    <listheader align="left" label="Código" width="120px"/>
-                                    <listheader align="left" label="Descrição"/>
-                                </listhead>
-                            </listbox>
-                        </vbox>
-                        <vbox>
-                            <button image="/img/icontexto-webdev-arrow-left-032x032.png" id="btnAddForm"/>
-                            <button image="/img/icontexto-webdev-arrow-right-032x032.png" id="btnRemoveForm"/>
-                        </vbox>
-                        <vbox height="100%">
-                            <label value="Disponíveis"/>
-                            <listbox id="listAvailable" droppable="true" height="200px" fixedLayout="true" multiple="true">
-                                <listhead sizable="true">
-                                    <listheader align="left" label="Código" width="120px"/>
-                                    <listheader align="left" label="Descrição"/>
-                                </listhead>
-                            </listbox>
-                        </vbox>
-                    </hbox>
                 </div>
             </center>
         </borderlayout>

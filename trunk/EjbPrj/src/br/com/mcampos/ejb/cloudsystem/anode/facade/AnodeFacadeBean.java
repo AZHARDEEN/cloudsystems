@@ -9,6 +9,7 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PadPK;
@@ -28,12 +29,15 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 
 @Stateless( name = "AnodeFacade", mappedName = "CloudSystems-EjbPrj-AnodeFacade" )
+@TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 {
     @PersistenceContext( unitName = "EjbPrj" )
@@ -259,5 +263,44 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return toPageList( padSession.getPages( entity ) );
     }
 
+
+    public List<MediaDTO> getImages( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoPagePK key = new AnotoPagePK( page );
+        AnotoPage entity = padSession.getPage( key );
+        return toMediaList( padSession.getImages( entity ) );
+    }
+
+    public MediaDTO removeFromPage( AuthenticationDTO auth, AnotoPageDTO page, MediaDTO image ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoPage pageEntity = padSession.getPage( new AnotoPagePK( page ) );
+        return padSession.removeImage( pageEntity, mediaSession.get( image.getId() ) ).toDTO();
+    }
+
+    public MediaDTO addToPage( AuthenticationDTO auth, AnotoPageDTO page, MediaDTO image ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoPage pageEntity = padSession.getPage( new AnotoPagePK( page ) );
+        Media imageEntity = mediaSession.add( DTOFactory.copy( image ) );
+        return padSession.addImage( pageEntity, imageEntity ).toDTO();
+    }
+
+    public List<PenDTO> getAvailablePens( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoPagePK key = new AnotoPagePK( page );
+        AnotoPage entity = padSession.getPage( key );
+        return toPenList( padSession.getAvailablePens( entity ) );
+    }
+
+    public List<PenDTO> getPens( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoPagePK key = new AnotoPagePK( page );
+        AnotoPage entity = padSession.getPage( key );
+        return toPenList( padSession.getPens( entity ) );
+    }
 }
 
