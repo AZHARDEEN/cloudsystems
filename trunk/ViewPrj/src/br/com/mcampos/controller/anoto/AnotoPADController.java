@@ -307,13 +307,10 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
                 Listitem li = ( Listitem )it.next();
                 itens.add( ( PenDTO )li.getValue() );
             }
-            /*
             if ( toListbox.equals( listAvailable ) )
-                getSession().removeFromPage( getLoggedInUser(), currentForm, itens );
+                getSession().removePens( getLoggedInUser(), currentForm, itens );
             else
-                getSession().insertIntoPage( getLoggedInUser(), currentForm, itens );
-            */
-
+                getSession().addPens( getLoggedInUser(), currentForm, itens );
             for ( Iterator it = al.iterator(); it.hasNext(); ) {
                 Listitem li = ( Listitem )it.next();
                 li.setSelected( false );

@@ -5,6 +5,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.BackgroundImage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.BackgroundImagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
@@ -70,8 +71,8 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
 
     public Media removeImage( AnotoPage pageEntity, Media image ) throws ApplicationException
     {
-        BackgroundImage removeEntity = getEntityManager()
-            .find( BackgroundImage.class, new BackgroundImagePK( pageEntity, image ) );
+        BackgroundImage removeEntity =
+            getEntityManager().find( BackgroundImage.class, new BackgroundImagePK( pageEntity, image ) );
         getEntityManager().remove( removeEntity.getMedia() );
         getEntityManager().remove( removeEntity );
         return image;
@@ -107,7 +108,8 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         Query query;
         List<AnotoPen> list;
 
-        sqlQuery = "SELECT pen_id_ch , pen_insert_dt  FROM anoto_pen WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 AND 	PAD_ID_IN = ?2 AND 	APG_ID_CH = ?3 )";
+        sqlQuery =
+                "SELECT pen_id_ch , pen_insert_dt  FROM anoto_pen WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 AND 	PAD_ID_IN = ?2 AND 	APG_ID_CH = ?3 )";
         query = getEntityManager().createNativeQuery( sqlQuery, AnotoPen.class );
         query.setParameter( 1, page.getFormId() );
         query.setParameter( 2, page.getPadId() );
@@ -128,5 +130,28 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         return makePenList( list );
     }
 
+    public void addPens( AnotoPage page, List<AnotoPen> pens ) throws ApplicationException
+    {
+        AnotoPenPage entity;
+
+        for ( AnotoPen pen : pens ) {
+            entity = new AnotoPenPage( pen, page );
+            getEntityManager().persist( entity );
+        }
+    }
+
+    public void removePens( AnotoPage page, List<AnotoPen> pens ) throws ApplicationException
+    {
+        AnotoPenPage entity;
+        AnotoPenPagePK key = new AnotoPenPagePK();
+
+        key.setPage( page );
+        for ( AnotoPen pen : pens ) {
+            key.setPen( pen );
+            entity = getEntityManager().find( AnotoPenPage.class, key );
+            if ( entity != null )
+                getEntityManager().remove( entity );
+        }
+    }
 
 }

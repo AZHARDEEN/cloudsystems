@@ -32,4 +32,8 @@ public interface PadSessionLocal
     List<AnotoPen> getAvailablePens( AnotoPage page ) throws ApplicationException;
 
     List<AnotoPen> getPens( AnotoPage page ) throws ApplicationException;
+
+    void addPens( AnotoPage page, List<AnotoPen> pens ) throws ApplicationException;
+
+    void removePens( AnotoPage page, List<AnotoPen> pens ) throws ApplicationException;
 }
