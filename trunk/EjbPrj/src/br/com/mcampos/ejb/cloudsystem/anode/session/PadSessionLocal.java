@@ -2,10 +2,11 @@ package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPagePK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.PadPK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -36,4 +37,9 @@ public interface PadSessionLocal
     void addPens( AnotoPage page, List<AnotoPen> pens ) throws ApplicationException;
 
     void removePens( AnotoPage page, List<AnotoPen> pens ) throws ApplicationException;
+
+
+    List<AnotoPage> getPages( String address ) throws ApplicationException;
+
+    AnotoPenPage getPenPage( AnotoPen pen, AnotoPage page ) throws ApplicationException;
 }

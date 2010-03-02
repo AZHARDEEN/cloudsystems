@@ -77,7 +77,7 @@
                         <panelchildren>
                             <tabbox id="associationTab">
                                 <tabs>
-                                    <tab label="Arquivos"/>
+                                    <tab label="Arquivos PAD"/>
                                     <tab label="Canetas"/>
                                 </tabs>
                                 <tabpanels>

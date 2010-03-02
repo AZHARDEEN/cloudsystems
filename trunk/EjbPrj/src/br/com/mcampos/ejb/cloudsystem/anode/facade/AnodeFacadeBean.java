@@ -10,11 +10,14 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPagePK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPenPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.PadPK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodeFormSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodePenSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.PGCSessionLocal;
@@ -372,38 +375,74 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         pgc.setMedia( media );
         pgc.setInsertDate( new Date() );
         System.out.println( "Pgc: " + media.getName() + " is loaded!" );
+        Pen pen = getPgcPenObject( pgc );
+        PgcStatus status = new PgcStatus( 1 );
+        /*Search for a pen in our database*/
+        if ( hasAnotoPen( pgc, pen ) == false )
+            status.setId( 1 );
         pgc = pgcSession.add( pgc );
-        loadPgcParams( pgc );
         return pgc.toDTO();
     }
 
+    protected boolean hasAnotoPen( Pgc pgc, Pen pen ) throws ApplicationException
+    {
+        String penId;
+        AnotoPen anotoPen;
+        try {
+            penId = pen.getPenData().getPenSerial();
+            System.out.println( "Pgc has this pen id: " + penId );
+            anotoPen = penSession.get( penId );
+            if ( anotoPen == null )
+                System.out.println( "No pen id database: " + penId );
+        }
+        catch ( NoSuchPermissionException e ) {
+            anotoPen = null;
+        }
+        return ( anotoPen != null ) ? true : false;
+    }
 
-    protected void loadPgcParams( Pgc pgc )
+    protected boolean hasAnotoPages( Pgc pgc, Pen pen, AnotoPen anotoPen ) throws ApplicationException
+    {
+        Iterator it = pen.getPageAddresses();
+        while ( it.hasNext() ) {
+            String address = ( String )it.next();
+            List<AnotoPage> list = padSession.getPages( address );
+
+            /*Now I have a page and a pen */
+            attachPenPage( list, anotoPen, pgc );
+        }
+        return true;
+    }
+
+    protected boolean attachPenPage( List<AnotoPage> pages, AnotoPen pen, Pgc pgc ) throws ApplicationException
+    {
+        AnotoPenPage item;
+        AnotoPenPagePK key;
+
+        key = new AnotoPenPagePK();
+        key.setPen( pen );
+        for ( AnotoPage page : pages ) {
+            key.setPage( page );
+            item = padSession.getPenPage( pen, page );
+            if ( item != null ) {
+                pgcSession.attach( pgc, item );
+            }
+        }
+        return true;
+    }
+
+    protected Pen getPgcPenObject( Pgc pgc )
     {
         ByteArrayInputStream is = new ByteArrayInputStream( pgc.getMedia().getObject() );
-        Pen pen;
+        Pen pen = null;
         try {
             pen = ( Pen )PenHome.read( is );
-            Iterator it = pen.getPageAddresses();
-            while ( it.hasNext() ) {
-                String address = ( String )it.next();
-                System.out.println( "Address: " + address );
-            }
-            byte level = pen.getPenData().getBatteryLevel();
-            int iLevel = ( int )level;
-            System.out.println( "BatteryLevel: " + iLevel );
-            System.out.println( "Custom Allocation Data: " + pen.getPenData().getCustomAllocationData() );
-            System.out.println( "PenID: " + pen.getPenData().getPenId() );
-            System.out.println( "Free Memory: " + pen.getPenData().getFreeMemory() );
-            System.out.println( "Serial: " + pen.getPenData().getPenSerial() );
         }
         catch ( PenCreationException e ) {
             System.err.println( e.getMessage() );
+            pen = null;
         }
-        catch ( NoSuchPermissionException e ) {
-            System.err.println( e.getMessage() );
-        }
+        return pen;
     }
-
 }
 

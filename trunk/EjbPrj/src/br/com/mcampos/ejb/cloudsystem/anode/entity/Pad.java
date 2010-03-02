@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
 
 import br.com.mcampos.dto.anoto.PadDTO;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
