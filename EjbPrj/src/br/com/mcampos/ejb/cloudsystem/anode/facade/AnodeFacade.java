@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.facade;
 
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
+import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
@@ -91,4 +92,18 @@ public interface AnodeFacade
     void addPens( AuthenticationDTO auth, AnotoPageDTO page, List<PenDTO> pens ) throws ApplicationException;
 
     void removePens( AuthenticationDTO auth, AnotoPageDTO page, List<PenDTO> pens ) throws ApplicationException;
+
+
+    /* *************************************************************************
+     * *************************************************************************
+     *
+     * OPERACAO EM PGCS
+     *
+     * *************************************************************************
+     * *************************************************************************
+     */
+
+    PGCDTO add( PGCDTO dto ) throws ApplicationException;
+
+    List<PGCDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException;
 }

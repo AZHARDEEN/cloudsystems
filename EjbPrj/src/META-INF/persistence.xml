@@ -56,6 +56,8 @@
     <class>br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anode.entity.BackgroundImage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus</class>
     <properties>
       <property name="eclipselink.target-server" value="WebLogic 10"/>
       <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/PostgreSQLDS"/>

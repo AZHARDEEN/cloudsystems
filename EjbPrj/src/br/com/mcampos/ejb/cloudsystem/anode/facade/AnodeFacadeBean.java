@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.facade;
 
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
+import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
@@ -13,8 +14,10 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PadPK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodeFormSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodePenSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anode.session.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.PadSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
@@ -23,8 +26,17 @@ import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import com.anoto.api.core.NoSuchPermissionException;
+import com.anoto.api.core.Pen;
+import com.anoto.api.core.PenCreationException;
+import com.anoto.api.core.PenHome;
+
+import java.io.ByteArrayInputStream;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -52,6 +64,8 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     private MediaSessionLocal mediaSession;
     @EJB
     private PadSessionLocal padSession;
+    @EJB
+    private PGCSessionLocal pgcSession;
 
     public AnodeFacadeBean()
     {
@@ -330,5 +344,66 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         AnotoPage entity = padSession.getPage( key );
         return toPenList( padSession.getPens( entity ) );
     }
+
+
+    protected List<PGCDTO> toPgcList( List<Pgc> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<PGCDTO> dtoList = new ArrayList<PGCDTO>( list.size() );
+        for ( Pgc f : list ) {
+            dtoList.add( f.toDTO() );
+        }
+        return dtoList;
+    }
+
+    public List<PGCDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth );
+        return toPgcList( pgcSession.getAll() );
+    }
+
+    public PGCDTO add( PGCDTO dto ) throws ApplicationException
+    {
+        //authenticate( auth ); IT´S FREE FOR NOW
+        /*Does this media exists??*/
+        Pgc pgc = DTOFactory.copy( dto );
+        Media media = mediaSession.add( pgc.getMedia() );
+        pgc.setMedia( media );
+        pgc.setInsertDate( new Date() );
+        System.out.println( "Pgc: " + media.getName() + " is loaded!" );
+        pgc = pgcSession.add( pgc );
+        loadPgcParams( pgc );
+        return pgc.toDTO();
+    }
+
+
+    protected void loadPgcParams( Pgc pgc )
+    {
+        ByteArrayInputStream is = new ByteArrayInputStream( pgc.getMedia().getObject() );
+        Pen pen;
+        try {
+            pen = ( Pen )PenHome.read( is );
+            Iterator it = pen.getPageAddresses();
+            while ( it.hasNext() ) {
+                String address = ( String )it.next();
+                System.out.println( "Address: " + address );
+            }
+            byte level = pen.getPenData().getBatteryLevel();
+            int iLevel = ( int )level;
+            System.out.println( "BatteryLevel: " + iLevel );
+            System.out.println( "Custom Allocation Data: " + pen.getPenData().getCustomAllocationData() );
+            System.out.println( "PenID: " + pen.getPenData().getPenId() );
+            System.out.println( "Free Memory: " + pen.getPenData().getFreeMemory() );
+            System.out.println( "Serial: " + pen.getPenData().getPenSerial() );
+        }
+        catch ( PenCreationException e ) {
+            System.err.println( e.getMessage() );
+        }
+        catch ( NoSuchPermissionException e ) {
+            System.err.println( e.getMessage() );
+        }
+    }
+
 }
 
