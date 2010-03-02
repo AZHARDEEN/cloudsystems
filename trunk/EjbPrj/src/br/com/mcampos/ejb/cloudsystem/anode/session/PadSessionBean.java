@@ -10,6 +10,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.BackgroundImage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.BackgroundImagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PadPK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
@@ -71,8 +72,8 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
 
     public Media removeImage( AnotoPage pageEntity, Media image ) throws ApplicationException
     {
-        BackgroundImage removeEntity =
-            getEntityManager().find( BackgroundImage.class, new BackgroundImagePK( pageEntity, image ) );
+        BackgroundImage removeEntity = getEntityManager()
+            .find( BackgroundImage.class, new BackgroundImagePK( pageEntity, image ) );
         getEntityManager().remove( removeEntity.getMedia() );
         getEntityManager().remove( removeEntity );
         return image;
@@ -108,8 +109,7 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         Query query;
         List<AnotoPen> list;
 
-        sqlQuery =
-                "SELECT pen_id_ch , pen_insert_dt  FROM anoto_pen WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 AND 	PAD_ID_IN = ?2 AND 	APG_ID_CH = ?3 )";
+        sqlQuery = "SELECT pen_id_ch , pen_insert_dt  FROM anoto_pen WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 AND 	PAD_ID_IN = ?2 AND 	APG_ID_CH = ?3 )";
         query = getEntityManager().createNativeQuery( sqlQuery, AnotoPen.class );
         query.setParameter( 1, page.getFormId() );
         query.setParameter( 2, page.getPadId() );
@@ -152,6 +152,11 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
             if ( entity != null )
                 getEntityManager().remove( entity );
         }
+    }
+
+    public void addPGC( Pgc pgc ) throws ApplicationException
+    {
+
     }
 
 }

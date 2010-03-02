@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.core.util;
 
+
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.address.AddressTypeDTO;
@@ -7,6 +8,7 @@ import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
+import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MediaDTO;
@@ -14,7 +16,6 @@ import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.system.SystemParametersDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
-import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserContactDTO;
 import br.com.mcampos.dto.user.UserDTO;
@@ -25,13 +26,15 @@ import br.com.mcampos.dto.user.attributes.CompanyTypeDTO;
 import br.com.mcampos.dto.user.attributes.ContactTypeDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.dto.user.attributes.GenderDTO;
-import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.attributes.TitleDTO;
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
+import br.com.mcampos.dto.user.login.ListLoginDTO;
+import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.entity.address.AddressType;
 import br.com.mcampos.ejb.entity.address.City;
@@ -39,12 +42,12 @@ import br.com.mcampos.ejb.entity.address.Country;
 import br.com.mcampos.ejb.entity.address.Region;
 import br.com.mcampos.ejb.entity.address.State;
 import br.com.mcampos.ejb.entity.login.AccessLogType;
-import br.com.mcampos.ejb.entity.system.SystemParameters;
-import br.com.mcampos.ejb.entity.user.Address;
 import br.com.mcampos.ejb.entity.login.Login;
 import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.ejb.entity.security.Task;
 import br.com.mcampos.ejb.entity.system.Menu;
+import br.com.mcampos.ejb.entity.system.SystemParameters;
+import br.com.mcampos.ejb.entity.user.Address;
 import br.com.mcampos.ejb.entity.user.Company;
 import br.com.mcampos.ejb.entity.user.Person;
 import br.com.mcampos.ejb.entity.user.UserContact;
@@ -57,15 +60,14 @@ import br.com.mcampos.ejb.entity.user.attributes.ContactType;
 import br.com.mcampos.ejb.entity.user.attributes.DocumentType;
 import br.com.mcampos.ejb.entity.user.attributes.Gender;
 import br.com.mcampos.ejb.entity.user.attributes.Title;
-
 import br.com.mcampos.ejb.entity.user.attributes.UserStatus;
-
 import br.com.mcampos.ejb.entity.user.attributes.UserType;
 
 import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public final class DTOFactory implements Serializable
 {
@@ -231,9 +233,11 @@ public final class DTOFactory implements Serializable
 
         code = document.trim();
         switch ( type ) {
-        case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
+        case UserDocument.typeCPF:
+            code = code.replaceAll( "[\\-.\\/]", "" );
             break;
-        case UserDocument.typeEmail: code = code.toLowerCase();
+        case UserDocument.typeEmail:
+            code = code.toLowerCase();
             break;
         }
         return code;
@@ -785,5 +789,12 @@ public final class DTOFactory implements Serializable
         if ( entity == null )
             return null;
         return new AnotoPen( entity.getId() );
+    }
+
+    public static Pgc copy( PGCDTO source )
+    {
+        Pgc pgc = new Pgc();
+        pgc.setMedia( copy( source.getMedia() ) );
+        return pgc;
     }
 }

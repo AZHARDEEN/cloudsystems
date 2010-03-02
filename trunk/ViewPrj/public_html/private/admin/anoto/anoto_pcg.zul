@@ -14,9 +14,7 @@
                     <!-- Por favor, nao mude o id desta listbox -->
                     <listbox id="listboxRecord" vflex="true">
                         <listhead sizable="true">
-                            <listheader align="left" label="Nome" width="50%"/>
-                            <listheader align="left" label="Tipo"/>
-                            <listheader align="left" label="Tamanho"/>
+                            <listheader align="left" label="Nome"/>
                         </listhead>
                     </listbox>
                 </div>

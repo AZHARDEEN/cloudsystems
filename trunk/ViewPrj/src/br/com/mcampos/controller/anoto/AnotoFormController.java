@@ -188,6 +188,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         if ( isPadFile( dto ) ) {
             MediaDTO addedDTO;
             try {
+                dto.setFormat( "pad" );
                 addedDTO = getSession().addToForm( getLoggedInUser(), form, dto );
                 ListModelList model = ( ListModelList )listAttachs.getModel();
                 model.add( addedDTO );
