@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
 
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.BackgroundImagePK;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 
 import java.io.Serializable;

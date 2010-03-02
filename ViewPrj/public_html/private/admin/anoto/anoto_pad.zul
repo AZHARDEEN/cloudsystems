@@ -69,7 +69,7 @@
                         <panelchildren>
                             <tabbox id="associationTab">
                                 <tabs>
-                                    <tab label="Arquivos"/>
+                                    <tab label="Imagens de Fundo"/>
                                     <tab label="Canetas"/>
                                 </tabs>
                                 <tabpanels>

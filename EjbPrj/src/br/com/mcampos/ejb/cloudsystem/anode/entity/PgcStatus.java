@@ -19,6 +19,10 @@ import javax.persistence.Table;
 @Table( name = "\"pgc_status\"" )
 public class PgcStatus implements Serializable, EntityCopyInterface<PgcStatusDTO>
 {
+    public static final Integer statusOk = 1;
+    public static final Integer statusNoPen = 2;
+    public static final Integer statusNoPenForm = 3;
+
     @Column( name = "pgs_description_ch", nullable = false )
     private String description;
     @Id
@@ -29,7 +33,12 @@ public class PgcStatus implements Serializable, EntityCopyInterface<PgcStatusDTO
     {
     }
 
-    public PgcStatus( String pgs_description_ch, Integer pgs_id_in )
+    public PgcStatus( Integer pgs_id_in )
+    {
+        this.id = pgs_id_in;
+    }
+
+    public PgcStatus( Integer pgs_id_in, String pgs_description_ch )
     {
         this.description = pgs_description_ch;
         this.id = pgs_id_in;

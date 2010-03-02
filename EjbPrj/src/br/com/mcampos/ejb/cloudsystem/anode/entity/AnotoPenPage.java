@@ -1,5 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPenPagePK;
+
 import java.io.Serializable;
 
 import java.sql.Timestamp;
@@ -20,13 +22,16 @@ import javax.persistence.Table;
 @NamedQueries( { @NamedQuery( name = "AnotoPenPage.findAll", query = "select o from AnotoPenPage o" ),
                  @NamedQuery( name = AnotoPenPage.pageAvailablePensQueryName,
                               query = "select o from AnotoPenPage o where o.page <> ?1" ),
-                 @NamedQuery( name = AnotoPenPage.pagePensQueryName, query = "select o from AnotoPenPage o where o.page = ?1" ) } )
+                 @NamedQuery( name = AnotoPenPage.pagePensQueryName, query = "select o from AnotoPenPage o where o.page = ?1" ),
+                 @NamedQuery( name = AnotoPenPage.pagePenQueryName,
+                              query = "select o from AnotoPenPage o where o.page = ?1 and o.pen = ?2" ) } )
 @Table( name = "anoto_pen_page" )
 @IdClass( AnotoPenPagePK.class )
 public class AnotoPenPage implements Serializable
 {
     public static final String pageAvailablePensQueryName = "AnotoPenPage.getPageAvailablePens";
     public static final String pagePensQueryName = "AnotoPenPage.getPagePens";
+    public static final String pagePenQueryName = "AnotoPenPage.getPagePen";
 
     @Id
     @Column( name = "apg_id_ch", nullable = false, insertable = false, updatable = false )

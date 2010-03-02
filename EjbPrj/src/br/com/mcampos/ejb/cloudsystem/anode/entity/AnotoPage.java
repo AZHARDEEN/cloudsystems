@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
 
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPagePK;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
@@ -20,13 +21,16 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = AnotoPage.anotoPagesGetAllNamedQuery, query = "select o from AnotoPage o" ),
-                 @NamedQuery( name = AnotoPage.padPagesGetAllNamedQuery, query = "select o from AnotoPage o where o.pad = ?1" ) } )
+                 @NamedQuery( name = AnotoPage.padPagesGetAllNamedQuery, query = "select o from AnotoPage o where o.pad = ?1" ),
+                 @NamedQuery( name = AnotoPage.pagesGetAddressesNamedQuery,
+                              query = "select o from AnotoPage o where o.pageAddress = ?1" ) } )
 @Table( name = "anoto_page" )
 @IdClass( AnotoPagePK.class )
 public class AnotoPage implements Serializable, EntityCopyInterface<AnotoPageDTO>
 {
     public static final String anotoPagesGetAllNamedQuery = "AnotoPage.findAll";
     public static final String padPagesGetAllNamedQuery = "AnotoPage.padFindAll";
+    public static final String pagesGetAddressesNamedQuery = "AnotoPage.pagesGetAddresses";
 
     @Id
     @Column( name = "frm_id_in", nullable = false, insertable = false, updatable = false )

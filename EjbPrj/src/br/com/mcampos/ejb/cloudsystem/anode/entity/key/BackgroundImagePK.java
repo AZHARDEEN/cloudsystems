@@ -1,6 +1,7 @@
-package br.com.mcampos.ejb.cloudsystem.anode.entity;
+package br.com.mcampos.ejb.cloudsystem.anode.entity.key;
 
 
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 
 import java.io.Serializable;
