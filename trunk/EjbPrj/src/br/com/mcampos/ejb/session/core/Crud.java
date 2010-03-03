@@ -29,7 +29,7 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         super();
     }
 
-    public ENTITY add( ENTITY entity )
+    public ENTITY add( ENTITY entity ) throws ApplicationException
     {
         getEntityManager().persist( entity );
         getEntityManager().flush();
@@ -37,14 +37,14 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         return entity;
     }
 
-    public void delete( Class<ENTITY> eClass, KEY key )
+    public void delete( Class<ENTITY> eClass, KEY key ) throws ApplicationException
     {
         ENTITY toDelete = get( eClass, key );
 
         getEntityManager().remove( toDelete );
     }
 
-    public ENTITY get( Class<ENTITY> eClass, KEY key )
+    public ENTITY get( Class<ENTITY> eClass, KEY key ) throws ApplicationException
     {
         try {
             return getEntityManager().find( eClass, key );
@@ -55,7 +55,7 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         }
     }
 
-    public List<ENTITY> getAll( String namedQuery )
+    public List<ENTITY> getAll( String namedQuery ) throws ApplicationException
     {
         if ( namedQuery == null )
             return Collections.emptyList();
@@ -68,7 +68,7 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         }
     }
 
-    public ENTITY update( ENTITY entity )
+    public ENTITY update( ENTITY entity ) throws ApplicationException
     {
         ENTITY merged = getEntityManager().merge( entity );
         return merged;

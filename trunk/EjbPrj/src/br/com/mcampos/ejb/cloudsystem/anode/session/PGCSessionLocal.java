@@ -24,4 +24,6 @@ public interface PGCSessionLocal
     List<Pgc> getAll() throws ApplicationException;
 
     PgcPenPage attach( Pgc pgc, AnotoPenPage penPage ) throws ApplicationException;
+
+    void setPgcStatus( Pgc pgc, Integer newStatus ) throws ApplicationException;
 }

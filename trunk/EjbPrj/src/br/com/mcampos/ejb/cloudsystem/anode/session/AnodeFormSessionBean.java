@@ -41,7 +41,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         return get( AnotoForm.class, key );
     }
 
-    public List<AnotoForm> getAll()
+    public List<AnotoForm> getAll() throws ApplicationException
     {
         return getAll( "Form.findAll" );
     }
@@ -52,7 +52,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
     }
 
     @Override
-    public AnotoForm add( AnotoForm entity )
+    public AnotoForm add( AnotoForm entity ) throws ApplicationException
     {
         entity.setInsertDate( new Date() );
         return super.add( entity );
@@ -71,7 +71,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         return newEntity.getMedia();
     }
 
-    protected List<Element> loadPadFile( AnotoForm form, Pad pad )
+    protected List<Element> loadPadFile( AnotoForm form, Pad pad ) throws ApplicationException
     {
         PADFile padFile;
         AnotoPage page;

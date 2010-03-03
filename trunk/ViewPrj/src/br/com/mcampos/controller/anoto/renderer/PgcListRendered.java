@@ -19,6 +19,7 @@ public class PgcListRendered implements ListitemRenderer
         item.setValue( data );
         PGCDTO dto = ( PGCDTO )data;
 
-        item.appendChild( new Listcell( dto.getMedia().getName() ) );
+        Listcell cell = new Listcell( dto.getMedia().getName() );
+        item.appendChild( cell );
     }
 }

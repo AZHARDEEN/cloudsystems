@@ -2,15 +2,15 @@ package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPenPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.BackgroundImage;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.key.BackgroundImagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPagePK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPenPagePK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.BackgroundImagePK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
@@ -45,7 +45,7 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         return pageList;
     }
 
-    public Pad get( PadPK key )
+    public Pad get( PadPK key ) throws ApplicationException
     {
         return get( Pad.class, key );
     }
@@ -72,8 +72,8 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
 
     public Media removeImage( AnotoPage pageEntity, Media image ) throws ApplicationException
     {
-        BackgroundImage removeEntity =
-            getEntityManager().find( BackgroundImage.class, new BackgroundImagePK( pageEntity, image ) );
+        BackgroundImage removeEntity = getEntityManager()
+            .find( BackgroundImage.class, new BackgroundImagePK( pageEntity, image ) );
         getEntityManager().remove( removeEntity.getMedia() );
         getEntityManager().remove( removeEntity );
         return image;
@@ -109,8 +109,7 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         Query query;
         List<AnotoPen> list;
 
-        sqlQuery =
-                "SELECT pen_id_ch , pen_insert_dt  FROM anoto_pen WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 AND 	PAD_ID_IN = ?2 AND 	APG_ID_CH = ?3 )";
+        sqlQuery = "SELECT pen_id_ch , pen_insert_dt  FROM anoto_pen WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 AND 	PAD_ID_IN = ?2 AND 	APG_ID_CH = ?3 )";
         query = getEntityManager().createNativeQuery( sqlQuery, AnotoPen.class );
         query.setParameter( 1, page.getFormId() );
         query.setParameter( 2, page.getPadId() );

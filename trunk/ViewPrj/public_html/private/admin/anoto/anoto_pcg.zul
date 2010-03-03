@@ -27,15 +27,10 @@
                 <div id="recordDetail">
                     <grid width="100%" id="gridProperties">
                         <columns>
-                            <column align="left" width="100px"/>
+                            <column align="left" width="30%"/>
                             <column align="left"/>
                         </columns>
-                        <rows>
-                            <row>
-                                Propriedade
-                                <label id="recordId"/>
-                            </row>
-                        </rows>
+                        <rows></rows>
                     </grid>
                 </div>
             </center>

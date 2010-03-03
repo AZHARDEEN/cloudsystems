@@ -37,7 +37,7 @@ public class AnodePenSessionBean extends Crud<String, AnotoPen> implements Anode
     }
 
     @Override
-    public AnotoPen add( AnotoPen entity )
+    public AnotoPen add( AnotoPen entity ) throws ApplicationException
     {
         entity.setInsertDate( new Date() );
         return super.add( entity );
