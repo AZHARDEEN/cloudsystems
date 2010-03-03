@@ -6,18 +6,9 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus;
 import br.com.mcampos.ejb.session.core.Crud;
-
 import br.com.mcampos.exception.ApplicationException;
 
-import com.anoto.api.core.NoSuchPermissionException;
-import com.anoto.api.core.Pen;
-import com.anoto.api.core.PenCreationException;
-import com.anoto.api.core.PenHome;
-
-import java.io.ByteArrayInputStream;
-
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -33,23 +24,22 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     {
     }
 
-    public void delete( Integer key )
+    public void delete( Integer key ) throws ApplicationException
     {
         delete( Pgc.class, key );
     }
 
-    public Pgc get( Integer key )
+    public Pgc get( Integer key ) throws ApplicationException
     {
         return get( Pgc.class, key );
     }
 
-    public List<Pgc> getAll()
+    public List<Pgc> getAll() throws ApplicationException
     {
         return getAll( Pgc.findAllQueryName );
     }
 
-    @Override
-    public Pgc add( Pgc entity )
+    public Pgc add( Pgc entity ) throws ApplicationException
     {
         entity.setInsertDate( new Date() );
         PgcStatus status;
@@ -63,9 +53,17 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
 
     public PgcPenPage attach( Pgc pgc, AnotoPenPage penPage ) throws ApplicationException
     {
+        if ( pgc == null || penPage == null )
+            return null;
         PgcPenPage entity = new PgcPenPage( penPage, pgc );
         getEntityManager().persist( entity );
         return entity;
+    }
+
+    public void setPgcStatus( Pgc pgc, Integer newStatus ) throws ApplicationException
+    {
+        getEntityManager().merge( pgc );
+        pgc.setPgcStatus( getEntityManager().find( PgcStatus.class, newStatus ) );
     }
 
 }

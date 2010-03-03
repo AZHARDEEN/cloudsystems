@@ -10,14 +10,14 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPenPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPagePK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPenPagePK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodeFormSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodePenSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.PGCSessionLocal;
@@ -377,14 +377,14 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         System.out.println( "Pgc: " + media.getName() + " is loaded!" );
         Pen pen = getPgcPenObject( pgc );
         PgcStatus status = new PgcStatus( 1 );
+        pgc.setPgcStatus( status );
         /*Search for a pen in our database*/
-        if ( hasAnotoPen( pgc, pen ) == false )
-            status.setId( 1 );
         pgc = pgcSession.add( pgc );
+        verifyBindings( pgc, pen );
         return pgc.toDTO();
     }
 
-    protected boolean hasAnotoPen( Pgc pgc, Pen pen ) throws ApplicationException
+    protected boolean verifyBindings( Pgc pgc, Pen pen ) throws ApplicationException
     {
         String penId;
         AnotoPen anotoPen;
@@ -398,20 +398,31 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         catch ( NoSuchPermissionException e ) {
             anotoPen = null;
         }
-        return ( anotoPen != null ) ? true : false;
+        if ( anotoPen == null ) {
+            pgcSession.setPgcStatus( pgc, PgcStatus.statusNoPen );
+            return false;
+        }
+        return hasAnotoPages( pgc, pen, anotoPen );
     }
 
     protected boolean hasAnotoPages( Pgc pgc, Pen pen, AnotoPen anotoPen ) throws ApplicationException
     {
+        boolean allBinded = true;
         Iterator it = pen.getPageAddresses();
         while ( it.hasNext() ) {
             String address = ( String )it.next();
             List<AnotoPage> list = padSession.getPages( address );
-
             /*Now I have a page and a pen */
-            attachPenPage( list, anotoPen, pgc );
+            if ( SysUtils.isEmpty( list ) == false )
+                attachPenPage( list, anotoPen, pgc );
+            else {
+                if ( allBinded == true ) {
+                    allBinded = false;
+                    pgcSession.setPgcStatus( pgc, PgcStatus.statusNoPenForm );
+                }
+            }
         }
-        return true;
+        return allBinded;
     }
 
     protected boolean attachPenPage( List<AnotoPage> pages, AnotoPen pen, Pgc pgc ) throws ApplicationException

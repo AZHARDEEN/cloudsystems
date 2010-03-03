@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
+
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PgcPenPagePK;
 
 import java.io.Serializable;
@@ -10,11 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "PgcPenPage.findAll", query = "select o from PgcPenPage o" ) } )
@@ -55,7 +56,8 @@ public class PgcPenPage implements Serializable
 
     public PgcPenPage( AnotoPenPage penPage, Pgc pgc )
     {
-
+        setPenPage( penPage );
+        setPgc( pgc );
     }
 
     public PgcPenPage( String apg_id_ch, Integer frm_id_in, Integer pad_id_in, String pen_id_ch, Integer pgc_id_in )
