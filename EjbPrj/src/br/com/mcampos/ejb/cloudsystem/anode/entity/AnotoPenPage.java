@@ -1,6 +1,9 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
+
+import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPenPagePK;
+import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
 
@@ -20,14 +23,12 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "AnotoPenPage.findAll", query = "select o from AnotoPenPage o" ),
-                 @NamedQuery( name = AnotoPenPage.pageAvailablePensQueryName,
-                              query = "select o from AnotoPenPage o where o.page <> ?1" ),
+                 @NamedQuery( name = AnotoPenPage.pageAvailablePensQueryName, query = "select o from AnotoPenPage o where o.page <> ?1" ),
                  @NamedQuery( name = AnotoPenPage.pagePensQueryName, query = "select o from AnotoPenPage o where o.page = ?1" ),
-                 @NamedQuery( name = AnotoPenPage.pagePenQueryName,
-                              query = "select o from AnotoPenPage o where o.page = ?1 and o.pen = ?2" ) } )
+                 @NamedQuery( name = AnotoPenPage.pagePenQueryName, query = "select o from AnotoPenPage o where o.page = ?1 and o.pen = ?2" ) } )
 @Table( name = "anoto_pen_page" )
 @IdClass( AnotoPenPagePK.class )
-public class AnotoPenPage implements Serializable
+public class AnotoPenPage implements Serializable, EntityCopyInterface<AnotoPenPageDTO>
 {
     public static final String pageAvailablePensQueryName = "AnotoPenPage.getPageAvailablePens";
     public static final String pagePensQueryName = "AnotoPenPage.getPagePens";
@@ -153,5 +154,11 @@ public class AnotoPenPage implements Serializable
     public AnotoPage getPage()
     {
         return page;
+    }
+
+    public AnotoPenPageDTO toDTO()
+    {
+        AnotoPenPageDTO dto = new AnotoPenPageDTO( getPen().toDTO(), getPage().toDTO() );
+        return dto;
     }
 }

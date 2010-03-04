@@ -1,13 +1,17 @@
 package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -64,6 +68,23 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     {
         getEntityManager().merge( pgc );
         pgc.setPgcStatus( getEntityManager().find( PgcStatus.class, newStatus ) );
+    }
+
+    public List<AnotoPenPage> get( AnotoPage page ) throws ApplicationException
+    {
+        return ( List<AnotoPenPage> )getResultList( AnotoPenPage.pagePensQueryName, page );
+    }
+
+    public List<Pgc> getAll( AnotoPenPage penPage ) throws ApplicationException
+    {
+        List<PgcPenPage> list;
+        list = ( List<PgcPenPage> )getResultList( PgcPenPage.getAllPgcQueryName, penPage );
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<Pgc> pgcs = new ArrayList<Pgc>( list.size() );
+        for ( PgcPenPage pgc : list )
+            pgcs.add( pgc.getPgc() );
+        return pgcs;
     }
 
 }

@@ -60,7 +60,7 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         if ( namedQuery == null )
             return Collections.emptyList();
         try {
-            return getEntityManager().createNamedQuery( namedQuery ).getResultList();
+            return ( ( List<ENTITY> )getEntityManager().createNamedQuery( namedQuery ).getResultList() );
         }
         catch ( NoResultException e ) {
             e = null;

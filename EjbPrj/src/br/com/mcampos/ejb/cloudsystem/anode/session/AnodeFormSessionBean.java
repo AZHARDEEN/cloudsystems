@@ -8,7 +8,6 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
-import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.sysutils.anoto.PADFile;
 
 import java.util.ArrayList;
@@ -99,17 +98,11 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         return pad;
     }
 
-    public List<Media> getPADs( AnotoForm form ) throws ApplicationException
+    public List<Pad> getPads( AnotoForm form ) throws ApplicationException
     {
         List<Object> parameter = new ArrayList<Object>( 1 );
         parameter.add( form );
         List<Pad> padList = ( List<Pad> )getResultList( Pad.padFindAllNamedQuery, parameter );
-        List<Media> medias = null;
-        if ( SysUtils.isNull( padList ) == false ) {
-            medias = new ArrayList<Media>( padList.size() );
-            for ( Pad pad : padList )
-                medias.add( pad.getMedia() );
-        }
-        return medias;
+        return padList;
     }
 }

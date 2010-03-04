@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -29,6 +30,6 @@ public interface AnodeFormSessionLocal
 
     Media removePadFile( AnotoForm form, Media pad ) throws ApplicationException;
 
-    List<Media> getPADs( AnotoForm form ) throws ApplicationException;
+    List<Pad> getPads( AnotoForm form ) throws ApplicationException;
 
 }

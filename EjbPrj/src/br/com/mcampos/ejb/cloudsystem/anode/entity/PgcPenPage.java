@@ -18,11 +18,13 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "PgcPenPage.findAll", query = "select o from PgcPenPage o" ) } )
+@NamedQueries( { @NamedQuery( name = "PgcPenPage.findAll", query = "select o from PgcPenPage o" ),
+                 @NamedQuery( name = "PgcPenPage.findAllPgc", query = "select o from PgcPenPage o where o.penPage = ?1" ) } )
 @Table( name = "pgc_pen_page" )
 @IdClass( PgcPenPagePK.class )
 public class PgcPenPage implements Serializable
 {
+    public static final String getAllPgcQueryName = "PgcPenPage.findAllPgc";
     @Id
     @Column( name = "apg_id_ch", nullable = false, insertable = false, updatable = false )
     private String pageAddress;

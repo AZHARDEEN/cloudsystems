@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.facade;
 
 
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
+import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
@@ -36,7 +37,7 @@ public interface AnodeFacade
 
     MediaDTO removeFromForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException;
 
-    List<MediaDTO> getPADs( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
+    List<PadDTO> getPads( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
 
     /* *************************************************************************
      * *************************************************************************
@@ -106,4 +107,8 @@ public interface AnodeFacade
     PGCDTO add( PGCDTO dto ) throws ApplicationException;
 
     List<PGCDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException;
+
+    List<AnotoPenPageDTO> getPenPages( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException;
+
+    List<PGCDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException;
 }

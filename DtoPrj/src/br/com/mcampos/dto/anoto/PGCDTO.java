@@ -66,4 +66,10 @@ public class PGCDTO implements Comparable<PGCDTO>, Serializable
     {
         return pgcStatus;
     }
+
+    @Override
+    public String toString()
+    {
+        return getMedia().toString();
+    }
 }
