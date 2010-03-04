@@ -1,14 +1,18 @@
 package br.com.mcampos.dto.anoto;
 
+
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.security.InvalidParameterException;
 
+import java.util.List;
+
+
 public class FormDTO extends SimpleTableDTO
 {
     String application;
-
+    List<PadDTO> pads;
 
     public FormDTO( SimpleTableDTO simpleTableDTO )
     {
@@ -41,5 +45,21 @@ public class FormDTO extends SimpleTableDTO
     public String getApplication()
     {
         return application;
+    }
+
+    public void setPads( List<PadDTO> pads )
+    {
+        this.pads = pads;
+    }
+
+    public List<PadDTO> getPads()
+    {
+        return pads;
+    }
+
+    @Override
+    public String toString()
+    {
+        return getApplication() + " - " + getDescription();
     }
 }

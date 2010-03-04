@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
@@ -26,4 +27,8 @@ public interface PGCSessionLocal
     PgcPenPage attach( Pgc pgc, AnotoPenPage penPage ) throws ApplicationException;
 
     void setPgcStatus( Pgc pgc, Integer newStatus ) throws ApplicationException;
+
+    List<AnotoPenPage> get( AnotoPage page ) throws ApplicationException;
+
+    List<Pgc> getAll( AnotoPenPage penPage ) throws ApplicationException;
 }

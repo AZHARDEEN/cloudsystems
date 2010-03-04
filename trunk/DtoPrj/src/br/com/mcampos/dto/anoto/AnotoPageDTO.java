@@ -1,6 +1,12 @@
 package br.com.mcampos.dto.anoto;
 
+
+import br.com.mcampos.sysutils.SysUtils;
+
 import java.io.Serializable;
+
+import java.util.List;
+
 
 public class AnotoPageDTO implements Comparable<AnotoPageDTO>, Serializable
 {
@@ -8,6 +14,8 @@ public class AnotoPageDTO implements Comparable<AnotoPageDTO>, Serializable
     private Integer padId;
     private String pageAddress;
     private String description;
+
+    private List<AnotoPenPageDTO> penPages;
 
     public AnotoPageDTO()
     {
@@ -79,6 +87,26 @@ public class AnotoPageDTO implements Comparable<AnotoPageDTO>, Serializable
     {
         AnotoPageDTO page = ( AnotoPageDTO )obj;
 
-        return getPageAddress().equals( page.getPageAddress() ) && getFormId().equals( page.getFormId() ) && getPadId().equals( page.getPadId() );
+        return getPageAddress().equals( page.getPageAddress() ) && getFormId().equals( page.getFormId() ) && getPadId()
+            .equals( page.getPadId() );
+    }
+
+    @Override
+    public String toString()
+    {
+        if ( SysUtils.isEmpty( getDescription() ) )
+            return getPageAddress();
+        else
+            return getPageAddress() + " - " + getDescription();
+    }
+
+    public void setPenPages( List<AnotoPenPageDTO> penPages )
+    {
+        this.penPages = penPages;
+    }
+
+    public List<AnotoPenPageDTO> getPenPages()
+    {
+        return penPages;
     }
 }

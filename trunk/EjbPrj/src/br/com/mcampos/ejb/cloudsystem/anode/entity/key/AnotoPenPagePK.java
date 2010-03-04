@@ -1,5 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity.key;
 
+
+import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 
@@ -20,6 +22,14 @@ public class AnotoPenPagePK implements Serializable
     {
         setPen( pen );
         setPage( page );
+    }
+
+    public AnotoPenPagePK( AnotoPenPageDTO dto )
+    {
+        setPageAddress( dto.getPageAddress() );
+        setFormId( dto.getFormId() );
+        setPadId( dto.getPadId() );
+        setPenId( dto.getPenId() );
     }
 
     public void setPen( AnotoPen pen )
@@ -46,9 +56,7 @@ public class AnotoPenPagePK implements Serializable
     {
         if ( other instanceof AnotoPenPagePK ) {
             final AnotoPenPagePK otherAnotoPenPagePK = ( AnotoPenPagePK )other;
-            final boolean areEqual =
-                ( otherAnotoPenPagePK.pageAddress.equals( pageAddress ) && otherAnotoPenPagePK.formId.equals( formId ) &&
-                  otherAnotoPenPagePK.padId.equals( padId ) && otherAnotoPenPagePK.penId.equals( penId ) );
+            final boolean areEqual = ( otherAnotoPenPagePK.pageAddress.equals( pageAddress ) && otherAnotoPenPagePK.formId.equals( formId ) && otherAnotoPenPagePK.padId.equals( padId ) && otherAnotoPenPagePK.penId.equals( penId ) );
             return areEqual;
         }
         return false;

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoViewController">
+        <borderlayout id="borderLayout">
+            <north flex="true" style="background: #D0DEF0">
+                <vbox align="center">
+                    <label style="font-size:20px;color:#0C7A9A" value="Lista de Arquivos PCG"/>
+                </vbox>
+            </north>
+            <west size="30%" splittable="true" flex="true">
+                <!-- Por favor, nao mude o id desta div -->
+                <div width="100%" height="100%" id="divListBoxRecord">
+                    <!-- Por favor, nao mude o id desta listbox -->
+                    <tree fixedLayout="true" id="tree" width="100%" height="100%" mold="paging"></tree>
+                    <paging pageSize="50"/>
+                </div>
+            </west>
+            <center flex="true" autoscroll="true">
+                <!-- Por favor, nao mude o id desta div -->
+                <div id="recordDetail">
+                    <grid width="100%" id="gridProperties">
+                        <columns>
+                            <column align="left" width="30%"/>
+                            <column align="left"/>
+                        </columns>
+                        <rows></rows>
+                    </grid>
+                </div>
+            </center>
+        </borderlayout>
+    </div>
+</zk>

@@ -1,6 +1,5 @@
 package br.com.mcampos.dto.system;
 
-import br.com.mcampos.dto.core.SimpleTableDTO;
 
 import java.io.Serializable;
 
@@ -107,5 +106,11 @@ public class MediaDTO implements Comparable<MediaDTO>, Serializable
         if ( obj == null || ( obj instanceof MediaDTO ) == false )
             return false;
         return getId().equals( ( ( MediaDTO )obj ).getId() );
+    }
+
+    @Override
+    public String toString()
+    {
+        return getName();
     }
 }

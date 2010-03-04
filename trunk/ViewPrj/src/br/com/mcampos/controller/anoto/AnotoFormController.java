@@ -262,10 +262,10 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     {
         if ( currentForm == null )
             return null;
-        List<MediaDTO> list;
+        List<PadDTO> list;
         ListModelList model = null;
         try {
-            list = getSession().getPADs( getLoggedInUser(), currentForm );
+            list = getSession().getPads( getLoggedInUser(), currentForm );
             model = new ListModelList( list );
             return model;
         }
@@ -405,7 +405,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         Listitem item = listAttachs.getSelectedItem();
 
         if ( item != null && item.getValue() != null ) {
-            PadDTO pad = new PadDTO( getValue( getListboxRecord().getSelectedItem() ), ( MediaDTO )item.getValue() );
+            PadDTO pad = ( PadDTO )item.getValue();
             Properties params = new Properties();
             params.put( AnotoPADController.padIdParameterName, pad );
             gotoPage( "/private/admin/anoto/anoto_pad.zul", getRootParent().getParent(), params );
