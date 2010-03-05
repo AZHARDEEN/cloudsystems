@@ -15,7 +15,7 @@ public class AnotoPenPageDTO implements Comparable<AnotoPenPageDTO>, Serializabl
     private PenDTO pen;
     private AnotoPageDTO page;
 
-    private List<PGCDTO> pgcs;
+    private List<PgcPenPageDTO> pgcPenPages;
 
 
     public AnotoPenPageDTO()
@@ -112,13 +112,13 @@ public class AnotoPenPageDTO implements Comparable<AnotoPenPageDTO>, Serializabl
         return getPen().equals( ( ( AnotoPenPageDTO )obj ).getPen() ) && getPage().equals( ( ( AnotoPenPageDTO )obj ).getPage() );
     }
 
-    public void setPgcs( List<PGCDTO> pgcs )
+    public void setPgcPenPages( List<PgcPenPageDTO> pgcPenPages )
     {
-        this.pgcs = pgcs;
+        this.pgcPenPages = pgcPenPages;
     }
 
-    public List<PGCDTO> getPgcs()
+    public List<PgcPenPageDTO> getPgcPenPages()
     {
-        return pgcs;
+        return pgcPenPages;
     }
 }

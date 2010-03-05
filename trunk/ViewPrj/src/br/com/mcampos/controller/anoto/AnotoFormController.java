@@ -18,7 +18,13 @@ import com.anoto.api.NotAllowedException;
 import com.anoto.api.PenHome;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import java.io.InputStreamReader;
+import java.io.Reader;
+
+import java.nio.CharBuffer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -202,7 +208,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     protected MediaDTO getMedia( org.zkoss.util.media.Media media )
     {
         MediaDTO dto = new MediaDTO();
-        int mediaSize;
+        int mediaSize = 1;
 
         try {
             dto.setFormat( media.getFormat() );
@@ -215,12 +221,27 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
                     dto.setObject( media.getStringData().getBytes() );
             }
             else {
-                mediaSize = media.getStreamData().available();
-                dto.setObject( new byte[ mediaSize ] );
-                media.getStreamData().read( dto.getObject(), 0, mediaSize );
+                if ( media.isBinary() ) {
+                    mediaSize = media.getStreamData().available();
+                    dto.setObject( new byte[ mediaSize ] );
+                    media.getStreamData().read( dto.getObject(), 0, mediaSize );
+                }
+                else {
+                    InputStreamReader is = ( InputStreamReader )media.getReaderData();
+                    StringBuffer strBuffer = new StringBuffer( 1024 * 64 );
+                    char[] chArray = new char[ 1024 * 64 ];
+                    int nRead;
+                    do {
+                        nRead = is.read( chArray );
+                        if ( nRead > 0 ) {
+                            strBuffer.append( chArray, 0, nRead );
+                        }
+                    } while ( nRead > 0 );
+                    mediaSize = strBuffer.length();
+                    dto.setObject( strBuffer.toString().getBytes( "UTF-8" ) );
+                }
             }
             return dto;
-
         }
         catch ( IOException e ) {
             showErrorMessage( e.getMessage(), "Upload Error" );

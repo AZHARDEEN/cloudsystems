@@ -5,12 +5,16 @@ import br.com.mcampos.dto.system.MediaDTO;
 
 import java.io.Serializable;
 
+import java.util.List;
+
 
 public class PGCDTO implements Comparable<PGCDTO>, Serializable
 {
     protected Integer id;
     protected MediaDTO media;
     protected PgcStatusDTO pgcStatus;
+
+    protected List<MediaDTO> backgroundImages;
 
     public PGCDTO()
     {
@@ -71,5 +75,15 @@ public class PGCDTO implements Comparable<PGCDTO>, Serializable
     public String toString()
     {
         return getMedia().toString();
+    }
+
+    public void setBackgroundImages( List<MediaDTO> backgroundImages )
+    {
+        this.backgroundImages = backgroundImages;
+    }
+
+    public List<MediaDTO> getBackgroundImages()
+    {
+        return backgroundImages;
     }
 }

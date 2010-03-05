@@ -3,6 +3,8 @@ package br.com.mcampos.controller.anoto.renderer;
 
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 
+import br.com.mcampos.dto.anoto.PgcPenPageDTO;
+
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.TreeitemRenderer;
@@ -27,10 +29,14 @@ public class AnotoViewRenderer implements TreeitemRenderer
         if ( data instanceof AnotoPenPageDTO ) {
             cell = new Treecell( ( ( AnotoPenPageDTO )data ).getPenId() );
         }
+        else if ( data instanceof PgcPenPageDTO ) {
+            cell = new Treecell( ( ( PgcPenPageDTO )data ).getPgc().toString() );
+        }
         else {
             cell = new Treecell( data.toString() );
         }
         treeRow.appendChild( cell );
+        item.setValue( data );
     }
 
 }

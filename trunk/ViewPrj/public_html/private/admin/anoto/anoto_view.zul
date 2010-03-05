@@ -26,6 +26,9 @@
                         </columns>
                         <rows></rows>
                     </grid>
+                    <div width="100%" height="100%" id="divImage">
+                        <image id="image"/>
+                    </div>
                 </div>
             </center>
         </borderlayout>
