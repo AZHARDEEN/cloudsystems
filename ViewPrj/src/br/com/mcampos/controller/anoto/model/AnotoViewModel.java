@@ -5,6 +5,7 @@ import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
+import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
@@ -46,7 +47,9 @@ public class AnotoViewModel extends AbstractTreeModel
             return ( ( AnotoPageDTO )parent ).getPenPages().get( index );
         }
         else if ( parent instanceof AnotoPenPageDTO )
-            return ( ( AnotoPenPageDTO )parent ).getPgcs().get( index );
+            return ( ( AnotoPenPageDTO )parent ).getPgcPenPages().get( index );
+        else if ( parent instanceof PgcPenPageDTO )
+            return ( ( PgcPenPageDTO )parent ).getBackgroundImages().get( index );
         else
             return null;
     }
@@ -69,9 +72,24 @@ public class AnotoViewModel extends AbstractTreeModel
             return getPenPages( ( ( AnotoPageDTO )parent ) );
         else if ( parent instanceof AnotoPenPageDTO )
             return getPgcs( ( ( AnotoPenPageDTO )parent ) );
+        else if ( parent instanceof PgcPenPageDTO )
+            return getBackgroundImages( ( PgcPenPageDTO )parent );
         else {
             return 0;
         }
+    }
+
+    protected int getBackgroundImages( PgcPenPageDTO pgc )
+    {
+        if ( SysUtils.isEmpty( pgc.getBackgroundImages() ) ) {
+            try {
+                pgc.setBackgroundImages( getSession().getImages( getCurrentUser(), pgc.getPenPage().getPage() ) );
+            }
+            catch ( ApplicationException e ) {
+                e = null;
+            }
+        }
+        return pgc.getBackgroundImages().size();
     }
 
     protected int getPads( FormDTO form )
@@ -117,15 +135,15 @@ public class AnotoViewModel extends AbstractTreeModel
 
     protected int getPgcs( AnotoPenPageDTO penPage )
     {
-        if ( SysUtils.isEmpty( penPage.getPgcs() ) ) {
+        if ( SysUtils.isEmpty( penPage.getPgcPenPages() ) ) {
             try {
-                penPage.setPgcs( getSession().get( getCurrentUser(), penPage ) );
+                penPage.setPgcPenPages( getSession().get( getCurrentUser(), penPage ) );
             }
             catch ( ApplicationException e ) {
                 e = null;
             }
         }
-        return penPage.getPgcs().size();
+        return penPage.getPgcPenPages().size();
     }
 
 

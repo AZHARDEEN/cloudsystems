@@ -1,7 +1,10 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
 
+import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PgcPenPagePK;
+
+import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
 
@@ -22,7 +25,7 @@ import javax.persistence.Table;
                  @NamedQuery( name = "PgcPenPage.findAllPgc", query = "select o from PgcPenPage o where o.penPage = ?1" ) } )
 @Table( name = "pgc_pen_page" )
 @IdClass( PgcPenPagePK.class )
-public class PgcPenPage implements Serializable
+public class PgcPenPage implements Serializable, EntityCopyInterface<PgcPenPageDTO>
 {
     public static final String getAllPgcQueryName = "PgcPenPage.findAllPgc";
     @Id
@@ -147,5 +150,11 @@ public class PgcPenPage implements Serializable
     public Pgc getPgc()
     {
         return pgc;
+    }
+
+    public PgcPenPageDTO toDTO()
+    {
+        PgcPenPageDTO dto = new PgcPenPageDTO( getPenPage().toDTO(), getPgc().toDTO() );
+        return dto;
     }
 }

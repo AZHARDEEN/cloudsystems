@@ -7,6 +7,7 @@ import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
+import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
@@ -15,6 +16,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPenPagePK;
@@ -383,19 +385,32 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return dtoList;
     }
 
+
+    protected List<PgcPenPageDTO> toPgcPenPageList( List<PgcPenPage> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<PgcPenPageDTO> dtoList = new ArrayList<PgcPenPageDTO>( list.size() );
+        for ( PgcPenPage f : list ) {
+            dtoList.add( f.toDTO() );
+        }
+        return dtoList;
+    }
+
+
     public List<PGCDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
         return toPgcList( pgcSession.getAll() );
     }
 
-    public List<PGCDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException
+    public List<PgcPenPageDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException
     {
         authenticate( auth );
         AnotoPen pen = penSession.get( penPage.getPenId() );
         AnotoPage page = getPageEntity( penPage.getPage() );
         AnotoPenPage entity = padSession.getPenPage( pen, page );
-        return toPgcList( pgcSession.getAll( entity ) );
+        return toPgcPenPageList( pgcSession.getAll( entity ) );
     }
 
 

@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.BackgroundImage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.exception.ApplicationException;
@@ -30,5 +31,5 @@ public interface PGCSessionLocal
 
     List<AnotoPenPage> get( AnotoPage page ) throws ApplicationException;
 
-    List<Pgc> getAll( AnotoPenPage penPage ) throws ApplicationException;
+    List<PgcPenPage> getAll( AnotoPenPage penPage ) throws ApplicationException;
 }
