@@ -1,19 +1,22 @@
 package br.com.mcampos.dto.anoto;
 
-import br.com.mcampos.dto.core.SimpleTableDTO;
+
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.io.Serializable;
 
 import java.security.InvalidParameterException;
 
+
 public class PenDTO implements Comparable<PenDTO>, Serializable
 {
     String id;
+    String description;
 
-    public PenDTO( String id )
+    public PenDTO( String id, String description )
     {
         setId( id );
+        setDescription( description );
     }
 
     public PenDTO()
@@ -60,5 +63,15 @@ public class PenDTO implements Comparable<PenDTO>, Serializable
         if ( obj == null || ( obj instanceof PenDTO ) == false )
             return false;
         return getId().equals( ( ( PenDTO )obj ).getId() );
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    public String getDescription()
+    {
+        return description;
     }
 }

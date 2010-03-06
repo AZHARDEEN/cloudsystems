@@ -1,14 +1,13 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
+
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
-
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.io.Serializable;
 
 import java.security.InvalidParameterException;
-
 
 import java.util.Date;
 
@@ -31,9 +30,12 @@ public class AnotoPen implements Serializable, EntityCopyInterface<PenDTO>
     @Column( name = "pen_id_ch", nullable = false )
     private String id;
 
-    @Column( name = "pen_insert_dt", nullable = false, insertable = true, updatable = false )
+    @Column( name = "pen_insert_dt", nullable = false )
     @Temporal( TemporalType.DATE )
     private Date insertDate;
+
+    @Column( name = "pen_description_ch", nullable = false )
+    private String description;
 
 
     public AnotoPen()
@@ -53,13 +55,13 @@ public class AnotoPen implements Serializable, EntityCopyInterface<PenDTO>
     public void setId( String pen_id_in )
     {
         if ( SysUtils.isEmpty( pen_id_in ) )
-            throw new InvalidParameterException( "Pen description could not be null or empty." );
+            throw new InvalidParameterException( "Pen identification could not be null or empty." );
         this.id = pen_id_in;
     }
 
     public PenDTO toDTO()
     {
-        return new PenDTO( getId() );
+        return new PenDTO( getId(), getDescription() );
     }
 
     public void setInsertDate( Date insertDate )
@@ -70,5 +72,15 @@ public class AnotoPen implements Serializable, EntityCopyInterface<PenDTO>
     public Date getInsertDate()
     {
         return insertDate;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    public String getDescription()
+    {
+        return description;
     }
 }

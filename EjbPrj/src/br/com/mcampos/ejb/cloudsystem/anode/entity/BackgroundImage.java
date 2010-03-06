@@ -61,6 +61,9 @@ public class BackgroundImage implements Serializable
     @JoinColumn( name = "med_id_in", referencedColumnName = "med_id_in" )
     private Media media;
 
+    @Column( name = "bin_description_ch", nullable = false )
+    private String description;
+
     public BackgroundImage()
     {
     }
@@ -159,5 +162,15 @@ public class BackgroundImage implements Serializable
     public Date getInsertDate()
     {
         return insertDate;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    public String getDescription()
+    {
+        return description;
     }
 }
