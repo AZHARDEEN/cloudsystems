@@ -108,7 +108,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     }
 
 
-    public MediaDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException
+    public PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException
     {
         authenticate( auth );
         /*
@@ -118,10 +118,11 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
          * 3) Vincular o formulário à midia
          */
         AnotoForm form = formSession.get( entity.getId() );
+        pad.setFormat( "pgc" );
         Media media = mediaSession.add( DTOFactory.copy( pad ) );
-        media = formSession.addPadFile( form, media );
+        Pad padentity = formSession.addPadFile( form, media );
 
-        return media.toDTO();
+        return padentity.toDTO();
     }
 
     public MediaDTO removeFromForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException

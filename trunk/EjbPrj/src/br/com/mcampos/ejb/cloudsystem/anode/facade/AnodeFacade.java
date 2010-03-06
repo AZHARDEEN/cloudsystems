@@ -34,7 +34,7 @@ public interface AnodeFacade
 
     Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException;
 
-    MediaDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException;
+    PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException;
 
     MediaDTO removeFromForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException;
 

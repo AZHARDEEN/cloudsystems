@@ -44,8 +44,12 @@ public class UploadPCG extends BaseController
             System.out.println( "Size: " + is.available() );
             byte[] pgcByte = new byte[ is.available() ];
             /*I really need pgc info*/
-            is.read( pgcByte );
-
+            int nRead = is.read( pgcByte );
+            System.out.println( "Bytes Read: " + nRead );
+            while ( nRead != pgcByte.length ) {
+                nRead += is.read( pgcByte, nRead, pgcByte.length );
+                System.out.println( "Bytes Read: " + nRead );
+            }
             MediaDTO media = new MediaDTO();
             media.setFormat( "pgc" );
             media.setMimeType( "application/octet-stream" );

@@ -192,7 +192,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         FormDTO form = getValue( getListboxRecord().getSelectedItem() );
 
         if ( isPadFile( dto ) ) {
-            MediaDTO addedDTO;
+            PadDTO addedDTO;
             try {
                 dto.setFormat( "pad" );
                 addedDTO = getSession().addToForm( getLoggedInUser(), form, dto );

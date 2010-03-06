@@ -57,7 +57,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         return super.add( entity );
     }
 
-    public Media addPadFile( AnotoForm form, Media pad ) throws ApplicationException
+    public Pad addPadFile( AnotoForm form, Media pad ) throws ApplicationException
     {
         form = getEntityManager().merge( form );
         pad = getEntityManager().merge( pad );
@@ -67,7 +67,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         getEntityManager().persist( newEntity );
         //getEntityManager().refresh( newEntity );
         loadPadFile( form, newEntity );
-        return newEntity.getMedia();
+        return newEntity;
     }
 
     protected List<Element> loadPadFile( AnotoForm form, Pad pad ) throws ApplicationException

@@ -26,7 +26,7 @@ public interface AnodeFormSessionLocal
 
     Integer nextId() throws ApplicationException;
 
-    Media addPadFile( AnotoForm form, Media pad ) throws ApplicationException;
+    Pad addPadFile( AnotoForm form, Media pad ) throws ApplicationException;
 
     Media removePadFile( AnotoForm form, Media pad ) throws ApplicationException;
 
