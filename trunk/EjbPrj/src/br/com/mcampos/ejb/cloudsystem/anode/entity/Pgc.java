@@ -44,6 +44,8 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
     @JoinColumn( name = "pgs_id_in" )
     private PgcStatus pgcStatus;
 
+    @Column( name = "pgc_description_ch", nullable = false )
+    private String description;
 
     public Pgc()
     {
@@ -103,5 +105,15 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
     public PgcStatus getPgcStatus()
     {
         return pgcStatus;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    public String getDescription()
+    {
+        return description;
     }
 }
