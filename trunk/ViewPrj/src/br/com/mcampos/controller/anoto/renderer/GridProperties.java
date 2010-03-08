@@ -6,15 +6,15 @@ import java.util.List;
 public class GridProperties
 {
     public String name;
-    public List<String> values;
+    public List<Object> values;
 
     public GridProperties()
     {
         super();
-        values = new ArrayList<String>();
+        values = new ArrayList<Object>();
     }
 
-    public void add( String value )
+    public void add( Object value )
     {
         values.add( value );
     }
