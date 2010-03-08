@@ -3,14 +3,11 @@ package br.com.mcampos.controller.logged;
 
 import br.com.mcampos.controller.core.BookmarkHelper;
 import br.com.mcampos.controller.core.LoggedBaseController;
-
 import br.com.mcampos.controller.core.PageBrowseHistory;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.sysutils.SysUtils;
-
 import br.com.mcampos.util.business.UsersLocator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
@@ -24,6 +21,7 @@ import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
 import org.zkoss.zul.Menuseparator;
 import org.zkoss.zul.api.Center;
+
 
 public class PrivateIndexController extends LoggedBaseController
 {
@@ -52,6 +50,7 @@ public class PrivateIndexController extends LoggedBaseController
         for ( MenuDTO item : menus ) {
             addMenu( item, mainMenu );
         }
+        mainMenu.invalidate();
         AddBookmarkEventListener();
     }
 
@@ -62,7 +61,7 @@ public class PrivateIndexController extends LoggedBaseController
                 public void onEvent( Event event ) throws Exception
                 {
                     if ( event != null && event instanceof BookmarkEvent )
-                        PrivateIndexController.this.onBookmarkChange( ( BookmarkEvent )event );
+                        PrivateIndexController.this.onBookmarkChange( ( BookmarkEvent ) event );
                 }
             } );
     }
@@ -155,11 +154,11 @@ public class PrivateIndexController extends LoggedBaseController
         Menuitem item;
 
         if ( evt.getTarget() instanceof Menuitem ) {
-            item = ( Menuitem )evt.getTarget();
+            item = ( Menuitem ) evt.getTarget();
             Object obj = item.getAttribute( attrMenu );
 
             if ( obj != null && obj instanceof MenuDTO ) {
-                MenuDTO dto = ( MenuDTO )obj;
+                MenuDTO dto = ( MenuDTO ) obj;
                 if ( SysUtils.isEmpty( dto.getTargetURL() ) == false )
                     gotoPage( dto.getTargetURL(), mdiApplication );
                 evt.stopPropagation();

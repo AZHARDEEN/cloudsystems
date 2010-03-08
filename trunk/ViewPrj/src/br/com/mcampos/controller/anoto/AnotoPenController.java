@@ -19,6 +19,11 @@ public class AnotoPenController extends BasicListController<PenDTO>
 {
     protected Textbox editId;
     protected Label recordId;
+
+
+    protected Textbox editDescription;
+    protected Label recordDescription;
+
     private AnodeFacade session;
 
     public AnotoPenController()
@@ -37,11 +42,13 @@ public class AnotoPenController extends BasicListController<PenDTO>
     {
         if ( record != null ) {
             recordId.setValue( record.getId() );
+            recordDescription.setValue( record.getDescription() );
             //listAvailable.setModel( getAvailableFormsListModel( record ) );
             //listAdded.setModel( getFormModel( record ) );
         }
         else {
             recordId.setValue( "" );
+            recordDescription.setValue( "" );
         }
     }
 
@@ -53,6 +60,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
     protected PenDTO copyTo( PenDTO dto )
     {
         dto.setId( editId.getValue() );
+        dto.setDescription( editDescription.getValue().trim() );
         return dto;
     }
 
@@ -86,6 +94,9 @@ public class AnotoPenController extends BasicListController<PenDTO>
     protected void prepareToInsert()
     {
         editId.setValue( "" );
+        editDescription.setValue( "" );
+        editId.setFocus( true );
+        editId.setDisabled( false );
     }
 
     protected Object prepareToUpdate( Listitem currentRecord )
@@ -95,6 +106,9 @@ public class AnotoPenController extends BasicListController<PenDTO>
         dto = getValue( currentRecord );
 
         editId.setValue( dto.getId() );
+        editDescription.setValue( dto.getDescription() );
+        editDescription.setFocus( true );
+        editId.setDisabled( true );
         return dto;
     }
 
@@ -105,7 +119,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
 
     protected void updateItem( Listitem e ) throws ApplicationException
     {
-        //getSession().update( getLoggedInUser(), getValue( e ) );
+        getSession().update( getLoggedInUser(), getValue( e ) );
     }
 
     @Override
@@ -113,7 +127,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
     {
         super.doAfterCompose( comp );
         /*We do not need update by now*/
-        cmdUpdate.setVisible( false );
+        //cmdUpdate.setVisible( false );
     }
     /*
     protected void moveListitem( Listbox toListbox, Listbox fromListbox )

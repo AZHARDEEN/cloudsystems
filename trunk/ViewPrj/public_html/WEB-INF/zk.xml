@@ -34,11 +34,11 @@
 		<value>auto</value>
 	</library-property>
 
+    <!--
     <library-property>
         <name>org.zkoss.zul.theme.fontFamilyC</name>
         <value>Courier New</value>
     </library-property>
-    <!--
     <library-property>
         <name>org.zkoss.zul.theme.fontFamilyT</name>
         <value>Courier New</value>
@@ -68,10 +68,10 @@
 
 	<!-- Optional -->
 	<!-- the following listener is used to see # of sessions, desktops...
-	-->
 	<listener>
 		<description>[Optional] Mointor the statistic</description>
 		<listener-class>org.zkoss.zk.ui.util.Statistic</listener-class>
 	</listener>
+	-->
 
 </zk>

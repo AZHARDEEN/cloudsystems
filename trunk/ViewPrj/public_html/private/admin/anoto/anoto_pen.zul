@@ -34,6 +34,10 @@
                                     Código
                                     <label id="recordId"/>
                                 </row>
+                                <row>
+                                    Descrição
+                                    <label id="recordDescription"/>
+                                </row>
                             </rows>
                         </grid>
                         <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
@@ -48,7 +52,11 @@
                             <rows>
                                 <row>
                                     Código
-                                    <textbox id="editId" width="1"/>
+                                    <textbox id="editId" width="1" maxlength="16"/>
+                                </row>
+                                <row>
+                                    Descrição
+                                    <textbox id="editDescription" width="99%" maxlength="64"/>
                                 </row>
                             </rows>
                         </grid>

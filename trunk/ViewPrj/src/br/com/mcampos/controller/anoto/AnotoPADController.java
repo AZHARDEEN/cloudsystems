@@ -9,6 +9,7 @@ import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.util.system.UploadMedia;
 
 import java.io.IOException;
 
@@ -238,36 +239,6 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
     }
 
 
-    protected MediaDTO getMedia( org.zkoss.util.media.Media media )
-    {
-        MediaDTO dto = new MediaDTO();
-        int mediaSize;
-
-        try {
-            dto.setFormat( media.getFormat() );
-            dto.setName( media.getName() );
-            dto.setMimeType( media.getContentType() );
-            if ( media.inMemory() ) {
-                if ( media.isBinary() )
-                    dto.setObject( media.getByteData() );
-                else
-                    dto.setObject( media.getStringData().getBytes() );
-            }
-            else {
-                mediaSize = media.getStreamData().available();
-                dto.setObject( new byte[ mediaSize ] );
-                media.getStreamData().read( dto.getObject(), 0, mediaSize );
-            }
-            return dto;
-
-        }
-        catch ( IOException e ) {
-            showErrorMessage( e.getMessage(), "Upload Error" );
-            return null;
-        }
-    }
-
-
     public void onUpload$btnAddAttach( UploadEvent evt )
     {
         if ( getListboxRecord().getSelectedCount() != 1 ) {
@@ -275,7 +246,13 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
             evt.stopPropagation();
             return;
         }
-        MediaDTO dto = getMedia( evt.getMedia() );
+        MediaDTO dto = null;
+        try {
+            dto = UploadMedia.getMedia( evt.getMedia() );
+        }
+        catch ( IOException e ) {
+            showErrorMessage( e.getMessage(), "Upload Media" );
+        }
         if ( dto == null )
             return;
         AnotoPageDTO page = getValue( getListboxRecord().getSelectedItem() );
