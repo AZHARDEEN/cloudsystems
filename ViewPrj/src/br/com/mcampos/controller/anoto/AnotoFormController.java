@@ -11,6 +11,7 @@ import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.util.system.UploadMedia;
 
 import com.anoto.api.FormatException;
 import com.anoto.api.IllegalValueException;
@@ -18,13 +19,7 @@ import com.anoto.api.NotAllowedException;
 import com.anoto.api.PenHome;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import java.io.InputStreamReader;
-import java.io.Reader;
-
-import java.nio.CharBuffer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -186,7 +181,13 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             evt.stopPropagation();
             return;
         }
-        MediaDTO dto = getMedia( evt.getMedia() );
+        MediaDTO dto = null;
+        try {
+            dto = UploadMedia.getMedia( evt.getMedia() );
+        }
+        catch ( IOException e ) {
+            showErrorMessage( e.getMessage(), "UploadMedia" );
+        }
         if ( dto == null )
             return;
         FormDTO form = getValue( getListboxRecord().getSelectedItem() );
@@ -205,49 +206,6 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    protected MediaDTO getMedia( org.zkoss.util.media.Media media )
-    {
-        MediaDTO dto = new MediaDTO();
-        int mediaSize = 1;
-
-        try {
-            dto.setFormat( media.getFormat() );
-            dto.setName( media.getName() );
-            dto.setMimeType( media.getContentType() );
-            if ( media.inMemory() ) {
-                if ( media.isBinary() )
-                    dto.setObject( media.getByteData() );
-                else
-                    dto.setObject( media.getStringData().getBytes() );
-            }
-            else {
-                if ( media.isBinary() ) {
-                    mediaSize = media.getStreamData().available();
-                    dto.setObject( new byte[ mediaSize ] );
-                    media.getStreamData().read( dto.getObject(), 0, mediaSize );
-                }
-                else {
-                    InputStreamReader is = ( InputStreamReader )media.getReaderData();
-                    StringBuffer strBuffer = new StringBuffer( 1024 * 64 );
-                    char[] chArray = new char[ 1024 * 64 ];
-                    int nRead;
-                    do {
-                        nRead = is.read( chArray );
-                        if ( nRead > 0 ) {
-                            strBuffer.append( chArray, 0, nRead );
-                        }
-                    } while ( nRead > 0 );
-                    mediaSize = strBuffer.length();
-                    dto.setObject( strBuffer.toString().getBytes( "UTF-8" ) );
-                }
-            }
-            return dto;
-        }
-        catch ( IOException e ) {
-            showErrorMessage( e.getMessage(), "Upload Error" );
-            return null;
-        }
-    }
 
     @Override
     public void doAfterCompose( Component comp ) throws Exception

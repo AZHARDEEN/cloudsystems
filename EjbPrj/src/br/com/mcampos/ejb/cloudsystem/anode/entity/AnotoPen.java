@@ -42,9 +42,10 @@ public class AnotoPen implements Serializable, EntityCopyInterface<PenDTO>
     {
     }
 
-    public AnotoPen( String pen_id_in )
+    public AnotoPen( String pen_id_in, String description )
     {
         setId( pen_id_in );
+        setDescription( description );
     }
 
     public String getId()
@@ -56,7 +57,7 @@ public class AnotoPen implements Serializable, EntityCopyInterface<PenDTO>
     {
         if ( SysUtils.isEmpty( pen_id_in ) )
             throw new InvalidParameterException( "Pen identification could not be null or empty." );
-        this.id = pen_id_in;
+        this.id = pen_id_in.trim();
     }
 
     public PenDTO toDTO()

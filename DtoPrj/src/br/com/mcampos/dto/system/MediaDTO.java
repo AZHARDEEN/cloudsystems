@@ -50,6 +50,8 @@ public class MediaDTO implements Comparable<MediaDTO>, Serializable
     public MediaDTO setObject( byte[] object )
     {
         this.object = object;
+        if ( object != null )
+            setSize( object.length );
         return this;
     }
 

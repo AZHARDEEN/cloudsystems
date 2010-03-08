@@ -262,11 +262,11 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jai.library"/>
+            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jdom.library"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jdom.library"/>
+            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/asprise.library"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
@@ -299,11 +299,11 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jai.library"/>
+            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jdom.library"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/jdom.library"/>
+            <url n="id" path="../../config/system11.1.1.2.36.55.36/o.jdeveloper/asprise.library"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>

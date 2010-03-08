@@ -788,7 +788,7 @@ public final class DTOFactory implements Serializable
     {
         if ( entity == null )
             return null;
-        return new AnotoPen( entity.getId() );
+        return new AnotoPen( entity.getId(), entity.getDescription() );
     }
 
     public static Pgc copy( PGCDTO source )
