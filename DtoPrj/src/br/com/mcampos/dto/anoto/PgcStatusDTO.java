@@ -4,6 +4,8 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class PgcStatusDTO extends SimpleTableDTO
 {
+    public static final int statusOk = 1;
+
     public PgcStatusDTO( SimpleTableDTO simpleTableDTO )
     {
         super( simpleTableDTO );

@@ -42,6 +42,8 @@ import javax.imageio.ImageIO;
 
 import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -58,6 +60,7 @@ import org.zkoss.zul.Treeitem;
 
 public class AnotoViewController extends LoggedBaseController
 {
+    protected static final String anotoServerPath = "/anoto_res";
 
     protected Tree tree;
     protected AnodeFacade session;
@@ -91,7 +94,7 @@ public class AnotoViewController extends LoggedBaseController
             {
                 public void onEvent( Event event )
                 {
-                    pgcImageAreaClick( ( MouseEvent ) event );
+                    pgcImageAreaClick( ( MouseEvent )event );
                 }
             } );
     }
@@ -104,7 +107,7 @@ public class AnotoViewController extends LoggedBaseController
     protected AnodeFacade getSession()
     {
         if ( session == null )
-            session = ( AnodeFacade ) getRemoteSession( AnodeFacade.class );
+            session = ( AnodeFacade )getRemoteSession( AnodeFacade.class );
         return session;
     }
 
@@ -116,9 +119,9 @@ public class AnotoViewController extends LoggedBaseController
         if ( value == null )
             return;
         if ( value instanceof PgcPenPageDTO )
-            showPgc( item, ( ( PgcPenPageDTO ) value ).getPgc() );
+            showPgc( item, ( ( PgcPenPageDTO )value ).getPgc() );
         if ( value instanceof MediaDTO )
-            showPgc( item, ( MediaDTO ) value );
+            showPgc( item, ( MediaDTO )value );
 
     }
 
@@ -168,7 +171,7 @@ public class AnotoViewController extends LoggedBaseController
             parentItem = parentItem.getParentItem();
         if ( parentItem == null )
             return bRet;
-        PadDTO dto = ( PadDTO ) parentItem.getValue();
+        PadDTO dto = ( PadDTO )parentItem.getValue();
         bRet = getSession().getObject( getLoggedInUser(), dto.getMedia() );
         return bRet;
     }
@@ -182,7 +185,7 @@ public class AnotoViewController extends LoggedBaseController
             parentItem = parentItem.getParentItem();
         if ( parentItem == null )
             return bRet;
-        PgcPenPageDTO dto = ( PgcPenPageDTO ) parentItem.getValue();
+        PgcPenPageDTO dto = ( PgcPenPageDTO )parentItem.getValue();
         bRet = getSession().getObject( getLoggedInUser(), dto.getPgc().getMedia() );
         return bRet;
     }
@@ -196,7 +199,7 @@ public class AnotoViewController extends LoggedBaseController
             parentItem = parentItem.getParentItem();
         if ( parentItem == null )
             return null;
-        FormDTO dto = ( FormDTO ) parentItem.getValue();
+        FormDTO dto = ( FormDTO )parentItem.getValue();
         return dto;
     }
 
@@ -209,7 +212,7 @@ public class AnotoViewController extends LoggedBaseController
             parentItem = parentItem.getParentItem();
         if ( parentItem == null )
             return null;
-        AnotoPageDTO dto = ( AnotoPageDTO ) parentItem.getValue();
+        AnotoPageDTO dto = ( AnotoPageDTO )parentItem.getValue();
         return dto;
     }
 
@@ -249,13 +252,14 @@ public class AnotoViewController extends LoggedBaseController
         int areaId = 1;
         try {
             while ( it.hasNext() ) {
-                PageArea pageArea = ( PageArea ) it.next();
+                PageArea pageArea = ( PageArea )it.next();
 
                 if ( pageArea.getType() != PageArea.DRAWING_AREA ) {
                     Bounds bounds = pageArea.getBounds();
-                    String coords = String.format( "%d,%d,%d,%d", ( ( int ) bounds.getX() ), ( ( int ) bounds.getY() ),
-                                                   ( ( int ) ( bounds.getX() + bounds.getWidth() ) ),
-                                                   ( ( int ) ( bounds.getY() + bounds.getHeight() ) ) );
+                    String coords =
+                        String.format( "%d,%d,%d,%d", ( ( int )bounds.getX() ), ( ( int )bounds.getY() ), ( ( int )( bounds.getX() +
+                                                                                                                     bounds.getWidth() ) ),
+                                       ( ( int )( bounds.getY() + bounds.getHeight() ) ) );
                     Area area = new Area();
                     area.setTooltiptext( pageArea.getName() );
                     area.setAttribute( pageArea.getName(), pageArea );
@@ -266,8 +270,8 @@ public class AnotoViewController extends LoggedBaseController
                     area.setCoords( coords );
                     Graphics gd = bufferedImage.getGraphics();
                     gd.setColor( Color.blue );
-                    gd.drawRect( ( int ) pageArea.getBounds().getX(), ( int ) pageArea.getBounds().getY(),
-                                 ( int ) pageArea.getBounds().getWidth(), ( int ) pageArea.getBounds().getHeight() );
+                    gd.drawRect( ( int )pageArea.getBounds().getX(), ( int )pageArea.getBounds().getY(),
+                                 ( int )pageArea.getBounds().getWidth(), ( int )pageArea.getBounds().getHeight() );
                     gd.setColor( Color.red );
                     gd.drawRect( 0, 0, bufferedImage.getWidth() - 1, bufferedImage.getHeight() - 1 );
                     pgcImage.appendChild( area );
@@ -306,7 +310,8 @@ public class AnotoViewController extends LoggedBaseController
                 System.out.println( "Rendering page: " + page.getPageName() + ". Address: " + page.getPageAddress() );
                 BufferedImage img = loadImage( renderedImagePath );
                 loadAreas( page, img );
-                System.out.println( "Tamanho da imagem: (" + pgcImage.getContent().getWidth() + "," + pgcImage.getContent().getHeight() + ")" );
+                System.out.println( "Tamanho da imagem: (" + pgcImage.getContent().getWidth() + "," +
+                                    pgcImage.getContent().getHeight() + ")" );
                 return img;
             }
             catch ( Exception e ) {
@@ -338,15 +343,17 @@ public class AnotoViewController extends LoggedBaseController
     protected String savePad( PadDTO dto ) throws ApplicationException, IOException
     {
         byte[] pad = getSession().getObject( getLoggedInUser(), dto.getMedia() );
-        String path = "t:/temp/anoto/registeredPads";
+        String path = getRegisteredPadPath();
         File f = new File( path );
         if ( f.exists() == false )
             f.mkdirs();
         path += "/" + dto.getMedia().getName();
         f = new File( path );
-        FileOutputStream writer = new FileOutputStream( f );
-        writer.write( pad );
-        writer.close();
+        if ( f.exists() == false ) {
+            FileOutputStream writer = new FileOutputStream( f );
+            writer.write( pad );
+            writer.close();
+        }
         return path;
     }
 
@@ -354,7 +361,7 @@ public class AnotoViewController extends LoggedBaseController
     protected String saveBackgroundImage( MediaDTO dto ) throws ApplicationException, IOException
     {
         byte[] pad = getSession().getObject( getLoggedInUser(), dto );
-        String path = "t:/temp/anoto/registeredPads";
+        String path = getAnotoUserPath();
         File f = new File( path );
         if ( f.exists() == false )
             f.mkdirs();
@@ -368,7 +375,7 @@ public class AnotoViewController extends LoggedBaseController
 
     protected String getRenderedImagePath( String szFilename ) throws ApplicationException, IOException
     {
-        String path = "t:/temp/anoto/registeredPads";
+        String path = getAnotoUserPath();
         File f = new File( path );
         if ( f.exists() == false )
             f.mkdirs();
@@ -382,16 +389,16 @@ public class AnotoViewController extends LoggedBaseController
         System.out.println( "onClick event fired" );
     }
 
-    public void onSelect$fields ()
+    public void onSelect$fields()
     {
-        if ( fields.getSelectedItem() == null ){
+        if ( fields.getSelectedItem() == null ) {
             icrInfo.setVisible( false );
             correctedInfo.setVisible( false );
             return;
         }
         icrInfo.setVisible( true );
         correctedInfo.setVisible( true );
-        Bounds area = (Bounds) fields.getSelectedItem().getValue();
+        Bounds area = ( Bounds )fields.getSelectedItem().getValue();
         if ( area == null )
             return;
         AImage aImage = ( AImage )pgcImage.getContent();
@@ -407,7 +414,26 @@ public class AnotoViewController extends LoggedBaseController
             return;
         img = img.getSubimage( ( int )area.getX(), ( int )area.getY(), ( int )area.getWidth(), ( int )area.getHeight() );
         /*
-         * TODO: OCR SHOULB BE HERE!!!!
+         * TODO: OCR SHOULD BE HERE!!!!
          */
+    }
+
+    protected String getPath( String path )
+    {
+        return Executions.getCurrent().getDesktop().getWebApp().getRealPath( anotoServerPath + "/" + path );
+    }
+
+    protected String getRegisteredPadPath()
+    {
+        return getPath( "registeredPads" );
+    }
+
+    protected String getAnotoUserPath()
+    {
+        int hash;
+
+        hash = getLoggedInUser().getSessionId().hashCode();
+        String path = "user_" + hash;
+        return getPath( path );
     }
 }

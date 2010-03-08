@@ -6,6 +6,7 @@ import br.com.mcampos.controller.anoto.renderer.PgcListRendered;
 import br.com.mcampos.controller.anoto.renderer.PropertyRowRenderer;
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.anoto.PGCDTO;
+import br.com.mcampos.dto.anoto.PgcStatusDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -27,6 +28,7 @@ import java.util.List;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Cell;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -77,7 +79,7 @@ public class AnotoPcgController extends LoggedBaseController
     public void onUpload$btnAddAttach( UploadEvent evt )
     {
 
-        PgcFile pgcFile = new PgcFile ();
+        PgcFile pgcFile = new PgcFile();
 
         try {
             pgcFile.uploadPgc( evt );
@@ -86,8 +88,7 @@ public class AnotoPcgController extends LoggedBaseController
             showErrorMessage( e.getMessage(), "Upload Media" );
         }
 
-        for ( int nIndex = 0; nIndex < pgcFile.getPgcs().size(); nIndex ++ )
-        {
+        for ( int nIndex = 0; nIndex < pgcFile.getPgcs().size(); nIndex++ ) {
             PGCDTO pgc = new PGCDTO( pgcFile.getPgcs().get( nIndex ) );
             try {
                 pgc = getSession().add( pgc );
@@ -140,7 +141,8 @@ public class AnotoPcgController extends LoggedBaseController
         ListModelList list = ( ListModelList )gridProperties.getModel();
         list.clear();
 
-        addProperty( "Status do PGC", pgc.getPgcStatus().toString() );
+        addProperty( "Status do PGC", pgc.getPgcStatus() );
+
         addProperty( "MagicBoxPage", pen.getMagicBoxPage() );
         addProperty( "ProtocolVersion", pen.getProtocolVersion() );
         try {
@@ -166,7 +168,7 @@ public class AnotoPcgController extends LoggedBaseController
         }
     }
 
-    protected void addProperty( String name, String value )
+    protected void addProperty( String name, Object value )
     {
         ListModelList list = ( ListModelList )gridProperties.getModel();
 
@@ -175,5 +177,4 @@ public class AnotoPcgController extends LoggedBaseController
         prop.add( value );
         list.add( prop );
     }
-
 }
