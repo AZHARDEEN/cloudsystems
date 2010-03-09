@@ -1,7 +1,7 @@
 package br.com.mcampos.controller.admin.system.config.menu;
 
-import br.com.mcampos.controller.core.BasicTreeCRUDController;
 
+import br.com.mcampos.controller.core.BasicTreeCRUDController;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.exception.ApplicationException;
@@ -311,9 +311,6 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         row = item.getTreerow();
         row.appendChild( new Treecell( data.toString() ) );
         row.appendChild( new Treecell( data.getSequence().toString() ) );
-        if ( SysUtils.isEmpty( data.getTargetURL() ) == false )
-            row.appendChild( new Treecell( data.getTargetURL() ) );
-        item.setOpen( true );
         row.setDraggable( "true" );
         row.setDroppable( "true" );
         row.addEventListener( Events.ON_DROP, new EventListener()

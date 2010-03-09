@@ -25,7 +25,7 @@ public class UploadMedia
             if ( media.isBinary() )
                 dto.setObject( media.getByteData() );
             else
-                dto.setObject( media.getStringData().getBytes() );
+                dto.setObject( media.getStringData().getBytes("UTF-8") );
         }
         else {
             if ( media.isBinary() ) {
