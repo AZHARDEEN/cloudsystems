@@ -1,5 +1,6 @@
 package br.com.mcampos.dto.core;
 
+
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.security.InvalidParameterException;
@@ -65,7 +66,7 @@ public abstract class SimpleTableDTO extends DisplayNameDTO implements SimpleTab
 
     public String getDisplayName()
     {
-        return "" + getId() + " - " + getDescription();
+        return getDescription();
     }
 
     public int compareTo( SimpleTableDTO o )

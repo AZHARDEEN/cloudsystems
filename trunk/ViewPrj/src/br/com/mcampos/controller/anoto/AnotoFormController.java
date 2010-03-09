@@ -360,7 +360,8 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         try {
             for ( Iterator it = al.iterator(); it.hasNext(); ) {
                 Listitem li = ( Listitem )it.next();
-                getSession().removeFromForm( getLoggedInUser(), currentForm, ( ( MediaDTO )li.getValue() ) );
+                PadDTO dto = ( PadDTO )li.getValue();
+                getSession().removeFromForm( getLoggedInUser(), currentForm, dto.getMedia() );
                 ( ( ListModelList )listAttachs.getModel() ).remove( li.getValue() );
             }
             btnRemoveAttach.setDisabled( true );
