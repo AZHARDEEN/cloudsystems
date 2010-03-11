@@ -1,5 +1,6 @@
 package br.com.mcampos.controller.admin.tables.core;
 
+
 import br.com.mcampos.controller.admin.tables.BasicListController;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 
@@ -23,20 +24,24 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
         super();
     }
 
+    protected void clearRecordInfo ()
+    {
+        editId.setRawValue( 0 );
+        editDescription.setValue( "" );
+    }
 
     protected void prepareToInsert()
     {
         editId.setRawValue( getNextId() );
         editId.setReadonly( false );
         editDescription.setFocus( true );
-        editDescription.setRawValue( "" );
     }
 
-    protected SimpleTableDTO prepareToUpdate( Listitem currentRecord )
+    protected SimpleTableDTO prepareToUpdate( Object currentRecord )
     {
         SimpleTableDTO dto = null;
 
-        dto = getValue( currentRecord );
+        //dto = getValue( currentRecord );
 
         editId.setValue( dto.getId() );
         editId.setReadonly( true );
@@ -51,8 +56,7 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
             recordDescription.setValue( record.getDescription() );
         }
         else {
-            recordId.setValue( "" );
-            recordDescription.setValue( "" );
+            clearRecordInfo();
         }
     }
 
@@ -65,15 +69,15 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
         return dto;
     }
 
-    protected void configure( Listitem item )
+    public void render( Listitem item, Object value )
     {
-        if ( item == null )
-            return;
-        SimpleTableDTO dto = getValue( item );
+        SimpleTableDTO dto = (SimpleTableDTO) value;
 
         if ( dto != null ) {
+            item.getChildren().clear();
             item.getChildren().add( new Listcell( dto.getId().toString() ) );
             item.getChildren().add( new Listcell( dto.getDescription() ) );
         }
     }
+
 }

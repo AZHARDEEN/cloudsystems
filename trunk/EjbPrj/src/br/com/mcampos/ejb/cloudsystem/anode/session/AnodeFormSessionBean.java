@@ -105,4 +105,12 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         List<Pad> padList = ( List<Pad> )getResultList( Pad.padFindAllNamedQuery, parameter );
         return padList;
     }
+
+    @Override
+    public AnotoForm update( AnotoForm entity ) throws ApplicationException
+    {
+        AnotoForm form = get ( entity.getId() );
+        entity.setInsertDate( form.getInsertDate() );
+        return super.update( entity );
+    }
 }

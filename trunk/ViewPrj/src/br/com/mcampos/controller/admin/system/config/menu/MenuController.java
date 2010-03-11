@@ -158,11 +158,11 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         getListboxRecord().getItems().clear();
     }
 
-    protected MenuDTO prepareToUpdate( Treeitem currentRecord )
+    protected MenuDTO prepareToUpdate( Object e )
     {
         MenuDTO dto = null;
 
-        dto = getValue( currentRecord );
+        dto = getValue( ((Treeitem)e) );
 
         if ( dto != null ) {
             editId.setValue( dto.getId() );
@@ -219,40 +219,40 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         }
     }
 
-    protected void delete( Treeitem treeItem )
+    protected void delete( Object e )
     {
-        if ( treeItem == null )
+        if ( e == null )
             return;
 
-        MenuDTO dto = getValue( treeItem );
+        MenuDTO dto = getValue( ((Treeitem)e) );
         if ( dto != null ) {
             try {
                 getLocator().delete( getLoggedInUser(), dto );
             }
-            catch ( ApplicationException e ) {
-                showErrorMessage( e.getMessage(), "Exclur Menu" );
+            catch ( ApplicationException ex ) {
+                showErrorMessage( ex.getMessage(), "Exclur Menu" );
             }
         }
     }
 
-    protected void insertItem( Treeitem treeItem )
+    protected void insertItem( Object treeItem )
     {
         try {
-            MenuDTO dto = getLocator().add( getLoggedInUser(), getValue( treeItem ) );
+            MenuDTO dto = getLocator().add( getLoggedInUser(), getValue( (Treeitem)treeItem ) );
             if ( dto != null )
-                treeItem.setValue( dto );
+                ((Treeitem)treeItem).setValue( dto );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Inserir Menu" );
         }
     }
 
-    protected void updateItem( Treeitem treeItem )
+    protected void updateItem( Object treeItem )
     {
         try {
-            MenuDTO dto = getLocator().update( getLoggedInUser(), getValue( treeItem ) );
+            MenuDTO dto = getLocator().update( getLoggedInUser(), getValue( ((Treeitem)treeItem) ) );
             if ( dto != null )
-                treeItem.setValue( dto );
+                ((Treeitem)treeItem).setValue( dto );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Atualizar Menu" );

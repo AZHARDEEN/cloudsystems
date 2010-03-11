@@ -1,7 +1,7 @@
 package br.com.mcampos.controller.core;
 
-import br.com.mcampos.exception.ApplicationException;
 
+import br.com.mcampos.exception.ApplicationException;
 
 import java.util.TreeMap;
 
@@ -13,12 +13,13 @@ import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
 import org.zkoss.zul.impl.XulElement;
 
+
 /**
  * Classe base para CRUD em uma tree.
  * Neste modelo de desenvolvimento optou-se pelo uso do pattern DTO.
  * @param <DTO>
  */
-public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController<Treeitem> implements TreeitemRenderer
+public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController implements TreeitemRenderer
 {
     protected Tree treeList;
     protected TreeMap treeMap;
@@ -88,19 +89,19 @@ public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController<T
 
 
     @Override
-    public void afterDelete( Treeitem currentRecord )
+    public void afterDelete( Object currentRecord )
     {
         if ( currentRecord == null )
             return;
-        removeNode( currentRecord );
+        removeNode( (Treeitem)currentRecord );
     }
 
     @Override
-    public void afterEdit( Treeitem record )
+    public void afterEdit( Object record )
     {
-        Object dto = getValue( record );
+        Object dto = getValue( (Treeitem )record );
         if ( isAddNewOperation() == false ) {
-            Treecell cell = ( Treecell )record.getTreerow().getFirstChild();
+            Treecell cell = ( Treecell )((Treeitem)record).getTreerow().getFirstChild();
             if ( cell != null )
                 cell.setLabel( dto.toString() );
             getTreeMap().remove( dto );
@@ -171,14 +172,14 @@ public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController<T
         return ( ( DTO )selecteItem.getValue() );
     }
 
-    protected Treeitem saveRecord( Treeitem selectedItem )
+    protected Object saveRecord( Object e )
     {
-        if ( selectedItem != null ) {
-            DTO dto = getValue( selectedItem );
+        if ( e != null ) {
+            DTO dto = getValue( ((Treeitem)e) );
             if ( dto != null )
                 copyTo( dto );
         }
-        return selectedItem;
+        return e;
     }
 
     protected Treeitem createNewRecord()

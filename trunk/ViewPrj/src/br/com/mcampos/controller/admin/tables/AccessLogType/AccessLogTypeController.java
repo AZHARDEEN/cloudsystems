@@ -1,14 +1,14 @@
 package br.com.mcampos.controller.admin.tables.AccessLogType;
 
+
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
-
 import br.com.mcampos.exception.ApplicationException;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.zkoss.zul.Listitem;
+
 
 public class AccessLogTypeController extends SimpleTableController<AccessLogTypeDTO>
 {
@@ -24,19 +24,19 @@ public class AccessLogTypeController extends SimpleTableController<AccessLogType
         return new AccessLogTypeDTO();
     }
 
-    protected void delete( Listitem currentRecord ) throws ApplicationException
+    protected void delete( Object currentRecord ) throws ApplicationException
     {
-        getLocator().delete( getLoggedInUser(), getValue( currentRecord ) );
+        getLocator().delete( getLoggedInUser(), getValue( (Listitem)currentRecord ) );
     }
 
-    protected void insertItem( Listitem e ) throws ApplicationException
+    protected void insertItem( Object e ) throws ApplicationException
     {
-        getLocator().add( getLoggedInUser(), getValue( e ) );
+        getLocator().add( getLoggedInUser(), (AccessLogTypeDTO)e );
     }
 
-    protected void updateItem( Listitem e ) throws ApplicationException
+    protected void updateItem( Object e ) throws ApplicationException
     {
-        getLocator().update( getLoggedInUser(), getValue( e ) );
+        getLocator().update( getLoggedInUser(), (AccessLogTypeDTO)e );
     }
 
     public AccessLogLocator getLocator()
@@ -67,4 +67,5 @@ public class AccessLogTypeController extends SimpleTableController<AccessLogType
     {
         return getLocator().getList( getLoggedInUser() );
     }
+
 }

@@ -64,13 +64,12 @@ public class AnotoPenController extends BasicListController<PenDTO>
         return dto;
     }
 
-    protected void configure( Listitem item )
+    public void render( Listitem item, Object value )
     {
-        if ( item == null )
-            return;
-        PenDTO dto = getValue( item );
+        PenDTO dto = (PenDTO )value;
 
         if ( dto != null ) {
+            item.setValue( value );
             item.getChildren().add( new Listcell( dto.getId() ) );
         }
     }
@@ -81,29 +80,34 @@ public class AnotoPenController extends BasicListController<PenDTO>
         return getSession().getPens( getLoggedInUser() );
     }
 
-    protected void delete( Listitem currentRecord ) throws ApplicationException
+    protected void delete( Object currentRecord ) throws ApplicationException
     {
-        getSession().delete( getLoggedInUser(), getValue( currentRecord ) );
+        getSession().delete( getLoggedInUser(), getValue( (Listitem)currentRecord ) );
     }
 
-    protected Listitem saveRecord( Listitem getCurrentRecord )
+    protected Object saveRecord( Object getCurrentRecord )
     {
         return getCurrentRecord;
     }
 
-    protected void prepareToInsert()
+    protected void clearRecordInfo ()
     {
         editId.setValue( "" );
         editDescription.setValue( "" );
+    }
+
+    protected void prepareToInsert()
+    {
+        clearRecordInfo();
         editId.setFocus( true );
         editId.setDisabled( false );
     }
 
-    protected Object prepareToUpdate( Listitem currentRecord )
+    protected Object prepareToUpdate( Object currentRecord )
     {
         PenDTO dto = null;
 
-        dto = getValue( currentRecord );
+        dto = getValue( (Listitem)currentRecord );
 
         editId.setValue( dto.getId() );
         editDescription.setValue( dto.getDescription() );
@@ -112,14 +116,14 @@ public class AnotoPenController extends BasicListController<PenDTO>
         return dto;
     }
 
-    protected void insertItem( Listitem e ) throws ApplicationException
+    protected void insertItem( Object e ) throws ApplicationException
     {
-        getSession().add( getLoggedInUser(), getValue( e ) );
+        getSession().add( getLoggedInUser(), getValue( (Listitem)e ) );
     }
 
-    protected void updateItem( Listitem e ) throws ApplicationException
+    protected void updateItem( Object e ) throws ApplicationException
     {
-        getSession().update( getLoggedInUser(), getValue( e ) );
+        getSession().update( getLoggedInUser(), getValue( (Listitem) e ) );
     }
 
     @Override

@@ -1,12 +1,12 @@
 package br.com.mcampos.controller.core;
 
-import br.com.mcampos.exception.ApplicationException;
 
+import br.com.mcampos.exception.ApplicationException;
 
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Div;
 
-public abstract class BasicCRUDController<T> extends LoggedBaseController
+public abstract class BasicCRUDController extends LoggedBaseController
 {
 
     /**
@@ -71,7 +71,7 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
      * @param currentRecord Objeto que represente o registro selecionado para exclusão.
      * @throws ApplicationException
      */
-    protected abstract void delete( T currentRecord ) throws ApplicationException;
+    protected abstract void delete( Object currentRecord ) throws ApplicationException;
 
     /**
      * Cleanup da função delete.
@@ -82,7 +82,7 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
      *
      * @param currentRecord Registro selecionado.
      */
-    protected abstract void afterDelete( T currentRecord );
+    protected abstract void afterDelete( Object currentRecord );
 
     /**
      * Cleanup das funções update ou insert.
@@ -93,28 +93,19 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
      *
      * @param currentRecord Registro selecionado.
      */
-    protected abstract void afterEdit( T currentRecord );
+    protected abstract void afterEdit( Object currentRecord );
 
     /**
      * Prepara um dto para inserção no banco de dados.
      * Esta função tem como principal objetivo obter os dados dos campos da página
      * web e criar um DTO para inserir no banco de dados.
+     * Durante o processo de inclusão de um registro no banco de dados, é solicitado ao controller a
+     * criação de um novo registro através desta função (Neste caso o parametro getCurrentRecord é null.
      *
      * @return Objeto a ser inserido no banco de dados.
      * @throws ApplicationException
      */
-    protected abstract T saveRecord( T getCurrentRecord ) throws ApplicationException;
-
-    /**
-     * Durante o processo de inclusão de um registro no banco de dados, é solicitado ao controller a
-     * criação de um novo registro através desta função.
-     * O implementador deve preocupar-se apenas em retornar oum novo objeto(que represente um registro) -
-     * um treeitem no caso de um tree por exemplo.
-     * @return O novo objeto criado.
-     * @throws ApplicationException
-     */
-    protected abstract T createNewRecord() throws ApplicationException;
-
+    protected abstract Object saveRecord( Object currentRecord ) throws ApplicationException;
 
     /**
      * Prepara a página para iniciar um procedimento de criação de um novo registro.
@@ -134,14 +125,14 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
      *
      * @param currentRecord O registro corrente(selecionado).
      */
-    protected abstract Object prepareToUpdate( T currentRecord );
+    protected abstract Object prepareToUpdate( Object currentRecord );
 
 
     /**
      * Obtem o registro autalmente selecionado, ou seja, o registro corrente.
      * @return Objeto selecionado.
      */
-    protected abstract T getCurrentRecord();
+    protected abstract Object getCurrentRecord();
 
     /**
      * Insere o novo registro no formulário. O implementador deve preocupar-se SOMENTE com os componetes visuais,
@@ -150,7 +141,7 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
      * @param e Novo objeto.
      * @throws ApplicationException
      */
-    protected abstract void insertItem( T e ) throws ApplicationException;
+    protected abstract void insertItem( Object e ) throws ApplicationException;
 
     /**
      * Autaliza o registro no formulário. O implementador deve preocupar-se SOMENTE com os componetes visuais,
@@ -159,7 +150,7 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
      * @param e Novo objeto.
      * @throws ApplicationException
      */
-    protected abstract void updateItem( T e ) throws ApplicationException;
+    protected abstract void updateItem( Object e ) throws ApplicationException;
 
 
     /**
@@ -218,7 +209,7 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
 
     public void onClick$cmdUpdate()
     {
-        T currentRecord = getCurrentRecord();
+        Object currentRecord = getCurrentRecord();
 
         if ( currentRecord != null ) {
             enableOperationsButtons( false );
@@ -235,9 +226,8 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
 
     public void onClick$cmdDelete()
     {
-        T currentRecord;
+        Object currentRecord;
 
-        //showEditPanel( false );
         currentRecord = getCurrentRecord();
         if ( currentRecord != null ) {
             try {
@@ -252,7 +242,6 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
 
     public void onClick$cmdRefresh()
     {
-        //showEditPanel( false );
         refresh();
     }
 
@@ -290,13 +279,14 @@ public abstract class BasicCRUDController<T> extends LoggedBaseController
 
     public void onClick$cmdSave()
     {
-        T record;
+        Object record;
 
         enableOperationsButtons( true );
         try {
             if ( isAddNewOperation() ) {
-                record = createNewRecord();
-                insertItem( record );
+                record = saveRecord( null );
+                if ( record != null )
+                    insertItem( record );
             }
             else {
                 record = saveRecord( getCurrentRecord() );

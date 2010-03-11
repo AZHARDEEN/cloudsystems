@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -80,19 +81,33 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public FormDTO add( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
         authenticate( auth );
-        return formSession.add( DTOFactory.copy( entity ) ).toDTO();
+        if ( entity == null )
+            throwCommomException( 3 );
+        try {
+            return formSession.add( DTOFactory.copy( entity ) ).toDTO();
+        }
+        catch ( EJBException e )
+        {
+            throwException( 1 );
+            return null;
+        }
     }
 
     public void delete( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
         authenticate( auth );
+        if ( entity == null )
+            throwCommomException( 3 );
         formSession.delete( entity.getId() );
     }
 
     public FormDTO get( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
         authenticate( auth );
-        return formSession.get( entity.getId() ).toDTO();
+        if ( entity == null || SysUtils.isZero( entity.getId() ) )
+            throwCommomException( 3 );
+        AnotoForm form = formSession.get( entity.getId() );
+        return form != null ? form.toDTO() : null;
     }
 
     public List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException

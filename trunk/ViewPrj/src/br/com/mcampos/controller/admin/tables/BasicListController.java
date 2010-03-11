@@ -1,20 +1,20 @@
 package br.com.mcampos.controller.admin.tables;
 
 
-import br.com.mcampos.controller.admin.tables.core.SimpleTableListModel;
 import br.com.mcampos.controller.core.BasicCRUDController;
-
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
-
+import java.util.Set;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
-public abstract class BasicListController<DTO> extends BasicCRUDController<Listitem> implements ListitemRenderer
+
+public abstract class BasicListController<DTO> extends BasicCRUDController implements ListitemRenderer
 {
 
     protected Listbox listboxRecord;
@@ -29,11 +29,9 @@ public abstract class BasicListController<DTO> extends BasicCRUDController<Listi
      */
     protected abstract void showRecord( DTO record ) throws ApplicationException;
 
-    protected abstract DTO createDTO();
+    protected abstract void clearRecordInfo ( );
 
-    protected abstract DTO copyTo( DTO dto );
-
-    protected abstract void configure( Listitem item );
+    //protected abstract void configure( Listitem item );
 
     protected abstract List getRecordList() throws ApplicationException;
 
@@ -55,19 +53,30 @@ public abstract class BasicListController<DTO> extends BasicCRUDController<Listi
 
     public void onSelect$listboxRecord()
     {
-
-        DTO record;
-
-        if ( getListboxRecord().getSelectedCount() == 1 ) {
-            try {
-                record = getValue( getListboxRecord().getSelectedItem() );
-                if ( record != null )
-                    showRecord( record );
+        try {
+            Set selection = getModel().getSelection();
+            if ( selection.size() == 1 ) {
+                showRecord( (DTO)selection.iterator().next() );
             }
-            catch ( ApplicationException e ) {
-                showErrorMessage( e.getMessage(), "Obter Informações do Registro" );
+            else {
+                clearRecordInfo();
             }
         }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Informações do Registro Selecionado" );
+        }
+    }
+
+    protected ListModelList getModel ()
+    {
+        ListModelList listModel;
+
+        listModel =  ( ListModelList ) getListboxRecord().getModel();
+        if ( listModel == null ) {
+            listModel = new ListModelList ();
+            getListboxRecord().setModel( listModel );
+        }
+        return listModel;
     }
 
     protected Listitem getCurrentRecord()
@@ -84,20 +93,11 @@ public abstract class BasicListController<DTO> extends BasicCRUDController<Listi
     {
         if ( selecteItem == null )
             return null;
-        return ( ( DTO )selecteItem.getValue() );
+        Object selectedItem = selecteItem.getValue();
+        return (DTO)selecteItem;
     }
 
-    @Override
-    protected Listitem createNewRecord() throws ApplicationException
-    {
-        DTO dto;
-
-        Listitem item = new Listitem();
-        dto = copyTo( createDTO() );
-        render( item, dto );
-        return item;
-    }
-
+    /*
     public void render( Listitem item, Object data )
     {
         if ( item != null ) {
@@ -105,12 +105,14 @@ public abstract class BasicListController<DTO> extends BasicCRUDController<Listi
             configure( item );
         }
     }
+    */
 
     @Override
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
         listboxRecord.setItemRenderer( this );
+        listboxRecord.setModel( new ListModelList () );
         refresh();
     }
 
@@ -118,7 +120,13 @@ public abstract class BasicListController<DTO> extends BasicCRUDController<Listi
     {
         try {
             showRecord( null );
-            getListboxRecord().setModel( new SimpleTableListModel( getRecordList() ) );
+            if ( getListboxRecord().getModel() == null )
+                getListboxRecord().setModel( new ListModelList( getRecordList() ) );
+            else {
+                ListModelList listModel = ( ListModelList ) getListboxRecord().getModel();
+                listModel.clear();
+                listModel.addAll( getRecordList() );
+            }
         }
         catch ( ApplicationException e ) {
             e = null;
@@ -133,28 +141,29 @@ public abstract class BasicListController<DTO> extends BasicCRUDController<Listi
             ( ( Listitem )item ).setDisabled( bShow );
     }
 
-    protected void afterDelete( Listitem currentRecord )
+    protected void afterDelete( Object currentRecord )
     {
+        /*
+        int currentIndex = getListboxRecord().getSelectedIndex();
         currentRecord.detach();
-        getListboxRecord().invalidate();
+        if ( currentIndex > 0 ) {
+            currentIndex --;
+        }
+        else{
+            if ( getListboxRecord().getItemCount() > 0 )
+                currentIndex ++;
+        }
+        getListboxRecord().setSelectedIndex( currentIndex );
+        onSelect$listboxRecord();
+        */
     }
 
-    protected void afterEdit( Listitem currentRecord )
+    protected void afterEdit( Object currentRecord )
     {
-        if ( currentRecord == null )
-            return;
-
-        if ( isAddNewOperation() ) {
-            refresh();
-        }
-        else {
-            configure( currentRecord );
-        }
     }
 
-    protected Listitem saveRecord( Listitem getCurrentRecord )
+    protected Object saveRecord( Object getCurrentRecord )
     {
-        copyTo( getValue( getCurrentRecord ) );
         return getCurrentRecord;
     }
 }

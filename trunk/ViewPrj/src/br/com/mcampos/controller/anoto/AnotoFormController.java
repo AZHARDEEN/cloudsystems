@@ -83,21 +83,53 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         return new FormDTO();
     }
 
-    protected void delete( Listitem currentRecord ) throws ApplicationException
+    protected void delete( Object currentRecord ) throws ApplicationException
     {
-        FormDTO dto = getValue( currentRecord );
+        FormDTO dto = getValue( (Listitem) currentRecord );
 
         getSession().delete( getLoggedInUser(), dto );
     }
 
-    protected void insertItem( Listitem e ) throws ApplicationException
+    protected boolean validate (  FormDTO dto, boolean bNew )
     {
-        getSession().add( getLoggedInUser(), getValue( e ) );
+        if ( SysUtils.isEmpty( dto.getDescription() ) )
+        {
+            showErrorMessage( "A descrição do formulário deve estar preenchida", "Formulário" );
+            return false;
+        }
+        if ( SysUtils.isEmpty( dto.getApplication() ) )
+        {
+            showErrorMessage( "A aplicação do formulário deve estar preenchida", "Formulário" );
+            return false;
+        }
+        if ( bNew ) {
+            FormDTO existDTO;
+            try {
+                existDTO = getSession().get( getLoggedInUser(), dto );
+                if ( existDTO != null )
+                {
+                    showErrorMessage( "Já existe um registro com este código de formulário.", "Formulário" );
+                }
+            }
+            catch ( ApplicationException e ) {
+                e = null;
+            }
+        }
+        return true;
     }
 
-    protected void updateItem( Listitem e ) throws ApplicationException
+    protected void insertItem( Object e ) throws ApplicationException
     {
-        getSession().update( getLoggedInUser(), getValue( e ) );
+        FormDTO dto = getValue ( (Listitem)e );
+        if ( validate ( dto, true ) )
+            getSession().add( getLoggedInUser(), dto );
+    }
+
+    protected void updateItem( Object e ) throws ApplicationException
+    {
+        FormDTO dto = getValue ( (Listitem)e );
+        if ( validate ( dto, false ) )
+            getSession().update( getLoggedInUser(), dto );
     }
 
 
@@ -126,7 +158,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     }
 
     @Override
-    protected FormDTO prepareToUpdate( Listitem currentRecord )
+    protected FormDTO prepareToUpdate( Object currentRecord )
     {
         FormDTO dto = ( FormDTO )super.prepareToUpdate( currentRecord );
         if ( dto != null )
@@ -139,19 +171,21 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     protected SimpleTableDTO copyTo( SimpleTableDTO dto )
     {
         FormDTO d = ( FormDTO )super.copyTo( dto );
-        if ( d != null )
+        if ( d != null ) {
             d.setIp( editIP.getValue() );
+            d.setDescription( editDescription.getValue() );
+        }
         return d;
     }
 
     @Override
-    protected void configure( Listitem item )
+    public void render ( Listitem item, Object value)
     {
-        if ( item == null )
-            return;
-        FormDTO dto = getValue( item );
+        FormDTO dto = (FormDTO)value;
 
         if ( dto != null ) {
+            item.setValue( value );
+            item.getChildren().clear();
             item.getChildren().add( new Listcell( dto.getApplication() ) );
             item.getChildren().add( new Listcell( dto.getDescription() ) );
         }
@@ -160,18 +194,22 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     @Override
     protected void showRecord( SimpleTableDTO record )
     {
-        super.showRecord( record );
-        recordIP.setValue( record != null ? ( ( FormDTO )record ).getApplication() : "" );
-        btnAddAttach.setDisabled( record == null );
-        listAttachs.setModel( getMediaModel( ( FormDTO )record ) );
         if ( record != null ) {
-            //refreshAttachs( ( FormDTO )record );
-            //listAdded.setModel( getPenModel( ( FormDTO )record ) );
+            super.showRecord( record );
+            recordIP.setValue( record != null ? ( ( FormDTO )record ).getApplication() : "" );
+            btnAddAttach.setDisabled( record == null );
+            listAttachs.setModel( getMediaModel( ( FormDTO )record ) );
+            if ( record != null ) {
+                //refreshAttachs( ( FormDTO )record );
+                //listAdded.setModel( getPenModel( ( FormDTO )record ) );
+            }
+            else {
+                listAvailable.getItems().clear();
+                listAdded.getItems().clear();
+            }
         }
-        else {
-            listAvailable.getItems().clear();
-            listAdded.getItems().clear();
-        }
+        else
+            clearRecordInfo();
     }
 
     public void onUpload$btnAddAttach( UploadEvent evt )
