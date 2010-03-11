@@ -123,7 +123,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
     @Override
     public void render( Listitem item, Object value )
     {
-        AnotoPageDTO dto = (AnotoPageDTO)value;
+        AnotoPageDTO dto = ( AnotoPageDTO )value;
 
         if ( dto != null ) {
             item.setValue( value );
@@ -148,7 +148,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
         btnAddAttach.setDisabled( record == null );
     }
 
-    protected AnotoPageDTO createDTO()
+    protected Object createNewRecord()
     {
         return new AnotoPageDTO();
     }
@@ -174,7 +174,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
     {
     }
 
-    protected void clearRecordInfo ()
+    protected void clearRecordInfo()
     {
         editId.setValue( "" );
         editDescription.setValue( "" );
@@ -189,7 +189,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
     @Override
     protected Object prepareToUpdate( Object currentRecord )
     {
-        AnotoPageDTO dto = (AnotoPageDTO)currentRecord;
+        AnotoPageDTO dto = ( AnotoPageDTO )currentRecord;
 
         editId.setValue( dto.getPageAddress() );
         editId.setDisabled( true );
@@ -197,7 +197,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
         return null;
     }
 
-    protected void insertItem( Object e )
+    protected void persist( Object e )
     {
     }
 

@@ -149,7 +149,7 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
         return dto;
     }
 
-    protected void insertItem( Object e )
+    protected void persist( Object e )
     {
         try {
             TaskDTO dto = getLocator().add( getLoggedInUser(), getValue( (Treeitem)e ) );

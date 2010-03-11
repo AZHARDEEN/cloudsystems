@@ -29,9 +29,7 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
      */
     protected abstract void showRecord( DTO record ) throws ApplicationException;
 
-    protected abstract void clearRecordInfo ( );
-
-    //protected abstract void configure( Listitem item );
+    protected abstract void clearRecordInfo();
 
     protected abstract List getRecordList() throws ApplicationException;
 
@@ -56,7 +54,7 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
         try {
             Set selection = getModel().getSelection();
             if ( selection.size() == 1 ) {
-                showRecord( (DTO)selection.iterator().next() );
+                showRecord( ( DTO )selection.iterator().next() );
             }
             else {
                 clearRecordInfo();
@@ -67,13 +65,13 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
         }
     }
 
-    protected ListModelList getModel ()
+    protected ListModelList getModel()
     {
         ListModelList listModel;
 
-        listModel =  ( ListModelList ) getListboxRecord().getModel();
+        listModel = ( ListModelList )getListboxRecord().getModel();
         if ( listModel == null ) {
-            listModel = new ListModelList ();
+            listModel = new ListModelList();
             getListboxRecord().setModel( listModel );
         }
         return listModel;
@@ -89,30 +87,20 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
     }
 
 
-    protected DTO getValue( Listitem selecteItem )
+    protected DTO getValue( Listitem item )
     {
-        if ( selecteItem == null )
+        if ( item == null )
             return null;
-        Object selectedItem = selecteItem.getValue();
-        return (DTO)selecteItem;
+        Object selectedItem = item.getValue();
+        return ( DTO )selectedItem;
     }
-
-    /*
-    public void render( Listitem item, Object data )
-    {
-        if ( item != null ) {
-            item.setValue( data );
-            configure( item );
-        }
-    }
-    */
 
     @Override
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
         listboxRecord.setItemRenderer( this );
-        listboxRecord.setModel( new ListModelList () );
+        listboxRecord.setModel( new ListModelList() );
         refresh();
     }
 
@@ -120,13 +108,9 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
     {
         try {
             showRecord( null );
-            if ( getListboxRecord().getModel() == null )
-                getListboxRecord().setModel( new ListModelList( getRecordList() ) );
-            else {
-                ListModelList listModel = ( ListModelList ) getListboxRecord().getModel();
-                listModel.clear();
-                listModel.addAll( getRecordList() );
-            }
+            ListModelList listModel = ( ListModelList )getListboxRecord().getModel();
+            listModel.clear();
+            listModel.addAll( getRecordList() );
         }
         catch ( ApplicationException e ) {
             e = null;
@@ -143,27 +127,11 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
 
     protected void afterDelete( Object currentRecord )
     {
-        /*
-        int currentIndex = getListboxRecord().getSelectedIndex();
-        currentRecord.detach();
-        if ( currentIndex > 0 ) {
-            currentIndex --;
-        }
-        else{
-            if ( getListboxRecord().getItemCount() > 0 )
-                currentIndex ++;
-        }
-        getListboxRecord().setSelectedIndex( currentIndex );
-        onSelect$listboxRecord();
-        */
+        getModel().remove( currentRecord );
     }
 
-    protected void afterEdit( Object currentRecord )
+    protected void afterPersist( Object currentRecord )
     {
-    }
-
-    protected Object saveRecord( Object getCurrentRecord )
-    {
-        return getCurrentRecord;
+        getModel().add( currentRecord );
     }
 }

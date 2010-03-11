@@ -78,27 +78,23 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    protected SimpleTableDTO createDTO()
+    protected Object createNewRecord()
     {
         return new FormDTO();
     }
 
     protected void delete( Object currentRecord ) throws ApplicationException
     {
-        FormDTO dto = getValue( (Listitem) currentRecord );
-
-        getSession().delete( getLoggedInUser(), dto );
+        getSession().delete( getLoggedInUser(), ( FormDTO )currentRecord );
     }
 
-    protected boolean validate (  FormDTO dto, boolean bNew )
+    protected boolean validate( FormDTO dto, boolean bNew )
     {
-        if ( SysUtils.isEmpty( dto.getDescription() ) )
-        {
+        if ( SysUtils.isEmpty( dto.getDescription() ) ) {
             showErrorMessage( "A descrição do formulário deve estar preenchida", "Formulário" );
             return false;
         }
-        if ( SysUtils.isEmpty( dto.getApplication() ) )
-        {
+        if ( SysUtils.isEmpty( dto.getApplication() ) ) {
             showErrorMessage( "A aplicação do formulário deve estar preenchida", "Formulário" );
             return false;
         }
@@ -106,8 +102,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             FormDTO existDTO;
             try {
                 existDTO = getSession().get( getLoggedInUser(), dto );
-                if ( existDTO != null )
-                {
+                if ( existDTO != null ) {
                     showErrorMessage( "Já existe um registro com este código de formulário.", "Formulário" );
                 }
             }
@@ -118,17 +113,14 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         return true;
     }
 
-    protected void insertItem( Object e ) throws ApplicationException
+    protected void persist( Object e ) throws ApplicationException
     {
-        FormDTO dto = getValue ( (Listitem)e );
-        if ( validate ( dto, true ) )
+        FormDTO dto = ( FormDTO )e;
+        if ( validate( dto, isAddNewOperation() ) == false )
+            return;
+        if ( isAddNewOperation() )
             getSession().add( getLoggedInUser(), dto );
-    }
-
-    protected void updateItem( Object e ) throws ApplicationException
-    {
-        FormDTO dto = getValue ( (Listitem)e );
-        if ( validate ( dto, false ) )
+        else
             getSession().update( getLoggedInUser(), dto );
     }
 
@@ -168,20 +160,17 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     }
 
     @Override
-    protected SimpleTableDTO copyTo( SimpleTableDTO dto )
+    protected Object saveRecord( Object dto )
     {
-        FormDTO d = ( FormDTO )super.copyTo( dto );
-        if ( d != null ) {
-            d.setIp( editIP.getValue() );
-            d.setDescription( editDescription.getValue() );
-        }
+        FormDTO d = ( FormDTO )super.saveRecord( dto );
+        d.setIp( editIP.getValue() );
         return d;
     }
 
     @Override
-    public void render ( Listitem item, Object value)
+    public void render( Listitem item, Object value )
     {
-        FormDTO dto = (FormDTO)value;
+        FormDTO dto = ( FormDTO )value;
 
         if ( dto != null ) {
             item.setValue( value );

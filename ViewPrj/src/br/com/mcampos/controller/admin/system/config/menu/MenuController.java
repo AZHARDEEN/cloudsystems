@@ -235,7 +235,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         }
     }
 
-    protected void insertItem( Object treeItem )
+    protected void persist( Object treeItem )
     {
         try {
             MenuDTO dto = getLocator().add( getLoggedInUser(), getValue( (Treeitem)treeItem ) );
