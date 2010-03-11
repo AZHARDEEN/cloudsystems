@@ -97,7 +97,7 @@ public abstract class BasicTreeCRUDController<DTO> extends BasicCRUDController i
     }
 
     @Override
-    public void afterEdit( Object record )
+    public void afterPersist( Object record )
     {
         Object dto = getValue( (Treeitem )record );
         if ( isAddNewOperation() == false ) {

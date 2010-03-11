@@ -93,7 +93,7 @@ public abstract class BasicCRUDController extends LoggedBaseController
      *
      * @param currentRecord Registro selecionado.
      */
-    protected abstract void afterEdit( Object currentRecord );
+    protected abstract void afterPersist( Object currentRecord );
 
     /**
      * Prepara um dto para inserção no banco de dados.
@@ -134,24 +134,14 @@ public abstract class BasicCRUDController extends LoggedBaseController
      */
     protected abstract Object getCurrentRecord();
 
-    /**
-     * Insere o novo registro no formulário. O implementador deve preocupar-se SOMENTE com os componetes visuais,
-     * pois todo o resto já foi tratado por outras funçãoes. Quando esta função é chamada, pode afirmar com certeza
-     * que o registro foi corretamente inserido no banco de dados.
-     * @param e Novo objeto.
-     * @throws ApplicationException
-     */
-    protected abstract void insertItem( Object e ) throws ApplicationException;
 
     /**
-     * Autaliza o registro no formulário. O implementador deve preocupar-se SOMENTE com os componetes visuais,
-     * pois todo o resto já foi tratado por outras funçãoes. Quando esta função é chamada, pode afirmar com certeza
-     * que o registro foi corretamente alterado no banco de dados.
-     * @param e Novo objeto.
-     * @throws ApplicationException
+     * Cria um novo registro. Este procedimento é usado na rotina de inclusao.
+     * @return Objeto selecionado.
      */
-    protected abstract void updateItem( Object e ) throws ApplicationException;
+    protected abstract Object createNewRecord();
 
+    protected abstract void persist( Object e ) throws ApplicationException;
 
     /**
      * Basic constructor
@@ -203,7 +193,8 @@ public abstract class BasicCRUDController extends LoggedBaseController
         }
         catch ( Exception e ) {
             onClick$cmdCancel();
-            showErrorMessage( "Ocorreu um erro ao processar a solicitação de inclusão. Não foi possível obter o valor do campo Chave", "Criar Novo Registro" );
+            showErrorMessage( "Ocorreu um erro ao processar a solicitação de inclusão. Não foi possível obter o valor do campo Chave",
+                              "Criar Novo Registro" );
         }
     }
 
@@ -219,7 +210,8 @@ public abstract class BasicCRUDController extends LoggedBaseController
             }
             catch ( Exception e ) {
                 onClick$cmdCancel();
-                showErrorMessage( "Ocorreu um erro ao processar a solicitação de atualizar o registro", "Atualizar Registro Corrente" );
+                showErrorMessage( "Ocorreu um erro ao processar a solicitação de atualizar o registro",
+                                  "Atualizar Registro Corrente" );
             }
         }
     }
@@ -283,17 +275,12 @@ public abstract class BasicCRUDController extends LoggedBaseController
 
         enableOperationsButtons( true );
         try {
-            if ( isAddNewOperation() ) {
-                record = saveRecord( null );
-                if ( record != null )
-                    insertItem( record );
-            }
-            else {
-                record = saveRecord( getCurrentRecord() );
-                if ( record != null )
-                    updateItem( record );
-            }
-            afterEdit( record );
+            if ( isAddNewOperation() )
+                record = createNewRecord();
+            else
+                record = getCurrentRecord();
+            persist( saveRecord( record ) );
+            afterPersist( record );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Salvar atualizações" );

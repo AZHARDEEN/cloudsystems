@@ -4,6 +4,8 @@ package br.com.mcampos.controller.admin.tables.core;
 import br.com.mcampos.controller.admin.tables.BasicListController;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 
+import br.com.mcampos.exception.ApplicationException;
+
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
@@ -24,7 +26,7 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
         super();
     }
 
-    protected void clearRecordInfo ()
+    protected void clearRecordInfo()
     {
         editId.setRawValue( 0 );
         editDescription.setValue( "" );
@@ -60,18 +62,19 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
         }
     }
 
-    protected SimpleTableDTO copyTo( SimpleTableDTO dto )
+    @Override
+    protected Object saveRecord( Object object )
     {
-        if ( dto != null ) {
+        SimpleTableDTO dto = ( SimpleTableDTO )object;
+        if ( isAddNewOperation() )
             dto.setId( editId.getValue() );
-            dto.setDescription( editDescription.getValue() );
-        }
+        dto.setDescription( editDescription.getValue() );
         return dto;
     }
 
     public void render( Listitem item, Object value )
     {
-        SimpleTableDTO dto = (SimpleTableDTO) value;
+        SimpleTableDTO dto = ( SimpleTableDTO )value;
 
         if ( dto != null ) {
             item.getChildren().clear();

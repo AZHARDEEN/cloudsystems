@@ -19,24 +19,24 @@ public class AccessLogTypeController extends SimpleTableController<AccessLogType
         super();
     }
 
-    protected AccessLogTypeDTO createDTO()
+    protected Object createNewRecord()
     {
         return new AccessLogTypeDTO();
     }
 
     protected void delete( Object currentRecord ) throws ApplicationException
     {
-        getLocator().delete( getLoggedInUser(), getValue( (Listitem)currentRecord ) );
+        getLocator().delete( getLoggedInUser(), getValue( ( Listitem )currentRecord ) );
     }
 
-    protected void insertItem( Object e ) throws ApplicationException
+    protected void persist( Object e ) throws ApplicationException
     {
-        getLocator().add( getLoggedInUser(), (AccessLogTypeDTO)e );
+        getLocator().add( getLoggedInUser(), ( AccessLogTypeDTO )e );
     }
 
     protected void updateItem( Object e ) throws ApplicationException
     {
-        getLocator().update( getLoggedInUser(), (AccessLogTypeDTO)e );
+        getLocator().update( getLoggedInUser(), ( AccessLogTypeDTO )e );
     }
 
     public AccessLogLocator getLocator()
@@ -67,5 +67,4 @@ public class AccessLogTypeController extends SimpleTableController<AccessLogType
     {
         return getLocator().getList( getLoggedInUser() );
     }
-
 }

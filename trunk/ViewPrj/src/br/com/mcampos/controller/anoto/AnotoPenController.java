@@ -52,7 +52,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
         }
     }
 
-    protected PenDTO createDTO()
+    protected Object createNewRecord()
     {
         return new PenDTO();
     }
@@ -66,7 +66,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
 
     public void render( Listitem item, Object value )
     {
-        PenDTO dto = (PenDTO )value;
+        PenDTO dto = ( PenDTO )value;
 
         if ( dto != null ) {
             item.setValue( value );
@@ -82,7 +82,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
 
     protected void delete( Object currentRecord ) throws ApplicationException
     {
-        getSession().delete( getLoggedInUser(), getValue( (Listitem)currentRecord ) );
+        getSession().delete( getLoggedInUser(), getValue( ( Listitem )currentRecord ) );
     }
 
     protected Object saveRecord( Object getCurrentRecord )
@@ -90,7 +90,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
         return getCurrentRecord;
     }
 
-    protected void clearRecordInfo ()
+    protected void clearRecordInfo()
     {
         editId.setValue( "" );
         editDescription.setValue( "" );
@@ -107,7 +107,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
     {
         PenDTO dto = null;
 
-        dto = getValue( (Listitem)currentRecord );
+        dto = getValue( ( Listitem )currentRecord );
 
         editId.setValue( dto.getId() );
         editDescription.setValue( dto.getDescription() );
@@ -116,14 +116,14 @@ public class AnotoPenController extends BasicListController<PenDTO>
         return dto;
     }
 
-    protected void insertItem( Object e ) throws ApplicationException
+    protected void persist( Object e ) throws ApplicationException
     {
-        getSession().add( getLoggedInUser(), getValue( (Listitem)e ) );
+        getSession().add( getLoggedInUser(), getValue( ( Listitem )e ) );
     }
 
     protected void updateItem( Object e ) throws ApplicationException
     {
-        getSession().update( getLoggedInUser(), getValue( (Listitem) e ) );
+        getSession().update( getLoggedInUser(), getValue( ( Listitem )e ) );
     }
 
     @Override
