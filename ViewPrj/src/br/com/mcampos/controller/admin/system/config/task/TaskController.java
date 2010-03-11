@@ -1,5 +1,6 @@
 package br.com.mcampos.controller.admin.system.config.task;
 
+
 import br.com.mcampos.controller.core.BasicTreeCRUDController;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.exception.ApplicationException;
@@ -95,12 +96,12 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
         }
     }
 
-    protected void delete( Treeitem currentRecord )
+    protected void delete( Object currentRecord )
     {
         if ( currentRecord == null )
             return;
 
-        TaskDTO dto = getValue( currentRecord );
+        TaskDTO dto = getValue( (Treeitem)currentRecord );
         if ( dto != null ) {
             try {
                 getLocator().delete( getLoggedInUser(), dto );
@@ -133,11 +134,11 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
     }
 
 
-    protected TaskDTO prepareToUpdate( Treeitem currentRecord )
+    protected TaskDTO prepareToUpdate( Object currentRecord )
     {
         TaskDTO dto = null;
 
-        dto = getValue( currentRecord );
+        dto = getValue( (Treeitem)currentRecord );
         if ( dto != null ) {
             editId.setValue( dto.getId() );
             editId.setReadonly( true );
@@ -148,24 +149,24 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
         return dto;
     }
 
-    protected void insertItem( Treeitem e )
+    protected void insertItem( Object e )
     {
         try {
-            TaskDTO dto = getLocator().add( getLoggedInUser(), getValue( e ) );
+            TaskDTO dto = getLocator().add( getLoggedInUser(), getValue( (Treeitem)e ) );
             if ( dto != null )
-                e.setValue( dto );
+                ((Treeitem)e).setValue( dto );
         }
         catch ( ApplicationException ex ) {
             showErrorMessage( ex.getMessage(), "Inserir" );
         }
     }
 
-    protected void updateItem( Treeitem e )
+    protected void updateItem( Object e )
     {
         try {
-            TaskDTO dto = getLocator().update( getLoggedInUser(), getValue( e ) );
+            TaskDTO dto = getLocator().update( getLoggedInUser(), getValue( ((Treeitem)e) ) );
             if ( dto != null )
-                e.setValue( dto );
+                ((Treeitem)e).setValue( dto );
         }
         catch ( ApplicationException ex ) {
             showErrorMessage( ex.getMessage(), "Atualizar" );

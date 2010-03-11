@@ -121,11 +121,12 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
     }
 
     @Override
-    protected void configure( Listitem item )
+    public void render( Listitem item, Object value )
     {
-        AnotoPageDTO dto = getValue( item );
+        AnotoPageDTO dto = (AnotoPageDTO)value;
 
         if ( dto != null ) {
+            item.setValue( value );
             item.getChildren().add( new Listcell( dto.getPageAddress() ) );
             item.getChildren().add( new Listcell( dto.getDescription() ) );
         }
@@ -173,16 +174,22 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
     {
     }
 
-    protected void prepareToInsert()
+    protected void clearRecordInfo ()
     {
         editId.setValue( "" );
-        editId.setDisabled( true );
         editDescription.setValue( "" );
     }
 
-    protected Object prepareToUpdate( Listitem currentRecord )
+    protected void prepareToInsert()
     {
-        AnotoPageDTO dto = getValue( currentRecord );
+        clearRecordInfo();
+        editId.setDisabled( true );
+    }
+
+    @Override
+    protected Object prepareToUpdate( Object currentRecord )
+    {
+        AnotoPageDTO dto = (AnotoPageDTO)currentRecord;
 
         editId.setValue( dto.getPageAddress() );
         editId.setDisabled( true );
@@ -190,11 +197,11 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
         return null;
     }
 
-    protected void insertItem( Listitem e )
+    protected void insertItem( Object e )
     {
     }
 
-    protected void updateItem( Listitem e )
+    protected void updateItem( Object e )
     {
     }
 
@@ -356,5 +363,18 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
             showErrorMessage( e.getMessage(), "Lista de Formulários" );
             return null;
         }
+    }
+
+    protected void delete( Object currentRecord )
+    {
+    }
+
+    protected void afterDelete( Object currentRecord )
+    {
+    }
+
+    protected Object saveRecord( Object currentRecord )
+    {
+        return null;
     }
 }
