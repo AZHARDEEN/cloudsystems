@@ -49,12 +49,26 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
         return listboxRecord;
     }
 
+    protected Object getSelectetItem ( )
+    {
+        Object object = null;
+
+
+        Set selection = getModel().getSelection();
+        /*
+         * ONLY SINGLE SELECTION IS AVAILABLE, BY NOW!!!
+         */
+        if ( selection.size() == 1 )
+            object = selection.iterator().next();
+        return object;
+    }
+
     public void onSelect$listboxRecord()
     {
         try {
-            Set selection = getModel().getSelection();
-            if ( selection.size() == 1 ) {
-                showRecord( ( DTO )selection.iterator().next() );
+            DTO dto = (DTO)getSelectetItem();
+            if ( dto != null ) {
+                showRecord( dto );
             }
             else {
                 clearRecordInfo();
@@ -77,13 +91,9 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
         return listModel;
     }
 
-    protected Listitem getCurrentRecord()
+    protected Object getCurrentRecord()
     {
-        if ( getListboxRecord().getSelectedCount() == 1 ) {
-            return getListboxRecord().getSelectedItem();
-        }
-        else
-            return null;
+        return getSelectetItem();
     }
 
 
@@ -100,7 +110,6 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
     {
         super.doAfterCompose( comp );
         listboxRecord.setItemRenderer( this );
-        listboxRecord.setModel( new ListModelList() );
         refresh();
     }
 
@@ -108,9 +117,8 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
     {
         try {
             showRecord( null );
-            ListModelList listModel = ( ListModelList )getListboxRecord().getModel();
-            listModel.clear();
-            listModel.addAll( getRecordList() );
+            getModel().clear();
+            getModel().addAll( getRecordList() );
         }
         catch ( ApplicationException e ) {
             e = null;
@@ -121,8 +129,13 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
     protected void showEditPanel( Boolean bShow )
     {
         super.showEditPanel( bShow );
-        for ( Object item : getListboxRecord().getItems() )
+        boolean bSelected;
+        for ( Object item : getListboxRecord().getItems() ) {
+            bSelected =  ( ( Listitem )item ).isSelected();
             ( ( Listitem )item ).setDisabled( bShow );
+            if ( bSelected )
+                ( ( Listitem )item ).setSelected( bSelected );
+        }
     }
 
     protected void afterDelete( Object currentRecord )
@@ -132,6 +145,13 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
 
     protected void afterPersist( Object currentRecord )
     {
-        getModel().add( currentRecord );
+        if ( isAddNewOperation() ) {
+            getModel().add( currentRecord );
+        }
+        else {
+            int nIndex = getModel().indexOf( currentRecord );
+            getModel().remove( currentRecord );
+            getModel().add( nIndex, currentRecord );
+        }
     }
 }
