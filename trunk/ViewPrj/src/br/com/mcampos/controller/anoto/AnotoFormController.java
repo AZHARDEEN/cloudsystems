@@ -2,6 +2,9 @@ package br.com.mcampos.controller.anoto;
 
 
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
+import br.com.mcampos.controller.anoto.model.FormApplicationComparator;
+import br.com.mcampos.controller.anoto.model.FormDescriptionApplication;
+import br.com.mcampos.controller.anoto.model.FormListModel;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PenListRenderer;
 import br.com.mcampos.dto.anoto.FormDTO;
@@ -39,6 +42,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
@@ -54,6 +58,9 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     protected Listbox listAttachs;
     protected Listbox listAvailable;
     protected Listbox listAdded;
+
+    protected Listheader headerApplication;
+    protected Listheader headerDescription;
 
     public AnotoFormController()
     {
@@ -262,6 +269,11 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
                     }
                 } );
         }
+        headerApplication.setSortAscending( new FormApplicationComparator( true ) );
+        headerApplication.setSortDescending( new FormApplicationComparator( false ) );
+
+        headerDescription.setSortAscending( new FormDescriptionApplication( true ) );
+        headerDescription.setSortDescending( new FormDescriptionApplication( false ) );
     }
 
     protected AbstractListModel getMediaModel( FormDTO currentForm )
@@ -453,5 +465,19 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     {
         onClick$btnProperties();
     }
+
+    @Override
+    protected ListModelList getModel()
+    {
+        FormListModel listModel;
+
+        listModel = ( FormListModel )getListboxRecord().getModel();
+        if ( listModel == null ) {
+            listModel = new FormListModel();
+            getListboxRecord().setModel( listModel );
+        }
+        return listModel;
+    }
+
 }
 

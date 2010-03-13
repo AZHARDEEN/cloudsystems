@@ -14,8 +14,8 @@
                     <!-- Por favor, nao mude o id desta listbox -->
                     <listbox id="listboxRecord" vflex="true">
                         <listhead sizable="true">
-                            <listheader id="recordListIdSort" align="left" label="Aplicação" sort="auto" width="140px"/>
-                            <listheader id="recordListDescSort" align="left" label="Descrição" sort="auto"/>
+                            <listheader id="headerApplication" align="left" label="Aplicação" sort="auto" width="140px"/>
+                            <listheader id="headerDescription" align="left" label="Descrição" sort="auto"/>
                         </listhead>
                     </listbox>
                 </div>

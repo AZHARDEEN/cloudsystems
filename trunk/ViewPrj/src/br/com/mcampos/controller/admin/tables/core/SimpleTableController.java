@@ -4,8 +4,6 @@ package br.com.mcampos.controller.admin.tables.core;
 import br.com.mcampos.controller.admin.tables.BasicListController;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 
-import br.com.mcampos.exception.ApplicationException;
-
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
@@ -34,6 +32,7 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
 
     protected void prepareToInsert()
     {
+        clearRecordInfo ();
         editId.setRawValue( getNextId() );
         editId.setReadonly( false );
         editDescription.setFocus( true );
@@ -41,7 +40,7 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
 
     protected SimpleTableDTO prepareToUpdate( Object currentRecord )
     {
-        SimpleTableDTO dto = null;
+        SimpleTableDTO dto = (SimpleTableDTO) currentRecord;
 
         //dto = getValue( currentRecord );
 
