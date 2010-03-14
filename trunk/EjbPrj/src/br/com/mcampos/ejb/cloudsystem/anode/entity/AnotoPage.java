@@ -22,6 +22,7 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries( { @NamedQuery( name = AnotoPage.anotoPagesGetAllNamedQuery, query = "select o from AnotoPage o" ),
                  @NamedQuery( name = AnotoPage.padPagesGetAllNamedQuery, query = "select o from AnotoPage o where o.pad = ?1" ),
+                 @NamedQuery( name = AnotoPage.formPagesGetAllNamedQuery, query = "select o from AnotoPage o where o.pad.form = ?1" ),
                  @NamedQuery( name = AnotoPage.pagesGetAddressesNamedQuery,
                               query = "select o from AnotoPage o where o.pageAddress = ?1" ) } )
 @Table( name = "anoto_page" )
@@ -30,6 +31,7 @@ public class AnotoPage implements Serializable, EntityCopyInterface<AnotoPageDTO
 {
     public static final String anotoPagesGetAllNamedQuery = "AnotoPage.findAll";
     public static final String padPagesGetAllNamedQuery = "AnotoPage.padFindAll";
+    public static final String formPagesGetAllNamedQuery = "AnotoPage.formFindAll";
     public static final String pagesGetAddressesNamedQuery = "AnotoPage.pagesGetAddresses";
 
     @Id

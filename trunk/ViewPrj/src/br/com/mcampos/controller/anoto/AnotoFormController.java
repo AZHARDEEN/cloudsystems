@@ -9,6 +9,7 @@ import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PenListRenderer;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
+import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
@@ -169,14 +170,20 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     @Override
     protected Object saveRecord( Object dto )
     {
+        System.out.println ( "saveRecord(Before):" );
+        System.out.println ( "\t" + dto.toString() );
         FormDTO d = ( FormDTO )super.saveRecord( dto );
         d.setIp( editIP.getValue() );
+        System.out.println ( "saveRecord(after):" );
+        System.out.println ( "\t" + dto.toString() );
         return d;
     }
 
     @Override
     public void render( Listitem item, Object value )
     {
+        System.out.println ( "Render:" );
+        System.out.println ( "\t" + value.toString() );
         FormDTO dto = ( FormDTO )value;
 
         if ( dto != null ) {
@@ -191,21 +198,22 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     protected void showRecord( SimpleTableDTO record )
     {
         if ( record != null ) {
+            System.out.println ( "showRecord:" );
+            System.out.println ( "\t" + record.toString() );
+        }
+        if ( record != null ) {
             super.showRecord( record );
             recordIP.setValue( record != null ? ( ( FormDTO )record ).getApplication() : "" );
             btnAddAttach.setDisabled( record == null );
             listAttachs.setModel( getMediaModel( ( FormDTO )record ) );
-            if ( record != null ) {
-                //refreshAttachs( ( FormDTO )record );
+            refreshPens( ( FormDTO )record );
                 //listAdded.setModel( getPenModel( ( FormDTO )record ) );
-            }
-            else {
-                listAvailable.getItems().clear();
-                listAdded.getItems().clear();
-            }
         }
-        else
+        else {
             clearRecordInfo();
+            listAvailable.getItems().clear();
+            listAdded.getItems().clear();
+        }
     }
 
     public void onUpload$btnAddAttach( UploadEvent evt )
@@ -294,7 +302,6 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     }
 
 
-    /*
     protected void moveListitem( Listbox toListbox, Listbox fromListbox )
     {
         if ( getListboxRecord().getSelectedCount() != 1 )
@@ -311,9 +318,9 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
                 itens.add( ( PenDTO )li.getValue() );
             }
             if ( toListbox.equals( listAvailable ) )
-                getSession().removeFromForm( getLoggedInUser(), currentForm, itens );
+                getSession().addPens( getLoggedInUser(), currentForm, itens );
             else
-                getSession().insertIntoForm( getLoggedInUser(), currentForm, itens );
+                //getSession().insertIntoForm( getLoggedInUser(), currentForm, itens );
 
 
             for ( Iterator it = al.iterator(); it.hasNext(); ) {
@@ -326,7 +333,6 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             showErrorMessage( e.getMessage(), "Formularios Associados" );
         }
     }
-*/
 
     public void onDrop( DropEvent evt )
     {
@@ -341,23 +347,28 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         ( ( Listitem )dragged ).setSelected( true );
         if ( target.equals( listAvailable ) ) {
             //we are removing forms from this pen
-            //moveListitem( listAvailable, listAdded );
+            moveListitem( listAvailable, listAdded );
         }
         else {
             // we are adding forms into this pen
-            //moveListitem( listAdded, listAvailable );
+            moveListitem( listAdded, listAvailable );
         }
     }
+    protected void refreshPens( FormDTO current )
+    {
+        listAvailable.setModel( getAvailablePensListModel( current ) );
+        listAvailable.invalidate();
+        listAdded.setModel( getPensListModel( current ) );
+        listAdded.invalidate();
+    }
 
-    /*
-    protected AbstractListModel getAvailablePensListModel( FormDTO current )
+
+    protected ListModelList getAvailablePensListModel( FormDTO current )
     {
         List<PenDTO> list;
-        ListModelList model = null;
         try {
             list = getSession().getAvailablePens( getLoggedInUser(), current );
-            model = new ListModelList( list, true );
-            return model;
+            return new ListModelList( list, true );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Lista de Formulários" );
@@ -365,11 +376,20 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    protected void refreshAttachs( FormDTO current )
+    protected ListModelList getPensListModel( FormDTO current )
     {
-        listAvailable.setModel( getAvailablePensListModel( current ) );
-        listAvailable.invalidate();
+        List<PenDTO> list;
+        try {
+            list = getSession().getPens( getLoggedInUser(), current );
+            return new ListModelList( list, true );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Lista de Formulários" );
+            return null;
+        }
     }
+
+    /*
 
     protected AbstractListModel getPenModel( FormDTO current )
     {

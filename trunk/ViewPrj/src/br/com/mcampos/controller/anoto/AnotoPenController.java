@@ -2,6 +2,7 @@ package br.com.mcampos.controller.anoto;
 
 
 import br.com.mcampos.controller.admin.tables.BasicListController;
+import br.com.mcampos.controller.anoto.model.PenIdComparator;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
@@ -11,6 +12,7 @@ import java.util.List;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
@@ -25,6 +27,8 @@ public class AnotoPenController extends BasicListController<PenDTO>
     protected Label recordDescription;
 
     private AnodeFacade session;
+
+    protected Listheader headerPenId;
 
     public AnotoPenController()
     {
@@ -82,12 +86,14 @@ public class AnotoPenController extends BasicListController<PenDTO>
 
     protected void delete( Object currentRecord ) throws ApplicationException
     {
-        getSession().delete( getLoggedInUser(), getValue( ( Listitem )currentRecord ) );
+        getSession().delete( getLoggedInUser(), ( PenDTO )currentRecord );
     }
 
-    protected Object saveRecord( Object getCurrentRecord )
+    protected Object saveRecord( Object record )
     {
-        return getCurrentRecord;
+        PenDTO dto = ( PenDTO )record;
+        copyTo( dto );
+        return dto;
     }
 
     protected void clearRecordInfo()
@@ -105,9 +111,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
 
     protected Object prepareToUpdate( Object currentRecord )
     {
-        PenDTO dto = null;
-
-        dto = getValue( ( Listitem )currentRecord );
+        PenDTO dto = ( PenDTO )currentRecord;
 
         editId.setValue( dto.getId() );
         editDescription.setValue( dto.getDescription() );
@@ -118,18 +122,18 @@ public class AnotoPenController extends BasicListController<PenDTO>
 
     protected void persist( Object e ) throws ApplicationException
     {
-        getSession().add( getLoggedInUser(), getValue( ( Listitem )e ) );
-    }
-
-    protected void updateItem( Object e ) throws ApplicationException
-    {
-        getSession().update( getLoggedInUser(), getValue( ( Listitem )e ) );
+        if ( isAddNewOperation() )
+            getSession().add( getLoggedInUser(), ( PenDTO )e  );
+        else
+            getSession().update( getLoggedInUser(), ( PenDTO )e );
     }
 
     @Override
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
+        headerPenId.setSortAscending( new PenIdComparator( true ) );
+        headerPenId.setSortDescending( new PenIdComparator( false ) );
         /*We do not need update by now*/
         //cmdUpdate.setVisible( false );
     }

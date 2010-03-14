@@ -25,6 +25,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.session.AnodeFormSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodePenSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.PadSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.core.AbstractSecurity;
@@ -93,6 +94,14 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         }
     }
 
+    public void addPens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException
+    {
+        authenticate( auth );
+        List<AnotoPen> entities = loadPenEntityList( pens );
+        formSession.add( DTOFactory.copy ( form ), entities );
+    }
+
+
     public void delete( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
         authenticate( auth );
@@ -113,7 +122,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
-        return toFormList( formSession.getAll() );
+        return AnotoUtils.toFormList( formSession.getAll() );
     }
 
     public FormDTO update( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
@@ -158,7 +167,19 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     {
         authenticate( auth );
         AnotoForm entity = formSession.get( form.getId() );
-        return toPadList( formSession.getPads( entity ) );
+        return AnotoUtils.toPadList( formSession.getPads( entity ) );
+    }
+
+    public List<PenDTO> getAvailablePens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
+    {
+        authenticate( auth );
+        return AnotoUtils.toPenList( formSession.getAvailablePens( DTOFactory.copy ( form ) ) );
+    }
+
+    public List<PenDTO> getPens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
+    {
+        authenticate( auth );
+        return AnotoUtils.toPenList( formSession.getPens( DTOFactory.copy ( form ) ) );
     }
 
 
@@ -210,7 +231,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public List<PenDTO> getPens( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
-        return toPenList( penSession.getAll() );
+        return AnotoUtils.toPenList( penSession.getAll() );
     }
 
     public PenDTO update( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException
@@ -218,66 +239,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         authenticate( auth );
         return penSession.update( DTOFactory.copy( entity ) ).toDTO();
     }
-
-    protected List<FormDTO> toFormList( List<AnotoForm> list )
-    {
-        if ( SysUtils.isEmpty( list ) )
-            return Collections.emptyList();
-        List<FormDTO> dtoList = new ArrayList<FormDTO>( list.size() );
-        for ( AnotoForm f : list ) {
-            dtoList.add( f.toDTO() );
-        }
-        return dtoList;
-    }
-
-
-    protected List<MediaDTO> toMediaList( List<Media> list )
-    {
-        if ( SysUtils.isEmpty( list ) )
-            return Collections.emptyList();
-        List<MediaDTO> dtoList = new ArrayList<MediaDTO>( list.size() );
-        for ( Media f : list ) {
-            dtoList.add( f.toDTO() );
-        }
-        return dtoList;
-    }
-
-
-    protected List<PenDTO> toPenList( List<AnotoPen> list )
-    {
-        if ( SysUtils.isEmpty( list ) )
-            return Collections.emptyList();
-        List<PenDTO> dtoList = new ArrayList<PenDTO>( list.size() );
-        for ( AnotoPen f : list ) {
-            dtoList.add( f.toDTO() );
-        }
-        return dtoList;
-    }
-
-
-    protected List<PadDTO> toPadList( List<Pad> list )
-    {
-        if ( SysUtils.isEmpty( list ) )
-            return Collections.emptyList();
-        List<PadDTO> dtoList = new ArrayList<PadDTO>( list.size() );
-        for ( Pad f : list ) {
-            dtoList.add( f.toDTO() );
-        }
-        return dtoList;
-    }
-
-
-    protected List<AnotoPenPageDTO> toPenPageList( List<AnotoPenPage> list )
-    {
-        if ( SysUtils.isEmpty( list ) )
-            return Collections.emptyList();
-        List<AnotoPenPageDTO> dtoList = new ArrayList<AnotoPenPageDTO>( list.size() );
-        for ( AnotoPenPage f : list ) {
-            dtoList.add( f.toDTO() );
-        }
-        return dtoList;
-    }
-
 
     /* *************************************************************************
      * *************************************************************************
@@ -327,7 +288,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public List<MediaDTO> getImages( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
     {
         authenticate( auth );
-        return toMediaList( padSession.getImages( getPageEntity( page ) ) );
+        return AnotoUtils.toMediaList( padSession.getImages( getPageEntity( page ) ) );
     }
 
     public MediaDTO removeFromPage( AuthenticationDTO auth, AnotoPageDTO page, MediaDTO image ) throws ApplicationException
@@ -373,7 +334,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public List<PenDTO> getAvailablePens( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
     {
         authenticate( auth );
-        return toPenList( padSession.getAvailablePens( getPageEntity( page ) ) );
+        return AnotoUtils.toPenList( padSession.getAvailablePens( getPageEntity( page ) ) );
     }
 
     protected AnotoPage getPageEntity( AnotoPageDTO page )
@@ -386,7 +347,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public List<PenDTO> getPens( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
     {
         authenticate( auth );
-        return toPenList( padSession.getPens( getPageEntity( page ) ) );
+        return AnotoUtils.toPenList( padSession.getPens( getPageEntity( page ) ) );
     }
 
 
@@ -522,7 +483,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     {
         authenticate( auth );
         List<AnotoPenPage> list = pgcSession.get( getPageEntity( page ) );
-        return toPenPageList( list );
+        return AnotoUtils.toPenPageList( list );
     }
 }
 

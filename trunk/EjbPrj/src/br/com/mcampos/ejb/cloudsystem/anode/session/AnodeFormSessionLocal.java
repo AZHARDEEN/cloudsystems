@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.exception.ApplicationException;
@@ -31,5 +32,11 @@ public interface AnodeFormSessionLocal
     Media removePadFile( AnotoForm form, Media pad ) throws ApplicationException;
 
     List<Pad> getPads( AnotoForm form ) throws ApplicationException;
+
+    List<AnotoPen> getAvailablePens ( AnotoForm form ) throws ApplicationException;
+
+    List<AnotoPen> getPens( AnotoForm form ) throws ApplicationException;
+
+    void add ( AnotoForm form, List<AnotoPen> pens ) throws ApplicationException;
 
 }

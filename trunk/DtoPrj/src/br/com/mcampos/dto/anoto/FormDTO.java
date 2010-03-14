@@ -60,6 +60,6 @@ public class FormDTO extends SimpleTableDTO
     @Override
     public String toString()
     {
-        return getApplication() + " - " + getDescription();
+        return getId() + "-" + getApplication() + "-" + getDescription();
     }
 }

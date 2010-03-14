@@ -3,14 +3,19 @@ package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
+import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.sysutils.anoto.PADFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +23,9 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import org.jdom.Element;
 
@@ -113,4 +121,48 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         entity.setInsertDate( form.getInsertDate() );
         return super.update( entity );
     }
+
+
+    public List<AnotoPen> getAvailablePens ( AnotoForm form ) throws ApplicationException
+    {
+        String sqlQuery;
+        Query query;
+        List<AnotoPen> list;
+
+        sqlQuery =  "SELECT " +
+                        "pen_id_ch , pen_description_ch, pen_insert_dt " +
+                    "FROM anoto_pen " +
+                    "WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 )";
+        query = getEntityManager().createNativeQuery( sqlQuery, AnotoPen.class );
+        query.setParameter( 1, form.getId() );
+        try {
+            list = ( List<AnotoPen> )query.getResultList();
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            list = Collections.emptyList();
+        }
+        return list;
+    }
+
+    public List<AnotoPen> getPens( AnotoForm form ) throws ApplicationException
+    {
+        List<AnotoPenPage> list = ( List<AnotoPenPage> )getResultList( AnotoPenPage.formPensQueryName, form );
+        return AnotoUtils.getPenListFromPenPage( list, true );
+    }
+
+
+    public void add ( AnotoForm form, List<AnotoPen> pens ) throws ApplicationException
+   {
+        List<AnotoPage> list = ( List<AnotoPage> )getResultList( AnotoPage.formPagesGetAllNamedQuery, form );
+        if ( SysUtils.isEmpty( list ))
+            return;
+        for ( AnotoPen pen : pens ) {
+            for ( AnotoPage page : list )
+            {
+                AnotoPenPage penPage = new AnotoPenPage ( pen, page );
+                getEntityManager().persist( penPage );
+            }
+        }
+   }
 }

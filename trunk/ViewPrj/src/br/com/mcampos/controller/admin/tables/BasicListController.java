@@ -129,13 +129,6 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
     protected void showEditPanel( Boolean bShow )
     {
         super.showEditPanel( bShow );
-        boolean bSelected;
-        for ( Object item : getListboxRecord().getItems() ) {
-            bSelected =  ( ( Listitem )item ).isSelected();
-            ( ( Listitem )item ).setDisabled( bShow );
-            if ( bSelected )
-                ( ( Listitem )item ).setSelected( bSelected );
-        }
     }
 
     protected void afterDelete( Object currentRecord )
@@ -145,13 +138,20 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
 
     protected void afterPersist( Object currentRecord )
     {
+        System.out.println ( "afterPersist:" );
+        System.out.println ( "\t" + currentRecord.toString() );
         if ( isAddNewOperation() ) {
             getModel().add( currentRecord );
         }
         else {
             int nIndex = getModel().indexOf( currentRecord );
-            getModel().remove( currentRecord );
-            getModel().add( nIndex, currentRecord );
+            getModel().set ( nIndex, currentRecord );
+        }
+        try {
+            showRecord( (DTO)currentRecord );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Formulário" );
         }
     }
 }
