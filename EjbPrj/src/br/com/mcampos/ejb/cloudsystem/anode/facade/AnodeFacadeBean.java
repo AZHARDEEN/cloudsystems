@@ -14,6 +14,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.FormMedia;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
@@ -211,6 +212,37 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return formSession.nextId();
     }
 
+
+    public MediaDTO addFile( AuthenticationDTO auth, FormDTO form, MediaDTO media ) throws ApplicationException
+    {
+        authenticate( auth );
+        Media entity = mediaSession.add( DTOFactory.copy( media ) );
+        AnotoForm anotoForm = formSession.get( form.getId() );
+        return formSession.addFile( anotoForm, entity ).getMedia().toDTO();
+    }
+
+
+    public void removeFile( AuthenticationDTO auth, FormDTO form, MediaDTO media ) throws ApplicationException
+    {
+        authenticate( auth );
+        Media entity = mediaSession.add( DTOFactory.copy( media ) );
+        AnotoForm anotoForm = formSession.get( form.getId() );
+        formSession.removeFile( anotoForm, entity );
+    }
+
+    public List<MediaDTO> getFiles( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoForm anotoForm = formSession.get( form.getId() );
+        List<FormMedia> list = formSession.getFiles( anotoForm );
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<Media> medias = new ArrayList<Media>( list.size() );
+        for ( FormMedia fm : list ) {
+            medias.add( fm.getMedia() );
+        }
+        return AnotoUtils.toMediaList( medias );
+    }
 
     /* *************************************************************************
      * *************************************************************************

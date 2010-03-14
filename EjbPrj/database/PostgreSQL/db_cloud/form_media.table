@@ -86,6 +86,10 @@
       <notNull>true</notNull>
       <properties>
         <entry>
+          <key>Comment</key>
+          <value class="java.lang.String">Código sequencial da media. Este código é gerado por sequence (seq_media).</value>
+        </entry>
+        <entry>
           <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
           <value class="oracle.javatools.db.ReferenceID">
             <name>med_id_in</name>
@@ -103,9 +107,9 @@
   <constraints>
     <constraint class="oracle.javatools.db.FKConstraint">
       <ID class="oracle.javatools.db.IdentifierBasedID">
-        <identifier class="java.lang.String">e6ca790c-4502-4f52-b2f8-806972df968f</identifier>
+        <identifier class="java.lang.String">7610eb7a-d7d6-4b75-867d-150fef3e2a7c</identifier>
       </ID>
-      <name>r_130</name>
+      <name>fk_form_formmedia</name>
       <columnIDs>
         <columnID class="oracle.javatools.db.IdentifierBasedID">
           <name>frm_id_in</name>
@@ -116,17 +120,16 @@
             <schemaName>db_cloud</schemaName>
             <type>TABLE</type>
           </parent>
-          <schemaName>db_cloud</schemaName>
           <type>COLUMN</type>
         </columnID>
       </columnIDs>
-      <deleteMode>0</deleteMode>
+      <deleteMode>1</deleteMode>
       <enabled>true</enabled>
       <properties>
         <entry>
           <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
           <value class="oracle.javatools.db.ReferenceID">
-            <name>r_130</name>
+            <name>fk_form_formmedia</name>
             <childObjectNames>
               <childObjectName>frm_id_in</childObjectName>
             </childObjectNames>
@@ -140,24 +143,25 @@
           </value>
         </entry>
       </properties>
-      <referenceID class="oracle.javatools.db.IdentifierBasedID">
-        <name>xpkforms</name>
-        <identifier class="java.lang.String">90bfddec-c2e2-470f-9c66-e2b1a849736c</identifier>
-        <parent class="oracle.javatools.db.IdentifierBasedID">
-          <name>form</name>
-          <identifier class="java.lang.String">a732142d-780d-44b1-8b60-6845cd287a33</identifier>
+      <referenceID class="oracle.javatools.db.ReferenceID">
+        <name>formpk</name>
+        <childObjectNames>
+          <childObjectName>frm_id_in</childObjectName>
+        </childObjectNames>
+        <parent class="oracle.javatools.db.ReferenceID">
+          <name>anoto_form</name>
           <schemaName>db_cloud</schemaName>
           <type>TABLE</type>
         </parent>
-        <schemaName>db_cloud</schemaName>
+        <subType>PKConstraint</subType>
         <type>CONSTRAINT</type>
       </referenceID>
     </constraint>
     <constraint class="oracle.javatools.db.FKConstraint">
       <ID class="oracle.javatools.db.IdentifierBasedID">
-        <identifier class="java.lang.String">d6d18513-e08e-4af0-89cc-adb48e4c01a6</identifier>
+        <identifier class="java.lang.String">efa6a70c-2237-4610-9772-de18ceaa999c</identifier>
       </ID>
-      <name>r_131</name>
+      <name>fk_media_formmedia</name>
       <columnIDs>
         <columnID class="oracle.javatools.db.IdentifierBasedID">
           <name>med_id_in</name>
@@ -168,17 +172,16 @@
             <schemaName>db_cloud</schemaName>
             <type>TABLE</type>
           </parent>
-          <schemaName>db_cloud</schemaName>
           <type>COLUMN</type>
         </columnID>
       </columnIDs>
-      <deleteMode>0</deleteMode>
+      <deleteMode>1</deleteMode>
       <enabled>true</enabled>
       <properties>
         <entry>
           <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
           <value class="oracle.javatools.db.ReferenceID">
-            <name>r_131</name>
+            <name>fk_media_formmedia</name>
             <childObjectNames>
               <childObjectName>med_id_in</childObjectName>
             </childObjectNames>
@@ -206,9 +209,9 @@
     </constraint>
     <constraint class="oracle.javatools.db.PKConstraint">
       <ID class="oracle.javatools.db.IdentifierBasedID">
-        <identifier class="java.lang.String">01de81c9-a8fe-4956-90d3-739f3b48f081</identifier>
+        <identifier class="java.lang.String">227d9d96-b200-472f-b634-4c0a61353d67</identifier>
       </ID>
-      <name>xpkform_media</name>
+      <name>xpkform_medias</name>
       <columnIDs>
         <columnID class="oracle.javatools.db.IdentifierBasedID">
           <name>frm_id_in</name>
@@ -219,7 +222,6 @@
             <schemaName>db_cloud</schemaName>
             <type>TABLE</type>
           </parent>
-          <schemaName>db_cloud</schemaName>
           <type>COLUMN</type>
         </columnID>
         <columnID class="oracle.javatools.db.IdentifierBasedID">
@@ -231,7 +233,6 @@
             <schemaName>db_cloud</schemaName>
             <type>TABLE</type>
           </parent>
-          <schemaName>db_cloud</schemaName>
           <type>COLUMN</type>
         </columnID>
       </columnIDs>
@@ -240,7 +241,7 @@
         <entry>
           <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
           <value class="oracle.javatools.db.ReferenceID">
-            <name>xpkform_media</name>
+            <name>xpkform_medias</name>
             <childObjectNames>
               <childObjectName>frm_id_in</childObjectName>
               <childObjectName>med_id_in</childObjectName>

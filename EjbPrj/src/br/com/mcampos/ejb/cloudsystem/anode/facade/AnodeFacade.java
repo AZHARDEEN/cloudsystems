@@ -48,6 +48,12 @@ public interface AnodeFacade
 
     void removePens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException;
 
+    MediaDTO addFile( AuthenticationDTO auth, FormDTO form, MediaDTO media ) throws ApplicationException;
+
+    void removeFile( AuthenticationDTO auth, FormDTO form, MediaDTO media ) throws ApplicationException;
+
+    List<MediaDTO> getFiles( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
+
     /* *************************************************************************
      * *************************************************************************
      *

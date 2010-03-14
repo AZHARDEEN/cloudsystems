@@ -53,18 +53,24 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     private AnodeFacade session;
     protected Textbox editIP;
     protected Label recordIP;
+
+
     protected Button btnAddAttach;
     protected Button btnRemoveAttach;
     protected Button btnProperties;
+    protected Button btnAddAttachOther;
+    protected Button btnRemoveAttachOther;
+    protected Button btnAddPen;
+    protected Button btnRemovePen;
+
     protected Listbox listAttachs;
     protected Listbox listAvailable;
     protected Listbox listAdded;
+    protected Listbox listAttachsOther;
 
     protected Listheader headerApplication;
     protected Listheader headerDescription;
 
-    protected Button btnAddPen;
-    protected Button btnRemovePen;
 
     public AnotoFormController()
     {
@@ -145,6 +151,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     protected List getRecordList() throws ApplicationException
     {
         btnAddAttach.setDisabled( true );
+        btnAddAttachOther.setDisabled( true );
         btnRemoveAttach.setDisabled( true );
         btnProperties.setDisabled( true );
         return getSession().getForms( getLoggedInUser() );
@@ -206,8 +213,6 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
         if ( record != null ) {
             super.showRecord( record );
-            recordIP.setValue( record != null ? ( ( FormDTO )record ).getApplication() : "" );
-            btnAddAttach.setDisabled( record == null );
             listAttachs.setModel( getMediaModel( ( FormDTO )record ) );
             refreshPens( ( FormDTO )record );
             //listAdded.setModel( getPenModel( ( FormDTO )record ) );
@@ -216,7 +221,11 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             clearRecordInfo();
             listAvailable.getItems().clear();
             listAdded.getItems().clear();
+            listAttachsOther.getItems().clear();
         }
+        btnAddAttach.setDisabled( record == null );
+        recordIP.setValue( record != null ? ( ( FormDTO )record ).getApplication() : "" );
+        btnAddAttachOther.setDisabled( record == null );
     }
 
     public void onUpload$btnAddAttach( UploadEvent evt )
@@ -369,6 +378,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         listAvailable.invalidate();
         listAdded.setModel( getPensListModel( current ) );
         listAdded.invalidate();
+        listAttachsOther.setModel( getFilesListModel( current ) );
     }
 
 
@@ -390,6 +400,19 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         List<PenDTO> list;
         try {
             list = getSession().getPens( getLoggedInUser(), current );
+            return new ListModelList( list, true );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Lista de Formulários" );
+            return null;
+        }
+    }
+
+    protected ListModelList getFilesListModel( FormDTO current )
+    {
+        List<MediaDTO> list;
+        try {
+            list = getSession().getFiles( getLoggedInUser(), current );
             return new ListModelList( list, true );
         }
         catch ( ApplicationException e ) {
@@ -428,6 +451,11 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         btnProperties.setDisabled( false );
     }
 
+    public void onSelect$listAttachsOther()
+    {
+        btnRemoveAttachOther.setDisabled( false );
+    }
+
 
     public void onClick$btnProperties()
     {
@@ -439,6 +467,54 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             params.put( AnotoPADController.padIdParameterName, pad );
             gotoPage( "/private/admin/anoto/anoto_pad.zul", getRootParent().getParent(), params );
         }
+    }
+
+    public void onUpload$btnAddAttachOther( UploadEvent evt )
+    {
+        if ( getListboxRecord().getSelectedCount() != 1 ) {
+            showErrorMessage( "Não existe nenhum formulário selecionado", "Upload Error" );
+            evt.stopPropagation();
+            return;
+        }
+        MediaDTO dto = null;
+        try {
+            dto = UploadMedia.getMedia( evt.getMedia() );
+        }
+        catch ( IOException e ) {
+            showErrorMessage( e.getMessage(), "UploadMedia" );
+        }
+        if ( dto == null )
+            return;
+        FormDTO form = getValue( getListboxRecord().getSelectedItem() );
+
+        try {
+            MediaDTO addedDTO = getSession().addFile( getLoggedInUser(), form, dto );
+            ListModelList model = ( ListModelList )listAttachsOther.getModel();
+            model.add( addedDTO );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Adicinar Arquivo" );
+        }
+    }
+
+
+    public void onClick$btnRemoveAttachOther()
+    {
+        FormDTO currentForm = getValue( getListboxRecord().getSelectedItem() );
+        ListModelList modelList = ( ( ListModelList )listAttachsOther.getModel() );
+        Set selected = modelList.getSelection();
+        if ( selected.isEmpty() )
+            return;
+        try {
+            for ( Iterator it = selected.iterator(); it.hasNext(); ) {
+                getSession().removeFile( getLoggedInUser(), currentForm, ( MediaDTO )it.next() );
+            }
+            modelList.removeAll( selected );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Remover Media" );
+        }
+
     }
 
 
