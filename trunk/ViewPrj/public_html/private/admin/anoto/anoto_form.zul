@@ -79,6 +79,7 @@
                                 <tabs>
                                     <tab label="Arquivos PAD"/>
                                     <tab label="Canetas"/>
+                                    <tab label="Outros Arquivos"/>
                                 </tabs>
                                 <tabpanels>
                                     <tabpanel>
@@ -119,6 +120,19 @@
                                                 </listbox>
                                             </vbox>
                                         </hbox>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <toolbar>
+                                            <toolbarbutton id="btnAddAttachOther" label="Adicionar" disabled="true"
+                                                           upload="true,native" image="/img/icontexto-webdev-add-016x016.png"/>
+                                            <toolbarbutton id="btnRemoveAttachOther" label="Remover" disabled="true"
+                                                           image="/img/icontexto-webdev-remove-016x016.png"/>
+                                        </toolbar>
+                                        <listbox id="listAttachsOther" fixedLayout="true" height="200px">
+                                            <listhead sizable="true">
+                                                <listheader align="left" label="Nome"/>
+                                            </listhead>
+                                        </listbox>
                                     </tabpanel>
                                 </tabpanels>
                             </tabbox>

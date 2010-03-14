@@ -2,18 +2,14 @@ package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.BackgroundImage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus;
-import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
-import br.com.mcampos.sysutils.SysUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -83,5 +79,14 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         list = ( List<PgcPenPage> )getResultList( PgcPenPage.getAllPgcQueryName, penPage );
         return list;
     }
+
+
+    public List<PgcPenPage> getAll( AnotoPen pen ) throws ApplicationException
+    {
+        List<PgcPenPage> list;
+        list = ( List<PgcPenPage> )getResultList( PgcPenPage.penGetAllPgcs, pen );
+        return list;
+    }
+
 }
 

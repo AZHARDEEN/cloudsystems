@@ -6,6 +6,8 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPenPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
@@ -117,22 +119,19 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
     @Override
     public AnotoForm update( AnotoForm entity ) throws ApplicationException
     {
-        AnotoForm form = get ( entity.getId() );
+        AnotoForm form = get( entity.getId() );
         entity.setInsertDate( form.getInsertDate() );
         return super.update( entity );
     }
 
 
-    public List<AnotoPen> getAvailablePens ( AnotoForm form ) throws ApplicationException
+    public List<AnotoPen> getAvailablePens( AnotoForm form ) throws ApplicationException
     {
         String sqlQuery;
         Query query;
         List<AnotoPen> list;
 
-        sqlQuery =  "SELECT " +
-                        "pen_id_ch , pen_description_ch, pen_insert_dt " +
-                    "FROM anoto_pen " +
-                    "WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 )";
+        sqlQuery = "SELECT " + "pen_id_ch , pen_description_ch, pen_insert_dt " + "FROM anoto_pen " + "WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 )";
         query = getEntityManager().createNativeQuery( sqlQuery, AnotoPen.class );
         query.setParameter( 1, form.getId() );
         try {
@@ -152,17 +151,39 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
     }
 
 
-    public void add ( AnotoForm form, List<AnotoPen> pens ) throws ApplicationException
-   {
+    public void add( AnotoForm form, List<AnotoPen> pens ) throws ApplicationException
+    {
         List<AnotoPage> list = ( List<AnotoPage> )getResultList( AnotoPage.formPagesGetAllNamedQuery, form );
-        if ( SysUtils.isEmpty( list ))
+        if ( SysUtils.isEmpty( list ) )
             return;
         for ( AnotoPen pen : pens ) {
-            for ( AnotoPage page : list )
-            {
-                AnotoPenPage penPage = new AnotoPenPage ( pen, page );
+            for ( AnotoPage page : list ) {
+                AnotoPenPage penPage = new AnotoPenPage( pen, page );
                 getEntityManager().persist( penPage );
             }
         }
-   }
+    }
+
+    protected boolean existsPgcPenPage( AnotoPenPage penPage ) throws ApplicationException
+    {
+        List list = getResultList( PgcPenPage.getAllPgcQueryName, penPage );
+        return SysUtils.isEmpty( list ) ? false : true;
+    }
+
+
+    public void remove( AnotoForm form, List<AnotoPen> pens ) throws ApplicationException
+    {
+        List<AnotoPage> list = ( List<AnotoPage> )getResultList( AnotoPage.formPagesGetAllNamedQuery, form );
+        if ( SysUtils.isEmpty( list ) )
+            return;
+        for ( AnotoPen pen : pens ) {
+            for ( AnotoPage page : list ) {
+                AnotoPenPagePK penPagePK = new AnotoPenPagePK( pen, page );
+                AnotoPenPage penPage = getEntityManager().find( AnotoPenPage.class, penPagePK );
+                if ( penPage != null && existsPgcPenPage( penPage ) == false ) {
+                    getEntityManager().remove( penPage );
+                }
+            }
+        }
+    }
 }

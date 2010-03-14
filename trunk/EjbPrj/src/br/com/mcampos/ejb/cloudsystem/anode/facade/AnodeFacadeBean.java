@@ -87,8 +87,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         try {
             return formSession.add( DTOFactory.copy( entity ) ).toDTO();
         }
-        catch ( EJBException e )
-        {
+        catch ( EJBException e ) {
             throwException( 1 );
             return null;
         }
@@ -98,7 +97,20 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     {
         authenticate( auth );
         List<AnotoPen> entities = loadPenEntityList( pens );
-        formSession.add( DTOFactory.copy ( form ), entities );
+        formSession.add( DTOFactory.copy( form ), entities );
+    }
+
+
+    public void removePens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException
+    {
+        authenticate( auth );
+        List<AnotoPen> entities = loadPenEntityList( pens );
+        for ( AnotoPen pen : entities ) {
+            List list = pgcSession.getAll( pen );
+            if ( SysUtils.isEmpty( list ) == false )
+                throwRuntimeException( 1 );
+        }
+        formSession.remove( DTOFactory.copy( form ), entities );
     }
 
 
@@ -173,13 +185,13 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public List<PenDTO> getAvailablePens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );
-        return AnotoUtils.toPenList( formSession.getAvailablePens( DTOFactory.copy ( form ) ) );
+        return AnotoUtils.toPenList( formSession.getAvailablePens( DTOFactory.copy( form ) ) );
     }
 
     public List<PenDTO> getPens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );
-        return AnotoUtils.toPenList( formSession.getPens( DTOFactory.copy ( form ) ) );
+        return AnotoUtils.toPenList( formSession.getPens( DTOFactory.copy( form ) ) );
     }
 
 

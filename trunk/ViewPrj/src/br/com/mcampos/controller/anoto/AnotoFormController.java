@@ -63,6 +63,9 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     protected Listheader headerApplication;
     protected Listheader headerDescription;
 
+    protected Button btnAddPen;
+    protected Button btnRemovePen;
+
     public AnotoFormController()
     {
         super();
@@ -170,20 +173,20 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     @Override
     protected Object saveRecord( Object dto )
     {
-        System.out.println ( "saveRecord(Before):" );
-        System.out.println ( "\t" + dto.toString() );
+        System.out.println( "saveRecord(Before):" );
+        System.out.println( "\t" + dto.toString() );
         FormDTO d = ( FormDTO )super.saveRecord( dto );
         d.setIp( editIP.getValue() );
-        System.out.println ( "saveRecord(after):" );
-        System.out.println ( "\t" + dto.toString() );
+        System.out.println( "saveRecord(after):" );
+        System.out.println( "\t" + dto.toString() );
         return d;
     }
 
     @Override
     public void render( Listitem item, Object value )
     {
-        System.out.println ( "Render:" );
-        System.out.println ( "\t" + value.toString() );
+        System.out.println( "Render:" );
+        System.out.println( "\t" + value.toString() );
         FormDTO dto = ( FormDTO )value;
 
         if ( dto != null ) {
@@ -198,8 +201,8 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     protected void showRecord( SimpleTableDTO record )
     {
         if ( record != null ) {
-            System.out.println ( "showRecord:" );
-            System.out.println ( "\t" + record.toString() );
+            System.out.println( "showRecord:" );
+            System.out.println( "\t" + record.toString() );
         }
         if ( record != null ) {
             super.showRecord( record );
@@ -207,7 +210,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             btnAddAttach.setDisabled( record == null );
             listAttachs.setModel( getMediaModel( ( FormDTO )record ) );
             refreshPens( ( FormDTO )record );
-                //listAdded.setModel( getPenModel( ( FormDTO )record ) );
+            //listAdded.setModel( getPenModel( ( FormDTO )record ) );
         }
         else {
             clearRecordInfo();
@@ -301,33 +304,27 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-
-    protected void moveListitem( Listbox toListbox, Listbox fromListbox )
+    protected void moveListitem( ListModelList toListbox, ListModelList fromListbox )
     {
         if ( getListboxRecord().getSelectedCount() != 1 )
             return;
         FormDTO currentForm = getValue( getListboxRecord().getSelectedItem() );
-        Set selected = fromListbox.getSelectedItems();
+        Set selected = fromListbox.getSelection();
         if ( selected.isEmpty() )
             return;
-        List al = new ArrayList( selected );
-        ArrayList<PenDTO> itens = new ArrayList<PenDTO>( al.size() );
+        ArrayList<PenDTO> itens = new ArrayList<PenDTO>();
         try {
-            for ( Iterator it = al.iterator(); it.hasNext(); ) {
-                Listitem li = ( Listitem )it.next();
-                itens.add( ( PenDTO )li.getValue() );
+            for ( Iterator it = selected.iterator(); it.hasNext(); ) {
+                itens.add( ( PenDTO )it.next() );
             }
-            if ( toListbox.equals( listAvailable ) )
+            if ( toListbox.equals( listAvailable.getModel() ) ) {
+                getSession().removePens( getLoggedInUser(), currentForm, itens );
+            }
+            else {
                 getSession().addPens( getLoggedInUser(), currentForm, itens );
-            else
-                //getSession().insertIntoForm( getLoggedInUser(), currentForm, itens );
-
-
-            for ( Iterator it = al.iterator(); it.hasNext(); ) {
-                Listitem li = ( Listitem )it.next();
-                li.setSelected( false );
-                toListbox.appendChild( li );
             }
+            toListbox.addAll( selected );
+            fromListbox.removeAll( selected );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Formularios Associados" );
@@ -347,13 +344,25 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         ( ( Listitem )dragged ).setSelected( true );
         if ( target.equals( listAvailable ) ) {
             //we are removing forms from this pen
-            moveListitem( listAvailable, listAdded );
+            moveListitem( ( ListModelList )listAvailable.getModel(), ( ListModelList )listAdded.getModel() );
         }
         else {
             // we are adding forms into this pen
-            moveListitem( listAdded, listAvailable );
+            moveListitem( ( ListModelList )listAdded.getModel(), ( ListModelList )listAvailable.getModel() );
         }
     }
+
+    public void onClick$btnAddPen()
+    {
+        moveListitem( ( ListModelList )listAdded.getModel(), ( ListModelList )listAvailable.getModel() );
+    }
+
+    public void onClick$btnRemovePen()
+    {
+        moveListitem( ( ListModelList )listAvailable.getModel(), ( ListModelList )listAdded.getModel() );
+    }
+
+
     protected void refreshPens( FormDTO current )
     {
         listAvailable.setModel( getAvailablePensListModel( current ) );
@@ -389,25 +398,6 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    /*
-
-    protected AbstractListModel getPenModel( FormDTO current )
-    {
-        List<PenDTO> list;
-        PenListModel model = null;
-        try {
-            list = getSession().getPens( getLoggedInUser(), current );
-            model = new PenListModel( list );
-            model.loadPage( 1, list.size() );
-            return model;
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Lista de Formulários" );
-            return null;
-        }
-    }
-
-    */
 
     public void onClick$btnRemoveAttach()
     {
@@ -498,6 +488,5 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
         return listModel;
     }
-
 }
 
