@@ -46,6 +46,8 @@ public interface AnodeFacade
 
     void addPens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException;
 
+    void removePens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException;
+
     /* *************************************************************************
      * *************************************************************************
      *

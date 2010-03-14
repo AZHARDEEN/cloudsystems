@@ -67,7 +67,7 @@
         </ID>
         <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
           <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
-          <typeName>DATE</typeName>
+          <typeName>TIMESTAMP</typeName>
         </dataTypeID>
         <properties>
           <entry>
@@ -104,6 +104,106 @@
         </entry>
       </properties>
     </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">8b7b9803-d1a0-4a10-afe2-c69f8a58b592</identifier>
+      </ID>
+      <name>pgs_id_in</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">61fa0017-6223-43a2-9ba8-ed98e93d155d</identifier>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>INT</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>pgs_id_in</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>pgc</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>pgs_id_in</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>pgc</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">dce22ba0-67b1-42b4-86ca-144c63bee53e</identifier>
+      </ID>
+      <name>pgc_description_ch</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">4035d9ac-972c-4651-b386-31d8acc5075b</identifier>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">64</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
+          <typeName>VARCHAR</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>pgc_description_ch</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>pgc</name>
+                  <schemaName>db_cloud</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>pgc_description_ch</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>pgc</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
   </columns>
   <constraints>
     <constraint class="oracle.javatools.db.FKConstraint">
@@ -121,7 +221,6 @@
             <schemaName>db_cloud</schemaName>
             <type>TABLE</type>
           </parent>
-          <schemaName>db_cloud</schemaName>
           <type>COLUMN</type>
         </columnID>
       </columnIDs>
@@ -157,6 +256,57 @@
         <type>CONSTRAINT</type>
       </referenceID>
     </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">a69be2b3-53ea-4143-9745-67b018497963</identifier>
+      </ID>
+      <name>r_153</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>pgs_id_in</name>
+          <identifier class="java.lang.String">8b7b9803-d1a0-4a10-afe2-c69f8a58b592</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>pgc</name>
+            <identifier class="java.lang.String">f1151768-e6ec-445e-b40b-022b0bab86f7</identifier>
+            <schemaName>db_cloud</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>db_cloud</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>0</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>r_153</name>
+            <childObjectNames>
+              <childObjectName>pgs_id_in</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>pgc</name>
+              <schemaName>db_cloud</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>xpkpgc_status</name>
+        <identifier class="java.lang.String">ddc4ceb0-ee5a-4064-b0dd-55f9a12a4e74</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>pgc_status</name>
+          <identifier class="java.lang.String">e9ea70a0-0acd-4bfe-bbde-6ea3c9fd2905</identifier>
+          <schemaName>db_cloud</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
     <constraint class="oracle.javatools.db.PKConstraint">
       <ID class="oracle.javatools.db.IdentifierBasedID">
         <identifier class="java.lang.String">8c6545d6-b306-4aef-a5dd-2373e03e0ab9</identifier>
@@ -172,7 +322,6 @@
             <schemaName>db_cloud</schemaName>
             <type>TABLE</type>
           </parent>
-          <schemaName>db_cloud</schemaName>
           <type>COLUMN</type>
         </columnID>
       </columnIDs>

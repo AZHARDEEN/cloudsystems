@@ -7,6 +7,8 @@ import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
 
+import java.sql.Timestamp;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -33,7 +35,7 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 
 
     @Column( name = "pgc_insert_dt" )
-    @Temporal( TemporalType.DATE )
+    @Temporal( TemporalType.TIMESTAMP )
     private Date insertDate;
 
     @ManyToOne
@@ -51,7 +53,7 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
     {
     }
 
-    public Pgc( Integer pk, Date insertDate )
+    public Pgc( Integer pk, Timestamp insertDate )
     {
         this.id = pk;
         this.insertDate = insertDate;

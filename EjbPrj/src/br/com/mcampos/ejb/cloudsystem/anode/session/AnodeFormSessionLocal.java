@@ -33,10 +33,12 @@ public interface AnodeFormSessionLocal
 
     List<Pad> getPads( AnotoForm form ) throws ApplicationException;
 
-    List<AnotoPen> getAvailablePens ( AnotoForm form ) throws ApplicationException;
+    List<AnotoPen> getAvailablePens( AnotoForm form ) throws ApplicationException;
 
     List<AnotoPen> getPens( AnotoForm form ) throws ApplicationException;
 
-    void add ( AnotoForm form, List<AnotoPen> pens ) throws ApplicationException;
+    void add( AnotoForm form, List<AnotoPen> pens ) throws ApplicationException;
+
+    void remove( AnotoForm form, List<AnotoPen> pens ) throws ApplicationException;
 
 }
