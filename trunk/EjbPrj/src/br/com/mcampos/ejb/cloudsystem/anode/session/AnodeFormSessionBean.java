@@ -5,9 +5,11 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.FormMedia;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPenPagePK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.FormMediaPK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
@@ -79,6 +81,34 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         loadPadFile( form, newEntity );
         return newEntity;
     }
+
+
+    public FormMedia addFile( AnotoForm form, Media media ) throws ApplicationException
+    {
+        form = getEntityManager().merge( form );
+        media = getEntityManager().merge( media );
+
+        FormMedia newEntity = new FormMedia( form, media );
+        getEntityManager().persist( newEntity );
+        return newEntity;
+    }
+
+
+    public void removeFile( AnotoForm form, Media media ) throws ApplicationException
+    {
+        FormMediaPK pk = new FormMediaPK( form, media );
+
+        FormMedia newEntity = getEntityManager().find( FormMedia.class, pk );
+        if ( newEntity != null )
+            getEntityManager().remove( newEntity );
+    }
+
+    public List<FormMedia> getFiles( AnotoForm form ) throws ApplicationException
+    {
+        List<FormMedia> list = ( List<FormMedia> )getResultList( FormMedia.formGetFiles, form );
+        return list;
+    }
+
 
     protected List<Element> loadPadFile( AnotoForm form, Pad pad ) throws ApplicationException
     {
