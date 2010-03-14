@@ -40,6 +40,12 @@ public interface AnodeFacade
 
     List<PadDTO> getPads( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
 
+    List<PenDTO> getAvailablePens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
+
+    List<PenDTO> getPens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
+
+    void addPens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException;
+
     /* *************************************************************************
      * *************************************************************************
      *

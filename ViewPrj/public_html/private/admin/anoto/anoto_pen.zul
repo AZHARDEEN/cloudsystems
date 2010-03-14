@@ -14,7 +14,7 @@
                     <!-- Por favor, nao mude o id desta listbox -->
                     <listbox fixedLayout="true" id="listboxRecord" vflex="true">
                         <listhead sizable="true">
-                            <listheader id="recordListIdSort" align="left" label="Código" sort="auto"/>
+                            <listheader id="headerPenId" align="left" label="Código" sort="auto"/>
                         </listhead>
                     </listbox>
                 </div>

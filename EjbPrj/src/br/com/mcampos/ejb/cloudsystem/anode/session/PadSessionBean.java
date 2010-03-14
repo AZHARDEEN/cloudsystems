@@ -11,10 +11,10 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPenPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.BackgroundImagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
+import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
-import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -91,18 +91,6 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         return image;
     }
 
-    protected List<AnotoPen> makePenList( List<AnotoPenPage> list )
-    {
-        List<AnotoPen> pens = Collections.emptyList();
-        if ( SysUtils.isEmpty( list ) == false ) {
-            pens = new ArrayList<AnotoPen>( list.size() );
-            for ( AnotoPenPage item : list ) {
-                pens.add( item.getPen() );
-            }
-        }
-        return pens;
-    }
-
     public List<AnotoPen> getAvailablePens( AnotoPage page ) throws ApplicationException
     {
         String sqlQuery;
@@ -127,7 +115,7 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
     public List<AnotoPen> getPens( AnotoPage page ) throws ApplicationException
     {
         List<AnotoPenPage> list = ( List<AnotoPenPage> )getResultList( AnotoPenPage.pagePensQueryName, page );
-        return makePenList( list );
+        return AnotoUtils.getPenListFromPenPage( list, true );
     }
 
     public void addPens( AnotoPage page, List<AnotoPen> pens ) throws ApplicationException
