@@ -14,7 +14,7 @@ import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 
-import br.com.mcampos.ejb.entity.security.Role;
+import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;

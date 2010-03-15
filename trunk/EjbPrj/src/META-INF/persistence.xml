@@ -39,7 +39,7 @@
     <class>br.com.mcampos.ejb.entity.system.EMail</class>
     <class>br.com.mcampos.ejb.entity.system.EMailPart</class>
     <class>br.com.mcampos.ejb.entity.system.EMailPartType</class>
-    <class>br.com.mcampos.ejb.entity.security.Role</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.entity.Role</class>
     <class>br.com.mcampos.ejb.entity.system.Menu</class>
     <class>br.com.mcampos.ejb.entity.security.SubjectRole</class>
     <class>br.com.mcampos.ejb.entity.security.PermissionAssignment</class>

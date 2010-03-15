@@ -72,9 +72,9 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
 
     public Media removeImage( AnotoPage pageEntity, Media image ) throws ApplicationException
     {
-        BackgroundImage removeEntity = getEntityManager()
-            .find( BackgroundImage.class, new BackgroundImagePK( pageEntity, image ) );
-        getEntityManager().remove( removeEntity.getMedia() );
+        BackgroundImagePK key = new BackgroundImagePK( pageEntity, image );
+        BackgroundImage removeEntity = getEntityManager().find( BackgroundImage.class, key );
+        //getEntityManager().remove( removeEntity.getMedia() );
         getEntityManager().remove( removeEntity );
         return image;
     }

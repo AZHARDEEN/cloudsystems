@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "Task.findAll", query = "select o from Task o where o.masterTaskList is EMPTY" ) } )
@@ -107,7 +109,7 @@ public class Task implements Serializable
         return permissionAssignment;
     }
 
-    @OneToMany( mappedBy = "task" )
+    @OneToMany( mappedBy = "task", cascade = CascadeType.REFRESH )
     public List<TaskMenu> getTaskMenuList()
     {
         return taskMenuList;

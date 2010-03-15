@@ -8,7 +8,7 @@ import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.ejb.entity.security.Role;
+import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 import br.com.mcampos.ejb.facade.UserFacadeSession;
 
 import br.com.mcampos.exception.ApplicationException;

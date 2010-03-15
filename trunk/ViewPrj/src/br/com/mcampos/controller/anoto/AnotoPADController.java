@@ -238,7 +238,6 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
                 ( ( ListModelList )listAttachs.getModel() ).remove( li.getValue() );
             }
             btnRemoveAttach.setDisabled( true );
-            btnProperties.setDisabled( true );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Remover Media" );
@@ -363,6 +362,11 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
             showErrorMessage( e.getMessage(), "Lista de Formulários" );
             return null;
         }
+    }
+
+    public void onSelect$listAttachs ()
+    {
+        btnRemoveAttach.setDisabled(  false  );
     }
 
     protected void delete( Object currentRecord )

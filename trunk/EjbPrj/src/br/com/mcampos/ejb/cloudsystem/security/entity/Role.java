@@ -1,4 +1,9 @@
-package br.com.mcampos.ejb.entity.security;
+package br.com.mcampos.ejb.cloudsystem.security.entity;
+
+
+import br.com.mcampos.dto.security.RoleDTO;
+import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
+import br.com.mcampos.ejb.entity.security.PermissionAssignment;
 
 import java.io.Serializable;
 
@@ -7,6 +12,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,13 +21,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries( { @NamedQuery( name = "Role.findAll", query = "select o from Role o" ) } )
-@Table( name = "\"role\"" )
-public class Role implements Serializable
+@NamedQueries( { @NamedQuery( name = Role.roleGetAll, query = "select o from Role o where o.parentRole = ?1" ) } )
+@Table( name = "role" )
+public class Role implements Serializable, EntityCopyInterface<RoleDTO>
 {
     public static final Integer systemAdmimRoleLevel = 1;
 
+    public static final String roleGetAll = "Role.findAll";
 
     private String description;
     private Integer id;
@@ -77,7 +85,7 @@ public class Role implements Serializable
         this.parentRole = role;
     }
 
-    @OneToMany( mappedBy = "parentRole" )
+    @OneToMany( mappedBy = "parentRole", fetch = FetchType.LAZY )
     public List<Role> getChildRoles()
     {
         if ( childRoles == null )
@@ -104,7 +112,7 @@ public class Role implements Serializable
         return role;
     }
 
-    @OneToMany( mappedBy = "role" )
+    @OneToMany( mappedBy = "role", fetch = FetchType.LAZY )
     public List<PermissionAssignment> getPermissionAssignmentList()
     {
         if ( permissionAssignmentList == null )
@@ -129,5 +137,12 @@ public class Role implements Serializable
         getPermissionAssignmentList().remove( permissionAssignment );
         permissionAssignment.setRole( null );
         return permissionAssignment;
+    }
+
+    public RoleDTO toDTO()
+    {
+        RoleDTO dto = new RoleDTO ( getId(), getDescription() );
+
+        return dto;
     }
 }
