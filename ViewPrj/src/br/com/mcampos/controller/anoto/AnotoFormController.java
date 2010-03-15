@@ -357,8 +357,18 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
         else {
             // we are adding forms into this pen
-            moveListitem( ( ListModelList )listAdded.getModel(), ( ListModelList )listAvailable.getModel() );
+            moveListitem( getModel ( listAdded ), getModel ( listAvailable ) );
         }
+    }
+    protected ListModelList getModel ( Listbox target )
+    {
+        ListModelList modelList = (ListModelList) target.getModel();
+        if ( modelList == null )
+        {
+            modelList = new ListModelList ();
+            target.setModel( modelList );
+        }
+        return modelList;
     }
 
     public void onClick$btnAddPen()
@@ -477,23 +487,21 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             return;
         }
         MediaDTO dto = null;
-        try {
-            dto = UploadMedia.getMedia( evt.getMedia() );
-        }
-        catch ( IOException e ) {
-            showErrorMessage( e.getMessage(), "UploadMedia" );
-        }
-        if ( dto == null )
-            return;
-        FormDTO form = getValue( getListboxRecord().getSelectedItem() );
 
         try {
+            dto = UploadMedia.getMedia( evt.getMedia() );
+            if ( dto == null )
+                return;
+            FormDTO form = getValue( getListboxRecord().getSelectedItem() );
             MediaDTO addedDTO = getSession().addFile( getLoggedInUser(), form, dto );
             ListModelList model = ( ListModelList )listAttachsOther.getModel();
             model.add( addedDTO );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Adicinar Arquivo" );
+        }
+        catch ( IOException e ) {
+            showErrorMessage( e.getMessage(), "UploadMedia" );
         }
     }
 

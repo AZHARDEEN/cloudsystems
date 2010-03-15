@@ -19,7 +19,7 @@ public class BackgroundImagePK implements Serializable
 
     public BackgroundImagePK( AnotoPage page, Media image )
     {
-        init( page.getPageAddress(), page.getPadId(), page.getFormId(), image.getId() );
+        init( page.getPageAddress(), page.getFormId(), image.getId(), page.getPadId() );
     }
 
     protected void init( String apg_id_ch, Integer frm_id_in, Integer med_id_in, Integer pad_id_in )

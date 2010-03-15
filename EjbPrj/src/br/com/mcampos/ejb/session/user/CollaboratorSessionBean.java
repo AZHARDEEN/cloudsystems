@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.session.user;
 
+
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
@@ -7,7 +8,7 @@ import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.security.PermissionAssignment;
-import br.com.mcampos.ejb.entity.security.Role;
+import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 import br.com.mcampos.ejb.entity.security.SubjectRole;
 import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.ejb.entity.security.Task;
@@ -15,11 +16,7 @@ import br.com.mcampos.ejb.entity.security.TaskMenu;
 import br.com.mcampos.ejb.entity.system.Menu;
 import br.com.mcampos.ejb.entity.user.Collaborator;
 import br.com.mcampos.ejb.entity.user.Users;
-import br.com.mcampos.ejb.entity.user.pk.CollaboratorPK;
-import br.com.mcampos.ejb.entity.user.attributes.CollaboratorType;
-
 import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionBean;
-
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.ArrayList;
@@ -27,13 +24,13 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 
 @Stateless( name = "CollaboratorSession", mappedName = "CloudSystems-EjbPrj-CollaboratorSession" )
 public class CollaboratorSessionBean extends AbstractSecurity implements CollaboratorSessionLocal
@@ -171,7 +168,7 @@ public class CollaboratorSessionBean extends AbstractSecurity implements Collabo
     {
         if ( entity == null || menuList == null )
             return;
-
+        getEntityManager().refresh( entity );
         for ( TaskMenu tm : entity.getTaskMenuList() ) {
             menuList.add( tm.getMenu() );
 
