@@ -16,6 +16,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -23,13 +25,22 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = Role.roleGetAll, query = "select o from Role o where o.parentRole = ?1" ) } )
+@NamedQueries( {
+        @NamedQuery( name = Role.roleGetAll, query = "select o from Role o" ),
+        @NamedQuery( name = Role.roleGetRoot, query = "select o from Role o where o.parentRole is null" ),
+        @NamedQuery( name = Role.roleGetChilds, query = "select o from Role o where o.parentRole = ?1" )
+                 } )
+@NamedNativeQueries( { @NamedNativeQuery( name = Role.roleMaxId, query = "select coalesce ( max (  rol_id_in ), 0 ) + 1 from role" )
+                       } )
 @Table( name = "role" )
 public class Role implements Serializable, EntityCopyInterface<RoleDTO>
 {
     public static final Integer systemAdmimRoleLevel = 1;
 
     public static final String roleGetAll = "Role.findAll";
+    public static final String roleGetRoot = "Role.getRoot";
+    public static final String roleGetChilds = "Role.getChilds";
+    public static final String roleMaxId = "Role.maxId";
 
     private String description;
     private Integer id;
@@ -142,7 +153,8 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>
     public RoleDTO toDTO()
     {
         RoleDTO dto = new RoleDTO ( getId(), getDescription() );
-
+        if ( getParentRole() != null )
+            dto.setParent( getParentRole().toDTO() );
         return dto;
     }
 }

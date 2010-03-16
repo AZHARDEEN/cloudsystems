@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<zk>
-    <div width="100%" height="100%" id="rootParent" >
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.admin.security.roles.RoleController" >
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
                     <label style="font-size:20px;color:#0C7A9A" value="Roles"/>
                 </vbox>
             </north>
-            <west size="30%">
+            <west size="40%">
                 <!-- Por favor, nao mude o id desta div -->
                 <div width="100%" height="100%" id="divListBoxRecord">
                     <!-- Por favor, nao mude o id desta listbox -->
@@ -15,15 +15,55 @@
                 </div>
             </west>
             <center >
-                <div align="center" width="100%" height="100%">
-                    <!-- Por favor, nao mude o id desta div -->
-                    <div id="divProperties" >
+                <!-- Por favor, nao mude o id desta div -->
+                <div id="recordDetail">
+                    <!-- view mode -->
+                    <div id="recordView" width="1">
                         <grid width="100%" fixedLayout="true">
                             <columns>
-                                <column align="right" width="15%"/>
+                                <column align="right" width="20%"/>
                                 <column align="left"/>
                             </columns>
+                            <rows>
+                                <row>
+                                    Código
+                                    <label id="labelId" />
+                                </row>
+                                <row>
+                                    Descrição
+                                    <label id="labelDescription" />
+                                </row>
+                                <row>
+                                    Role Pai
+                                    <label id="labelParent" />
+                                </row>
+                            </rows>
                         </grid>
+                        <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
+                    </div>
+                    <div id="recordEdit" visible="false" droppable="true">
+                        <grid width="100%" fixedLayout="true">
+                            <columns>
+                                <column align="right" width="20%"/>
+                                <column align="left" width="80%"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    Código
+                                    <intbox id="editId" width="100px" constraint="no negative, no zero"/>
+                                </row>
+                                <row>
+                                    Descrição
+                                    <textbox id="editDescription" width="99%"/>
+                                </row>
+                                <row>
+                                    Role Pai
+                                    <combobox id="comboParent" width="80%" readonly="true"/>
+                                </row>
+                            </rows>
+                        </grid>
+                        <separator/>
+                        <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
                     </div>
                 </div>
             </center>
