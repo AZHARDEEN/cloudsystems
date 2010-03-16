@@ -10,6 +10,7 @@ import br.com.mcampos.dto.address.StateDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
+import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.system.MenuDTO;
@@ -36,6 +37,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 import br.com.mcampos.ejb.entity.address.AddressType;
 import br.com.mcampos.ejb.entity.address.City;
 import br.com.mcampos.ejb.entity.address.Country;
@@ -796,5 +798,15 @@ public final class DTOFactory implements Serializable
         Pgc pgc = new Pgc();
         pgc.setMedia( copy( source.getMedia() ) );
         return pgc;
+    }
+
+    public static Role copy ( RoleDTO source )
+    {
+        Role role = new Role ();
+        role.setId( source.getId() );
+        role.setDescription( source.getDescription() );
+        if ( source.getParent() != null )
+            role.setParentRole( copy ( source.getParent() ) );
+        return role;
     }
 }

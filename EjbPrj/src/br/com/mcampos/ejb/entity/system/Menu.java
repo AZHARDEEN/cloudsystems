@@ -1,12 +1,8 @@
 package br.com.mcampos.ejb.entity.system;
 
-import br.com.mcampos.ejb.entity.security.Task;
-
-import br.com.mcampos.ejb.entity.security.TaskMenu;
 
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
-
-import com.sun.jmx.snmp.tasks.TaskServer;
+import br.com.mcampos.ejb.entity.security.TaskMenu;
 
 import java.io.Serializable;
 
@@ -27,11 +23,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
 @NamedQueries( { @NamedQuery( name = "Menu.findAll", query = "select o from Menu o where o.parentMenu is null" ) } )
 @NamedNativeQueries( { @NamedNativeQuery( name = "Menu.nexSequence", query = "select coalesce ( max (  mnu_sequence_in ), 0 ) + 1 from menu where coalesce ( mnu_parent_id, 0 ) = ?" ),
                        @NamedNativeQuery( name = "Menu.findSequence", query = "select 1 from Menu where coalesce ( mnu_parent_id, 0 ) = ? and mnu_sequence_in = ?" ) } )
-@Table( name = "\"menu\"" )
+@Table( name = "menu" )
 public class Menu implements Serializable, Comparable<Menu>
 {
     private String description;

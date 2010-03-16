@@ -12,6 +12,9 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+
 
 @Stateless( name = "RoleSession", mappedName = "CloudSystems-EjbPrj-RoleSession" )
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
@@ -37,6 +40,34 @@ public class RoleSessionBean extends Crud<Integer, Role> implements RoleSessionL
 
     public List<Role> getAll() throws ApplicationException
     {
-        return (List<Role>) getResultList( Role.roleGetAll, get ( Role.systemAdmimRoleLevel ) );
+        return (List<Role>) getResultList( Role.roleGetAll );
+    }
+
+
+    public Role getRootRole() throws ApplicationException
+    {
+        return (Role) getSingleResult( Role.roleGetRoot );
+    }
+
+    public List<Role> getChildRoles( Role role ) throws ApplicationException
+    {
+        List<Role> roles = (List<Role>) getResultList( Role.roleGetChilds, role );
+        return roles;
+    }
+
+    public Integer getMaxId ( )
+    {
+        Integer sequence;
+        try {
+            Query q;
+
+            q = getEntityManager().createNamedQuery( Role.roleMaxId );
+            sequence = ( Integer )q.getSingleResult();
+        }
+        catch ( NoResultException e ) {
+            sequence = 1;
+            e = null;
+        }
+        return sequence;
     }
 }

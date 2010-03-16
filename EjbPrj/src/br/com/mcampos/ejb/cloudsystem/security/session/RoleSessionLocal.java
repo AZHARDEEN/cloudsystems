@@ -22,7 +22,13 @@ public interface RoleSessionLocal
 
     List<Role> getAll( ) throws ApplicationException;
 
+    Role getRootRole() throws ApplicationException;
+
     Object getSingleResult( String namedQuery ) throws ApplicationException;
 
     Integer nextIntegerId( String namedQuery ) throws ApplicationException;
+
+    public List<Role> getChildRoles( Role role ) throws ApplicationException;
+
+    Integer getMaxId ( );
 }
