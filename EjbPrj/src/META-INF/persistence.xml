@@ -40,11 +40,11 @@
     <class>br.com.mcampos.ejb.entity.system.EMailPart</class>
     <class>br.com.mcampos.ejb.entity.system.EMailPartType</class>
     <class>br.com.mcampos.ejb.cloudsystem.security.entity.Role</class>
-    <class>br.com.mcampos.ejb.entity.system.Menu</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.entity.Menu</class>
     <class>br.com.mcampos.ejb.entity.security.SubjectRole</class>
     <class>br.com.mcampos.ejb.entity.security.PermissionAssignment</class>
     <class>br.com.mcampos.ejb.entity.security.Subtask</class>
-    <class>br.com.mcampos.ejb.entity.security.Task</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.entity.Task</class>
     <class>br.com.mcampos.ejb.entity.security.TaskMenu</class>
     <class>br.com.mcampos.ejb.cloudsystem.media.entity.Media</class>
     <class>br.com.mcampos.ejb.cloudsystem.entity.entity.Form</class>

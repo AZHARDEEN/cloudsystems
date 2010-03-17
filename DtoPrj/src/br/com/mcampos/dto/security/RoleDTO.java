@@ -2,6 +2,7 @@ package br.com.mcampos.dto.security;
 
 
 import br.com.mcampos.dto.core.SimpleTableDTO;
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class RoleDTO extends SimpleTableDTO
     public void add ( RoleDTO child )
     {
         if ( child != null ) {
-            if ( getChildRoles() == null )
+            if ( SysUtils.isEmpty( getChildRoles() ) )
                 setChildRoles( new ArrayList<RoleDTO> () );
             getChildRoles().add( child );
             child.setParent( this );

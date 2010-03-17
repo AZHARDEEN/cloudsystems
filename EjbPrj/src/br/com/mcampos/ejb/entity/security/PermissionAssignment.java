@@ -2,6 +2,8 @@ package br.com.mcampos.ejb.entity.security;
 
 import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 
+import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;

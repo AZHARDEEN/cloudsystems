@@ -96,6 +96,13 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         return roleSession.update( role ).toDTO();
     }
 
+
+    public void delete ( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        roleSession.delete( dto.getId() );
+    }
+
     public Integer getRoleMaxId ( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );

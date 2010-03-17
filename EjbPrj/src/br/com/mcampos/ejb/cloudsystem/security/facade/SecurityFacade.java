@@ -25,4 +25,6 @@ public interface SecurityFacade
 
     Integer getRoleMaxId ( AuthenticationDTO auth ) throws ApplicationException;
 
+    void delete ( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException;
+
 }

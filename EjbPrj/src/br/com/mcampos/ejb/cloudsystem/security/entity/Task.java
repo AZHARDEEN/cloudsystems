@@ -1,4 +1,8 @@
-package br.com.mcampos.ejb.entity.security;
+package br.com.mcampos.ejb.cloudsystem.security.entity;
+
+import br.com.mcampos.ejb.entity.security.PermissionAssignment;
+import br.com.mcampos.ejb.entity.security.Subtask;
+import br.com.mcampos.ejb.entity.security.TaskMenu;
 
 import java.io.Serializable;
 

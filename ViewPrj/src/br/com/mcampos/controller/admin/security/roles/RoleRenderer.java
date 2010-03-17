@@ -28,7 +28,11 @@ public class RoleRenderer implements TreeitemRenderer
             treeRow = new Treerow();
             item.appendChild( treeRow );
         }
-        cell = new Treecell( data.toString() );
-        treeRow.appendChild( cell );
+        cell = (Treecell) treeRow.getFirstChild();
+        if ( cell == null ) {
+            cell = new Treecell( );
+            treeRow.appendChild( cell );
+        }
+        cell.setLabel( data.toString() );
     }
 }

@@ -7,6 +7,7 @@ import br.com.mcampos.ejb.cloudsystem.security.facade.SecurityFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import org.zkoss.zul.AbstractTreeModel;
+import org.zkoss.zul.event.TreeDataEvent;
 
 public class RoleModel extends AbstractTreeModel
 {
@@ -72,5 +73,59 @@ public class RoleModel extends AbstractTreeModel
     protected AuthenticationDTO getCurrentUser()
     {
         return currentUser;
+    }
+
+    public void add ( RoleDTO dto )
+    {
+        RoleDTO parent = find ( dto.getParent() );
+        if ( parent != null ) {
+            parent.add( dto );
+            int nIndex = parent.getChildRoles().size();
+            nIndex --;
+            if ( nIndex == 0 ) {
+                RoleDTO p = parent.getParent();
+                fireEvent( p, 0, p.getChildRoles().size() - 1, TreeDataEvent.CONTENTS_CHANGED );
+            }
+            else {
+                fireEvent( parent, nIndex, nIndex, TreeDataEvent.INTERVAL_ADDED );
+            }
+        }
+    }
+
+    public void update ( RoleDTO dto )
+    {
+        RoleDTO parent  = find ( dto.getParent() );
+        if ( parent != null ) {
+            int nIndex = parent.getChildRoles().indexOf( dto );
+            if ( nIndex >= 0 ) {
+                parent.getChildRoles().set( nIndex, dto );
+                fireEvent( parent, nIndex, nIndex, TreeDataEvent.CONTENTS_CHANGED );
+            }
+        }
+    }
+
+    public void delete ( RoleDTO dto )
+    {
+        RoleDTO parent  = find ( dto.getParent() );
+        if ( parent != null ) {
+            int nIndex = parent.getChildRoles().indexOf( dto );
+            if ( nIndex >= 0 ) {
+                fireEvent( parent, nIndex, nIndex, TreeDataEvent.INTERVAL_REMOVED );
+            }
+        }
+    }
+
+    protected RoleDTO find ( RoleDTO node )
+    {
+        RoleDTO root = ( RoleDTO )getRoot();
+
+        int [] path = getPath( root, node );
+        int nIndex = 0;
+        while ( nIndex < path.length )
+        {
+            root = root.getChildRoles().get( path[nIndex] );
+            nIndex ++;
+        }
+        return root;
     }
 }

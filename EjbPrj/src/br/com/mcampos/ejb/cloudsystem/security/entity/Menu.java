@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.entity.system;
+package br.com.mcampos.ejb.cloudsystem.security.entity;
 
 
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
