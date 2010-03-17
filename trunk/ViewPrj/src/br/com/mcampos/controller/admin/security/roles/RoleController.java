@@ -67,25 +67,33 @@ public class RoleController extends SecutityBaseController
         updateComboParent( null );
     }
 
-    protected void delete( Object currentRecord )
+    protected void delete( Object currentRecord ) throws ApplicationException
     {
+        getSession().delete ( getLoggedInUser(), ((RoleDTO) currentRecord));
     }
 
     protected void afterDelete( Object currentRecord )
     {
+        ListModelList model = ( ListModelList ) comboParent.getModel();
+        RoleModel treeModel = (RoleModel)getTree().getModel();
+
+        model.remove( currentRecord );
+        treeModel.delete( ((RoleDTO) currentRecord) );
     }
 
     protected void afterPersist( Object currentRecord )
     {
         ListModelList model = ( ListModelList ) comboParent.getModel();
+        RoleModel treeModel = (RoleModel)getTree().getModel();
         if ( isAddNewOperation() ) {
             model.add( currentRecord );
+            treeModel.add( (RoleDTO) currentRecord );
         }
         else {
             int nIndex = model.indexOf( currentRecord );
             model.set( nIndex, currentRecord );
+            treeModel.update( (RoleDTO) currentRecord );
         }
-        updateComboParent( (RoleDTO)currentRecord );
     }
 
     protected Object saveRecord( Object currentRecord )
@@ -138,16 +146,11 @@ public class RoleController extends SecutityBaseController
         return new RoleDTO ();
     }
 
-    protected void persist( Object obj )
+    protected void persist( Object obj ) throws ApplicationException
     {
-        try {
-            if ( isAddNewOperation() )
-                getSession().add( getLoggedInUser(), (RoleDTO) obj );
-            else
-                getSession().update( getLoggedInUser(), (RoleDTO) obj );
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Role" );
-        }
+        if ( isAddNewOperation() )
+            getSession().add( getLoggedInUser(), (RoleDTO) obj );
+        else
+            getSession().update( getLoggedInUser(), (RoleDTO) obj );
     }
 }
