@@ -3,8 +3,11 @@ package br.com.mcampos.ejb.cloudsystem.security.facade;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.RoleDTO;
+import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
+import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
 import br.com.mcampos.ejb.cloudsystem.security.session.RoleSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.security.session.TaskSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
@@ -24,14 +27,17 @@ import javax.persistence.PersistenceContext;
 
 
 @Stateless( name = "SecurityFacade", mappedName = "CloudSystems-EjbPrj-SecurityFacade" )
-@TransactionAttribute( TransactionAttributeType.REQUIRES_NEW)
+@TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class SecurityFacadeBean extends AbstractSecurity implements SecurityFacade
 {
     @PersistenceContext( unitName = "EjbPrj" )
     private EntityManager em;
 
 
-    @EJB RoleSessionLocal roleSession;
+    @EJB
+    RoleSessionLocal roleSession;
+    @EJB
+    TaskSessionLocal taskSession;
 
 
     public SecurityFacadeBean()
@@ -42,10 +48,10 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         List<Role> roles = roleSession.getAll();
-        if ( SysUtils.isEmpty( roles ))
+        if ( SysUtils.isEmpty( roles ) )
             return Collections.emptyList();
-        List<RoleDTO> dtos = new ArrayList<RoleDTO> ( roles.size() );
-        for ( Role role : roles)
+        List<RoleDTO> dtos = new ArrayList<RoleDTO>( roles.size() );
+        for ( Role role : roles )
             dtos.add( role.toDTO() );
         return dtos;
     }
@@ -70,7 +76,7 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         return 8;
     }
 
-    public List<RoleDTO> getChildRoles ( AuthenticationDTO auth, RoleDTO parent ) throws ApplicationException
+    public List<RoleDTO> getChildRoles( AuthenticationDTO auth, RoleDTO parent ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         Role role = roleSession.get( parent.getId() );
@@ -82,30 +88,60 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         return parent.getChildRoles();
     }
 
-    public RoleDTO add ( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException
+    public RoleDTO add( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        Role role = DTOFactory.copy (dto );
+        Role role = DTOFactory.copy( dto );
         return roleSession.add( role ).toDTO();
     }
 
-    public RoleDTO update ( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException
+    public RoleDTO update( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        Role role = DTOFactory.copy (dto );
+        Role role = DTOFactory.copy( dto );
         return roleSession.update( role ).toDTO();
     }
 
 
-    public void delete ( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException
+    public void delete( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         roleSession.delete( dto.getId() );
     }
 
-    public Integer getRoleMaxId ( AuthenticationDTO auth ) throws ApplicationException
+    public Integer getRoleMaxId( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         return roleSession.getMaxId();
+    }
+
+
+    /*
+     *  TASKS
+     */
+
+    public List<TaskDTO> getSubtasks( AuthenticationDTO auth, TaskDTO task ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        return Collections.emptyList();
+    }
+
+
+    public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        List<Task> tasks = taskSession.getRoots();
+        return toTaskDTO( tasks );
+    }
+
+
+    protected List<TaskDTO> toTaskDTO( List<Task> tasks )
+    {
+        if ( SysUtils.isEmpty( tasks ) )
+            return Collections.emptyList();
+        List<TaskDTO> dtos = new ArrayList<TaskDTO>( tasks.size() );
+        for ( Task t : tasks )
+            dtos.add( t.toDTO() );
+        return dtos;
     }
 }

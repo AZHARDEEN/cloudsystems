@@ -1,5 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.security.entity;
 
+import br.com.mcampos.dto.security.TaskDTO;
+import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 import br.com.mcampos.ejb.entity.security.PermissionAssignment;
 import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.ejb.entity.security.TaskMenu;
@@ -19,10 +21,16 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Task.findAll", query = "select o from Task o where o.masterTaskList is EMPTY" ) } )
-@Table( name = "\"task\"" )
-public class Task implements Serializable
+@NamedQueries( { @NamedQuery( name = Task.findAll, query = "select o from Task o" ),
+                 @NamedQuery( name = Task.rootTasks, query = "select o from Task o where o.masterTaskList is EMPTY" ),
+                 @NamedQuery( name = Task.subTasks, query = "select o from Task o where o.subtasks.task = ?1" ) } )
+@Table( name = "task" )
+public class Task implements Serializable, EntityCopyInterface<TaskDTO>
 {
+    public static final String findAll = "Task.findAll";
+    public static final String rootTasks = "Task.rootTasks";
+    public static final String subTasks = "Task.subTasks";
+
     private String description;
     private Integer id;
     private List<Subtask> subtasks;
@@ -161,5 +169,12 @@ public class Task implements Serializable
         getMasterTaskList().remove( subtask );
         subtask.setTask( null );
         return subtask;
+    }
+
+    public TaskDTO toDTO()
+    {
+        TaskDTO dto = new TaskDTO( getId(), getDescription() );
+
+        return dto;
     }
 }
