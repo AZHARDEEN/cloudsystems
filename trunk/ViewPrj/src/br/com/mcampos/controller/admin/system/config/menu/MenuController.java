@@ -22,6 +22,7 @@ import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
@@ -32,32 +33,31 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     protected MenuLocator locator;
 
 
-    Label recordId;
-    Label recordDescription;
-    Label recordParent;
-    Label recordURL;
-    Label recordSequence;
-    Checkbox recordSeparator;
-    Checkbox recordAutocheck;
-    Checkbox recordChecked;
-    Checkbox recordCheckmark;
-    Checkbox recordDisabled;
+    protected Label recordId;
+    protected Label recordDescription;
+    protected Label recordParent;
+    protected Label recordURL;
+    protected Label recordSequence;
+    protected Checkbox recordSeparator;
+    protected Checkbox recordAutocheck;
+    protected Checkbox recordChecked;
+    protected Checkbox recordCheckmark;
+    protected Checkbox recordDisabled;
 
 
-    Intbox editId;
-    Textbox editDescription;
-    Intbox editParent;
-    Textbox editURL;
-    Intbox editSequence;
-    Checkbox editSeparator;
-    Checkbox editAutocheck;
-    Checkbox editChecked;
-    Checkbox editCheckmark;
-    Checkbox editDisabled;
+    protected Intbox editId;
+    protected Textbox editDescription;
+    protected Intbox editParent;
+    protected Textbox editURL;
+    protected Intbox editSequence;
+    protected Checkbox editSeparator;
+    protected Checkbox editAutocheck;
+    protected Checkbox editChecked;
+    protected Checkbox editCheckmark;
+    protected Checkbox editDisabled;
 
-    Listbox listboxRecord;
-    protected Listheader recordListDescSort;
 
+    protected Tree treeAvailableTasks;
 
     public MenuController( char c )
     {
@@ -88,7 +88,6 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
                 }
             } );
         getTreeList().setTreeitemRenderer( this );
-        getListboxRecord().setItemRenderer( this );
         refresh();
     }
 
@@ -125,7 +124,6 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         recordChecked.setChecked( dto.getChecked() );
         recordCheckmark.setChecked( dto.getCheckmark() );
         recordDisabled.setChecked( dto.getDisabled() );
-        refreshTasks( dto.getId() );
     }
 
     protected int getNextId()
@@ -155,14 +153,13 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         editCheckmark.setChecked( false );
         editDisabled.setChecked( false );
         getTreeList().clearSelection();
-        getListboxRecord().getItems().clear();
     }
 
     protected MenuDTO prepareToUpdate( Object e )
     {
         MenuDTO dto = null;
 
-        dto = getValue( ((Treeitem)e) );
+        dto = getValue( ( ( Treeitem )e ) );
 
         if ( dto != null ) {
             editId.setValue( dto.getId() );
@@ -224,7 +221,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         if ( e == null )
             return;
 
-        MenuDTO dto = getValue( ((Treeitem)e) );
+        MenuDTO dto = getValue( ( ( Treeitem )e ) );
         if ( dto != null ) {
             try {
                 getLocator().delete( getLoggedInUser(), dto );
@@ -238,9 +235,9 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     protected void persist( Object treeItem )
     {
         try {
-            MenuDTO dto = getLocator().add( getLoggedInUser(), getValue( (Treeitem)treeItem ) );
+            MenuDTO dto = getLocator().add( getLoggedInUser(), getValue( ( Treeitem )treeItem ) );
             if ( dto != null )
-                ((Treeitem)treeItem).setValue( dto );
+                ( ( Treeitem )treeItem ).setValue( dto );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Inserir Menu" );
@@ -250,9 +247,9 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     protected void updateItem( Object treeItem )
     {
         try {
-            MenuDTO dto = getLocator().update( getLoggedInUser(), getValue( ((Treeitem)treeItem) ) );
+            MenuDTO dto = getLocator().update( getLoggedInUser(), getValue( ( ( Treeitem )treeItem ) ) );
             if ( dto != null )
-                ((Treeitem)treeItem).setValue( dto );
+                ( ( Treeitem )treeItem ).setValue( dto );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Atualizar Menu" );
@@ -344,15 +341,5 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
 
         item.setValue( dto );
         item.getChildren().add( new Listcell( dto.getDescription() ) );
-    }
-
-    protected void refreshTasks( Integer menuId )
-    {
-        getListboxRecord().setModel( new TaskListModel( getLoggedInUser(), menuId ) );
-    }
-
-    public Listbox getListboxRecord()
-    {
-        return listboxRecord;
     }
 }
