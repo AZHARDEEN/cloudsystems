@@ -17,6 +17,8 @@ public class AnotoPageDTO implements Comparable<AnotoPageDTO>, Serializable
 
     private List<AnotoPenPageDTO> penPages;
 
+    private PadDTO pad;
+
     public AnotoPageDTO()
     {
         super();
@@ -24,8 +26,7 @@ public class AnotoPageDTO implements Comparable<AnotoPageDTO>, Serializable
 
     public AnotoPageDTO( PadDTO pad, String address )
     {
-        setFormId( pad.getFormId() );
-        setPadId( pad.getId() );
+        setPad( pad );
         setPageAddress( address );
     }
 
@@ -87,8 +88,8 @@ public class AnotoPageDTO implements Comparable<AnotoPageDTO>, Serializable
     {
         AnotoPageDTO page = ( AnotoPageDTO )obj;
 
-        return getPageAddress().equals( page.getPageAddress() ) && getFormId().equals( page.getFormId() ) && getPadId()
-            .equals( page.getPadId() );
+        return getPageAddress().equals( page.getPageAddress() ) && getFormId().equals( page.getFormId() ) &&
+            getPadId().equals( page.getPadId() );
     }
 
     @Override
@@ -108,5 +109,20 @@ public class AnotoPageDTO implements Comparable<AnotoPageDTO>, Serializable
     public List<AnotoPenPageDTO> getPenPages()
     {
         return penPages;
+    }
+
+    public void setPad( PadDTO pad )
+    {
+        this.pad = pad;
+        if ( pad != null ) {
+            setFormId( pad.getFormId() );
+            setPadId( pad.getId() );
+        }
+
+    }
+
+    public PadDTO getPad()
+    {
+        return pad;
     }
 }

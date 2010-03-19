@@ -83,7 +83,7 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
     {
         PGCDTO dto = new PGCDTO( this.getMedia().toDTO() );
         dto.setPgcStatus( getPgcStatus().toDTO() );
-
+        dto.setInsertDate( getInsertDate() );
         return dto;
     }
 

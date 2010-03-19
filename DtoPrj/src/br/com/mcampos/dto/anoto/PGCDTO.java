@@ -5,6 +5,7 @@ import br.com.mcampos.dto.system.MediaDTO;
 
 import java.io.Serializable;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -13,6 +14,8 @@ public class PGCDTO implements Comparable<PGCDTO>, Serializable
     protected Integer id;
     protected MediaDTO media;
     protected PgcStatusDTO pgcStatus;
+
+    protected Date insertDate;
 
     protected List<MediaDTO> backgroundImages;
 
@@ -85,5 +88,15 @@ public class PGCDTO implements Comparable<PGCDTO>, Serializable
     public List<MediaDTO> getBackgroundImages()
     {
         return backgroundImages;
+    }
+
+    public void setInsertDate( Date insertDate )
+    {
+        this.insertDate = insertDate;
+    }
+
+    public Date getInsertDate()
+    {
+        return insertDate;
     }
 }

@@ -17,10 +17,10 @@ public class ComboPageRenderer implements ComboitemRenderer
     public void render( Comboitem item, Object data ) throws Exception
     {
         item.setValue( data );
-        AnotoPageDTO dto = ( AnotoPageDTO ) data;
+        AnotoPageDTO dto = ( AnotoPageDTO )data;
         if ( SysUtils.isEmpty( dto.getDescription() ) )
-            item.setValue( dto.getPageAddress() );
+            item.setLabel( dto.getPageAddress() );
         else
-            item.setValue( dto.getDescription() );
+            item.setLabel( dto.getDescription() );
     }
 }

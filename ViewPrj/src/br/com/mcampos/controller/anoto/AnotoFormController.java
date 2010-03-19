@@ -353,19 +353,19 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         ( ( Listitem )dragged ).setSelected( true );
         if ( target.equals( listAvailable ) ) {
             //we are removing forms from this pen
-            moveListitem( ( ListModelList )listAvailable.getModel(), ( ListModelList )listAdded.getModel() );
+            moveListitem( getModel( listAvailable ), getModel( listAdded ) );
         }
         else {
             // we are adding forms into this pen
-            moveListitem( getModel ( listAdded ), getModel ( listAvailable ) );
+            moveListitem( getModel( listAdded ), getModel( listAvailable ) );
         }
     }
-    protected ListModelList getModel ( Listbox target )
+
+    protected ListModelList getModel( Listbox target )
     {
-        ListModelList modelList = (ListModelList) target.getModel();
-        if ( modelList == null )
-        {
-            modelList = new ListModelList ();
+        ListModelList modelList = ( ListModelList )target.getModel();
+        if ( modelList == null ) {
+            modelList = new ListModelList( new ArrayList<Object>() );
             target.setModel( modelList );
         }
         return modelList;
@@ -397,6 +397,8 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         List<PenDTO> list;
         try {
             list = getSession().getAvailablePens( getLoggedInUser(), current );
+            if ( SysUtils.isEmpty( list ) )
+                list = new ArrayList<PenDTO>();
             return new ListModelList( list, true );
         }
         catch ( ApplicationException e ) {
@@ -410,6 +412,8 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         List<PenDTO> list;
         try {
             list = getSession().getPens( getLoggedInUser(), current );
+            if ( SysUtils.isEmpty( list ) )
+                list = new ArrayList<PenDTO>();
             return new ListModelList( list, true );
         }
         catch ( ApplicationException e ) {
@@ -423,6 +427,8 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         List<MediaDTO> list;
         try {
             list = getSession().getFiles( getLoggedInUser(), current );
+            if ( SysUtils.isEmpty( list ) )
+                list = new ArrayList<MediaDTO>();
             return new ListModelList( list, true );
         }
         catch ( ApplicationException e ) {
