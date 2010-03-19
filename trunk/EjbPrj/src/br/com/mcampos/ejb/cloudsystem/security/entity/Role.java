@@ -27,7 +27,7 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries( {
         @NamedQuery( name = Role.roleGetAll, query = "select o from Role o" ),
-        @NamedQuery( name = Role.roleGetRoot, query = "select o from Role o where o.parentRole is null" ),
+        @NamedQuery( name = Role.roleGetRoot, query = "select o from Role o where o.id = 1" ),
         @NamedQuery( name = Role.roleGetChilds, query = "select o from Role o where o.parentRole = ?1" )
                  } )
 @NamedNativeQueries( { @NamedNativeQuery( name = Role.roleMaxId, query = "select coalesce ( max (  rol_id_in ), 0 ) + 1 from role" )

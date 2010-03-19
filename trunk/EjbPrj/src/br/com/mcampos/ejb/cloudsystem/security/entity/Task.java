@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.cloudsystem.security.entity;
 
+
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 import br.com.mcampos.ejb.entity.security.PermissionAssignment;
@@ -22,14 +23,13 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = Task.findAll, query = "select o from Task o" ),
-                 @NamedQuery( name = Task.rootTasks, query = "select o from Task o where o.masterTaskList is EMPTY" ),
-                 @NamedQuery( name = Task.subTasks, query = "select o from Task o where o.subtasks.task = ?1" ) } )
+                 @NamedQuery( name = Task.rootTasks, query = "select o from Task o where o.masterTaskList is EMPTY" )
+                 } )
 @Table( name = "task" )
 public class Task implements Serializable, EntityCopyInterface<TaskDTO>
 {
     public static final String findAll = "Task.findAll";
     public static final String rootTasks = "Task.rootTasks";
-    public static final String subTasks = "Task.subTasks";
 
     private String description;
     private Integer id;
