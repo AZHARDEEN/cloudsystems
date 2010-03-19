@@ -5,7 +5,6 @@ import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 import br.com.mcampos.ejb.entity.security.PermissionAssignment;
 import br.com.mcampos.ejb.entity.security.Subtask;
-import br.com.mcampos.ejb.entity.security.TaskMenu;
 
 import java.io.Serializable;
 

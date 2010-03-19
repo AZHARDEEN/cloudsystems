@@ -2,7 +2,6 @@ package br.com.mcampos.ejb.cloudsystem.security.entity;
 
 
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
-import br.com.mcampos.ejb.entity.security.TaskMenu;
 
 import java.io.Serializable;
 
