@@ -11,7 +11,7 @@ import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.login.AccessLogType;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
-import br.com.mcampos.ejb.entity.security.TaskMenu;
+import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenu;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
 
 import br.com.mcampos.exception.ApplicationException;

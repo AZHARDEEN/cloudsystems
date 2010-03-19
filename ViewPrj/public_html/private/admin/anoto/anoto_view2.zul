@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <div width="100%" height="100%" id="rootParent">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoView2Controller">
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
@@ -12,8 +12,48 @@
                 <div>
                     <borderlayout>
                         <north>
+                            <div>
+                                <grid >
+                                    <columns>
+                                        <column width="10%"/>
+                                        <column width="40%"/>
+                                        <column width="10%"/>
+                                        <column />
+                                    </columns>
+                                    <rows >
+                                        <row >
+                                            <label value="Applicação" />
+                                            <combobox id="cmbApplication" width="300px"/>
+                                            <label value="Malha" />
+                                            <combobox id="cmbPage" />
+                                        </row>
+                                        <row>
+                                            <label value="Caneta" />
+                                            <combobox id="cmbPen" />
+                                            <label value="Recebido em" />
+                                            <vbox>
+                                                <hbox>
+                                                    <datebox id="initDate" format="dd/MM/yyyy"/>
+                                                    <timebox id="initTime" format="hh:mm"/>
+                                                </hbox>
+                                                <hbox>
+                                                    <datebox id="endDate" format="dd/MM/yyyy"/>
+                                                    <timebox id="endTime" format="hh:mm"/>
+                                                </hbox>
+                                            </vbox>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </div>
                         </north>
                         <center>
+                            <div id="divResult">
+                                <listbox id="resultList" vflex="true">
+                                    <listhead>
+                                        <listheader id="headApplication" />
+                                    </listhead>
+                                </listbox>
+                            </div>
                         </center>
                     </borderlayout>
                 </div>

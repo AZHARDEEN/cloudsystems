@@ -328,6 +328,12 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return toPageList( padSession.getPages( entity ) );
     }
 
+    public List<AnotoPageDTO> getPages( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth );
+        return toPageList( padSession.getPages( ) );
+    }
+
 
     public List<MediaDTO> getImages( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
     {

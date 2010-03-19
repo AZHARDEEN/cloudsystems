@@ -109,6 +109,8 @@ public interface AnodeFacade
 
     void removePens( AuthenticationDTO auth, AnotoPageDTO page, List<PenDTO> pens ) throws ApplicationException;
 
+    List<AnotoPageDTO> getPages( AuthenticationDTO auth ) throws ApplicationException;
+
 
     /* *************************************************************************
      * *************************************************************************

@@ -12,7 +12,7 @@ import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 import br.com.mcampos.ejb.entity.security.SubjectRole;
 import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
-import br.com.mcampos.ejb.entity.security.TaskMenu;
+import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenu;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
 import br.com.mcampos.ejb.entity.user.Collaborator;
 import br.com.mcampos.ejb.entity.user.Users;

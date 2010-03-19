@@ -45,6 +45,12 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         return pageList;
     }
 
+    public List<AnotoPage> getPages( ) throws ApplicationException
+    {
+        List<AnotoPage> pageList = ( List<AnotoPage> )getResultList( AnotoPage.anotoPagesGetAllNamedQuery );
+        return pageList;
+    }
+
     public Pad get( PadPK key ) throws ApplicationException
     {
         return get( Pad.class, key );
