@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
@@ -45,11 +46,21 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         return pageList;
     }
 
-    public List<AnotoPage> getPages( ) throws ApplicationException
+    public List<AnotoPage> getPages() throws ApplicationException
     {
         List<AnotoPage> pageList = ( List<AnotoPage> )getResultList( AnotoPage.anotoPagesGetAllNamedQuery );
         return pageList;
     }
+
+    public List<AnotoPage> getPages( AnotoForm param ) throws ApplicationException
+    {
+        List<AnotoPage> pageList = Collections.emptyList();
+
+        if ( param != null )
+            pageList = ( List<AnotoPage> )getResultList( AnotoPage.formPagesGetAllNamedQuery, param );
+        return pageList;
+    }
+
 
     public Pad get( PadPK key ) throws ApplicationException
     {
@@ -103,7 +114,8 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         Query query;
         List<AnotoPen> list;
 
-        sqlQuery = "SELECT pen_id_ch , pen_insert_dt  FROM anoto_pen WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 AND 	PAD_ID_IN = ?2 AND 	APG_ID_CH = ?3 )";
+        sqlQuery =
+                "SELECT pen_id_ch , pen_insert_dt  FROM anoto_pen WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 AND 	PAD_ID_IN = ?2 AND 	APG_ID_CH = ?3 )";
         query = getEntityManager().createNativeQuery( sqlQuery, AnotoPen.class );
         query.setParameter( 1, page.getFormId() );
         query.setParameter( 2, page.getPadId() );

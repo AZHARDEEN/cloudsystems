@@ -156,8 +156,13 @@ public abstract class BaseController extends GenericForwardComposer
     {
         //Executions.getCurrent().sendRedirect( uri );
         if ( parent != null ) {
-            if ( SysUtils.isEmpty( parent.getChildren() ) == false )
-                parent.getChildren().clear();
+            try {
+                if ( SysUtils.isEmpty( parent.getChildren() ) == false )
+                    parent.getChildren().clear();
+            }
+            catch ( NullPointerException e ) {
+                e = null;
+            }
             setBookmark( uri, parent, parameters );
             Executions.getCurrent().createComponents( uri, parent, parameters );
         }

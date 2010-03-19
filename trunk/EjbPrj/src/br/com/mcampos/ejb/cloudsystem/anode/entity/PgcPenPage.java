@@ -20,13 +20,18 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "PgcPenPage.findAll", query = "select o from PgcPenPage o" ), @NamedQuery( name = PgcPenPage.getAllPgcQueryName, query = "select o from PgcPenPage o where o.penPage = ?1" ), @NamedQuery( name = PgcPenPage.penGetAllPgcs, query = "select o from PgcPenPage o where o.penPage.pen = ?1" ) } )
+@NamedQueries( { @NamedQuery( name = PgcPenPage.getAll, query = "select o from PgcPenPage o" ),
+                 @NamedQuery( name = PgcPenPage.getAllPgcQueryName, query = "select o from PgcPenPage o where o.penPage = ?1" ),
+                 @NamedQuery( name = PgcPenPage.penGetAllPgcs, query = "select o from PgcPenPage o where o.penPage.pen = ?1" ) } )
 @Table( name = "pgc_pen_page" )
 @IdClass( PgcPenPagePK.class )
 public class PgcPenPage implements Serializable, EntityCopyInterface<PgcPenPageDTO>
 {
+    public static final String getAll = "PgcPenPage.findAll";
     public static final String getAllPgcQueryName = "PgcPenPage.findAllPgc";
     public static final String penGetAllPgcs = "PgcPenPage.penGetAllPgcs";
+
+
     @Id
     @Column( name = "apg_id_ch", nullable = false, insertable = false, updatable = false )
     private String pageAddress;
@@ -44,7 +49,10 @@ public class PgcPenPage implements Serializable, EntityCopyInterface<PgcPenPageD
     private Integer pgcId;
 
     @ManyToOne
-    @JoinColumns( { @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in" ), @JoinColumn( name = "pad_id_in", referencedColumnName = "pad_id_in" ), @JoinColumn( name = "apg_id_ch", referencedColumnName = "apg_id_ch" ), @JoinColumn( name = "pen_id_ch", referencedColumnName = "pen_id_ch" ) } )
+    @JoinColumns( { @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in" ),
+                    @JoinColumn( name = "pad_id_in", referencedColumnName = "pad_id_in" ),
+                    @JoinColumn( name = "apg_id_ch", referencedColumnName = "apg_id_ch" ),
+                    @JoinColumn( name = "pen_id_ch", referencedColumnName = "pen_id_ch" ) } )
     private AnotoPenPage penPage;
 
     @ManyToOne

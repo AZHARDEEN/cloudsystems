@@ -14,6 +14,8 @@ import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
 
+import java.util.Properties;
+
 import javax.ejb.Remote;
 
 
@@ -111,6 +113,8 @@ public interface AnodeFacade
 
     List<AnotoPageDTO> getPages( AuthenticationDTO auth ) throws ApplicationException;
 
+    List<AnotoPageDTO> getPages( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
+
 
     /* *************************************************************************
      * *************************************************************************
@@ -128,4 +132,6 @@ public interface AnodeFacade
     List<AnotoPenPageDTO> getPenPages( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException;
 
     List<PgcPenPageDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException;
+
+    List<PgcPenPageDTO> getAllPgcPenPage( AuthenticationDTO auth, Properties props ) throws ApplicationException;
 }

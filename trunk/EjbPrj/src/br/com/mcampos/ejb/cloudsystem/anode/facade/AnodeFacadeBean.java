@@ -26,6 +26,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.session.AnodeFormSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodePenSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.PadSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anode.session.PgcPenPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
@@ -46,6 +47,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import java.util.Properties;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -75,6 +78,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     private PadSessionLocal padSession;
     @EJB
     private PGCSessionLocal pgcSession;
+
+    @EJB
+    private PgcPenPageSessionLocal pgcPenPageSession;
 
     public AnodeFacadeBean()
     {
@@ -328,10 +334,19 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return toPageList( padSession.getPages( entity ) );
     }
 
+    public List<AnotoPageDTO> getPages( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoForm entity = formSession.get( form.getId() );
+
+        return toPageList( padSession.getPages( entity ) );
+    }
+
+
     public List<AnotoPageDTO> getPages( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
-        return toPageList( padSession.getPages( ) );
+        return toPageList( padSession.getPages() );
     }
 
 
@@ -438,6 +453,24 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         AnotoPage page = getPageEntity( penPage.getPage() );
         AnotoPenPage entity = padSession.getPenPage( pen, page );
         return toPgcPenPageList( pgcSession.getAll( entity ) );
+    }
+
+
+    public List<PgcPenPageDTO> getAllPgcPenPage( AuthenticationDTO auth, Properties props ) throws ApplicationException
+    {
+        authenticate( auth );
+        if ( props != null && props.size() > 0 ) {
+            /*Trocar o DTO pela entidade*/
+            Object value;
+
+            value = props.get( "form" );
+            if ( value != null ) {
+                AnotoForm entity = formSession.get( ( ( FormDTO )value ).getId() );
+                if ( entity != null )
+                    props.put( "form", entity );
+            }
+        }
+        return toPgcPenPageList( pgcPenPageSession.getAll( props ) );
     }
 
 
