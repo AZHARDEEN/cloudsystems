@@ -3,15 +3,16 @@ package br.com.mcampos.ejb.cloudsystem.security.session;
 
 import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
 import br.com.mcampos.ejb.session.core.Crud;
-
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+
 
 @Stateless( name = "TaskSession", mappedName = "CloudSystems-EjbPrj-TaskSession" )
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
@@ -50,7 +51,7 @@ public class TaskSessionBean extends Crud<Integer, Task> implements TaskSessionL
 
     public List<Task> getSubtasks( Task task ) throws ApplicationException
     {
-        List<Task> tasks = ( List<Task> )getResultList( Task.subTasks, task );
+        List<Task> tasks = Collections.emptyList();//( List<Task> )getResultList( Task.subTasks, task );
         return tasks;
     }
 

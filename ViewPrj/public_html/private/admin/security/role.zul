@@ -11,7 +11,11 @@
                 <!-- Por favor, nao mude o id desta div -->
                 <div width="100%" height="100%" id="divListBoxRecord">
                     <!-- Por favor, nao mude o id desta listbox -->
-                    <tree id="tree" vflex="true"></tree>
+                    <tree id="tree" vflex="true">
+                        <treecols>
+                            <treecol label="Roles" />
+                        </treecols>
+                    </tree>
                 </div>
             </west>
             <center >

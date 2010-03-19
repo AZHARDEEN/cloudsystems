@@ -7,25 +7,26 @@ import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.Properties;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.DropEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
+
 
 public class MenuController extends BasicTreeCRUDController<MenuDTO> implements ListitemRenderer
 {
@@ -56,8 +57,8 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     protected Checkbox editCheckmark;
     protected Checkbox editDisabled;
 
+    protected Button cmdTasks;
 
-    protected Tree treeAvailableTasks;
 
     public MenuController( char c )
     {
@@ -341,5 +342,17 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
 
         item.setValue( dto );
         item.getChildren().add( new Listcell( dto.getDescription() ) );
+    }
+
+    public void onClick$cmdTasks ()
+    {
+        Treeitem item = getTreeList().getSelectedItem();
+
+        if ( item != null && item.getValue() != null ) {
+            MenuDTO dto = ( MenuDTO )item.getValue();
+            Properties params = new Properties();
+            params.put( "menuForTask", dto );
+            gotoPage( "/private/admin/system/config/menu_task.zul", getRootParent().getParent(), params );
+        }
     }
 }

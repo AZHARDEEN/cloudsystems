@@ -8,7 +8,7 @@
                     <label style="font-size:20px;color:#0C7A9A" value="Manutenção - Menu do Sistema"/>
                 </vbox>
             </north>
-            <west size="50%" splittable="true" autoscroll="false">
+            <west size="50%" splittable="true" autoscroll="false" title="Hierarquia do Menu">
                 <!-- Por favor, nao mude o id deste TreeControl -->
                 <tree id="treeList" zclass="z-dottree" vflex="true">
                     <treecols sizable="true">
@@ -19,17 +19,18 @@
                 </tree>
             </west>
             <center autoscroll="true" flex="true" title="Detalhes do Registro">
+                <div>
                 <!-- Por favor, nao mude o id desta div -->
-                <tabbox>
-                    <tabs>
-                        <tab label="Propriedades"/>
-                        <tab label="Tarefas"/>
-                    </tabs>
-                    <tabpanels>
-                        <tabpanel fulfill="=/private/admin/system/config/menu_crud.zul"></tabpanel>
-                        <tabpanel fulfill="=/private/admin/system/config/menu_task.zul"></tabpanel>
-                    </tabpanels>
-                </tabbox>
+                    <div fulfill="=/private/admin/system/config/menu_crud.zul">
+                    </div>
+                    <div >
+                        <groupbox id="gb" mold="3d" width="100%">
+                            <caption label="Outras Opções"/>
+                            <button id="cmdTasks" label="Associar Tarefas" image="/img/icontexto-webdev-site-map-016x016.png"
+                                    tooltiptext="Vincula Tarefas ao Menu"/>
+                        </groupbox>
+                    </div>
+                </div>
             </center>
         </borderlayout>
     </div>
