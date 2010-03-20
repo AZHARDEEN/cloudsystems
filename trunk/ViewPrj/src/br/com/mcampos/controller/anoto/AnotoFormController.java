@@ -180,20 +180,14 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     @Override
     protected Object saveRecord( Object dto )
     {
-        System.out.println( "saveRecord(Before):" );
-        System.out.println( "\t" + dto.toString() );
         FormDTO d = ( FormDTO )super.saveRecord( dto );
         d.setIp( editIP.getValue() );
-        System.out.println( "saveRecord(after):" );
-        System.out.println( "\t" + dto.toString() );
         return d;
     }
 
     @Override
     public void render( Listitem item, Object value )
     {
-        System.out.println( "Render:" );
-        System.out.println( "\t" + value.toString() );
         FormDTO dto = ( FormDTO )value;
 
         if ( dto != null ) {
@@ -207,10 +201,6 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     @Override
     protected void showRecord( SimpleTableDTO record )
     {
-        if ( record != null ) {
-            System.out.println( "showRecord:" );
-            System.out.println( "\t" + record.toString() );
-        }
         if ( record != null ) {
             super.showRecord( record );
             listAttachs.setModel( getMediaModel( ( FormDTO )record ) );
