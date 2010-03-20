@@ -7,11 +7,17 @@ import br.com.mcampos.controller.anoto.renderer.ComboPenRenderer;
 import br.com.mcampos.controller.anoto.renderer.PgcPenPageListRenderer;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
+import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import java.util.Properties;
 
 import org.zkoss.zk.ui.Component;
@@ -19,7 +25,6 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.SimpleListModel;
 import org.zkoss.zul.Timebox;
 
 
@@ -49,6 +54,7 @@ public class AnotoView2Controller extends AnotoLoggedController
     {
         super.doAfterCompose( comp );
         refresh();
+        resultList.setItemRenderer( new PgcPenPageListRenderer() );
     }
 
     protected void refresh()
@@ -56,7 +62,7 @@ public class AnotoView2Controller extends AnotoLoggedController
         loadApplication();
         loadPages( null );
         loadPens( null );
-        loadPGC( null );
+        //loadPGC( null );
     }
 
     protected void loadApplication()
@@ -79,17 +85,16 @@ public class AnotoView2Controller extends AnotoLoggedController
 
     protected void loadPages( FormDTO dto )
     {
-        SimpleListModel model;
+        ListModelList model;
         List<AnotoPageDTO> list;
         try {
             if ( dto == null )
                 list = getSession().getPages( getLoggedInUser() );
             else
                 list = getSession().getPages( getLoggedInUser(), dto );
-            model = new SimpleListModel( list );
+            model = new ListModelList( list );
             cmbAnotoPage.setItemRenderer( new ComboPageRenderer() );
             cmbAnotoPage.setModel( model );
-            cmbAnotoPage.invalidate();
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Carregar Páginas" );
@@ -128,35 +133,110 @@ public class AnotoView2Controller extends AnotoLoggedController
         List<PgcPenPageDTO> dtos;
         try {
             dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop );
-            ListModelList model = new ListModelList( dtos );
-            resultList.setItemRenderer( new PgcPenPageListRenderer() );
-            resultList.setModel( model );
+            ListModelList model = getModel();
+            model.clear();
+            model.addAll( dtos );
+            resultList.invalidate();
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Lista de PGC" );
         }
     }
 
+    protected ListModelList getModel ()
+    {
+        ListModelList model = (ListModelList) resultList.getModel();
+        if ( model == null ) {
+            model = new ListModelList( new ArrayList<PgcPenPageDTO>(), true );
+            resultList.setModel( model );
+        }
+        return model;
+    }
+
     public void onClick$btnFilter()
     {
         Properties prop = new Properties();
 
+        /*
+         * Does form combo selected??
+         */
         if ( cmbApplication.getSelectedItem() != null ) {
             prop.put( "form", cmbApplication.getSelectedItem().getValue() );
         }
 
-        String strPage = "";
+        /*
+         * Does page combo selected or have this combo a text?
+         */
+        String strInfo = "";
         if ( cmbAnotoPage.getSelectedItem() != null ) {
             AnotoPageDTO page;
 
             page = ( AnotoPageDTO )cmbAnotoPage.getSelectedItem().getValue();
-            strPage = page.getPageAddress();
+            strInfo = page.getPageAddress();
         }
-        else if ( cmbAnotoPage.getText() != null ) {
-            strPage = cmbAnotoPage.getText();
+        else if ( SysUtils.isEmpty( cmbAnotoPage.getText() ) == false ) {
+            strInfo = cmbAnotoPage.getText();
         }
-        if ( strPage.length() > 0 )
-            prop.put( "page", strPage );
+        if ( strInfo.length() > 0 )
+            prop.put( "page", strInfo );
+
+        /*
+         * Does pen combo is selected? Have any text?
+         */
+        String penInfo = "";
+        if ( cmbPen.getSelectedItem() != null ) {
+            PenDTO pen;
+
+            pen = ( PenDTO )cmbPen.getSelectedItem().getValue();
+            penInfo = pen.getId();
+        }
+        else if ( SysUtils.isEmpty( cmbPen.getText() ) == false ) {
+            penInfo = cmbPen.getText();
+        }
+        if ( penInfo.length() > 0 )
+            prop.put( "pen", penInfo );
+
+
+        /*
+         * Does we have a init Date?
+         */
+        Date iDate = getDate( initDate, initTime );
+        if ( iDate != null )
+            prop.put( "initDate", iDate );
+
+        /*
+         * Does we have a end Date?
+         */
+        Date eDate = getDate ( endDate, endTime );
+        if ( eDate != null )
+            prop.put( "endDate", eDate );
+
         loadPGC( prop );
+    }
+
+    protected Date getDate ( Datebox d, Timebox t )
+    {
+        Date eDate = null;
+        if ( d.getValue() != null )
+            eDate = new Date ( d.getValue().getTime() );
+        if ( t.getValue() != null )
+        {
+            String strDate, strTime;
+            SimpleDateFormat dfh = new SimpleDateFormat ("yyyyMMdd");
+            SimpleDateFormat dft = new SimpleDateFormat ("HHmm");
+            if ( eDate == null )
+                eDate = new Date ();
+            strDate = dfh.format( eDate );
+            strTime = dft.format( t.getValue() );
+            strDate += strTime;
+            dfh = new SimpleDateFormat ("yyyyMMddHHmm");
+            try {
+                eDate = dfh.parse( strDate );
+            }
+            catch ( ParseException e ) {
+                e = null;
+            }
+        }
+        return eDate;
     }
 }
