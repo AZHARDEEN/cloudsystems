@@ -44,17 +44,21 @@
                                         </row>
                                     </rows>
                                 </grid>
-                                <hbox align="center" width="100%">
-                                    <toolbar width="100%">
-                                        <toolbarbutton id="btnFilter" label="Filtrar"
-                                                       image="/img/icontexto-webdev-search-016x016.png"/>
-                                    </toolbar>
-                                </hbox>
+                                <div align="center" width="100%">
+                                    <hbox>
+                                        <toolbar>
+                                            <toolbarbutton id="btnFilter" label="Filtrar"
+                                                           image="/img/icontexto-webdev-search-016x016.png"/>
+                                            <toolbarbutton id="btnProperty" label="Visualizar"
+                                                           image="/img/icontexto-webdev-alert-016x016.png"/>
+                                        </toolbar>
+                                    </hbox>
+                                </div>
                             </div>
                         </north>
                         <center autoscroll="true">
                             <div id="divResult">
-                                <listbox id="resultList" fixedLayout="true" width="100%" height="100%" >
+                                <listbox id="resultList" fixedLayout="true" width="100%" height="100%">
                                     <listhead>
                                         <listheader id="headApplication" label="Aplicação"/>
                                         <listheader id="headPage" label="Malha" width="140px"/>

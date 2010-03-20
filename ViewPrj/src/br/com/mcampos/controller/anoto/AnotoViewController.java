@@ -1,16 +1,12 @@
 package br.com.mcampos.controller.anoto;
 
 
-import br.com.mcampos.controller.anoto.model.AnotoViewModel;
-import br.com.mcampos.controller.anoto.renderer.AnotoViewRenderer;
-import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.system.MediaDTO;
-import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import com.anoto.api.Bounds;
@@ -38,19 +34,22 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import java.util.Map;
+
 import javax.imageio.ImageIO;
 
 import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.MouseEvent;
+import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zul.Area;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Imagemap;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
@@ -58,19 +57,20 @@ import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treeitem;
 
 
-public class AnotoViewController extends LoggedBaseController
+public class AnotoViewController extends AnotoLoggedController
 {
     protected static final String anotoServerPath = "/anoto_res";
+    public static final String paramName = "PgcPenPageParam";
 
-    protected Tree tree;
-    protected AnodeFacade session;
     protected Imagemap pgcImage;
-    protected Checkbox showFields;
     protected Combobox fields;
     protected Row icrInfo;
     protected Row correctedInfo;
     protected Textbox correctedValue;
     protected Label icrValue;
+
+
+    private PgcPenPageDTO dtoParam;
 
 
     public AnotoViewController( char c )
@@ -88,8 +88,6 @@ public class AnotoViewController extends LoggedBaseController
     {
         super.doAfterCompose( comp );
         List<FormDTO> list = getSession().getForms( getLoggedInUser() );
-        tree.setTreeitemRenderer( new AnotoViewRenderer() );
-        tree.setModel( new AnotoViewModel( getSession(), getLoggedInUser(), list ) );
         pgcImage.addEventListener( Events.ON_CLICK, new EventListener()
             {
                 public void onEvent( Event event )
@@ -97,32 +95,37 @@ public class AnotoViewController extends LoggedBaseController
                     pgcImageAreaClick( ( MouseEvent )event );
                 }
             } );
+        if ( dtoParam != null ) {
+            showPgc( dtoParam );
+        }
     }
 
-    protected void setSession( AnodeFacade session )
+
+    @Override
+    public ComponentInfo doBeforeCompose( org.zkoss.zk.ui.Page page, Component parent, ComponentInfo compInfo )
     {
-        this.session = session;
+        Object param = getParameter();
+
+        if ( param != null )
+            return super.doBeforeCompose( page, parent, compInfo );
+        else
+            return null;
     }
 
-    protected AnodeFacade getSession()
+    protected Object getParameter()
     {
-        if ( session == null )
-            session = ( AnodeFacade )getRemoteSession( AnodeFacade.class );
-        return session;
-    }
+        Object param;
 
-    public void onSelect$tree()
-    {
-        Treeitem item = tree.getSelectedItem();
-        Object value = item.getValue();
-
-        if ( value == null )
-            return;
-        if ( value instanceof PgcPenPageDTO )
-            showPgc( item, ( ( PgcPenPageDTO )value ).getPgc() );
-        if ( value instanceof MediaDTO )
-            showPgc( item, ( MediaDTO )value );
-
+        Map args = Executions.getCurrent().getArg();
+        if ( args == null || args.size() == 0 )
+            args = Executions.getCurrent().getParameterMap();
+        param = args.get( paramName );
+        if ( param instanceof PgcPenPageDTO ) {
+            dtoParam = ( PgcPenPageDTO )param;
+            return dtoParam;
+        }
+        else
+            return null;
     }
 
     protected void showPgc( Treeitem item, MediaDTO media )
@@ -144,15 +147,14 @@ public class AnotoViewController extends LoggedBaseController
 
     }
 
-    protected void showPgc( Treeitem item, PGCDTO pgcDto )
+    protected void showPgc( PgcPenPageDTO dto )
     {
         byte[] pgc;
 
         try {
             /*Obter o pgc*/
-            pgc = getSession().getObject( getLoggedInUser(), pgcDto.getMedia() );
-            AnotoPageDTO pageDto = getPageDTO( item );
-            loadImage( getAppName( item ), pageDto, pgc, null );
+            pgc = getSession().getObject( getLoggedInUser(), dto.getPgc().getMedia() );
+            loadImage( dto.getPenPage().getPage().getPad().getForm(), dto.getPenPage().getPage(), pgc, null );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Mostrar Objeto" );
@@ -247,14 +249,15 @@ public class AnotoViewController extends LoggedBaseController
         pgcImage.getChildren().clear();
         fields.getChildren().clear();
         fields.setSelectedItem( null );
-        icrInfo.setVisible( false );
-        correctedInfo.setVisible( false );
         int areaId = 1;
         try {
             while ( it.hasNext() ) {
                 PageArea pageArea = ( PageArea )it.next();
 
                 if ( pageArea.getType() != PageArea.DRAWING_AREA ) {
+
+                    if ( pageArea.getType() != PageArea.USER_AREA )
+                        continue;
                     Bounds bounds = pageArea.getBounds();
                     String coords =
                         String.format( "%d,%d,%d,%d", ( ( int )bounds.getX() ), ( ( int )bounds.getY() ), ( ( int )( bounds.getX() +
@@ -262,22 +265,29 @@ public class AnotoViewController extends LoggedBaseController
                                        ( ( int )( bounds.getY() + bounds.getHeight() ) ) );
                     Area area = new Area();
                     area.setTooltiptext( pageArea.getName() );
-                    area.setAttribute( pageArea.getName(), pageArea );
-
                     area.setId( pgcImage.getId() + "_area_" + areaId++ );
-                    fields.appendItem( pageArea.getName() ).setValue( bounds );
+                    Comboitem item = new Comboitem( pageArea.getName() );
+                    item.setValue( pageArea );
+                    area.setAttribute( "field", item );
+                    fields.appendChild( item );
+                    area.setAttribute( pageArea.getName(), pageArea );
                     area.setShape( "rect" );
                     area.setCoords( coords );
-                    Graphics gd = bufferedImage.getGraphics();
-                    gd.setColor( Color.blue );
-                    gd.drawRect( ( int )pageArea.getBounds().getX(), ( int )pageArea.getBounds().getY(),
-                                 ( int )pageArea.getBounds().getWidth(), ( int )pageArea.getBounds().getHeight() );
-                    gd.setColor( Color.red );
-                    gd.drawRect( 0, 0, bufferedImage.getWidth() - 1, bufferedImage.getHeight() - 1 );
+                    /*
+                    if ( showFields.isChecked() ) {
+                        Graphics gd = bufferedImage.getGraphics();
+                        gd.setColor( Color.blue );
+                        gd.drawRect( ( int )pageArea.getBounds().getX(), ( int )pageArea.getBounds().getY(),
+                                     ( int )pageArea.getBounds().getWidth(), ( int )pageArea.getBounds().getHeight() );
+                        gd.setColor( Color.red );
+                        gd.drawRect( 0, 0, bufferedImage.getWidth() - 1, bufferedImage.getHeight() - 1 );
+                    }*/
                     pgcImage.appendChild( area );
                 }
             }
             pgcImage.setContent( bufferedImage );
+            if ( fields.getChildren().size() > 0 )
+                fields.setSelectedIndex( 0 );
         }
         catch ( Exception e ) {
             showErrorMessage( e.getMessage(), "Logical Pages" );
@@ -307,11 +317,8 @@ public class AnotoViewController extends LoggedBaseController
                 }
                 renderedImagePath = getRenderedImagePath( "rendered_image.png" );
                 renderer.renderToFile( renderedImagePath );
-                System.out.println( "Rendering page: " + page.getPageName() + ". Address: " + page.getPageAddress() );
                 BufferedImage img = loadImage( renderedImagePath );
                 loadAreas( page, img );
-                System.out.println( "Tamanho da imagem: (" + pgcImage.getContent().getWidth() + "," +
-                                    pgcImage.getContent().getHeight() + ")" );
                 return img;
             }
             catch ( Exception e ) {
@@ -328,11 +335,11 @@ public class AnotoViewController extends LoggedBaseController
     {
         String path;
 
+        dto.setPads( getSession().getPads( getLoggedInUser(), dto ) );
         for ( PadDTO pad : dto.getPads() ) {
             path = savePad( pad );
             try {
                 PenHome.registerPad( dto.getApplication(), path );
-                System.out.println( "Registrando pad " + path );
             }
             catch ( Exception e ) {
                 showErrorMessage( e.getMessage(), "Register Pad" );
@@ -385,20 +392,29 @@ public class AnotoViewController extends LoggedBaseController
 
     public void pgcImageAreaClick( MouseEvent event )
     {
-        alert( event.getArea() );
-        System.out.println( "onClick event fired" );
+        if ( event == null )
+            return;
+
+        List<Area> areas = ( List<Area> )pgcImage.getChildren();
+        for ( Area area : areas ) {
+            if ( area.getId().equals( event.getArea() ) == true ) {
+                Object obj = area.getAttribute( "field" );
+                if ( obj != null ) {
+                    fields.setSelectedItem( ( Comboitem )obj );
+                    onSelect$fields();
+                }
+                break;
+            }
+        }
+
     }
 
     public void onSelect$fields()
     {
         if ( fields.getSelectedItem() == null ) {
-            icrInfo.setVisible( false );
-            correctedInfo.setVisible( false );
             return;
         }
-        icrInfo.setVisible( true );
-        correctedInfo.setVisible( true );
-        Bounds area = ( Bounds )fields.getSelectedItem().getValue();
+        PageArea area = ( PageArea )fields.getSelectedItem().getValue();
         if ( area == null )
             return;
         AImage aImage = ( AImage )pgcImage.getContent();
@@ -412,7 +428,8 @@ public class AnotoViewController extends LoggedBaseController
         }
         if ( img == null )
             return;
-        img = img.getSubimage( ( int )area.getX(), ( int )area.getY(), ( int )area.getWidth(), ( int )area.getHeight() );
+        Bounds bounds = area.getBounds();
+        img = img.getSubimage( ( int )bounds.getX(), ( int )bounds.getY(), ( int )bounds.getWidth(), ( int )bounds.getHeight() );
         /*
          * TODO: OCR SHOULD BE HERE!!!!
          */
@@ -435,5 +452,15 @@ public class AnotoViewController extends LoggedBaseController
         hash = getLoggedInUser().getSessionId().hashCode();
         String path = "user_" + hash;
         return getPath( path );
+    }
+
+    public void onCheck$showFields()
+    {
+        showPgc( dtoParam );
+    }
+
+    public void onCheck$showPidget()
+    {
+        showPgc( dtoParam );
     }
 }

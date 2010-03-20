@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Properties;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.ListModelList;
@@ -55,6 +58,7 @@ public class AnotoView2Controller extends AnotoLoggedController
         super.doAfterCompose( comp );
         refresh();
         resultList.setItemRenderer( new PgcPenPageListRenderer() );
+        configureonOkEvents();
     }
 
     protected void refresh()
@@ -143,9 +147,9 @@ public class AnotoView2Controller extends AnotoLoggedController
         }
     }
 
-    protected ListModelList getModel ()
+    protected ListModelList getModel()
     {
-        ListModelList model = (ListModelList) resultList.getModel();
+        ListModelList model = ( ListModelList )resultList.getModel();
         if ( model == null ) {
             model = new ListModelList( new ArrayList<PgcPenPageDTO>(), true );
             resultList.setModel( model );
@@ -207,29 +211,28 @@ public class AnotoView2Controller extends AnotoLoggedController
         /*
          * Does we have a end Date?
          */
-        Date eDate = getDate ( endDate, endTime );
+        Date eDate = getDate( endDate, endTime );
         if ( eDate != null )
             prop.put( "endDate", eDate );
 
         loadPGC( prop );
     }
 
-    protected Date getDate ( Datebox d, Timebox t )
+    protected Date getDate( Datebox d, Timebox t )
     {
         Date eDate = null;
         if ( d.getValue() != null )
-            eDate = new Date ( d.getValue().getTime() );
-        if ( t.getValue() != null )
-        {
+            eDate = new Date( d.getValue().getTime() );
+        if ( t.getValue() != null ) {
             String strDate, strTime;
-            SimpleDateFormat dfh = new SimpleDateFormat ("yyyyMMdd");
-            SimpleDateFormat dft = new SimpleDateFormat ("HHmm");
+            SimpleDateFormat dfh = new SimpleDateFormat( "yyyyMMdd" );
+            SimpleDateFormat dft = new SimpleDateFormat( "HHmm" );
             if ( eDate == null )
-                eDate = new Date ();
+                eDate = new Date();
             strDate = dfh.format( eDate );
             strTime = dft.format( t.getValue() );
             strDate += strTime;
-            dfh = new SimpleDateFormat ("yyyyMMddHHmm");
+            dfh = new SimpleDateFormat( "yyyyMMddHHmm" );
             try {
                 eDate = dfh.parse( strDate );
             }
@@ -238,5 +241,79 @@ public class AnotoView2Controller extends AnotoLoggedController
             }
         }
         return eDate;
+    }
+
+
+    public void onDoubleClick$resultList()
+    {
+        onClick$btnProperty();
+    }
+
+    public void onClick$btnProperty()
+    {
+        if ( resultList.getSelectedItem() != null ) {
+            Properties params = new Properties();
+            params.put( AnotoViewController.paramName, resultList.getSelectedItem().getValue() );
+            gotoPage( "/private/admin/anoto/anoto_view.zul", getRootParent().getParent(), params );
+        }
+        else {
+            showErrorMessage( "Selecione um pgc da lista primeiro", "Visualizar PGC" );
+        }
+    }
+
+
+    protected void configureonOkEvents()
+    {
+        cmbApplication.addEventListener( Events.ON_OK, new EventListener()
+            {
+                public void onEvent( Event event )
+                {
+                    onClick$btnFilter();
+                }
+            } );
+
+        cmbPen.addEventListener( Events.ON_OK, new EventListener()
+            {
+                public void onEvent( Event event )
+                {
+                    onClick$btnFilter();
+                }
+            } );
+
+        cmbAnotoPage.addEventListener( Events.ON_OK, new EventListener()
+            {
+                public void onEvent( Event event )
+                {
+                    onClick$btnFilter();
+                }
+            } );
+        initDate.addEventListener( Events.ON_OK, new EventListener()
+            {
+                public void onEvent( Event event )
+                {
+                    onClick$btnFilter();
+                }
+            } );
+        endDate.addEventListener( Events.ON_OK, new EventListener()
+            {
+                public void onEvent( Event event )
+                {
+                    onClick$btnFilter();
+                }
+            } );
+        initTime.addEventListener( Events.ON_OK, new EventListener()
+            {
+                public void onEvent( Event event )
+                {
+                    onClick$btnFilter();
+                }
+            } );
+        endTime.addEventListener( Events.ON_OK, new EventListener()
+            {
+                public void onEvent( Event event )
+                {
+                    onClick$btnFilter();
+                }
+            } );
     }
 }

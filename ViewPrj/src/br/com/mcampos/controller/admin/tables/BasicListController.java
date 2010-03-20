@@ -49,7 +49,7 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
         return listboxRecord;
     }
 
-    protected Object getSelectetItem ( )
+    protected Object getSelectetItem()
     {
         Object object = null;
 
@@ -66,7 +66,7 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
     public void onSelect$listboxRecord()
     {
         try {
-            DTO dto = (DTO)getSelectetItem();
+            DTO dto = ( DTO )getSelectetItem();
             if ( dto != null ) {
                 showRecord( dto );
             }
@@ -138,17 +138,15 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
 
     protected void afterPersist( Object currentRecord )
     {
-        System.out.println ( "afterPersist:" );
-        System.out.println ( "\t" + currentRecord.toString() );
         if ( isAddNewOperation() ) {
             getModel().add( currentRecord );
         }
         else {
             int nIndex = getModel().indexOf( currentRecord );
-            getModel().set ( nIndex, currentRecord );
+            getModel().set( nIndex, currentRecord );
         }
         try {
-            showRecord( (DTO)currentRecord );
+            showRecord( ( DTO )currentRecord );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Formulário" );
