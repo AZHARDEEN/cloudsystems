@@ -4,6 +4,7 @@ package br.com.mcampos.util.system;
 import br.com.mcampos.dto.system.MediaDTO;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class UploadMedia
@@ -25,7 +26,7 @@ public class UploadMedia
             if ( media.isBinary() )
                 dto.setObject( media.getByteData() );
             else
-                dto.setObject( media.getStringData().getBytes("UTF-8") );
+                dto.setObject( media.getStringData().getBytes( "UTF-8" ) );
         }
         else {
             if ( media.isBinary() ) {
@@ -36,7 +37,7 @@ public class UploadMedia
             else {
                 InputStreamReader is = ( InputStreamReader )media.getReaderData();
                 StringBuffer strBuffer = new StringBuffer( 1024 * 64 );
-                char[] chArray = new char[ 1024 * 64 ];
+                char[] chArray = new char[ 512 ];
                 int nRead;
                 do {
                     nRead = is.read( chArray );

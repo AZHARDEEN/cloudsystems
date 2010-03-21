@@ -53,7 +53,7 @@ public class UploadPGC extends HttpServlet
         response.setContentType( CONTENT_TYPE );
         if ( getPGC( request ) == true ) {
             response.addHeader( "Router-Commit-ASH", "true" );
-            response.addHeader( "Router-Commit-Application-Name", "Minha Aplicação" );
+            response.addHeader( "Router-Commit-Application-Name", "PGC Recebido com sucesso" );
         }
         PrintWriter out = response.getWriter();
         out.println( "<html>" );
