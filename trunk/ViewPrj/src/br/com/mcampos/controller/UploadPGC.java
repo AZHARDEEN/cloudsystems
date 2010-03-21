@@ -13,12 +13,16 @@ import com.anoto.api.PenHome;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.nio.ByteBuffer;
+
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
+
+import org.apache.commons.lang.ArrayUtils;
 
 public class UploadPGC extends HttpServlet
 {
@@ -48,7 +52,7 @@ public class UploadPGC extends HttpServlet
     {
         response.setContentType( CONTENT_TYPE );
         if ( getPGC( request ) == true ) {
-            response.addHeader( "Router-Commit-ASH", "HTTP 200 OK" );
+            response.addHeader( "Router-Commit-ASH", "true" );
             response.addHeader( "Router-Commit-Application-Name", "Minha Aplicação" );
         }
         PrintWriter out = response.getWriter();
@@ -69,36 +73,50 @@ public class UploadPGC extends HttpServlet
 
         try {
             ServletInputStream is = req.getInputStream();
-            System.out.println( "Size: " + is.available() );
-            if ( is.available() > 0 ) {
-                byte[] pgcByte = new byte[ is.available() ];
-                /*I really need pgc info*/
-                int nRead = is.read( pgcByte );
-                System.out.println( "Bytes Read: " + nRead );
-                while ( nRead != pgcByte.length && nRead > 0 ) {
-                    nRead += is.read( pgcByte, nRead, pgcByte.length );
-                    System.out.println( "Bytes Read: " + nRead );
+            byte[] pgcByte = new byte[ 64 * 1024 ];
+            byte[] output = null;
+            /*I really need pgc info*/
+            int nRead;
+            do {
+                nRead = is.read( pgcByte );
+                if ( nRead > 0 ) {
+                    if ( output == null ) {
+                        output = new byte[ nRead ];
+                        System.arraycopy( pgcByte, 0, output, 0, nRead );
+                    }
+                    else
+                        output = concat( output, pgcByte );
                 }
-                MediaDTO media = new MediaDTO();
-                media.setFormat( "pgc" );
-                media.setMimeType( "application/octet-stream" );
-                Date currentDate = new Date();
-                SimpleDateFormat format = new SimpleDateFormat( "dd_MM_yyyy_hh.mm.ss.SSS" );
-                media.setName( String.format( "penDispatcher_%s.pcg", format.format( currentDate ) ) );
-                media.setObject( pgcByte );
-                PGCDTO pgc = new PGCDTO( media );
-                session = ( AnodeFacade )getRemoteSession( AnodeFacade.class );
-                session.add( pgc );
-                return true;
-            }
-            else
+            } while ( nRead > 0 );
+            if ( output == null )
                 return false;
+            MediaDTO media = new MediaDTO();
+            media.setFormat( "pgc" );
+            media.setMimeType( "application/octet-stream" );
+            Date currentDate = new Date();
+            SimpleDateFormat format = new SimpleDateFormat( "dd_MM_yyyy_hh.mm.ss.SSS" );
+            media.setName( String.format( "penDispatcher_%s.pcg", format.format( currentDate ) ) );
+            media.setObject( output );
+            PGCDTO pgc = new PGCDTO( media );
+            session = ( AnodeFacade )getRemoteSession( AnodeFacade.class );
+            session.add( pgc );
+            return true;
         }
         catch ( Exception e ) {
             System.out.println( e.getMessage() );
             return false;
         }
     }
+
+    protected byte[] concat( byte[] A, byte[] B )
+    {
+        byte[] C = new byte[ A.length + B.length ];
+
+        System.arraycopy( A, 0, C, 0, A.length );
+        System.arraycopy( B, 0, C, A.length, B.length );
+        return C;
+    }
+
 
     protected AnodeFacade getRemoteSession( Class remoteClass )
     {
