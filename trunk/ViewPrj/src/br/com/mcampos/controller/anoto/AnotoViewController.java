@@ -154,7 +154,12 @@ public class AnotoViewController extends AnotoLoggedController
         try {
             /*Obter o pgc*/
             pgc = getSession().getObject( getLoggedInUser(), dto.getPgc().getMedia() );
-            loadImage( dto.getPenPage().getPage().getPad().getForm(), dto.getPenPage().getPage(), pgc, null );
+            List<MediaDTO> medias = getSession().getImages( getLoggedInUser(), dto.getPenPage().getPage() );
+            MediaDTO background = null;
+            if ( medias.size() > 0 ) {
+                background = medias.get( 0 );
+            }
+            loadImage( dto.getPenPage().getPage().getPad().getForm(), dto.getPenPage().getPage(), pgc, background );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Mostrar Objeto" );

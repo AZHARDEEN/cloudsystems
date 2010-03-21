@@ -41,7 +41,7 @@
                             </div>
                         </div>
                     </west>
-                    <center>
+                    <center autoscroll="true" flex="true">
                         <div>
                             <div align="center" width="100%">
                                 <hbox>
