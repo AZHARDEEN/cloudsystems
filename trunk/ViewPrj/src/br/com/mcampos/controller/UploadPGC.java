@@ -7,6 +7,9 @@ import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.util.locator.ServiceLocator;
 import br.com.mcampos.util.locator.ServiceLocatorException;
 
+import com.anoto.api.PenCreationException;
+import com.anoto.api.PenHome;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -44,10 +47,15 @@ public class UploadPGC extends HttpServlet
                                                                                                                IOException
     {
         response.setContentType( CONTENT_TYPE );
-        getPGC( request );
+        if ( getPGC( request ) == true ) {
+            response.addHeader( "Router-Commit-ASH", "HTTP 200 OK" );
+            response.addHeader( "Router-Commit-Application-Name", "Minha Aplicação" );
+        }
         PrintWriter out = response.getWriter();
         out.println( "<html>" );
-        out.println( "<head><title>UploadPGC</title></head>" );
+        out.println( "<head>" );
+        out.println( "<title>UploadPGC</title>" );
+        out.println( "</head>" );
         out.println( "<body>" );
         out.println( "<p>The servlet has received a POST. This is the reply.</p>" );
         out.println( "</body></html>" );
@@ -55,7 +63,7 @@ public class UploadPGC extends HttpServlet
     }
 
 
-    protected void getPGC( HttpServletRequest req )
+    protected boolean getPGC( HttpServletRequest req )
     {
         AnodeFacade session;
 
@@ -81,10 +89,14 @@ public class UploadPGC extends HttpServlet
                 PGCDTO pgc = new PGCDTO( media );
                 session = ( AnodeFacade )getRemoteSession( AnodeFacade.class );
                 session.add( pgc );
+                return true;
             }
+            else
+                return false;
         }
         catch ( Exception e ) {
             System.out.println( e.getMessage() );
+            return false;
         }
     }
 
