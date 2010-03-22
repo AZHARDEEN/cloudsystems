@@ -3,7 +3,6 @@ package br.com.mcampos.controller.anoto;
 
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
-import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.system.MediaDTO;
@@ -21,8 +20,6 @@ import com.anoto.api.PenHome;
 import com.anoto.api.Renderer;
 import com.anoto.api.RendererFactory;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Label;
 import java.awt.image.BufferedImage;
 
@@ -33,7 +30,6 @@ import java.io.IOException;
 
 import java.util.Iterator;
 import java.util.List;
-
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -47,13 +43,12 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zul.Area;
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Image;
 import org.zkoss.zul.Imagemap;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treeitem;
 
 
@@ -68,6 +63,7 @@ public class AnotoViewController extends AnotoLoggedController
     protected Row correctedInfo;
     protected Textbox correctedValue;
     protected Label icrValue;
+    protected Image fieldImage;
 
 
     private PgcPenPageDTO dtoParam;
@@ -434,10 +430,13 @@ public class AnotoViewController extends AnotoLoggedController
         if ( img == null )
             return;
         Bounds bounds = area.getBounds();
+        fieldImage.setWidth( "" + ( int )bounds.getWidth() );
+        fieldImage.setWidth( "" + ( int )bounds.getHeight() );
         img = img.getSubimage( ( int )bounds.getX(), ( int )bounds.getY(), ( int )bounds.getWidth(), ( int )bounds.getHeight() );
         /*
          * TODO: OCR SHOULD BE HERE!!!!
          */
+        fieldImage.setContent( img );
     }
 
     protected String getPath( String path )
@@ -459,13 +458,15 @@ public class AnotoViewController extends AnotoLoggedController
         return getPath( path );
     }
 
-    public void onCheck$showFields()
+    public void onOK$correctedValue ()
     {
-        showPgc( dtoParam );
-    }
+        int nIndex = fields.getSelectedIndex();
 
-    public void onCheck$showPidget()
-    {
-        showPgc( dtoParam );
+        nIndex ++;
+        if ( nIndex >= fields.getItemCount() )
+            nIndex = 0;
+        fields.setSelectedIndex( nIndex );
+        onSelect$fields();
+        correctedValue.setFocus( true );
     }
 }

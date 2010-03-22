@@ -10,34 +10,45 @@
             </north>
             <center flex="true" autoscroll="true">
                 <borderlayout>
-                    <west splittable="true" width="50%">
+                    <west splittable="true" width="50%" autoscroll="true" flex="true">
                         <div align="center" width="100%" height="100%">
                             <!-- Por favor, nao mude o id desta div -->
-                            <div id="divProperties">
-                                <grid width="100%" fixedLayout="true">
-                                    <columns>
-                                        <column align="right" width="15%"/>
-                                        <column align="left"/>
-                                    </columns>
-                                    <rows>
-                                        <row>
-                                            Campos do Formulário
-                                            <combobox id="fields" width="80%"></combobox>
-                                        </row>
-                                        <row id="rowImage">
-                                            Imagem do Campo
-                                            <image id="fieldImage" width="80%" height="30px"/>
-                                        </row>
-                                        <row id="icrInfo">
-                                            Reconhecimento
-                                            <label id="icrValue" width="80%"/>
-                                        </row>
-                                        <row id="correctedInfo">
-                                            Correção
-                                            <textbox id="correctedValue" width="80%"/>
-                                        </row>
-                                    </rows>
-                                </grid>
+                            <tabbox>
+                                <tabs>
+                                    <tab id="tabIcr" label="ICR" />
+                                    <tab id="tabPgc" label="Propriedades"/>
+                                    <tab id="tabAttach" label="Anexos"/>
+                                </tabs>
+                                <tabpanels>
+                                    <tabpanel>
+                                        <div id="divProperties">
+                                            <grid width="100%" fixedLayout="true">
+                                                <columns>
+                                                    <column align="left" width="30%"/>
+                                                    <column align="left"/>
+                                                </columns>
+                                                <rows>
+                                                    <row>
+                                                        <label value="Campos do Formulário" />
+                                                        <combobox id="fields" width="80%"></combobox>
+                                                    </row>
+                                                    <row id="icrInfo">
+                                                        <label value="Reconhecimento" />
+                                                        <label id="icrValue" width="80%"/>
+                                                    </row>
+                                                    <row id="correctedInfo">
+                                                        <label value="Correção" />
+                                                        <textbox id="correctedValue" width="80%"/>
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </div>
+                                    </tabpanel>
+                                </tabpanels>
+                            </tabbox>
+                            <separator bar="true" height="10px"/>
+                            <div width="100%" align="center">
+                                <image id="fieldImage"/>
                             </div>
                         </div>
                     </west>
