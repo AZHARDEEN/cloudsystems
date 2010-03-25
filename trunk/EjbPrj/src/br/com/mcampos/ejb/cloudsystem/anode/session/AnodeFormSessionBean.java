@@ -16,7 +16,6 @@ import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.sysutils.anoto.PADFile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,8 +29,6 @@ import javax.ejb.TransactionAttributeType;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-
-import org.jdom.Element;
 
 
 @Stateless( name = "AnodeFormSession", mappedName = "CloudSystems-EjbPrj-AnodeFormSession" )
@@ -69,7 +66,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         return super.add( entity );
     }
 
-    public Pad addPadFile( AnotoForm form, Media pad ) throws ApplicationException
+    public Pad addPadFile( AnotoForm form, Media pad, List<String> pages ) throws ApplicationException
     {
         form = getEntityManager().merge( form );
         pad = getEntityManager().merge( pad );
@@ -78,7 +75,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         newEntity.setInsertDate( new Date() );
         getEntityManager().persist( newEntity );
         //getEntityManager().refresh( newEntity );
-        loadPadFile( form, newEntity );
+        loadPadFile( form, newEntity, pages );
         return newEntity;
     }
 
@@ -110,18 +107,14 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
     }
 
 
-    protected List<Element> loadPadFile( AnotoForm form, Pad pad ) throws ApplicationException
+    protected void loadPadFile( AnotoForm form, Pad pad, List<String> pages ) throws ApplicationException
     {
-        PADFile padFile;
         AnotoPage page;
         try {
-            padFile = new PADFile( pad.getMedia().getObject() );
-            List<Element> pages = padFile.getPages();
-            for ( Element padPage : pages ) {
-                page = new AnotoPage( pad, padFile.getPageAddress( padPage ) );
+            for ( String address : pages ) {
+                page = new AnotoPage( pad, address );
                 getEntityManager().persist( page );
             }
-            return pages;
         }
         catch ( Exception e ) {
             throw new EJBException( "Erro ao carregar o arquivo PAD", e );

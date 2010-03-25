@@ -6,7 +6,6 @@ import br.com.mcampos.controller.anoto.renderer.PgcListRendered;
 import br.com.mcampos.controller.anoto.renderer.PropertyRowRenderer;
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.anoto.PGCDTO;
-import br.com.mcampos.dto.anoto.PgcStatusDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -28,7 +27,6 @@ import java.util.List;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zul.Button;
-import org.zkoss.zul.Cell;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -90,8 +88,8 @@ public class AnotoPcgController extends LoggedBaseController
 
         for ( int nIndex = 0; nIndex < pgcFile.getPgcs().size(); nIndex++ ) {
             PGCDTO pgc = new PGCDTO( pgcFile.getPgcs().get( nIndex ) );
-            try {
-                pgc = getSession().add( pgc );
+            //try {
+                //pgc = getSession().add( pgc );
                 ListModelList model = ( ListModelList )listboxRecord.getModel();
                 if ( SysUtils.isEmpty( model.getInnerList() ) ) {
                     ArrayList<PGCDTO> list = new ArrayList<PGCDTO>();
@@ -101,10 +99,10 @@ public class AnotoPcgController extends LoggedBaseController
                 else {
                     model.add( pgc );
                 }
-            }
+            /*}
             catch ( ApplicationException e ) {
                 showErrorMessage( e.getMessage(), "Upload Error" );
-            }
+            }*/
         }
     }
 

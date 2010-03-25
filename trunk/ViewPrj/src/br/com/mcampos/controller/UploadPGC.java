@@ -1,28 +1,26 @@
 package br.com.mcampos.controller;
 
+
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
-
 import br.com.mcampos.util.locator.ServiceLocator;
 import br.com.mcampos.util.locator.ServiceLocatorException;
 
-import com.anoto.api.PenCreationException;
-import com.anoto.api.PenHome;
-
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import java.nio.ByteBuffer;
 
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.ArrayUtils;
 
 public class UploadPGC extends HttpServlet
 {
@@ -99,7 +97,7 @@ public class UploadPGC extends HttpServlet
             media.setObject( output );
             PGCDTO pgc = new PGCDTO( media );
             session = ( AnodeFacade )getRemoteSession( AnodeFacade.class );
-            session.add( pgc );
+            //session.add( pgc );
             return true;
         }
         catch ( Exception e ) {
