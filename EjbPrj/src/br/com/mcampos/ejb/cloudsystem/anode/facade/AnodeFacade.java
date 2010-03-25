@@ -13,7 +13,6 @@ import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
-
 import java.util.Properties;
 
 import javax.ejb.Remote;
@@ -36,7 +35,7 @@ public interface AnodeFacade
 
     Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException;
 
-    PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException;
+    PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad, List<String> pages ) throws ApplicationException;
 
     MediaDTO removeFromForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException;
 
@@ -125,7 +124,7 @@ public interface AnodeFacade
      * *************************************************************************
      */
 
-    PGCDTO add( PGCDTO dto ) throws ApplicationException;
+    PGCDTO add( PGCDTO dto, String penId, String [] addresses ) throws ApplicationException;
 
     List<PGCDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException;
 

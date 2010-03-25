@@ -1,6 +1,7 @@
 package br.com.mcampos.controller.anoto;
 
 
+import br.com.mcampos.controller.anoto.util.PadFile;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
@@ -16,7 +17,6 @@ import com.anoto.api.PageAreaException;
 import com.anoto.api.PageException;
 import com.anoto.api.Pen;
 import com.anoto.api.PenCreationException;
-import com.anoto.api.PenHome;
 import com.anoto.api.Renderer;
 import com.anoto.api.RendererFactory;
 
@@ -54,7 +54,6 @@ import org.zkoss.zul.Treeitem;
 
 public class AnotoViewController extends AnotoLoggedController
 {
-    protected static final String anotoServerPath = "/anoto_res";
     public static final String paramName = "PgcPenPageParam";
 
     protected Imagemap pgcImage;
@@ -298,16 +297,16 @@ public class AnotoViewController extends AnotoLoggedController
     protected BufferedImage loadImage( FormDTO formDto, AnotoPageDTO pageDTO, byte[] pgc,
                                        MediaDTO backGround ) throws ApplicationException, IOException
     {
-        if ( PenHome.padIsRegistered( formDto.getApplication() ) == false ) {
-            registerApplication( formDto );
+        PadFile file = new PadFile ( getLoggedInUser() );
+        if ( file.isRegistered( formDto ) == false ) {
+            //registerApplication( formDto );
         }
         Pen pen;
         Page page;
         String backgroundImagePath, renderedImagePath;
 
         try {
-            pen = PenHome.read( new ByteArrayInputStream( pgc ), formDto.getApplication() );
-            //pen = PenHome.read( new ByteArrayInputStream( pgc ), "CloudSystems" );
+            pen = file.getPen( new ByteArrayInputStream( pgc ), formDto.getApplication() );
             try {
                 page = pen.getPage( pageDTO.getPageAddress() );
                 Renderer renderer = RendererFactory.create( page );
@@ -332,6 +331,7 @@ public class AnotoViewController extends AnotoLoggedController
         return null;
     }
 
+    /*
     protected void registerApplication( FormDTO dto ) throws ApplicationException, IOException
     {
         String path;
@@ -347,11 +347,14 @@ public class AnotoViewController extends AnotoLoggedController
             }
         }
     }
+    */
 
+
+    /*
     protected String savePad( PadDTO dto ) throws ApplicationException, IOException
     {
         byte[] pad = getSession().getObject( getLoggedInUser(), dto.getMedia() );
-        String path = getRegisteredPadPath();
+        String path = PadFile.getRegisteredPadPath( );
         File f = new File( path );
         if ( f.exists() == false )
             f.mkdirs();
@@ -364,12 +367,13 @@ public class AnotoViewController extends AnotoLoggedController
         }
         return path;
     }
+    */
 
 
     protected String saveBackgroundImage( MediaDTO dto ) throws ApplicationException, IOException
     {
         byte[] pad = getSession().getObject( getLoggedInUser(), dto );
-        String path = getAnotoUserPath();
+        String path = PadFile.getAnotoUserPath( getLoggedInUser().getSessionId().hashCode() );
         File f = new File( path );
         if ( f.exists() == false )
             f.mkdirs();
@@ -383,7 +387,7 @@ public class AnotoViewController extends AnotoLoggedController
 
     protected String getRenderedImagePath( String szFilename ) throws ApplicationException, IOException
     {
-        String path = getAnotoUserPath();
+        String path = PadFile.getAnotoUserPath( getLoggedInUser().getSessionId().hashCode() );
         File f = new File( path );
         if ( f.exists() == false )
             f.mkdirs();
@@ -437,25 +441,6 @@ public class AnotoViewController extends AnotoLoggedController
          * TODO: OCR SHOULD BE HERE!!!!
          */
         fieldImage.setContent( img );
-    }
-
-    protected String getPath( String path )
-    {
-        return Executions.getCurrent().getDesktop().getWebApp().getRealPath( anotoServerPath + "/" + path );
-    }
-
-    protected String getRegisteredPadPath()
-    {
-        return getPath( "registeredPads" );
-    }
-
-    protected String getAnotoUserPath()
-    {
-        int hash;
-
-        hash = getLoggedInUser().getSessionId().hashCode();
-        String path = "user_" + hash;
-        return getPath( path );
     }
 
     public void onOK$correctedValue ()

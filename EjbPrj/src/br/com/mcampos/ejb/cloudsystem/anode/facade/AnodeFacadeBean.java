@@ -35,19 +35,10 @@ import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
-import com.anoto.api.core.NoSuchPermissionException;
-import com.anoto.api.core.Pen;
-import com.anoto.api.core.PenCreationException;
-import com.anoto.api.core.PenHome;
-
-import java.io.ByteArrayInputStream;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-
 import java.util.Properties;
 
 import javax.ejb.EJB;
@@ -151,7 +142,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     }
 
 
-    public PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException
+    public PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad, List<String> pages ) throws ApplicationException
     {
         authenticate( auth );
         /*
@@ -161,10 +152,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
          * 3) Vincular o formulário à midia
          */
         AnotoForm form = formSession.get( entity.getId() );
-        pad.setFormat( "pgc" );
+        pad.setFormat( "pad" );
         Media media = mediaSession.add( DTOFactory.copy( pad ) );
-        Pad padentity = formSession.addPadFile( form, media );
-
+        Pad padentity = formSession.addPadFile( form, media, pages );
         return padentity.toDTO();
     }
 
@@ -474,7 +464,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     }
 
 
-    public PGCDTO add( PGCDTO dto ) throws ApplicationException
+    public PGCDTO add( PGCDTO dto, String penId, String [] addresses ) throws ApplicationException
     {
         //authenticate( auth ); IT´S FREE FOR NOW
         /*Does this media exists??*/
@@ -483,42 +473,33 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         pgc.setMedia( media );
         pgc.setInsertDate( new Date() );
         System.out.println( "Pgc: " + media.getName() + " is loaded!" );
-        Pen pen = getPgcPenObject( pgc );
         PgcStatus status = new PgcStatus( 1 );
         pgc.setPgcStatus( status );
         /*Search for a pen in our database*/
         pgc = pgcSession.add( pgc );
-        verifyBindings( pgc, pen );
+        verifyBindings( pgc, penId, addresses );
         return pgc.toDTO();
     }
 
-    protected boolean verifyBindings( Pgc pgc, Pen pen ) throws ApplicationException
+    protected boolean verifyBindings( Pgc pgc, String penId, String[] addresses ) throws ApplicationException
     {
-        String penId;
         AnotoPen anotoPen;
-        try {
-            penId = pen.getPenData().getPenSerial();
-            System.out.println( "Pgc has this pen id: " + penId );
-            anotoPen = penSession.get( penId );
-            if ( anotoPen == null )
-                System.out.println( "No pen id database: " + penId );
-        }
-        catch ( NoSuchPermissionException e ) {
-            anotoPen = null;
-        }
+        System.out.println( "Pgc has this pen id: " + penId );
+        anotoPen = penSession.get( penId );
+        if ( anotoPen == null )
+            System.out.println( "No pen id database: " + penId );
         if ( anotoPen == null ) {
             pgcSession.setPgcStatus( pgc, PgcStatus.statusNoPen );
             return false;
         }
-        return hasAnotoPages( pgc, pen, anotoPen );
+        return hasAnotoPages( pgc, addresses, anotoPen );
     }
 
-    protected boolean hasAnotoPages( Pgc pgc, Pen pen, AnotoPen anotoPen ) throws ApplicationException
+    protected boolean hasAnotoPages( Pgc pgc, String[] addresses, AnotoPen anotoPen ) throws ApplicationException
     {
         boolean missAny = false;
-        Iterator it = pen.getPageAddresses();
-        while ( it.hasNext() ) {
-            String address = ( String )it.next();
+
+        for ( String address : addresses ) {
             List<AnotoPage> list = padSession.getPages( address );
             /*Now I have a page and a pen */
             if ( SysUtils.isEmpty( list ) == false )
@@ -546,20 +527,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             }
         }
         return true;
-    }
-
-    protected Pen getPgcPenObject( Pgc pgc )
-    {
-        ByteArrayInputStream is = new ByteArrayInputStream( pgc.getMedia().getObject() );
-        Pen pen = null;
-        try {
-            pen = PenHome.read( is );
-        }
-        catch ( PenCreationException e ) {
-            System.err.println( e.getMessage() );
-            pen = null;
-        }
-        return pen;
     }
 
     public List<AnotoPenPageDTO> getPenPages( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException

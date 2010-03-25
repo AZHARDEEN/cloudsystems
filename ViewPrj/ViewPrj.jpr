@@ -175,17 +175,6 @@
          </list>
       </hash>
    </hash>
-   <hash n="oracle.jdeveloper.model.PathsConfiguration">
-      <hash n="javaContentSet">
-         <list n="pattern-filters">
-            <string v="-br/com/mcampos/controller/anoto/util/PADFile.java"/>
-            <string v="+**"/>
-         </list>
-         <list n="url-path">
-            <url path="src/"/>
-         </list>
-      </hash>
-   </hash>
    <hash n="oracle.jdeveloper.offlinedb.model.OfflineDBProjectSettings">
       <hash n="offlineDBContentSet">
          <list n="pattern-filters">
@@ -224,9 +213,9 @@
             <value n="JavaScriptRunConfigurationTransferErrors" v="true"/>
             <value n="JavaScriptRunConfigurationType"/>
             <value n="name" v="web"/>
-            <value n="runActiveFile" v="false"/>
+            <value n="runActiveFile" v="true"/>
             <value n="saveAllBeforeRun" v="true"/>
-            <value n="targetURL"/>
+            <url n="targetURL" path="public_html/index.html"/>
          </hash>
       </hash>
       <list n="runConfigurationList">
