@@ -4,27 +4,34 @@ package br.com.mcampos.controller;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
+import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.locator.ServiceLocator;
 import br.com.mcampos.util.locator.ServiceLocatorException;
+import br.com.mcampos.util.system.PgcFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 
 public class UploadPGC extends HttpServlet
 {
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
+    private static final String TMP_DIR_PATH = "/anoto_res/tmp_dir";
+    private static final String DESTINATION_DIR_PATH ="/files";
 
     public void init( ServletConfig config ) throws ServletException
     {
@@ -65,39 +72,67 @@ public class UploadPGC extends HttpServlet
     }
 
 
-    protected boolean getPGC( HttpServletRequest req )
+    protected File getTempDir ()
     {
-        AnodeFacade session;
+        File file;
+
+        String realPath = getServletContext().getRealPath( TMP_DIR_PATH );
+        file = new File ( realPath );
+        if ( file.exists() == false )
+            file.mkdirs();
+        return file;
+    }
+
+
+    protected PgcFile createMediaDTO ( byte[] pgc ) throws IOException
+    {
+        Date now = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMmddHHmmssSSSS");
+
+        MediaDTO dto = new MediaDTO ();
+        dto.setFormat( "pgc" );
+        dto.setMimeType( "application/octet-stream" );
+        dto.setName( "uploaded" + df.format( now ) );
+        dto.setObject( pgc );
+        PgcFile pgcFile = new PgcFile ();
+        pgcFile.uploadPgc( dto );
+        return pgcFile;
+    }
+
+    protected boolean getPGC( HttpServletRequest request )
+    {
+        AnodeFacade session = null;
 
         try {
-            ServletInputStream is = req.getInputStream();
-            byte[] pgcByte = new byte[ 64 * 1024 ];
-            byte[] output = null;
-            /*I really need pgc info*/
-            int nRead;
-            do {
-                nRead = is.read( pgcByte );
-                if ( nRead > 0 ) {
-                    if ( output == null ) {
-                        output = new byte[ nRead ];
-                        System.arraycopy( pgcByte, 0, output, 0, nRead );
+            if ( ServletFileUpload.isMultipartContent( request ) ) {
+                return processMultiPart ();
+            }
+            else {
+                String header;
+
+                header = request.getHeader( "Content-Type" );
+                if ( SysUtils.isEmpty( header ) )
+                    return false;
+                if ( header.equals( "application/octet-stream" ) )
+                {
+                    header = request.getHeader( "Content-Length" );
+                    if ( SysUtils.isEmpty( header ) == false )
+                    {
+                        int totalSize = Integer.parseInt( header );
+                        byte [] pgc = new byte[ totalSize ];
+                        request.getInputStream().read( pgc );
+                        PgcFile pgcFile = createMediaDTO( pgc );
+                        List<MediaDTO> parts = pgcFile.getPgcs();
+                        for ( MediaDTO part : parts )
+                        {
+                            if ( session == null )
+                                session = getRemoteSession( AnodeFacade.class );
+                            String address = pgcFile.getPageAddress ( part.getObject() );
+                            session.add( new PGCDTO ( part ), pgcFile.getPenId(), address );
+                        }
                     }
-                    else
-                        output = concat( output, pgcByte );
                 }
-            } while ( nRead > 0 );
-            if ( output == null )
-                return false;
-            MediaDTO media = new MediaDTO();
-            media.setFormat( "pgc" );
-            media.setMimeType( "application/octet-stream" );
-            Date currentDate = new Date();
-            SimpleDateFormat format = new SimpleDateFormat( "dd_MM_yyyy_hh.mm.ss.SSS" );
-            media.setName( String.format( "penDispatcher_%s.pcg", format.format( currentDate ) ) );
-            media.setObject( output );
-            PGCDTO pgc = new PGCDTO( media );
-            session = ( AnodeFacade )getRemoteSession( AnodeFacade.class );
-            //session.add( pgc );
+            }
             return true;
         }
         catch ( Exception e ) {
@@ -106,15 +141,10 @@ public class UploadPGC extends HttpServlet
         }
     }
 
-    protected byte[] concat( byte[] A, byte[] B )
+    protected boolean processMultiPart ()
     {
-        byte[] C = new byte[ A.length + B.length ];
-
-        System.arraycopy( A, 0, C, 0, A.length );
-        System.arraycopy( B, 0, C, A.length, B.length );
-        return C;
+        return false;
     }
-
 
     protected AnodeFacade getRemoteSession( Class remoteClass )
     {

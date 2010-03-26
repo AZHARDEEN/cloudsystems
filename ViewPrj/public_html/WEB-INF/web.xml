@@ -10,7 +10,11 @@
         </servlet>
         <servlet-mapping>
                 <servlet-name>UploadPGC</servlet-name>
+                <url-pattern>/upload</url-pattern>
                 <url-pattern>/upload_pcg</url-pattern>
+                <url-pattern>/upload_pgc</url-pattern>
+                <url-pattern>/uploadpgc</url-pattern>
+                <url-pattern>/uploadpgc</url-pattern>
         </servlet-mapping>
         <session-config>
                 <session-timeout>30</session-timeout>

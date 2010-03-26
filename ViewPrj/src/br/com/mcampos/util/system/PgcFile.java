@@ -1,27 +1,34 @@
 package br.com.mcampos.util.system;
 
 
-import br.com.mcampos.dto.system.*;
+import br.com.mcampos.dto.system.MediaDTO;
 
-import com.anoto.api.*;
+import com.anoto.api.NoSuchPermissionException;
+import com.anoto.api.Pen;
+import com.anoto.api.PenCreationException;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-import org.zkoss.zk.ui.event.*;
+import org.zkoss.zk.ui.event.UploadEvent;
 
 
 public class PgcFile
 {
     List<MediaDTO> pgcs;
+    String penId;
 
     public PgcFile()
     {
         super();
     }
 
-    protected com.anoto.api.Pen getPgcPenObject( byte[] pgcByteArray )
+    protected static com.anoto.api.Pen getPgcPenObject( byte[] pgcByteArray )
     {
         ByteArrayInputStream is = new ByteArrayInputStream( pgcByteArray );
         com.anoto.api.Pen pen = null;
@@ -36,13 +43,48 @@ public class PgcFile
     }
 
 
+    protected void setPenId ( String id )
+    {
+        penId = id;
+    }
+
+    public String getPenId ()
+    {
+        return penId;
+    }
+
+    public static String getPageAddress ( byte [] pgc )
+    {
+        Pen pen = getPgcPenObject( pgc );
+        Iterator it = pen.getPageAddresses();
+        if ( it != null && it.hasNext() )
+            return (String) it.next();
+        else
+            return null;
+    }
+
     public void uploadPgc( UploadEvent evt ) throws IOException
     {
         MediaDTO dto;
         dto = UploadMedia.getMedia( evt.getMedia() );
+        uploadPgc ( dto );
+    }
+
+
+    public void uploadPgc ( MediaDTO dto ) throws IOException
+    {
         if ( dto == null )
             return;
         Pen pen = getPgcPenObject( dto.getObject() );
+        try {
+            String strPen;
+
+            strPen = pen.getPenData().getPenSerial();
+            setPenId( strPen );
+        }
+        catch ( NoSuchPermissionException e ) {
+            e = null;
+        }
         split ( pen, dto );
     }
 
