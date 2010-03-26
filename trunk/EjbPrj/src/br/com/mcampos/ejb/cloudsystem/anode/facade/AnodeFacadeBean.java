@@ -464,7 +464,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     }
 
 
-    public PGCDTO add( PGCDTO dto, String penId, String [] addresses ) throws ApplicationException
+    public PGCDTO add( PGCDTO dto, String penId, String address ) throws ApplicationException
     {
         //authenticate( auth ); IT´S FREE FOR NOW
         /*Does this media exists??*/
@@ -477,11 +477,11 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         pgc.setPgcStatus( status );
         /*Search for a pen in our database*/
         pgc = pgcSession.add( pgc );
-        verifyBindings( pgc, penId, addresses );
+        verifyBindings( pgc, penId, address );
         return pgc.toDTO();
     }
 
-    protected boolean verifyBindings( Pgc pgc, String penId, String[] addresses ) throws ApplicationException
+    protected boolean verifyBindings( Pgc pgc, String penId, String address ) throws ApplicationException
     {
         AnotoPen anotoPen;
         System.out.println( "Pgc has this pen id: " + penId );
@@ -492,22 +492,20 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             pgcSession.setPgcStatus( pgc, PgcStatus.statusNoPen );
             return false;
         }
-        return hasAnotoPages( pgc, addresses, anotoPen );
+        return hasAnotoPages( pgc, address, anotoPen );
     }
 
-    protected boolean hasAnotoPages( Pgc pgc, String[] addresses, AnotoPen anotoPen ) throws ApplicationException
+    protected boolean hasAnotoPages( Pgc pgc, String address, AnotoPen anotoPen ) throws ApplicationException
     {
         boolean missAny = false;
 
-        for ( String address : addresses ) {
-            List<AnotoPage> list = padSession.getPages( address );
-            /*Now I have a page and a pen */
-            if ( SysUtils.isEmpty( list ) == false )
-                attachPenPage( list, anotoPen, pgc );
-            else {
-                missAny = true;
-                pgcSession.setPgcStatus( pgc, PgcStatus.statusNoPenForm );
-            }
+        List<AnotoPage> list = padSession.getPages( address );
+        /*Now I have a page and a pen */
+        if ( SysUtils.isEmpty( list ) == false )
+            attachPenPage( list, anotoPen, pgc );
+        else {
+            missAny = true;
+            pgcSession.setPgcStatus( pgc, PgcStatus.statusNoPenForm );
         }
         return !missAny;
     }

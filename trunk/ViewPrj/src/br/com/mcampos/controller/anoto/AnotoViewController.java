@@ -299,7 +299,7 @@ public class AnotoViewController extends AnotoLoggedController
     {
         PadFile file = new PadFile ( getLoggedInUser() );
         if ( file.isRegistered( formDto ) == false ) {
-            //registerApplication( formDto );
+            file.register( formDto );
         }
         Pen pen;
         Page page;
