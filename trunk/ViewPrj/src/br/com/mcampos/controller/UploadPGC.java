@@ -9,6 +9,8 @@ import br.com.mcampos.util.locator.ServiceLocator;
 import br.com.mcampos.util.locator.ServiceLocatorException;
 import br.com.mcampos.util.system.PgcFile;
 
+import com.anoto.api.NoSuchPermissionException;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,7 +33,7 @@ public class UploadPGC extends HttpServlet
 {
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
     private static final String TMP_DIR_PATH = "/anoto_res/tmp_dir";
-    private static final String DESTINATION_DIR_PATH ="/files";
+    private static final String DESTINATION_DIR_PATH = "/files";
 
     public void init( ServletConfig config ) throws ServletException
     {
@@ -72,40 +74,38 @@ public class UploadPGC extends HttpServlet
     }
 
 
-    protected File getTempDir ()
+    protected File getTempDir()
     {
         File file;
 
         String realPath = getServletContext().getRealPath( TMP_DIR_PATH );
-        file = new File ( realPath );
+        file = new File( realPath );
         if ( file.exists() == false )
             file.mkdirs();
         return file;
     }
 
 
-    protected PgcFile createMediaDTO ( byte[] pgc ) throws IOException
+    protected PgcFile createDTO( byte[] pgc ) throws IOException, NoSuchPermissionException
     {
         Date now = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyyMmddHHmmssSSSS");
+        SimpleDateFormat df = new SimpleDateFormat( "yyyyMmddHHmmssSSSS" );
 
-        MediaDTO dto = new MediaDTO ();
+        MediaDTO dto = new MediaDTO();
         dto.setFormat( "pgc" );
         dto.setMimeType( "application/octet-stream" );
         dto.setName( "uploaded" + df.format( now ) );
         dto.setObject( pgc );
-        PgcFile pgcFile = new PgcFile ();
-        pgcFile.uploadPgc( dto );
-        return pgcFile;
+        PgcFile file = new PgcFile();
+        file.uploadPgc( dto );
+        return file;
     }
 
     protected boolean getPGC( HttpServletRequest request )
     {
-        AnodeFacade session = null;
-
         try {
             if ( ServletFileUpload.isMultipartContent( request ) ) {
-                return processMultiPart ();
+                return processMultiPart();
             }
             else {
                 String header;
@@ -113,23 +113,14 @@ public class UploadPGC extends HttpServlet
                 header = request.getHeader( "Content-Type" );
                 if ( SysUtils.isEmpty( header ) )
                     return false;
-                if ( header.equals( "application/octet-stream" ) )
-                {
+                if ( header.equals( "application/octet-stream" ) ) {
                     header = request.getHeader( "Content-Length" );
-                    if ( SysUtils.isEmpty( header ) == false )
-                    {
+                    if ( SysUtils.isEmpty( header ) == false ) {
                         int totalSize = Integer.parseInt( header );
-                        byte [] pgc = new byte[ totalSize ];
+                        byte[] pgc = new byte[ totalSize ];
                         request.getInputStream().read( pgc );
-                        PgcFile pgcFile = createMediaDTO( pgc );
-                        List<MediaDTO> parts = pgcFile.getPgcs();
-                        for ( MediaDTO part : parts )
-                        {
-                            if ( session == null )
-                                session = getRemoteSession( AnodeFacade.class );
-                            String address = pgcFile.getPageAddress ( part.getObject() );
-                            session.add( new PGCDTO ( part ), pgcFile.getPenId(), address );
-                        }
+                        PgcFile pgcFile = createDTO( pgc );
+                        pgcFile.persist();
                     }
                 }
             }
@@ -141,18 +132,8 @@ public class UploadPGC extends HttpServlet
         }
     }
 
-    protected boolean processMultiPart ()
+    protected boolean processMultiPart()
     {
         return false;
-    }
-
-    protected AnodeFacade getRemoteSession( Class remoteClass )
-    {
-        try {
-            return ( AnodeFacade )ServiceLocator.getInstance().getRemoteSession( remoteClass );
-        }
-        catch ( ServiceLocatorException e ) {
-            throw new NullPointerException( "Invalid EJB Session (possible null)" );
-        }
     }
 }

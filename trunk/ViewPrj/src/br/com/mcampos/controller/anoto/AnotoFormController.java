@@ -90,6 +90,14 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
+    protected void clearAllFormLists()
+    {
+        listAdded.getChildren().clear();
+        listAttachs.getChildren().clear();
+        listAttachsOther.getChildren().clear();
+        listAvailable.getChildren().clear();
+    }
+
     protected Object createNewRecord()
     {
         return new FormDTO();
@@ -231,13 +239,13 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             return;
         FormDTO form = getValue( getListboxRecord().getSelectedItem() );
         try {
-            PadFile file = new PadFile ( getLoggedInUser(), dto.getObject() );
+            PadFile file = new PadFile( getLoggedInUser(), dto.getObject() );
 
             if ( file.isPadFile( form, dto ) ) {
                 PadDTO addedDTO;
 
-                List<String> pages = new ArrayList<String> ( file.getPages().size() );
-                for ( int nIndex = 0; nIndex < file.getPages().size(); nIndex ++ )
+                List<String> pages = new ArrayList<String>( file.getPages().size() );
+                for ( int nIndex = 0; nIndex < file.getPages().size(); nIndex++ )
                     pages.add( file.getPageAddress( file.getPages().get( nIndex ) ) );
                 addedDTO = getSession().addToForm( getLoggedInUser(), form, dto, pages );
                 ListModelList model = ( ListModelList )listAttachs.getModel();
@@ -247,8 +255,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
                 showErrorMessage( "Erro ao registrar o arquivo PAD", "Adicinar PAD" );
             }
         }
-        catch ( Exception e )
-        {
+        catch ( Exception e ) {
             showErrorMessage( e.getMessage(), "Adicinar PAD" );
         }
     }
@@ -438,7 +445,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         if ( selected.isEmpty() )
             return;
         List al = new ArrayList( selected );
-        PadFile padFile = new PadFile ( getLoggedInUser() );
+        PadFile padFile = new PadFile( getLoggedInUser() );
         try {
             for ( Iterator it = al.iterator(); it.hasNext(); ) {
                 Listitem li = ( Listitem )it.next();
@@ -505,7 +512,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    protected  MediaDTO addPadFile (FormDTO form, MediaDTO newPad ) throws ApplicationException
+    protected MediaDTO addPadFile( FormDTO form, MediaDTO newPad ) throws ApplicationException
     {
         MediaDTO dto = getSession().addFile( getLoggedInUser(), form, newPad );
         return dto;

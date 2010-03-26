@@ -8,7 +8,6 @@ import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
-import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.system.PgcFile;
 
 import com.anoto.api.core.NoSuchPermissionException;
@@ -18,7 +17,6 @@ import com.anoto.api.core.PenHome;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -81,28 +79,10 @@ public class AnotoPcgController extends LoggedBaseController
 
         try {
             pgcFile.uploadPgc( evt );
+            pgcFile.persist();
         }
-        catch ( IOException e ) {
+        catch ( Exception e ) {
             showErrorMessage( e.getMessage(), "Upload Media" );
-        }
-
-        for ( int nIndex = 0; nIndex < pgcFile.getPgcs().size(); nIndex++ ) {
-            PGCDTO pgc = new PGCDTO( pgcFile.getPgcs().get( nIndex ) );
-            //try {
-                //pgc = getSession().add( pgc );
-                ListModelList model = ( ListModelList )listboxRecord.getModel();
-                if ( SysUtils.isEmpty( model.getInnerList() ) ) {
-                    ArrayList<PGCDTO> list = new ArrayList<PGCDTO>();
-                    list.add( pgc );
-                    listboxRecord.setModel( new ListModelList( list, true ) );
-                }
-                else {
-                    model.add( pgc );
-                }
-            /*}
-            catch ( ApplicationException e ) {
-                showErrorMessage( e.getMessage(), "Upload Error" );
-            }*/
         }
     }
 
@@ -139,11 +119,10 @@ public class AnotoPcgController extends LoggedBaseController
         ListModelList list = ( ListModelList )gridProperties.getModel();
         list.clear();
 
-        addProperty( "Status do PGC", pgc.getPgcStatus() );
-
-        addProperty( "MagicBoxPage", pen.getMagicBoxPage() );
-        addProperty( "ProtocolVersion", pen.getProtocolVersion() );
         try {
+            addProperty( "Status do PGC", pgc.getPgcStatus() );
+            addProperty( "MagicBoxPage", pen.getMagicBoxPage() );
+            addProperty( "ProtocolVersion", pen.getProtocolVersion() );
             addProperty( "Bateria", "" + ( ( int )pen.getPenData().getBatteryLevel() ) );
             addProperty( "Custom", "" + pen.getPenData().getCustomAllocationData() );
             addProperty( "Form ID", "" + pen.getPenData().getFormId() );

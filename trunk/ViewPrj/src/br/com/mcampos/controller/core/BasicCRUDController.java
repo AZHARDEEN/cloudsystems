@@ -3,6 +3,8 @@ package br.com.mcampos.controller.core;
 
 import br.com.mcampos.exception.ApplicationException;
 
+import javax.ejb.EJBException;
+
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Div;
 
@@ -228,6 +230,9 @@ public abstract class BasicCRUDController extends LoggedBaseController
             }
             catch ( ApplicationException e ) {
                 showErrorMessage( "Ocorreu um erro ao tentar excluir o registro. A transação foi desfeita.", "Excluir Registro" );
+            }
+            catch ( EJBException e ) {
+                showErrorMessage( "Não é possível excluir o registro.", "Excluir Registro" );
             }
         }
     }

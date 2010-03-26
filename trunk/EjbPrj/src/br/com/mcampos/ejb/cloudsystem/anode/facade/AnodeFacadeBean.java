@@ -55,6 +55,8 @@ import javax.persistence.PersistenceContext;
 @TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 {
+    protected static final int SystemMessageTypeId = 7;
+
     @PersistenceContext( unitName = "EjbPrj" )
     private EntityManager em;
 
@@ -117,7 +119,12 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         authenticate( auth );
         if ( entity == null )
             throwCommomException( 3 );
-        formSession.delete( entity.getId() );
+        try {
+            formSession.delete( entity.getId() );
+        }
+        catch ( Exception e ) {
+            throwRuntimeException( 2 );
+        }
     }
 
     public FormDTO get( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
@@ -199,7 +206,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
     public Integer getMessageTypeId()
     {
-        return 7;
+        return SystemMessageTypeId;
     }
 
     public Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException
