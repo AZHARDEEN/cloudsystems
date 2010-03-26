@@ -1,7 +1,14 @@
 package br.com.mcampos.util.system;
 
 
+import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.system.MediaDTO;
+
+import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
+
+import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.util.locator.ServiceLocator;
+import br.com.mcampos.util.locator.ServiceLocatorException;
 
 import com.anoto.api.NoSuchPermissionException;
 import com.anoto.api.Pen;
@@ -22,6 +29,9 @@ public class PgcFile
 {
     List<MediaDTO> pgcs;
     String penId;
+    AnodeFacade session;
+
+    PGCDTO currentPgc;
 
     public PgcFile()
     {
@@ -43,81 +53,112 @@ public class PgcFile
     }
 
 
-    protected void setPenId ( String id )
+    protected void setPenId( String id )
     {
         penId = id;
     }
 
-    public String getPenId ()
+    public String getPenId()
     {
         return penId;
     }
 
-    public static String getPageAddress ( byte [] pgc )
+    public static String getPageAddress( byte[] pgc )
     {
         Pen pen = getPgcPenObject( pgc );
         Iterator it = pen.getPageAddresses();
         if ( it != null && it.hasNext() )
-            return (String) it.next();
+            return ( String )it.next();
         else
             return null;
     }
 
-    public void uploadPgc( UploadEvent evt ) throws IOException
+    public void uploadPgc( UploadEvent evt ) throws IOException, NoSuchPermissionException
     {
         MediaDTO dto;
         dto = UploadMedia.getMedia( evt.getMedia() );
-        uploadPgc ( dto );
+        uploadPgc( dto );
     }
 
 
-    public void uploadPgc ( MediaDTO dto ) throws IOException
+    public void uploadPgc( MediaDTO dto ) throws IOException, NoSuchPermissionException
     {
         if ( dto == null )
             return;
         Pen pen = getPgcPenObject( dto.getObject() );
-        try {
-            String strPen;
-
-            strPen = pen.getPenData().getPenSerial();
-            setPenId( strPen );
-        }
-        catch ( NoSuchPermissionException e ) {
-            e = null;
-        }
-        split ( pen, dto );
+        String strPen;
+        strPen = pen.getPenData().getPenSerial();
+        setPenId( strPen );
+        setCurrentPgc( new PGCDTO( dto ) );
     }
 
-    protected MediaDTO createMedia ( MediaDTO base, byte[] object, String prefix )
+    protected MediaDTO createMedia( MediaDTO base, byte[] object, String prefix )
     {
-        MediaDTO dto = new MediaDTO ();
+        MediaDTO dto = new MediaDTO();
         dto.setFormat( "pgc" );
         dto.setMimeType( base.getMimeType() );
-        dto.setName( prefix+ "_" + base.getName() );
+        dto.setName( prefix + "_" + base.getName() );
         dto.setObject( object );
         return dto;
     }
 
-    protected void split ( Pen pen, MediaDTO base ) throws IOException
+
+    /*
+    protected void split( Pen pen, MediaDTO base ) throws IOException
     {
         Iterator it = pen.split();
         int nIndex = 0;
-        while ( it != null && it.hasNext() )
-        {
-            Pen splittedPen = (Pen)it.next();
-            ByteArrayOutputStream out = new ByteArrayOutputStream ();
+        while ( it != null && it.hasNext() ) {
+            Pen splittedPen = ( Pen )it.next();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
             splittedPen.write( out );
-            nIndex ++;
-            MediaDTO dto = createMedia ( base, out.toByteArray(), "part_" + nIndex );
-            getPgcs().add ( dto );
+            nIndex++;
+            MediaDTO dto = createMedia( base, out.toByteArray(), "part_" + nIndex );
+            getPgcs().add( dto );
             out.close();
         }
     }
+    */
 
     public List<MediaDTO> getPgcs()
     {
         if ( pgcs == null )
-            pgcs = new ArrayList<MediaDTO> ();
+            pgcs = new ArrayList<MediaDTO>();
         return pgcs;
+    }
+
+
+    protected AnodeFacade getRemoteSession()
+    {
+        try {
+            return ( AnodeFacade )ServiceLocator.getInstance().getRemoteSession( AnodeFacade.class );
+        }
+        catch ( ServiceLocatorException e ) {
+            throw new NullPointerException( "Invalid EJB Session (possible null)" );
+        }
+    }
+
+
+    protected AnodeFacade getSession()
+    {
+        if ( session == null )
+            session = getRemoteSession();
+        return session;
+    }
+
+
+    public void persist() throws ApplicationException
+    {
+        getSession().add( getCurrentPgc(), getPenId(), "nil" );
+    }
+
+    public void setCurrentPgc( PGCDTO currentPgc )
+    {
+        this.currentPgc = currentPgc;
+    }
+
+    public PGCDTO getCurrentPgc()
+    {
+        return currentPgc;
     }
 }

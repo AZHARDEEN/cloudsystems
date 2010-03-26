@@ -15,7 +15,7 @@
                             <!-- Por favor, nao mude o id desta div -->
                             <tabbox>
                                 <tabs>
-                                    <tab id="tabIcr" label="ICR" />
+                                    <tab id="tabIcr" label="ICR"/>
                                     <tab id="tabPgc" label="Propriedades"/>
                                     <tab id="tabAttach" label="Anexos"/>
                                 </tabs>
@@ -29,15 +29,15 @@
                                                 </columns>
                                                 <rows>
                                                     <row>
-                                                        <label value="Campos do Formulário" />
+                                                        <label value="Campos do Formulário"/>
                                                         <combobox id="fields" width="80%"></combobox>
                                                     </row>
                                                     <row id="icrInfo">
-                                                        <label value="Reconhecimento" />
+                                                        <label value="Reconhecimento"/>
                                                         <label id="icrValue" width="80%"/>
                                                     </row>
                                                     <row id="correctedInfo">
-                                                        <label value="Correção" />
+                                                        <label value="Correção"/>
                                                         <textbox id="correctedValue" width="80%"/>
                                                     </row>
                                                 </rows>
@@ -52,9 +52,9 @@
                             </div>
                         </div>
                     </west>
-                    <center autoscroll="true" flex="true">
+                    <center autoscroll="true" flex="true" border="normal" id="centerImageArea">
                         <div>
-                            <div align="center" width="100%">
+                            <div align="center" width="100%" id="divImageButtons">
                                 <hbox>
                                     <toolbar>
                                         <toolbarbutton id="btnFit" label="Ajustar"
@@ -66,7 +66,9 @@
                                     </toolbar>
                                 </hbox>
                             </div>
-                            <imagemap id="pgcImage"></imagemap>
+                            <div align="center" id="divCenterImageArea">
+                                <imagemap id="pgcImage" align="center" border="normal"></imagemap>
+                            </div>
                         </div>
                     </center>
                 </borderlayout>

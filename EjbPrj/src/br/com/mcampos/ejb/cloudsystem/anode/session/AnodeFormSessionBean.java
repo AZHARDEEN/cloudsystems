@@ -42,6 +42,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
     public void delete( Integer key ) throws ApplicationException
     {
         delete( AnotoForm.class, key );
+        getEntityManager().flush();
     }
 
     public AnotoForm get( Integer key ) throws ApplicationException
@@ -154,7 +155,8 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         Query query;
         List<AnotoPen> list;
 
-        sqlQuery = "SELECT " + "pen_id_ch , pen_description_ch, pen_insert_dt " + "FROM anoto_pen " + "WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 )";
+        sqlQuery =
+                "SELECT " + "pen_id_ch , pen_description_ch, pen_insert_dt " + "FROM anoto_pen " + "WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 )";
         query = getEntityManager().createNativeQuery( sqlQuery, AnotoPen.class );
         query.setParameter( 1, form.getId() );
         try {

@@ -64,6 +64,8 @@ public class AnotoViewController extends AnotoLoggedController
     protected Label icrValue;
     protected Image fieldImage;
 
+    protected float factor = 1.0F;
+
 
     private PgcPenPageDTO dtoParam;
 
@@ -82,7 +84,6 @@ public class AnotoViewController extends AnotoLoggedController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
-        List<FormDTO> list = getSession().getForms( getLoggedInUser() );
         pgcImage.addEventListener( Events.ON_CLICK, new EventListener()
             {
                 public void onEvent( Event event )
@@ -123,25 +124,6 @@ public class AnotoViewController extends AnotoLoggedController
             return null;
     }
 
-    protected void showPgc( Treeitem item, MediaDTO media )
-    {
-        byte[] pgc;
-
-        try {
-            /*Obter o pgc*/
-            pgc = getPgc( item );
-            AnotoPageDTO pageDto = getPageDTO( item );
-            pgcImage.setContent( loadImage( getAppName( item ), pageDto, pgc, media ) );
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Mostrar Objeto" );
-        }
-        catch ( IOException e ) {
-            showErrorMessage( e.getMessage(), "Mostrar Objeto" );
-        }
-
-    }
-
     protected void showPgc( PgcPenPageDTO dto )
     {
         byte[] pgc;
@@ -154,7 +136,7 @@ public class AnotoViewController extends AnotoLoggedController
             if ( medias.size() > 0 ) {
                 background = medias.get( 0 );
             }
-            loadImage( dto.getPenPage().getPage().getPad().getForm(), dto.getPenPage().getPage(), pgc, background );
+            loadImage( dto.getPenPage().getPage().getPad().getForm(), dto.getPenPage().getPage(), pgc, background, factor );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Mostrar Objeto" );
@@ -294,10 +276,10 @@ public class AnotoViewController extends AnotoLoggedController
         }
     }
 
-    protected BufferedImage loadImage( FormDTO formDto, AnotoPageDTO pageDTO, byte[] pgc,
-                                       MediaDTO backGround ) throws ApplicationException, IOException
+    protected BufferedImage loadImage( FormDTO formDto, AnotoPageDTO pageDTO, byte[] pgc, MediaDTO backGround,
+                                       float factor ) throws ApplicationException, IOException
     {
-        PadFile file = new PadFile ( getLoggedInUser() );
+        PadFile file = new PadFile( getLoggedInUser() );
         if ( file.isRegistered( formDto ) == false ) {
             file.register( formDto );
         }
@@ -316,7 +298,8 @@ public class AnotoViewController extends AnotoLoggedController
                     renderer.setBackground( backgroundImagePath );
                 }
                 renderedImagePath = getRenderedImagePath( "rendered_image.png" );
-                renderer.renderToFile( renderedImagePath );
+                renderer.renderToFile( renderedImagePath, ( ( int )( page.getBounds().getWidth() * factor ) ),
+                                       ( ( int )( page.getBounds().getHeight() * factor ) ) );
                 BufferedImage img = loadImage( renderedImagePath );
                 loadAreas( page, img );
                 return img;
@@ -443,15 +426,32 @@ public class AnotoViewController extends AnotoLoggedController
         fieldImage.setContent( img );
     }
 
-    public void onOK$correctedValue ()
+    public void onOK$correctedValue()
     {
         int nIndex = fields.getSelectedIndex();
 
-        nIndex ++;
+        nIndex++;
         if ( nIndex >= fields.getItemCount() )
             nIndex = 0;
         fields.setSelectedIndex( nIndex );
         onSelect$fields();
         correctedValue.setFocus( true );
+    }
+
+    public void onClick$btnZoomIn()
+    {
+        factor += .1F;
+        if ( dtoParam != null ) {
+            showPgc( dtoParam );
+        }
+    }
+
+
+    public void onClick$btnZoomOut()
+    {
+        factor -= .1F;
+        if ( dtoParam != null ) {
+            showPgc( dtoParam );
+        }
     }
 }
