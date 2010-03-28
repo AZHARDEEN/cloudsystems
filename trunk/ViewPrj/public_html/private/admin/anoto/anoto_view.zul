@@ -5,7 +5,7 @@
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:20px;color:#0C7A9A" value="Visualização de PGC"/>
+                    <label style="font-size:20px;color:#0C7A9A" value="Visualização de Formulários"/>
                 </vbox>
             </north>
             <center flex="true" autoscroll="true">
@@ -15,9 +15,11 @@
                             <!-- Por favor, nao mude o id desta div -->
                             <tabbox>
                                 <tabs>
-                                    <tab id="tabIcr" label="ICR"/>
+                                    <tab id="tabIcr" label="Dados"/>
                                     <tab id="tabPgc" label="Propriedades"/>
-                                    <tab id="tabAttach" label="Anexos"/>
+                                    <tab id="tabAttach" label="Cód. Barras"/>
+                                    <tab id="tabAttach" label="Foto"/>
+                                    <tab id="tabAttach" label="GPS"/>
                                 </tabs>
                                 <tabpanels>
                                     <tabpanel>
@@ -75,22 +77,24 @@
                     <center autoscroll="true" flex="true" border="normal" id="centerImageArea">
                         <div width="100">
                             <grid width="100%">
-                            <columns >
-                                <column width="100px"/>
-                                <column />
-                            </columns>
-                            <rows>
-                                <row >
-                                    <label value="Logical Books" /> <paging id="pagingBooks" />
-                                </row>
-                                <row >
-                                    <label value="Pages" /> <paging id="pagingPages" />
-                                </row>
-                                <row id = "rowBackGroundImages">
-                                    <label value="Imagens de Fundo" />
-                                    <combobox id = "cmbBackgroundImages" width="90%" readonly="true"/>
-                                </row>
-                            </rows>
+                                <columns>
+                                    <column width="100px"/>
+                                    <column/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <label value="Logical Books"/>
+                                        <paging id="pagingBooks"/>
+                                    </row>
+                                    <row>
+                                        <label value="Pages"/>
+                                        <paging id="pagingPages"/>
+                                    </row>
+                                    <row id="rowBackGroundImages">
+                                        <label value="Imagens de Fundo"/>
+                                        <combobox id="cmbBackgroundImages" width="90%" readonly="true"/>
+                                    </row>
+                                </rows>
                             </grid>
                             <div align="center" width="100%" id="divImageButtons">
                                 <hbox>
