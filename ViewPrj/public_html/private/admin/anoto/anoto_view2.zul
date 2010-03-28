@@ -5,7 +5,7 @@
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:20px;color:#0C7A9A" value="PGC"/>
+                    <label style="font-size:20px;color:#0C7A9A" value="Pesquisa de Formulários"/>
                 </vbox>
             </north>
             <center flex="true" autoscroll="true">
