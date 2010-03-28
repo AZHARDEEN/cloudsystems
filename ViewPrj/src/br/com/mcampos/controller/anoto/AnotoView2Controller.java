@@ -244,7 +244,7 @@ public class AnotoView2Controller extends AnotoLoggedController
     }
 
 
-    public void onDoubleClick$resultList()
+    public void onSelect$resultList()
     {
         onClick$btnProperty();
     }

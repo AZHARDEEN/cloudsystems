@@ -7,7 +7,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.locator.ServiceLocator;
 import br.com.mcampos.util.locator.ServiceLocatorException;
-import br.com.mcampos.util.system.PgcFile;
+import br.com.mcampos.controller.anoto.util.PgcFile;
 
 import com.anoto.api.NoSuchPermissionException;
 

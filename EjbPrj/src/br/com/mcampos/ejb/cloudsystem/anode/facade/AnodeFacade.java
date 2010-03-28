@@ -124,7 +124,7 @@ public interface AnodeFacade
      * *************************************************************************
      */
 
-    PGCDTO add( PGCDTO dto, String penId, String address ) throws ApplicationException;
+    PGCDTO add( PGCDTO dto, String penId, List<String> pages ) throws ApplicationException;
 
     List<PGCDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException;
 

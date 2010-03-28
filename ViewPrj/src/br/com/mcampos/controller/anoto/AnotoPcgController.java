@@ -8,7 +8,7 @@ import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
-import br.com.mcampos.util.system.PgcFile;
+import br.com.mcampos.controller.anoto.util.PgcFile;
 
 import com.anoto.api.core.NoSuchPermissionException;
 import com.anoto.api.core.Pen;
