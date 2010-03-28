@@ -1,4 +1,4 @@
-package br.com.mcampos.util.system;
+package br.com.mcampos.controller.anoto.util;
 
 import org.jawin.COMException;
 import org.jawin.DispatchPtr;

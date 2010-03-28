@@ -47,23 +47,32 @@ public class PadFile
 
     protected Document document;
     protected AnodeFacade session;
-
     protected AuthenticationDTO currentUser;
+    protected FormDTO currentApplication;
 
 
-    public PadFile( AuthenticationDTO currentUser )
+    public PadFile( AuthenticationDTO currentUser, FormDTO application )
     {
         super();
-        this.currentUser = currentUser;
+        init ( currentUser, application );
     }
 
-    public PadFile( AuthenticationDTO currentUser, byte[] pad ) throws JDOMException, IOException
+    public PadFile( AuthenticationDTO currentUser, FormDTO application, byte[] pad ) throws JDOMException, IOException
     {
         super ( );
-        this.currentUser = currentUser;
+        init ( currentUser, application );
         ByteArrayInputStream is = new ByteArrayInputStream( pad );
         InputStreamReader reader = new InputStreamReader( is );
         load( reader );
+    }
+
+
+    protected void init ( AuthenticationDTO currentUser, FormDTO application )
+    {
+        this.currentUser = currentUser;
+        this.currentApplication = application;
+        if ( isRegistered( application ) == false )
+            register( application );
     }
 
 
@@ -242,10 +251,17 @@ public class PadFile
         return pen;
     }
 
+    public Pen getPen ( InputStream is ) throws PenCreationException
+    {
+        return getPen ( is, currentApplication.getApplication() );
+    }
+
     public static String getAnotoUserPath( int hash )
     {
         String path = "user_" + hash;
         return getPath( path );
     }
+
+
 
 }

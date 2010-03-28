@@ -1,22 +1,24 @@
 package br.com.mcampos.controller.anoto;
 
 
+import br.com.mcampos.controller.anoto.renderer.AttatchmentGridRenderer;
+import br.com.mcampos.controller.anoto.renderer.ComboMediaRenderer;
+import br.com.mcampos.controller.anoto.util.AnotoBook;
 import br.com.mcampos.controller.anoto.util.PadFile;
+import br.com.mcampos.controller.anoto.util.PgcFile;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
-import br.com.mcampos.dto.anoto.FormDTO;
-import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
+import com.anoto.api.Attachment;
 import com.anoto.api.Bounds;
 import com.anoto.api.IllegalValueException;
 import com.anoto.api.Page;
 import com.anoto.api.PageArea;
 import com.anoto.api.PageAreaException;
 import com.anoto.api.PageException;
-import com.anoto.api.Pen;
-import com.anoto.api.PenCreationException;
 import com.anoto.api.Renderer;
 import com.anoto.api.RendererFactory;
 
@@ -28,28 +30,33 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.ForwardEvent;
 import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zul.Area;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Div;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Imagemap;
+import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Paging;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.Treeitem;
+import org.zkoss.zul.event.PagingEvent;
 
 
 public class AnotoViewController extends AnotoLoggedController
@@ -68,7 +75,20 @@ public class AnotoViewController extends AnotoLoggedController
 
 
     private PgcPenPageDTO dtoParam;
+    private PadFile padFile;
+    private PgcFile pgcFile;
 
+
+
+    protected Grid gridProperties;
+    private Paging pagingBooks;
+    private Paging pagingPages;
+    private Row rowBackGroundImages;
+    private Combobox cmbBackgroundImages;
+    private Div divCenterImageArea;
+
+    private List<AnotoBook> books;
+    private Grid gridAttach;
 
     public AnotoViewController( char c )
     {
@@ -84,6 +104,8 @@ public class AnotoViewController extends AnotoLoggedController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
+        cmbBackgroundImages.setItemRenderer( new ComboMediaRenderer() );
+        gridAttach.setRowRenderer( new AttatchmentGridRenderer() );
         pgcImage.addEventListener( Events.ON_CLICK, new EventListener()
             {
                 public void onEvent( Event event )
@@ -92,10 +114,9 @@ public class AnotoViewController extends AnotoLoggedController
                 }
             } );
         if ( dtoParam != null ) {
-            showPgc( dtoParam );
+            getBooks ();
         }
     }
-
 
     @Override
     public ComponentInfo doBeforeCompose( org.zkoss.zk.ui.Page page, Component parent, ComponentInfo compInfo )
@@ -124,82 +145,59 @@ public class AnotoViewController extends AnotoLoggedController
             return null;
     }
 
-    protected void showPgc( PgcPenPageDTO dto )
+    protected void loadProperties()
     {
-        byte[] pgc;
+        if ( gridProperties == null || pagingBooks == null )
+            return;
+    }
 
+    protected void getBooks ()
+    {
+        books = getPgcFile().getBooks();
+
+        pagingBooks.setTotalSize( SysUtils.isEmpty( books ) == false ? books.size() : 0 );
+        pagingBooks.setActivePage( 0 );
+        pagingBooks.setPageSize( 1 );
+        pagingBooks.setAutohide( true );
+        configurePages( books == null ? null : books.get( 0 ) );
+
+    }
+
+    protected void loadBackgroundImages ( Page page )
+    {
+        List<MediaDTO> medias;
+
+
+        cmbBackgroundImages.getChildren().clear();
+        if ( page == null )
+            return;
         try {
-            /*Obter o pgc*/
-            pgc = getSession().getObject( getLoggedInUser(), dto.getPgc().getMedia() );
-            List<MediaDTO> medias = getSession().getImages( getLoggedInUser(), dto.getPenPage().getPage() );
-            MediaDTO background = null;
-            if ( medias.size() > 0 ) {
-                background = medias.get( 0 );
+            AnotoPageDTO dto = new AnotoPageDTO ( dtoParam.getPenPage().getPage().getPad(), page.getPageAddress() );
+            medias = getSession().getImages( getLoggedInUser(), dto );
+            rowBackGroundImages.setVisible( !SysUtils.isEmpty( medias ) );
+            for ( MediaDTO media : medias ) {
+                Comboitem item = new Comboitem ( media.toString() );
+                item.setValue( media );
+                cmbBackgroundImages.appendChild( item );
             }
-            loadImage( dto.getPenPage().getPage().getPad().getForm(), dto.getPenPage().getPage(), pgc, background, factor );
+            if ( cmbBackgroundImages.getItemCount() > 0 ) {
+                cmbBackgroundImages.setSelectedIndex( 0 );
+                onSelect$cmbBackgroundImages();
+            }
         }
         catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Mostrar Objeto" );
-        }
-        catch ( IOException e ) {
-            showErrorMessage( e.getMessage(), "Mostrar Objeto" );
+            showErrorMessage( e.getMessage(), "Imagens de Fundo" );
         }
     }
 
-    protected byte[] getPad( Treeitem childItem ) throws ApplicationException
+    /*
+    protected void showPgc( )
     {
-        Treeitem parentItem = childItem.getParentItem();
-        byte[] bRet = null;
-
-        while ( parentItem != null && ( parentItem.getValue() instanceof PadDTO ) == false )
-            parentItem = parentItem.getParentItem();
-        if ( parentItem == null )
-            return bRet;
-        PadDTO dto = ( PadDTO )parentItem.getValue();
-        bRet = getSession().getObject( getLoggedInUser(), dto.getMedia() );
-        return bRet;
+        if ( getPgcFile() == null )
+            return;
+        getBooks ();
     }
-
-    protected byte[] getPgc( Treeitem childItem ) throws ApplicationException
-    {
-        Treeitem parentItem = childItem.getParentItem();
-        byte[] bRet = null;
-
-        while ( parentItem != null && ( parentItem.getValue() instanceof PgcPenPageDTO ) == false )
-            parentItem = parentItem.getParentItem();
-        if ( parentItem == null )
-            return bRet;
-        PgcPenPageDTO dto = ( PgcPenPageDTO )parentItem.getValue();
-        bRet = getSession().getObject( getLoggedInUser(), dto.getPgc().getMedia() );
-        return bRet;
-    }
-
-
-    protected FormDTO getAppName( Treeitem childItem ) throws ApplicationException
-    {
-        Treeitem parentItem = childItem.getParentItem();
-
-        while ( parentItem != null && ( parentItem.getValue() instanceof FormDTO ) == false )
-            parentItem = parentItem.getParentItem();
-        if ( parentItem == null )
-            return null;
-        FormDTO dto = ( FormDTO )parentItem.getValue();
-        return dto;
-    }
-
-
-    protected AnotoPageDTO getPageDTO( Treeitem childItem ) throws ApplicationException
-    {
-        Treeitem parentItem = childItem.getParentItem();
-
-        while ( parentItem != null && ( parentItem.getValue() instanceof AnotoPageDTO ) == false )
-            parentItem = parentItem.getParentItem();
-        if ( parentItem == null )
-            return null;
-        AnotoPageDTO dto = ( AnotoPageDTO )parentItem.getValue();
-        return dto;
-    }
-
+    */
 
     protected BufferedImage loadImage( byte[] byteImage )
     {
@@ -224,7 +222,7 @@ public class AnotoViewController extends AnotoLoggedController
     }
 
 
-    protected void loadAreas( Page page, BufferedImage bufferedImage ) throws PageException, PageAreaException,
+    protected void loadAreas( Page page ) throws PageException, PageAreaException,
                                                                               IllegalValueException
     {
         Iterator it = page.getPageAreas();
@@ -235,7 +233,6 @@ public class AnotoViewController extends AnotoLoggedController
         try {
             while ( it.hasNext() ) {
                 PageArea pageArea = ( PageArea )it.next();
-
                 if ( pageArea.getType() != PageArea.DRAWING_AREA ) {
 
                     if ( pageArea.getType() != PageArea.USER_AREA )
@@ -248,10 +245,12 @@ public class AnotoViewController extends AnotoLoggedController
                     Area area = new Area();
                     area.setTooltiptext( pageArea.getName() );
                     area.setId( pgcImage.getId() + "_area_" + areaId++ );
+
                     Comboitem item = new Comboitem( pageArea.getName() );
                     item.setValue( pageArea );
                     area.setAttribute( "field", item );
                     fields.appendChild( item );
+
                     area.setAttribute( pageArea.getName(), pageArea );
                     area.setShape( "rect" );
                     area.setCoords( coords );
@@ -267,90 +266,15 @@ public class AnotoViewController extends AnotoLoggedController
                     pgcImage.appendChild( area );
                 }
             }
-            pgcImage.setContent( bufferedImage );
-            if ( fields.getChildren().size() > 0 )
+            if ( fields.getChildren().size() > 0 ) {
                 fields.setSelectedIndex( 0 );
+                onSelect$fields();
+            }
         }
         catch ( Exception e ) {
             showErrorMessage( e.getMessage(), "Logical Pages" );
         }
     }
-
-    protected BufferedImage loadImage( FormDTO formDto, AnotoPageDTO pageDTO, byte[] pgc, MediaDTO backGround,
-                                       float factor ) throws ApplicationException, IOException
-    {
-        PadFile file = new PadFile( getLoggedInUser() );
-        if ( file.isRegistered( formDto ) == false ) {
-            file.register( formDto );
-        }
-        Pen pen;
-        Page page;
-        String backgroundImagePath, renderedImagePath;
-
-        try {
-            pen = file.getPen( new ByteArrayInputStream( pgc ), formDto.getApplication() );
-            try {
-                page = pen.getPage( pageDTO.getPageAddress() );
-                Renderer renderer = RendererFactory.create( page );
-                renderer.useForce( true );
-                if ( backGround != null ) {
-                    backgroundImagePath = saveBackgroundImage( backGround );
-                    renderer.setBackground( backgroundImagePath );
-                }
-                renderedImagePath = getRenderedImagePath( "rendered_image.png" );
-                renderer.renderToFile( renderedImagePath, ( ( int )( page.getBounds().getWidth() * factor ) ),
-                                       ( ( int )( page.getBounds().getHeight() * factor ) ) );
-                BufferedImage img = loadImage( renderedImagePath );
-                loadAreas( page, img );
-                return img;
-            }
-            catch ( Exception e ) {
-                showErrorMessage( e.getMessage(), "Criar Anoto Pen" );
-            }
-        }
-        catch ( PenCreationException e ) {
-            showErrorMessage( e.getMessage(), "Criar Anoto Pen" );
-        }
-        return null;
-    }
-
-    /*
-    protected void registerApplication( FormDTO dto ) throws ApplicationException, IOException
-    {
-        String path;
-
-        dto.setPads( getSession().getPads( getLoggedInUser(), dto ) );
-        for ( PadDTO pad : dto.getPads() ) {
-            path = savePad( pad );
-            try {
-                PenHome.registerPad( dto.getApplication(), path );
-            }
-            catch ( Exception e ) {
-                showErrorMessage( e.getMessage(), "Register Pad" );
-            }
-        }
-    }
-    */
-
-
-    /*
-    protected String savePad( PadDTO dto ) throws ApplicationException, IOException
-    {
-        byte[] pad = getSession().getObject( getLoggedInUser(), dto.getMedia() );
-        String path = PadFile.getRegisteredPadPath( );
-        File f = new File( path );
-        if ( f.exists() == false )
-            f.mkdirs();
-        path += "/" + dto.getMedia().getName();
-        f = new File( path );
-        if ( f.exists() == false ) {
-            FileOutputStream writer = new FileOutputStream( f );
-            writer.write( pad );
-            writer.close();
-        }
-        return path;
-    }
-    */
 
 
     protected String saveBackgroundImage( MediaDTO dto ) throws ApplicationException, IOException
@@ -405,6 +329,28 @@ public class AnotoViewController extends AnotoLoggedController
         PageArea area = ( PageArea )fields.getSelectedItem().getValue();
         if ( area == null )
             return;
+        Page page = getPage ();
+
+        try {
+            if ( page.hasPenStrokes() ) {
+                fieldImage.setVisible( true );
+                Page logicalPage = ( Page )page.createLogicalPage( area.getPenStrokes() );
+                if ( logicalPage != null ) {
+                    fieldImage.setContent( ( BufferedImage ) logicalPage.render() );
+                }
+            }
+            else
+            {
+                fieldImage.setVisible( false );
+            }
+        }
+        catch ( Exception e )
+        {
+            fieldImage.setVisible( false );
+        }
+
+
+        /*
         AImage aImage = ( AImage )pgcImage.getContent();
         BufferedImage img;
         try {
@@ -420,10 +366,11 @@ public class AnotoViewController extends AnotoLoggedController
         fieldImage.setWidth( "" + ( int )bounds.getWidth() );
         fieldImage.setWidth( "" + ( int )bounds.getHeight() );
         img = img.getSubimage( ( int )bounds.getX(), ( int )bounds.getY(), ( int )bounds.getWidth(), ( int )bounds.getHeight() );
+        fieldImage.setContent( img );
+        */
         /*
          * TODO: OCR SHOULD BE HERE!!!!
          */
-        fieldImage.setContent( img );
     }
 
     public void onOK$correctedValue()
@@ -442,7 +389,7 @@ public class AnotoViewController extends AnotoLoggedController
     {
         factor += .1F;
         if ( dtoParam != null ) {
-            showPgc( dtoParam );
+            showPage ();
         }
     }
 
@@ -451,7 +398,186 @@ public class AnotoViewController extends AnotoLoggedController
     {
         factor -= .1F;
         if ( dtoParam != null ) {
-            showPgc( dtoParam );
+            showPage ( );
         }
+    }
+
+    protected PadFile getPadFile()
+    {
+        if ( padFile == null )
+            padFile = new PadFile ( getLoggedInUser(), dtoParam.getPenPage().getPage().getPad().getForm() );
+        return padFile;
+    }
+
+    protected void setPgcFile( PgcFile pgcFile )
+    {
+        this.pgcFile = pgcFile;
+    }
+
+    protected PgcFile getPgcFile()
+    {
+        if ( pgcFile == null ) {
+            pgcFile = new PgcFile ();
+            try {
+                pgcFile.setObject ( getPadFile(), getSession().getObject( getLoggedInUser(), dtoParam.getPgc().getMedia() ) );
+            }
+            catch ( Exception e ) {
+                showErrorMessage( e.getMessage(), "Erro lendo dados do PGC" );
+                pgcFile = null;
+            }
+        }
+        return pgcFile;
+    }
+
+    public void onPaging$pagingBooks ( ForwardEvent evt )
+    {
+        PagingEvent pageEvent = (PagingEvent) evt.getOrigin();
+
+        configurePages ( books.get ( pageEvent.getActivePage() ) );
+    }
+
+
+    protected void configurePages ( AnotoBook book )
+    {
+        if ( book != null ) {
+            pagingPages.setTotalSize( book.getPageCount() );
+            pagingPages.setActivePage( 0 );
+            pagingPages.setAutohide( true );
+            pagingPages.setPageSize( 1 );
+        }
+        else
+        {
+            pagingPages.setTotalSize( getPgcFile().getPageCount( 0 ) );
+            pagingPages.setActivePage( 0 );
+            pagingPages.setAutohide( true );
+            pagingPages.setPageSize( 1 );
+        }
+        loadBackgroundImages( getPage() );
+        showPage();
+    }
+
+
+    public void onPaging$pagingPages ( ForwardEvent evt )
+    {
+        PagingEvent pgEvt = (PagingEvent) evt.getOrigin();
+
+        pagingPages.setActivePage( pgEvt.getActivePage() );
+        loadBackgroundImages( getPage() );
+        showPage ( );
+    }
+
+
+    protected Page getPage ()
+    {
+        int book  = pagingBooks.getActivePage();
+        int page = pagingPages.getActivePage();
+        Page pageObject;
+
+        if ( books != null )
+             pageObject = books.get( book ).getPages().get( page );
+        else
+            pageObject = getPgcFile().getPage( page );
+        return pageObject;
+    }
+
+
+    protected void showPage ( )
+    {
+        Page page = getPage ();
+
+        try {
+            if ( page != null && page.hasPenStrokes() ) {
+                divCenterImageArea.setVisible( true );
+                rowBackGroundImages.setVisible( true );
+                render ( page );
+            }
+            else {
+                divCenterImageArea.setVisible( false );
+                rowBackGroundImages.setVisible( false );
+            }
+        }
+        catch ( PageException e ) {
+            divCenterImageArea.setVisible( false );
+            rowBackGroundImages.setVisible( false );
+        }
+    }
+
+
+    protected MediaDTO getBackgroundMedia ()
+    {
+        if ( rowBackGroundImages.isVisible() == false )
+            return null;
+        Comboitem item =  cmbBackgroundImages.getSelectedItem();
+        if ( item == null ) {
+            if ( cmbBackgroundImages.getItemCount() > 1 )
+                cmbBackgroundImages.setSelectedIndex( 0 );
+            item =  cmbBackgroundImages.getSelectedItem();
+            if ( item == null ) {
+                if ( cmbBackgroundImages.getModel() == null )
+                    return null;
+                ListModelList list = ( ListModelList ) cmbBackgroundImages.getModel();
+                if ( list.getSize() < 1 )
+                    return null;
+                return ( MediaDTO ) list.get( 0 );
+            }
+        }
+        return (MediaDTO) item.getValue();
+    }
+
+    protected void render ( Page page )
+    {
+        Renderer renderer;
+        String backgroundImagePath, renderedImagePath;
+
+        MediaDTO backGround = getBackgroundMedia ();
+        try {
+            renderer = RendererFactory.create( page );
+            //renderer.useForce( true );
+            if ( backGround != null ) {
+                backgroundImagePath = saveBackgroundImage( backGround );
+                renderer.setBackground( backgroundImagePath );
+            }
+            renderedImagePath = getRenderedImagePath( "rendered_image.png" );
+            renderer.renderToFile( renderedImagePath, ( ( int )( page.getBounds().getWidth() * factor ) ),
+                                   ( ( int )( page.getBounds().getHeight() * factor ) ) );
+            BufferedImage img = loadImage( renderedImagePath );
+            pgcImage.setContent( img );
+            loadAreas( page );
+            loadAttachments( page );
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage(), "Erro ao renderizar Imagem" );
+        }
+
+    }
+
+    protected void loadAttachments ( Page page ) throws PageException
+    {
+        if ( gridAttach.getRows() != null )
+            gridAttach.getRows().getChildren().clear ();
+        if ( page == null )
+            return;
+        if ( page.hasAttachments() )
+        {
+            Iterator it = page.getAttachments();
+            List<Attachment> attachments = null;
+            while ( it != null && it.hasNext() )
+            {
+                Attachment obj = (Attachment) it.next();
+                if ( obj != null )
+                {
+                    if ( attachments == null )
+                        attachments = new ArrayList<Attachment> ();
+                    attachments.add( obj );
+                }
+            }
+            if ( attachments != null )
+                gridAttach.setModel( new ListModelList ( attachments) );
+        }
+    }
+
+    public void onSelect$cmbBackgroundImages()
+    {
+        showPage();
     }
 }

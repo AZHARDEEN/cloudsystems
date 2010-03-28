@@ -24,7 +24,7 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = Pgc.findAllQueryName, query = "select o from Pgc o" ) } )
+@NamedQueries( { @NamedQuery( name = Pgc.findAllQueryName, query = "select o from Pgc o order by o.insertDate desc" ) } )
 @Table( name = "pgc" )
 public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 {

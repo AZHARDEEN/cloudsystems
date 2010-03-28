@@ -21,7 +21,7 @@
                                 </tabs>
                                 <tabpanels>
                                     <tabpanel>
-                                        <div id="divProperties">
+                                        <div id="divIcr">
                                             <grid width="100%" fixedLayout="true">
                                                 <columns>
                                                     <column align="left" width="30%"/>
@@ -43,17 +43,55 @@
                                                 </rows>
                                             </grid>
                                         </div>
+                                        <separator bar="true" height="10px"/>
+                                        <div width="100%" align="center">
+                                            <image id="fieldImage"/>
+                                        </div>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <div id="divProperties">
+                                            <grid width="100%" fixedLayout="true" id="gridProperties">
+                                                <columns>
+                                                    <column align="left" width="30%"/>
+                                                    <column align="left"/>
+                                                </columns>
+                                            </grid>
+                                        </div>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <div id="divAttach">
+                                            <grid width="100%" fixedLayout="true" id="gridAttach">
+                                                <columns>
+                                                    <column align="left" width="30%"/>
+                                                    <column align="left"/>
+                                                </columns>
+                                            </grid>
+                                        </div>
                                     </tabpanel>
                                 </tabpanels>
                             </tabbox>
-                            <separator bar="true" height="10px"/>
-                            <div width="100%" align="center">
-                                <image id="fieldImage"/>
-                            </div>
                         </div>
                     </west>
                     <center autoscroll="true" flex="true" border="normal" id="centerImageArea">
-                        <div>
+                        <div width="100">
+                            <grid width="100%">
+                            <columns >
+                                <column width="100px"/>
+                                <column />
+                            </columns>
+                            <rows>
+                                <row >
+                                    <label value="Logical Books" /> <paging id="pagingBooks" />
+                                </row>
+                                <row >
+                                    <label value="Pages" /> <paging id="pagingPages" />
+                                </row>
+                                <row id = "rowBackGroundImages">
+                                    <label value="Imagens de Fundo" />
+                                    <combobox id = "cmbBackgroundImages" width="90%" readonly="true"/>
+                                </row>
+                            </rows>
+                            </grid>
                             <div align="center" width="100%" id="divImageButtons">
                                 <hbox>
                                     <toolbar>

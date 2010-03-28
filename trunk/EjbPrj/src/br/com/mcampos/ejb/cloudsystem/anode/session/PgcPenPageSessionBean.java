@@ -98,7 +98,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         }
 
         if ( jpaWhere.length() > 0 )
-            jpaQuery += " WHERE " + jpaWhere;
+            jpaQuery += " WHERE " + jpaWhere + " ORDER BY o.pgc.insertDate desc ";
         Query query = getEntityManager().createQuery( jpaQuery );
         query.setMaxResults( 20 );
         if ( form != null )
