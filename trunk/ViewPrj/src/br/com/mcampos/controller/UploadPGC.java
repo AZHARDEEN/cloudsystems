@@ -57,6 +57,7 @@ public class UploadPGC extends HttpServlet
     protected void doGetPost( HttpServletRequest request, HttpServletResponse response, String method ) throws ServletException,
                                                                                                                IOException
     {
+        System.out.println ( "New pgc received.");
         response.setContentType( CONTENT_TYPE );
         if ( getPGC( request ) == true ) {
             response.addHeader( "Router-Commit-ASH", "true" );
@@ -112,8 +113,8 @@ public class UploadPGC extends HttpServlet
 
                 header = request.getHeader( "Content-Type" );
                 if ( SysUtils.isEmpty( header ) )
-                    return false;
-                if ( header.equals( "application/octet-stream" ) ) {
+                    return false; 
+                if ( header.startsWith( "application/octet-stream" ) ) {
                     header = request.getHeader( "Content-Length" );
                     if ( SysUtils.isEmpty( header ) == false ) {
                         int totalSize = Integer.parseInt( header );
