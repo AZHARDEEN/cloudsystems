@@ -235,8 +235,13 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
 
     protected void persist( Object treeItem )
     {
+        MenuDTO dto = null;
         try {
-            MenuDTO dto = getLocator().add( getLoggedInUser(), getValue( ( Treeitem )treeItem ) );
+            if ( isAddNewOperation() )
+                dto = getLocator().add( getLoggedInUser(), getValue( ( Treeitem )treeItem ) );
+            else
+                dto = getLocator().update( getLoggedInUser(), getValue( ( ( Treeitem )treeItem ) ) );
+
             if ( dto != null )
                 ( ( Treeitem )treeItem ).setValue( dto );
         }
@@ -247,14 +252,15 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
 
     protected void updateItem( Object treeItem )
     {
+        /*
         try {
-            MenuDTO dto = getLocator().update( getLoggedInUser(), getValue( ( ( Treeitem )treeItem ) ) );
             if ( dto != null )
                 ( ( Treeitem )treeItem ).setValue( dto );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Atualizar Menu" );
         }
+        */
     }
 
     protected void loadSequence()
@@ -344,7 +350,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         item.getChildren().add( new Listcell( dto.getDescription() ) );
     }
 
-    public void onClick$cmdTasks ()
+    public void onClick$cmdTasks()
     {
         Treeitem item = getTreeList().getSelectedItem();
 
