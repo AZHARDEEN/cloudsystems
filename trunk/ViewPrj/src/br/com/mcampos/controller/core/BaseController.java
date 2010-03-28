@@ -41,10 +41,11 @@ public abstract class BaseController extends GenericForwardComposer
     {
         Cookie[] cookies = ( ( HttpServletRequest )Executions.getCurrent().getNativeRequest() ).getCookies();
 
-
-        for ( Cookie cookie : cookies ) {
-            if ( name.equalsIgnoreCase( cookie.getName() ) )
-                return cookie.getValue();
+        if ( cookies != null ) {
+            for ( Cookie cookie : cookies ) {
+                if ( name.equalsIgnoreCase( cookie.getName() ) )
+                    return cookie.getValue();
+            }
         }
         return null;
     }
