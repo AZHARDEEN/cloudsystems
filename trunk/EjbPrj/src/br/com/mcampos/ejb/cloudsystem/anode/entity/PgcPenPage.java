@@ -22,7 +22,8 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries( { @NamedQuery( name = PgcPenPage.getAll, query = "select o from PgcPenPage o" ),
                  @NamedQuery( name = PgcPenPage.getAllPgcQueryName, query = "select o from PgcPenPage o where o.penPage = ?1" ),
-                 @NamedQuery( name = PgcPenPage.penGetAllPgcs, query = "select o from PgcPenPage o where o.penPage.pen = ?1" ) } )
+                 @NamedQuery( name = PgcPenPage.penGetAllPgcs, query = "select o from PgcPenPage o where o.penPage.pen = ?1" ),
+                 @NamedQuery( name = PgcPenPage.deleteFromPgc, query = "delete from PgcPenPage o where o.pgc = ?1" ) } )
 @Table( name = "pgc_pen_page" )
 @IdClass( PgcPenPagePK.class )
 public class PgcPenPage implements Serializable, EntityCopyInterface<PgcPenPageDTO>
@@ -30,6 +31,7 @@ public class PgcPenPage implements Serializable, EntityCopyInterface<PgcPenPageD
     public static final String getAll = "PgcPenPage.findAll";
     public static final String getAllPgcQueryName = "PgcPenPage.findAllPgc";
     public static final String penGetAllPgcs = "PgcPenPage.penGetAllPgcs";
+    public static final String deleteFromPgc = "PgcPenPage.deleteFromPgc";
 
 
     @Id

@@ -28,6 +28,7 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 
 
 public class AnotoPcgController extends LoggedBaseController
@@ -153,5 +154,25 @@ public class AnotoPcgController extends LoggedBaseController
         prop.name = name;
         prop.add( value );
         list.add( prop );
+    }
+
+    public void onClick$btnRemove()
+    {
+        Listitem item = listboxRecord.getSelectedItem();
+        if ( item != null ) {
+            PGCDTO dto = ( PGCDTO )item.getValue();
+            if ( dto != null ) {
+                try {
+                    getSession().delete( getLoggedInUser(), dto );
+                    ListModelList list = ( ListModelList )listboxRecord.getModel();
+                    if ( list != null ) {
+                        list.remove( dto );
+                    }
+                }
+                catch ( ApplicationException e ) {
+                    showErrorMessage( e.getMessage(), "Excluir PGC" );
+                }
+            }
+        }
     }
 }

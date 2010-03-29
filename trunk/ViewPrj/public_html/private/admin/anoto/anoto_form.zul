@@ -101,7 +101,8 @@
                                         <hbox>
                                             <vbox>
                                                 <label value="Associadas"/>
-                                                <listbox id="listAdded" fixedLayout="true" height="200px" droppable="true">
+                                                <listbox id="listAdded" fixedLayout="true" height="200px" width="200px"
+                                                         droppable="true">
                                                     <listhead sizable="true">
                                                         <listheader align="left" label="Código"/>
                                                     </listhead>
@@ -113,7 +114,8 @@
                                             </vbox>
                                             <vbox>
                                                 <label value="Disponíveis"/>
-                                                <listbox fixedLayout="true" id="listAvailable" height="200px" droppable="true">
+                                                <listbox fixedLayout="true" id="listAvailable" height="200px" width="200px"
+                                                         droppable="true">
                                                     <listhead sizable="true">
                                                         <listheader align="left" label="Código"/>
                                                     </listhead>

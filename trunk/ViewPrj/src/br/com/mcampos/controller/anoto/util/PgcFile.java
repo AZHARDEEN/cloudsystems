@@ -156,15 +156,14 @@ public class PgcFile
     }
 
 
-    protected List<String> getPageAddresess ()
+    protected List<String> getPageAddresess()
     {
         Iterator it = getCurrentPen().getPageAddresses();
         List<String> addresses = null;
-        while ( it != null & it.hasNext() )
-        {
+        while ( it != null & it.hasNext() ) {
             if ( addresses == null )
-                addresses = new ArrayList<String> ();
-            addresses.add( (String) it.next() );
+                addresses = new ArrayList<String>();
+            addresses.add( ( String )it.next() );
         }
         return addresses;
     }
@@ -185,12 +184,12 @@ public class PgcFile
         this.currentPen = currentPen;
     }
 
-    protected Pen getCurrentPen()
+    public Pen getCurrentPen()
     {
         return currentPen;
     }
 
-    public void setObject ( PadFile pad,  byte[] object ) throws PenCreationException
+    public void setObject( PadFile pad, byte[] object ) throws PenCreationException
     {
         setPad( pad );
         bytePgc = object;
@@ -208,15 +207,14 @@ public class PgcFile
     }
 
 
-    public int getBookCount ()
+    public int getBookCount()
     {
         try {
             Iterator it = getCurrentPen().getLogicalBooks();
             Iterator obj;
             int nCount = 0;
-            while ( it != null && it.hasNext() )
-            {
-                obj = (Iterator) it.next();
+            while ( it != null && it.hasNext() ) {
+                obj = ( Iterator )it.next();
                 nCount++;
             }
             return nCount;
@@ -227,18 +225,17 @@ public class PgcFile
         }
     }
 
-    public List<AnotoBook> getBooks ()
+    public List<AnotoBook> getBooks()
     {
         List<AnotoBook> books = null;
 
         Iterator bookIterator;
         try {
             bookIterator = getCurrentPen().getLogicalBooks();
-            while ( bookIterator != null && bookIterator.hasNext() )
-            {
+            while ( bookIterator != null && bookIterator.hasNext() ) {
                 if ( books == null )
-                    books = new ArrayList<AnotoBook> ();
-                AnotoBook ab = new AnotoBook ( (Iterator) bookIterator.next() );
+                    books = new ArrayList<AnotoBook>();
+                AnotoBook ab = new AnotoBook( ( Iterator )bookIterator.next() );
                 books.add( ab );
             }
             return books;
@@ -248,7 +245,7 @@ public class PgcFile
         }
     }
 
-    protected Iterator getBook ( int nIndex )
+    protected Iterator getBook( int nIndex )
     {
         if ( nIndex < 0 )
             return null;
@@ -260,41 +257,39 @@ public class PgcFile
         catch ( Exception e ) {
             return null;
         }
-        while ( it != null && it.hasNext() && nIndex >= 0 )
-        {
+        while ( it != null && it.hasNext() && nIndex >= 0 ) {
             book = ( Iterator )it.next();
-            nIndex --;
+            nIndex--;
         }
         if ( nIndex >= 0 )
             return null;
         return book;
     }
 
-    public Page getPage ( int book, int nIndex )
+    public Page getPage( int book, int nIndex )
     {
-        Iterator bookIt = getBook ( book );
+        Iterator bookIt = getBook( book );
         Page page = null;
         page = getPage( bookIt, nIndex );
         return page;
     }
 
 
-    public Page getPage ( Iterator book, int nIndex )
+    public Page getPage( Iterator book, int nIndex )
     {
         Page page = null;
         if ( book == null )
-            return getPage ( nIndex );
-        while ( book.hasNext() && nIndex >=0 )
-        {
-            page = ( Page ) book.next();
-            nIndex --;
+            return getPage( nIndex );
+        while ( book.hasNext() && nIndex >= 0 ) {
+            page = ( Page )book.next();
+            nIndex--;
         }
         if ( nIndex >= 0 )
             return null;
         return page;
     }
 
-    public Page getPage ( int nIndex )
+    public Page getPage( int nIndex )
     {
         Page page = null;
         Iterator it;
@@ -304,34 +299,30 @@ public class PgcFile
         catch ( PageException e ) {
             return null;
         }
-        while ( it != null && it.hasNext() && nIndex >= 0  )
-        {
-            page = (Page) it.next();
-            nIndex --;
+        while ( it != null && it.hasNext() && nIndex >= 0 ) {
+            page = ( Page )it.next();
+            nIndex--;
         }
         return page;
     }
 
-    public int getPageCount ( int nBook )
+    public int getPageCount( int nBook )
     {
         int nIndex = 0;
 
-        Iterator book = getBook ( nBook );
-        if ( book != null )
-        {
-            while ( book.hasNext() )
-            {
+        Iterator book = getBook( nBook );
+        if ( book != null ) {
+            while ( book.hasNext() ) {
                 book.next();
-                nIndex ++;
+                nIndex++;
             }
         }
         else {
             try {
                 Iterator it = getCurrentPen().getPages();
-                while ( it != null && it.hasNext() )
-                {
+                while ( it != null && it.hasNext() ) {
                     it.next();
-                    nIndex ++;
+                    nIndex++;
                 }
             }
             catch ( PageException e ) {
@@ -341,7 +332,7 @@ public class PgcFile
         return nIndex;
     }
 
-    public boolean hasLogicalBooks ()
+    public boolean hasLogicalBooks()
     {
         Iterator books;
         try {

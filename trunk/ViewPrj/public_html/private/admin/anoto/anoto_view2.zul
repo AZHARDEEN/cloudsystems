@@ -50,7 +50,9 @@
                                             <toolbarbutton id="btnFilter" label="Filtrar"
                                                            image="/img/icontexto-webdev-search-016x016.png"/>
                                             <toolbarbutton id="btnProperty" label="Visualizar"
-                                                           image="/img/icontexto-webdev-alert-016x016.png"/>
+                                                           image="/img/icontexto-webdev-info-016x016.png"></toolbarbutton>
+                                            <toolbarbutton id="btnRemove" label="Excluir"
+                                                           image="/img/icontexto-webdev-remove-016x016.png"></toolbarbutton>
                                         </toolbar>
                                     </hbox>
                                 </div>

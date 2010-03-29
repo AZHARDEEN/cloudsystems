@@ -244,11 +244,6 @@ public class AnotoView2Controller extends AnotoLoggedController
     }
 
 
-    public void onSelect$resultList()
-    {
-        onClick$btnProperty();
-    }
-
     public void onClick$btnProperty()
     {
         if ( resultList.getSelectedItem() != null ) {
@@ -316,4 +311,14 @@ public class AnotoView2Controller extends AnotoLoggedController
                 }
             } );
     }
+
+    public void onClick$btnRemove()
+    {
+        if ( resultList.getSelectedItem() != null ) {
+        }
+        else {
+            showErrorMessage( "Selecione um pgc da lista primeiro", "Visualizar PGC" );
+        }
+    }
+
 }

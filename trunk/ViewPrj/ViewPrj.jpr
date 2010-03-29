@@ -201,7 +201,7 @@
             <value n="name" v="Default"/>
             <value n="runActiveFile" v="false"/>
             <value n="saveAllBeforeRun" v="true"/>
-            <url n="targetURL" path="public_html/index.html"/>
+            <url n="targetURL" path="public_html/WEB-INF/web.xml"/>
          </hash>
          <hash n="web">
             <value n="custom" v="false"/>
