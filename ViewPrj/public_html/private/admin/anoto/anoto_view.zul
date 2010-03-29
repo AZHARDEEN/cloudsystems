@@ -17,9 +17,9 @@
                                 <tabs>
                                     <tab id="tabIcr" label="Dados"/>
                                     <tab id="tabPgc" label="Propriedades"/>
-                                    <tab id="tabAttach" label="Cód. Barras"/>
-                                    <tab id="tabAttach" label="Foto"/>
-                                    <tab id="tabAttach" label="GPS"/>
+                                    <tab id="tabbarCode" label="Cód. Barras"/>
+                                    <tab id="tabPhotos" label="Foto"/>
+                                    <tab id="tabGPS" label="GPS"/>
                                 </tabs>
                                 <tabpanels>
                                     <tabpanel>
@@ -57,6 +57,7 @@
                                                     <column align="left" width="30%"/>
                                                     <column align="left"/>
                                                 </columns>
+                                                <rows></rows>
                                             </grid>
                                         </div>
                                     </tabpanel>
@@ -83,11 +84,11 @@
                                 </columns>
                                 <rows>
                                     <row>
-                                        <label value="Logical Books"/>
+                                        <label value="Formulários"/>
                                         <paging id="pagingBooks"/>
                                     </row>
                                     <row>
-                                        <label value="Pages"/>
+                                        <label value="Páginas"/>
                                         <paging id="pagingPages"/>
                                     </row>
                                     <row id="rowBackGroundImages">

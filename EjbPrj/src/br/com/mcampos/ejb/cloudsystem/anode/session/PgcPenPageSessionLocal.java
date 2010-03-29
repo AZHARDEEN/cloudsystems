@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.cloudsystem.anode.session;
 
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PgcPenPagePK;
 import br.com.mcampos.ejb.session.core.CrudInterface;
@@ -23,4 +24,6 @@ public interface PgcPenPageSessionLocal
     void delete( PgcPenPagePK key ) throws ApplicationException;
 
     PgcPenPage get( PgcPenPagePK key ) throws ApplicationException;
+
+    void delete( Pgc entity ) throws ApplicationException;
 }

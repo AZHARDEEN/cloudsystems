@@ -51,18 +51,25 @@ public class AttatchmentGridRenderer implements RowRenderer
                 caracter = barCodeData[ nCount ];
                 sValue += caracter.toString();
             }
-            switch ( type ) {
-            case 1: barcode = new CodabarBarcode( sValue );
-                break;
-            case 2: barcode = new EAN13Barcode( sValue );
-                break;
-            case 3: break;
-            case 4: barcode = new Code39Barcode( sValue, false, true );
-                break;
-            case 5: barcode = new Code128Barcode( sValue );
-                break;
-            case 6: barcode = new Int2of5Barcode( sValue );
-                break;
+            try {
+                switch ( type ) {
+                case 1: barcode = new CodabarBarcode( sValue );
+                    break;
+                case 2: if ( sValue.length() > 12 )
+                        sValue = sValue.substring( 0, 12 );
+                    barcode = new EAN13Barcode( sValue );
+                    break;
+                case 3: break;
+                case 4: barcode = new Code39Barcode( sValue, false, true );
+                    break;
+                case 5: barcode = new Code128Barcode( sValue );
+                    break;
+                case 6: barcode = new Int2of5Barcode( sValue );
+                    break;
+                }
+            }
+            catch ( Exception e ) {
+                barcode = null;
             }
         }
         if ( barcode != null ) {

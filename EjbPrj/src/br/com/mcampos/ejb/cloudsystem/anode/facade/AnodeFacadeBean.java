@@ -539,5 +539,16 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         List<AnotoPenPage> list = pgcSession.get( getPageEntity( page ) );
         return AnotoUtils.toPenPageList( list );
     }
+
+
+    public void delete( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException
+    {
+        authenticate( auth );
+        Pgc entity = pgcSession.get( pgc.getId() );
+        if ( entity != null ) {
+            pgcPenPageSession.delete( entity );
+            pgcSession.delete( pgc.getId() );
+        }
+    }
 }
 

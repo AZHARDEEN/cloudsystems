@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PgcPenPagePK;
 import br.com.mcampos.ejb.session.core.Crud;
@@ -51,7 +52,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         String page;
         String pen;
 
-        form = ( AnotoForm ) ( props != null ? props.get( "form" ) : null );
+        form = ( AnotoForm )( props != null ? props.get( "form" ) : null );
         if ( form != null ) {
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
@@ -123,5 +124,12 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
     public PgcPenPage get( PgcPenPagePK key ) throws ApplicationException
     {
         return get( PgcPenPage.class, key );
+    }
+
+    public void delete( Pgc entity ) throws ApplicationException
+    {
+        Query query = getEntityManager().createNamedQuery( PgcPenPage.deleteFromPgc );
+        query.setParameter( 1, entity );
+        query.executeUpdate();
     }
 }

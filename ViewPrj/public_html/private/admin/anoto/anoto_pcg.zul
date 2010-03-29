@@ -15,6 +15,7 @@
                     <!-- Por favor, nao mude o id desta listbox -->
                     <toolbar>
                         <toolbarbutton id="btnAddAttach" upload="true,native" label="Enviar PGC"></toolbarbutton>
+                        <toolbarbutton id="btnRemove" label="Excluir PGC" image="/img/icontexto-webdev-remove-016x016.png"></toolbarbutton>
                     </toolbar>
                     <listbox id="listboxRecord" vflex="true">
                         <listhead sizable="true">

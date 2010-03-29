@@ -116,7 +116,8 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
             Menu entity = getEntityManager().find( Menu.class, dto.getId() );
             if ( entity == null )
                 throwCommomRuntimeException( 4 );
-            if ( entity.getSequence() != dto.getSequence() || entity.getParentMenu().getId() != dto.getParentId() ) {
+            if ( entity.getSequence() != dto.getSequence() ||
+                 ( entity.getParentMenu() != null && entity.getParentMenu().getId() != dto.getParentId() ) ) {
                 /*
                  * ou a sequence foi alterada ou o menu pai foi alterado.
                  * Em ambos os casos, deve-se verificar a existencia do para (parent_id + sequence)
