@@ -28,6 +28,7 @@ public class AnotoLoggedController extends LoggedBaseController
     }
 
 
+    @Override
     protected Object getRemoteSession( Class remoteClass )
     {
         try {

@@ -132,6 +132,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
         }
     }
 
+    @Override
     protected void showRecord( AnotoPageDTO record )
     {
         if ( record != null ) {
@@ -148,6 +149,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
         btnAddAttach.setDisabled( record == null );
     }
 
+    @Override
     protected Object createNewRecord()
     {
         return new AnotoPageDTO();
@@ -159,6 +161,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
         return dto;
     }
 
+    @Override
     protected List getRecordList()
     {
         try {
@@ -174,12 +177,14 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
     {
     }
 
+    @Override
     protected void clearRecordInfo()
     {
         editId.setValue( "" );
         editDescription.setValue( "" );
     }
 
+    @Override
     protected void prepareToInsert()
     {
         clearRecordInfo();
@@ -197,6 +202,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
         return null;
     }
 
+    @Override
     protected void persist( Object e )
     {
     }
@@ -364,19 +370,22 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
         }
     }
 
-    public void onSelect$listAttachs ()
+    public void onSelect$listAttachs()
     {
-        btnRemoveAttach.setDisabled(  false  );
+        btnRemoveAttach.setDisabled( false );
     }
 
+    @Override
     protected void delete( Object currentRecord )
     {
     }
 
+    @Override
     protected void afterDelete( Object currentRecord )
     {
     }
 
+    @Override
     protected Object saveRecord( Object currentRecord )
     {
         return null;

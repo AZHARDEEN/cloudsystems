@@ -42,6 +42,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
         return session;
     }
 
+    @Override
     protected void showRecord( PenDTO record )
     {
         if ( record != null ) {
@@ -56,6 +57,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
         }
     }
 
+    @Override
     protected Object createNewRecord()
     {
         return new PenDTO();
@@ -68,6 +70,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
         return dto;
     }
 
+    @Override
     public void render( Listitem item, Object value )
     {
         PenDTO dto = ( PenDTO )value;
@@ -78,17 +81,20 @@ public class AnotoPenController extends BasicListController<PenDTO>
         }
     }
 
+    @Override
     protected List getRecordList() throws ApplicationException
     {
         showRecord( null );
         return getSession().getPens( getLoggedInUser() );
     }
 
+    @Override
     protected void delete( Object currentRecord ) throws ApplicationException
     {
         getSession().delete( getLoggedInUser(), ( PenDTO )currentRecord );
     }
 
+    @Override
     protected Object saveRecord( Object record )
     {
         PenDTO dto = ( PenDTO )record;
@@ -96,12 +102,14 @@ public class AnotoPenController extends BasicListController<PenDTO>
         return dto;
     }
 
+    @Override
     protected void clearRecordInfo()
     {
         editId.setValue( "" );
         editDescription.setValue( "" );
     }
 
+    @Override
     protected void prepareToInsert()
     {
         clearRecordInfo();
@@ -109,6 +117,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
         editId.setDisabled( false );
     }
 
+    @Override
     protected Object prepareToUpdate( Object currentRecord )
     {
         PenDTO dto = ( PenDTO )currentRecord;
@@ -120,10 +129,11 @@ public class AnotoPenController extends BasicListController<PenDTO>
         return dto;
     }
 
+    @Override
     protected void persist( Object e ) throws ApplicationException
     {
         if ( isAddNewOperation() )
-            getSession().add( getLoggedInUser(), ( PenDTO )e  );
+            getSession().add( getLoggedInUser(), ( PenDTO )e );
         else
             getSession().update( getLoggedInUser(), ( PenDTO )e );
     }
