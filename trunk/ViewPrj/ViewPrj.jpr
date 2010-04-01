@@ -61,6 +61,10 @@
       <string v="oracle.tip.tools.ide.fabric.addin.SCAContentSetProvider/sca-content"/>
    </list>
    <value n="defaultPackage" v="viewprj"/>
+   <hash n="ejbModuleContainer">
+      <value n="dbConnection" v="PostgreSQL"/>
+      <value n="ejbVersion" v="3.0"/>
+   </hash>
    <hash n="oracle.adfdtinternal.model.ide.settings.ADFMSettings">
       <hash n="adfmContentSet">
          <list n="pattern-filters">
@@ -159,6 +163,103 @@
          <string v="-Xlint:-fallthrough"/>
          <string v="-Xlint:-serial"/>
          <string v="-Xlint:-unchecked"/>
+      </list>
+   </hash>
+   <hash n="oracle.jdeveloper.deploy.dt.DeploymentProfiles">
+      <hash n="profileDefinitions">
+         <hash n="WEB">
+            <hash n="appletArchives"/>
+            <hash n="appletFiles">
+               <value n="autoInclude" v="true"/>
+               <list n="selectionFilters">
+                  <string v="oracle.jdevimpl.deploy.common.JavaSelectionFilter"/>
+               </list>
+            </hash>
+            <hash n="archiveOptions">
+               <value n="compressed" v="true"/>
+               <value n="hasManifest" v="false"/>
+            </hash>
+            <value n="defaultConnection" v="IntegratedWebLogicServer"/>
+            <hash n="dependencies">
+               <list n="dependencyList">
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="../DtoPrj/DTOPrj.jpr"/>
+                     <value n="profileName" v="dtoprj"/>
+                  </hash>
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="../EjbPrj/EjbPrj.jpr"/>
+                     <value n="profileName" v="EjbPrj"/>
+                  </hash>
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="../SysUtils/SysUtils.jpr"/>
+                     <value n="profileName" v="sysutils"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="earURL" path="deploy/WEB.ear"/>
+            <value n="enterpriseAppName" v="WEB"/>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Web Files"/>
+                     <hash n="filters">
+                        <list n="rules"/>
+                     </hash>
+                     <value n="internalName" v="web-files"/>
+                     <value n="type" v="1"/>
+                  </hash>
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="WEB-INF/classes"/>
+                     <hash n="filters">
+                        <list n="rules"/>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="targetWithinJar" v="WEB-INF/classes"/>
+                     <value n="type" v="1"/>
+                  </hash>
+                  <hash>
+                     <value n="displayName" v="WEB-INF/lib"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="libraries"/>
+                     <value n="targetWithinJar" v="WEB-INF/lib"/>
+                     <value n="type" v="3"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/WEB.war"/>
+            <hash n="libraryDependencies">
+               <value n="IncludeLibrariesFromOtherContainers" v="true"/>
+            </hash>
+            <value n="platformType" v="WEBLOGIC"/>
+            <value n="platformVersion" v="10.3.0.0"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.war.WarProfile"/>
+            <value n="profileName" v="WEB"/>
+         </hash>
+      </hash>
+      <list n="profileList">
+         <string v="WEB"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">

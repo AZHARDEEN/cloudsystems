@@ -36,7 +36,32 @@
             </hash>
             <value n="defaultConnection" v="IntegratedWebLogicServer"/>
             <hash n="dependencies">
-               <list n="dependencyList"/>
+               <list n="dependencyList">
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="DtoPrj/DTOPrj.jpr"/>
+                     <value n="pathInEar" v=""/>
+                     <value n="profileName" v="dtoprj"/>
+                  </hash>
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="EjbPrj/EjbPrj.jpr"/>
+                     <value n="pathInEar" v=""/>
+                     <value n="profileName" v="EjbPrj"/>
+                  </hash>
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="SysUtils/SysUtils.jpr"/>
+                     <value n="pathInEar" v=""/>
+                     <value n="profileName" v="sysutils"/>
+                  </hash>
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="ViewPrj/ViewPrj.jpr"/>
+                     <value n="pathInEar" v=""/>
+                     <value n="profileName" v="WEB"/>
+                  </hash>
+               </list>
             </hash>
             <url n="earURL" path="deploy/cloudsystems.ear"/>
             <value n="enterpriseAppName" v="cloudsystems"/>

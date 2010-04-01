@@ -36,7 +36,10 @@
                                                     </row>
                                                     <row id="icrInfo">
                                                         <label value="Reconhecimento"/>
-                                                        <label id="icrValue" width="80%"/>
+                                                        <hbox >
+                                                            <label id="icrValue" width="80%"/>
+                                                            <button id="btnScan" label="ICR" />
+                                                        </hbox>
                                                     </row>
                                                     <row id="correctedInfo">
                                                         <label value="Correção"/>
