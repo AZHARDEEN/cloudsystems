@@ -4,6 +4,7 @@ package br.com.mcampos.controller.anoto;
 import br.com.mcampos.controller.anoto.renderer.AttatchmentGridRenderer;
 import br.com.mcampos.controller.anoto.renderer.ComboMediaRenderer;
 import br.com.mcampos.controller.anoto.util.AnotoBook;
+import br.com.mcampos.controller.anoto.util.ICRObject;
 import br.com.mcampos.controller.anoto.util.PadFile;
 import br.com.mcampos.controller.anoto.util.PgcFile;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
@@ -30,6 +31,7 @@ import com.anoto.api.RendererFactory;
 import java.awt.image.BufferedImage;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -44,6 +46,8 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.jawin.COMException;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -57,7 +61,6 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Grid;
-import org.zkoss.zul.Group;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Imagemap;
 import org.zkoss.zul.Label;
@@ -410,28 +413,42 @@ public class AnotoViewController extends AnotoLoggedController
             fieldImage.setVisible( false );
         }
         loadProperties( area );
-        /*
-        AImage aImage = ( AImage )pgcImage.getContent();
-        BufferedImage img;
-        try {
-            img = ImageIO.read( aImage.getStreamData() );
-        }
-        catch ( IOException e ) {
-            e = null;
-            img = null;
-        }
-        if ( img == null )
-            return;
-        Bounds bounds = area.getBounds();
-        fieldImage.setWidth( "" + ( int )bounds.getWidth() );
-        fieldImage.setWidth( "" + ( int )bounds.getHeight() );
-        img = img.getSubimage( ( int )bounds.getX(), ( int )bounds.getY(), ( int )bounds.getWidth(), ( int )bounds.getHeight() );
-        fieldImage.setContent( img );
-        */
-        /*
-         * TODO: OCR SHOULD BE HERE!!!!
-         */
     }
+
+    public void onClick$btnScan ()
+    {
+        ICRObject icr = new ICRObject();
+
+        org.zkoss.image.Image img = fieldImage.getContent();
+        if ( img != null )
+        {
+            String format = img.getFormat();
+            try {
+                BufferedImage bf_source = ImageIO.read( img.getStreamData() );
+                ByteArrayOutputStream out = new ByteArrayOutputStream ();
+                String path = PadFile.getAnotoUserPath( getLoggedInUser().hashCode() );
+                File file = new File ( path );
+                if ( file.exists() == false )
+                    file.mkdirs();
+                path += "\\field.jpg";
+                ImageIO.write( bf_source, "jpg", new File ( path ) );
+                try {
+                    String output = icr.process( path );
+                    if ( SysUtils.isEmpty( output ) == false )
+                        icrValue.setValue( output );
+                    else
+                        icrValue.setValue( "" );
+                }
+                catch ( COMException e ) {
+                    showErrorMessage( e.getMessage(), "ICR");
+                }
+            }
+            catch ( IOException e ) {
+                showErrorMessage( e.getMessage(), "Converter Imagem" );
+            }
+        }
+    }
+
 
     public void onOK$correctedValue()
     {
@@ -596,7 +613,7 @@ public class AnotoViewController extends AnotoLoggedController
                 backgroundImagePath = saveBackgroundImage( backGround );
                 renderer.setBackground( backgroundImagePath );
             }
-            renderedImagePath = getRenderedImagePath( "rendered_image.png" );
+            renderedImagePath = getRenderedImagePath( "rendered_image.jpg" );
             renderer.renderToFile( renderedImagePath, ( ( int )( page.getBounds().getWidth() * factor ) ),
                                    ( ( int )( page.getBounds().getHeight() * factor ) ) );
             BufferedImage img = loadImage( renderedImagePath );

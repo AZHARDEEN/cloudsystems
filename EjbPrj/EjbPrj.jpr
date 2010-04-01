@@ -145,6 +145,64 @@
       <value n="target" v="Default"/>
       <value n="webIANAEncoding" v="UTF-8"/>
    </hash>
+   <hash n="oracle.jdeveloper.deploy.dt.DeploymentProfiles">
+      <hash n="profileDefinitions">
+         <hash n="EjbPrj">
+            <hash n="archiveOptions">
+               <value n="compressed" v="true"/>
+               <value n="hasManifest" v="true"/>
+            </hash>
+            <value n="defaultConnection" v="IntegratedWebLogicServer"/>
+            <hash n="dependencies">
+               <list n="dependencyList">
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="../DtoPrj/DTOPrj.jpr"/>
+                     <value n="profileName" v="dtoprj"/>
+                  </hash>
+                  <hash>
+                     <value n="adapterClass" v="oracle.jdevimpl.deploy.common.DefaultProfileDependable"/>
+                     <url n="ownerURL" path="../SysUtils/SysUtils.jpr"/>
+                     <value n="profileName" v="sysutils"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="earURL" path="deploy/EjbPrj.ear"/>
+            <value n="enterpriseAppName" v="EjbPrj"/>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules"/>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/EjbPrj.jar"/>
+            <hash n="libraryDependencies">
+               <value n="IncludeLibrariesFromOtherContainers" v="true"/>
+            </hash>
+            <value n="platformType" v="WEBLOGIC"/>
+            <value n="platformVersion" v="10.3.0.0"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.ejb.EjbProfile"/>
+            <value n="profileName" v="EjbPrj"/>
+         </hash>
+      </hash>
+      <list n="profileList">
+         <string v="EjbPrj"/>
+      </list>
+   </hash>
    <hash n="oracle.jdeveloper.maven.compiler.MavenRunConfiguration">
       <list n="repositoryLocations">
          <url protocol="http" host="repo1.maven.org" path="/maven2/"/>
