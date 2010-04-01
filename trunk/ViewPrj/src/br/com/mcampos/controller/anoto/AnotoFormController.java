@@ -79,6 +79,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         return session;
     }
 
+    @Override
     protected Integer getNextId()
     {
         try {
@@ -98,11 +99,13 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         listAvailable.getChildren().clear();
     }
 
+    @Override
     protected Object createNewRecord()
     {
         return new FormDTO();
     }
 
+    @Override
     protected void delete( Object currentRecord ) throws ApplicationException
     {
         getSession().delete( getLoggedInUser(), ( FormDTO )currentRecord );
@@ -133,6 +136,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         return true;
     }
 
+    @Override
     protected void persist( Object e ) throws ApplicationException
     {
         FormDTO dto = ( FormDTO )e;
@@ -151,6 +155,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         return ( FormDTO )super.getValue( selecteItem );
     }
 
+    @Override
     protected List getRecordList() throws ApplicationException
     {
         btnAddAttach.setDisabled( true );
