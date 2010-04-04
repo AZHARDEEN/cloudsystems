@@ -59,6 +59,9 @@
     <class>br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus</class>
     <class>br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anode.entity.FormMedia</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anode.entity.PgcProcessedImage</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anode.entity.PgcAttachment</class>
     <properties>
       <property name="eclipselink.target-server" value="WebLogic 10"/>
       <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/PostgreSQLDS"/>

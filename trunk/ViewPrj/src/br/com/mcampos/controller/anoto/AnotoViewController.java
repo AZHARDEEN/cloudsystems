@@ -243,7 +243,7 @@ public class AnotoViewController extends AnotoLoggedController
             return;
         try {
             AnotoPageDTO dto = new AnotoPageDTO( dtoParam.getPenPage().getPage().getPad(), page.getPageAddress() );
-            medias = getSession().getImages( getLoggedInUser(), dto );
+            medias = getSession().getImages( dto );
             rowBackGroundImages.setVisible( !SysUtils.isEmpty( medias ) );
             for ( MediaDTO media : medias ) {
                 Comboitem item = new Comboitem( media.toString() );
@@ -348,7 +348,7 @@ public class AnotoViewController extends AnotoLoggedController
 
     protected String saveBackgroundImage( MediaDTO dto ) throws ApplicationException, IOException
     {
-        byte[] pad = getSession().getObject( getLoggedInUser(), dto );
+        byte[] pad = getSession().getObject( dto );
         String path = PadFile.getAnotoUserPath( getLoggedInUser().getSessionId().hashCode() );
         File f = new File( path );
         if ( f.exists() == false )
@@ -482,7 +482,7 @@ public class AnotoViewController extends AnotoLoggedController
     protected PadFile getPadFile()
     {
         if ( padFile == null )
-            padFile = new PadFile( getLoggedInUser(), dtoParam.getPenPage().getPage().getPad().getForm() );
+            padFile = new PadFile( dtoParam.getForm() );
         return padFile;
     }
 
@@ -496,7 +496,7 @@ public class AnotoViewController extends AnotoLoggedController
         if ( pgcFile == null ) {
             pgcFile = new PgcFile();
             try {
-                pgcFile.setObject( getPadFile(), getSession().getObject( getLoggedInUser(), dtoParam.getPgc().getMedia() ) );
+                pgcFile.setObject( getPadFile(), getSession().getObject( dtoParam.getPgc().getMedia() ) );
             }
             catch ( Exception e ) {
                 showErrorMessage( e.getMessage(), "Erro lendo dados do PGC" );

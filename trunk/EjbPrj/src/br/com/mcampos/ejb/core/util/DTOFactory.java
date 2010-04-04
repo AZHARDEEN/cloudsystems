@@ -10,6 +10,7 @@ import br.com.mcampos.dto.address.StateDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
+import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MediaDTO;
@@ -36,8 +37,11 @@ import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
+import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
 import br.com.mcampos.ejb.entity.address.AddressType;
 import br.com.mcampos.ejb.entity.address.City;
 import br.com.mcampos.ejb.entity.address.Country;
@@ -46,8 +50,6 @@ import br.com.mcampos.ejb.entity.address.State;
 import br.com.mcampos.ejb.entity.login.AccessLogType;
 import br.com.mcampos.ejb.entity.login.Login;
 import br.com.mcampos.ejb.entity.security.Subtask;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
 import br.com.mcampos.ejb.entity.system.SystemParameters;
 import br.com.mcampos.ejb.entity.user.Address;
 import br.com.mcampos.ejb.entity.user.Company;
@@ -808,5 +810,20 @@ public final class DTOFactory implements Serializable
         if ( source.getParent() != null )
             role.setParentRole( copy ( source.getParent() ) );
         return role;
+    }
+
+    public static PgcField copy ( PgcFieldDTO dto )
+    {
+        PgcField entity = new PgcField ();
+
+        entity.setBookId( dto.getBookId() );
+        entity.setIcrText( dto.getIrcText() );
+        entity.setName( dto.getName() );
+        entity.setPageId( dto.getPageId() );
+        entity.setRevisedText( dto.getRevisedText() );
+        entity.setPgc( copy ( dto.getPgc() ) );
+        entity.setHasPenstrokes( dto.getHasPenstrokes() );
+        entity.setType( dto.getType() );
+        return entity;
     }
 }

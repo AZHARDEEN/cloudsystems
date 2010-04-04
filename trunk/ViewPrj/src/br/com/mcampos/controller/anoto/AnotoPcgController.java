@@ -4,11 +4,11 @@ package br.com.mcampos.controller.anoto;
 import br.com.mcampos.controller.anoto.renderer.GridProperties;
 import br.com.mcampos.controller.anoto.renderer.PgcListRendered;
 import br.com.mcampos.controller.anoto.renderer.PropertyRowRenderer;
+import br.com.mcampos.controller.anoto.util.PgcFile;
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
-import br.com.mcampos.controller.anoto.util.PgcFile;
 
 import com.anoto.api.core.NoSuchPermissionException;
 import com.anoto.api.core.Pen;
@@ -104,7 +104,7 @@ public class AnotoPcgController extends LoggedBaseController
         PGCDTO dto = ( PGCDTO )listboxRecord.getSelectedItem().getValue();
 
         try {
-            byte[] bytepgc = getSession().getObject( getLoggedInUser(), dto.getMedia() );
+            byte[] bytepgc = getSession().getObject( dto.getMedia() );
             Pen pen = getPenObject( bytepgc );
             showProperties( pen, dto );
         }

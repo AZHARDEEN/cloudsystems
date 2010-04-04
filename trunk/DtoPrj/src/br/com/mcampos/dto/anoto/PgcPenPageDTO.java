@@ -1,10 +1,12 @@
 package br.com.mcampos.dto.anoto;
 
+
 import br.com.mcampos.dto.system.MediaDTO;
 
 import java.io.Serializable;
 
 import java.util.List;
+
 
 public class PgcPenPageDTO implements Comparable<PgcPenPageDTO>, Serializable
 {
@@ -132,5 +134,10 @@ public class PgcPenPageDTO implements Comparable<PgcPenPageDTO>, Serializable
     public List<MediaDTO> getBackgroundImages()
     {
         return backgroundImages;
+    }
+
+    public FormDTO getForm ()
+    {
+        return getPenPage().getPage().getPad().getForm();
     }
 }

@@ -7,6 +7,7 @@ import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
+import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
@@ -39,7 +40,7 @@ public interface AnodeFacade
 
     MediaDTO removeFromForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException;
 
-    List<PadDTO> getPads( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
+    List<PadDTO> getPads( FormDTO form ) throws ApplicationException;
 
     List<PenDTO> getAvailablePens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
 
@@ -83,7 +84,7 @@ public interface AnodeFacade
      * *************************************************************************
      */
 
-    byte[] getObject( AuthenticationDTO auth, MediaDTO key ) throws ApplicationException;
+    byte[] getObject( MediaDTO key ) throws ApplicationException;
 
     /* *************************************************************************
      * *************************************************************************
@@ -96,7 +97,7 @@ public interface AnodeFacade
 
     List<AnotoPageDTO> getPages( AuthenticationDTO auth, PadDTO pad ) throws ApplicationException;
 
-    List<MediaDTO> getImages( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException;
+    List<MediaDTO> getImages( AnotoPageDTO page ) throws ApplicationException;
 
     MediaDTO removeFromPage( AuthenticationDTO auth, AnotoPageDTO page, MediaDTO image ) throws ApplicationException;
 
@@ -134,5 +135,11 @@ public interface AnodeFacade
 
     List<PgcPenPageDTO> getAllPgcPenPage( AuthenticationDTO auth, Properties props ) throws ApplicationException;
 
+    List<PgcPenPageDTO> getPgcPenPages( PGCDTO pgc ) throws ApplicationException;
+
     void delete( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException;
+
+    void addProcessedImage ( PGCDTO pgc, MediaDTO media, int book, int page ) throws ApplicationException;
+
+    void addPgcField ( PgcFieldDTO dto ) throws ApplicationException;
 }
