@@ -4,6 +4,7 @@ package br.com.mcampos.controller.anoto.util;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
+import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.anoto.PgcStatusDTO;
@@ -300,12 +301,39 @@ public class PgcFile
         }
     }
 
-    protected void addAttachments ( PgcPenPageDTO pgcPenPage, Page page, int bookId, int pageId, String basePath ) throws PageException
+    protected void addAttachments ( PgcPenPageDTO pgcPenPage, Page page, int bookId, int pageId, String basePath ) throws PageException,
+                                                            ApplicationException
     {
+        PgcAttachmentDTO dto;
+
         if ( page.hasAttachments() ) {
             Iterator it = page.getAttachments();
             while ( it != null && it.hasNext() ) {
                 Attachment obj = ( Attachment )it.next();
+                dto = new PgcAttachmentDTO ();
+                dto.setBookId( bookId );
+                dto.setPageId( pageId );
+                dto.setPgc( pgcPenPage.getPgc() );
+                if ( obj.getType() == Attachment.ATTACHMENT_TYPE_BARCODE ) {
+                    dto.setType( 1 );
+                    byte[] barCodeData = obj.getData();
+                    dto.setBarcodeType( ( int ) barCodeData[ 0 ] );
+                    String sValue = "";
+                    Byte caracter;
+                    for ( int nCount = 1; nCount < barCodeData.length; nCount++ ) {
+                        caracter = barCodeData[ nCount ];
+                        sValue += caracter.toString();
+                    }
+                    if ( dto.getBarcodeType() == 2 )
+                    {
+                        if ( sValue.length() > 12 )
+                            sValue = sValue.substring( 0, 12 );
+                    }
+                    dto.setValue( sValue );
+                }
+                else
+                    dto.setType( 2 );
+                getSession().addPgcAttachment( dto );
             }
         }
     }

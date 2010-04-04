@@ -7,6 +7,7 @@ import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
+import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
@@ -18,6 +19,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.FormMedia;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcProcessedImage;
@@ -570,6 +572,16 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         PgcField field = DTOFactory.copy ( dto );
         field.setMedia( media );
         pgcSession.add( field );
+    }
+
+    public void addPgcAttachment ( PgcAttachmentDTO dto ) throws ApplicationException
+    {
+        Media media = null;
+        if ( dto.getMedia () != null )
+            media = mediaSession.add ( DTOFactory.copy ( dto.getMedia () ) );
+        PgcAttachment entity = DTOFactory.copy ( dto );
+        entity.setMedia( media );
+        pgcSession.add ( entity );
     }
 }
 
