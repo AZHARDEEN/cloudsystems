@@ -7,12 +7,10 @@ import java.io.Serializable;
 
 public class PgcFieldDTO implements Serializable, Comparable<PgcFieldDTO>
 {
-    private Integer bookId;
     private String ircText;
     private String name;
-    private Integer pageId;
     private String revisedText;
-    private PGCDTO pgc;
+    private PgcPageDTO pgcPage;
     private MediaDTO media;
     private Boolean hasPenstrokes;
     private Integer type;
@@ -22,15 +20,12 @@ public class PgcFieldDTO implements Serializable, Comparable<PgcFieldDTO>
         super();
     }
 
-    public void setBookId( Integer pfl_book_id )
+    public PgcFieldDTO( PgcPageDTO pgcPage )
     {
-        this.bookId = pfl_book_id;
+        super();
+        setPgcPage( pgcPage );
     }
 
-    public Integer getBookId()
-    {
-        return bookId;
-    }
 
     public void setIrcText( String pfl_icr_tx )
     {
@@ -52,16 +47,6 @@ public class PgcFieldDTO implements Serializable, Comparable<PgcFieldDTO>
         return name;
     }
 
-    public void setPageId( Integer pfl_page_id )
-    {
-        this.pageId = pfl_page_id;
-    }
-
-    public Integer getPageId()
-    {
-        return pageId;
-    }
-
     public void setRevisedText( String pfl_revised_tx )
     {
         this.revisedText = pfl_revised_tx;
@@ -72,15 +57,6 @@ public class PgcFieldDTO implements Serializable, Comparable<PgcFieldDTO>
         return revisedText;
     }
 
-    public void setPgc( PGCDTO pgc )
-    {
-        this.pgc = pgc;
-    }
-
-    public PGCDTO getPgc()
-    {
-        return pgc;
-    }
 
     public void setMedia( MediaDTO media )
     {
@@ -115,5 +91,15 @@ public class PgcFieldDTO implements Serializable, Comparable<PgcFieldDTO>
     public Integer getType()
     {
         return type;
+    }
+
+    public void setPgcPage( PgcPageDTO pgcPage )
+    {
+        this.pgcPage = pgcPage;
+    }
+
+    public PgcPageDTO getPgcPage()
+    {
+        return pgcPage;
     }
 }

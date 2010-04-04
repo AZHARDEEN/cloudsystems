@@ -7,6 +7,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcProcessedImage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus;
@@ -99,37 +100,41 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         return list;
     }
 
-    public void add ( PgcProcessedImage processedImage ) throws ApplicationException
+    public void add( PgcProcessedImage processedImage ) throws ApplicationException
     {
         getEntityManager().persist( processedImage );
     }
 
-    public void add ( PgcField pgcField ) throws ApplicationException
+    public void add( PgcField pgcField ) throws ApplicationException
     {
         getEntityManager().persist( pgcField );
     }
 
-    public void add ( PgcAttachment pgcField ) throws ApplicationException
+    public void add( PgcAttachment pgcField ) throws ApplicationException
     {
         Integer sequence;
 
-        sequence = getAttachmentSequence (pgcField);
+        sequence = getAttachmentSequence( pgcField );
         pgcField.setSequence( sequence );
         getEntityManager().persist( pgcField );
     }
 
-    protected Integer getAttachmentSequence ( PgcAttachment entity )
+    protected Integer getAttachmentSequence( PgcAttachment entity )
     {
         String sql;
 
-        sql = "SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID FROM  PGC_ATTACHMENT " +
-            "WHERE PGC_ID_IN = ?1 AND PAT_BOOK_ID = ?2 AND PAT_PAGE_ID = ?3 ";
+        sql = "SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID FROM  PGC_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PAT_BOOK_ID = ?2 AND PAT_PAGE_ID = ?3 ";
         Query query = getEntityManager().createNativeQuery( sql );
         query.setParameter( 1, entity.getPgcId() );
         query.setParameter( 2, entity.getBookId() );
         query.setParameter( 3, entity.getPageId() );
-        Integer id = (Integer) query.getSingleResult();
+        Integer id = ( Integer )query.getSingleResult();
         return id;
+    }
+
+    public void add( PgcPage entity ) throws ApplicationException
+    {
+        getEntityManager().persist( entity );
     }
 }
 

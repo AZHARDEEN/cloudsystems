@@ -12,6 +12,7 @@ import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
+import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MediaDTO;
@@ -40,6 +41,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
@@ -804,37 +806,40 @@ public final class DTOFactory implements Serializable
         return pgc;
     }
 
-    public static Role copy ( RoleDTO source )
+    public static Role copy( RoleDTO source )
     {
-        Role role = new Role ();
+        Role role = new Role();
         role.setId( source.getId() );
         role.setDescription( source.getDescription() );
         if ( source.getParent() != null )
-            role.setParentRole( copy ( source.getParent() ) );
+            role.setParentRole( copy( source.getParent() ) );
         return role;
     }
 
-    public static PgcField copy ( PgcFieldDTO dto )
+    public static PgcPage copy( PgcPageDTO dto )
     {
-        PgcField entity = new PgcField ();
+        PgcPage entity = new PgcPage( copy( dto.getPgc() ), dto.getBookId(), dto.getPageId() );
 
-        entity.setBookId( dto.getBookId() );
+        return entity;
+    }
+
+    public static PgcField copy( PgcFieldDTO dto )
+    {
+        PgcField entity = new PgcField();
+
         entity.setIcrText( dto.getIrcText() );
         entity.setName( dto.getName() );
-        entity.setPageId( dto.getPageId() );
         entity.setRevisedText( dto.getRevisedText() );
-        entity.setPgc( copy ( dto.getPgc() ) );
+        entity.setPgcPage( copy( dto.getPgcPage() ) );
         entity.setHasPenstrokes( dto.getHasPenstrokes() );
         entity.setType( dto.getType() );
         return entity;
     }
 
-    public static PgcAttachment copy ( PgcAttachmentDTO dto )
+    public static PgcAttachment copy( PgcAttachmentDTO dto )
     {
-        PgcAttachment entity = new PgcAttachment ();
-        entity.setBookId( dto.getBookId() );
-        entity.setPageId( dto.getPageId() );
-        entity.setPgc( copy ( dto.getPgc() ) );
+        PgcAttachment entity = new PgcAttachment();
+        entity.setPgcPage( copy( dto.getPgcPage() ) );
         entity.setSequence( dto.getSequence() );
         entity.setType( dto.getType() );
         entity.setValue( dto.getValue() );

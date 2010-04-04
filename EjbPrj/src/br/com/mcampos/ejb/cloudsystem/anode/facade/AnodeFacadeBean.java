@@ -9,6 +9,7 @@ import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
+import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
@@ -21,6 +22,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcProcessedImage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus;
@@ -187,6 +189,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     /*
      * Esta funcao nao possui autenticações pois necessita ser usado no upload de um pgc, o qual não possui usuário
      */
+
     public List<PadDTO> getPads( FormDTO form ) throws ApplicationException
     {
         AnotoForm entity = formSession.get( form.getId() );
@@ -541,8 +544,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     }
 
 
-
-
     public void delete( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException
     {
         authenticate( auth );
@@ -553,35 +554,40 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         }
     }
 
-    public void addProcessedImage ( PGCDTO pgc, MediaDTO media, int book, int page ) throws ApplicationException
+    public void addProcessedImage( PGCDTO pgc, MediaDTO media, int book, int page ) throws ApplicationException
     {
         Pgc entity = pgcSession.get( pgc.getId() );
-        if ( entity != null )
-        {
-            Media mediaEntity = mediaSession.add( DTOFactory.copy ( media) );
-            PgcProcessedImage pi = new PgcProcessedImage (entity, mediaEntity, book, page );
-            pgcSession.add ( pi );
+        if ( entity != null ) {
+            Media mediaEntity = mediaSession.add( DTOFactory.copy( media ) );
+            PgcProcessedImage pi = new PgcProcessedImage( new PgcPage( entity, book, page ), mediaEntity, book, page );
+            pgcSession.add( pi );
         }
     }
 
-    public void addPgcField ( PgcFieldDTO dto ) throws ApplicationException
+    public void addPgcField( PgcFieldDTO dto ) throws ApplicationException
     {
         Media media = null;
         if ( dto.getMedia() != null )
-             media = mediaSession.add( DTOFactory.copy ( dto.getMedia () ) );
-        PgcField field = DTOFactory.copy ( dto );
+            media = mediaSession.add( DTOFactory.copy( dto.getMedia() ) );
+        PgcField field = DTOFactory.copy( dto );
         field.setMedia( media );
         pgcSession.add( field );
     }
 
-    public void addPgcAttachment ( PgcAttachmentDTO dto ) throws ApplicationException
+    public void addPgcAttachment( PgcAttachmentDTO dto ) throws ApplicationException
     {
         Media media = null;
-        if ( dto.getMedia () != null )
-            media = mediaSession.add ( DTOFactory.copy ( dto.getMedia () ) );
-        PgcAttachment entity = DTOFactory.copy ( dto );
+        if ( dto.getMedia() != null )
+            media = mediaSession.add( DTOFactory.copy( dto.getMedia() ) );
+        PgcAttachment entity = DTOFactory.copy( dto );
         entity.setMedia( media );
-        pgcSession.add ( entity );
+        pgcSession.add( entity );
+    }
+
+    public void add( PgcPageDTO dto ) throws ApplicationException
+    {
+        PgcPage entity = DTOFactory.copy( dto );
+        pgcSession.add( entity );
     }
 }
 
