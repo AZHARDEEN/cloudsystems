@@ -177,10 +177,10 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
     /**
      * Obtém o próximo id disponível.
      * Esta função obtém o próximo número disponível para o id do Menu (Max(id)+1).
-     * Não há necessidade de usar sequence para inclusão visto que a atualização desta
+     * Não há necessidade de usar type para inclusão visto que a atualização desta
      * tabela é mímina.
      *
-     * @param auth.
+     * @param auth .
      * @return O próximo id disponível.
      */
     public Integer getNextMenuId( AuthenticationDTO auth ) throws ApplicationException
@@ -301,8 +301,8 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
 
 
     /**
-     * Verifica a existência de alguma sequence do menu no banco de dados.
-     * Existe uma chave única na tabela de menu que garante a unicidade do par (parent_id + sequence).
+     * Verifica a existência de alguma type do menu no banco de dados.
+     * Existe uma chave única na tabela de menu que garante a unicidade do par (parent_id + type).
      * Se existir tal combinação, o sistema deverá gerar outra.
      *
      * @param parent Id do menu pai (mnu_parent_id_in)

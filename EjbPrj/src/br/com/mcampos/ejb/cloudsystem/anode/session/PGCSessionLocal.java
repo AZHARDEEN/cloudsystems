@@ -5,7 +5,9 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcProcessedImage;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -31,7 +33,13 @@ public interface PGCSessionLocal
 
     List<AnotoPenPage> get( AnotoPage page ) throws ApplicationException;
 
+    List<PgcPenPage> get( Pgc pgc ) throws ApplicationException;
+
     List<PgcPenPage> getAll( AnotoPenPage penPage ) throws ApplicationException;
 
     List<PgcPenPage> getAll( AnotoPen pen ) throws ApplicationException;
+
+    void add ( PgcProcessedImage processedImage ) throws ApplicationException;
+
+    void add ( PgcField pgcField ) throws ApplicationException;
 }

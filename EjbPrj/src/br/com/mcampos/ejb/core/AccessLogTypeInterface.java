@@ -20,10 +20,10 @@ public interface AccessLogTypeInterface
     /**
      * Obtém o próximo id disponível.
      * Esta função obtém o próximo número disponível para o id do Menu (Max(id)+1).
-     * Não há necessidade de usar sequence para inclusão visto que a atualização desta
+     * Não há necessidade de usar type para inclusão visto que a atualização desta
      * tabela é mímina.
      *
-     * @param auth.
+     * @param auth .
      * @return O próximo id disponível.
      * @throws ApplicationException
      */

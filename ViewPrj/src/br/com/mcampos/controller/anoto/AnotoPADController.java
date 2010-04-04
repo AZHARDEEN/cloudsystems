@@ -219,7 +219,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
         List<MediaDTO> list;
         ListModelList model = null;
         try {
-            list = getSession().getImages( getLoggedInUser(), current );
+            list = getSession().getImages( current );
             model = new ListModelList( list );
             return model;
         }

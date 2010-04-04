@@ -1,22 +1,37 @@
 package br.com.mcampos.controller.anoto.util;
 
 
+import br.com.mcampos.dto.anoto.AnotoPageDTO;
+import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
+import br.com.mcampos.dto.anoto.PgcFieldDTO;
+import br.com.mcampos.dto.anoto.PgcPenPageDTO;
+import br.com.mcampos.dto.anoto.PgcStatusDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.locator.ServiceLocator;
 import br.com.mcampos.util.locator.ServiceLocatorException;
 import br.com.mcampos.util.system.UploadMedia;
 
+import com.anoto.api.Attachment;
 import com.anoto.api.NoSuchPermissionException;
+import com.anoto.api.NotAllowedException;
 import com.anoto.api.Page;
+import com.anoto.api.PageArea;
 import com.anoto.api.PageException;
 import com.anoto.api.Pen;
 import com.anoto.api.PenCreationException;
+import com.anoto.api.RenderException;
+import com.anoto.api.Renderer;
+import com.anoto.api.RendererFactory;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,20 +55,6 @@ public class PgcFile
         super();
     }
 
-    protected static com.anoto.api.Pen getPgcPenObject( byte[] pgcByteArray )
-    {
-        ByteArrayInputStream is = new ByteArrayInputStream( pgcByteArray );
-        com.anoto.api.Pen pen = null;
-        try {
-            pen = com.anoto.api.PenHome.read( is );
-        }
-        catch ( PenCreationException e ) {
-            System.err.println( e.getMessage() );
-            pen = null;
-        }
-        return pen;
-    }
-
     protected void setPenId( String id )
     {
         penId = id;
@@ -64,9 +65,12 @@ public class PgcFile
         return penId;
     }
 
+    /*
+     * Without PAD file information
+     */
     public static String getPageAddress( byte[] pgc )
     {
-        Pen pen = getPgcPenObject( pgc );
+        Pen pen = PadFile.getPen( pgc );
         Iterator it = pen.getPageAddresses();
         if ( it != null && it.hasNext() )
             return ( String )it.next();
@@ -86,7 +90,7 @@ public class PgcFile
     {
         if ( dto == null )
             return;
-        setCurrentPen( getPgcPenObject( dto.getObject() ) );
+        setCurrentPen( PadFile.getPen( dto.getObject() ) );
         String strPen;
         strPen = getCurrentPen().getPenData().getPenSerial();
         setPenId( strPen );
@@ -101,6 +105,38 @@ public class PgcFile
         dto.setName( prefix + "_" + base.getName() );
         dto.setObject( object );
         return dto;
+    }
+
+    protected MediaDTO createMedia( String media )
+    {
+        MediaDTO dto = new MediaDTO();
+        dto.setFormat( "jpg" );
+        dto.setMimeType( "image" );
+        dto.setName( "renderedImage.jpg" );
+        File file = new File ( media );
+        InputStream is;
+        int length = (int)file.length();
+        byte[] bytes = new byte[ length ];
+        int offset = 0;
+        int numRead = 0;
+        try {
+            is = new FileInputStream(file);
+            while (offset < bytes.length
+                   && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+                offset += numRead;
+            }
+            if (offset < bytes.length) {
+                 throw new IOException("Could not completely read file "+file.getName());
+             }
+
+             // Close the input stream and return bytes
+             is.close();
+            dto.setObject( bytes );
+            return dto;
+        }
+        catch ( Exception e ) {
+            return null;
+        }
     }
 
 
@@ -150,11 +186,191 @@ public class PgcFile
 
     public void persist() throws ApplicationException
     {
+        FormDTO form;
         PGCDTO pgc = getCurrentPgc();
         List<String> addresses = getPageAddresess();
-        getSession().add( getCurrentPgc(), getPenId(), addresses );
+        PGCDTO insertedPgc = getSession().add( getCurrentPgc(), getPenId(), addresses );
+
+
+        if ( insertedPgc.getPgcStatus().getId() != PgcStatusDTO.statusOk )
+            return;
+        List<PgcPenPageDTO> pgcsPenPage = getSession().getPgcPenPages( insertedPgc );
+        if ( SysUtils.isEmpty( pgcsPenPage ) )
+            return;
+        /*
+         * All pgcpenpage MUST belong to one and one only form
+         */
+        form = pgcsPenPage.get( 0 ).getForm();
+        if ( getPad() == null )
+            setPad( new PadFile ( form ) );
+        if ( getPad().isRegistered( form ) == false )
+            getPad().register( form );
+        setCurrentPen( PadFile.getPen( pgc.getMedia().getObject(), form.getApplication() ) );
+        try {
+            setObject( getPad(), pgc.getMedia().getObject() );
+            processPGC ( pgcsPenPage.get( 0 ) );
+        }
+        catch ( PenCreationException e ) {
+            return;
+        }
     }
 
+    protected void processPGC ( PgcPenPageDTO pgcPenPage )
+    {
+        List<AnotoBook> books = null;
+        List<Page> pages = null;
+        int nPageIndex = 0;
+        int nBookIndex = 0;
+
+        books = getBooks();
+        pages = null;
+        if ( SysUtils.isEmpty( books ) ) {
+            pages = getPages();
+            if ( SysUtils.isEmpty( pages ) )
+                return;
+            for ( Page page : pages )
+            {
+                processPage ( pgcPenPage, 0, nPageIndex, page );
+                nPageIndex ++;
+            }
+        }
+        else
+        {
+            for ( AnotoBook book : books )
+            {
+                for ( Page page : book.getPages() )
+                {
+                    processPage ( pgcPenPage, nBookIndex, nPageIndex, page );
+                    nPageIndex ++;
+                }
+                nBookIndex ++;
+            }
+        }
+    }
+
+
+    protected void processPage ( PgcPenPageDTO pgcPenPage, int nBookIndex, int nPageIndex, Page page )
+    {
+        String basePath;
+
+
+        basePath = String.format( "%s/%s/%s/%d", pgcPenPage.getForm().getApplication(),
+                                  pgcPenPage.getPenPage().getPage().getPad().getMedia().getName(),
+                                  page.getPageAddress(),
+                                  pgcPenPage.getPgc().getId() );
+        basePath = PadFile.getPath(basePath);
+        File file = new File ( basePath );
+        if ( file.exists() == false )
+            file.mkdirs();
+        try {
+            addAnotoImages( pgcPenPage, page, basePath, nBookIndex, nPageIndex );
+            addFields( pgcPenPage.getPgc(), page, nBookIndex, nPageIndex, basePath );
+            addAttachments( pgcPenPage, page, nBookIndex, nPageIndex, basePath );
+        }
+        catch ( Exception e ) {
+            return;
+        }
+    }
+
+    protected void addAnotoImages (PgcPenPageDTO pgcPenPage, Page page, String basePath, int nBookIndex, int nPageIndex ) throws RenderException,
+                                                      NotAllowedException,
+                                                            ApplicationException
+    {
+        Renderer renderer;
+        List<MediaDTO> backgroundImages = loadBackgroundImages( pgcPenPage, page );
+        String renderedImage = basePath + "/renderedImage.jpg";
+
+        renderer = RendererFactory.create( page );
+        if ( SysUtils.isEmpty( backgroundImages ) )
+        {
+            renderer.renderToFile( renderedImage, 200 );
+        }
+        else
+        {
+            for ( MediaDTO image : backgroundImages )
+            {
+                String imagePath = basePath + "/background" ;
+                byte [] object = getSession().getObject( image );
+                renderer.setBackground( getPad().saveBackgroundImage( imagePath, image.getName(), object ) );
+                renderer.renderToFile( renderedImage, 200 );
+                MediaDTO media = createMedia( renderedImage );
+                if ( media != null )
+                    getSession().addProcessedImage( pgcPenPage.getPgc(), media, nBookIndex, nPageIndex );
+            }
+        }
+    }
+
+    protected void addAttachments ( PgcPenPageDTO pgcPenPage, Page page, int bookId, int pageId, String basePath ) throws PageException
+    {
+        if ( page.hasAttachments() ) {
+            Iterator it = page.getAttachments();
+            while ( it != null && it.hasNext() ) {
+                Attachment obj = ( Attachment )it.next();
+            }
+        }
+    }
+
+    protected void addFields ( PGCDTO pgc, Page page, int bookId, int pageId, String basePath )
+    {
+        Iterator it = page.getPageAreas();
+        PageArea pageArea = null;
+        PgcFieldDTO fieldDTO;
+
+
+        while ( it != null && it.hasNext () )
+        {
+            pageArea = (PageArea)it.next();
+            if ( pageArea.getType() == PageArea.DRAWING_AREA )
+                continue;
+            if ( pageArea.getType() != PageArea.USER_AREA )
+                continue;
+            fieldDTO = new PgcFieldDTO ();
+            fieldDTO.setBookId( bookId );
+            fieldDTO.setName( pageArea.getName() );
+            fieldDTO.setPageId( pageId );
+            fieldDTO.setPgc( pgc );
+            fieldDTO.setHasPenstrokes( pageArea.hasPenStrokes() );
+            pageArea.getType();
+            if ( fieldDTO.getHasPenstrokes() )
+            {
+                Renderer renderer;
+                try {
+                    renderer = RendererFactory.create( pageArea );
+                    String path = basePath + "/" + "field.jpg";
+                    renderer.renderToFile( path, 200 );
+                    MediaDTO media = createMedia( path );
+                    fieldDTO.setMedia( media );
+                }
+                catch ( Exception e ) {
+                    e = null;
+                }
+            }
+            try {
+                getSession().addPgcField( fieldDTO );
+            }
+            catch ( ApplicationException e ) {
+                e = null;
+            }
+        }
+    }
+
+
+    protected List<MediaDTO> loadBackgroundImages( PgcPenPageDTO pgcPenPage, Page page )
+    {
+        List<MediaDTO> medias = null;
+
+
+        if ( page == null )
+            return medias;
+        try {
+            AnotoPageDTO dto = new AnotoPageDTO( pgcPenPage.getPenPage().getPage().getPad(), page.getPageAddress() );
+            medias = getSession().getImages( dto );
+            return medias;
+        }
+        catch ( ApplicationException e ) {
+            return medias;
+        }
+    }
 
     protected List<String> getPageAddresess()
     {
@@ -243,6 +459,26 @@ public class PgcFile
         catch ( Exception e ) {
             return books;
         }
+    }
+
+    public List<Page> getPages ()
+    {
+        Iterator it;
+        List<Page> list = null;
+
+        try {
+            it = getCurrentPen().getPages();
+            while ( it != null && it.hasNext() )
+            {
+                if ( list == null )
+                    list = new ArrayList<Page> ();
+                list.add ( (Page) it.next() );
+            }
+        }
+        catch ( PageException e ) {
+            list = null;
+        }
+        return list;
     }
 
     protected Iterator getBook( int nIndex )

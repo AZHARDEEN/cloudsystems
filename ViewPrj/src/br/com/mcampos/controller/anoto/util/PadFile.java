@@ -3,7 +3,6 @@ package br.com.mcampos.controller.anoto.util;
 
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
-import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
@@ -47,29 +46,27 @@ public class PadFile
 
     protected Document document;
     protected AnodeFacade session;
-    protected AuthenticationDTO currentUser;
     protected FormDTO currentApplication;
 
 
-    public PadFile( AuthenticationDTO currentUser, FormDTO application )
+    public PadFile( FormDTO application )
     {
         super();
-        init ( currentUser, application );
+        init ( application );
     }
 
-    public PadFile( AuthenticationDTO currentUser, FormDTO application, byte[] pad ) throws JDOMException, IOException
+    public PadFile( FormDTO application, byte[] pad ) throws JDOMException, IOException
     {
         super ( );
-        init ( currentUser, application );
+        init ( application );
         ByteArrayInputStream is = new ByteArrayInputStream( pad );
         InputStreamReader reader = new InputStreamReader( is );
         load( reader );
     }
 
 
-    protected void init ( AuthenticationDTO currentUser, FormDTO application )
+    protected void init ( FormDTO application )
     {
-        this.currentUser = currentUser;
         this.currentApplication = application;
         if ( isRegistered( application ) == false )
             register( application );
@@ -184,6 +181,25 @@ public class PadFile
         return getPath( "registeredPads" ) + "/" + appName;
     }
 
+    public String saveBackgroundImage ( String path, String name, byte[] object )
+    {
+        File f = new File( path );
+        if ( f.exists() == false )
+            f.mkdirs();
+        path += "/" + name;
+        f = new File( path );
+        FileOutputStream writer;
+        try {
+            writer = new FileOutputStream( f );
+            writer.write( object );
+            writer.close();
+            return path;
+        }
+        catch ( Exception e ) {
+            return null;
+        }
+    }
+
 
     protected boolean register ( FormDTO form, String padFileName ) throws IllegalValueException,
                                                          FormatException,
@@ -200,12 +216,12 @@ public class PadFile
     public void register ( FormDTO form )
     {
         try {
-            List<PadDTO> pads = getSession().getPads( currentUser, form );
+            List<PadDTO> pads = getSession().getPads( form );
             if ( SysUtils.isEmpty( pads ) )
                 return;
             for ( PadDTO pad : pads )
             {
-                pad.getMedia().setObject( getSession().getObject( currentUser, pad.getMedia() ) );
+                pad.getMedia().setObject( getSession().getObject( pad.getMedia() ) );
                 PenHome.registerPad( form.getApplication(), savePad( form, pad.getMedia() ) );
             }
         }
@@ -239,7 +255,7 @@ public class PadFile
         }
     }
 
-    public Pen getPen ( InputStream is, String appName ) throws PenCreationException
+    public static Pen getPen ( InputStream is, String appName ) throws PenCreationException
     {
         Pen pen = PenHome.read( is, appName );
         try {
@@ -260,6 +276,34 @@ public class PadFile
     {
         String path = "user_" + hash;
         return getPath( path );
+    }
+
+    public static com.anoto.api.Pen getPen( byte[] pgcByteArray, String appName )
+    {
+        ByteArrayInputStream is = new ByteArrayInputStream( pgcByteArray );
+        com.anoto.api.Pen pen = null;
+        try {
+            pen = getPen( is, appName );
+        }
+        catch ( PenCreationException e ) {
+            System.err.println( e.getMessage() );
+            pen = null;
+        }
+        return pen;
+    }
+
+    public static com.anoto.api.Pen getPen( byte[] pgcByteArray )
+    {
+        ByteArrayInputStream is = new ByteArrayInputStream( pgcByteArray );
+        com.anoto.api.Pen pen = null;
+        try {
+            pen = PenHome.read( is );
+        }
+        catch ( PenCreationException e ) {
+            System.err.println( e.getMessage() );
+            pen = null;
+        }
+        return pen;
     }
 
 

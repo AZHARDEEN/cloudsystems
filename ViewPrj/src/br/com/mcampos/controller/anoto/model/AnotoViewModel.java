@@ -83,7 +83,7 @@ public class AnotoViewModel extends AbstractTreeModel
     {
         if ( SysUtils.isEmpty( pgc.getBackgroundImages() ) ) {
             try {
-                pgc.setBackgroundImages( getSession().getImages( getCurrentUser(), pgc.getPenPage().getPage() ) );
+                pgc.setBackgroundImages( getSession().getImages( pgc.getPenPage().getPage() ) );
             }
             catch ( ApplicationException e ) {
                 e = null;
@@ -96,7 +96,7 @@ public class AnotoViewModel extends AbstractTreeModel
     {
         if ( SysUtils.isEmpty( form.getPads() ) ) {
             try {
-                form.setPads( getSession().getPads( getCurrentUser(), form ) );
+                form.setPads( getSession().getPads( form ) );
             }
             catch ( ApplicationException e ) {
                 e = null;

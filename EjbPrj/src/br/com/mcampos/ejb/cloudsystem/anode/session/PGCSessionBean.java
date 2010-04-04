@@ -5,7 +5,9 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcProcessedImage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
@@ -73,6 +75,12 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         return ( List<AnotoPenPage> )getResultList( AnotoPenPage.pagePensQueryName, page );
     }
 
+    public List<PgcPenPage> get( Pgc pgc ) throws ApplicationException
+    {
+        return ( List<PgcPenPage> )getResultList( PgcPenPage.getAllFromPGC, pgc );
+    }
+
+
     public List<PgcPenPage> getAll( AnotoPenPage penPage ) throws ApplicationException
     {
         List<PgcPenPage> list;
@@ -86,6 +94,16 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         List<PgcPenPage> list;
         list = ( List<PgcPenPage> )getResultList( PgcPenPage.penGetAllPgcs, pen );
         return list;
+    }
+
+    public void add ( PgcProcessedImage processedImage ) throws ApplicationException
+    {
+        getEntityManager().persist( processedImage );
+    }
+
+    public void add ( PgcField pgcField ) throws ApplicationException
+    {
+        getEntityManager().persist( pgcField );
     }
 
 }

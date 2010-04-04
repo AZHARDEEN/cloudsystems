@@ -1,15 +1,19 @@
 package br.com.mcampos.ejb.cloudsystem.anode.utils;
 
 
+import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
+import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -88,12 +92,35 @@ public class AnotoUtils
     }
 
 
+    public static List<PgcPenPageDTO> toPgcPenPageList( List<PgcPenPage> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<PgcPenPageDTO> dtoList = new ArrayList<PgcPenPageDTO>( list.size() );
+        for ( PgcPenPage f : list ) {
+            dtoList.add( f.toDTO() );
+        }
+        return dtoList;
+    }
+
+
     public static List<AnotoPenPageDTO> toPenPageList( List<AnotoPenPage> list )
     {
         if ( SysUtils.isEmpty( list ) )
             return Collections.emptyList();
         List<AnotoPenPageDTO> dtoList = new ArrayList<AnotoPenPageDTO>( list.size() );
         for ( AnotoPenPage f : list ) {
+            dtoList.add( f.toDTO() );
+        }
+        return dtoList;
+    }
+
+    public static List<AnotoPageDTO> toPageList( List<AnotoPage> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<AnotoPageDTO> dtoList = new ArrayList<AnotoPageDTO>( list.size() );
+        for ( AnotoPage f : list ) {
             dtoList.add( f.toDTO() );
         }
         return dtoList;

@@ -22,7 +22,13 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "AnotoPenPage.findAll", query = "select o from AnotoPenPage o" ), @NamedQuery( name = AnotoPenPage.pageAvailablePensQueryName, query = "select o from AnotoPenPage o where o.page <> ?1" ), @NamedQuery( name = AnotoPenPage.pagePensQueryName, query = "select o from AnotoPenPage o where o.page = ?1" ), @NamedQuery( name = AnotoPenPage.formPensQueryName, query = "select o from AnotoPenPage o where o.page.pad.form = ?1" ), @NamedQuery( name = AnotoPenPage.formAndPenQueryName, query = "select o from AnotoPenPage o where o.page.pad.form = ?1 and o.pen = ?2" ), @NamedQuery( name = AnotoPenPage.pagePenQueryName, query = "select o from AnotoPenPage o where o.page = ?1 and o.pen = ?2" ) } )
+@NamedQueries( { @NamedQuery( name = "AnotoPenPage.findAll", query = "select o from AnotoPenPage o" ),
+                 @NamedQuery( name = AnotoPenPage.pageAvailablePensQueryName, query = "select o from AnotoPenPage o where o.page <> ?1" ),
+                 @NamedQuery( name = AnotoPenPage.pagePensQueryName, query = "select o from AnotoPenPage o where o.page = ?1" ),
+                 @NamedQuery( name = AnotoPenPage.formPensQueryName, query = "select o from AnotoPenPage o where o.page.pad.form = ?1" ),
+                 @NamedQuery( name = AnotoPenPage.formAndPenQueryName, query = "select o from AnotoPenPage o where o.page.pad.form = ?1 and o.pen = ?2" ),
+                 @NamedQuery( name = AnotoPenPage.pagePenQueryName, query = "select o from AnotoPenPage o where o.page = ?1 and o.pen = ?2" )
+                 } )
 @Table( name = "anoto_pen_page" )
 @IdClass( AnotoPenPagePK.class )
 public class AnotoPenPage implements Serializable, EntityCopyInterface<AnotoPenPageDTO>
@@ -32,6 +38,7 @@ public class AnotoPenPage implements Serializable, EntityCopyInterface<AnotoPenP
     public static final String formPensQueryName = "AnotoPenPage.getFormPens";
     public static final String formAndPenQueryName = "AnotoPenPage.getFormAndPen";
     public static final String pagePenQueryName = "AnotoPenPage.getPagePen";
+    public static final String pgcQueryName = "AnotoPenPage.getPenPageFromPGC";
 
     @Id
     @Column( name = "apg_id_ch", nullable = false, insertable = false, updatable = false )
