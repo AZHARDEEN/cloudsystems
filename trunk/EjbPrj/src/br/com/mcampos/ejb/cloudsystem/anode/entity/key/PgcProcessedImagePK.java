@@ -4,30 +4,28 @@ import java.io.Serializable;
 
 public class PgcProcessedImagePK implements Serializable
 {
-    private Integer med_id_in;
-    private Integer pgc_id_in;
-    private Integer ppi_book_id;
-    private Integer ppi_page_id;
+    private Integer mediaId;
+    private Integer pgcId;
+    private Integer bookId;
+    private Integer pageId;
 
     public PgcProcessedImagePK()
     {
     }
 
-    public PgcProcessedImagePK( Integer med_id_in, Integer pgc_id_in,
-                                Integer ppi_book_id, Integer ppi_page_id )
+    public PgcProcessedImagePK( Integer med_id_in, Integer pgc_id_in, Integer ppi_book_id, Integer ppi_page_id )
     {
-        this.med_id_in = med_id_in;
-        this.pgc_id_in = pgc_id_in;
-        this.ppi_book_id = ppi_book_id;
-        this.ppi_page_id = ppi_page_id;
+        this.mediaId = med_id_in;
+        this.pgcId = pgc_id_in;
+        this.bookId = ppi_book_id;
+        this.pageId = ppi_page_id;
     }
 
     public boolean equals( Object other )
     {
-        if (other instanceof PgcProcessedImagePK) {
-            final PgcProcessedImagePK otherPgcProcessedImagePK = (PgcProcessedImagePK) other;
-            final boolean areEqual =
-                (otherPgcProcessedImagePK.med_id_in.equals(med_id_in) && otherPgcProcessedImagePK.pgc_id_in.equals(pgc_id_in) && otherPgcProcessedImagePK.ppi_book_id.equals(ppi_book_id) && otherPgcProcessedImagePK.ppi_page_id.equals(ppi_page_id));
+        if ( other instanceof PgcProcessedImagePK ) {
+            final PgcProcessedImagePK otherPgcProcessedImagePK = ( PgcProcessedImagePK )other;
+            final boolean areEqual = ( otherPgcProcessedImagePK.mediaId.equals( mediaId ) && otherPgcProcessedImagePK.pgcId.equals( pgcId ) && otherPgcProcessedImagePK.bookId.equals( bookId ) && otherPgcProcessedImagePK.pageId.equals( pageId ) );
             return areEqual;
         }
         return false;
@@ -38,43 +36,43 @@ public class PgcProcessedImagePK implements Serializable
         return super.hashCode();
     }
 
-    Integer getMed_id_in()
+    Integer getMediaId()
     {
-        return med_id_in;
+        return mediaId;
     }
 
-    void setMed_id_in( Integer med_id_in )
+    void setMediaId( Integer med_id_in )
     {
-        this.med_id_in = med_id_in;
+        this.mediaId = med_id_in;
     }
 
-    Integer getPgc_id_in()
+    Integer getPgcId()
     {
-        return pgc_id_in;
+        return pgcId;
     }
 
-    void setPgc_id_in( Integer pgc_id_in )
+    void setPgcId( Integer pgc_id_in )
     {
-        this.pgc_id_in = pgc_id_in;
+        this.pgcId = pgc_id_in;
     }
 
-    Integer getPpi_book_id()
+    Integer getBookId()
     {
-        return ppi_book_id;
+        return bookId;
     }
 
-    void setPpi_book_id( Integer ppi_book_id )
+    void setBookId( Integer ppi_book_id )
     {
-        this.ppi_book_id = ppi_book_id;
+        this.bookId = ppi_book_id;
     }
 
-    Integer getPpi_page_id()
+    Integer getPageId()
     {
-        return ppi_page_id;
+        return pageId;
     }
 
-    void setPpi_page_id( Integer ppi_page_id )
+    void setPageId( Integer ppi_page_id )
     {
-        this.ppi_page_id = ppi_page_id;
+        this.pageId = ppi_page_id;
     }
 }

@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -18,61 +19,47 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "PgcField.findAll", query = "select o from PgcField o")
-})
+@NamedQueries( { @NamedQuery( name = "PgcField.findAll", query = "select o from PgcField o" ) } )
 @Table( name = "pgc_field" )
 @IdClass( PgcFieldPK.class )
 public class PgcField implements Serializable
 {
-    @Column( name="med_id_in", insertable = false, updatable = false )
+    @Column( name = "med_id_in", insertable = false, updatable = false )
     private Integer mediaId;
     @Id
-    @Column( name="pfl_book_id", nullable = false )
+    @Column( name = "ppg_book_id", nullable = false, insertable = false, updatable = false )
     private Integer bookId;
-    @Column( name="pfl_icr_tx" )
+    @Column( name = "pfl_icr_tx" )
     private String icrText;
     @Id
-    @Column( name="pfl_name_ch", nullable = false )
+    @Column( name = "pfl_name_ch", nullable = false )
     private String name;
     @Id
-    @Column( name="pfl_page_id", nullable = false )
+    @Column( name = "ppg_page_id", nullable = false, insertable = false, updatable = false )
     private Integer pageId;
-    @Column( name="pfl_revised_tx" )
+    @Column( name = "pfl_revised_tx" )
     private String revisedText;
     @Id
-    @Column( name="pgc_id_in", nullable = false, insertable = false, updatable = false )
+    @Column( name = "pgc_id_in", nullable = false, insertable = false, updatable = false )
     private Integer pgcId;
-    @Column( name="pfl_type_in" )
+    @Column( name = "pfl_type_in" )
     private Integer type;
 
-    @Column( name="pfl_has_penstrokes_bt" )
+    @Column( name = "pfl_has_penstrokes_bt" )
     private Boolean hasPenstrokes;
 
-
-    @ManyToOne
-    @JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" )
-    private Pgc pgc;
 
     @ManyToOne
     @JoinColumn( name = "med_id_in", referencedColumnName = "med_id_in" )
     private Media media;
 
+    @ManyToOne
+    @JoinColumns( { @JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" ), @JoinColumn( name = "ppg_book_id", referencedColumnName = "ppg_book_id" ), @JoinColumn( name = "ppg_page_id", referencedColumnName = "ppg_page_id" ) } )
+    private PgcPage pgcPage;
+
+
     public PgcField()
     {
-    }
-
-    public PgcField( Integer med_id_in, Integer pfl_book_id, String pfl_icr_tx,
-                     String pfl_name_ch, Integer pfl_page_id,
-                     String pfl_revised_tx, Integer pgc_id_in )
-    {
-        this.mediaId = med_id_in;
-        this.bookId = pfl_book_id;
-        this.icrText = pfl_icr_tx;
-        this.name = pfl_name_ch;
-        this.pageId = pfl_page_id;
-        this.revisedText = pfl_revised_tx;
-        this.pgcId = pgc_id_in;
     }
 
     public Integer getMediaId()
@@ -145,17 +132,6 @@ public class PgcField implements Serializable
         this.pgcId = pgc_id_in;
     }
 
-    public void setPgc( Pgc pgc )
-    {
-        this.pgc = pgc;
-        if ( pgc != null )
-            setPgcId( pgc.getId() );
-    }
-
-    public Pgc getPgc()
-    {
-        return pgc;
-    }
 
     public void setMedia( Media media )
     {
@@ -187,5 +163,20 @@ public class PgcField implements Serializable
     public Integer getType()
     {
         return type;
+    }
+
+    public void setPgcPage( PgcPage pgcPage )
+    {
+        this.pgcPage = pgcPage;
+        if ( pgcPage != null ) {
+            setBookId( pgcPage.getBookId() );
+            setPageId( pgcPage.getPageId() );
+            setPgcId( pgcPage.getPgcId() );
+        }
+    }
+
+    public PgcPage getPgcPage()
+    {
+        return pgcPage;
     }
 }

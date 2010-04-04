@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -18,36 +19,34 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "PgcAttachment.findAll", query = "select o from PgcAttachment o")
-})
+@NamedQueries( { @NamedQuery( name = "PgcAttachment.findAll", query = "select o from PgcAttachment o" ) } )
 @Table( name = "\"pgc_attachment\"" )
 @IdClass( PgcAttachmentPK.class )
 public class PgcAttachment implements Serializable
 {
     @Id
-    @Column( name="pat_book_id", nullable = false )
+    @Column( name = "ppg_book_id", nullable = false, insertable = false, updatable = false )
     private Integer bookId;
-    @Column( name="pat_id_in", nullable = false )
+    @Column( name = "pat_id_in", nullable = false )
     private Integer type;
     @Id
-    @Column( name="pat_page_id", nullable = false )
+    @Column( name = "ppg_page_id", nullable = false, insertable = false, updatable = false )
     private Integer pageId;
     @Id
-    @Column( name="pat_seq_in", nullable = false )
+    @Column( name = "pat_seq_in", nullable = false )
     private Integer sequence;
-    @Column( name="pat_value_ch" )
+    @Column( name = "pat_value_ch" )
     private String value;
     @Id
-    @Column( name="pgc_id_in", nullable = false, insertable = false, updatable = false )
+    @Column( name = "pgc_id_in", nullable = false, insertable = false, updatable = false )
     private Integer pgcId;
 
-    @Column( name="pat_barcode_type_in" )
+    @Column( name = "pat_barcode_type_in" )
     private Integer barcodeType;
 
     @ManyToOne
-    @JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" )
-    private Pgc pgc;
+    @JoinColumns( { @JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" ), @JoinColumn( name = "ppg_book_id", referencedColumnName = "ppg_book_id" ), @JoinColumn( name = "ppg_page_id", referencedColumnName = "ppg_page_id" ) } )
+    private PgcPage pgcPage;
 
     @ManyToOne
     @JoinColumn( name = "med_id_in", referencedColumnName = "med_id_in" )
@@ -119,17 +118,6 @@ public class PgcAttachment implements Serializable
         this.pgcId = pgc_id_in;
     }
 
-    public void setPgc( Pgc pgc )
-    {
-        this.pgc = pgc;
-        if ( pgc != null )
-            setPgcId( pgc.getId() );
-    }
-
-    public Pgc getPgc()
-    {
-        return pgc;
-    }
 
     public void setMedia( Media media )
     {
@@ -149,5 +137,20 @@ public class PgcAttachment implements Serializable
     public Integer getBarcodeType()
     {
         return barcodeType;
+    }
+
+    public void setPgcPage( PgcPage pgcPage )
+    {
+        this.pgcPage = pgcPage;
+        if ( pgcPage != null ) {
+            setBookId( pgcPage.getBookId() );
+            setPageId( pgcPage.getPageId() );
+            setPgcId( pgcPage.getPgcId() );
+        }
+    }
+
+    public PgcPage getPgcPage()
+    {
+        return pgcPage;
     }
 }
