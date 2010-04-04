@@ -244,7 +244,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             return;
         FormDTO form = getValue( getListboxRecord().getSelectedItem() );
         try {
-            PadFile file = new PadFile( getLoggedInUser(), form, dto.getObject() );
+            PadFile file = new PadFile( form, dto.getObject() );
 
             if ( file.isPadFile( form, dto ) ) {
                 PadDTO addedDTO;
@@ -308,7 +308,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         List<PadDTO> list;
         ListModelList model = null;
         try {
-            list = getSession().getPads( getLoggedInUser(), currentForm );
+            list = getSession().getPads( currentForm );
             model = new ListModelList( list );
             return model;
         }
@@ -450,7 +450,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         if ( selected.isEmpty() )
             return;
         List al = new ArrayList( selected );
-        PadFile padFile = new PadFile( getLoggedInUser(), currentForm );
+        PadFile padFile = new PadFile( currentForm );
         try {
             for ( Iterator it = al.iterator(); it.hasNext(); ) {
                 Listitem li = ( Listitem )it.next();
