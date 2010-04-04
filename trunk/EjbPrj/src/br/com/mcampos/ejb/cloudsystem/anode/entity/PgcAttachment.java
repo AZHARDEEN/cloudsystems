@@ -42,6 +42,9 @@ public class PgcAttachment implements Serializable
     @Column( name="pgc_id_in", nullable = false, insertable = false, updatable = false )
     private Integer pgcId;
 
+    @Column( name="pat_barcode_type_in" )
+    private Integer barcodeType;
+
     @ManyToOne
     @JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" )
     private Pgc pgc;
@@ -136,5 +139,15 @@ public class PgcAttachment implements Serializable
     public Media getMedia()
     {
         return media;
+    }
+
+    public void setBarcodeType( Integer barcodeType )
+    {
+        this.barcodeType = barcodeType;
+    }
+
+    public Integer getBarcodeType()
+    {
+        return barcodeType;
     }
 }

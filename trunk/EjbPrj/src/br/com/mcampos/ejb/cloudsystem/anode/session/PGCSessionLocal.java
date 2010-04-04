@@ -5,6 +5,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcProcessedImage;
@@ -42,4 +43,6 @@ public interface PGCSessionLocal
     void add ( PgcProcessedImage processedImage ) throws ApplicationException;
 
     void add ( PgcField pgcField ) throws ApplicationException;
+
+    void add ( PgcAttachment pgcField ) throws ApplicationException;
 }

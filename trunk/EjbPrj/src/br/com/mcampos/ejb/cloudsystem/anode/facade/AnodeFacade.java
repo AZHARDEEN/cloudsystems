@@ -7,6 +7,7 @@ import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
+import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
@@ -142,4 +143,7 @@ public interface AnodeFacade
     void addProcessedImage ( PGCDTO pgc, MediaDTO media, int book, int page ) throws ApplicationException;
 
     void addPgcField ( PgcFieldDTO dto ) throws ApplicationException;
+
+    void addPgcAttachment ( PgcAttachmentDTO dto ) throws ApplicationException;
+
 }

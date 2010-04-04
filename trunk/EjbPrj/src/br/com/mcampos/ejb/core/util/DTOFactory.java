@@ -10,6 +10,7 @@ import br.com.mcampos.dto.address.StateDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
+import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
@@ -37,6 +38,7 @@ import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
@@ -824,6 +826,19 @@ public final class DTOFactory implements Serializable
         entity.setPgc( copy ( dto.getPgc() ) );
         entity.setHasPenstrokes( dto.getHasPenstrokes() );
         entity.setType( dto.getType() );
+        return entity;
+    }
+
+    public static PgcAttachment copy ( PgcAttachmentDTO dto )
+    {
+        PgcAttachment entity = new PgcAttachment ();
+        entity.setBookId( dto.getBookId() );
+        entity.setPageId( dto.getPageId() );
+        entity.setPgc( copy ( dto.getPgc() ) );
+        entity.setSequence( dto.getSequence() );
+        entity.setType( dto.getType() );
+        entity.setValue( dto.getValue() );
+        entity.setBarcodeType( dto.getBarcodeType() );
         return entity;
     }
 }
