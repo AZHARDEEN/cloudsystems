@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.facade;
 
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
+import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
@@ -450,7 +451,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     }
 
 
-    public List<PgcPenPageDTO> getAllPgcPenPage( AuthenticationDTO auth, Properties props ) throws ApplicationException
+    public List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props ) throws ApplicationException
     {
         authenticate( auth );
         if ( props != null && props.size() > 0 ) {
@@ -464,7 +465,22 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
                     props.put( "form", entity );
             }
         }
-        return toPgcPenPageList( pgcPenPageSession.getAll( props ) );
+        List<PgcPenPage> list = pgcPenPageSession.getAll( props );
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<AnotoResultList> resultList = new ArrayList<AnotoResultList> ( );
+        for ( PgcPenPage entity : list )
+        {
+            for ( PgcPage page : entity.getPgc().getPages() ) {
+                AnotoResultList item = new AnotoResultList ( );
+                item.setForm( entity.getPenPage().getPage().getPad().getForm().toDTO() );
+                item.setPen( entity.getPenPage().getPen().toDTO() );
+                item.setPgcPage( page.toDTO() );
+                if ( resultList.contains( item ) == false )
+                    resultList.add ( item );
+            }
+        }
+        return resultList;
     }
 
 
@@ -588,6 +604,11 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     {
         PgcPage entity = DTOFactory.copy( dto );
         pgcSession.add( entity );
+    }
+
+    public List<MediaDTO> getImages( PgcPageDTO page ) throws ApplicationException
+    {
+        return AnotoUtils.toMediaList( pgcSession.getImages( DTOFactory.copy ( page ) ) );
     }
 }
 

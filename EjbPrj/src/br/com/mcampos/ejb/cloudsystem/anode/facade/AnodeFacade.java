@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.facade;
 
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
+import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
@@ -135,7 +136,7 @@ public interface AnodeFacade
 
     List<PgcPenPageDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException;
 
-    List<PgcPenPageDTO> getAllPgcPenPage( AuthenticationDTO auth, Properties props ) throws ApplicationException;
+    List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props ) throws ApplicationException;
 
     List<PgcPenPageDTO> getPgcPenPages( PGCDTO pgc ) throws ApplicationException;
 
@@ -148,5 +149,7 @@ public interface AnodeFacade
     void addPgcAttachment ( PgcAttachmentDTO dto ) throws ApplicationException;
 
     void add( PgcPageDTO dto ) throws ApplicationException;
+
+    List<MediaDTO> getImages( PgcPageDTO page ) throws ApplicationException;
 
 }

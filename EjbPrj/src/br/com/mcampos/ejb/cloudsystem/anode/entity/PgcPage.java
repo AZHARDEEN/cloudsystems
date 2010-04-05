@@ -1,10 +1,15 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
 
+import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PgcPagePK;
+import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -20,7 +26,7 @@ import javax.persistence.Table;
 @NamedQueries( { @NamedQuery( name = "PgcPage.findAll", query = "select o from PgcPage o" ) } )
 @Table( name = "\"pgc_page\"" )
 @IdClass( PgcPagePK.class )
-public class PgcPage implements Serializable
+public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
 {
     @Id
     @Column( name = "pgc_id_in", nullable = false, insertable = false, updatable = false )
@@ -37,6 +43,12 @@ public class PgcPage implements Serializable
     @ManyToOne
     @JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" )
     private Pgc pgc;
+
+    @OneToMany( mappedBy = "pgcPage", cascade = CascadeType.ALL )
+    private List<PgcAttachment> attachments;
+
+    @OneToMany( mappedBy = "pgcPage", cascade = CascadeType.ALL )
+    private List<PgcField> fields;
 
 
     public PgcPage()
@@ -90,5 +102,34 @@ public class PgcPage implements Serializable
     public Pgc getPgc()
     {
         return pgc;
+    }
+
+    public void setAttachments( List<PgcAttachment> attachments )
+    {
+        this.attachments = attachments;
+    }
+
+    public List<PgcAttachment> getAttachments()
+    {
+        return attachments;
+    }
+
+    public void setFields( List<PgcField> fields )
+    {
+        this.fields = fields;
+    }
+
+    public List<PgcField> getFields()
+    {
+        return fields;
+    }
+
+    public PgcPageDTO toDTO()
+    {
+        PgcPageDTO dto = new PgcPageDTO ();
+        dto.setBookId( getBookId() );
+        dto.setPageId( getPageId() );
+        dto.setPgc( getPgc().toDTO() );
+        return dto;
     }
 }

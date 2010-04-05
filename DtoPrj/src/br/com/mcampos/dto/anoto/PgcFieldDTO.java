@@ -14,6 +14,9 @@ public class PgcFieldDTO implements Serializable, Comparable<PgcFieldDTO>
     private MediaDTO media;
     private Boolean hasPenstrokes;
     private Integer type;
+    private Long startTime;
+    private Long endTime;
+
 
     public PgcFieldDTO()
     {
@@ -101,5 +104,25 @@ public class PgcFieldDTO implements Serializable, Comparable<PgcFieldDTO>
     public PgcPageDTO getPgcPage()
     {
         return pgcPage;
+    }
+
+    public void setStartTime( Long startTime )
+    {
+        this.startTime = startTime;
+    }
+
+    public Long getStartTime()
+    {
+        return startTime;
+    }
+
+    public void setEndTime( Long endTime )
+    {
+        this.endTime = endTime;
+    }
+
+    public Long getEndTime()
+    {
+        return endTime;
     }
 }

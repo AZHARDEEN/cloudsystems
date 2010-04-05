@@ -45,6 +45,12 @@ public class PgcField implements Serializable
     @Column( name = "pfl_type_in" )
     private Integer type;
 
+    @Column( name = "pfl_start_time_in" )
+    private Long startTime;
+
+    @Column( name = "pfl_end_time_in" )
+    private Long endTime;
+
     @Column( name = "pfl_has_penstrokes_bt" )
     private Boolean hasPenstrokes;
 
@@ -178,5 +184,25 @@ public class PgcField implements Serializable
     public PgcPage getPgcPage()
     {
         return pgcPage;
+    }
+
+    public void setStartTime( Long startTime )
+    {
+        this.startTime = startTime;
+    }
+
+    public Long getStartTime()
+    {
+        return startTime;
+    }
+
+    public void setEndTime( Long endTime )
+    {
+        this.endTime = endTime;
+    }
+
+    public Long getEndTime()
+    {
+        return endTime;
     }
 }

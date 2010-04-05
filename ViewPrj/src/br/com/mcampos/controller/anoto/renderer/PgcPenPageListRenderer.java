@@ -1,7 +1,7 @@
 package br.com.mcampos.controller.anoto.renderer;
 
 
-import br.com.mcampos.dto.anoto.PgcPenPageDTO;
+import br.com.mcampos.dto.anoto.AnotoResultList;
 
 import java.text.SimpleDateFormat;
 
@@ -23,19 +23,23 @@ public class PgcPenPageListRenderer implements ListitemRenderer
     public void render( Listitem item, Object data ) throws Exception
     {
         item.setValue( data );
-        PgcPenPageDTO dto = ( PgcPenPageDTO )data;
+        AnotoResultList dto = ( AnotoResultList )data;
 
         if ( item.getChildren().size() == 0 ) {
             item.appendChild( new Listcell( ) );
             item.appendChild( new Listcell( ) );
             item.appendChild( new Listcell( ) );
             item.appendChild( new Listcell( ) );
+            item.appendChild( new Listcell( ) );
         }
-        ((Listcell)item.getChildren().get( 0 )).setLabel( dto.getPenPage().getPage().getPad().getForm().toString() );
-        ((Listcell)item.getChildren().get( 1 )).setLabel( dto.getPenPage().getPage().toString() );
-        ((Listcell)item.getChildren().get( 2 )).setLabel( dto.getPenPage().getPen().toString() );
+        ((Listcell)item.getChildren().get( 0 )).setLabel( dto.getForm().toString() );
+        Integer aux = dto.getPgcPage().getBookId() + 1;
+        ((Listcell)item.getChildren().get( 1 )).setLabel( aux.toString() );
+        aux = dto.getPgcPage().getPageId() + 1;
+        ((Listcell)item.getChildren().get( 2 )).setLabel( aux.toString() );
+        ((Listcell)item.getChildren().get( 3 )).setLabel( dto.getPen().toString() );
         try {
-            ((Listcell)item.getChildren().get( 3 )).setLabel( renderedDateFormat.format( dto.getPgc().getInsertDate() ) );
+            ((Listcell)item.getChildren().get( 4 )).setLabel( renderedDateFormat.format( dto.getPgcPage().getPgc().getInsertDate() ) );
         }
         catch ( Exception e ) {
             e = null;
