@@ -19,11 +19,16 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "PgcProcessedImage.findAll", query = "select o from PgcProcessedImage o" ) } )
-@Table( name = "\"pgc_processed_image\"" )
+@NamedQueries( {
+    @NamedQuery( name = "PgcProcessedImage.findAll", query = "select o from PgcProcessedImage o" ),
+    @NamedQuery( name = PgcProcessedImage.findPgcPageImages, query = "select o from PgcProcessedImage o where o.pgcPage = ?1" )
+    } )
+@Table( name = "pgc_processed_image" )
 @IdClass( PgcProcessedImagePK.class )
 public class PgcProcessedImage implements Serializable
 {
+    public static final String findPgcPageImages = "PgcProcessedImage.findPgcPageImages";
+
     @Id
     @Column( name = "med_id_in", nullable = false, insertable = false, updatable = false )
     private Integer mediaId;
@@ -56,8 +61,8 @@ public class PgcProcessedImage implements Serializable
     {
         setPgc( pgc );
         setMedia( media );
-        this.bookId = ppi_book_id;
-        this.pageId = ppi_page_id;
+        setBookId( ppi_book_id );
+        setPageId( ppi_page_id );
     }
 
     public Integer getMediaId()

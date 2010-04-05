@@ -803,6 +803,8 @@ public final class DTOFactory implements Serializable
     {
         Pgc pgc = new Pgc();
         pgc.setMedia( copy( source.getMedia() ) );
+        pgc.setPenId( source.getPenId() );
+        pgc.setTimediff( source.getTimeDiff() );
         return pgc;
     }
 
@@ -832,6 +834,8 @@ public final class DTOFactory implements Serializable
         entity.setRevisedText( dto.getRevisedText() );
         entity.setPgcPage( copy( dto.getPgcPage() ) );
         entity.setHasPenstrokes( dto.getHasPenstrokes() );
+        entity.setStartTime( dto.getStartTime() );
+        entity.setEndTime( dto.getEndTime() );
         entity.setType( dto.getType() );
         return entity;
     }

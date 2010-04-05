@@ -10,7 +10,9 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,7 +36,6 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
     @Column( name = "pgc_id_in", nullable = false, insertable = false, updatable = false, unique = true )
     private Integer id;
 
-
     @Column( name = "pgc_insert_dt" )
     @Temporal( TemporalType.TIMESTAMP )
     private Date insertDate;
@@ -48,6 +50,17 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 
     @Column( name = "pgc_description_ch", nullable = false )
     private String description;
+
+    @Column( name = "pgc_pen_id" )
+    private String penId;
+
+
+    @Column( name = "pgc_time_diff_in" )
+    private Long timediff;
+
+    @OneToMany( mappedBy = "pgc", cascade = CascadeType.ALL )
+    private List<PgcPage> pages;
+
 
     public Pgc()
     {
@@ -117,5 +130,35 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
     public String getDescription()
     {
         return description;
+    }
+
+    public void setPenId( String penId )
+    {
+        this.penId = penId;
+    }
+
+    public String getPenId()
+    {
+        return penId;
+    }
+
+    public void setTimediff( Long timediff )
+    {
+        this.timediff = timediff;
+    }
+
+    public Long getTimediff()
+    {
+        return timediff;
+    }
+
+    public void setPages( List<PgcPage> books )
+    {
+        this.pages = books;
+    }
+
+    public List<PgcPage> getPages()
+    {
+        return pages;
     }
 }

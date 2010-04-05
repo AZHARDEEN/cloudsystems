@@ -10,6 +10,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcProcessedImage;
+import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -48,4 +49,6 @@ public interface PGCSessionLocal
     void add( PgcAttachment pgcField ) throws ApplicationException;
 
     void add( PgcPage entity ) throws ApplicationException;
+
+    List<Media> getImages( PgcPage page ) throws ApplicationException;
 }

@@ -11,9 +11,13 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcProcessedImage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus;
+import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -123,7 +127,7 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     {
         String sql;
 
-        sql = "SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID FROM  PGC_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PAT_BOOK_ID = ?2 AND PAT_PAGE_ID = ?3 ";
+        sql = "SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID FROM  PGC_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
         Query query = getEntityManager().createNativeQuery( sql );
         query.setParameter( 1, entity.getPgcId() );
         query.setParameter( 2, entity.getBookId() );
@@ -135,6 +139,19 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     public void add( PgcPage entity ) throws ApplicationException
     {
         getEntityManager().persist( entity );
+    }
+
+    public List<Media> getImages( PgcPage page ) throws ApplicationException
+    {
+        List<Media> medias;
+
+        List<PgcProcessedImage> ppis =  (List<PgcProcessedImage>) getResultList( PgcProcessedImage.findPgcPageImages, page );
+        if ( SysUtils.isEmpty( ppis ))
+            return Collections.emptyList();
+        medias = new ArrayList<Media> ( ppis.size() );
+        for ( PgcProcessedImage ppi : ppis )
+            medias.add( ppi.getMedia() );
+        return medias;
     }
 }
 

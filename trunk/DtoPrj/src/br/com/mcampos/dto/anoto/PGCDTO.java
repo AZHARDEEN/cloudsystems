@@ -14,6 +14,8 @@ public class PGCDTO implements Comparable<PGCDTO>, Serializable
     protected Integer id;
     protected MediaDTO media;
     protected PgcStatusDTO pgcStatus;
+    protected String penId;
+    protected Long timeDiff;
 
     protected Date insertDate;
 
@@ -98,5 +100,25 @@ public class PGCDTO implements Comparable<PGCDTO>, Serializable
     public Date getInsertDate()
     {
         return insertDate;
+    }
+
+    public void setPenId( String penId )
+    {
+        this.penId = penId;
+    }
+
+    public String getPenId()
+    {
+        return penId;
+    }
+
+    public void setTimeDiff( Long timeDiff )
+    {
+        this.timeDiff = timeDiff;
+    }
+
+    public Long getTimeDiff()
+    {
+        return timeDiff;
     }
 }

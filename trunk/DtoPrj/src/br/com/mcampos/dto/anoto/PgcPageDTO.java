@@ -2,7 +2,7 @@ package br.com.mcampos.dto.anoto;
 
 import java.io.Serializable;
 
-public class PgcPageDTO implements Serializable
+public class PgcPageDTO implements Serializable, Comparable<PgcPageDTO>
 {
     private PGCDTO pgc;
     private Integer bookId;
@@ -49,5 +49,25 @@ public class PgcPageDTO implements Serializable
     public PGCDTO getPgc()
     {
         return pgc;
+    }
+
+    public int compareTo( PgcPageDTO o )
+    {
+        int nRet;
+
+        nRet = getPageId().compareTo( o.getPageId() );
+        if ( nRet != 0 )
+            return nRet;
+        nRet = getBookId().compareTo( o.getBookId() );
+        if ( nRet != 0 )
+            return nRet;
+        return getPgc().compareTo( o.getPgc() );
+    }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        PgcPageDTO other = ( PgcPageDTO ) obj;
+        return  getPageId().equals( other.getPageId() ) && getBookId().equals( other.getBookId() ) && getPgc().equals( other.getPgc() ) ;
     }
 }

@@ -2,10 +2,10 @@ package br.com.mcampos.controller.anoto;
 
 
 import br.com.mcampos.controller.anoto.renderer.ComboFormRenderer;
-import br.com.mcampos.controller.anoto.renderer.ComboPageRenderer;
 import br.com.mcampos.controller.anoto.renderer.ComboPenRenderer;
 import br.com.mcampos.controller.anoto.renderer.PgcPenPageListRenderer;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
+import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
@@ -34,7 +34,6 @@ import org.zkoss.zul.Timebox;
 public class AnotoView2Controller extends AnotoLoggedController
 {
     protected Combobox cmbApplication;
-    protected Combobox cmbAnotoPage;
     protected Combobox cmbPen;
     protected Datebox initDate;
     protected Timebox initTime;
@@ -97,8 +96,6 @@ public class AnotoView2Controller extends AnotoLoggedController
             else
                 list = getSession().getPages( getLoggedInUser(), dto );
             model = new ListModelList( list );
-            cmbAnotoPage.setItemRenderer( new ComboPageRenderer() );
-            cmbAnotoPage.setModel( model );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Carregar Páginas" );
@@ -134,7 +131,7 @@ public class AnotoView2Controller extends AnotoLoggedController
 
     protected void loadPGC( Properties prop )
     {
-        List<PgcPenPageDTO> dtos;
+        List<AnotoResultList> dtos;
         try {
             dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop );
             ListModelList model = getModel();
@@ -172,15 +169,6 @@ public class AnotoView2Controller extends AnotoLoggedController
          * Does page combo selected or have this combo a text?
          */
         String strInfo = "";
-        if ( cmbAnotoPage.getSelectedItem() != null ) {
-            AnotoPageDTO page;
-
-            page = ( AnotoPageDTO )cmbAnotoPage.getSelectedItem().getValue();
-            strInfo = page.getPageAddress();
-        }
-        else if ( SysUtils.isEmpty( cmbAnotoPage.getText() ) == false ) {
-            strInfo = cmbAnotoPage.getText();
-        }
         if ( strInfo.length() > 0 )
             prop.put( "page", strInfo );
 
@@ -275,13 +263,6 @@ public class AnotoView2Controller extends AnotoLoggedController
                 }
             } );
 
-        cmbAnotoPage.addEventListener( Events.ON_OK, new EventListener()
-            {
-                public void onEvent( Event event )
-                {
-                    onClick$btnFilter();
-                }
-            } );
         initDate.addEventListener( Events.ON_OK, new EventListener()
             {
                 public void onEvent( Event event )

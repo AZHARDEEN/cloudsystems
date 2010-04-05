@@ -19,12 +19,16 @@ import br.com.mcampos.util.system.UploadMedia;
 
 import com.anoto.api.Attachment;
 import com.anoto.api.NoSuchPermissionException;
+import com.anoto.api.NoSuchPropertyException;
 import com.anoto.api.NotAllowedException;
 import com.anoto.api.Page;
 import com.anoto.api.PageArea;
+import com.anoto.api.PageAreaException;
 import com.anoto.api.PageException;
 import com.anoto.api.Pen;
 import com.anoto.api.PenCreationException;
+import com.anoto.api.PenStroke;
+import com.anoto.api.PenStrokes;
 import com.anoto.api.RenderException;
 import com.anoto.api.Renderer;
 import com.anoto.api.RendererFactory;
@@ -210,10 +214,31 @@ public class PgcFile
         setCurrentPen( PadFile.getPen( pgc.getMedia().getObject(), form.getApplication() ) );
         try {
             setObject( getPad(), pgc.getMedia().getObject() );
+            processProperties ();
             processPGC( pgcsPenPage.get( 0 ) );
         }
         catch ( PenCreationException e ) {
             return;
+        }
+        catch ( NoSuchPropertyException e ) {
+            return;
+        }
+    }
+
+
+    protected void processProperties () throws NoSuchPropertyException
+    {
+        Iterator it;
+
+        it = getCurrentPen().getPropertyIds();
+        while ( it != null && it.hasNext() )
+        {
+            Short obj = ( (Short) it.next() );
+            String [] values = getCurrentPen().getProperty( obj );
+            if ( values != null && values.length > 0 )
+            {
+
+            }
         }
     }
 
@@ -221,7 +246,7 @@ public class PgcFile
     {
         List<AnotoBook> books = null;
         List<Page> pages = null;
-        int nPageIndex = 0;
+        int nPageIndex;
         int nBookIndex = 0;
 
         books = getBooks();
@@ -230,6 +255,7 @@ public class PgcFile
             pages = getPages();
             if ( SysUtils.isEmpty( pages ) )
                 return;
+            nPageIndex = 0;
             for ( Page page : pages ) {
                 processPage( pgcPenPage, 0, nPageIndex, page );
                 nPageIndex++;
@@ -237,6 +263,7 @@ public class PgcFile
         }
         else {
             for ( AnotoBook book : books ) {
+                nPageIndex = 0;
                 for ( Page page : book.getPages() ) {
                     processPage( pgcPenPage, nBookIndex, nPageIndex, page );
                     nPageIndex++;
@@ -325,7 +352,8 @@ public class PgcFile
         }
     }
 
-    protected void addFields( PgcPageDTO pgcPage, Page page, String basePath )
+    protected void addFields( PgcPageDTO pgcPage, Page page, String basePath ) throws ApplicationException,
+                                                       PageAreaException
     {
         Iterator it = page.getPageAreas();
         PageArea pageArea = null;
@@ -340,10 +368,24 @@ public class PgcFile
                 continue;
             fieldDTO = new PgcFieldDTO( pgcPage );
             fieldDTO.setName( pageArea.getName() );
+            fieldDTO.setType( pageArea.getType() );
             fieldDTO.setHasPenstrokes( pageArea.hasPenStrokes() );
             pageArea.getType();
             if ( fieldDTO.getHasPenstrokes() ) {
                 Renderer renderer;
+                Long minTime = 0L, maxTime = 0L;
+                PenStrokes pss = pageArea.getPenStrokes();
+                Iterator strokesIt = pss.getIterator();
+                while (strokesIt != null && strokesIt.hasNext() )
+                {
+                    PenStroke ps = ( PenStroke ) strokesIt.next();
+                    if ( maxTime < ps.getEndTime() )
+                        maxTime = ps.getEndTime();
+                    if ( minTime == 0 || minTime > ps.getStartTime() )
+                        minTime = ps.getStartTime();
+                }
+                fieldDTO.setStartTime ( minTime );
+                fieldDTO.setEndTime ( maxTime );
                 try {
                     renderer = RendererFactory.create( pageArea );
                     String path = basePath + "/" + "field.jpg";
@@ -355,15 +397,9 @@ public class PgcFile
                     e = null;
                 }
             }
-            try {
-                getSession().addPgcField( fieldDTO );
-            }
-            catch ( ApplicationException e ) {
-                e = null;
-            }
+            getSession().addPgcField( fieldDTO );
         }
     }
-
 
     protected List<MediaDTO> loadBackgroundImages( PgcPenPageDTO pgcPenPage, Page page )
     {
@@ -398,6 +434,13 @@ public class PgcFile
     public void setCurrentPgc( PGCDTO currentPgc )
     {
         this.currentPgc = currentPgc;
+        try {
+            getCurrentPgc().setPenId( getCurrentPen().getPenData().getPenSerial() );
+            getCurrentPgc().setTimeDiff( getCurrentPen().getPenData().getTimeDiff() );
+        }
+        catch ( Exception e ) {
+            e = null;
+        }
     }
 
     public PGCDTO getCurrentPgc()
