@@ -1,6 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
+import br.com.mcampos.dto.anoto.AnotoResultList;
+import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
@@ -11,6 +13,8 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcProcessedImage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcStatus;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PgcFieldPK;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PgcPagePK;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
@@ -152,6 +156,33 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         for ( PgcProcessedImage ppi : ppis )
             medias.add( ppi.getMedia() );
         return medias;
+    }
+
+    public List<PgcField> getFields ( PgcPage page ) throws ApplicationException
+    {
+        List<PgcField> fields;
+
+        fields = ( List<PgcField> ) getResultList( PgcField.findPageFields, page );
+        return fields;
+    }
+
+    public void update ( PgcField field ) throws ApplicationException
+    {
+        PgcField entity = getEntityManager().find( PgcField.class, new PgcFieldPK ( field ) );
+        if ( entity != null ) {
+            entity.setRevisedText( field.getRevisedText() );
+            getEntityManager().merge( entity );
+        }
+    }
+
+    public Integer remove ( AnotoResultList item  )throws ApplicationException
+    {
+        PgcPageDTO dto = item.getPgcPage();
+        PgcPagePK key = new PgcPagePK( dto.getPgc().getId(), dto.getBookId(), dto.getPageId() );
+        PgcPage page = getEntityManager().find ( PgcPage.class, key );
+        if ( page != null )
+            getEntityManager().remove( page );
+        return 1;
     }
 }
 

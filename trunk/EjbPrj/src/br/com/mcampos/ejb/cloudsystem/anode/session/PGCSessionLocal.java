@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
+import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
@@ -51,4 +52,10 @@ public interface PGCSessionLocal
     void add( PgcPage entity ) throws ApplicationException;
 
     List<Media> getImages( PgcPage page ) throws ApplicationException;
+
+    List<PgcField> getFields ( PgcPage page ) throws ApplicationException;
+
+    void update ( PgcField field ) throws ApplicationException;
+
+    Integer remove ( AnotoResultList item  ) throws ApplicationException;
 }

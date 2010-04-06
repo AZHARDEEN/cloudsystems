@@ -8,7 +8,6 @@ import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
-import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -148,7 +147,7 @@ public class AnotoView2Controller extends AnotoLoggedController
     {
         ListModelList model = ( ListModelList )resultList.getModel();
         if ( model == null ) {
-            model = new ListModelList( new ArrayList<PgcPenPageDTO>(), true );
+            model = new ListModelList( new ArrayList<AnotoResultList>(), true );
             resultList.setModel( model );
         }
         return model;
@@ -231,12 +230,20 @@ public class AnotoView2Controller extends AnotoLoggedController
         return eDate;
     }
 
+    public void onSelect$resultList ()
+    {
+        onClick$btnProperty();
+    }
+
 
     public void onClick$btnProperty()
     {
         if ( resultList.getSelectedItem() != null ) {
             Properties params = new Properties();
             params.put( AnotoViewController.paramName, resultList.getSelectedItem().getValue() );
+            ListModelList model = getModel();
+            List list = model.getInnerList();
+            params.put( AnotoViewController.listName, list );
             gotoPage( "/private/admin/anoto/anoto_view.zul", getRootParent().getParent(), params );
         }
         else {

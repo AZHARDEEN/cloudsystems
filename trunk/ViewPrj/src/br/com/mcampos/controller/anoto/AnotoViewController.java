@@ -3,10 +3,8 @@ package br.com.mcampos.controller.anoto;
 
 import br.com.mcampos.controller.anoto.renderer.AttatchmentGridRenderer;
 import br.com.mcampos.controller.anoto.renderer.ComboMediaRenderer;
-import br.com.mcampos.controller.anoto.util.AnotoBook;
-import br.com.mcampos.controller.anoto.util.PadFile;
-import br.com.mcampos.controller.anoto.util.PgcFile;
 import br.com.mcampos.dto.anoto.AnotoResultList;
+import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -38,23 +36,23 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Div;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Image;
-import org.zkoss.zul.Imagemap;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.West;
 
 import sun.awt.image.BufferedImageGraphicsConfig;
 
 
 public class AnotoViewController extends AnotoLoggedController
 {
-    public static final String paramName = "PgcPenPageParam";
+    public static final String paramName = "viewCurrentItem";
+    public static final String listName = "viewListName";
 
-    protected Imagemap pgcImage;
+    protected Image pgcImage;
     protected Combobox fields;
     protected Row icrInfo;
     protected Row correctedInfo;
@@ -62,24 +60,26 @@ public class AnotoViewController extends AnotoLoggedController
     protected Label icrValue;
     protected Image fieldImage;
 
-    protected float factor = 1.0F;
+    protected float imageRateSize = 0.0F;
     protected static final int targetWidth = 570;
+    protected BufferedImage currentImage;
 
 
     private AnotoResultList dtoParam;
-    private PadFile padFile;
-    private PgcFile pgcFile;
+    private List<AnotoResultList> currentList;
+    List<PgcFieldDTO> currentFields;
 
 
     protected Grid gridProperties;
-    private Paging pagingBooks;
     private Paging pagingPages;
     private Row rowBackGroundImages;
+    private Row rowPaging;
     private Combobox cmbBackgroundImages;
-    private Div divCenterImageArea;
-
-    private List<AnotoBook> books;
+    private West westView;
     private Grid gridAttach;
+    private Combobox cmbZoonRate;
+    private Label startTime;
+    private Label endTime;
 
 
     public AnotoViewController( char c )
@@ -108,6 +108,31 @@ public class AnotoViewController extends AnotoLoggedController
         if ( dtoParam != null ) {
             process( dtoParam );
         }
+        loadZoomRate ();
+        preparePaging ();
+    }
+
+    protected void preparePaging ()
+    {
+        if ( currentList == null || currentList.size() == 1 ) {
+            rowPaging.setVisible( false );
+            return;
+        }
+        rowPaging.setVisible( true );
+        int nIndex = currentList.indexOf( dtoParam );
+        pagingPages.setTotalSize( currentList.size() );
+        pagingPages.setPageSize( 1 );
+        pagingPages.setPageIncrement( 1 );
+        pagingPages.setActivePage( nIndex );
+    }
+
+    protected void loadZoomRate ()
+    {
+        for ( Integer nRate = 10; nRate <= 150; nRate += 10 )
+        {
+            Comboitem item = cmbZoonRate.appendItem( nRate.toString() + "%" );
+            item.setValue( nRate );
+        }
     }
 
     @Override
@@ -115,8 +140,10 @@ public class AnotoViewController extends AnotoLoggedController
     {
         Object param = getParameter();
 
-        if ( param != null )
-            return super.doBeforeCompose( page, parent, compInfo );
+        if ( param != null ) {
+            ComponentInfo obj = super.doBeforeCompose( page, parent, compInfo );
+            return obj;
+        }
         else
             return null;
     }
@@ -131,6 +158,7 @@ public class AnotoViewController extends AnotoLoggedController
         param = args.get( paramName );
         if ( param instanceof AnotoResultList ) {
             dtoParam = ( AnotoResultList )param;
+            currentList = (List<AnotoResultList> ) args.get( listName );
             return dtoParam;
         }
         else
@@ -140,6 +168,115 @@ public class AnotoViewController extends AnotoLoggedController
     protected void process( AnotoResultList target ) throws ApplicationException
     {
         loadImages ( target );
+        showFields ( target );
+    }
+
+    protected void showFields ( AnotoResultList target ) throws ApplicationException
+    {
+        currentFields = getSession().getFields ( getLoggedInUser(), target.getPgcPage() );
+        if ( SysUtils.isEmpty( currentFields ) ) {
+            westView.setVisible( false );
+            return;
+        }
+        westView.setVisible( true );
+        if ( SysUtils.isEmpty( fields.getChildren() ) == false )
+            fields.getChildren().clear();
+        for ( PgcFieldDTO field : currentFields ) {
+            Comboitem item = fields.appendItem( field.toString() );
+            item.setValue( field );
+        }
+        fields.setSelectedIndex( 0 );
+        onSelect$fields();
+    }
+
+    public void onSelect$fields ()
+    {
+        Comboitem item = fields.getSelectedItem();
+        if ( item == null )
+            return;
+        PgcFieldDTO field = (PgcFieldDTO) item.getValue();
+        if ( field == null )
+            return;
+        correctedValue.setText( field.getRevisedText() );
+        if ( field.getEndTime() != null && field.getStartTime() != null ) {
+            Long diff = field.getEndTime() - field.getStartTime();
+            Float diffSec = diff.floatValue() / 1000;
+            startTime.setValue( diffSec.toString() );
+        }
+        else
+        {
+            startTime.setValue( "" );
+        }
+        MediaDTO media = field.getMedia();
+        if ( media != null )
+        {
+            ByteArrayInputStream is;
+            try {
+                is = new ByteArrayInputStream( getSession().getObject( media ) );
+                BufferedImage img = ImageIO.read( is );
+                fieldImage.setContent( img );
+                fieldImage.setVisible( true );
+            }
+            catch ( Exception e ) {
+                showErrorMessage( e.getMessage(), "Carragar Imagem" );
+            }
+        }
+        else
+        {
+            fieldImage.setVisible( false );
+        }
+    }
+
+    public void onBlur$correctedValue ()
+    {
+        PgcFieldDTO field = getCurrentField();
+        if ( field == null )
+            return;
+        String value = correctedValue.getText();
+        updateField( field, value );
+    }
+
+    public void onOK$correctedValue ()
+    {
+        PgcFieldDTO field = getCurrentField();
+        if ( field == null )
+            return;
+        String value = correctedValue.getText();
+        updateField( field, value );
+        int nIndex = fields.getSelectedIndex();
+        nIndex ++;
+        if ( nIndex >= fields.getItemCount() )
+            nIndex = 0;
+        fields.setSelectedIndex( nIndex );
+        onSelect$fields();
+    }
+
+    protected PgcFieldDTO getCurrentField ()
+    {
+        Comboitem item = fields.getSelectedItem();
+        if ( item == null )
+            return null;
+        PgcFieldDTO field = (PgcFieldDTO) item.getValue();
+        if ( field == null )
+            return null;
+        return field;
+    }
+
+    protected void updateField ( PgcFieldDTO field, String value )
+    {
+        String fieldValue = field.getRevisedText();
+        if ( fieldValue == null )
+            fieldValue = "";
+        if ( value.equals( fieldValue ) == false )
+        {
+            field.setRevisedText( value );
+            try {
+                getSession().update( getLoggedInUser(), field );
+            }
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage(), "Atualizar Campo" );
+            }
+        }
     }
 
     protected void loadImages ( AnotoResultList target ) throws ApplicationException
@@ -171,36 +308,36 @@ public class AnotoViewController extends AnotoLoggedController
         try {
             media = (MediaDTO)item.getValue ();
             object = getSession().getObject( media );
-            showImage( object );
+            loadImage( object );
+            showImage( );
         }
         catch ( Exception e ) {
             showErrorMessage( e.getMessage(), "Mostrar Imagem" );
         }
     }
 
-    protected void showImage ( byte[] object ) throws IOException
+    protected void loadImage ( byte[] object ) throws IOException
     {
         ByteArrayInputStream is = new ByteArrayInputStream( object );
-        BufferedImage bufferedImage = ImageIO.read( is );
-        int w = bufferedImage.getWidth();
-        int h = bufferedImage.getHeight();
-        float r = 1.0F;
+        currentImage = ImageIO.read( is );
+    }
 
-        if ( w > targetWidth )
-        {
-            r = ((float)w) / ((float)targetWidth);
+    protected void showImage ( ) throws IOException
+    {
+        int w = currentImage.getWidth();
+        int h = currentImage.getHeight();
+
+        if ( imageRateSize == 0.0F ) {
+            sizeToFit();
         }
-        w *= .35;
-        h *= .35;
-
-        bufferedImage = resizeTrick( bufferedImage, w, h );
-
+        w *= imageRateSize;
+        h *= imageRateSize;
+        BufferedImage bufferedImage = resizeTrick( currentImage, w, h );
         pgcImage.setContent( bufferedImage );
     }
 
     private static BufferedImage resizeTrick(BufferedImage image, int width, int height) {
         image = createCompatibleImage(image);
-        //image = resize(image, 100, 100);
         image = blurImage(image);
         image = resize(image, width, height);
         return image;
@@ -258,5 +395,107 @@ public class AnotoViewController extends AnotoLoggedController
         g.drawImage(image, 0, 0, width, height, null);
         g.dispose();
         return resizedImage;
+    }
+
+    protected void sizeToFit ()
+    {
+        if ( currentImage.getWidth() > targetWidth ) {
+            imageRateSize = ((float)targetWidth) / ((float)currentImage.getWidth());
+        }
+        else
+            imageRateSize = 1.0F;
+    }
+
+    public void onClick$btnFit ()
+    {
+        if ( currentImage == null )
+            return;
+        try {
+            sizeToFit();
+            showImage ();
+        }
+        catch ( IOException e ) {
+            showErrorMessage( e.getMessage(), "Ajustar Imagem" );
+        }
+    }
+
+    public void onClick$btnZoomIn()
+    {
+        if ( currentImage == null )
+            return;
+        imageRateSize += 0.1;
+        try {
+            showImage ();
+        }
+        catch ( IOException e ) {
+            showErrorMessage( e.getMessage(), "Ajustar Imagem" );
+        }
+    }
+
+    public void onSelect$cmbZoonRate ()
+    {
+
+        Comboitem item = cmbZoonRate.getSelectedItem();
+        if ( item == null )
+        {
+            String value = cmbZoonRate.getText();
+            if ( SysUtils.isEmpty( value ))
+                return;
+        }
+        else
+        {
+            Integer rate = (Integer) item.getValue();
+            imageRateSize = ( rate.floatValue() / 100F );
+        }
+        try {
+            showImage ();
+        }
+        catch ( IOException e ) {
+            showErrorMessage( e.getMessage(), "Ajustar Imagem" );
+        }
+    }
+
+    public void onClick$btnZoomOut()
+    {
+        if ( currentImage == null )
+            return;
+        if ( imageRateSize > .2 )
+            imageRateSize -= 0.1;
+        try {
+            showImage ();
+        }
+        catch ( IOException e ) {
+            showErrorMessage( e.getMessage(), "Ajustar Imagem" );
+        }
+    }
+
+    public void onPaging$pagingPages ()
+    {
+        dtoParam = currentList.get ( pagingPages.getActivePage() );
+        try {
+            process ( dtoParam );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Paging" );
+        }
+    }
+
+    public void onClick$btnDeleteBook ()
+    {
+        if ( pagingPages.getTotalSize() > 0 ) {
+            try {
+                getSession().remove ( getLoggedInUser(), dtoParam );
+                pagingPages.setTotalSize( pagingPages.getTotalSize() - 1 );
+                currentList.remove( dtoParam );
+                if ( pagingPages.getTotalSize() == 0 )
+                    gotoPage( "/private/admin/anoto/anoto_view2.zul", getRootParent() );
+                else
+                    onPaging$pagingPages();
+            }
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage(), "Excluir Página" );
+            }
+        }
+
     }
 }

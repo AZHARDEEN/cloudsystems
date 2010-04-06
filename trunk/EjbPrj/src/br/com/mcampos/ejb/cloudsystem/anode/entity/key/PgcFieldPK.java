@@ -1,5 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity.key;
 
+
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
+
 import java.io.Serializable;
 
 public class PgcFieldPK implements Serializable
@@ -13,14 +16,14 @@ public class PgcFieldPK implements Serializable
     {
     }
 
-    public PgcFieldPK( Integer pfl_book_id, String pfl_name_ch,
-                       Integer pfl_page_id, Integer pgc_id_in )
+    public PgcFieldPK ( PgcField entity )
     {
-        this.bookId = pfl_book_id;
-        this.name = pfl_name_ch;
-        this.pageId = pfl_page_id;
-        this.pgcId = pgc_id_in;
+        setBookId( entity.getBookId() );
+        setPageId( entity.getPageId() );
+        setPgcId( entity.getPgcId() );
+        setName( entity.getName() );
     }
+
 
     public boolean equals( Object other )
     {
