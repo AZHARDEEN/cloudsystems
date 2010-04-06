@@ -610,5 +610,27 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     {
         return AnotoUtils.toMediaList( pgcSession.getImages( DTOFactory.copy ( page ) ) );
     }
+
+    public List<PgcFieldDTO> getFields ( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
+    {
+        authenticate( auth );
+        List<PgcField> fields = pgcSession.getFields ( DTOFactory.copy( page ) );
+        if ( SysUtils.isEmpty( fields ) )
+            return Collections.emptyList();
+        return AnotoUtils.toPgcFieldList( fields );
+    }
+
+
+    public void update ( AuthenticationDTO auth, PgcFieldDTO field ) throws ApplicationException
+    {
+        authenticate( auth );
+        pgcSession.update( DTOFactory.copy ( field ) );
+    }
+
+    public Integer remove ( AuthenticationDTO auth, AnotoResultList item  )throws ApplicationException
+    {
+        authenticate( auth );
+        return pgcSession.remove ( item );
+    }
 }
 

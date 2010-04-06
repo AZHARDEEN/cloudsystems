@@ -125,4 +125,10 @@ public class PgcFieldDTO implements Serializable, Comparable<PgcFieldDTO>
     {
         return endTime;
     }
+
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 }

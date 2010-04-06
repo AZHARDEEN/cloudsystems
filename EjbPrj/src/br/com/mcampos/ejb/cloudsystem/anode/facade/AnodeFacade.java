@@ -152,4 +152,9 @@ public interface AnodeFacade
 
     List<MediaDTO> getImages( PgcPageDTO page ) throws ApplicationException;
 
+    List<PgcFieldDTO> getFields ( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException;
+
+    void update ( AuthenticationDTO auth, PgcFieldDTO page ) throws ApplicationException;
+
+    Integer remove ( AuthenticationDTO auth, AnotoResultList item  )throws ApplicationException;
 }

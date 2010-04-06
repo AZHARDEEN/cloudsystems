@@ -286,7 +286,6 @@ public class PgcFile
             file.mkdirs();
         try {
             PgcPageDTO dto = new PgcPageDTO( pgcPenPage.getPgc(), nBookIndex, nPageIndex );
-
             getSession().add( dto );
             addAnotoImages( dto, pgcPenPage, page, basePath, nBookIndex, nPageIndex );
             addFields( dto, page, basePath );

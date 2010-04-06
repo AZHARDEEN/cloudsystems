@@ -1,8 +1,10 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
 
+import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PgcFieldPK;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
 
@@ -19,11 +21,17 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "PgcField.findAll", query = "select o from PgcField o" ) } )
+@NamedQueries( {
+                @NamedQuery( name = PgcField.findAll, query = "select o from PgcField o" ),
+                @NamedQuery( name = PgcField.findPageFields, query = "select o from PgcField o where o.pgcPage = ?1" )
+                 } )
 @Table( name = "pgc_field" )
 @IdClass( PgcFieldPK.class )
-public class PgcField implements Serializable
+public class PgcField implements Serializable, EntityCopyInterface<PgcFieldDTO>
 {
+    public static final String findAll =  "PgcField.findAll";
+    public static final String findPageFields = "PgcField.findPageFields";
+
     @Column( name = "med_id_in", insertable = false, updatable = false )
     private Integer mediaId;
     @Id
@@ -204,5 +212,20 @@ public class PgcField implements Serializable
     public Long getEndTime()
     {
         return endTime;
+    }
+
+    public PgcFieldDTO toDTO()
+    {
+        PgcFieldDTO dto = new PgcFieldDTO ( getPgcPage().toDTO() );
+        dto.setEndTime( getEndTime() );
+        dto.setHasPenstrokes( getHasPenstrokes() );
+        dto.setIrcText( getIcrText() );
+        if ( getMedia() != null )
+            dto.setMedia( getMedia().toDTO() );
+        dto.setName( getName() );
+        dto.setRevisedText( getRevisedText() );
+        dto.setStartTime( getStartTime() );
+        dto.setType( getType() );
+        return dto;
     }
 }
