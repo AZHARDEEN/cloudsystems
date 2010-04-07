@@ -58,7 +58,7 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
     @Column( name = "pgc_time_diff_in" )
     private Long timediff;
 
-    @OneToMany( mappedBy = "pgc", cascade = CascadeType.ALL )
+    @OneToMany( mappedBy = "pgc", cascade = CascadeType.REFRESH )
     private List<PgcPage> pages;
 
 
