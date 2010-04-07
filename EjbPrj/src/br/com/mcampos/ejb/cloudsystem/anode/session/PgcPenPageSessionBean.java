@@ -113,7 +113,13 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         if ( endDate != null )
             query.setParameter( "endDate", endDate );
 
-        return query.getResultList();
+        List<PgcPenPage> list = ( List<PgcPenPage> )query.getResultList();
+        if ( SysUtils.isEmpty( list ) )
+            return list;
+        for ( PgcPenPage item : list ) {
+            getEntityManager().refresh( item.getPgc() );
+        }
+        return list;
     }
 
     public void delete( PgcPenPagePK key ) throws ApplicationException

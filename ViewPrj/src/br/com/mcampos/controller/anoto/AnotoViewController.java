@@ -108,11 +108,11 @@ public class AnotoViewController extends AnotoLoggedController
         if ( dtoParam != null ) {
             process( dtoParam );
         }
-        loadZoomRate ();
-        preparePaging ();
+        loadZoomRate();
+        preparePaging();
     }
 
-    protected void preparePaging ()
+    protected void preparePaging()
     {
         if ( currentList == null || currentList.size() == 1 ) {
             rowPaging.setVisible( false );
@@ -126,10 +126,9 @@ public class AnotoViewController extends AnotoLoggedController
         pagingPages.setActivePage( nIndex );
     }
 
-    protected void loadZoomRate ()
+    protected void loadZoomRate()
     {
-        for ( Integer nRate = 10; nRate <= 150; nRate += 10 )
-        {
+        for ( Integer nRate = 10; nRate <= 150; nRate += 10 ) {
             Comboitem item = cmbZoonRate.appendItem( nRate.toString() + "%" );
             item.setValue( nRate );
         }
@@ -158,7 +157,7 @@ public class AnotoViewController extends AnotoLoggedController
         param = args.get( paramName );
         if ( param instanceof AnotoResultList ) {
             dtoParam = ( AnotoResultList )param;
-            currentList = (List<AnotoResultList> ) args.get( listName );
+            currentList = ( List<AnotoResultList> )args.get( listName );
             return dtoParam;
         }
         else
@@ -167,13 +166,13 @@ public class AnotoViewController extends AnotoLoggedController
 
     protected void process( AnotoResultList target ) throws ApplicationException
     {
-        loadImages ( target );
-        showFields ( target );
+        loadImages( target );
+        showFields( target );
     }
 
-    protected void showFields ( AnotoResultList target ) throws ApplicationException
+    protected void showFields( AnotoResultList target ) throws ApplicationException
     {
-        currentFields = getSession().getFields ( getLoggedInUser(), target.getPgcPage() );
+        currentFields = getSession().getFields( getLoggedInUser(), target.getPgcPage() );
         if ( SysUtils.isEmpty( currentFields ) ) {
             westView.setVisible( false );
             return;
@@ -189,12 +188,12 @@ public class AnotoViewController extends AnotoLoggedController
         onSelect$fields();
     }
 
-    public void onSelect$fields ()
+    public void onSelect$fields()
     {
         Comboitem item = fields.getSelectedItem();
         if ( item == null )
             return;
-        PgcFieldDTO field = (PgcFieldDTO) item.getValue();
+        PgcFieldDTO field = ( PgcFieldDTO )item.getValue();
         if ( field == null )
             return;
         correctedValue.setText( field.getRevisedText() );
@@ -203,13 +202,11 @@ public class AnotoViewController extends AnotoLoggedController
             Float diffSec = diff.floatValue() / 1000;
             startTime.setValue( diffSec.toString() );
         }
-        else
-        {
+        else {
             startTime.setValue( "" );
         }
         MediaDTO media = field.getMedia();
-        if ( media != null )
-        {
+        if ( media != null ) {
             ByteArrayInputStream is;
             try {
                 is = new ByteArrayInputStream( getSession().getObject( media ) );
@@ -221,13 +218,12 @@ public class AnotoViewController extends AnotoLoggedController
                 showErrorMessage( e.getMessage(), "Carragar Imagem" );
             }
         }
-        else
-        {
+        else {
             fieldImage.setVisible( false );
         }
     }
 
-    public void onBlur$correctedValue ()
+    public void onBlur$correctedValue()
     {
         PgcFieldDTO field = getCurrentField();
         if ( field == null )
@@ -236,7 +232,7 @@ public class AnotoViewController extends AnotoLoggedController
         updateField( field, value );
     }
 
-    public void onOK$correctedValue ()
+    public void onOK$correctedValue()
     {
         PgcFieldDTO field = getCurrentField();
         if ( field == null )
@@ -244,31 +240,30 @@ public class AnotoViewController extends AnotoLoggedController
         String value = correctedValue.getText();
         updateField( field, value );
         int nIndex = fields.getSelectedIndex();
-        nIndex ++;
+        nIndex++;
         if ( nIndex >= fields.getItemCount() )
             nIndex = 0;
         fields.setSelectedIndex( nIndex );
         onSelect$fields();
     }
 
-    protected PgcFieldDTO getCurrentField ()
+    protected PgcFieldDTO getCurrentField()
     {
         Comboitem item = fields.getSelectedItem();
         if ( item == null )
             return null;
-        PgcFieldDTO field = (PgcFieldDTO) item.getValue();
+        PgcFieldDTO field = ( PgcFieldDTO )item.getValue();
         if ( field == null )
             return null;
         return field;
     }
 
-    protected void updateField ( PgcFieldDTO field, String value )
+    protected void updateField( PgcFieldDTO field, String value )
     {
         String fieldValue = field.getRevisedText();
         if ( fieldValue == null )
             fieldValue = "";
-        if ( value.equals( fieldValue ) == false )
-        {
+        if ( value.equals( fieldValue ) == false ) {
             field.setRevisedText( value );
             try {
                 getSession().update( getLoggedInUser(), field );
@@ -279,7 +274,7 @@ public class AnotoViewController extends AnotoLoggedController
         }
     }
 
-    protected void loadImages ( AnotoResultList target ) throws ApplicationException
+    protected void loadImages( AnotoResultList target ) throws ApplicationException
     {
         List<MediaDTO> images;
         Comboitem item;
@@ -290,14 +285,14 @@ public class AnotoViewController extends AnotoLoggedController
             return;
         cmbBackgroundImages.getChildren().clear();
         for ( MediaDTO media : images ) {
-             item = cmbBackgroundImages.appendItem( media.toString() );
+            item = cmbBackgroundImages.appendItem( media.toString() );
             item.setValue( media );
         }
         cmbBackgroundImages.setSelectedIndex( 0 );
         onSelect$cmbBackgroundImages();
     }
 
-    public void onSelect$cmbBackgroundImages ()
+    public void onSelect$cmbBackgroundImages()
     {
         byte[] object;
         MediaDTO media;
@@ -306,23 +301,23 @@ public class AnotoViewController extends AnotoLoggedController
         if ( item == null )
             return;
         try {
-            media = (MediaDTO)item.getValue ();
+            media = ( MediaDTO )item.getValue();
             object = getSession().getObject( media );
             loadImage( object );
-            showImage( );
+            showImage();
         }
         catch ( Exception e ) {
             showErrorMessage( e.getMessage(), "Mostrar Imagem" );
         }
     }
 
-    protected void loadImage ( byte[] object ) throws IOException
+    protected void loadImage( byte[] object ) throws IOException
     {
         ByteArrayInputStream is = new ByteArrayInputStream( object );
         currentImage = ImageIO.read( is );
     }
 
-    protected void showImage ( ) throws IOException
+    protected void showImage() throws IOException
     {
         int w = currentImage.getWidth();
         int h = currentImage.getHeight();
@@ -330,89 +325,90 @@ public class AnotoViewController extends AnotoLoggedController
         if ( imageRateSize == 0.0F ) {
             sizeToFit();
         }
-        w *= imageRateSize;
-        h *= imageRateSize;
-        BufferedImage bufferedImage = resizeTrick( currentImage, w, h );
-        pgcImage.setContent( bufferedImage );
+        if ( imageRateSize != 1.0F ) {
+            w *= imageRateSize;
+            h *= imageRateSize;
+            BufferedImage bufferedImage = resizeTrick( currentImage, w, h );
+            pgcImage.setContent( bufferedImage );
+        }
+        else {
+            pgcImage.setContent( currentImage );
+        }
     }
 
-    private static BufferedImage resizeTrick(BufferedImage image, int width, int height) {
-        image = createCompatibleImage(image);
-        image = blurImage(image);
-        image = resize(image, width, height);
+    private static BufferedImage resizeTrick( BufferedImage image, int width, int height )
+    {
+        image = createCompatibleImage( image );
+        //image = blurImage( image );
+        image = resize( image, width, height );
         return image;
     }
 
-    private static BufferedImage createCompatibleImage(BufferedImage image) {
-        GraphicsConfiguration gc = BufferedImageGraphicsConfig.getConfig(image);
+    private static BufferedImage createCompatibleImage( BufferedImage image )
+    {
+        GraphicsConfiguration gc = BufferedImageGraphicsConfig.getConfig( image );
         int w = image.getWidth();
         int h = image.getHeight();
-        BufferedImage result = gc.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
+        BufferedImage result = gc.createCompatibleImage( w, h, Transparency.TRANSLUCENT );
         Graphics2D g2 = result.createGraphics();
-        g2.drawRenderedImage(image, null);
+        g2.drawRenderedImage( image, null );
         g2.dispose();
         return result;
     }
 
 
-    public static BufferedImage blurImage(BufferedImage image) {
-        float ninth = 1.0f/9.0f;
-        float[] blurKernel = {
-        ninth, ninth, ninth,
-        ninth, ninth, ninth,
-        ninth, ninth, ninth
-        };
+    public static BufferedImage blurImage( BufferedImage image )
+    {
+        float ninth = 1.0f / 9.0f;
+        float[] blurKernel = { ninth, ninth, ninth, ninth, ninth, ninth, ninth, ninth, ninth };
 
         Map map = new HashMap();
 
-        map.put(RenderingHints.KEY_INTERPOLATION,
-        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        map.put( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
 
-        map.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        map.put( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY );
 
-        map.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        map.put( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 
-        RenderingHints hints = new RenderingHints(map);
-        BufferedImageOp op = new ConvolveOp(new Kernel(3, 3, blurKernel), ConvolveOp.EDGE_NO_OP, hints);
-        return op.filter(image, null);
+        RenderingHints hints = new RenderingHints( map );
+        BufferedImageOp op = new ConvolveOp( new Kernel( 3, 3, blurKernel ), ConvolveOp.EDGE_NO_OP, hints );
+        return op.filter( image, null );
     }
 
-    private static BufferedImage resize(BufferedImage image, int width, int height) {
-        int type = image.getType() == 0? BufferedImage.TYPE_INT_ARGB : image.getType();
-        BufferedImage resizedImage = new BufferedImage(width, height, type);
+    private static BufferedImage resize( BufferedImage image, int width, int height )
+    {
+        int type = image.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : image.getType();
+        BufferedImage resizedImage = new BufferedImage( width, height, type );
         Graphics2D g = resizedImage.createGraphics();
-        g.setComposite(AlphaComposite.Src);
+        g.setComposite( AlphaComposite.Src );
 
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
 
-        g.setRenderingHint(RenderingHints.KEY_RENDERING,
-        RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY );
 
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 
-        g.drawImage(image, 0, 0, width, height, null);
+        g.drawImage( image, 0, 0, width, height, null );
         g.dispose();
         return resizedImage;
     }
 
-    protected void sizeToFit ()
+    protected void sizeToFit()
     {
         if ( currentImage.getWidth() > targetWidth ) {
-            imageRateSize = ((float)targetWidth) / ((float)currentImage.getWidth());
+            imageRateSize = ( ( float )targetWidth ) / ( ( float )currentImage.getWidth() );
         }
         else
             imageRateSize = 1.0F;
     }
 
-    public void onClick$btnFit ()
+    public void onClick$btnFit()
     {
         if ( currentImage == null )
             return;
         try {
             sizeToFit();
-            showImage ();
+            showImage();
         }
         catch ( IOException e ) {
             showErrorMessage( e.getMessage(), "Ajustar Imagem" );
@@ -425,30 +421,28 @@ public class AnotoViewController extends AnotoLoggedController
             return;
         imageRateSize += 0.1;
         try {
-            showImage ();
+            showImage();
         }
         catch ( IOException e ) {
             showErrorMessage( e.getMessage(), "Ajustar Imagem" );
         }
     }
 
-    public void onSelect$cmbZoonRate ()
+    public void onSelect$cmbZoonRate()
     {
 
         Comboitem item = cmbZoonRate.getSelectedItem();
-        if ( item == null )
-        {
+        if ( item == null ) {
             String value = cmbZoonRate.getText();
-            if ( SysUtils.isEmpty( value ))
+            if ( SysUtils.isEmpty( value ) )
                 return;
         }
-        else
-        {
-            Integer rate = (Integer) item.getValue();
+        else {
+            Integer rate = ( Integer )item.getValue();
             imageRateSize = ( rate.floatValue() / 100F );
         }
         try {
-            showImage ();
+            showImage();
         }
         catch ( IOException e ) {
             showErrorMessage( e.getMessage(), "Ajustar Imagem" );
@@ -462,29 +456,29 @@ public class AnotoViewController extends AnotoLoggedController
         if ( imageRateSize > .2 )
             imageRateSize -= 0.1;
         try {
-            showImage ();
+            showImage();
         }
         catch ( IOException e ) {
             showErrorMessage( e.getMessage(), "Ajustar Imagem" );
         }
     }
 
-    public void onPaging$pagingPages ()
+    public void onPaging$pagingPages()
     {
-        dtoParam = currentList.get ( pagingPages.getActivePage() );
+        dtoParam = currentList.get( pagingPages.getActivePage() );
         try {
-            process ( dtoParam );
+            process( dtoParam );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Paging" );
         }
     }
 
-    public void onClick$btnDeleteBook ()
+    public void onClick$btnDeleteBook()
     {
         if ( pagingPages.getTotalSize() > 0 ) {
             try {
-                getSession().remove ( getLoggedInUser(), dtoParam );
+                getSession().remove( getLoggedInUser(), dtoParam );
                 pagingPages.setTotalSize( pagingPages.getTotalSize() - 1 );
                 currentList.remove( dtoParam );
                 if ( pagingPages.getTotalSize() == 0 )
