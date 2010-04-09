@@ -1,15 +1,11 @@
 package br.com.mcampos.ejb.mdb;
 
+
 import br.com.mcampos.dto.system.SendMailDTO;
 
-
-import com.sun.mail.smtp.SMTPSSLTransport;
-
-import java.util.Date;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
-
 import javax.annotation.PreDestroy;
 
 import javax.ejb.ActivationConfigProperty;
@@ -27,8 +23,8 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MailDateFormat;
 import javax.mail.internet.MimeMessage;
+
 
 @MessageDriven( mappedName = "jms/CloudSystemQueue", activationConfig = { @ActivationConfigProperty( propertyName = "destinationType", propertyValue = "javax.jms.Queue" ), @ActivationConfigProperty( propertyName = "destinationName", propertyValue = "jms/CloudSystemQueue" ) } )
 public class EmailMessageSessionBean implements MessageListener
@@ -55,10 +51,10 @@ public class EmailMessageSessionBean implements MessageListener
             getTransport().connect( SMTP_SERVER_ADDRESS, SMTP_SERVER_PORT, SMTP_USENAME, SMTP_PASSWORD );
         }
         catch ( NoSuchProviderException e ) {
-            e = null;
+            System.out.println ( e.getMessage() );
         }
         catch ( MessagingException e ) {
-            e = null;
+            System.out.println ( e.getMessage() );
         }
     }
 
@@ -71,7 +67,7 @@ public class EmailMessageSessionBean implements MessageListener
             transport = null;
         }
         catch ( MessagingException e ) {
-            e = null;
+            System.out.println ( e.getMessage() );
         }
         mailSession = null;
     }
@@ -108,7 +104,7 @@ public class EmailMessageSessionBean implements MessageListener
                 message.acknowledge();
             }
             catch ( JMSException e ) {
-                e = null;
+                System.out.println ( e.getMessage() );
             }
         }
     }
@@ -127,7 +123,7 @@ public class EmailMessageSessionBean implements MessageListener
             getTransport().send( message );
         }
         catch ( MessagingException e ) {
-            e = null;
+            System.out.println ( e.getMessage() );
         }
     }
 
