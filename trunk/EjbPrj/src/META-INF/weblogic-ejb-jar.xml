@@ -175,4 +175,19 @@
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>AnodeFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>MediaFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>SecurityFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
 </weblogic-ejb-jar>

@@ -1,12 +1,12 @@
 package br.com.mcampos.ejb.session.system;
 
+
 import br.com.mcampos.dto.system.SendMailDTO;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 
 import javax.jms.Connection;
@@ -16,21 +16,25 @@ import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.Session;
-import javax.jms.TextMessage;
+
 
 @Stateless( name = "SendMailSession", mappedName = "CloudSystems-EjbPrj-SendMailSession" )
 public class SendMailSessionBean implements SendMailSessionLocal
 {
+    /*
+     * INFO:
+     * NO WEBLogic, DEVE ser ativado o XA-Transaction para o Connection Factory
+     */
     @Resource(mappedName="jms/CloudSystemsCF")  private ConnectionFactory cf;
     @Resource(mappedName="jms/CloudSystemQueue") private Queue queue;
     private Connection connection;
     private Session session;
-    
+
     public SendMailSessionBean()
     {
     }
-    
-    
+
+
     @PostConstruct
     protected void init ()
     {
@@ -44,7 +48,7 @@ public class SendMailSessionBean implements SendMailSessionLocal
             session = null;
         }
     }
-    
+
     @PreDestroy
     protected void destroy ()
     {
@@ -58,8 +62,8 @@ public class SendMailSessionBean implements SendMailSessionLocal
             }
         }
     }
-    
-    
+
+
     public void sendMail ( SendMailDTO dto )
     {
         try {
