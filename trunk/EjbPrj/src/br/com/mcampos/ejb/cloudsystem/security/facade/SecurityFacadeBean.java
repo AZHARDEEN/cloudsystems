@@ -144,4 +144,12 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
             dtos.add( t.toDTO() );
         return dtos;
     }
+
+    public List<TaskDTO> getTasks ( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        List<Task> tasks;
+        tasks = roleSession.getTasks( dto.getId() );
+        return toTaskDTO( tasks );
+    }
 }

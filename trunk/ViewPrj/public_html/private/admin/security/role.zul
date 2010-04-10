@@ -18,58 +18,31 @@
                     </tree>
                 </div>
             </west>
-            <center >
-                <!-- Por favor, nao mude o id desta div -->
-                <div id="recordDetail">
-                    <!-- view mode -->
-                    <div id="recordView" width="1">
-                        <grid width="100%" fixedLayout="true">
-                            <columns>
-                                <column align="right" width="20%"/>
-                                <column align="left"/>
-                            </columns>
-                            <rows>
-                                <row>
-                                    Código
-                                    <label id="labelId" />
-                                </row>
-                                <row>
-                                    Descrição
-                                    <label id="labelDescription" />
-                                </row>
-                                <row>
-                                    Role Pai
-                                    <label id="labelParent" />
-                                </row>
-                            </rows>
-                        </grid>
-                        <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
-                    </div>
-                    <div id="recordEdit" visible="false" droppable="true">
-                        <grid width="100%" fixedLayout="true">
-                            <columns>
-                                <column align="right" width="20%"/>
-                                <column align="left" width="80%"/>
-                            </columns>
-                            <rows>
-                                <row>
-                                    Código
-                                    <intbox id="editId" width="100px" constraint="no negative, no zero"/>
-                                </row>
-                                <row>
-                                    Descrição
-                                    <textbox id="editDescription" width="99%"/>
-                                </row>
-                                <row>
-                                    Role Pai
-                                    <combobox id="comboParent" width="80%" readonly="true"/>
-                                </row>
-                            </rows>
-                        </grid>
-                        <separator/>
-                        <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
-                    </div>
-                </div>
+            <center flex="true">
+                <tabbox >
+                    <tabs>
+                        <tab id="tabData" label="Dados" />
+                        <tab id="tabTasks" label="Tarefas Associadas" />
+                        <tab id="tabFreeTasks" label="Tarefas Disponíveis" />
+                    </tabs>
+                    <tabpanels>
+                        <tabpanel id="panelData" fulfill="=/private/admin/security/role_data.zul" />
+                        <tabpanel id="panelTasks">
+                            <listbox id="listTasks" vflex="true" height="300px">
+                                <listhead sizable="true">
+                                    <listheader id="headerDescription" align="left" label="Tarefas" sort="auto"/>
+                                </listhead>
+                            </listbox>
+                        </tabpanel>
+                        <tabpanel id="panelFreeTasks">
+                            <label id="lblTips" value="Arraste a tarefa até a role desejada" />
+                            <listbox id="freeTasks" vflex="true">
+                                <listhead value="Tarefa" />
+                                <listitem />
+                            </listbox>
+                        </tabpanel>
+                    </tabpanels>
+                </tabbox>
             </center>
         </borderlayout>
     </div>

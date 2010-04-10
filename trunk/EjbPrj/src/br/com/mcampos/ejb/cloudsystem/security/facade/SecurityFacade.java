@@ -28,6 +28,8 @@ public interface SecurityFacade
 
     void delete( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException;
 
+    List<TaskDTO> getTasks ( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException;
+
 
     /*
      * TASKS

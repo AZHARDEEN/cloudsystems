@@ -2,10 +2,14 @@ package br.com.mcampos.ejb.cloudsystem.security.session;
 
 
 import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
+import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
+import br.com.mcampos.ejb.entity.security.PermissionAssignment;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -69,5 +73,30 @@ public class RoleSessionBean extends Crud<Integer, Role> implements RoleSessionL
             e = null;
         }
         return sequence;
+    }
+
+    public List<Task> getTasks ( Integer key ) throws ApplicationException
+    {
+        Role role = get(key);
+        if ( role == null )
+            return Collections.emptyList();
+        List<Task> tasks = new ArrayList<Task> ();
+        return getTasks( role, tasks );
+    }
+
+
+    protected List<Task> getTasks ( Role role, List<Task> tasks ) throws ApplicationException
+    {
+        if ( role == null )
+            return Collections.emptyList();
+        List<PermissionAssignment> permissions =
+            ( List<PermissionAssignment> )getResultList( PermissionAssignment.findByTask, role );
+        if ( SysUtils.isEmpty( permissions ) == false ) {
+            for ( PermissionAssignment permission : permissions )
+                tasks.add( permission.getTask() );
+        }
+        for ( Role item : role.getChildRoles() )
+            getTasks( item, tasks );
+        return tasks;
     }
 }

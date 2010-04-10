@@ -2,25 +2,35 @@ package br.com.mcampos.controller.admin.security.roles;
 
 
 import br.com.mcampos.controller.admin.security.SecutityBaseController;
+import br.com.mcampos.controller.admin.system.config.task.TaskListRenderer;
 import br.com.mcampos.dto.security.RoleDTO;
+import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.exception.ApplicationException;
 
+import java.util.List;
+
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
+
 
 public class RoleController extends SecutityBaseController
 {
 
-    Label labelId;
-    Label labelDescription;
-    Label labelParent;
+    private Label labelId;
+    private Label labelDescription;
+    private Label labelParent;
 
-    Intbox editId;
-    Textbox editDescription;
-    Combobox comboParent;
+    private Intbox editId;
+    private Textbox editDescription;
+    private Combobox comboParent;
+
+    private Listbox freeTasks;
+    private Listbox listTasks;
 
     public RoleController( char c )
     {
@@ -55,6 +65,21 @@ public class RoleController extends SecutityBaseController
         labelDescription.setValue(  dto.getDescription() );
         labelId.setValue( dto.getId().toString( ) );
         labelParent.setValue( dto.getParent() != null ? dto.getParent().toString() : "" );
+
+        try {
+            loadTasks ( dto );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "LoadTasks" );
+        }
+    }
+
+    protected void loadTasks ( RoleDTO dto ) throws ApplicationException
+    {
+        List<TaskDTO> tasks = getSession().getTasks ( getLoggedInUser(), dto );
+        listTasks.getItems().clear();
+        ListModelList model = new ListModelList (tasks, false);
+        listTasks.setModel( model );
     }
 
     protected void clearRecord()
@@ -152,5 +177,12 @@ public class RoleController extends SecutityBaseController
             getSession().add( getLoggedInUser(), (RoleDTO) obj );
         else
             getSession().update( getLoggedInUser(), (RoleDTO) obj );
+    }
+
+    @Override
+    public void doAfterCompose( Component comp ) throws Exception
+    {
+        super.doAfterCompose( comp );
+        listTasks.setItemRenderer( new TaskListRenderer() );
     }
 }

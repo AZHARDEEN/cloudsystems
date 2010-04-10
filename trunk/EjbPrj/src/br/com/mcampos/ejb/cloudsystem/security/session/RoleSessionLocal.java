@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.security.session;
 
 
 import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
+import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -28,7 +29,9 @@ public interface RoleSessionLocal
 
     Integer nextIntegerId( String namedQuery ) throws ApplicationException;
 
-    public List<Role> getChildRoles( Role role ) throws ApplicationException;
+    List<Role> getChildRoles( Role role ) throws ApplicationException;
 
     Integer getMaxId ( );
+
+    List<Task> getTasks ( Integer key ) throws ApplicationException;
 }

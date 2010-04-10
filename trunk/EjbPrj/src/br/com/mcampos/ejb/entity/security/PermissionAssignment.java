@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.entity.security;
 
-import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 
+import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
 
 import java.io.Serializable;
@@ -16,12 +16,18 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries( { @NamedQuery( name = "PermissionAssignment.findAll", query = "select o from PermissionAssignment o" ) } )
-@Table( name = "\"permission_assignment\"" )
+@NamedQueries( {
+    @NamedQuery( name = PermissionAssignment.findAll, query = "select o from PermissionAssignment o" ),
+    @NamedQuery( name = PermissionAssignment.findByTask, query = "select o from PermissionAssignment o where o.role = ?1" )
+    } )
+@Table( name = "permission_assignment" )
 @IdClass( PermissionAssignmentPK.class )
 public class PermissionAssignment implements Serializable
 {
+    public static final String findByTask = "PermissionAssignment.findByTasks";
+    public static final String findAll = "PermissionAssignment.findAll";
     private Integer permissonId;
     private Integer roleId;
     private Integer taskId;
