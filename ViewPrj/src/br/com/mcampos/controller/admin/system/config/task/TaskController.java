@@ -69,7 +69,6 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
 
         row = item.getTreerow();
         row.appendChild( new Treecell( data.toString() ) );
-        item.setOpen( true );
         row.setDraggable( "true" );
         row.setDroppable( "true" );
         row.addEventListener( Events.ON_DROP, new EventListener()
@@ -88,14 +87,12 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
 
     protected void refresh()
     {
-        /*
         try {
-            getTreeList().setModel( new TaskTreeModel( getLocator().getTasks( getLoggedInUser() ) ) );
+            getTreeList().setModel( new TaskTreeModel( getLoggedInUser(), getLocator().getRootTasks( getLoggedInUser() ) ) );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Refresh Menu" );
         }
-*/
     }
 
     protected void delete( Object currentRecord )
@@ -126,7 +123,8 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
     protected int getNextId()
     {
         try {
-            return getLocator().getNextTaskId( getLoggedInUser() );
+            int nextVal = getLocator().getNextTaskId( getLoggedInUser() );
+            return nextVal;
         }
         catch ( ApplicationException e ) {
             e = null;

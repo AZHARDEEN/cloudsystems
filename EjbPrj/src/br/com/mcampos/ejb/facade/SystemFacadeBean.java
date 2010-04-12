@@ -198,4 +198,9 @@ public class SystemFacadeBean implements SystemFacade
     {
         getSystemSession().delete( auth, id );
     }
+
+    public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
+    {
+        return getSystemSession().getRootTasks( auth );
+    }
 }
