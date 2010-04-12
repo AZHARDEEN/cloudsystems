@@ -1,19 +1,17 @@
 package br.com.mcampos.ejb.session.system;
 
-import br.com.mcampos.dto.security.AuthenticationDTO;
 
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
-
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
-import br.com.mcampos.ejb.core.AbstractSecurity;
-import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.entity.login.AccessLogType;
+import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
 import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenu;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
-
+import br.com.mcampos.ejb.core.AbstractSecurity;
+import br.com.mcampos.ejb.core.util.DTOFactory;
+import br.com.mcampos.ejb.entity.login.AccessLogType;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -28,6 +26,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 
 @Stateless( name = "SystemSession", mappedName = "CloudSystems-EjbPrj-SystemSession" )
 public class SystemSessionBean extends AbstractSecurity implements SystemSessionLocal
@@ -340,14 +339,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
             getEntityManager().clear();
             getEntityManager().flush();
             list = ( List<Task> )getEntityManager().createNamedQuery( "Task.findAll" ).getResultList();
-            if ( list == null || list.size() == 0 )
-                return Collections.emptyList();
-            ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( list.size() );
-            for ( Task m : list ) {
-                getEntityManager().refresh( m );
-                listDTO.add( DTOFactory.copy( m, true ) );
-            }
-            return listDTO;
+            return toTasksDTO( list );
         }
         catch ( NoResultException e ) {
             e = null;
@@ -355,16 +347,52 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         }
     }
 
+    protected List<TaskDTO> toTasksDTO( List<Task> list )
+    {
+        if ( list == null || list.size() == 0 )
+            return Collections.emptyList();
+        ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( list.size() );
+        for ( Task m : list ) {
+            getEntityManager().refresh( m );
+            listDTO.add( DTOFactory.copy( m, true ) );
+        }
+        return listDTO;
+    }
+
+
+    public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
+    {
+        List<Task> list;
+
+        authenticate( auth, Role.systemAdmimRoleLevel );
+
+        try {
+            getEntityManager().clear();
+            getEntityManager().flush();
+            list = ( List<Task> )getEntityManager().createNamedQuery( Task.rootTasks ).getResultList();
+            return toTasksDTO( list );
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            return Collections.emptyList();
+        }
+    }
+
+
     public TaskDTO update( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        return null;
+        Task entity = DTOFactory.copy( dto );
+        getEntityManager().merge( entity );
+        return entity.toDTO();
     }
 
     public TaskDTO add( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        return null;
+        Task entity = DTOFactory.copy( dto );
+        getEntityManager().persist( entity );
+        return entity.toDTO();
     }
 
     public Boolean validate( TaskDTO dto, Boolean isNew ) throws ApplicationException
@@ -375,12 +403,24 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
     public void delete( AuthenticationDTO auth, TaskDTO id ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
+        Task entity = getEntityManager().find( Task.class, id );
+        if ( entity != null )
+            getEntityManager().remove( entity );
     }
 
     public Integer getNextTaskId( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        return 0;
+        String sql;
+
+        sql = "SELECT COALESCE ( MAX ( TSK_ID_IN ), 0 ) + 1 AS ID FROM TASK";
+        Query query = getEntityManager().createNativeQuery( sql );
+        try {
+            return ( Integer )query.getSingleResult();
+        }
+        catch ( Exception e ) {
+            return 1;
+        }
     }
 
     public List<AccessLogTypeDTO> getAccessLogTypes( AuthenticationDTO auth ) throws ApplicationException

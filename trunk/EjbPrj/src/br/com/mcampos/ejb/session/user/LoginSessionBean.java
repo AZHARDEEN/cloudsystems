@@ -1,12 +1,13 @@
 package br.com.mcampos.ejb.session.user;
 
+
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.BasicSecurityDTO;
+import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.system.SendMailDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
-import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.core.util.RandomString;
@@ -14,14 +15,11 @@ import br.com.mcampos.ejb.entity.login.AccessLog;
 import br.com.mcampos.ejb.entity.login.AccessLogType;
 import br.com.mcampos.ejb.entity.login.LastUsedPassword;
 import br.com.mcampos.ejb.entity.login.LastUsedPasswordPK;
-import br.com.mcampos.ejb.entity.system.SystemParameters;
 import br.com.mcampos.ejb.entity.login.Login;
-
-
+import br.com.mcampos.ejb.entity.system.SystemParameters;
 import br.com.mcampos.ejb.entity.user.Person;
 import br.com.mcampos.ejb.entity.user.UserDocument;
 import br.com.mcampos.ejb.entity.user.attributes.UserStatus;
-
 import br.com.mcampos.ejb.session.system.EmailSessionLocal;
 import br.com.mcampos.ejb.session.system.SendMailSessionLocal;
 import br.com.mcampos.ejb.session.system.SystemParametersSessionLocal;
@@ -44,9 +42,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-
 import javax.persistence.Query;
-
 
 import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.jasypt.util.text.BasicTextEncryptor;
@@ -421,7 +417,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         Date now = new Date();
         if ( login.getPasswordExpirationDate().compareTo( new Timestamp( now.getTime() ) ) < 0 ) {
             login.setUserStatus( getEntityManager().find( UserStatus.class, UserStatus.statusExpiredPassword ) );
-            throwException( 19 );
+            //throwException( 19 );
         }
         AuthenticationDTO retDTO = new AuthenticationDTO();
         retDTO.setUserId( login.getUserId() );
@@ -510,8 +506,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
         try {
             now = new Timestamp( Calendar.getInstance().getTime().getTime() );
-            lastUsedPassword = getEntityManager()
-                    .find( LastUsedPassword.class, new LastUsedPasswordPK( login.getPassword(), login.getUserId() ) );
+            lastUsedPassword =
+                    getEntityManager().find( LastUsedPassword.class, new LastUsedPasswordPK( login.getPassword(), login.getUserId() ) );
             if ( lastUsedPassword == null ) {
                 lastUsedPassword = new LastUsedPassword( now, login.getPassword(), null, login.getUserId() );
                 lastUsedPassword.setLogin( login );
@@ -539,14 +535,10 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
             return;
 
         switch ( ( int )( login.getUserStatus().getId() ) ) {
-        case UserStatus.statusMaxLoginTryCount:
-            throwException( 15 );
-        case UserStatus.statusInativo:
-            throwException( 16 );
-        case UserStatus.statusEmailNotValidated:
-            throwException( 17 );
-        default:
-            throwException( 18 );
+        case UserStatus.statusMaxLoginTryCount: throwException( 15 );
+        case UserStatus.statusInativo: throwException( 16 );
+        case UserStatus.statusEmailNotValidated: throwException( 17 );
+        default: throwException( 18 );
         }
     }
 
@@ -602,8 +594,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         try {
             List retList;
 
-            retList = getEntityManager().createNamedQuery( "LastUsedPassword.findAll" ).setParameter( "id", login.getUserId() )
-                    .getResultList();
+            retList =
+                    getEntityManager().createNamedQuery( "LastUsedPassword.findAll" ).setParameter( "id", login.getUserId() ).getResultList();
             list = ( List<LastUsedPassword> )retList;
             passwordEncryptor = new BasicPasswordEncryptor();
             for ( LastUsedPassword password : list ) {
@@ -683,8 +675,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         Login login = null;
 
         try {
-            login = ( Login )getEntityManager().createNamedQuery( "Login.findToken" ).setParameter( "token", token )
-                    .getSingleResult();
+            login =
+                    ( Login )getEntityManager().createNamedQuery( "Login.findToken" ).setParameter( "token", token ).getSingleResult();
         }
         catch ( NoResultException e ) {
             e = null;

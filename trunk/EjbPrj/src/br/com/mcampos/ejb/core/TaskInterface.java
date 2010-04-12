@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.core;
 
+
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.exception.ApplicationException;
@@ -16,6 +17,15 @@ public interface TaskInterface
      * @throws ApplicationException
      */
     List<TaskDTO> getTasks( AuthenticationDTO auth ) throws ApplicationException;
+
+    /**
+     * Obtem a lista dos objetos.
+     *
+     * @param auth - dto do usuário autenticado no sistema.
+     * @return Lista de objetos.
+     * @throws ApplicationException
+     */
+    List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException;
 
 
     /**

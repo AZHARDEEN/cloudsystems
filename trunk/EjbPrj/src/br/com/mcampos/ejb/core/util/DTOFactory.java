@@ -241,11 +241,9 @@ public final class DTOFactory implements Serializable
 
         code = document.trim();
         switch ( type ) {
-        case UserDocument.typeCPF:
-            code = code.replaceAll( "[\\-.\\/]", "" );
+        case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
             break;
-        case UserDocument.typeEmail:
-            code = code.toLowerCase();
+        case UserDocument.typeEmail: code = code.toLowerCase();
             break;
         }
         return code;
@@ -750,6 +748,14 @@ public final class DTOFactory implements Serializable
                 target.add( copy( sm.getSubTask(), true ) );
             }
         }
+        return target;
+    }
+
+    public static Task copy( TaskDTO source )
+    {
+        if ( source == null )
+            return null;
+        Task target = new Task( source.getDescription(), source.getId() );
         return target;
     }
 

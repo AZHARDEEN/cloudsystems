@@ -48,4 +48,9 @@ public class TaskLocator extends SystemLocator implements TaskInterface
     {
         getSessionBean().delete( auth, id );
     }
+
+    public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
+    {
+        return getSessionBean().getRootTasks( auth );
+    }
 }
