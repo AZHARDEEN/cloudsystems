@@ -32,12 +32,16 @@
                                         </row>
                                         <row>
                                             <label value="Caneta"/>
-                                            <combobox id="cmbPen" width="90%"/>
+                                            <combobox id="cmbPen" width="200px"/>
                                             <label value="Data Final"/>
                                             <hbox>
                                                 <datebox id="endDate" format="dd/MM/yyyy"/>
                                                 <timebox id="endTime" format="HH:mm"/>
                                             </hbox>
+                                        </row>
+                                        <row>
+                                            <label value="Código de Barras"/>
+                                            <textbox id="txtBarcode" width="200px"/>
                                         </row>
                                     </rows>
                                 </grid>
