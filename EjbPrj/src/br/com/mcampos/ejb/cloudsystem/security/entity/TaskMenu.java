@@ -13,12 +13,19 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries( { @NamedQuery( name = "TaskMenu.findAll", query = "select o from TaskMenu o" ) } )
-@Table( name = "\"task_menu\"" )
+@NamedQueries( {
+    @NamedQuery( name = TaskMenu.findAll, query = "select o from TaskMenu o" ),
+    @NamedQuery( name = TaskMenu.findByTask, query = "select o from TaskMenu o where o.task = ?1" )
+    } )
+@Table( name = "task_menu" )
 @IdClass( TaskMenuPK.class )
 public class TaskMenu implements Serializable
 {
+    public static final String findAll = "TaskMenu.findAll";
+    public static final String findByTask = "TaskMenu.findByTask";
+
     private Integer menuId;
     private Integer taskId;
     private Task task;

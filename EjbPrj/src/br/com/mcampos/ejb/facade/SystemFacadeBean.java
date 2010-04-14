@@ -1,21 +1,20 @@
 package br.com.mcampos.ejb.facade;
 
+
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.ejb.session.system.SystemSessionLocal;
-
 import br.com.mcampos.exception.ApplicationException;
-
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
+
 
 @Stateless( name = "SystemFacade", mappedName = "CloudSystems-EjbPrj-SystemFacade" )
 public class SystemFacadeBean implements SystemFacade
@@ -202,5 +201,15 @@ public class SystemFacadeBean implements SystemFacade
     public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
     {
         return getSystemSession().getRootTasks( auth );
+    }
+
+    public TaskDTO getTask (AuthenticationDTO auth, Integer taskId ) throws ApplicationException
+    {
+        return getSystemSession().getTask( auth, taskId );
+    }
+
+    public void addMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+    {
+        getSystemSession().addMenuTask ( auth, menu, task );
     }
 }

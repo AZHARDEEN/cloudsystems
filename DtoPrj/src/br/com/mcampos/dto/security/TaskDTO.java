@@ -1,8 +1,8 @@
 package br.com.mcampos.dto.security;
 
+
 import br.com.mcampos.dto.core.SimpleTableDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TaskDTO extends SimpleTableDTO
@@ -39,8 +39,6 @@ public class TaskDTO extends SimpleTableDTO
 
     public List<TaskDTO> getSubtasks()
     {
-        if ( subtasks == null )
-            subtasks = new ArrayList<TaskDTO>();
         return subtasks;
     }
 

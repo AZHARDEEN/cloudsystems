@@ -1,12 +1,12 @@
 package br.com.mcampos.controller.admin.system.config.task;
 
+
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.ejb.core.TaskInterface;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.SystemLocator;
 
-import java.util.Collections;
 import java.util.List;
 
 public class TaskLocator extends SystemLocator implements TaskInterface
@@ -52,5 +52,10 @@ public class TaskLocator extends SystemLocator implements TaskInterface
     public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
     {
         return getSessionBean().getRootTasks( auth );
+    }
+
+    public TaskDTO getTask( AuthenticationDTO auth, Integer taskId ) throws ApplicationException
+    {
+        return getSessionBean().getTask( auth, taskId );
     }
 }

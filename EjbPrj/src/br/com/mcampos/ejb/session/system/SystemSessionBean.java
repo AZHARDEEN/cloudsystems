@@ -12,6 +12,7 @@ import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenu;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.login.AccessLogType;
+import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -86,7 +87,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
             ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( menu.getTasks().size() );
             for ( TaskMenu m : menu.getTasks() ) {
                 getEntityManager().refresh( m );
-                listDTO.add( DTOFactory.copy( m.getTask(), false ) );
+                listDTO.add( DTOFactory.copy( m.getTask() ) );
             }
             return listDTO;
         }
@@ -349,12 +350,14 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
 
     protected List<TaskDTO> toTasksDTO( List<Task> list )
     {
+        Integer size;
+
         if ( list == null || list.size() == 0 )
             return Collections.emptyList();
         ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( list.size() );
         for ( Task m : list ) {
             getEntityManager().refresh( m );
-            listDTO.add( DTOFactory.copy( m, true ) );
+            listDTO.add( DTOFactory.copy( m ) );
         }
         return listDTO;
     }
@@ -392,6 +395,17 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         authenticate( auth, Role.systemAdmimRoleLevel );
         Task entity = DTOFactory.copy( dto );
         getEntityManager().persist( entity );
+        if ( dto.getParent() != null )
+        {
+            Task masterTask = getEntityManager().find( Task.class, dto.getParentId() );
+            if ( masterTask != null )
+            {
+                Subtask subTask = new Subtask ();
+                subTask.setTask( masterTask );
+                subTask.setSubTask( entity );
+                getEntityManager().persist( subTask );
+            }
+        }
         return entity.toDTO();
     }
 
@@ -521,6 +535,27 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
     protected AccessLogType getAccessLogType( Integer id )
     {
         return ( AccessLogType )get( AccessLogType.class, id );
+    }
+
+    public TaskDTO getTask (AuthenticationDTO auth, Integer taskId ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        Task entity = getEntityManager().find( Task.class, taskId );
+        return entity != null ? entity.toDTO() : null;
+    }
+
+    public void addMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+    {
+        Menu menuEntity = getEntityManager().find( Menu.class, menu.getId() );
+        Task taskEntity = getEntityManager().find( Task.class, task.getId() );
+        if ( menuEntity != null && taskEntity != null )
+        {
+            TaskMenu tm = new TaskMenu();
+
+            tm.setTask( taskEntity );
+            tm.setMenu( menuEntity );
+            getEntityManager().persist( tm );
+        }
     }
 }
 

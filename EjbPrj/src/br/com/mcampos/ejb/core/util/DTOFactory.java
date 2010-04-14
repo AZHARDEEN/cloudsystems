@@ -53,7 +53,6 @@ import br.com.mcampos.ejb.entity.address.Region;
 import br.com.mcampos.ejb.entity.address.State;
 import br.com.mcampos.ejb.entity.login.AccessLogType;
 import br.com.mcampos.ejb.entity.login.Login;
-import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.ejb.entity.system.SystemParameters;
 import br.com.mcampos.ejb.entity.user.Address;
 import br.com.mcampos.ejb.entity.user.Company;
@@ -734,7 +733,7 @@ public final class DTOFactory implements Serializable
     }
 
 
-    public static TaskDTO copy( Task source, Boolean copySubtasks )
+    public static TaskDTO copy( Task source )
     {
         if ( source == null )
             return null;
@@ -743,11 +742,6 @@ public final class DTOFactory implements Serializable
 
         target.setId( source.getId() );
         target.setDescription( source.getDescription() );
-        if ( ( source.getSubtasks().size() > 0 ) && copySubtasks ) {
-            for ( Subtask sm : source.getSubtasks() ) {
-                target.add( copy( sm.getSubTask(), true ) );
-            }
-        }
         return target;
     }
 

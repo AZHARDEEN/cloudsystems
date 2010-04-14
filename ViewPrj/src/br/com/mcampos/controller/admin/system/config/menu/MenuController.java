@@ -1,6 +1,8 @@
 package br.com.mcampos.controller.admin.system.config.menu;
 
 
+import br.com.mcampos.controller.admin.system.config.task.TaskTreeModel;
+import br.com.mcampos.controller.admin.system.config.task.TaskTreeRenderer;
 import br.com.mcampos.controller.core.BasicTreeCRUDController;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
@@ -23,6 +25,7 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
@@ -59,6 +62,8 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
 
     protected Button cmdTasks;
 
+    protected Tree treeTasks;
+
 
     public MenuController( char c )
     {
@@ -89,6 +94,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
                 }
             } );
         getTreeList().setTreeitemRenderer( this );
+        treeTasks.setTreeitemRenderer( new TaskTreeRenderer (true, false) );
         refresh();
     }
 
@@ -104,6 +110,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     {
         try {
             getTreeList().setModel( new MenuTreeModel( getLocator().getMenus( getLoggedInUser() ) ) );
+            refreshTask();
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Refresh Menu" );
@@ -191,29 +198,45 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
             return;
         de = ( DropEvent )evt;
         Object obj = de.getDragged();
-        MenuDTO fromDTO = getValue( ( Treeitem )( ( Treerow )obj ).getParent() );
-        if ( de.getTarget() instanceof Treerow ) {
-            MenuDTO toDTO = getValue( ( Treeitem )( ( Treerow )de.getTarget() ).getParent() );
+        Object dto = getValue( ( Treeitem )( ( Treerow )obj ).getParent() );
+        if ( dto instanceof MenuDTO ) {
+            MenuDTO fromDTO = (MenuDTO) dto;
+            if ( de.getTarget() instanceof Treerow ) {
+                MenuDTO toDTO = getValue( ( Treeitem )( ( Treerow )de.getTarget() ).getParent() );
 
-            if ( obj instanceof Treerow && toDTO != null ) {
-                fromDTO.setParent( toDTO );
+                if ( obj instanceof Treerow && toDTO != null ) {
+                    fromDTO.setParent( toDTO );
+                    try {
+                        getLocator().update( getLoggedInUser(), fromDTO );
+                        moveTreeItem( ( ( Treeitem )de.getTarget().getParent() ), ( ( Treeitem )de.getDragged().getParent() ) );
+                        MenuDTO parentDTO = toDTO.getParent();
+                        if ( parentDTO != null )
+                            parentDTO.removeSubMenu( fromDTO );
+                        toDTO.addSubMenu( fromDTO );
+                        showRecord( fromDTO );
+                    }
+                    catch ( ApplicationException e ) {
+                        showErrorMessage( e.getMessage(), "OnDrop Error" );
+                    }
+                }
+            }
+            else if ( de.getTarget() instanceof Intbox || de.getTarget() instanceof Div ) {
+                editParent.setValue( fromDTO.getId() );
+                loadSequence();
+            }
+        }
+        else if ( dto instanceof TaskDTO )
+        {
+            TaskDTO task = ( TaskDTO )dto;
+            if ( de.getTarget() instanceof Treerow ) {
+                MenuDTO toDTO = getValue( ( Treeitem )( ( Treerow )de.getTarget() ).getParent() );
                 try {
-                    getLocator().update( getLoggedInUser(), fromDTO );
-                    moveTreeItem( ( ( Treeitem )de.getTarget().getParent() ), ( ( Treeitem )de.getDragged().getParent() ) );
-                    MenuDTO parentDTO = toDTO.getParent();
-                    if ( parentDTO != null )
-                        parentDTO.removeSubMenu( fromDTO );
-                    toDTO.addSubMenu( fromDTO );
-                    showRecord( fromDTO );
+                    getLocator().addMenuTask ( getLoggedInUser(), toDTO, task );
                 }
                 catch ( ApplicationException e ) {
                     showErrorMessage( e.getMessage(), "OnDrop Error" );
                 }
             }
-        }
-        else if ( de.getTarget() instanceof Intbox || de.getTarget() instanceof Div ) {
-            editParent.setValue( fromDTO.getId() );
-            loadSequence();
         }
     }
 
@@ -359,6 +382,16 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
             Properties params = new Properties();
             params.put( "menuForTask", dto );
             gotoPage( "/private/admin/system/config/menu_task.zul", getRootParent().getParent(), params );
+        }
+    }
+
+    protected void refreshTask()
+    {
+        try {
+            treeTasks.setModel( new TaskTreeModel( getLoggedInUser(), getLocator().getRootTasks( getLoggedInUser() ) ) );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Refresh Menu" );
         }
     }
 }

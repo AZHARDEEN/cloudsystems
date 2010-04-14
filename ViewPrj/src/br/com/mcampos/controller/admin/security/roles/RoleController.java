@@ -3,22 +3,29 @@ package br.com.mcampos.controller.admin.security.roles;
 
 import br.com.mcampos.controller.admin.security.SecutityBaseController;
 import br.com.mcampos.controller.admin.system.config.task.TaskListRenderer;
+import br.com.mcampos.controller.admin.system.config.task.TaskTreeModel;
+import br.com.mcampos.controller.admin.system.config.task.TaskTreeRenderer;
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.util.system.IDropEvent;
 
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.DropEvent;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Tree;
+import org.zkoss.zul.Treeitem;
+import org.zkoss.zul.Treerow;
 
 
-public class RoleController extends SecutityBaseController
+public class RoleController extends SecutityBaseController implements IDropEvent
 {
 
     private Label labelId;
@@ -29,7 +36,7 @@ public class RoleController extends SecutityBaseController
     private Textbox editDescription;
     private Combobox comboParent;
 
-    private Listbox freeTasks;
+    private Tree treeTasks;
     private Listbox listTasks;
 
     public RoleController( char c )
@@ -46,12 +53,12 @@ public class RoleController extends SecutityBaseController
     {
         RoleDTO dto;
 
-        getTree().setTreeitemRenderer( new RoleRenderer() );
         try {
             dto = getSession().getRootRole( getLoggedInUser() );
             getTree().setModel( new RoleModel ( getSession(), getLoggedInUser(), dto ) );
             comboParent.setItemRenderer(  new RoleItemRenderer() );
             comboParent.setModel( new ListModelList ( getSession().getRoles( getLoggedInUser() ) ) );
+            treeTasks.setModel( new TaskTreeModel( getLoggedInUser(), getSession().getRootTasks( getLoggedInUser() ) ) );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Role" );
@@ -184,5 +191,28 @@ public class RoleController extends SecutityBaseController
     {
         super.doAfterCompose( comp );
         listTasks.setItemRenderer( new TaskListRenderer() );
+        treeTasks.setTreeitemRenderer( new TaskTreeRenderer ( true, false) );
+        getTree().setTreeitemRenderer( new RoleRenderer( this, true, true) );
     }
+
+    public void onDrop( DropEvent evt )
+    {
+        Treerow source = (Treerow) evt.getDragged();
+        Treerow target = (Treerow) evt.getTarget();
+        Object vSource = ((Treeitem)source.getParent()).getValue();
+        Object vTarget = ((Treeitem)target.getParent()).getValue();
+        if ( vSource instanceof TaskDTO ) {
+            if ( vSource != null && vTarget != null ) {
+                TaskDTO dSource = (TaskDTO)vSource;
+                RoleDTO dTarget = ( RoleDTO)vTarget;
+                try {
+                    getSession().add( getLoggedInUser(), dTarget, dSource );
+                }
+                catch ( ApplicationException e ) {
+                    showErrorMessage( e.getMessage(), "Permission Assigment" );
+                }
+            }
+        }
+    }
+
 }

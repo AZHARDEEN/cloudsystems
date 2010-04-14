@@ -70,7 +70,7 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>
         this.id = tsk_id_in;
     }
 
-    @OneToMany( mappedBy = "task" )
+    @OneToMany( mappedBy = "task", cascade = CascadeType.REFRESH )
     public List<Subtask> getSubtasks()
     {
         return subtasks;
@@ -95,7 +95,7 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>
         return subtask;
     }
 
-    @OneToMany( mappedBy = "task" )
+    @OneToMany( mappedBy = "task", cascade = CascadeType.REFRESH )
     public List<PermissionAssignment> getPermissionAssignmentList()
     {
         return permissionAssignmentList;
@@ -145,17 +145,6 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>
         return taskMenu;
     }
 
-    @OneToMany( mappedBy = "subTask" )
-    public List<Subtask> getMasterTaskList()
-    {
-        return masterTaskList;
-    }
-
-    public void setMasterTaskList( List<Subtask> subtaskList1 )
-    {
-        this.masterTaskList = subtaskList1;
-    }
-
     public Subtask addSubtask1( Subtask subtask )
     {
         getMasterTaskList().add( subtask );
@@ -168,6 +157,17 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>
         getMasterTaskList().remove( subtask );
         subtask.setTask( null );
         return subtask;
+    }
+
+    @OneToMany( mappedBy = "subTask", cascade = CascadeType.REFRESH )
+    public List<Subtask> getMasterTaskList()
+    {
+        return masterTaskList;
+    }
+
+    public void setMasterTaskList( List<Subtask> subtaskList1 )
+    {
+        this.masterTaskList = subtaskList1;
     }
 
     public TaskDTO toDTO()

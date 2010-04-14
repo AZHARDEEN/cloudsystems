@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.entity.security;
 
+
 import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
 
 import java.io.Serializable;
@@ -14,12 +15,19 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries( { @NamedQuery( name = "Subtask.findAll", query = "select o from Subtask o" ) } )
-@Table( name = "\"subtask\"" )
+@NamedQueries( {
+    @NamedQuery( name = Subtask.findAll, query = "select o from Subtask o" ),
+    @NamedQuery( name = Subtask.findbyTask, query = "select o from Subtask o where o.task = ?1" )
+    } )
+@Table( name = "subtask" )
 @IdClass( SubtaskPK.class )
 public class Subtask implements Serializable
 {
+    public static final String findAll = "Subtask.findAll";
+    public static final String findbyTask = "Subtask.findByTask";
+
     private Integer subtaskId;
     private Integer taskId;
     private Task subTask;

@@ -82,4 +82,6 @@ public interface TaskInterface
      * @throws ApplicationException
      */
     void delete( AuthenticationDTO auth, TaskDTO id ) throws ApplicationException;
+
+    TaskDTO getTask (AuthenticationDTO auth, Integer taskId ) throws ApplicationException;
 }
