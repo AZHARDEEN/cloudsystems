@@ -1,6 +1,7 @@
 package br.com.mcampos.controller.admin.system.config.menu;
 
 
+import br.com.mcampos.controller.admin.system.config.task.TaskListRenderer;
 import br.com.mcampos.controller.admin.system.config.task.TaskTreeModel;
 import br.com.mcampos.controller.admin.system.config.task.TaskTreeRenderer;
 import br.com.mcampos.controller.core.BasicTreeCRUDController;
@@ -9,6 +10,7 @@ import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.List;
 import java.util.Properties;
 
 import org.zkoss.zk.ui.Component;
@@ -21,6 +23,8 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
@@ -63,6 +67,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     protected Button cmdTasks;
 
     protected Tree treeTasks;
+    protected Listbox listTasks;
 
 
     public MenuController( char c )
@@ -94,7 +99,8 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
                 }
             } );
         getTreeList().setTreeitemRenderer( this );
-        treeTasks.setTreeitemRenderer( new TaskTreeRenderer (true, false) );
+        treeTasks.setTreeitemRenderer( new TaskTreeRenderer( true, false ) );
+        listTasks.setItemRenderer( new TaskListRenderer() );
         refresh();
     }
 
@@ -132,6 +138,13 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         recordChecked.setChecked( dto.getChecked() );
         recordCheckmark.setChecked( dto.getCheckmark() );
         recordDisabled.setChecked( dto.getDisabled() );
+        showMenuTasks( dto );
+    }
+
+    protected void showMenuTasks( MenuDTO dto ) throws ApplicationException
+    {
+        List<TaskDTO> tasks = getLocator().getMenuTasks( getLoggedInUser(), dto.getId() );
+        listTasks.setModel( new ListModelList( tasks, true ) );
     }
 
     protected int getNextId()
@@ -200,7 +213,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         Object obj = de.getDragged();
         Object dto = getValue( ( Treeitem )( ( Treerow )obj ).getParent() );
         if ( dto instanceof MenuDTO ) {
-            MenuDTO fromDTO = (MenuDTO) dto;
+            MenuDTO fromDTO = ( MenuDTO )dto;
             if ( de.getTarget() instanceof Treerow ) {
                 MenuDTO toDTO = getValue( ( Treeitem )( ( Treerow )de.getTarget() ).getParent() );
 
@@ -225,13 +238,14 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
                 loadSequence();
             }
         }
-        else if ( dto instanceof TaskDTO )
-        {
+        else if ( dto instanceof TaskDTO ) {
             TaskDTO task = ( TaskDTO )dto;
             if ( de.getTarget() instanceof Treerow ) {
                 MenuDTO toDTO = getValue( ( Treeitem )( ( Treerow )de.getTarget() ).getParent() );
                 try {
-                    getLocator().addMenuTask ( getLoggedInUser(), toDTO, task );
+                    getLocator().addMenuTask( getLoggedInUser(), toDTO, task );
+                    ListModelList model = ( ListModelList )listTasks.getModel();
+                    model.add( task );
                 }
                 catch ( ApplicationException e ) {
                     showErrorMessage( e.getMessage(), "OnDrop Error" );

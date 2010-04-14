@@ -218,12 +218,14 @@ public class PgcFile
             setObject( getPad(), pgc.getMedia().getObject() );
             processProperties();
             processPGC( pgcsPenPage.get( 0 ) );
+            /*
             locCoord = getCurrentPen().getProperty( KEY_LOCATION_COORDINATES );
             if ( null != locCoord && 5 < locCoord.length ) {
                 int a = 0;
                 a++;
                 a--;
             }
+            */
         }
         catch ( PenCreationException e ) {
             return;

@@ -47,6 +47,11 @@
                 </rows>
             </grid>
             <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
+            <listbox id="listTasks" height="200px">
+                <listhead>
+                    <listheader label="Tarefas Associadas"/>
+                </listhead>
+            </listbox>
         </div>
         <!-- Por favor, nao mude o id desta div -->
         <div id="recordEdit" visible="false" droppable="true">
