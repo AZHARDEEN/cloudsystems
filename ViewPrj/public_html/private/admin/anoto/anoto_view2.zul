@@ -8,7 +8,7 @@
                     <label style="font-size:20px;color:#0C7A9A" value="Pesquisa de Formulários"/>
                 </vbox>
             </north>
-            <center flex="true" autoscroll="true">
+            <center flex="true" autoscroll="false">
                 <div>
                     <borderlayout>
                         <north>
@@ -42,12 +42,11 @@
                                     </rows>
                                 </grid>
                                 <div align="center" width="100%">
-                                    <button id="btnFilter" label="Filtrar"
-                                                   image="/img/icontexto-webdev-search-016x016.png"/>
+                                    <button id="btnFilter" label="Filtrar" image="/img/icontexto-webdev-search-016x016.png"/>
                                 </div>
                             </div>
                         </north>
-                        <center autoscroll="true">
+                        <center autoscroll="false">
                             <div id="divResult">
                                 <listbox id="resultList" fixedLayout="true" width="100%" height="100%">
                                     <listhead>

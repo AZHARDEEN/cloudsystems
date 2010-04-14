@@ -48,6 +48,8 @@ import org.zkoss.zk.ui.event.UploadEvent;
 
 public class PgcFile
 {
+    private static final short KEY_LOCATION_COORDINATES = 16386;
+
     protected List<MediaDTO> pgcs;
     protected String penId;
     protected AnodeFacade session;
@@ -196,7 +198,7 @@ public class PgcFile
         PGCDTO pgc = getCurrentPgc();
         List<String> addresses = getPageAddresess();
         PGCDTO insertedPgc = getSession().add( getCurrentPgc(), getPenId(), addresses );
-
+        String locCoord[];
 
         if ( insertedPgc.getPgcStatus().getId() != PgcStatusDTO.statusOk )
             return;
@@ -214,8 +216,14 @@ public class PgcFile
         setCurrentPen( PadFile.getPen( pgc.getMedia().getObject(), form.getApplication() ) );
         try {
             setObject( getPad(), pgc.getMedia().getObject() );
-            processProperties ();
+            processProperties();
             processPGC( pgcsPenPage.get( 0 ) );
+            locCoord = getCurrentPen().getProperty( KEY_LOCATION_COORDINATES );
+            if ( null != locCoord && 5 < locCoord.length ) {
+                int a = 0;
+                a++;
+                a--;
+            }
         }
         catch ( PenCreationException e ) {
             return;
@@ -226,17 +234,15 @@ public class PgcFile
     }
 
 
-    protected void processProperties () throws NoSuchPropertyException
+    protected void processProperties() throws NoSuchPropertyException
     {
         Iterator it;
 
         it = getCurrentPen().getPropertyIds();
-        while ( it != null && it.hasNext() )
-        {
-            Short obj = ( (Short) it.next() );
-            String [] values = getCurrentPen().getProperty( obj );
-            if ( values != null && values.length > 0 )
-            {
+        while ( it != null && it.hasNext() ) {
+            Short obj = ( ( Short )it.next() );
+            String[] values = getCurrentPen().getProperty( obj );
+            if ( values != null && values.length > 0 ) {
 
             }
         }
@@ -279,7 +285,9 @@ public class PgcFile
         String basePath;
 
 
-        basePath = String.format( "%s/%s/%s/%d", pgcPenPage.getForm().getApplication(), pgcPenPage.getPenPage().getPage().getPad().getMedia().getName(), page.getPageAddress(), pgcPenPage.getPgc().getId() );
+        basePath =
+                String.format( "%s/%s/%s/%d", pgcPenPage.getForm().getApplication(), pgcPenPage.getPenPage().getPage().getPad().getMedia()
+                               .getName(), page.getPageAddress(), pgcPenPage.getPgc().getId() );
         basePath = PadFile.getPath( basePath );
         File file = new File( basePath );
         if ( file.exists() == false )
@@ -296,7 +304,8 @@ public class PgcFile
         }
     }
 
-    protected void addAnotoImages( PgcPageDTO pgcPage, PgcPenPageDTO pgcPenPage, Page page, String basePath, int nBookIndex, int nPageIndex ) throws RenderException, NotAllowedException, ApplicationException
+    protected void addAnotoImages( PgcPageDTO pgcPage, PgcPenPageDTO pgcPenPage, Page page, String basePath, int nBookIndex,
+                                   int nPageIndex ) throws RenderException, NotAllowedException, ApplicationException
     {
         Renderer renderer;
         List<MediaDTO> backgroundImages = loadBackgroundImages( pgcPenPage, page );
@@ -351,8 +360,7 @@ public class PgcFile
         }
     }
 
-    protected void addFields( PgcPageDTO pgcPage, Page page, String basePath ) throws ApplicationException,
-                                                       PageAreaException
+    protected void addFields( PgcPageDTO pgcPage, Page page, String basePath ) throws ApplicationException, PageAreaException
     {
         Iterator it = page.getPageAreas();
         PageArea pageArea = null;
@@ -375,16 +383,15 @@ public class PgcFile
                 Long minTime = 0L, maxTime = 0L;
                 PenStrokes pss = pageArea.getPenStrokes();
                 Iterator strokesIt = pss.getIterator();
-                while (strokesIt != null && strokesIt.hasNext() )
-                {
-                    PenStroke ps = ( PenStroke ) strokesIt.next();
+                while ( strokesIt != null && strokesIt.hasNext() ) {
+                    PenStroke ps = ( PenStroke )strokesIt.next();
                     if ( maxTime < ps.getEndTime() )
                         maxTime = ps.getEndTime();
                     if ( minTime == 0 || minTime > ps.getStartTime() )
                         minTime = ps.getStartTime();
                 }
-                fieldDTO.setStartTime ( minTime );
-                fieldDTO.setEndTime ( maxTime );
+                fieldDTO.setStartTime( minTime );
+                fieldDTO.setEndTime( maxTime );
                 try {
                     renderer = RendererFactory.create( pageArea );
                     String path = basePath + "/" + "field.jpg";

@@ -142,19 +142,22 @@ public interface AnodeFacade
 
     void delete( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException;
 
-    void addProcessedImage ( PGCDTO pgc, MediaDTO media, int book, int page ) throws ApplicationException;
+    void addProcessedImage( PGCDTO pgc, MediaDTO media, int book, int page ) throws ApplicationException;
 
-    void addPgcField ( PgcFieldDTO dto ) throws ApplicationException;
+    void addPgcField( PgcFieldDTO dto ) throws ApplicationException;
 
-    void addPgcAttachment ( PgcAttachmentDTO dto ) throws ApplicationException;
+    void addPgcAttachment( PgcAttachmentDTO dto ) throws ApplicationException;
 
     void add( PgcPageDTO dto ) throws ApplicationException;
 
     List<MediaDTO> getImages( PgcPageDTO page ) throws ApplicationException;
 
-    List<PgcFieldDTO> getFields ( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException;
+    List<PgcFieldDTO> getFields( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException;
 
-    void update ( AuthenticationDTO auth, PgcFieldDTO page ) throws ApplicationException;
+    void update( AuthenticationDTO auth, PgcFieldDTO page ) throws ApplicationException;
 
-    Integer remove ( AuthenticationDTO auth, AnotoResultList item  )throws ApplicationException;
+    Integer remove( AuthenticationDTO auth, AnotoResultList item ) throws ApplicationException;
+
+    List<PgcAttachmentDTO> getAttachments( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException;
+
 }

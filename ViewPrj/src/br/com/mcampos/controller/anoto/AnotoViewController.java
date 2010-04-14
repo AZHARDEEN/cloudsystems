@@ -4,6 +4,7 @@ package br.com.mcampos.controller.anoto;
 import br.com.mcampos.controller.anoto.renderer.AttatchmentGridRenderer;
 import br.com.mcampos.controller.anoto.renderer.ComboMediaRenderer;
 import br.com.mcampos.dto.anoto.AnotoResultList;
+import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
@@ -39,6 +40,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
@@ -168,6 +170,13 @@ public class AnotoViewController extends AnotoLoggedController
     {
         loadImages( target );
         showFields( target );
+        showAttachments( target );
+    }
+
+    protected void showAttachments( AnotoResultList target ) throws ApplicationException
+    {
+        List<PgcAttachmentDTO> attachments = getSession().getAttachments( getLoggedInUser(), target.getPgcPage() );
+        gridAttach.setModel( new ListModelList( attachments, true ) );
     }
 
     protected void showFields( AnotoResultList target ) throws ApplicationException

@@ -1,8 +1,10 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
 
+import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PgcAttachmentPK;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
 
@@ -19,11 +21,16 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "PgcAttachment.findAll", query = "select o from PgcAttachment o" ) } )
-@Table( name = "\"pgc_attachment\"" )
+@NamedQueries( { @NamedQuery( name = PgcAttachment.findAll, query = "select o from PgcAttachment o" ),
+                 @NamedQuery( name = PgcAttachment.findByPage, query = "select o from PgcAttachment o where o.pgcPage = ?1" ) } )
+@Table( name = "pgc_attachment" )
 @IdClass( PgcAttachmentPK.class )
-public class PgcAttachment implements Serializable
+public class PgcAttachment implements Serializable, EntityCopyInterface<PgcAttachmentDTO>
 {
+    public static final String findAll = "PgcAttachment.findAll";
+    public static final String findByPage = "PgcAttachment.findByPage";
+
+
     @Id
     @Column( name = "ppg_book_id", nullable = false, insertable = false, updatable = false )
     private Integer bookId;
@@ -45,7 +52,9 @@ public class PgcAttachment implements Serializable
     private Integer barcodeType;
 
     @ManyToOne
-    @JoinColumns( { @JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" ), @JoinColumn( name = "ppg_book_id", referencedColumnName = "ppg_book_id" ), @JoinColumn( name = "ppg_page_id", referencedColumnName = "ppg_page_id" ) } )
+    @JoinColumns( { @JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" ),
+                    @JoinColumn( name = "ppg_book_id", referencedColumnName = "ppg_book_id" ),
+                    @JoinColumn( name = "ppg_page_id", referencedColumnName = "ppg_page_id" ) } )
     private PgcPage pgcPage;
 
     @ManyToOne
@@ -152,5 +161,17 @@ public class PgcAttachment implements Serializable
     public PgcPage getPgcPage()
     {
         return pgcPage;
+    }
+
+    public PgcAttachmentDTO toDTO()
+    {
+        PgcAttachmentDTO dto = new PgcAttachmentDTO( getPgcPage().toDTO() );
+        dto.setBarcodeType( getBarcodeType() );
+        if ( getMedia() != null )
+            dto.setMedia( getMedia().toDTO() );
+        dto.setSequence( getSequence() );
+        dto.setType( getType() );
+        dto.setValue( getValue() );
+        return dto;
     }
 }

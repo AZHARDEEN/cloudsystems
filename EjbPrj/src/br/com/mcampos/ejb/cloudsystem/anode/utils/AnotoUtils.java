@@ -6,6 +6,7 @@ import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
+import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.system.MediaDTO;
@@ -14,6 +15,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
@@ -135,6 +137,18 @@ public class AnotoUtils
             return Collections.emptyList();
         List<PgcFieldDTO> dtoList = new ArrayList<PgcFieldDTO>( list.size() );
         for ( PgcField f : list ) {
+            dtoList.add( f.toDTO() );
+        }
+        return dtoList;
+    }
+
+
+    public static List<PgcAttachmentDTO> toPgcAttachmentList( List<PgcAttachment> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<PgcAttachmentDTO> dtoList = new ArrayList<PgcAttachmentDTO>( list.size() );
+        for ( PgcAttachment f : list ) {
             dtoList.add( f.toDTO() );
         }
         return dtoList;

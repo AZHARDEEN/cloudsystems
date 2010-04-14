@@ -1,6 +1,9 @@
 package br.com.mcampos.controller.anoto.renderer;
 
 
+import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
+import br.com.mcampos.sysutils.SysUtils;
+
 import com.anoto.api.Attachment;
 
 import net.sourceforge.barbecue.Barcode;
@@ -29,9 +32,9 @@ public class AttatchmentGridRenderer implements RowRenderer
     public void render( Row row, Object data ) throws Exception
     {
         row.setValue( data );
-        Attachment a = ( Attachment )data;
-        row.appendChild( new Label( "Tipo do Anexo" ) );
+        PgcAttachmentDTO a = ( PgcAttachmentDTO )data;
         if ( a.getType() == Attachment.ATTACHMENT_TYPE_BARCODE ) {
+            row.appendChild( new Label( a.getValue() ) );
             showBarCode( row, a );
         }
         else {
@@ -39,32 +42,22 @@ public class AttatchmentGridRenderer implements RowRenderer
         }
     }
 
-    protected void showBarCode( Row row, Attachment a ) throws BarcodeException, OutputException
+    protected void showBarCode( Row row, PgcAttachmentDTO a ) throws BarcodeException, OutputException
     {
-        byte[] barCodeData = a.getData();
         Barcode barcode = null;
-        if ( barCodeData != null ) {
-            int type = barCodeData[ 0 ];
-            String sValue = "";
-            Byte caracter;
-            for ( int nCount = 1; nCount < barCodeData.length; nCount++ ) {
-                caracter = barCodeData[ nCount ];
-                sValue += caracter.toString();
-            }
+        if ( SysUtils.isEmpty( a.getValue() ) == false ) {
             try {
-                switch ( type ) {
-                case 1: barcode = new CodabarBarcode( sValue );
+                switch ( a.getBarcodeType() ) {
+                case 1: barcode = new CodabarBarcode( a.getValue() );
                     break;
-                case 2: if ( sValue.length() > 12 )
-                        sValue = sValue.substring( 0, 12 );
-                    barcode = new EAN13Barcode( sValue );
+                case 2: barcode = new EAN13Barcode( a.getValue() );
                     break;
                 case 3: break;
-                case 4: barcode = new Code39Barcode( sValue, false, true );
+                case 4: barcode = new Code39Barcode( a.getValue(), false, true );
                     break;
-                case 5: barcode = new Code128Barcode( sValue );
+                case 5: barcode = new Code128Barcode( a.getValue() );
                     break;
-                case 6: barcode = new Int2of5Barcode( sValue );
+                case 6: barcode = new Int2of5Barcode( a.getValue() );
                     break;
                 }
             }
