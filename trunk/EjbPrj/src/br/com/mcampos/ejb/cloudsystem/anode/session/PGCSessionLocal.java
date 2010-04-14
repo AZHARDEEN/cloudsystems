@@ -53,9 +53,11 @@ public interface PGCSessionLocal
 
     List<Media> getImages( PgcPage page ) throws ApplicationException;
 
-    List<PgcField> getFields ( PgcPage page ) throws ApplicationException;
+    List<PgcField> getFields( PgcPage page ) throws ApplicationException;
 
-    void update ( PgcField field ) throws ApplicationException;
+    void update( PgcField field ) throws ApplicationException;
 
-    Integer remove ( AnotoResultList item  ) throws ApplicationException;
+    Integer remove( AnotoResultList item ) throws ApplicationException;
+
+    List<PgcAttachment> getAttachments( PgcPage page ) throws ApplicationException;
 }

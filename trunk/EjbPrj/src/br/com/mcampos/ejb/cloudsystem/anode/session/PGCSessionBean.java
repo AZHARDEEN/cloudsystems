@@ -131,7 +131,8 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     {
         String sql;
 
-        sql = "SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID FROM  PGC_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
+        sql =
+"SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID FROM  PGC_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
         Query query = getEntityManager().createNativeQuery( sql );
         query.setParameter( 1, entity.getPgcId() );
         query.setParameter( 2, entity.getBookId() );
@@ -149,40 +150,49 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     {
         List<Media> medias;
 
-        List<PgcProcessedImage> ppis =  (List<PgcProcessedImage>) getResultList( PgcProcessedImage.findPgcPageImages, page );
-        if ( SysUtils.isEmpty( ppis ))
+        List<PgcProcessedImage> ppis = ( List<PgcProcessedImage> )getResultList( PgcProcessedImage.findPgcPageImages, page );
+        if ( SysUtils.isEmpty( ppis ) )
             return Collections.emptyList();
-        medias = new ArrayList<Media> ( ppis.size() );
+        medias = new ArrayList<Media>( ppis.size() );
         for ( PgcProcessedImage ppi : ppis )
             medias.add( ppi.getMedia() );
         return medias;
     }
 
-    public List<PgcField> getFields ( PgcPage page ) throws ApplicationException
+    public List<PgcField> getFields( PgcPage page ) throws ApplicationException
     {
         List<PgcField> fields;
 
-        fields = ( List<PgcField> ) getResultList( PgcField.findPageFields, page );
+        fields = ( List<PgcField> )getResultList( PgcField.findPageFields, page );
         return fields;
     }
 
-    public void update ( PgcField field ) throws ApplicationException
+    public void update( PgcField field ) throws ApplicationException
     {
-        PgcField entity = getEntityManager().find( PgcField.class, new PgcFieldPK ( field ) );
+        PgcField entity = getEntityManager().find( PgcField.class, new PgcFieldPK( field ) );
         if ( entity != null ) {
             entity.setRevisedText( field.getRevisedText() );
             getEntityManager().merge( entity );
         }
     }
 
-    public Integer remove ( AnotoResultList item  )throws ApplicationException
+    public Integer remove( AnotoResultList item ) throws ApplicationException
     {
         PgcPageDTO dto = item.getPgcPage();
         PgcPagePK key = new PgcPagePK( dto.getPgc().getId(), dto.getBookId(), dto.getPageId() );
-        PgcPage page = getEntityManager().find ( PgcPage.class, key );
+        PgcPage page = getEntityManager().find( PgcPage.class, key );
         if ( page != null )
             getEntityManager().remove( page );
         return 1;
+    }
+
+    public List<PgcAttachment> getAttachments( PgcPage page ) throws ApplicationException
+    {
+        List<PgcAttachment> attachments;
+
+
+        attachments = ( List<PgcAttachment> )getResultList( PgcAttachment.findByPage, page );
+        return attachments;
     }
 }
 

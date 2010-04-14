@@ -468,16 +468,15 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         List<PgcPenPage> list = pgcPenPageSession.getAll( props );
         if ( SysUtils.isEmpty( list ) )
             return Collections.emptyList();
-        List<AnotoResultList> resultList = new ArrayList<AnotoResultList> ( );
-        for ( PgcPenPage entity : list )
-        {
+        List<AnotoResultList> resultList = new ArrayList<AnotoResultList>();
+        for ( PgcPenPage entity : list ) {
             for ( PgcPage page : entity.getPgc().getPages() ) {
-                AnotoResultList item = new AnotoResultList ( );
+                AnotoResultList item = new AnotoResultList();
                 item.setForm( entity.getPenPage().getPage().getPad().getForm().toDTO() );
                 item.setPen( entity.getPenPage().getPen().toDTO() );
                 item.setPgcPage( page.toDTO() );
                 if ( resultList.contains( item ) == false )
-                    resultList.add ( item );
+                    resultList.add( item );
             }
         }
         return resultList;
@@ -608,29 +607,35 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
     public List<MediaDTO> getImages( PgcPageDTO page ) throws ApplicationException
     {
-        return AnotoUtils.toMediaList( pgcSession.getImages( DTOFactory.copy ( page ) ) );
+        return AnotoUtils.toMediaList( pgcSession.getImages( DTOFactory.copy( page ) ) );
     }
 
-    public List<PgcFieldDTO> getFields ( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
+    public List<PgcFieldDTO> getFields( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
     {
         authenticate( auth );
-        List<PgcField> fields = pgcSession.getFields ( DTOFactory.copy( page ) );
+        List<PgcField> fields = pgcSession.getFields( DTOFactory.copy( page ) );
         if ( SysUtils.isEmpty( fields ) )
             return Collections.emptyList();
         return AnotoUtils.toPgcFieldList( fields );
     }
 
 
-    public void update ( AuthenticationDTO auth, PgcFieldDTO field ) throws ApplicationException
+    public void update( AuthenticationDTO auth, PgcFieldDTO field ) throws ApplicationException
     {
         authenticate( auth );
-        pgcSession.update( DTOFactory.copy ( field ) );
+        pgcSession.update( DTOFactory.copy( field ) );
     }
 
-    public Integer remove ( AuthenticationDTO auth, AnotoResultList item  )throws ApplicationException
+    public Integer remove( AuthenticationDTO auth, AnotoResultList item ) throws ApplicationException
     {
         authenticate( auth );
-        return pgcSession.remove ( item );
+        return pgcSession.remove( item );
+    }
+
+    public List<PgcAttachmentDTO> getAttachments( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
+    {
+        authenticate( auth );
+        return AnotoUtils.toPgcAttachmentList( pgcSession.getAttachments( DTOFactory.copy( page ) ) );
     }
 }
 
