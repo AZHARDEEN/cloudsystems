@@ -10,7 +10,7 @@
             </north>
             <west size="50%" splittable="true" flex="true">
                 <borderlayout>
-                    <center flex="true" autoscroll="true">
+                    <center flex="true" autoscroll="false">
                         <!-- Por favor, nao mude o id deste TreeControl -->
                         <borderlayout>
                             <north size="60%" splittable="true" flex="true">
@@ -60,7 +60,7 @@
                     </center>
                 </borderlayout>
             </west>
-            <center autoscroll="true" flex="true" title="Detalhes do Registro">
+            <center autoscroll="false" flex="true" title="Detalhes do Registro">
                 <!-- Por favor, nao mude o id desta div -->
                 <div id="recordDetail">
                     <!-- view mode -->

@@ -37,4 +37,8 @@ public interface SecurityFacade
 
     List<TaskDTO> getSubtasks( AuthenticationDTO auth, TaskDTO task ) throws ApplicationException;
 
+    List<TaskDTO> getRootTasks ( AuthenticationDTO auth )throws ApplicationException;
+
+    void add ( AuthenticationDTO auth, RoleDTO roleDTO, TaskDTO taskDTO ) throws ApplicationException;
+
 }

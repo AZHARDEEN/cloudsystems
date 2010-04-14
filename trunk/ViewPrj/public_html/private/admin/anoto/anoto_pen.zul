@@ -31,12 +31,16 @@
                             </columns>
                             <rows>
                                 <row>
-                                    Código
+                                    <label value = "Código" />
                                     <label id="recordId"/>
                                 </row>
                                 <row>
-                                    Descrição
+                                    <label value = "Descrição" />
                                     <label id="recordDescription"/>
+                                </row>
+                                <row>
+                                    <label value = "Usuário" />
+                                    <label id="recordUser"/>
                                 </row>
                             </rows>
                         </grid>
@@ -51,12 +55,16 @@
                             </columns>
                             <rows>
                                 <row>
-                                    Código
+                                    <label value = "Código" />
                                     <textbox id="editId" width="1" maxlength="16"/>
                                 </row>
                                 <row>
-                                    Descrição
+                                    <label value = "Descrição" />
                                     <textbox id="editDescription" width="99%" maxlength="64"/>
+                                </row>
+                                <row>
+                                    <label value = "Usuário" />
+                                    <textbox id="editUser" width="99%" maxlength="64"/>
                                 </row>
                             </rows>
                         </grid>

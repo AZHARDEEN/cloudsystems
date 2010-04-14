@@ -36,10 +36,12 @@
                         </tabpanel>
                         <tabpanel id="panelFreeTasks">
                             <label id="lblTips" value="Arraste a tarefa até a role desejada" />
-                            <listbox id="freeTasks" vflex="true">
-                                <listhead value="Tarefa" />
-                                <listitem />
-                            </listbox>
+                            <tree fixedLayout="true" id="treeTasks" width="100%" height="100%" zclass="z-dottree">
+                                <treecols sizable="true">
+                                    <treecol label="Tarefa" width="1"/>
+                                </treecols>
+                                <treechildren id="rootTreeTasks"></treechildren>
+                            </tree>
                         </tabpanel>
                     </tabpanels>
                 </tabbox>

@@ -38,11 +38,11 @@ public class PermissionAssignment implements Serializable
     {
     }
 
-    public PermissionAssignment( Integer prm_id_in, Integer rol_id_in, Task task )
+    public PermissionAssignment( Role role, Task task )
     {
-        this.permissonId = prm_id_in;
-        this.roleId = rol_id_in;
-        this.task = task;
+        this.permissonId = 1;
+        setRole( role );
+        setTask( task );
     }
 
     @Column( name = "prm_id_in", nullable = false )
@@ -98,6 +98,8 @@ public class PermissionAssignment implements Serializable
     public void setRole( Role role )
     {
         this.role = role;
+        if ( role != null )
+            this.roleId = role.getId();
     }
 
     @ManyToOne

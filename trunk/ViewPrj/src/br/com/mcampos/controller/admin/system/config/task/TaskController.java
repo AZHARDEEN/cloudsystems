@@ -53,7 +53,14 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
     {
         dto.setId( editId.getValue() );
         dto.setDescription( editDescription.getValue() );
-        dto.setParentId( editParent.getValue() );
+        if ( editParent.getValue() != 0 ) {
+            try {
+                dto.setParent( getLocator().getTask ( getLoggedInUser(), editParent.getValue() ) );
+            }
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage(), "Obter Tarefa Associada" );
+            }
+        }
         return dto;
     }
 

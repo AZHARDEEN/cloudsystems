@@ -1,9 +1,9 @@
 package br.com.mcampos.ejb.core;
 
+
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
-
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -100,5 +100,5 @@ public interface MenuInterface
      */
     void delete( AuthenticationDTO auth, MenuDTO id ) throws ApplicationException;
 
-
+    void addMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException;
 }
