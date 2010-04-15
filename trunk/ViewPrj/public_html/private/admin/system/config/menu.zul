@@ -18,11 +18,11 @@
                     <treechildren id="rootTree"></treechildren>
                 </tree>
             </west>
-            <center autoscroll="true" flex="true" title="Detalhes do Registro">
+            <center autoscroll="true" flex="true">
                 <div>
                     <tabbox>
                         <tabs>
-                            <tab label="Dados" />
+                            <tab label="Detalhes" />
                             <tab label="Tarefas" />
                         </tabs>
                         <tabpanels>

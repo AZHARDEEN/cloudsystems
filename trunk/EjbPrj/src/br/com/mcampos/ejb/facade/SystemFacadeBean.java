@@ -212,4 +212,9 @@ public class SystemFacadeBean implements SystemFacade
     {
         getSystemSession().addMenuTask ( auth, menu, task );
     }
+
+    public void removeMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+    {
+        getSystemSession().removeMenuTask ( auth, menu, task );
+    }
 }

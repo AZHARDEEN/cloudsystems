@@ -101,4 +101,6 @@ public interface MenuInterface
     void delete( AuthenticationDTO auth, MenuDTO id ) throws ApplicationException;
 
     void addMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException;
+
+    void removeMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException;
 }

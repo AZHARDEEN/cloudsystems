@@ -11,7 +11,6 @@ import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.List;
-import java.util.Properties;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.DropEvent;
@@ -65,6 +64,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     protected Checkbox editDisabled;
 
     protected Button cmdTasks;
+    protected Button removeTask;
 
     protected Tree treeTasks;
     protected Listbox listTasks;
@@ -145,6 +145,8 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     {
         List<TaskDTO> tasks = getLocator().getMenuTasks( getLoggedInUser(), dto.getId() );
         listTasks.setModel( new ListModelList( tasks, true ) );
+        removeTask.setDisabled( true );
+
     }
 
     protected int getNextId()
@@ -287,19 +289,6 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         }
     }
 
-    protected void updateItem( Object treeItem )
-    {
-        /*
-        try {
-            if ( dto != null )
-                ( ( Treeitem )treeItem ).setValue( dto );
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Atualizar Menu" );
-        }
-        */
-    }
-
     protected void loadSequence()
     {
         if ( editSequence == null ) {
@@ -387,18 +376,6 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         item.getChildren().add( new Listcell( dto.getDescription() ) );
     }
 
-    public void onClick$cmdTasks()
-    {
-        Treeitem item = getTreeList().getSelectedItem();
-
-        if ( item != null && item.getValue() != null ) {
-            MenuDTO dto = ( MenuDTO )item.getValue();
-            Properties params = new Properties();
-            params.put( "menuForTask", dto );
-            gotoPage( "/private/admin/system/config/menu_task.zul", getRootParent().getParent(), params );
-        }
-    }
-
     protected void refreshTask()
     {
         try {
@@ -406,6 +383,35 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Refresh Menu" );
+        }
+    }
+
+    public void onSelect$listTasks ()
+    {
+        removeTask.setDisabled( false );
+    }
+
+    public void onClick$removeTask ()
+    {
+        Listitem item = listTasks.getSelectedItem();
+        MenuDTO menu = null;
+        if ( getTreeList().getSelectedItem() != null )
+            menu = (MenuDTO) getTreeList().getSelectedItem().getValue();
+        if ( item != null && menu != null )
+        {
+            try {
+                TaskDTO task = (TaskDTO ) item.getValue();
+                getLocator().removeMenuTask ( getLoggedInUser(), menu, task );
+                if ( task != null ) {
+                    ListModelList model = (ListModelList ) listTasks.getModel();
+                    if ( model != null )
+                        model.remove( task );
+                    removeTask.setDisabled( true );
+                }
+            }
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage(), "Remover Tarefa do Menu" );
+            }
         }
     }
 }

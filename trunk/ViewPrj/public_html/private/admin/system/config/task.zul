@@ -25,8 +25,7 @@
                                 <tabbox id="associationTab">
                                     <tabs>
                                         <tab label="Menu"/>
-                                        <tab label="Permissão"/>
-                                        <tab label="Subtarefas"/>
+                                        <tab label="Roles"/>
                                     </tabs>
                                     <tabpanels>
                                         <tabpanel>
@@ -40,15 +39,7 @@
                                         <tabpanel>
                                             <listbox fixedLayout="true" id="listPermission">
                                                 <listhead sizable="true">
-                                                    <listheader id="listHeaderPermision" align="left" label="Descrição" sort="auto"
-                                                                width="1"/>
-                                                </listhead>
-                                            </listbox>
-                                        </tabpanel>
-                                        <tabpanel>
-                                            <listbox fixedLayout="true" id="listSubtask">
-                                                <listhead sizable="true">
-                                                    <listheader id="listHeadetSubtask" align="left" label="Descrição" sort="auto"
+                                                    <listheader id="listHeaderRole" align="left" label="Descrição" sort="auto"
                                                                 width="1"/>
                                                 </listhead>
                                             </listbox>
