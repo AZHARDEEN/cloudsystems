@@ -22,10 +22,9 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = Task.findAll, query = "select o from Task o" ),
-                 @NamedQuery( name = Task.rootTasks, query = "select o from Task o where o.masterTaskList is EMPTY" )
-                 } )
+                 @NamedQuery( name = Task.rootTasks, query = "select o from Task o where o.masterTaskList is EMPTY" ) } )
 @Table( name = "task" )
-public class Task implements Serializable, EntityCopyInterface<TaskDTO>
+public class Task implements Serializable, EntityCopyInterface<TaskDTO>, Comparable<Task>
 {
     public static final String findAll = "Task.findAll";
     public static final String rootTasks = "Task.rootTasks";
@@ -131,17 +130,19 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>
         this.taskMenuList = taskMenuList;
     }
 
-    public TaskMenu addTaskMenu( TaskMenu taskMenu )
+    public TaskMenu add( TaskMenu taskMenu )
     {
         getTaskMenuList().add( taskMenu );
         taskMenu.setTask( this );
         return taskMenu;
     }
 
-    public TaskMenu removeTaskMenu( TaskMenu taskMenu )
+    public TaskMenu remove( TaskMenu taskMenu )
     {
-        getTaskMenuList().remove( taskMenu );
-        taskMenu.setTask( null );
+        if ( getTaskMenuList() != null ) {
+            getTaskMenuList().remove( taskMenu );
+            taskMenu.setTask( null );
+        }
         return taskMenu;
     }
 
@@ -170,10 +171,28 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>
         this.masterTaskList = subtaskList1;
     }
 
+    @Override
     public TaskDTO toDTO()
     {
         TaskDTO dto = new TaskDTO( getId(), getDescription() );
 
         return dto;
+    }
+
+    @Override
+    public int compareTo( Task o )
+    {
+        return getId().compareTo( o.getId() );
+    }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof Task )
+            return getId().equals( ( ( Task )obj ).getId() );
+        else if ( obj instanceof Integer )
+            return getId().equals( ( Integer )obj );
+        else
+            return false;
     }
 }

@@ -15,16 +15,16 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( {
-    @NamedQuery( name = TaskMenu.findAll, query = "select o from TaskMenu o" ),
-    @NamedQuery( name = TaskMenu.findByTask, query = "select o from TaskMenu o where o.task = ?1" )
-    } )
+@NamedQueries( { @NamedQuery( name = TaskMenu.findAll, query = "select o from TaskMenu o" ),
+                 @NamedQuery( name = TaskMenu.findByMenu, query = "select o from TaskMenu o where o.menu = ?1" ),
+                 @NamedQuery( name = TaskMenu.findByTask, query = "select o from TaskMenu o where o.task = ?1" ) } )
 @Table( name = "task_menu" )
 @IdClass( TaskMenuPK.class )
-public class TaskMenu implements Serializable
+public class TaskMenu implements Serializable, Comparable<TaskMenu>
 {
     public static final String findAll = "TaskMenu.findAll";
     public static final String findByTask = "TaskMenu.findByTask";
+    public static final String findByMenu = "TaskMenu.findByMenu";
 
     private Integer menuId;
     private Integer taskId;
@@ -35,10 +35,10 @@ public class TaskMenu implements Serializable
     {
     }
 
-    public TaskMenu( Integer mnu_id_in, Task task )
+    public TaskMenu( Menu menu, Task task )
     {
-        this.menuId = mnu_id_in;
-        this.task = task;
+        setMenu( menu );
+        setTask( task );
     }
 
     @Id
@@ -93,5 +93,14 @@ public class TaskMenu implements Serializable
         if ( menu != null ) {
             this.menuId = menu.getId();
         }
+    }
+
+    public int compareTo( TaskMenu o )
+    {
+        int nRet;
+        nRet = getMenu().compareTo( o.getMenu() );
+        if ( nRet != 0 )
+            return nRet;
+        return getTask().compareTo( o.getTask() );
     }
 }

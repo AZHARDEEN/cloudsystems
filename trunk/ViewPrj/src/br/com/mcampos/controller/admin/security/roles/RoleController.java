@@ -56,7 +56,7 @@ public class RoleController extends SecutityBaseController implements IDropEvent
         try {
             dto = getSession().getRootRole( getLoggedInUser() );
             getTree().setModel( new RoleModel ( getSession(), getLoggedInUser(), dto ) );
-            comboParent.setItemRenderer(  new RoleItemRenderer() );
+            comboParent.setItemRenderer(  new RoleComboRenderer() );
             comboParent.setModel( new ListModelList ( getSession().getRoles( getLoggedInUser() ) ) );
             treeTasks.setModel( new TaskTreeModel( getLoggedInUser(), getSession().getRootTasks( getLoggedInUser() ) ) );
         }

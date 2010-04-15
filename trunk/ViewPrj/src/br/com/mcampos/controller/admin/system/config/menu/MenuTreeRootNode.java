@@ -37,6 +37,6 @@ public class MenuTreeRootNode extends SimpleTreeNode implements Serializable
 
     public void readChildren() throws ApplicationException
     {
-        children = getLocator().getMenus( getCurrentUser() );
+        children = getLocator().getParentMenus( getCurrentUser() );
     }
 }

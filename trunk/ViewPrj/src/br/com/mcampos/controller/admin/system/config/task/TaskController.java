@@ -1,9 +1,15 @@
 package br.com.mcampos.controller.admin.system.config.task;
 
 
+import br.com.mcampos.controller.admin.security.roles.RoleListRenderer;
+import br.com.mcampos.controller.admin.system.config.menu.MenuListRenderer;
 import br.com.mcampos.controller.core.BasicTreeCRUDController;
+import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
+import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.exception.ApplicationException;
+
+import java.util.List;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -11,10 +17,13 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
+
 
 public class TaskController extends BasicTreeCRUDController<TaskDTO>
 {
@@ -29,6 +38,9 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
     Textbox editDescription;
     Intbox editParent;
 
+    protected Listbox listMenu;
+    protected Listbox listRole;
+
     public TaskController( char c )
     {
         super( c );
@@ -39,7 +51,7 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
         super();
     }
 
-    protected void showRecord( TaskDTO record )
+    protected void showRecord( TaskDTO record ) throws ApplicationException
     {
         recordId.setValue( record.getId().toString() );
         recordDescription.setValue( record.getDescription() );
@@ -47,6 +59,28 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
             recordParent.setValue( record.getParent().toString() );
         else
             recordParent.setValue( "" );
+        showTaskMenu( record );
+        showTaskRole( record );
+    }
+
+    protected void showTaskMenu( TaskDTO task ) throws ApplicationException
+    {
+        if ( task == null )
+            return;
+        System.out.println( "ShowTaskMenu: " + task.toString() );
+        List<MenuDTO> menus = getLocator().getMenus( getLoggedInUser(), task );
+        listMenu.setModel( new ListModelList( menus, true ) );
+        System.out.println( "ShowTaskMenu is done!!! " + task.toString() );
+    }
+
+    protected void showTaskRole( TaskDTO task ) throws ApplicationException
+    {
+        if ( task == null )
+            return;
+        System.out.println( "ShowTaskRole: " + task.toString() );
+        List<RoleDTO> roles = getLocator().getRoles( getLoggedInUser(), task );
+        listRole.setModel( new ListModelList( roles, true ) );
+        System.out.println( "ShowTaskRole is done!!! " + task.toString() );
     }
 
     protected TaskDTO copyTo( TaskDTO dto )
@@ -55,7 +89,7 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
         dto.setDescription( editDescription.getValue() );
         if ( editParent.getValue() != 0 ) {
             try {
-                dto.setParent( getLocator().getTask ( getLoggedInUser(), editParent.getValue() ) );
+                dto.setParent( getLocator().getTask( getLoggedInUser(), editParent.getValue() ) );
             }
             catch ( ApplicationException e ) {
                 showErrorMessage( e.getMessage(), "Obter Tarefa Associada" );
@@ -198,6 +232,8 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
     {
         super.doAfterCompose( comp );
         getTreeList().setTreeitemRenderer( this );
+        listMenu.setItemRenderer( new MenuListRenderer() );
+        listRole.setItemRenderer( new RoleListRenderer() );
         refresh();
     }
 }

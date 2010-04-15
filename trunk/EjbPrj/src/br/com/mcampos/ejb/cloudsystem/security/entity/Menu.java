@@ -1,11 +1,12 @@
 package br.com.mcampos.ejb.cloudsystem.security.entity;
 
 
+import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,12 +25,18 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Menu.findAll", query = "select o from Menu o where o.parentMenu is null" ) } )
-@NamedNativeQueries( { @NamedNativeQuery( name = "Menu.nexSequence", query = "select coalesce ( max (  mnu_sequence_in ), 0 ) + 1 from menu where coalesce ( mnu_parent_id, 0 ) = ?" ),
-                       @NamedNativeQuery( name = "Menu.findSequence", query = "select 1 from Menu where coalesce ( mnu_parent_id, 0 ) = ? and mnu_sequence_in = ?" ) } )
+@NamedQueries( { @NamedQuery( name = Menu.findaAll, query = "select o from Menu o where o.parentMenu is null" ) } )
+@NamedNativeQueries( { @NamedNativeQuery( name = Menu.nextSequence,
+                                          query = "select coalesce ( max (  mnu_sequence_in ), 0 ) + 1 from menu where coalesce ( mnu_parent_id, 0 ) = ?" ),
+                       @NamedNativeQuery( name = Menu.findSequence,
+                                          query = "select 1 from Menu where coalesce ( mnu_parent_id, 0 ) = ? and mnu_sequence_in = ?" ) } )
 @Table( name = "menu" )
-public class Menu implements Serializable, Comparable<Menu>
+public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface<MenuDTO>
 {
+    public static final String findaAll = "Menu.findAll";
+    public static final String nextSequence = "Menu.nexSequence";
+    public static final String findSequence = "Menu.findSequence";
+
     private String description;
     private Integer id;
     private Integer sequence;
@@ -96,7 +103,7 @@ public class Menu implements Serializable, Comparable<Menu>
         this.targetURL = mnu_url_ch;
     }
 
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "mnu_parent_id" )
     public Menu getParentMenu()
     {
@@ -117,11 +124,9 @@ public class Menu implements Serializable, Comparable<Menu>
         }
     }
 
-    @OneToMany( mappedBy = "parentMenu", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.REFRESH } )
+    @OneToMany( mappedBy = "parentMenu", cascade = { CascadeType.REFRESH } )
     public List<Menu> getSubMenus()
     {
-        if ( subMenus == null )
-            subMenus = new ArrayList<Menu>();
         return subMenus;
     }
 
@@ -243,11 +248,40 @@ public class Menu implements Serializable, Comparable<Menu>
         this.tasks = tasks;
     }
 
-    @OneToMany( mappedBy = "menu", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.REFRESH } )
+    @OneToMany( mappedBy = "menu", cascade = { CascadeType.REFRESH } )
     public List<TaskMenu> getTasks()
     {
-        if ( tasks == null )
-            tasks = new ArrayList<TaskMenu>();
         return tasks;
+    }
+
+    public void remove( TaskMenu tm )
+    {
+        if ( tasks != null )
+            tasks.remove( tm );
+    }
+
+
+    public void add( TaskMenu tm )
+    {
+        if ( tasks != null )
+            tasks.add( tm );
+    }
+
+    public MenuDTO toDTO()
+    {
+        MenuDTO target = new MenuDTO();
+
+        target.setId( getId() );
+        target.setDescription( getDescription() );
+        target.setSequence( getSequence() );
+        target.setTargetURL( getTargetURL() );
+        target.setAutocheck( getAutocheck() );
+        target.setChecked( getChecked() );
+        target.setCheckmark( getCheckmark() );
+        target.setDisabled( getDisabled() );
+        target.setSeparatorBefore( getSeparatorBefore() );
+        if ( getParentMenu() != null )
+            target.setParent( getParentMenu().toDTO() );
+        return target;
     }
 }

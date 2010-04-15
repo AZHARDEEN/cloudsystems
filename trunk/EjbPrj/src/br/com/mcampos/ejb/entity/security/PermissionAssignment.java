@@ -18,16 +18,19 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( {
-    @NamedQuery( name = PermissionAssignment.findAll, query = "select o from PermissionAssignment o" ),
-    @NamedQuery( name = PermissionAssignment.findByTask, query = "select o from PermissionAssignment o where o.role = ?1" )
-    } )
+@NamedQueries( { @NamedQuery( name = PermissionAssignment.findAll, query = "select o from PermissionAssignment o" ),
+                 @NamedQuery( name = PermissionAssignment.findByTask,
+                              query = "select o from PermissionAssignment o where o.task = ?1" ),
+                 @NamedQuery( name = PermissionAssignment.findByRole,
+                              query = "select o from PermissionAssignment o where o.role = ?1" ) } )
 @Table( name = "permission_assignment" )
 @IdClass( PermissionAssignmentPK.class )
 public class PermissionAssignment implements Serializable
 {
-    public static final String findByTask = "PermissionAssignment.findByTasks";
+    public static final String findByTask = "PermissionAssignment.findByTask";
     public static final String findAll = "PermissionAssignment.findAll";
+    public static final String findByRole = "PermissionAssignment.findByRole";
+
     private Integer permissonId;
     private Integer roleId;
     private Integer taskId;
