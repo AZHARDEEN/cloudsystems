@@ -9,6 +9,7 @@ import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
 import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenu;
+import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenuPK;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.login.AccessLogType;
@@ -84,6 +85,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
 
         try {
             Menu menu = em.find( Menu.class, menuId );
+            getEntityManager().refresh( menu );
             ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( menu.getTasks().size() );
             for ( TaskMenu m : menu.getTasks() ) {
                 getEntityManager().refresh( m );
@@ -546,6 +548,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
 
     public void addMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
     {
+        authenticate( auth, Role.systemAdmimRoleLevel );
         Menu menuEntity = getEntityManager().find( Menu.class, menu.getId() );
         Task taskEntity = getEntityManager().find( Task.class, task.getId() );
         if ( menuEntity != null && taskEntity != null )
@@ -555,6 +558,21 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
             tm.setTask( taskEntity );
             tm.setMenu( menuEntity );
             getEntityManager().persist( tm );
+        }
+    }
+
+
+    public void removeMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        Menu menuEntity = getEntityManager().find( Menu.class, menu.getId() );
+        Task taskEntity = getEntityManager().find( Task.class, task.getId() );
+        if ( menuEntity != null && taskEntity != null )
+        {
+            TaskMenu tm = getEntityManager().find( TaskMenu.class, new TaskMenuPK ( menu.getId(), task.getId() ) );
+
+            if ( tm != null )
+                getEntityManager().remove( tm );
         }
     }
 }

@@ -47,11 +47,17 @@
                 </rows>
             </grid>
             <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
-            <listbox id="listTasks" height="200px">
-                <listhead>
-                    <listheader label="Tarefas Associadas"/>
-                </listhead>
-            </listbox>
+            <separator />
+            <div >
+                <listbox id="listTasks" height="200px">
+                    <listhead>
+                        <listheader label="Tarefas Associadas"/>
+                    </listhead>
+                </listbox>
+                <toolbar >
+                    <toolbarbutton id="removeTask" image="/img/icontexto-webdev-remove-016x016.png" label="Remover Tarefa" disabled="true"/>
+                </toolbar>
+            </div>
         </div>
         <!-- Por favor, nao mude o id desta div -->
         <div id="recordEdit" visible="false" droppable="true">

@@ -124,4 +124,11 @@ public class MenuLocator extends SystemLocator implements MenuInterface
     {
         getSessionBean().addMenuTask ( auth, menu, task );
     }
+
+
+    public void removeMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+    {
+        getSessionBean().removeMenuTask ( auth, menu, task );
+    }
+
 }
