@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.facade;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
@@ -14,9 +15,12 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 
 @Stateless( name = "SystemFacade", mappedName = "CloudSystems-EjbPrj-SystemFacade" )
+@TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class SystemFacadeBean implements SystemFacade
 {
     @EJB
@@ -38,11 +42,12 @@ public class SystemFacadeBean implements SystemFacade
      * @param auth - dto do usuário autenticado no sistema.
      * @return Lista com os menus
      */
-    public List<MenuDTO> getMenus( AuthenticationDTO auth ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public List<MenuDTO> getParentMenus( AuthenticationDTO auth ) throws ApplicationException
     {
         if ( auth == null )
             return Collections.emptyList();
-        return getSystemSession().getMenus( auth );
+        return getSystemSession().getParentMenus( auth );
     }
 
     /**
@@ -131,13 +136,16 @@ public class SystemFacadeBean implements SystemFacade
         getSystemSession().delete( auth, menuId );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<TaskDTO> getMenuTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
     {
         if ( auth == null || SysUtils.isZero( menuId ) )
             return Collections.emptyList();
+        System.out.println( "SystemFacade.getMenuTasks" );
         return getSystemSession().getMenuTasks( auth, menuId );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<TaskDTO> getTasks( AuthenticationDTO auth ) throws ApplicationException
     {
         return getSystemSession().getTasks( auth );
@@ -198,23 +206,37 @@ public class SystemFacadeBean implements SystemFacade
         getSystemSession().delete( auth, id );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
     {
         return getSystemSession().getRootTasks( auth );
     }
 
-    public TaskDTO getTask (AuthenticationDTO auth, Integer taskId ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public TaskDTO getTask( AuthenticationDTO auth, Integer taskId ) throws ApplicationException
     {
         return getSystemSession().getTask( auth, taskId );
     }
 
-    public void addMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+    public void addMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
     {
-        getSystemSession().addMenuTask ( auth, menu, task );
+        getSystemSession().addMenuTask( auth, menu, task );
     }
 
-    public void removeMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+    public void removeMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
     {
-        getSystemSession().removeMenuTask ( auth, menu, task );
+        getSystemSession().removeMenuTask( auth, menu, task );
+    }
+
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public List<MenuDTO> getMenus( AuthenticationDTO auth, TaskDTO dtoTask ) throws ApplicationException
+    {
+        return getSystemSession().getMenus( auth, dtoTask );
+    }
+
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public List<RoleDTO> getRoles( AuthenticationDTO auth, TaskDTO dtoTask ) throws ApplicationException
+    {
+        return getSystemSession().getRoles( auth, dtoTask );
     }
 }

@@ -1,137 +1,109 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<weblogic-ejb-jar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.bea.com/ns/weblogic/weblogic-ejb-jar http://www.bea.com/ns/weblogic/weblogic-ejb-jar/1.0/weblogic-ejb-jar.xsd" xmlns="http://www.bea.com/ns/weblogic/weblogic-ejb-jar">
+<weblogic-ejb-jar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.bea.com/ns/weblogic/weblogic-ejb-jar http://www.bea.com/ns/weblogic/weblogic-ejb-jar/1.0/weblogic-ejb-jar.xsd"
+                  xmlns="http://www.bea.com/ns/weblogic/weblogic-ejb-jar">
     <description>CloudSystems</description>
     <weblogic-enterprise-bean>
         <ejb-name>RegisterFacadeSession</ejb-name>
-            <stateless-session-descriptor>
-                <pool>
-                    <max-beans-in-free-pool>100</max-beans-in-free-pool>
-                    <initial-beans-in-free-pool>50</initial-beans-in-free-pool>
-                </pool>
-            </stateless-session-descriptor>
+        <stateless-session-descriptor/>
         <transaction-descriptor>
             <trans-timeout-seconds>60</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-    
     <weblogic-enterprise-bean>
         <ejb-name>AddressTypeSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-    
     <weblogic-enterprise-bean>
         <ejb-name>CountrySession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-
     <weblogic-enterprise-bean>
         <ejb-name>TitleSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-
     <weblogic-enterprise-bean>
         <ejb-name>BasicTableSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-
     <weblogic-enterprise-bean>
         <ejb-name>StateSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-                
     <weblogic-enterprise-bean>
         <ejb-name>UserTypeSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-
     <weblogic-enterprise-bean>
         <ejb-name>RegionSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-
     <weblogic-enterprise-bean>
         <ejb-name>UserStatusSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-
     <weblogic-enterprise-bean>
         <ejb-name>ContactTypeSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-                   
     <weblogic-enterprise-bean>
         <ejb-name>LoginSession</ejb-name>
-        <stateless-session-descriptor>
-            <pool>
-                <idle-timeout-seconds>600</idle-timeout-seconds>
-            </pool>
-        </stateless-session-descriptor>
-        <transaction-descriptor>
-            <trans-timeout-seconds>30</trans-timeout-seconds>
-        </transaction-descriptor>
+        <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
- 
     <weblogic-enterprise-bean>
         <ejb-name>TableManagerSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-
     <weblogic-enterprise-bean>
         <ejb-name>PersonSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-
     <weblogic-enterprise-bean>
         <ejb-name>GenderSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-
     <weblogic-enterprise-bean>
         <ejb-name>CivilStateSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
- 
     <weblogic-enterprise-bean>
         <ejb-name>DocumentTypeSession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-
     <weblogic-enterprise-bean>
         <ejb-name>CitySession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-
     <weblogic-enterprise-bean>
         <ejb-name>UserFacadeSession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>300</trans-timeout-seconds>
+            <trans-timeout-seconds>10</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
-
     <weblogic-enterprise-bean>
         <ejb-name>UserSession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>300</trans-timeout-seconds>
+            <trans-timeout-seconds>10</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
@@ -139,7 +111,7 @@
         <ejb-name>CollaboratorSession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>300</trans-timeout-seconds>
+            <trans-timeout-seconds>10</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
@@ -147,7 +119,7 @@
         <ejb-name>ClientSession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>300</trans-timeout-seconds>
+            <trans-timeout-seconds>10</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
@@ -155,7 +127,7 @@
         <ejb-name>LoginFacadeSession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>300</trans-timeout-seconds>
+            <trans-timeout-seconds>10</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
@@ -163,7 +135,7 @@
         <ejb-name>CompanySession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>300</trans-timeout-seconds>
+            <trans-timeout-seconds>10</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
@@ -171,7 +143,7 @@
         <ejb-name>SystemFacade</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>300</trans-timeout-seconds>
+            <trans-timeout-seconds>10</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>

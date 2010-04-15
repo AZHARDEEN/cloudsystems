@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.session.system;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
@@ -13,6 +14,7 @@ import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenuPK;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.login.AccessLogType;
+import br.com.mcampos.ejb.entity.security.PermissionAssignment;
 import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -23,6 +25,8 @@ import java.util.List;
 
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -31,6 +35,7 @@ import javax.persistence.Query;
 
 
 @Stateless( name = "SystemSession", mappedName = "CloudSystems-EjbPrj-SystemSession" )
+@TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class SystemSessionBean extends AbstractSecurity implements SystemSessionLocal
 {
     @PersistenceContext( unitName = "EjbPrj" )
@@ -50,24 +55,15 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
      * @param auth - dto do usuário autenticado no sistema.
      * @return a lista de menus
      */
-    public List<MenuDTO> getMenus( AuthenticationDTO auth ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public List<MenuDTO> getParentMenus( AuthenticationDTO auth ) throws ApplicationException
     {
-        List<Menu> list;
-
         authenticate( auth, Role.systemAdmimRoleLevel );
 
+        List<Menu> list;
         try {
-            getEntityManager().clear();
-            getEntityManager().flush();
             list = ( List<Menu> )getEntityManager().createNamedQuery( "Menu.findAll" ).getResultList();
-            if ( list == null || list.size() == 0 )
-                return Collections.emptyList();
-            ArrayList<MenuDTO> listDTO = new ArrayList<MenuDTO>( list.size() );
-            for ( Menu m : list ) {
-                getEntityManager().refresh( m );
-                listDTO.add( DTOFactory.copy( m, true ) );
-            }
-            return listDTO;
+            return toMenuDTOList( list );
         }
         catch ( NoResultException e ) {
             e = null;
@@ -75,7 +71,66 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         }
     }
 
+    protected List<MenuDTO> toMenuDTOList( List<Menu> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        ArrayList<MenuDTO> listDTO = new ArrayList<MenuDTO>( list.size() );
+        for ( Menu m : list ) {
+            listDTO.add( DTOFactory.copy( m, true ) );
+        }
+        return listDTO;
+    }
 
+    protected List<MenuDTO> toMenuDTOListFromTaskMenu( List<TaskMenu> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        ArrayList<MenuDTO> listDTO = new ArrayList<MenuDTO>( list.size() );
+        for ( TaskMenu m : list ) {
+            listDTO.add( DTOFactory.copy( m.getMenu(), false ) );
+        }
+        return listDTO;
+    }
+
+
+    protected List<RoleDTO> toRoleDTOListFromPermission( List<PermissionAssignment> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        ArrayList<RoleDTO> listDTO = new ArrayList<RoleDTO>( list.size() );
+        for ( PermissionAssignment m : list ) {
+            listDTO.add( m.getRole().toDTO() );
+        }
+        return listDTO;
+    }
+
+
+    protected List<TaskDTO> toTaskDTOListFromTaskMenu( List<TaskMenu> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( list.size() );
+        for ( TaskMenu m : list ) {
+            listDTO.add( DTOFactory.copy( m.getTask() ) );
+        }
+        System.out.println( "toTaskDTOListFromTaskMenu" );
+        return listDTO;
+    }
+
+    protected List<TaskDTO> toTaskDTOList( List<Task> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( list.size() );
+        for ( Task m : list ) {
+            listDTO.add( DTOFactory.copy( m ) );
+        }
+        return listDTO;
+    }
+
+
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<TaskDTO> getMenuTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
@@ -84,19 +139,19 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
             throwException( 4 );
 
         try {
-            Menu menu = em.find( Menu.class, menuId );
-            getEntityManager().refresh( menu );
-            ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( menu.getTasks().size() );
-            for ( TaskMenu m : menu.getTasks() ) {
-                getEntityManager().refresh( m );
-                listDTO.add( DTOFactory.copy( m.getTask() ) );
+            System.out.println( "SystemSessionBean.getMenuTasks" );
+            Menu menu = getEntityManager().find( Menu.class, menuId );
+            if ( menu != null ) {
+                System.out.println( "SystemSessionBean.Refreshing Menu" );
+                getEntityManager().refresh( menu );
+                System.out.println( "SystemSessionBean.getting Task List" );
+                return toTaskDTOListFromTaskMenu( menu.getTasks() );
             }
-            return listDTO;
         }
         catch ( NoResultException e ) {
             e = null;
-            return Collections.emptyList();
         }
+        return Collections.emptyList();
     }
 
 
@@ -295,7 +350,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
 
         if ( SysUtils.isZero( menuId.getId() ) )
             throwException( 4 );
-        Menu entity = em.find( Menu.class, menuId.getId() );
+        Menu entity = getEntityManager().find( Menu.class, menuId.getId() );
         if ( entity == null )
             throwException( 4 );
         getEntityManager().remove( entity );
@@ -318,7 +373,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         try {
             Query q;
 
-            q = em.createNamedQuery( "Menu.findSequence" );
+            q = getEntityManager().createNamedQuery( "Menu.findSequence" );
             q.setParameter( 1, parent );
             q.setParameter( 2, sequence );
             menu = ( Integer )q.getSingleResult();
@@ -332,6 +387,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
     }
 
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<TaskDTO> getTasks( AuthenticationDTO auth ) throws ApplicationException
     {
         List<Task> list;
@@ -339,10 +395,8 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         authenticate( auth, Role.systemAdmimRoleLevel );
 
         try {
-            getEntityManager().clear();
-            getEntityManager().flush();
             list = ( List<Task> )getEntityManager().createNamedQuery( "Task.findAll" ).getResultList();
-            return toTasksDTO( list );
+            return toTaskDTOList( list );
         }
         catch ( NoResultException e ) {
             e = null;
@@ -350,21 +404,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         }
     }
 
-    protected List<TaskDTO> toTasksDTO( List<Task> list )
-    {
-        Integer size;
-
-        if ( list == null || list.size() == 0 )
-            return Collections.emptyList();
-        ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( list.size() );
-        for ( Task m : list ) {
-            getEntityManager().refresh( m );
-            listDTO.add( DTOFactory.copy( m ) );
-        }
-        return listDTO;
-    }
-
-
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
     {
         List<Task> list;
@@ -372,10 +412,8 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         authenticate( auth, Role.systemAdmimRoleLevel );
 
         try {
-            getEntityManager().clear();
-            getEntityManager().flush();
             list = ( List<Task> )getEntityManager().createNamedQuery( Task.rootTasks ).getResultList();
-            return toTasksDTO( list );
+            return toTaskDTOList( list );
         }
         catch ( NoResultException e ) {
             e = null;
@@ -397,12 +435,10 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         authenticate( auth, Role.systemAdmimRoleLevel );
         Task entity = DTOFactory.copy( dto );
         getEntityManager().persist( entity );
-        if ( dto.getParent() != null )
-        {
+        if ( dto.getParent() != null ) {
             Task masterTask = getEntityManager().find( Task.class, dto.getParentId() );
-            if ( masterTask != null )
-            {
-                Subtask subTask = new Subtask ();
+            if ( masterTask != null ) {
+                Subtask subTask = new Subtask();
                 subTask.setTask( masterTask );
                 subTask.setSubTask( entity );
                 getEntityManager().persist( subTask );
@@ -479,7 +515,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         if ( validate( dto, false ) ) {
             AccessLogType entity;
             entity = DTOFactory.copy( dto );
-            em.merge( entity );
+            getEntityManager().merge( entity );
             return DTOFactory.copy( entity );
         }
         else
@@ -493,7 +529,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         if ( validate( dto, true ) ) {
             AccessLogType entity;
             entity = DTOFactory.copy( dto );
-            em.persist( entity );
+            getEntityManager().persist( entity );
             return DTOFactory.copy( entity );
         }
         else
@@ -539,20 +575,20 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         return ( AccessLogType )get( AccessLogType.class, id );
     }
 
-    public TaskDTO getTask (AuthenticationDTO auth, Integer taskId ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public TaskDTO getTask( AuthenticationDTO auth, Integer taskId ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         Task entity = getEntityManager().find( Task.class, taskId );
         return entity != null ? entity.toDTO() : null;
     }
 
-    public void addMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+    public void addMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         Menu menuEntity = getEntityManager().find( Menu.class, menu.getId() );
         Task taskEntity = getEntityManager().find( Task.class, task.getId() );
-        if ( menuEntity != null && taskEntity != null )
-        {
+        if ( menuEntity != null && taskEntity != null ) {
             TaskMenu tm = new TaskMenu();
 
             tm.setTask( taskEntity );
@@ -562,18 +598,57 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
     }
 
 
-    public void removeMenuTask ( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+    public void removeMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         Menu menuEntity = getEntityManager().find( Menu.class, menu.getId() );
         Task taskEntity = getEntityManager().find( Task.class, task.getId() );
-        if ( menuEntity != null && taskEntity != null )
-        {
-            TaskMenu tm = getEntityManager().find( TaskMenu.class, new TaskMenuPK ( menu.getId(), task.getId() ) );
+        if ( menuEntity != null && taskEntity != null ) {
+            TaskMenu tm = getEntityManager().find( TaskMenu.class, new TaskMenuPK( menu.getId(), task.getId() ) );
 
             if ( tm != null )
                 getEntityManager().remove( tm );
         }
+    }
+
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public List<MenuDTO> getMenus( AuthenticationDTO auth, TaskDTO dtoTask ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        Task taskEntity = getEntityManager().find( Task.class, dtoTask.getId() );
+        if ( taskEntity != null ) {
+            List<TaskMenu> list = null;
+            try {
+                list = getEntityManager().createNamedQuery( TaskMenu.findByTask ).setParameter( 1, taskEntity ).getResultList();
+                return toMenuDTOListFromTaskMenu( list );
+            }
+            catch ( NoResultException e ) {
+                return Collections.emptyList();
+            }
+
+        }
+        return Collections.emptyList();
+    }
+
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public List<RoleDTO> getRoles( AuthenticationDTO auth, TaskDTO dtoTask ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        Task taskEntity = getEntityManager().find( Task.class, dtoTask.getId() );
+        if ( taskEntity != null ) {
+            List<PermissionAssignment> list = null;
+            try {
+                Query query = getEntityManager().createNamedQuery( PermissionAssignment.findByTask );
+
+                query.setParameter( 1, taskEntity );
+                list = query.getResultList();
+                return toRoleDTOListFromPermission( list );
+            }
+            catch ( NoResultException e ) {
+                return Collections.emptyList();
+            }
+        }
+        return Collections.emptyList();
     }
 }
 

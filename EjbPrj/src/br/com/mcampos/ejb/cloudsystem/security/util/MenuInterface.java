@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.core;
+package br.com.mcampos.ejb.cloudsystem.security.util;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
@@ -42,7 +42,7 @@ public interface MenuInterface
      * @return Lista de objetos.
      * @throws ApplicationException
      */
-    List<MenuDTO> getMenus( AuthenticationDTO auth ) throws ApplicationException;
+    List<MenuDTO> getParentMenus( AuthenticationDTO auth ) throws ApplicationException;
 
 
     /**

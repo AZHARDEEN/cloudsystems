@@ -8,9 +8,12 @@ import br.com.mcampos.ejb.entity.security.PermissionAssignmentPK;
 import br.com.mcampos.ejb.session.core.Crud;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 @Stateless( name = "PermissionAssignmentSession", mappedName = "CloudSystems-EjbPrj-PermissionAssignmentSession" )
-public class PermissionAssignmentSessionBean extends Crud<PermissionAssignmentPK, PermissionAssignment > implements PermissionAssignmentSessionLocal
+@TransactionAttribute( TransactionAttributeType.MANDATORY )
+public class PermissionAssignmentSessionBean extends Crud<PermissionAssignmentPK, PermissionAssignment> implements PermissionAssignmentSessionLocal
 {
     public PermissionAssignmentSessionBean()
     {
@@ -18,7 +21,7 @@ public class PermissionAssignmentSessionBean extends Crud<PermissionAssignmentPK
 
     public void add( Role role, Task task )
     {
-        PermissionAssignment entity = new PermissionAssignment ( role, task );
+        PermissionAssignment entity = new PermissionAssignment( role, task );
         getEntityManager().persist( entity );
     }
 }

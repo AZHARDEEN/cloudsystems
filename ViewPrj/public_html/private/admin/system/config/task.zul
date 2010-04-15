@@ -31,16 +31,26 @@
                                         <tabpanel>
                                             <listbox fixedLayout="true" id="listMenu">
                                                 <listhead sizable="true">
-                                                    <listheader id="listHeaderMenu" align="left" label="Descrição" sort="auto"
-                                                                width="1"/>
+                                                    <listheader id="listHeaderMenuId" align="left" label="Cód" sort="auto"
+                                                                width="10%"/>
+                                                    <listheader id="listHeaderMenuDesc" align="left" label="Descrição" sort="auto"
+                                                                width="20%"/>
+                                                    <listheader id="listHeaderMenuUrl" align="left" label="URL" sort="auto"
+                                                                width="50%"/>
+                                                    <listheader id="listHeaderMenuParent" align="left" label="Menu Pai" sort="auto"
+                                                                width="20%"/>
                                                 </listhead>
                                             </listbox>
                                         </tabpanel>
                                         <tabpanel>
-                                            <listbox fixedLayout="true" id="listPermission">
+                                            <listbox fixedLayout="true" id="listRole">
                                                 <listhead sizable="true">
-                                                    <listheader id="listHeaderRole" align="left" label="Descrição" sort="auto"
-                                                                width="1"/>
+                                                    <listheader id="listHeaderRoleId" align="left" label="Cód" sort="auto"
+                                                                width="15%"/>
+                                                    <listheader id="listHeaderRoleDesc" align="left" label="Descrição" sort="auto"
+                                                                width="50%"/>
+                                                    <listheader id="listHeaderRoleParent" align="left" label="Role Pai" sort="auto"
+                                                                width="35%"/>
                                                 </listhead>
                                             </listbox>
                                         </tabpanel>

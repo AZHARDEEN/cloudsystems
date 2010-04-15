@@ -12,7 +12,7 @@ import javax.ejb.Remote;
 
 
 @Remote
-public interface SecurityFacade
+public interface SecurityFacade extends MenuSecurityFacade
 {
     List<RoleDTO> getRoles( AuthenticationDTO auth ) throws ApplicationException;
 
@@ -28,7 +28,7 @@ public interface SecurityFacade
 
     void delete( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException;
 
-    List<TaskDTO> getTasks ( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException;
+    List<TaskDTO> getTasks( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException;
 
 
     /*
@@ -37,8 +37,8 @@ public interface SecurityFacade
 
     List<TaskDTO> getSubtasks( AuthenticationDTO auth, TaskDTO task ) throws ApplicationException;
 
-    List<TaskDTO> getRootTasks ( AuthenticationDTO auth )throws ApplicationException;
+    List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException;
 
-    void add ( AuthenticationDTO auth, RoleDTO roleDTO, TaskDTO taskDTO ) throws ApplicationException;
+    void add( AuthenticationDTO auth, RoleDTO roleDTO, TaskDTO taskDTO ) throws ApplicationException;
 
 }

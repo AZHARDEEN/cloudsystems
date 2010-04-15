@@ -115,7 +115,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     protected void refresh()
     {
         try {
-            getTreeList().setModel( new MenuTreeModel( getLocator().getMenus( getLoggedInUser() ) ) );
+            getTreeList().setModel( new MenuTreeModel( getLocator().getParentMenus( getLoggedInUser() ) ) );
             refreshTask();
         }
         catch ( ApplicationException e ) {
@@ -143,9 +143,13 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
 
     protected void showMenuTasks( MenuDTO dto ) throws ApplicationException
     {
+        System.out.println( "ShowMenuTask: " + dto.toString() );
         List<TaskDTO> tasks = getLocator().getMenuTasks( getLoggedInUser(), dto.getId() );
+        System.out.println( "ShowMenuTask list was gotten: " + dto.toString() );
         listTasks.setModel( new ListModelList( tasks, true ) );
+        System.out.println( "ShowMenuTask model created: " + dto.toString() );
         removeTask.setDisabled( true );
+        System.out.println( "ShowMenuTask is done!!!: " + dto.toString() );
 
     }
 
@@ -264,7 +268,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         MenuDTO dto = getValue( ( ( Treeitem )e ) );
         if ( dto != null ) {
             try {
-                getLocator().delete( getLoggedInUser(), dto );
+                getLocator().delete( getLoggedInUser(), dto.getId() );
             }
             catch ( ApplicationException ex ) {
                 showErrorMessage( ex.getMessage(), "Exclur Menu" );
@@ -386,24 +390,23 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         }
     }
 
-    public void onSelect$listTasks ()
+    public void onSelect$listTasks()
     {
         removeTask.setDisabled( false );
     }
 
-    public void onClick$removeTask ()
+    public void onClick$removeTask()
     {
         Listitem item = listTasks.getSelectedItem();
         MenuDTO menu = null;
         if ( getTreeList().getSelectedItem() != null )
-            menu = (MenuDTO) getTreeList().getSelectedItem().getValue();
-        if ( item != null && menu != null )
-        {
+            menu = ( MenuDTO )getTreeList().getSelectedItem().getValue();
+        if ( item != null && menu != null ) {
             try {
-                TaskDTO task = (TaskDTO ) item.getValue();
-                getLocator().removeMenuTask ( getLoggedInUser(), menu, task );
+                TaskDTO task = ( TaskDTO )item.getValue();
+                getLocator().removeMenuTask( getLoggedInUser(), menu, task );
                 if ( task != null ) {
-                    ListModelList model = (ListModelList ) listTasks.getModel();
+                    ListModelList model = ( ListModelList )listTasks.getModel();
                     if ( model != null )
                         model.remove( task );
                     removeTask.setDisabled( true );

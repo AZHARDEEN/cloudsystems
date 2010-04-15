@@ -3,9 +3,9 @@ package br.com.mcampos.controller.admin.security.roles;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.ComboitemRenderer;
 
-public class RoleItemRenderer implements ComboitemRenderer
+public class RoleComboRenderer implements ComboitemRenderer
 {
-    public RoleItemRenderer()
+    public RoleComboRenderer()
     {
         super();
     }
