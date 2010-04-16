@@ -8,6 +8,7 @@ import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
+import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenu;
 import br.com.mcampos.ejb.cloudsystem.security.session.MenuSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.security.session.PermissionAssignmentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.security.session.RoleSessionLocal;
@@ -16,6 +17,7 @@ import br.com.mcampos.ejb.cloudsystem.security.session.TaskSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.security.util.SecurityUtils;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
+import br.com.mcampos.ejb.entity.security.PermissionAssignment;
 import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -207,10 +209,10 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         try {
-            System.out.println( "SystemSessionBean.getMenuTasks" );
+            System.out.println( "SecuritySessionBean.getMenuTasks" );
             Menu menu = menuSession.get( menuId );
             if ( menu != null ) {
-                System.out.println( "SystemSessionBean.getting Task List" );
+                System.out.println( "SecuritySessionBean.getting Task List" );
                 return SecurityUtils.toTaskDTOListFromTaskMenu( menu.getTasks() );
             }
         }
@@ -290,6 +292,127 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         Task taskEntity = taskSession.get( task.getId() );
         if ( menuEntity != null && taskEntity != null ) {
             taskMenuSession.delete( menuEntity, taskEntity );
+        }
+    }
+
+    public List<MenuDTO> getMenus ( AuthenticationDTO auth, RoleDTO dto )throws ApplicationException
+    {
+        authenticate( auth );
+        List<Menu> menus = new ArrayList<Menu> ();
+
+        Role role = roleSession.get( dto.getId() );
+        if ( role != null )
+        {
+            getMenus ( role, menus );
+            if ( menus.size() > 0  )
+            {
+                List<MenuDTO> dtoList = new ArrayList<MenuDTO>( menus.size());
+                for ( Menu m : menus ) {
+                    addMenu( dtoList, m );
+                }
+                return dtoList;
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    protected MenuDTO addMenu( List menuList, Menu newMenu )
+    {
+        MenuDTO dto, parentDTO = null;
+        int nIndex;
+
+        if ( newMenu.getParentMenu() != null ) {
+            //this menu has a parent menu.
+            parentDTO = DTOFactory.copy( newMenu.getParentMenu(), false );
+            nIndex = menuList.indexOf( parentDTO );
+            if ( nIndex == -1 ) {
+                //parent is not in list. Must Add.
+                parentDTO = addMenu( menuList, newMenu.getParentMenu() );
+            }
+            else {
+                parentDTO = ( MenuDTO )menuList.get( nIndex );
+            }
+            dto = DTOFactory.copy( newMenu, false );
+            return addMenu( parentDTO.getSubMenu(), dto );
+        }
+        else {
+            dto = DTOFactory.copy( newMenu, false );
+            return addMenu( menuList, dto );
+        }
+    }
+
+    protected MenuDTO addMenu( List menuList, MenuDTO dto )
+    {
+        int nIndex;
+
+        nIndex = menuList.indexOf( dto );
+        if ( nIndex == -1 ) {
+            for ( MenuDTO sibling : ( List<MenuDTO> )menuList ) {
+                if ( dto.getSequence() > sibling.getSequence() )
+                    continue;
+                nIndex = menuList.indexOf( sibling );
+                break;
+            }
+            if ( nIndex == -1 )
+                menuList.add( dto );
+            else
+                menuList.add( nIndex, dto );
+            return dto;
+        }
+        else
+            return ( MenuDTO )menuList.get( nIndex );
+    }
+
+
+    protected void getMenus ( Role role, List<Menu> menus )
+    {
+        for ( Role r : role.getChildRoles() )
+        {
+            getEntityManager().refresh( r );
+            getMenus ( r, menus );
+        }
+        List<PermissionAssignment> assignmentList = role.getPermissionAssignmentList();
+        for ( PermissionAssignment p : assignmentList )
+        {
+            Task t = p.getTask();
+            getEntityManager().refresh( t );
+            if ( t != null )
+                getMenus ( t, menus );
+        }
+    }
+
+    protected void getMenus ( Task t, List<Menu> menus  )
+    {
+        if ( t != null ) {
+            List<Subtask> subtasks = t.getSubtasks();
+            for ( Subtask s : subtasks ) {
+                getMenus( s.getSubTask(), menus );
+            }
+            List<TaskMenu> tmList = t.getTaskMenuList();
+            for ( TaskMenu tm : tmList )
+            {
+                Menu menu = tm.getMenu();
+                if ( menu != null )
+                    getMenu ( menu, menus );
+            }
+        }
+    }
+
+    protected void getMenu ( Menu menu, List<Menu> menus )
+    {
+        if ( menu != null )
+        {
+            for ( Menu subMenu : menu.getSubMenus() )
+                getMenu ( subMenu, menus );
+            Menu parent = menu.getParentMenu();
+            while ( parent != null )
+            {
+                if ( menus.contains( parent ) == false )
+                    menus.add ( parent );
+                parent = parent.getParentMenu();
+            }
+            if ( menus.contains( menu ) == false )
+                menus.add( menu );
         }
     }
 }

@@ -33,8 +33,10 @@ public class MenuSessionBean extends Crud<Integer, Menu> implements MenuSessionL
     public Menu get( Integer key ) throws ApplicationException
     {
         Menu menu = get( Menu.class, key );
-        if ( menu != null )
+        if ( menu != null ) {
+            System.out.println( "SecuritySessionBean.Refreshing Menu" );
             getEntityManager().refresh( menu );
+        }
         return menu;
     }
 

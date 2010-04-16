@@ -25,6 +25,20 @@
                 </rows>
             </grid>
             <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
+            <separator />
+            <div >
+                <toolbar >
+                    <toolbarbutton id="removeTask" image="/img/icontexto-webdev-remove-016x016.png" label="Remover Tarefa" disabled="true"/>
+                </toolbar>
+                <listbox id="listTasks" height="200px">
+                    <listhead sizable="true">
+                        <listheader id="headerDescription" align="left" label="Tarefas" sort="auto"/>
+                    </listhead>
+                </listbox>
+            </div>
+            <separator />
+            <menubar id="roleMenuView" width="100%">
+            </menubar>
         </div>
         <div id="recordEdit" visible="false" droppable="true">
             <grid width="100%" fixedLayout="true">

@@ -6,6 +6,7 @@ import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
+import br.com.mcampos.ejb.cloudsystem.security.session.RoleSessionLocal;
 import br.com.mcampos.ejb.session.system.SystemSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -25,6 +26,9 @@ public class SystemFacadeBean implements SystemFacade
 {
     @EJB
     SystemSessionLocal systemSession;
+
+    @EJB
+    RoleSessionLocal roleSession;
 
     public SystemFacadeBean()
     {
@@ -238,5 +242,10 @@ public class SystemFacadeBean implements SystemFacade
     public List<RoleDTO> getRoles( AuthenticationDTO auth, TaskDTO dtoTask ) throws ApplicationException
     {
         return getSystemSession().getRoles( auth, dtoTask );
+    }
+
+    public RoleDTO getRootRole( AuthenticationDTO auth ) throws ApplicationException
+    {
+        return roleSession.getRootRole().toDTO();
     }
 }

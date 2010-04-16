@@ -4,6 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.security.facade;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
+import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -29,6 +30,8 @@ public interface SecurityFacade extends MenuSecurityFacade
     void delete( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException;
 
     List<TaskDTO> getTasks( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException;
+
+    List<MenuDTO> getMenus ( AuthenticationDTO auth, RoleDTO dto )throws ApplicationException;
 
 
     /*

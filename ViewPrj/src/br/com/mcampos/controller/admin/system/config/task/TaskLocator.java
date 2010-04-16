@@ -70,4 +70,14 @@ public class TaskLocator extends SystemLocator implements TaskInterface
     {
         return getSessionBean().getRoles( auth, dtoTask );
     }
+
+    public List<MenuDTO> getParentMenus ( AuthenticationDTO auth ) throws ApplicationException
+    {
+        return getSessionBean().getParentMenus( auth );
+    }
+
+    public RoleDTO getRootRole ( AuthenticationDTO auth ) throws ApplicationException
+    {
+        return getSessionBean().getRootRole ( auth );
+    }
 }

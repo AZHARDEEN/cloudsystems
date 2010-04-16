@@ -10,6 +10,7 @@ import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
@@ -99,7 +100,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
                 }
             } );
         getTreeList().setTreeitemRenderer( this );
-        treeTasks.setTreeitemRenderer( new TaskTreeRenderer( true, false ) );
+        treeTasks.setTreeitemRenderer( new TaskTreeRenderer( null, true, false ) );
         listTasks.setItemRenderer( new TaskListRenderer() );
         refresh();
     }
@@ -116,6 +117,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     {
         try {
             getTreeList().setModel( new MenuTreeModel( getLocator().getParentMenus( getLoggedInUser() ) ) );
+
             refreshTask();
         }
         catch ( ApplicationException e ) {
@@ -146,7 +148,9 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         System.out.println( "ShowMenuTask: " + dto.toString() );
         List<TaskDTO> tasks = getLocator().getMenuTasks( getLoggedInUser(), dto.getId() );
         System.out.println( "ShowMenuTask list was gotten: " + dto.toString() );
-        listTasks.setModel( new ListModelList( tasks, true ) );
+        if ( SysUtils.isEmpty( tasks ) )
+            tasks = new ArrayList<TaskDTO>();
+        listTasks.setModel( new ListModelList(  tasks, true ) );
         System.out.println( "ShowMenuTask model created: " + dto.toString() );
         removeTask.setDisabled( true );
         System.out.println( "ShowMenuTask is done!!!: " + dto.toString() );

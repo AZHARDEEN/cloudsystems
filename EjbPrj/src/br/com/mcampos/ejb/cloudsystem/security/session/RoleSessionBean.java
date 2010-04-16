@@ -39,7 +39,10 @@ public class RoleSessionBean extends Crud<Integer, Role> implements RoleSessionL
     {
         if ( SysUtils.isZero( key ) )
             return null;
-        return super.get( Role.class, key );
+        Role role = super.get( Role.class, key );
+        if ( role != null )
+            getEntityManager().refresh( role );
+        return role;
     }
 
     public List<Role> getAll() throws ApplicationException
@@ -90,7 +93,7 @@ public class RoleSessionBean extends Crud<Integer, Role> implements RoleSessionL
         if ( role == null )
             return Collections.emptyList();
         List<PermissionAssignment> permissions =
-            ( List<PermissionAssignment> )getResultList( PermissionAssignment.findByTask, role );
+            ( List<PermissionAssignment> )getResultList( PermissionAssignment.findByRole, role );
         if ( SysUtils.isEmpty( permissions ) == false ) {
             for ( PermissionAssignment permission : permissions )
                 tasks.add( permission.getTask() );

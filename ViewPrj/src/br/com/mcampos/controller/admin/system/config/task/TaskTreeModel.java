@@ -19,9 +19,9 @@ public class TaskTreeModel extends AbstractTreeModel
     private SecurityFacade session;
     private AuthenticationDTO currentUser;
 
-    public TaskTreeModel( AuthenticationDTO currentUser, List<TaskDTO> list )
+    public TaskTreeModel( AuthenticationDTO currentUser, Object root ) throws ApplicationException
     {
-        super( list );
+        super( root );
         setCurrentUser( currentUser );
     }
 
