@@ -2,12 +2,17 @@ package br.com.mcampos.controller.admin.system.config.task;
 
 
 import br.com.mcampos.controller.admin.security.roles.RoleListRenderer;
+import br.com.mcampos.controller.admin.security.roles.RoleModel;
+import br.com.mcampos.controller.admin.security.roles.RoleRenderer;
 import br.com.mcampos.controller.admin.system.config.menu.MenuListRenderer;
+import br.com.mcampos.controller.admin.system.config.menu.MenuTreeModel;
+import br.com.mcampos.controller.admin.system.config.menu.MenuTreeRenderer;
 import br.com.mcampos.controller.core.BasicTreeCRUDController;
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.util.system.IDropEvent;
 
 import java.util.List;
 
@@ -20,12 +25,13 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
 
-public class TaskController extends BasicTreeCRUDController<TaskDTO>
+public class TaskController extends BasicTreeCRUDController<TaskDTO> implements IDropEvent
 {
     protected TaskLocator locator;
 
@@ -40,6 +46,8 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
 
     protected Listbox listMenu;
     protected Listbox listRole;
+    protected Tree treeMenu;
+    protected Tree treeRole;
 
     public TaskController( char c )
     {
@@ -130,6 +138,8 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
     {
         try {
             getTreeList().setModel( new TaskTreeModel( getLoggedInUser(), getLocator().getRootTasks( getLoggedInUser() ) ) );
+            treeMenu.setModel( new MenuTreeModel( getLocator().getParentMenus( getLoggedInUser() ) ) );
+            treeRole.setModel( new RoleModel ( getLoggedInUser(), getLocator().getRootRole( getLoggedInUser() ) ) );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Refresh Menu" );
@@ -231,9 +241,17 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO>
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
-        getTreeList().setTreeitemRenderer( this );
+        getTreeList().setTreeitemRenderer( new TaskTreeRenderer ( this, true, true ) );
         listMenu.setItemRenderer( new MenuListRenderer() );
         listRole.setItemRenderer( new RoleListRenderer() );
+        treeRole.setTreeitemRenderer( new RoleRenderer( null, true, false ) );
+        treeMenu.setTreeitemRenderer( new MenuTreeRenderer( null, true, false ) );
         refresh();
+    }
+
+    public void onDrop( org.zkoss.zk.ui.event.DropEvent evt )
+    {
+        Object source = evt.getDragged();
+        String str = source.toString();
     }
 }

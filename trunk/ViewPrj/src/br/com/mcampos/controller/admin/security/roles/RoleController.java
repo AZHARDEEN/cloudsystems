@@ -7,6 +7,7 @@ import br.com.mcampos.controller.admin.system.config.task.TaskTreeModel;
 import br.com.mcampos.controller.admin.system.config.task.TaskTreeRenderer;
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
+import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.system.IDropEvent;
 
@@ -19,7 +20,13 @@ import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Menu;
+import org.zkoss.zul.Menubar;
+import org.zkoss.zul.Menuitem;
+import org.zkoss.zul.Menupopup;
+import org.zkoss.zul.Menuseparator;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
@@ -39,6 +46,10 @@ public class RoleController extends SecutityBaseController implements IDropEvent
     private Tree treeTasks;
     private Listbox listTasks;
 
+    protected Menubar roleMenuView;
+
+    protected Toolbarbutton removeTask;
+
     public RoleController( char c )
     {
         super( c );
@@ -51,11 +62,8 @@ public class RoleController extends SecutityBaseController implements IDropEvent
 
     protected void refresh ()
     {
-        RoleDTO dto;
-
         try {
-            dto = getSession().getRootRole( getLoggedInUser() );
-            getTree().setModel( new RoleModel ( getSession(), getLoggedInUser(), dto ) );
+            getTree().setModel( new RoleModel ( getLoggedInUser(), getSession().getRootRole( getLoggedInUser() ) ) );
             comboParent.setItemRenderer(  new RoleComboRenderer() );
             comboParent.setModel( new ListModelList ( getSession().getRoles( getLoggedInUser() ) ) );
             treeTasks.setModel( new TaskTreeModel( getLoggedInUser(), getSession().getRootTasks( getLoggedInUser() ) ) );
@@ -72,9 +80,10 @@ public class RoleController extends SecutityBaseController implements IDropEvent
         labelDescription.setValue(  dto.getDescription() );
         labelId.setValue( dto.getId().toString( ) );
         labelParent.setValue( dto.getParent() != null ? dto.getParent().toString() : "" );
-
+        removeTask.setDisabled( true );
         try {
             loadTasks ( dto );
+            showMenu ( dto );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "LoadTasks" );
@@ -191,7 +200,7 @@ public class RoleController extends SecutityBaseController implements IDropEvent
     {
         super.doAfterCompose( comp );
         listTasks.setItemRenderer( new TaskListRenderer() );
-        treeTasks.setTreeitemRenderer( new TaskTreeRenderer ( true, false) );
+        treeTasks.setTreeitemRenderer( new TaskTreeRenderer ( null, true, false) );
         getTree().setTreeitemRenderer( new RoleRenderer( this, true, true) );
     }
 
@@ -215,4 +224,70 @@ public class RoleController extends SecutityBaseController implements IDropEvent
         }
     }
 
+    protected void showMenu ( RoleDTO role )
+    {
+        List<MenuDTO> menus;
+        try {
+            menus = getSession().getMenus ( getLoggedInUser(), role );
+            if ( roleMenuView.getChildren() != null )
+                roleMenuView.getChildren().clear();
+            for ( MenuDTO item : menus ) {
+                addMenu( item, roleMenuView );
+            }
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Montar Menu" );
+        }
+    }
+
+    protected Component addMenu( MenuDTO item, Component parent )
+    {
+
+        if ( item.getSubMenu().size() > 0 ) {
+            Menu menuItem;
+            Menupopup menuBar;
+
+            menuItem = new Menu( item.getDescription() );
+            menuBar = new Menupopup();
+            menuBar.setParent( menuItem );
+            menuItem.appendChild( menuBar );
+            menuItem.setParent( parent );
+            parent.appendChild( menuItem );
+            for ( MenuDTO submenu : item.getSubMenu() ) {
+                addMenu( submenu, menuBar );
+            }
+            return menuBar;
+        }
+        else {
+            Menuitem menuItem;
+
+            menuItem = new Menuitem( item.getDescription() );
+            if ( item.getSeparatorBefore() )
+                parent.appendChild( new Menuseparator() );
+            parent.appendChild( menuItem );
+            menuItem.setParent( parent );
+            menuItem.setAutocheck( item.getAutocheck() );
+            menuItem.setChecked( item.getChecked() );
+            menuItem.setCheckmark( item.getCheckmark() );
+            menuItem.setDisabled( item.getDisabled() );
+            return parent;
+        }
+    }
+
+    public void onSelect$listTasks ()
+    {
+        removeTask.setDisabled( false );
+    }
+
+    public void onClick$removeTask ()
+    {
+        removeTask.setDisabled( true );
+        if ( listTasks.getSelectedItem() != null ) {
+            Object task = listTasks.getSelectedItem().getValue();
+            if ( task != null ) {
+                ListModelList model = (ListModelList ) listTasks.getModel();
+                model.remove( task );
+            }
+        }
+    }
 }

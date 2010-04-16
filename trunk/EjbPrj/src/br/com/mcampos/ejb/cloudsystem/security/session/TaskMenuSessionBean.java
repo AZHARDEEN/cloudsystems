@@ -21,8 +21,8 @@ public class TaskMenuSessionBean extends Crud<TaskMenuPK, TaskMenu> implements T
     public TaskMenu add( Menu menu, Task task ) throws ApplicationException
     {
         TaskMenu tm = add( new TaskMenu( menu, task ) );
-        menu.add( tm );
-        task.add( tm );
+        //menu.add( tm );
+        //task.add( tm );
         return tm;
     }
 
@@ -31,8 +31,8 @@ public class TaskMenuSessionBean extends Crud<TaskMenuPK, TaskMenu> implements T
         TaskMenu tm = get( menu, task );
         if ( tm != null ) {
             getEntityManager().remove( tm );
-            menu.remove( tm );
-            task.remove( tm );
+            //menu.remove( tm );
+            //task.remove( tm );
         }
     }
 

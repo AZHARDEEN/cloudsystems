@@ -21,19 +21,11 @@
             <center flex="true">
                 <tabbox >
                     <tabs>
-                        <tab id="tabData" label="Dados" />
-                        <tab id="tabTasks" label="Tarefas Associadas" />
-                        <tab id="tabFreeTasks" label="Tarefas Disponíveis" />
+                        <tab id="tabData" label="Detalhe" />
+                        <tab id="tabFreeTasks" label="Tarefas" />
                     </tabs>
                     <tabpanels>
                         <tabpanel id="panelData" fulfill="=/private/admin/security/role_data.zul" />
-                        <tabpanel id="panelTasks">
-                            <listbox id="listTasks" vflex="true" height="300px">
-                                <listhead sizable="true">
-                                    <listheader id="headerDescription" align="left" label="Tarefas" sort="auto"/>
-                                </listhead>
-                            </listbox>
-                        </tabpanel>
                         <tabpanel id="panelFreeTasks">
                             <label id="lblTips" value="Arraste a tarefa até a role desejada" />
                             <tree fixedLayout="true" id="treeTasks" width="100%" height="100%" zclass="z-dottree">

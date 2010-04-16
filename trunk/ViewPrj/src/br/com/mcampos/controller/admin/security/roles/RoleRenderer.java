@@ -50,13 +50,15 @@ public class RoleRenderer implements TreeitemRenderer
             treeRow.setDraggable( "true" );
         if ( droppable ) {
             treeRow.setDroppable( "true" );
-            treeRow.addEventListener( Events.ON_DROP, new EventListener()
+            if ( dropEvent != null ) {
+                treeRow.addEventListener( Events.ON_DROP, new EventListener()
                 {
                     public void onEvent( Event event ) throws Exception
                     {
                         dropEvent.onDrop( (DropEvent)event );
                     }
                 } );
+            }
         }
     }
 }

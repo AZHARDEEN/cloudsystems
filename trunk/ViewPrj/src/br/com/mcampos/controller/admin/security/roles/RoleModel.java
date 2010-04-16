@@ -5,6 +5,8 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.ejb.cloudsystem.security.facade.SecurityFacade;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.util.locator.ServiceLocator;
+import br.com.mcampos.util.locator.ServiceLocatorException;
 
 import org.zkoss.zul.AbstractTreeModel;
 import org.zkoss.zul.event.TreeDataEvent;
@@ -14,10 +16,9 @@ public class RoleModel extends AbstractTreeModel
     SecurityFacade session;
     AuthenticationDTO currentUser;
 
-    public RoleModel( SecurityFacade session, AuthenticationDTO currentUser, Object object )
+    public RoleModel( AuthenticationDTO currentUser, Object root ) throws ApplicationException
     {
-        super( object );
-        this.session = session;
+        super( root );
         this.currentUser = currentUser;
     }
 
@@ -67,7 +68,19 @@ public class RoleModel extends AbstractTreeModel
 
     protected SecurityFacade getSession()
     {
+        if ( session == null )
+            session = ( SecurityFacade ) getRemoteSession( SecurityFacade.class );
         return session;
+    }
+
+    protected Object getRemoteSession( Class remoteClass )
+    {
+        try {
+            return ServiceLocator.getInstance().getRemoteSession( remoteClass );
+        }
+        catch ( ServiceLocatorException e ) {
+            throw new NullPointerException( "Invalid EJB Session (possible null)" );
+        }
     }
 
     protected AuthenticationDTO getCurrentUser()
