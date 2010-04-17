@@ -29,6 +29,7 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         super();
     }
 
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
     public ENTITY add( ENTITY entity ) throws ApplicationException
     {
         getEntityManager().persist( entity );
@@ -37,22 +38,12 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         return entity;
     }
 
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
     public void delete( Class<ENTITY> eClass, KEY key ) throws ApplicationException
     {
         ENTITY toDelete = get( eClass, key );
 
         getEntityManager().remove( toDelete );
-    }
-
-    public ENTITY get( Class<ENTITY> eClass, KEY key ) throws ApplicationException
-    {
-        try {
-            return getEntityManager().find( eClass, key );
-        }
-        catch ( NoResultException e ) {
-            e = null;
-            return null;
-        }
     }
 
     public List<ENTITY> getAll( String namedQuery ) throws ApplicationException
@@ -68,6 +59,7 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         }
     }
 
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
     public ENTITY update( ENTITY entity ) throws ApplicationException
     {
         ENTITY merged = getEntityManager().merge( entity );
@@ -143,5 +135,16 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
             id = 0;
         id++;
         return id;
+    }
+
+    public ENTITY get( Class<ENTITY> eClass, KEY key ) throws ApplicationException
+    {
+        try {
+            return getEntityManager().find( eClass, key );
+        }
+        catch ( NoResultException e ) {
+            e = null;
+            return null;
+        }
     }
 }

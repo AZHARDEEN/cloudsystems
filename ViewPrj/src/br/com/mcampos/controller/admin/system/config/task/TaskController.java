@@ -252,6 +252,33 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO> implements 
     public void onDrop( org.zkoss.zk.ui.event.DropEvent evt )
     {
         Object source = evt.getDragged();
-        String str = source.toString();
+        if ( getTreeList().getSelectedItem()  == null )
+            return;
+        TaskDTO task = (TaskDTO) getTreeList().getSelectedItem().getValue();
+        if ( source instanceof Treerow ) {
+            Treerow row = (Treerow) source;
+            Treeitem item = (Treeitem) row.getParent();
+            Object value = item.getValue();
+            try {
+                if ( value instanceof MenuDTO )
+                {
+                    MenuDTO menu = (MenuDTO)value;
+                    getLocator().add ( getLoggedInUser(), task, menu );
+                    ListModelList model = ( ListModelList ) listMenu.getModel();
+                    model.add( menu );
+                }
+                else if ( value instanceof RoleDTO )
+                {
+                    RoleDTO role = (RoleDTO)value;
+                    getLocator().add ( getLoggedInUser(), task, role );
+                    ListModelList model = ( ListModelList ) listRole.getModel();
+                    model.add( role );
+                }
+            }
+            catch ( ApplicationException e )
+            {
+                showErrorMessage( e.getMessage(), "Associar" );
+            }
+        }
     }
 }

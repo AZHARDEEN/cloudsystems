@@ -17,7 +17,7 @@ import javax.persistence.Query;
 
 
 @Stateless( name = "MenuSession", mappedName = "CloudSystems-EjbPrj-MenuSession" )
-@TransactionAttribute( TransactionAttributeType.MANDATORY )
+@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 public class MenuSessionBean extends Crud<Integer, Menu> implements MenuSessionLocal
 {
     public MenuSessionBean()
@@ -25,6 +25,7 @@ public class MenuSessionBean extends Crud<Integer, Menu> implements MenuSessionL
         super();
     }
 
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
     public void delete( Integer key ) throws ApplicationException
     {
         delete( Menu.class, key );
@@ -33,10 +34,6 @@ public class MenuSessionBean extends Crud<Integer, Menu> implements MenuSessionL
     public Menu get( Integer key ) throws ApplicationException
     {
         Menu menu = get( Menu.class, key );
-        if ( menu != null ) {
-            System.out.println( "SecuritySessionBean.Refreshing Menu" );
-            getEntityManager().refresh( menu );
-        }
         return menu;
     }
 
@@ -45,6 +42,7 @@ public class MenuSessionBean extends Crud<Integer, Menu> implements MenuSessionL
         return ( List<Menu> )getResultList( Menu.findaAll );
     }
 
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
     public Integer getNextSequence( int parentId )
     {
         if ( SysUtils.isZero( parentId ) )

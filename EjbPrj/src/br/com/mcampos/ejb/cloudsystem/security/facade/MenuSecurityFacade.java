@@ -99,8 +99,4 @@ public interface MenuSecurityFacade
      * @throws ApplicationException
      */
     void delete( AuthenticationDTO auth, Integer id ) throws ApplicationException;
-
-    void addMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException;
-
-    void removeMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException;
 }

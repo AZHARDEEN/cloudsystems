@@ -37,10 +37,10 @@ public class Subtask implements Serializable
     {
     }
 
-    public Subtask( Task task, Task task1 )
+    public Subtask( Task masterTask, Task subTask )
     {
-        this.subTask = task;
-        this.task = task1;
+        setTask( masterTask );
+        setSubTask( subTask );
     }
 
     @Id

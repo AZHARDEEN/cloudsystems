@@ -2,27 +2,29 @@ package br.com.mcampos.ejb.cloudsystem.security.session;
 
 
 import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
+import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
+import javax.persistence.Query;
+
 
 @Stateless( name = "TaskSession", mappedName = "CloudSystems-EjbPrj-TaskSession" )
-@TransactionAttribute( TransactionAttributeType.MANDATORY )
+@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 public class TaskSessionBean extends Crud<Integer, Task> implements TaskSessionLocal
 {
     public TaskSessionBean()
     {
     }
 
-
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
     public void delete( Integer key ) throws ApplicationException
     {
         if ( SysUtils.isZero( key ) )
@@ -49,10 +51,34 @@ public class TaskSessionBean extends Crud<Integer, Task> implements TaskSessionL
         return ( List<Task> )getResultList( Task.rootTasks );
     }
 
-    public List<Task> getSubtasks( Task task ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    public void add( Task master, Task entity ) throws ApplicationException
     {
-        List<Task> tasks = Collections.emptyList();//( List<Task> )getResultList( Task.subTasks, task );
-        return tasks;
+        Subtask st = new Subtask( master, entity );
+        getEntityManager().persist( st );
+        getEntityManager().refresh( master );
+        getEntityManager().refresh( entity );
     }
 
+    @Override
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    public Task update( Task entity ) throws ApplicationException
+    {
+        Task updated = super.update( entity );
+        return updated;
+    }
+
+    public Integer getNextTaskId( ) throws ApplicationException
+    {
+        String sql;
+
+        sql = "SELECT COALESCE ( MAX ( TSK_ID_IN ), 0 ) + 1 AS ID FROM TASK";
+        Query query = getEntityManager().createNativeQuery( sql );
+        try {
+            return ( Integer )query.getSingleResult();
+        }
+        catch ( Exception e ) {
+            return 1;
+        }
+    }
 }

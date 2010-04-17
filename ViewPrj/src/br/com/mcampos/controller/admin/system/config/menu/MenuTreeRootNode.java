@@ -1,8 +1,8 @@
 package br.com.mcampos.controller.admin.system.config.menu;
 
+
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.exception.ApplicationException;
-import br.com.mcampos.util.business.SystemLocator;
 import br.com.mcampos.util.system.tree.SimpleTreeNode;
 
 import java.io.Serializable;
