@@ -253,7 +253,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
             if ( de.getTarget() instanceof Treerow ) {
                 MenuDTO toDTO = getValue( ( Treeitem )( ( Treerow )de.getTarget() ).getParent() );
                 try {
-                    getLocator().addMenuTask( getLoggedInUser(), toDTO, task );
+                    getLocator().add( getLoggedInUser(), task, toDTO );
                     ListModelList model = ( ListModelList )listTasks.getModel();
                     model.add( task );
                 }
@@ -408,7 +408,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         if ( item != null && menu != null ) {
             try {
                 TaskDTO task = ( TaskDTO )item.getValue();
-                getLocator().removeMenuTask( getLoggedInUser(), menu, task );
+                getLocator().remove( getLoggedInUser(), task, menu );
                 if ( task != null ) {
                     ListModelList model = ( ListModelList )listTasks.getModel();
                     if ( model != null )

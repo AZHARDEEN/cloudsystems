@@ -9,8 +9,10 @@ import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.system.IDropEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
@@ -93,8 +95,9 @@ public class RoleController extends SecutityBaseController implements IDropEvent
     protected void loadTasks ( RoleDTO dto ) throws ApplicationException
     {
         List<TaskDTO> tasks = getSession().getTasks ( getLoggedInUser(), dto );
-        listTasks.getItems().clear();
-        ListModelList model = new ListModelList (tasks, false);
+        if ( SysUtils.isEmpty( tasks ) )
+            tasks = new ArrayList<TaskDTO> ();
+        ListModelList model = new ListModelList (tasks, true);
         listTasks.setModel( model );
     }
 
@@ -215,7 +218,10 @@ public class RoleController extends SecutityBaseController implements IDropEvent
                 TaskDTO dSource = (TaskDTO)vSource;
                 RoleDTO dTarget = ( RoleDTO)vTarget;
                 try {
-                    getSession().add( getLoggedInUser(), dTarget, dSource );
+                    getSession().add( getLoggedInUser(), dSource, dTarget );
+                    ListModelList model = ( ListModelList ) listTasks.getModel();
+                    if ( model != null )
+                        model.add( dSource );
                 }
                 catch ( ApplicationException e ) {
                     showErrorMessage( e.getMessage(), "Permission Assigment" );
@@ -284,9 +290,16 @@ public class RoleController extends SecutityBaseController implements IDropEvent
         removeTask.setDisabled( true );
         if ( listTasks.getSelectedItem() != null ) {
             Object task = listTasks.getSelectedItem().getValue();
-            if ( task != null ) {
-                ListModelList model = (ListModelList ) listTasks.getModel();
-                model.remove( task );
+            if ( task != null && getTree().getSelectedItem() != null ) {
+                RoleDTO role = ( RoleDTO ) getTree().getSelectedItem().getValue();
+                try {
+                    getSession().remove( getLoggedInUser(), ((TaskDTO)task), role);
+                    ListModelList model = (ListModelList ) listTasks.getModel();
+                    model.remove( task );
+                }
+                catch ( ApplicationException e ) {
+                    showErrorMessage( e.getMessage(), "Excluir Tarefa" );
+                }
             }
         }
     }

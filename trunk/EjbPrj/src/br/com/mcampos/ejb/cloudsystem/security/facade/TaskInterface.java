@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.core;
+package br.com.mcampos.ejb.cloudsystem.security.facade;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
@@ -90,4 +90,6 @@ public interface TaskInterface
     List<MenuDTO> getMenus( AuthenticationDTO auth, TaskDTO taskId ) throws ApplicationException;
 
     List<RoleDTO> getRoles( AuthenticationDTO auth, TaskDTO dtoTask ) throws ApplicationException;
+
+    List<TaskDTO> getSubTasks (AuthenticationDTO auth, TaskDTO dtoTask) throws ApplicationException;
 }

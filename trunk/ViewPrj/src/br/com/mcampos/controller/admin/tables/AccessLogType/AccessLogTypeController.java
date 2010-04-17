@@ -12,7 +12,6 @@ import org.zkoss.zul.Listitem;
 
 public class AccessLogTypeController extends SimpleTableController<AccessLogTypeDTO>
 {
-    private AccessLogLocator locator;
 
     public AccessLogTypeController()
     {
@@ -26,24 +25,17 @@ public class AccessLogTypeController extends SimpleTableController<AccessLogType
 
     protected void delete( Object currentRecord ) throws ApplicationException
     {
-        getLocator().delete( getLoggedInUser(), getValue( ( Listitem )currentRecord ) );
+        //getLocator().delete( getLoggedInUser(), getValue( ( Listitem )currentRecord ) );
     }
 
     protected void persist( Object e ) throws ApplicationException
     {
-        getLocator().add( getLoggedInUser(), ( AccessLogTypeDTO )e );
+        //getLocator().add( getLoggedInUser(), ( AccessLogTypeDTO )e );
     }
 
     protected void updateItem( Object e ) throws ApplicationException
     {
-        getLocator().update( getLoggedInUser(), ( AccessLogTypeDTO )e );
-    }
-
-    public AccessLogLocator getLocator()
-    {
-        if ( locator == null )
-            locator = new AccessLogLocator();
-        return locator;
+        //getLocator().update( getLoggedInUser(), ( AccessLogTypeDTO )e );
     }
 
     @Override
@@ -54,6 +46,7 @@ public class AccessLogTypeController extends SimpleTableController<AccessLogType
 
     protected Integer getNextId()
     {
+        /*
         try {
             return getLocator().getNextAccessLogTypeId( getLoggedInUser() );
         }
@@ -61,10 +54,13 @@ public class AccessLogTypeController extends SimpleTableController<AccessLogType
             showErrorMessage( e.getMessage(), "Próximo ID" );
             return 0;
         }
+        */
+        return 0;
     }
 
     protected List getRecordList()
     {
-        return getLocator().getList( getLoggedInUser() );
+        //return getLocator().getList( getLoggedInUser() );
+        return null;
     }
 }

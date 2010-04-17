@@ -1,11 +1,13 @@
 package br.com.mcampos.ejb.cloudsystem.security.session;
 
+
 import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
 
 import javax.ejb.Local;
+
 
 @Local
 public interface TaskSessionLocal
@@ -18,5 +20,11 @@ public interface TaskSessionLocal
 
     List<Task> getRoots() throws ApplicationException;
 
-    List<Task> getSubtasks( Task task ) throws ApplicationException;
+    Task add( Task entity ) throws ApplicationException;
+
+    void add( Task masterTask, Task entity ) throws ApplicationException;
+
+    Task update( Task entity ) throws ApplicationException;
+
+    Integer getNextTaskId( ) throws ApplicationException;
 }

@@ -6,6 +6,7 @@ import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.ejb.cloudsystem.security.facade.MenuSecurityFacade;
 import br.com.mcampos.ejb.cloudsystem.security.facade.SecurityFacade;
+import br.com.mcampos.ejb.cloudsystem.security.facade.TaskMenuInterface;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.business.BusinessDelegate;
@@ -13,7 +14,7 @@ import br.com.mcampos.util.business.BusinessDelegate;
 import java.util.Collections;
 import java.util.List;
 
-public class MenuLocator extends BusinessDelegate implements MenuSecurityFacade
+public class MenuLocator extends BusinessDelegate implements MenuSecurityFacade, TaskMenuInterface
 {
     public MenuLocator()
     {
@@ -122,15 +123,15 @@ public class MenuLocator extends BusinessDelegate implements MenuSecurityFacade
         return getSessionBean().getRootTasks( auth );
     }
 
-    public void addMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+    public void add( AuthenticationDTO auth, TaskDTO task, MenuDTO menu ) throws ApplicationException
     {
-        getSessionBean().addMenuTask( auth, menu, task );
+        getSessionBean().add( auth, task, menu );
     }
 
 
-    public void removeMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+    public void remove( AuthenticationDTO auth, TaskDTO task, MenuDTO menu ) throws ApplicationException
     {
-        getSessionBean().removeMenuTask( auth, menu, task );
+        getSessionBean().remove( auth, task, menu );
     }
 
 

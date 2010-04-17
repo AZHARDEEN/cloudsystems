@@ -53,7 +53,7 @@ public class TaskTreeModel extends AbstractTreeModel
             try {
                 TaskDTO dto = ( TaskDTO )parent;
                 if ( dto.getSubtasks() == null )
-                    dto.setSubtasks( getSession().getSubtasks( getCurrentUser(), dto ) );
+                    dto.setSubtasks( getSession().getSubTasks( getCurrentUser(), dto ) );
                 return ( SysUtils.isEmpty( dto.getSubtasks() ) ) ? 0 : dto.getSubtasks().size();
             }
             catch ( ApplicationException e ) {

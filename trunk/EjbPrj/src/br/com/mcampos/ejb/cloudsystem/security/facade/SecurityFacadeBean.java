@@ -60,6 +60,7 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
     {
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<RoleDTO> getRoles( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
@@ -72,6 +73,7 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         return dtos;
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public RoleDTO getRootRole( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
@@ -92,6 +94,7 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         return 8;
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<RoleDTO> getChildRoles( AuthenticationDTO auth, RoleDTO parent ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
@@ -125,6 +128,7 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         roleSession.delete( dto.getId() );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public Integer getRoleMaxId( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
@@ -132,59 +136,20 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
     }
 
 
-    /*
-     *  TASKS
-     */
-
-    public List<TaskDTO> getSubtasks( AuthenticationDTO auth, TaskDTO task ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Task entity = DTOFactory.copy( task );
-        List<Subtask> subtasks;
-        try {
-            subtasks = getEntityManager().createNamedQuery( Subtask.findbyTask ).setParameter( 1, entity ).getResultList();
-            return toTaskDTOFromSubtask( subtasks );
-        }
-        catch ( NoResultException e ) {
-            return Collections.emptyList();
-        }
-    }
-
-    protected List<TaskDTO> toTaskDTOFromSubtask( List<Subtask> subtasks )
-    {
-        if ( SysUtils.isEmpty( subtasks ) )
-            return Collections.emptyList();
-        List<TaskDTO> tasks = new ArrayList<TaskDTO>( subtasks.size() );
-        for ( Subtask s : subtasks )
-            tasks.add( s.getSubTask().toDTO() );
-        return tasks;
-    }
-
-
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        List<Task> tasks = taskSession.getRoots();
-        return toTaskDTO( tasks );
+        return SecurityUtils.toTaskDTOList( taskSession.getRoots() );
     }
 
 
-    protected List<TaskDTO> toTaskDTO( List<Task> tasks )
-    {
-        if ( SysUtils.isEmpty( tasks ) )
-            return Collections.emptyList();
-        List<TaskDTO> dtos = new ArrayList<TaskDTO>( tasks.size() );
-        for ( Task t : tasks )
-            dtos.add( DTOFactory.copy( t ) );
-        return dtos;
-    }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<TaskDTO> getTasks( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        List<Task> tasks;
-        tasks = roleSession.getTasks( dto.getId() );
-        return toTaskDTO( tasks );
+        return SecurityUtils.toTaskDTOList( roleSession.getTasks( dto.getId() ) );
     }
 
     public void add( AuthenticationDTO auth, RoleDTO roleDTO, TaskDTO taskDTO ) throws ApplicationException
@@ -205,14 +170,13 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
      */
 
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<TaskDTO> getMenuTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         try {
-            System.out.println( "SecuritySessionBean.getMenuTasks" );
             Menu menu = menuSession.get( menuId );
             if ( menu != null ) {
-                System.out.println( "SecuritySessionBean.getting Task List" );
                 return SecurityUtils.toTaskDTOListFromTaskMenu( menu.getTasks() );
             }
         }
@@ -222,12 +186,15 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         return Collections.emptyList();
     }
 
+
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public Integer getNextSequence( AuthenticationDTO auth, Integer parentId ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         return menuSession.getNextSequence( parentId );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<MenuDTO> getParentMenus( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
@@ -248,6 +215,7 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         return menu.toDTO();
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public Integer getNextMenuId( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
@@ -273,26 +241,6 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         menuSession.delete( id );
-    }
-
-    public void addMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Menu menuEntity = menuSession.get( menu.getId() );
-        Task taskEntity = taskSession.get( task.getId() );
-        if ( menuEntity != null && taskEntity != null ) {
-            taskMenuSession.add( menuEntity, taskEntity );
-        }
-    }
-
-    public void removeMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Menu menuEntity = menuSession.get( menu.getId() );
-        Task taskEntity = taskSession.get( task.getId() );
-        if ( menuEntity != null && taskEntity != null ) {
-            taskMenuSession.delete( menuEntity, taskEntity );
-        }
     }
 
     public List<MenuDTO> getMenus ( AuthenticationDTO auth, RoleDTO dto )throws ApplicationException
@@ -415,4 +363,133 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
                 menus.add( menu );
         }
     }
+
+    public void removeTask( AuthenticationDTO auth, RoleDTO roleDTO,
+                            TaskDTO taskDTO ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        Role role = roleSession.get ( roleDTO.getId() );
+        Task task = taskSession.get( taskDTO.getId() );
+        if ( role != null && task != null )
+            permissionSession.delete( role, task );
+    }
+
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public List<TaskDTO> getTasks( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        return SecurityUtils.toTaskDTOList( taskSession.getAll() );
+    }
+
+    public TaskDTO update( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+
+        Task entity = DTOFactory.copy( dto );
+        entity = taskSession.update ( entity );
+        return entity.toDTO();
+    }
+
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public Integer getNextTaskId( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        return taskSession.getNextTaskId();
+    }
+
+    public TaskDTO add( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        authenticate( auth, Role.systemAdmimRoleLevel );
+
+        Task entity = DTOFactory.copy( dto );
+        entity = taskSession.add ( entity );
+        if ( entity != null && dto.getParentId() != null ) {
+            Task masterTask = taskSession.get (dto.getParentId() );
+            if ( masterTask != null ) {
+                taskSession.add ( masterTask, entity );
+            }
+        }
+        return entity.toDTO();
+    }
+
+    public Boolean validate( TaskDTO dto, Boolean isNew )
+    {
+        return null;
+    }
+
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public TaskDTO getTask( AuthenticationDTO auth, Integer taskId ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        return taskSession.get( taskId ).toDTO();
+    }
+
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public List<MenuDTO> getMenus( AuthenticationDTO auth, TaskDTO taskId ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        Task task = taskSession.get( taskId.getId() );
+        return SecurityUtils.toMenuDTOListFromTaskMenu( task.getTaskMenuList() );
+    }
+
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public List<RoleDTO> getRoles( AuthenticationDTO auth, TaskDTO dtoTask ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        Task task = taskSession.get( dtoTask.getId() );
+        return SecurityUtils.toRoleDTOListFromPermission( task.getPermissionAssignmentList() );
+    }
+
+    public void add( AuthenticationDTO auth, TaskDTO dtoTask, MenuDTO menuDTO ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        Menu menu = menuSession.get( menuDTO.getId() );
+        Task task = taskSession.get ( dtoTask.getId () );
+        taskMenuSession.add( menu, task );
+    }
+
+    public void add( AuthenticationDTO auth, TaskDTO dtoTask, RoleDTO roleDTO ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        Role role = roleSession.get( roleDTO.getId() );
+        Task task = taskSession.get ( dtoTask.getId () );
+        permissionSession.add( role, task );
+    }
+
+    public void remove( AuthenticationDTO auth, TaskDTO dtoTask,
+                        MenuDTO menuDTO ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        Menu menu = menuSession.get( menuDTO.getId() );
+        Task task = taskSession.get ( dtoTask.getId () );
+        taskMenuSession.delete( menu, task );
+    }
+
+    public void remove( AuthenticationDTO auth, TaskDTO dtoTask,
+                        RoleDTO roleDTO ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        Role role = roleSession.get( roleDTO.getId() );
+        Task task = taskSession.get ( dtoTask.getId () );
+        permissionSession.delete( role, task );
+    }
+
+    public void delete( AuthenticationDTO auth, TaskDTO id ) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        taskSession.delete( id.getId() );
+    }
+
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public List<TaskDTO> getSubTasks (AuthenticationDTO auth, TaskDTO dtoTask) throws ApplicationException
+    {
+        authenticate( auth, Role.systemAdmimRoleLevel );
+        Task task = taskSession.get( dtoTask.getId() );
+        if ( task != null ) {
+            return SecurityUtils.toTaskDTOListFromSubtask( task.getSubtasks() );
+        }
+        return Collections.emptyList();
+    }
+
 }

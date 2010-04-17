@@ -9,8 +9,11 @@ import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 @Stateless( name = "TaskMenuSession", mappedName = "CloudSystems-EjbPrj-TaskMenuSession" )
+@TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class TaskMenuSessionBean extends Crud<TaskMenuPK, TaskMenu> implements TaskMenuSessionLocal
 {
     public TaskMenuSessionBean()
@@ -36,6 +39,7 @@ public class TaskMenuSessionBean extends Crud<TaskMenuPK, TaskMenu> implements T
         }
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public TaskMenu get( Menu menu, Task task ) throws ApplicationException
     {
         return get( TaskMenu.class, new TaskMenuPK( menu.getId(), task.getId() ) );

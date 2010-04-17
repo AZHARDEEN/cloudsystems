@@ -9,6 +9,7 @@ import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
 import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenu;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.security.PermissionAssignment;
+import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -75,7 +76,18 @@ public class SecurityUtils
             return Collections.emptyList();
         ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( list.size() );
         for ( Task m : list ) {
-            listDTO.add( DTOFactory.copy( m ) );
+            listDTO.add( m.toDTO() );
+        }
+        return listDTO;
+    }
+
+    public static List<TaskDTO> toTaskDTOListFromSubtask( List<Subtask> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( list.size() );
+        for ( Subtask m : list ) {
+            listDTO.add( DTOFactory.copy( m.getSubTask() ) );
         }
         return listDTO;
     }

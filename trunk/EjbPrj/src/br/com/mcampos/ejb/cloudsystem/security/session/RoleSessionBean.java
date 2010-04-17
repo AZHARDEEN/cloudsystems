@@ -21,13 +21,14 @@ import javax.persistence.Query;
 
 
 @Stateless( name = "RoleSession", mappedName = "CloudSystems-EjbPrj-RoleSession" )
-@TransactionAttribute( TransactionAttributeType.MANDATORY )
+@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 public class RoleSessionBean extends Crud<Integer, Role> implements RoleSessionLocal
 {
     public RoleSessionBean()
     {
     }
 
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
     public void delete( Integer key ) throws ApplicationException
     {
         if ( SysUtils.isZero( key ) )
@@ -40,8 +41,6 @@ public class RoleSessionBean extends Crud<Integer, Role> implements RoleSessionL
         if ( SysUtils.isZero( key ) )
             return null;
         Role role = super.get( Role.class, key );
-        if ( role != null )
-            getEntityManager().refresh( role );
         return role;
     }
 

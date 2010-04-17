@@ -11,4 +11,6 @@ import javax.ejb.Local;
 public interface PermissionAssignmentSessionLocal
 {
     void add (Role role, Task task ) throws ApplicationException;
+
+    void delete (Role role, Task task ) throws ApplicationException;
 }
