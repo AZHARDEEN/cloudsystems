@@ -118,7 +118,6 @@ public class AnotoPageDTO implements Comparable<AnotoPageDTO>, Serializable
             setFormId( pad.getFormId() );
             setPadId( pad.getId() );
         }
-
     }
 
     public PadDTO getPad()

@@ -63,6 +63,8 @@
     <class>br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField</class>
     <class>br.com.mcampos.ejb.cloudsystem.anode.entity.PgcAttachment</class>
     <class>br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPage</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPageField</class>
+    <class>br.com.mcampos.ejb.cloudsystem.system.entity.FieldType</class>
     <properties>
       <property name="eclipselink.target-server" value="WebLogic 10"/>
       <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/PostgreSQLDS"/>
