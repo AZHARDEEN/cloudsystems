@@ -53,15 +53,12 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     protected Button btnAddAttach;
     protected Button btnRemoveAttach;
     protected Button btnProperties;
-    protected Button btnAddAttachOther;
-    protected Button btnRemoveAttachOther;
     protected Button btnAddPen;
     protected Button btnRemovePen;
 
     protected Listbox listAttachs;
     protected Listbox listAvailable;
     protected Listbox listAdded;
-    protected Listbox listAttachsOther;
 
     protected Listheader headerApplication;
     protected Listheader headerDescription;
@@ -95,7 +92,6 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     {
         listAdded.getChildren().clear();
         listAttachs.getChildren().clear();
-        listAttachsOther.getChildren().clear();
         listAvailable.getChildren().clear();
     }
 
@@ -159,7 +155,6 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     protected List getRecordList() throws ApplicationException
     {
         btnAddAttach.setDisabled( true );
-        btnAddAttachOther.setDisabled( true );
         btnRemoveAttach.setDisabled( true );
         btnProperties.setDisabled( true );
         return getSession().getForms( getLoggedInUser() );
@@ -219,11 +214,9 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             clearRecordInfo();
             listAvailable.getItems().clear();
             listAdded.getItems().clear();
-            listAttachsOther.getItems().clear();
         }
         btnAddAttach.setDisabled( record == null );
         recordIP.setValue( record != null ? ( ( FormDTO )record ).getApplication() : "" );
-        btnAddAttachOther.setDisabled( record == null );
     }
 
     public void onUpload$btnAddAttach( UploadEvent evt )
@@ -393,7 +386,6 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         listAvailable.invalidate();
         listAdded.setModel( getPensListModel( current ) );
         listAdded.invalidate();
-        listAttachsOther.setModel( getFilesListModel( current ) );
     }
 
 
@@ -474,12 +466,6 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         btnProperties.setDisabled( false );
     }
 
-    public void onSelect$listAttachsOther()
-    {
-        btnRemoveAttachOther.setDisabled( false );
-    }
-
-
     public void onClick$btnProperties()
     {
         Listitem item = listAttachs.getSelectedItem();
@@ -492,55 +478,11 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    public void onUpload$btnAddAttachOther( UploadEvent evt )
-    {
-        if ( getListboxRecord().getSelectedCount() != 1 ) {
-            showErrorMessage( "Não existe nenhum formulário selecionado", "Upload Error" );
-            evt.stopPropagation();
-            return;
-        }
-        MediaDTO dto = null;
-
-        try {
-            dto = UploadMedia.getMedia( evt.getMedia() );
-            if ( dto == null )
-                return;
-            FormDTO form = getValue( getListboxRecord().getSelectedItem() );
-            ListModelList model = ( ListModelList )listAttachsOther.getModel();
-            model.add( addPadFile( form, dto ) );
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Adicinar Arquivo" );
-        }
-        catch ( IOException e ) {
-            showErrorMessage( e.getMessage(), "UploadMedia" );
-        }
-    }
 
     protected MediaDTO addPadFile( FormDTO form, MediaDTO newPad ) throws ApplicationException
     {
         MediaDTO dto = getSession().addFile( getLoggedInUser(), form, newPad );
         return dto;
-    }
-
-
-    public void onClick$btnRemoveAttachOther()
-    {
-        FormDTO currentForm = getValue( getListboxRecord().getSelectedItem() );
-        ListModelList modelList = ( ( ListModelList )listAttachsOther.getModel() );
-        Set selected = modelList.getSelection();
-        if ( selected.isEmpty() )
-            return;
-        try {
-            for ( Iterator it = selected.iterator(); it.hasNext(); ) {
-                getSession().removeFile( getLoggedInUser(), currentForm, ( MediaDTO )it.next() );
-            }
-            modelList.removeAll( selected );
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Remover Media" );
-        }
-
     }
 
 

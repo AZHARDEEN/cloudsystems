@@ -45,15 +45,24 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         delete( Pgc.class, key );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public Pgc get( Integer key ) throws ApplicationException
     {
         return get( Pgc.class, key );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<Pgc> getAll() throws ApplicationException
     {
         return getAll( Pgc.findAllQueryName );
     }
+
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public List<Pgc> getSuspended() throws ApplicationException
+    {
+        return getAll( Pgc.findSuspended );
+    }
+
 
     public Pgc add( Pgc entity ) throws ApplicationException
     {
@@ -82,17 +91,20 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         pgc.setPgcStatus( getEntityManager().find( PgcStatus.class, newStatus ) );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPenPage> get( AnotoPage page ) throws ApplicationException
     {
         return ( List<AnotoPenPage> )getResultList( AnotoPenPage.pagePensQueryName, page );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<PgcPenPage> get( Pgc pgc ) throws ApplicationException
     {
         return ( List<PgcPenPage> )getResultList( PgcPenPage.getAllFromPGC, pgc );
     }
 
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<PgcPenPage> getAll( AnotoPenPage penPage ) throws ApplicationException
     {
         List<PgcPenPage> list;
@@ -101,6 +113,7 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     }
 
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<PgcPenPage> getAll( AnotoPen pen ) throws ApplicationException
     {
         List<PgcPenPage> list;
@@ -127,12 +140,14 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         getEntityManager().persist( pgcField );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     protected Integer getAttachmentSequence( PgcAttachment entity )
     {
         String sql;
 
-        sql =
-"SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID FROM  PGC_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
+        sql = "SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID " +
+                "FROM  PGC_ATTACHMENT " +
+                "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
         Query query = getEntityManager().createNativeQuery( sql );
         query.setParameter( 1, entity.getPgcId() );
         query.setParameter( 2, entity.getBookId() );
@@ -146,6 +161,7 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         getEntityManager().persist( entity );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<Media> getImages( PgcPage page ) throws ApplicationException
     {
         List<Media> medias;
@@ -159,6 +175,7 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         return medias;
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<PgcField> getFields( PgcPage page ) throws ApplicationException
     {
         List<PgcField> fields;
@@ -186,10 +203,10 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         return 1;
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<PgcAttachment> getAttachments( PgcPage page ) throws ApplicationException
     {
         List<PgcAttachment> attachments;
-
 
         attachments = ( List<PgcAttachment> )getResultList( PgcAttachment.findByPage, page );
         return attachments;

@@ -45,16 +45,19 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         getEntityManager().flush();
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public AnotoForm get( Integer key ) throws ApplicationException
     {
         return get( AnotoForm.class, key );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoForm> getAll() throws ApplicationException
     {
         return getAll( "Form.findAll" );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public Integer nextId() throws ApplicationException
     {
         return nextIntegerId( "Form.nextId" );
@@ -101,6 +104,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
             getEntityManager().remove( newEntity );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<FormMedia> getFiles( AnotoForm form ) throws ApplicationException
     {
         List<FormMedia> list = ( List<FormMedia> )getResultList( FormMedia.formGetFiles, form );
@@ -132,6 +136,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         return pad;
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<Pad> getPads( AnotoForm form ) throws ApplicationException
     {
         List<Object> parameter = new ArrayList<Object>( 1 );
@@ -149,6 +154,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
     }
 
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPen> getAvailablePens( AnotoForm form ) throws ApplicationException
     {
         String sqlQuery;
@@ -169,6 +175,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
         return list;
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPen> getPens( AnotoForm form ) throws ApplicationException
     {
         List<AnotoPenPage> list = ( List<AnotoPenPage> )getResultList( AnotoPenPage.formPensQueryName, form );

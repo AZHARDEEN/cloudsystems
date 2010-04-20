@@ -44,6 +44,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         return 9;
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<PgcPenPage> getAll( Properties props ) throws ApplicationException
     {
         String jpaQuery = "select o from PgcPenPage o ";
@@ -127,6 +128,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         delete( PgcPenPage.class, key );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public PgcPenPage get( PgcPenPagePK key ) throws ApplicationException
     {
         return get( PgcPenPage.class, key );

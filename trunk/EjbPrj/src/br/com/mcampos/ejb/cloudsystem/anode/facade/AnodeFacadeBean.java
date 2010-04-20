@@ -135,6 +135,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         }
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public FormDTO get( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
         authenticate( auth );
@@ -144,6 +145,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return form != null ? form.toDTO() : null;
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
@@ -191,18 +193,21 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
      * Esta funcao nao possui autenticações pois necessita ser usado no upload de um pgc, o qual não possui usuário
      */
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PadDTO> getPads( FormDTO form ) throws ApplicationException
     {
         AnotoForm entity = formSession.get( form.getId() );
         return AnotoUtils.toPadList( formSession.getPads( entity ) );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PenDTO> getAvailablePens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );
         return AnotoUtils.toPenList( formSession.getAvailablePens( DTOFactory.copy( form ) ) );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PenDTO> getPens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );
@@ -244,10 +249,13 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         formSession.removeFile( anotoForm, entity );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<MediaDTO> getFiles( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );
         AnotoForm anotoForm = formSession.get( form.getId() );
+        if ( anotoForm == null )
+            return Collections.emptyList();
         List<FormMedia> list = formSession.getFiles( anotoForm );
         if ( SysUtils.isEmpty( list ) )
             return Collections.emptyList();
@@ -280,12 +288,14 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         penSession.delete( entity.getId() );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public PenDTO get( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException
     {
         authenticate( auth );
         return penSession.get( entity.getId() ).toDTO();
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PenDTO> getPens( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
@@ -307,6 +317,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
      * *************************************************************************
      */
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public byte[] getObject( MediaDTO key ) throws ApplicationException
     {
         return mediaSession.getObject( key.getId() );
@@ -321,6 +332,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
      * *************************************************************************
      */
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<AnotoPageDTO> getPages( AuthenticationDTO auth, PadDTO pad ) throws ApplicationException
     {
         authenticate( auth );
@@ -330,6 +342,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return AnotoUtils.toPageList( padSession.getPages( entity ) );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<AnotoPageDTO> getPages( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );
@@ -339,6 +352,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     }
 
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<AnotoPageDTO> getPages( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
@@ -346,6 +360,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     }
 
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<MediaDTO> getImages( AnotoPageDTO page ) throws ApplicationException
     {
         return AnotoUtils.toMediaList( padSession.getImages( getPageEntity( page ) ) );
@@ -391,6 +406,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     }
 
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PenDTO> getAvailablePens( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
     {
         authenticate( auth );
@@ -404,6 +420,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return entity;
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PenDTO> getPens( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
     {
         authenticate( auth );
@@ -411,35 +428,19 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     }
 
 
-    protected List<PGCDTO> toPgcList( List<Pgc> list )
-    {
-        if ( SysUtils.isEmpty( list ) )
-            return Collections.emptyList();
-        List<PGCDTO> dtoList = new ArrayList<PGCDTO>( list.size() );
-        for ( Pgc f : list ) {
-            dtoList.add( f.toDTO() );
-        }
-        return dtoList;
-    }
-
-
-    protected List<PgcPenPageDTO> toPgcPenPageList( List<PgcPenPage> list )
-    {
-        if ( SysUtils.isEmpty( list ) )
-            return Collections.emptyList();
-        List<PgcPenPageDTO> dtoList = new ArrayList<PgcPenPageDTO>( list.size() );
-        for ( PgcPenPage f : list ) {
-            dtoList.add( f.toDTO() );
-        }
-        return dtoList;
-    }
-
-
     public List<PGCDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
-        return toPgcList( pgcSession.getAll() );
+        return AnotoUtils.toPgcList( pgcSession.getAll() );
     }
+
+
+    public List<PGCDTO> getSuspendedPgc( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth );
+        return AnotoUtils.toPgcList( pgcSession.getSuspended() );
+    }
+
 
     public List<PgcPenPageDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException
     {
@@ -447,10 +448,11 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         AnotoPen pen = penSession.get( penPage.getPenId() );
         AnotoPage page = getPageEntity( penPage.getPage() );
         AnotoPenPage entity = padSession.getPenPage( pen, page );
-        return toPgcPenPageList( pgcSession.getAll( entity ) );
+        return AnotoUtils.toPgcPenPageList( pgcSession.getAll( entity ) );
     }
 
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props ) throws ApplicationException
     {
         authenticate( auth );
@@ -545,6 +547,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return true;
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<AnotoPenPageDTO> getPenPages( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
     {
         authenticate( auth );
@@ -552,6 +555,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return AnotoUtils.toPenPageList( list );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PgcPenPageDTO> getPgcPenPages( PGCDTO pgc ) throws ApplicationException
     {
         List<PgcPenPage> list = pgcSession.get( DTOFactory.copy( pgc ) );
@@ -605,11 +609,13 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         pgcSession.add( entity );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<MediaDTO> getImages( PgcPageDTO page ) throws ApplicationException
     {
         return AnotoUtils.toMediaList( pgcSession.getImages( DTOFactory.copy( page ) ) );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PgcFieldDTO> getFields( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
     {
         authenticate( auth );

@@ -7,7 +7,6 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.BackgroundImage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPenPagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.BackgroundImagePK;
@@ -38,6 +37,7 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
     {
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPage> getPages( Pad pad ) throws ApplicationException
     {
         List<Object> parameter = new ArrayList<Object>( 1 );
@@ -46,12 +46,14 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         return pageList;
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPage> getPages() throws ApplicationException
     {
         List<AnotoPage> pageList = ( List<AnotoPage> )getResultList( AnotoPage.anotoPagesGetAllNamedQuery );
         return pageList;
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPage> getPages( AnotoForm param ) throws ApplicationException
     {
         List<AnotoPage> pageList = Collections.emptyList();
@@ -62,16 +64,19 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
     }
 
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public Pad get( PadPK key ) throws ApplicationException
     {
         return get( Pad.class, key );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public AnotoPage getPage( AnotoPagePK key )
     {
         return getEntityManager().find( AnotoPage.class, key );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<Media> getImages( AnotoPage page ) throws ApplicationException
     {
         List<Object> parameter = new ArrayList<Object>( 1 );
@@ -108,6 +113,7 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         return image;
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPen> getAvailablePens( AnotoPage page ) throws ApplicationException
     {
         String sqlQuery;
@@ -130,6 +136,7 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         return list;
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPen> getPens( AnotoPage page ) throws ApplicationException
     {
         List<AnotoPenPage> list = ( List<AnotoPenPage> )getResultList( AnotoPenPage.pagePensQueryName, page );
@@ -160,18 +167,14 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         }
     }
 
-    public void addPGC( Pgc pgc ) throws ApplicationException
-    {
-
-    }
-
-
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPage> getPages( String address ) throws ApplicationException
     {
         List<AnotoPage> list = ( List<AnotoPage> )getResultList( AnotoPage.pagesGetAddressesNamedQuery, address );
         return list;
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public AnotoPenPage getPenPage( AnotoPen pen, AnotoPage page ) throws ApplicationException
     {
         AnotoPenPagePK key = new AnotoPenPagePK( pen, page );
