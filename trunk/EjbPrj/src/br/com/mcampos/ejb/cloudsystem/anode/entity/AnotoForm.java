@@ -1,8 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
+
 import br.com.mcampos.dto.anoto.FormDTO;
-
-
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
@@ -18,11 +17,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+
 @Entity
 @NamedQueries( { @NamedQuery( name = "Form.findAll", query = "select o from AnotoForm o" ),
                  @NamedQuery( name = "Form.nextId", query = "select MAX(o.id) from AnotoForm o" ) } )
 @Table( name = "anoto_form" )
-public class AnotoForm implements Serializable, EntityCopyInterface<FormDTO>
+public class AnotoForm implements Serializable, EntityCopyInterface<FormDTO>, Comparable<AnotoForm>
 {
     @Id
     @Column( name = "frm_id_in", nullable = false )
@@ -95,5 +95,10 @@ public class AnotoForm implements Serializable, EntityCopyInterface<FormDTO>
     public Date getInsertDate()
     {
         return insertDate;
+    }
+
+    public int compareTo( AnotoForm o )
+    {
+        return getId().compareTo( o.getId() );
     }
 }

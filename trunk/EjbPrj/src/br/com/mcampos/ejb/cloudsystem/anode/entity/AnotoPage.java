@@ -21,13 +21,15 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = AnotoPage.anotoPagesGetAllNamedQuery, query = "select o from AnotoPage o" ),
-                 @NamedQuery( name = AnotoPage.padPagesGetAllNamedQuery, query = "select o from AnotoPage o where o.pad = ?1" ),
-                 @NamedQuery( name = AnotoPage.formPagesGetAllNamedQuery, query = "select o from AnotoPage o where o.pad.form = ?1" ),
+                 @NamedQuery( name = AnotoPage.padPagesGetAllNamedQuery,
+                              query = "select o from AnotoPage o where o.pad = ?1 order by by o.pageAddress" ),
+                 @NamedQuery( name = AnotoPage.formPagesGetAllNamedQuery,
+                              query = "select o from AnotoPage o where o.pad.form = ?1 order by o.pageAddress" ),
                  @NamedQuery( name = AnotoPage.pagesGetAddressesNamedQuery,
                               query = "select o from AnotoPage o where o.pageAddress = ?1" ) } )
 @Table( name = "anoto_page" )
 @IdClass( AnotoPagePK.class )
-public class AnotoPage implements Serializable, EntityCopyInterface<AnotoPageDTO>
+public class AnotoPage implements Serializable, EntityCopyInterface<AnotoPageDTO>, Comparable<AnotoPage>
 {
     public static final String anotoPagesGetAllNamedQuery = "AnotoPage.findAll";
     public static final String padPagesGetAllNamedQuery = "AnotoPage.padFindAll";
@@ -125,5 +127,15 @@ public class AnotoPage implements Serializable, EntityCopyInterface<AnotoPageDTO
         AnotoPageDTO dto = new AnotoPageDTO( getPad().toDTO(), getPageAddress() );
         dto.setDescription( getDescription() );
         return dto;
+    }
+
+    public int compareTo( AnotoPage o )
+    {
+        int nRet;
+
+        nRet = getPageAddress().compareTo( o.getPageAddress() );
+        if ( nRet != 0 )
+            return nRet;
+        return getPad().compareTo( o.getPad() );
     }
 }

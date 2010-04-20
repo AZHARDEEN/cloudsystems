@@ -28,7 +28,7 @@ import javax.persistence.TemporalType;
                  @NamedQuery( name = Pad.padFindAllNamedQuery, query = "select o from Pad o where o.form = ?1" ) } )
 @Table( name = "pad" )
 @IdClass( PadPK.class )
-public class Pad implements Serializable, EntityCopyInterface<PadDTO>
+public class Pad implements Serializable, EntityCopyInterface<PadDTO>, Comparable<Pad>
 {
     public static final String formPadsNamedQuery = "Pad.findFormPads";
     public static final String padFindAllNamedQuery = "Pad.findAll";
@@ -128,5 +128,15 @@ public class Pad implements Serializable, EntityCopyInterface<PadDTO>
     {
         PadDTO dto = new PadDTO( getForm().toDTO(), getMedia().toDTO() );
         return dto;
+    }
+
+    public int compareTo( Pad o )
+    {
+        int nRet;
+
+        nRet = getId().compareTo( o.getId() );
+        if ( nRet != 0 )
+            return nRet;
+        return getForm().compareTo( o.getForm() );
     }
 }

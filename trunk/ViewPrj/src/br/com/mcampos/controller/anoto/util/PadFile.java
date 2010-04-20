@@ -42,6 +42,8 @@ public class PadFile
     protected static final String spaceDefinitionChildName = "spacedefinition";
     protected static final String pagesChildName = "pages";
     protected static final String addressAttributeName = "address";
+    protected static final String drawingAreaName = "drawing_area";
+    protected static final String userAreaName = "user_area";
     protected static final String anotoServerPath = "/anoto_res";
 
     protected Document document;
@@ -52,20 +54,20 @@ public class PadFile
     public PadFile( FormDTO application )
     {
         super();
-        init ( application );
+        init( application );
     }
 
     public PadFile( FormDTO application, byte[] pad ) throws JDOMException, IOException
     {
-        super ( );
-        init ( application );
+        super();
+        init( application );
         ByteArrayInputStream is = new ByteArrayInputStream( pad );
         InputStreamReader reader = new InputStreamReader( is );
         load( reader );
     }
 
 
-    protected void init ( FormDTO application )
+    protected void init( FormDTO application )
     {
         this.currentApplication = application;
         if ( isRegistered( application ) == false )
@@ -83,7 +85,7 @@ public class PadFile
         if ( fileExtension.endsWith( ".pad" ) == false )
             return false;
         try {
-            return register ( form, savePad( form, media ) );
+            return register( form, savePad( form, media ) );
         }
         catch ( Exception e ) {
             return false;
@@ -132,22 +134,22 @@ public class PadFile
         }
     }
 
-    public boolean isRegistered ( FormDTO form )
+    public boolean isRegistered( FormDTO form )
     {
         return PenHome.padIsRegistered( form.getApplication() );
     }
 
-    public void unregister ( FormDTO form, MediaDTO media )
+    public void unregister( FormDTO form, MediaDTO media )
     {
         String path = getPadPath( form, media );
         PenHome.unregisterPad( form.getApplication(), path );
 
-        File file = new File ( path );
+        File file = new File( path );
         if ( file.exists() )
             file.delete();
     }
 
-    public String savePad( FormDTO form, MediaDTO media) throws ApplicationException, IOException
+    public String savePad( FormDTO form, MediaDTO media ) throws ApplicationException, IOException
     {
         String path = getPadPath( form, media );
         File f = new File( path );
@@ -160,9 +162,9 @@ public class PadFile
         return path;
     }
 
-    protected String getPadPath ( FormDTO form, MediaDTO media )
+    protected String getPadPath( FormDTO form, MediaDTO media )
     {
-        String path = getRegisteredPadPath( form.getApplication() ) ;
+        String path = getRegisteredPadPath( form.getApplication() );
         File f = new File( path );
         if ( f.exists() == false )
             f.mkdirs();
@@ -181,7 +183,7 @@ public class PadFile
         return getPath( "registeredPads" ) + "/" + appName;
     }
 
-    public String saveBackgroundImage ( String path, String name, byte[] object )
+    public String saveBackgroundImage( String path, String name, byte[] object )
     {
         File f = new File( path );
         if ( f.exists() == false )
@@ -201,26 +203,24 @@ public class PadFile
     }
 
 
-    protected boolean register ( FormDTO form, String padFileName ) throws IllegalValueException,
-                                                         FormatException,
-                                                         NotAllowedException
+    protected boolean register( FormDTO form, String padFileName ) throws IllegalValueException, FormatException,
+                                                                          NotAllowedException
     {
         String appName = form.getApplication();
 
         if ( isRegistered( form ) == false )
-            register ( form );
+            register( form );
         PenHome.registerPad( appName, padFileName );
         return true;
     }
 
-    public void register ( FormDTO form )
+    public void register( FormDTO form )
     {
         try {
             List<PadDTO> pads = getSession().getPads( form );
             if ( SysUtils.isEmpty( pads ) )
                 return;
-            for ( PadDTO pad : pads )
-            {
+            for ( PadDTO pad : pads ) {
                 pad.getMedia().setObject( getSession().getObject( pad.getMedia() ) );
                 PenHome.registerPad( form.getApplication(), savePad( form, pad.getMedia() ) );
             }
@@ -231,7 +231,7 @@ public class PadFile
     }
 
 
-    public void unregister ( FormDTO form )
+    public void unregister( FormDTO form )
     {
         if ( isRegistered( form ) )
             PenHome.unregisterPads( form.getApplication() );
@@ -255,7 +255,7 @@ public class PadFile
         }
     }
 
-    public static Pen getPen ( InputStream is, String appName ) throws PenCreationException
+    public static Pen getPen( InputStream is, String appName ) throws PenCreationException
     {
         Pen pen = PenHome.read( is, appName );
         try {
@@ -267,9 +267,9 @@ public class PadFile
         return pen;
     }
 
-    public Pen getPen ( InputStream is ) throws PenCreationException
+    public Pen getPen( InputStream is ) throws PenCreationException
     {
-        return getPen ( is, currentApplication.getApplication() );
+        return getPen( is, currentApplication.getApplication() );
     }
 
     public static String getAnotoUserPath( int hash )
@@ -305,7 +305,6 @@ public class PadFile
         }
         return pen;
     }
-
 
 
 }
