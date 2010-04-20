@@ -27,11 +27,16 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = Pgc.findAllQueryName, query = "select o from Pgc o order by o.insertDate desc" ) } )
+@NamedQueries( {
+    @NamedQuery( name = Pgc.findAllQueryName, query = "select o from Pgc o order by o.insertDate desc" ),
+    @NamedQuery( name = Pgc.findSuspended, query = "select o from Pgc o where o.pgcStatus.id <> 1 order by o.insertDate desc" )
+    } )
 @Table( name = "pgc" )
 public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 {
     public static final String findAllQueryName = "Pgc.findAll";
+    public static final String findSuspended = "Pgc.findSuspended";
+
     @Id
     @Column( name = "pgc_id_in", nullable = false, insertable = false, updatable = false, unique = true )
     private Integer id;

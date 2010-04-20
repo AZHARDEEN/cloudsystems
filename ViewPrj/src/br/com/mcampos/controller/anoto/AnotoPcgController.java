@@ -7,8 +7,10 @@ import br.com.mcampos.controller.anoto.renderer.PropertyRowRenderer;
 import br.com.mcampos.controller.anoto.util.PgcFile;
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.anoto.PGCDTO;
+import br.com.mcampos.dto.anoto.PgcStatusDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
 import com.anoto.api.core.NoSuchPermissionException;
 import com.anoto.api.core.Pen;
@@ -57,12 +59,10 @@ public class AnotoPcgController extends LoggedBaseController
     {
         super.doAfterCompose( comp );
 
-        List<PGCDTO> medias = getSession().getAllPgc( getLoggedInUser() );
-
         listboxRecord.setItemRenderer( new PgcListRendered() );
-        listboxRecord.setModel( new ListModelList( medias, true ) );
         gridProperties.setRowRenderer( new PropertyRowRenderer() );
         gridProperties.setModel( new ListModelList( new ArrayList<GridProperties>() ) );
+        refresh ();
     }
 
     private File checkAndCreateDir( File directory ) throws Exception
@@ -81,6 +81,13 @@ public class AnotoPcgController extends LoggedBaseController
         try {
             pgcFile.uploadPgc( evt );
             pgcFile.persist();
+            if ( pgcFile.getCurrentPgc() != null && pgcFile.getCurrentPgc().getPgcStatus().getId() != PgcStatusDTO.statusOk )
+            {
+                ListModelList model = (ListModelList) listboxRecord.getModel();
+                if ( model != null )
+                    model.add( 0, pgcFile.getCurrentPgc() );
+            }
+
         }
         catch ( Exception e ) {
             showErrorMessage( e.getMessage(), "Upload Media" );
@@ -174,5 +181,23 @@ public class AnotoPcgController extends LoggedBaseController
                 }
             }
         }
+    }
+
+    public void onClick$btnRefresh ()
+    {
+        try {
+            refresh ();
+        }
+        catch ( ApplicationException e ) {
+            System.out.println ( e.getMessage() );
+        }
+    }
+
+    protected void refresh () throws ApplicationException
+    {
+        List<PGCDTO> medias = getSession().getSuspendedPgc( getLoggedInUser() );
+        if ( SysUtils.isEmpty( medias ) )
+            medias = new ArrayList<PGCDTO>();
+        listboxRecord.setModel( new ListModelList(  medias, true ) );
     }
 }

@@ -26,11 +26,13 @@ public class AnodePenSessionBean extends Crud<String, AnotoPen> implements Anode
         super.delete( AnotoPen.class, key );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public AnotoPen get( String key ) throws ApplicationException
     {
         return super.get( AnotoPen.class, key );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPen> getAll() throws ApplicationException
     {
         return super.getAll( "Pen.findAll" );

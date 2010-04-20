@@ -132,6 +132,8 @@ public interface AnodeFacade
 
     List<PGCDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException;
 
+    List<PGCDTO> getSuspendedPgc( AuthenticationDTO auth ) throws ApplicationException;
+
     List<AnotoPenPageDTO> getPenPages( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException;
 
     List<PgcPenPageDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException;

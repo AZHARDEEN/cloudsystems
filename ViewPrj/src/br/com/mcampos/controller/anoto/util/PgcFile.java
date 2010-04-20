@@ -33,15 +33,20 @@ import com.anoto.api.RenderException;
 import com.anoto.api.Renderer;
 import com.anoto.api.RendererFactory;
 
+import java.awt.image.BufferedImage;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.zkoss.zk.ui.event.UploadEvent;
 
@@ -200,6 +205,7 @@ public class PgcFile
         PGCDTO insertedPgc = getSession().add( getCurrentPgc(), getPenId(), addresses );
         String locCoord[];
 
+        setCurrentPgc( insertedPgc );
         if ( insertedPgc.getPgcStatus().getId() != PgcStatusDTO.statusOk )
             return;
         List<PgcPenPageDTO> pgcsPenPage = getSession().getPgcPenPages( insertedPgc );
@@ -367,7 +373,7 @@ public class PgcFile
         Iterator it = page.getPageAreas();
         PageArea pageArea = null;
         PgcFieldDTO fieldDTO;
-
+        int fieldIndex = 0;
 
         while ( it != null && it.hasNext() ) {
             pageArea = ( PageArea )it.next();
@@ -400,6 +406,16 @@ public class PgcFile
                     renderer.renderToFile( path, 200 );
                     MediaDTO media = createMedia( path );
                     fieldDTO.setMedia( media );
+
+                    String filename = String.format ( "%s\\%03d_%03d_%03d.TIFF",
+                                basePath,
+                                fieldIndex ++,
+                                fieldDTO.getPgcPage().getBookId(),
+                                fieldDTO.getPgcPage().getPageId() );
+                    BufferedImage img =  (BufferedImage) pageArea.render();
+                    FileOutputStream fos = new FileOutputStream ( new File (filename) );
+                    ImageIO.write( img, "TIFF", fos );
+                    fos.close();
                 }
                 catch ( Exception e ) {
                     e = null;

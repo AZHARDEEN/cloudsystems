@@ -20,7 +20,8 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "FormMedia.findAll", query = "select o from FormMedia o" ), @NamedQuery( name = FormMedia.formGetFiles, query = "select o from FormMedia o where o.form = ?1" ) } )
+@NamedQueries( { @NamedQuery( name = "FormMedia.findAll", query = "select o from FormMedia o" ),
+                 @NamedQuery( name = FormMedia.formGetFiles, query = "select o from FormMedia o where o.form = ?1" ) } )
 @Table( name = "form_media" )
 @IdClass( FormMediaPK.class )
 public class FormMedia implements Serializable, EntityCopyInterface<FormMediaDTO>

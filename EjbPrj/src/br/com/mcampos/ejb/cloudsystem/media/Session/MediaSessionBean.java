@@ -28,11 +28,13 @@ public class MediaSessionBean extends Crud<Integer, Media> implements MediaSessi
         delete( Media.class, key );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public Media get( Integer key ) throws ApplicationException
     {
         return get( Media.class, key );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public byte[] getObject( Integer key ) throws ApplicationException
     {
         Media entity = get( key );

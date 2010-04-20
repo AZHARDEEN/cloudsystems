@@ -14,7 +14,7 @@
                 );
             ]]>
         </script>
-        <panel border="normal" title="Cadastro" width="100%" id="main"> 
+        <panel border="normal" title="Cadastro" width="100%" id="main">
             <panelchildren>
                 <div align="left" >
                     <grid fixedLayout="true">
@@ -28,7 +28,7 @@
                                 <textbox id="name" width="99%" maxlength="128" />
                             </row>
                             <row>
-                                <label value="CPF"  />        
+                                <label value="CPF"  />
                                 <hbox>
                                     <textbox id="cpf" width="200px" maxlength="14" />
                                 </hbox>
@@ -95,7 +95,7 @@
                             </tabpanel>
                         </tabpanels>
                     </tabbox>
-                </div>        
+                </div>
                 <separator />
                 <div fulfill="=/resources/submit_cancel.zul" >
                 </div>
