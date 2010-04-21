@@ -4,6 +4,13 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class FieldTypeDTO extends SimpleTableDTO
 {
+    public static final Integer typeString   = 1;
+    public static final Integer typeInteger  = 2;
+    public static final Integer typeDate     = 3;
+    public static final Integer typeHour     = 4;
+    public static final Integer typeDecimal  = 5;
+    public static final Integer typeBoolean   = 6;
+
     public FieldTypeDTO( SimpleTableDTO simpleTableDTO )
     {
         super( simpleTableDTO );

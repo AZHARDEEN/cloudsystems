@@ -24,6 +24,7 @@ import javax.persistence.Table;
 @IdClass( AnotoPageFieldPK.class )
 public class AnotoPageField implements Serializable, Comparable<AnotoPageField>
 {
+
     @Column( name = "aft_icr_bt", nullable = false )
     private Boolean icr;
 
@@ -42,6 +43,19 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>
     @Id
     @Column( name = "pad_id_in", nullable = false, insertable = false, updatable = false )
     private Integer padId;
+
+    @Column( name = "apf_left_in" )
+    private Integer left;
+
+    @Column( name = "alf_top_in" )
+    private Integer top;
+
+    @Column( name = "alf_width_in" )
+    private Integer width;
+
+    @Column( name = "alf_height_in" )
+    private Integer height;
+
 
     @ManyToOne
     @JoinColumn( name = "flt_id_in", referencedColumnName = "flt_id_in" )
@@ -150,5 +164,45 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>
         if ( nRet != 0 )
             return nRet;
         return getName().compareTo( o.getName() );
+    }
+
+    public void setLeft( Integer left )
+    {
+        this.left = left;
+    }
+
+    public Integer getLeft()
+    {
+        return left;
+    }
+
+    public void setTop( Integer top )
+    {
+        this.top = top;
+    }
+
+    public Integer getTop()
+    {
+        return top;
+    }
+
+    public void setWidth( Integer width )
+    {
+        this.width = width;
+    }
+
+    public Integer getWidth()
+    {
+        return width;
+    }
+
+    public void setHeight( Integer height )
+    {
+        this.height = height;
+    }
+
+    public Integer getHeight()
+    {
+        return height;
     }
 }

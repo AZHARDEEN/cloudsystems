@@ -7,14 +7,18 @@ import br.com.mcampos.dto.address.AddressTypeDTO;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
+import br.com.mcampos.dto.anoto.AnotoPageDTO;
+import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
+import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
+import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.system.SystemParametersDTO;
@@ -37,7 +41,10 @@ import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPageField;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
@@ -46,6 +53,7 @@ import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
+import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
 import br.com.mcampos.ejb.entity.address.AddressType;
 import br.com.mcampos.ejb.entity.address.City;
 import br.com.mcampos.ejb.entity.address.Country;
@@ -849,5 +857,31 @@ public final class DTOFactory implements Serializable
         entity.setValue( dto.getValue() );
         entity.setBarcodeType( dto.getBarcodeType() );
         return entity;
+    }
+
+    public static FieldType copy ( FieldTypeDTO dto )
+    {
+        FieldType target = new FieldType ( dto.getDescription(), dto.getId() );
+        return target;
+    }
+
+    public static AnotoPageField copy ( AnotoPageFieldDTO dto )
+    {
+        AnotoPageField target = new AnotoPageField ( );
+        if ( dto.getPage() != null )
+            target.setAnotoPage( copy ( dto.getPage() ) );
+        return target;
+    }
+
+    public static AnotoPage copy ( AnotoPageDTO dto )
+    {
+        AnotoPage target = new AnotoPage ( copy ( dto.getPad() ), dto.getPageAddress() );
+        return target;
+    }
+
+    public static Pad copy ( PadDTO dto )
+    {
+        Pad target = new Pad ( );
+        return target;
     }
 }

@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
+import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
@@ -41,10 +42,11 @@ public interface PadSessionLocal
 
     void removePens( AnotoPage page, List<AnotoPen> pens ) throws ApplicationException;
 
-
     List<AnotoPage> getPages( String address ) throws ApplicationException;
 
     AnotoPenPage getPenPage( AnotoPen pen, AnotoPage page ) throws ApplicationException;
 
     List<AnotoPage> getPages( AnotoForm param ) throws ApplicationException;
+
+    void add ( AnotoPage page, List<AnotoPageFieldDTO> fields ) throws ApplicationException;
 }

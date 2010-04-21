@@ -8,6 +8,7 @@ import br.com.mcampos.controller.anoto.model.FormListModel;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PenListRenderer;
 import br.com.mcampos.controller.anoto.util.PadFile;
+import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
@@ -246,6 +247,16 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
                 for ( int nIndex = 0; nIndex < file.getPages().size(); nIndex++ )
                     pages.add( file.getPageAddress( file.getPages().get( nIndex ) ) );
                 addedDTO = getSession().addToForm( getLoggedInUser(), form, dto, pages );
+                try {
+                    for (String page : pages ) {
+                        List<AnotoPageFieldDTO> fields = file.getFields( page );
+                        if ( SysUtils.isEmpty( fields ) == false )
+                            getSession().addToPage ( getLoggedInUser(), addedDTO, page, fields );
+                    }
+                }
+                catch ( Exception e ) {
+                    e = null;
+                }
                 ListModelList model = ( ListModelList )listAttachs.getModel();
                 model.add( addedDTO );
             }

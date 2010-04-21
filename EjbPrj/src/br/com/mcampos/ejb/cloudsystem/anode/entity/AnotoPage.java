@@ -20,9 +20,9 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = AnotoPage.anotoPagesGetAllNamedQuery, query = "select o from AnotoPage o" ),
+@NamedQueries( { @NamedQuery( name = AnotoPage.anotoPagesGetAllNamedQuery, query = "select o from AnotoPage o order by o.pageAddress " ),
                  @NamedQuery( name = AnotoPage.padPagesGetAllNamedQuery,
-                              query = "select o from AnotoPage o where o.pad = ?1 order by by o.pageAddress" ),
+                              query = "select o from AnotoPage o where o.pad = ?1 order by o.pageAddress" ),
                  @NamedQuery( name = AnotoPage.formPagesGetAllNamedQuery,
                               query = "select o from AnotoPage o where o.pad.form = ?1 order by o.pageAddress" ),
                  @NamedQuery( name = AnotoPage.pagesGetAddressesNamedQuery,
