@@ -468,19 +468,18 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
                     props.put( "form", entity );
             }
         }
-        List<PgcPenPage> list = pgcPenPageSession.getAll( props );
+        List<PgcPage> list = pgcPenPageSession.getAll( props );
         if ( SysUtils.isEmpty( list ) )
             return Collections.emptyList();
         List<AnotoResultList> resultList = new ArrayList<AnotoResultList>();
-        for ( PgcPenPage entity : list ) {
-            for ( PgcPage page : entity.getPgc().getPages() ) {
-                AnotoResultList item = new AnotoResultList();
-                item.setForm( entity.getPenPage().getPage().getPad().getForm().toDTO() );
-                item.setPen( entity.getPenPage().getPen().toDTO() );
-                item.setPgcPage( page.toDTO() );
-                if ( resultList.contains( item ) == false )
-                    resultList.add( item );
-            }
+        for ( PgcPage page : list ) {
+            AnotoResultList item = new AnotoResultList();
+
+            item.setForm( page.getPgc().getPgcPenPages().get(0).getPenPage().getPage().getPad().getForm().toDTO() );
+            item.setPen( page.getPgc().getPgcPenPages().get(0).getPenPage().getPen().toDTO() );
+            item.setPgcPage( page.toDTO() );
+            if ( resultList.contains( item ) == false )
+                resultList.add( item );
         }
         return resultList;
     }
