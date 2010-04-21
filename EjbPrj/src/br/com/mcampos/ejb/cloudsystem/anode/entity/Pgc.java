@@ -66,6 +66,8 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
     @OneToMany( mappedBy = "pgc", cascade = CascadeType.REFRESH )
     private List<PgcPage> pages;
 
+    @OneToMany ( mappedBy = "pgc" )
+    private List<PgcPenPage> pgcPenPages;
 
     public Pgc()
     {
@@ -165,5 +167,15 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
     public List<PgcPage> getPages()
     {
         return pages;
+    }
+
+    public void setPgcPenPages( List<PgcPenPage> pgcPenPages )
+    {
+        this.pgcPenPages = pgcPenPages;
+    }
+
+    public List<PgcPenPage> getPgcPenPages()
+    {
+        return pgcPenPages;
     }
 }

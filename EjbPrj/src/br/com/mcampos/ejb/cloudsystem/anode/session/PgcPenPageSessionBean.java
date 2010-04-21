@@ -3,12 +3,14 @@ package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PgcPenPagePK;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -45,9 +47,9 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
     }
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public List<PgcPenPage> getAll( Properties props ) throws ApplicationException
+    public List<PgcPage> getAll( Properties props ) throws ApplicationException
     {
-        String jpaQuery = "select o from PgcPenPage o ";
+        String jpaQuery = "select o from PgcPage o ";
         String jpaWhere = "";
         AnotoForm form;
         String page;
@@ -57,7 +59,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         if ( form != null ) {
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
-            jpaWhere += "o.penPage.page.pad.form = :form";
+            jpaWhere += " o.pgc IN ( select ppp.pgc from PgcPenPage ppp where ppp.penPage.page.pad.form = :form ) ";
         }
 
         page = ( String )( props != null ? props.get( "page" ) : "" );
@@ -114,13 +116,10 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         if ( endDate != null )
             query.setParameter( "endDate", endDate );
 
-        List<PgcPenPage> list = ( List<PgcPenPage> )query.getResultList();
+        List<PgcPage> list = ( List<PgcPage> )query.getResultList();
         if ( SysUtils.isEmpty( list ) )
-            return list;
-        for ( PgcPenPage item : list ) {
-            getEntityManager().refresh( item.getPgc() );
-        }
-        return list;
+            return Collections.emptyList();
+        return Collections.emptyList();
     }
 
     public void delete( PgcPenPagePK key ) throws ApplicationException

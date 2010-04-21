@@ -50,6 +50,8 @@ public class PgcFile
 {
     private static final short KEY_LOCATION_COORDINATES = 16386;
 
+    protected String imageFileTypeExtension = "png";
+
     protected List<MediaDTO> pgcs;
     protected String penId;
     protected AnodeFacade session;
@@ -119,9 +121,9 @@ public class PgcFile
     protected MediaDTO createMedia( String media )
     {
         MediaDTO dto = new MediaDTO();
-        dto.setFormat( "jpg" );
+        dto.setFormat( getImageFileTypeExtension() );
         dto.setMimeType( "image" );
-        dto.setName( "renderedImage.jpg" );
+        dto.setName( "renderedImage." + getImageFileTypeExtension() );
         File file = new File( media );
         InputStream is;
         int length = ( int )file.length();
@@ -312,7 +314,7 @@ public class PgcFile
     {
         Renderer renderer;
         List<MediaDTO> backgroundImages = loadBackgroundImages( pgcPenPage, page );
-        String renderedImage = basePath + "/renderedImage.jpg";
+        String renderedImage = basePath + "/renderedImage." + getImageFileTypeExtension();
 
         renderer = RendererFactory.create( page );
         if ( SysUtils.isEmpty( backgroundImages ) ) {
@@ -397,16 +399,17 @@ public class PgcFile
                 fieldDTO.setEndTime( maxTime );
                 try {
                     renderer = RendererFactory.create( pageArea );
-                    String path = basePath + "/" + "field.jpg";
+                    String path = basePath + "/" + "field." + getImageFileTypeExtension();
                     renderer.renderToFile( path, 200 );
                     MediaDTO media = createMedia( path );
                     fieldDTO.setMedia( media );
 
-                    String filename = String.format ( "%s\\%03d_%03d_%03d.JPG",
+                    String filename = String.format ( "%s\\%03d_%03d_%03d.%s" ,
                                 basePath,
                                 fieldIndex ++,
                                 fieldDTO.getPgcPage().getBookId(),
-                                fieldDTO.getPgcPage().getPageId() );
+                                fieldDTO.getPgcPage().getPageId(),
+                                getImageFileTypeExtension());
                     renderer.renderToFile( filename, 300 );
                 }
                 catch ( Exception e ) {
@@ -646,5 +649,15 @@ public class PgcFile
         catch ( Exception e ) {
             return false;
         }
+    }
+
+    public void setImageFileTypeExtension( String imageFileType )
+    {
+        this.imageFileTypeExtension = imageFileType;
+    }
+
+    public String getImageFileTypeExtension()
+    {
+        return imageFileTypeExtension;
     }
 }
