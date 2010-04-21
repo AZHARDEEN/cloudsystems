@@ -33,20 +33,15 @@ import com.anoto.api.RenderException;
 import com.anoto.api.Renderer;
 import com.anoto.api.RendererFactory;
 
-import java.awt.image.BufferedImage;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.zkoss.zk.ui.event.UploadEvent;
 
@@ -407,15 +402,12 @@ public class PgcFile
                     MediaDTO media = createMedia( path );
                     fieldDTO.setMedia( media );
 
-                    String filename = String.format ( "%s\\%03d_%03d_%03d.TIFF",
+                    String filename = String.format ( "%s\\%03d_%03d_%03d.JPG",
                                 basePath,
                                 fieldIndex ++,
                                 fieldDTO.getPgcPage().getBookId(),
                                 fieldDTO.getPgcPage().getPageId() );
-                    BufferedImage img =  (BufferedImage) pageArea.render();
-                    FileOutputStream fos = new FileOutputStream ( new File (filename) );
-                    ImageIO.write( img, "TIFF", fos );
-                    fos.close();
+                    renderer.renderToFile( filename, 300 );
                 }
                 catch ( Exception e ) {
                     e = null;

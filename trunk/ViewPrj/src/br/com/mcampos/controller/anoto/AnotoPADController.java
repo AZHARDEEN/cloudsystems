@@ -3,12 +3,16 @@ package br.com.mcampos.controller.anoto;
 
 import br.com.mcampos.controller.anoto.model.PenListModel;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
+import br.com.mcampos.controller.anoto.renderer.PageFieldListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PenListRenderer;
+import br.com.mcampos.controller.anoto.util.PadFile;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
+import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.system.UploadMedia;
 
 import java.io.IOException;
@@ -54,6 +58,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
     protected Listbox listAttachs;
     protected Listbox listAvailable;
     protected Listbox listAdded;
+    protected Listbox listFields;
 
 
     public AnotoPADController()
@@ -91,6 +96,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
                     }
                 } );
         }
+        listFields.setItemRenderer( new PageFieldListRenderer() );
     }
 
     @Override
@@ -389,5 +395,36 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
     protected Object saveRecord( Object currentRecord )
     {
         return null;
+    }
+
+    public void onClick$btnRefreshFields ()
+    {
+        Listitem item = getListboxRecord().getSelectedItem();
+
+        if ( item == null ) {
+            showErrorMessage( "Por favor selecione um endereço de página na lista", "Atualizar Campos" );
+            return;
+        }
+        AnotoPageDTO page = (AnotoPageDTO) item.getValue();
+        if ( page == null ) {
+            showErrorMessage( "Não existem dados da página associados", "Atualizar Campos" );
+            return;
+        }
+        byte [] padByte;
+        try {
+            padByte = getSession().getObject( page.getPad().getMedia() );
+            if ( padByte != null )
+            {
+                PadFile padFile;
+                padFile = new PadFile ( page.getPad().getForm(), padByte );
+                List<AnotoPageFieldDTO> fields = padFile.getFields( page.getPageAddress() );
+                if ( SysUtils.isEmpty( fields ))
+                    fields = new ArrayList<AnotoPageFieldDTO> ();
+                listFields.setModel( new ListModelList ( fields) );
+            }
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage(), "Atualizar Campos" );
+        }
     }
 }

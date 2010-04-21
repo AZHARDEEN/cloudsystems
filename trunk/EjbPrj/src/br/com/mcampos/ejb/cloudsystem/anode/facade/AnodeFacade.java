@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.facade;
 
 
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
+import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.FormDTO;
@@ -162,4 +163,5 @@ public interface AnodeFacade
 
     List<PgcAttachmentDTO> getAttachments( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException;
 
+    void addToPage ( AuthenticationDTO auth, PadDTO PAD, String page, List<AnotoPageFieldDTO> fields ) throws ApplicationException;
 }

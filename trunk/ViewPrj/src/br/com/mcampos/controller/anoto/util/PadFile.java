@@ -1,6 +1,7 @@
 package br.com.mcampos.controller.anoto.util;
 
 
+import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.system.MediaDTO;
@@ -25,6 +26,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jdom.DataConversionException;
@@ -108,6 +111,45 @@ public class PadFile
     public String getPageAddress( Element pageElement )
     {
         return pageElement.getAttributeValue( addressAttributeName );
+    }
+
+    public Element getPage ( String pageAddress )
+    {
+        for ( Element page : getPages() )
+        {
+            if ( getPageAddress(page).equals( pageAddress ) )
+                return page;
+        }
+        return null;
+    }
+
+    public List<AnotoPageFieldDTO> getFields ( String pageAddress )
+    {
+        Element page = getPage ( pageAddress );
+        return getFields ( page );
+    }
+
+    public List<AnotoPageFieldDTO> getFields ( Element page )
+    {
+        if ( page == null )
+            return Collections.emptyList();
+        Element d = page.getChild( drawingAreaName );
+        List<Element> elements = null;
+        if ( d != null )
+            elements = d.getChildren( userAreaName );
+        if ( SysUtils.isEmpty( elements ) )
+            return Collections.emptyList();
+        List<AnotoPageFieldDTO> fields = new ArrayList<AnotoPageFieldDTO> ( elements.size() );
+        for ( Element field : elements ) {
+            AnotoPageFieldDTO dto = new AnotoPageFieldDTO ();
+            dto.setName( field.getAttributeValue( "name" ) );
+            dto.setTop( Integer.parseInt( field.getAttributeValue( "top" ) ) );
+            dto.setLeft( Integer.parseInt( field.getAttributeValue( "left" ) ) );
+            dto.setWidth( Integer.parseInt( field.getAttributeValue( "width" ) ) );
+            dto.setHeight( Integer.parseInt( field.getAttributeValue( "height" ) ) );
+            fields.add( dto );
+        }
+        return fields;
     }
 
     public int getNumberOfPages()

@@ -1,8 +1,10 @@
 package br.com.mcampos.ejb.cloudsystem.anode.session;
 
 
+import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPageField;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.BackgroundImage;
@@ -13,6 +15,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.key.BackgroundImagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.PadPK;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -180,6 +183,21 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         AnotoPenPagePK key = new AnotoPenPagePK( pen, page );
         AnotoPenPage penPage = getEntityManager().find( AnotoPenPage.class, key );
         return penPage;
+    }
+
+    public void add ( AnotoPage page, List<AnotoPageFieldDTO> fields ) throws ApplicationException
+    {
+        for ( AnotoPageFieldDTO field : fields )
+        {
+            FieldType type = getEntityManager().find( FieldType.class, field.getType().getId() );
+            AnotoPageField entity = new AnotoPageField ( page, field.getName(), type );
+            entity.setIcr( field.getIcr() );
+            entity.setLeft( field.getLeft() );
+            entity.setTop( field.getTop() );
+            entity.setWidth( field.getWidth() );
+            entity.setHeight( field.getHeight() );
+            getEntityManager().persist( entity );
+        }
     }
 
 }

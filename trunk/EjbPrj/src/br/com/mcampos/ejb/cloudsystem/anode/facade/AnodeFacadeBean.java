@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.facade;
 
 
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
+import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.FormDTO;
@@ -642,6 +643,15 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     {
         authenticate( auth );
         return AnotoUtils.toPgcAttachmentList( pgcSession.getAttachments( DTOFactory.copy( page ) ) );
+    }
+
+    public void addToPage ( AuthenticationDTO auth, PadDTO padDTO, String pageAddress, List<AnotoPageFieldDTO> fields ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoPage page = padSession.getPage( new AnotoPagePK ( pageAddress, padDTO.getForm().getId(), padDTO.getId() ) );
+        if ( page == null )
+            return;
+        padSession.add ( page, fields  );
     }
 }
 

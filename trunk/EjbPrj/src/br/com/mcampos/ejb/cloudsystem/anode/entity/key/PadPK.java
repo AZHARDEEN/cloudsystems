@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity.key;
 
+
 import java.io.Serializable;
 
 public class PadPK implements Serializable

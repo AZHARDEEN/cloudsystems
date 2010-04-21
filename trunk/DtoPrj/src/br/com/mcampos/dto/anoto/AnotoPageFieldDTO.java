@@ -1,10 +1,18 @@
 package br.com.mcampos.dto.anoto;
 
+import br.com.mcampos.dto.system.FieldTypeDTO;
+
 public class AnotoPageFieldDTO
 {
     private Boolean icr;
     private AnotoPageDTO page;
     private String name;
+    private Integer width;
+    private Integer height;
+    private Integer top;
+    private Integer left;
+    private FieldTypeDTO type;
+
 
     public AnotoPageFieldDTO()
     {
@@ -12,7 +20,7 @@ public class AnotoPageFieldDTO
     }
 
 
-    public AnotoPageFieldDTO( AnotoPageDTO page, String name )
+    public AnotoPageFieldDTO( AnotoPageDTO page, String name, FieldTypeDTO type )
     {
         super();
         setPage( page );
@@ -27,6 +35,8 @@ public class AnotoPageFieldDTO
 
     public Boolean getIcr()
     {
+        if ( icr == null )
+            icr = true;
         return icr;
     }
 
@@ -48,5 +58,57 @@ public class AnotoPageFieldDTO
     public String getName()
     {
         return name;
+    }
+
+    public void setWidth( Integer width )
+    {
+        this.width = width;
+    }
+
+    public Integer getWidth()
+    {
+        return width;
+    }
+
+    public void setHeight( Integer height )
+    {
+        this.height = height;
+    }
+
+    public Integer getHeight()
+    {
+        return height;
+    }
+
+    public void setTop( Integer top )
+    {
+        this.top = top;
+    }
+
+    public Integer getTop()
+    {
+        return top;
+    }
+
+    public void setLeft( Integer left )
+    {
+        this.left = left;
+    }
+
+    public Integer getLeft()
+    {
+        return left;
+    }
+
+    public void setType( FieldTypeDTO type )
+    {
+        this.type = type;
+    }
+
+    public FieldTypeDTO getType()
+    {
+        if ( type == null )
+            type = new FieldTypeDTO ( FieldTypeDTO.typeString );
+        return type;
     }
 }

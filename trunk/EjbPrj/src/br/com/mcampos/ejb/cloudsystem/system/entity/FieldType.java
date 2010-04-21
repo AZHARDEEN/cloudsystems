@@ -19,6 +19,14 @@ import javax.persistence.Table;
 @Table( name = "field_type" )
 public class FieldType implements Serializable, Comparable<FieldType>, EntityCopyInterface<FieldTypeDTO>
 {
+
+    public static final Integer typeString   = 1;
+    public static final Integer typeInteger  = 2;
+    public static final Integer typeDate     = 3;
+    public static final Integer typeHour     = 4;
+    public static final Integer typeDecimal  = 5;
+    public static final Integer typeBoolean   = 6;
+
     @Column( name = "flt_description_ch", nullable = false )
     private String description;
     @Id
