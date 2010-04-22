@@ -1,8 +1,10 @@
 package br.com.mcampos.ejb.cloudsystem.anode.entity;
 
 
+import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.key.AnotoPageFieldPK;
 import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
+import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
 
@@ -19,11 +21,15 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "AnotoPageField.findAll", query = "select o from AnotoPageField o" ) } )
+@NamedQueries( { @NamedQuery( name = AnotoPageField.getAll, query = "select o from AnotoPageField o" ),
+                 @NamedQuery( name = AnotoPageField.getAllFromPage,
+                              query = "select o from AnotoPageField o where o.anotoPage = ?1" ) } )
 @Table( name = "anoto_page_field" )
 @IdClass( AnotoPageFieldPK.class )
-public class AnotoPageField implements Serializable, Comparable<AnotoPageField>
+public class AnotoPageField implements Serializable, Comparable<AnotoPageField>, EntityCopyInterface<AnotoPageFieldDTO>
 {
+    public static final String getAll = "AnotoPageField.findAll";
+    public static final String getAllFromPage = "AnotoPageField.findAllFromPage";
 
     @Column( name = "aft_icr_bt", nullable = false )
     private Boolean icr;
@@ -204,5 +210,16 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>
     public Integer getHeight()
     {
         return height;
+    }
+
+    public AnotoPageFieldDTO toDTO()
+    {
+        AnotoPageFieldDTO dto = new AnotoPageFieldDTO( getAnotoPage().toDTO(), getName(), getType().toDTO() );
+        dto.setHeight( getHeight() );
+        dto.setIcr( hasIcr() );
+        dto.setLeft( getLeft() );
+        dto.setTop( getTop() );
+        dto.setWidth( getWidth() );
+        return dto;
     }
 }

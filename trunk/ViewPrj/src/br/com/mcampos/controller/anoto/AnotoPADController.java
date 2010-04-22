@@ -1,15 +1,18 @@
 package br.com.mcampos.controller.anoto;
 
 
+import br.com.mcampos.controller.anoto.model.AnotoPageFieldComparator;
 import br.com.mcampos.controller.anoto.model.PenListModel;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
-import br.com.mcampos.controller.anoto.renderer.PageFieldListRenderer;
+import br.com.mcampos.controller.anoto.renderer.PageFieldRowRenderer;
 import br.com.mcampos.controller.anoto.renderer.PenListRenderer;
+import br.com.mcampos.controller.anoto.util.IAnotoPageFieldEvent;
 import br.com.mcampos.controller.anoto.util.PadFile;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
+import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -35,15 +38,21 @@ import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zul.AbstractListModel;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 
-public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
+public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implements IAnotoPageFieldEvent
 {
     public static final String padIdParameterName = "padId";
 
@@ -58,7 +67,10 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
     protected Listbox listAttachs;
     protected Listbox listAvailable;
     protected Listbox listAdded;
-    protected Listbox listFields;
+    protected Grid gridFields;
+    protected Column headerName;
+    protected Column headerType;
+    protected Column headerIcr;
 
 
     public AnotoPADController()
@@ -96,7 +108,21 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
                     }
                 } );
         }
-        listFields.setItemRenderer( new PageFieldListRenderer() );
+        if ( gridFields != null ) {
+            gridFields.setRowRenderer( new PageFieldRowRenderer( this, getSession().getFieldTypes( getLoggedInUser() ) ) );
+            if ( headerIcr != null ) {
+                headerIcr.setSortAscending( new AnotoPageFieldComparator( true, AnotoPageFieldComparator.headerIcr ) );
+                headerIcr.setSortDescending( new AnotoPageFieldComparator( false, AnotoPageFieldComparator.headerIcr ) );
+            }
+            if ( headerType != null ) {
+                headerType.setSortAscending( new AnotoPageFieldComparator( true, AnotoPageFieldComparator.headerType ) );
+                headerType.setSortDescending( new AnotoPageFieldComparator( false, AnotoPageFieldComparator.headerType ) );
+            }
+            if ( headerName != null ) {
+                headerName.setSortAscending( new AnotoPageFieldComparator( true, AnotoPageFieldComparator.headerName ) );
+                headerName.setSortDescending( new AnotoPageFieldComparator( false, AnotoPageFieldComparator.headerName ) );
+            }
+        }
     }
 
     @Override
@@ -139,7 +165,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
     }
 
     @Override
-    protected void showRecord( AnotoPageDTO record )
+    protected void showRecord( AnotoPageDTO record ) throws ApplicationException
     {
         if ( record != null ) {
             recordId.setValue( record.getPageAddress() );
@@ -147,6 +173,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
             listAttachs.setModel( getMediaModel( record ) );
             refreshAttachs( record );
             listAdded.setModel( getPenModel( record ) );
+            refreshFields( record );
         }
         else {
             listAvailable.getItems().clear();
@@ -397,7 +424,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
         return null;
     }
 
-    public void onClick$btnRefreshFields ()
+    public void onClick$btnRefreshFields()
     {
         Listitem item = getListboxRecord().getSelectedItem();
 
@@ -405,26 +432,85 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO>
             showErrorMessage( "Por favor selecione um endereço de página na lista", "Atualizar Campos" );
             return;
         }
-        AnotoPageDTO page = (AnotoPageDTO) item.getValue();
+        AnotoPageDTO page = ( AnotoPageDTO )item.getValue();
         if ( page == null ) {
             showErrorMessage( "Não existem dados da página associados", "Atualizar Campos" );
             return;
         }
-        byte [] padByte;
+        byte[] padByte;
         try {
             padByte = getSession().getObject( page.getPad().getMedia() );
-            if ( padByte != null )
-            {
+            if ( padByte != null ) {
                 PadFile padFile;
-                padFile = new PadFile ( page.getPad().getForm(), padByte );
-                List<AnotoPageFieldDTO> fields = padFile.getFields( page.getPageAddress() );
-                if ( SysUtils.isEmpty( fields ))
-                    fields = new ArrayList<AnotoPageFieldDTO> ();
-                listFields.setModel( new ListModelList ( fields) );
+                padFile = new PadFile( page.getPad().getForm(), padByte );
+                List<AnotoPageFieldDTO> fields = padFile.getFields( page );
+                if ( SysUtils.isEmpty( fields ) == false ) {
+                    for ( AnotoPageFieldDTO field : fields )
+                        field.setPage( page );
+                    getSession().refreshFields( getLoggedInUser(), fields );
+                    refreshFields( fields );
+                }
             }
         }
         catch ( Exception e ) {
             showErrorMessage( e.getMessage(), "Atualizar Campos" );
+        }
+    }
+
+    protected void refreshFields( List<AnotoPageFieldDTO> fields )
+    {
+        if ( SysUtils.isEmpty( fields ) )
+            fields = new ArrayList<AnotoPageFieldDTO>();
+        gridFields.setModel( new ListModelList( fields ) );
+    }
+
+    protected void refreshFields( AnotoPageDTO record ) throws ApplicationException
+    {
+        List<AnotoPageFieldDTO> fields;
+
+        fields = getSession().getFields( getLoggedInUser(), record );
+        refreshFields( fields );
+    }
+
+    public void onSelect( org.zkoss.zk.ui.event.SelectEvent evt )
+    {
+        if ( evt.getTarget() != null && evt.getTarget() instanceof Combobox ) {
+            Combobox target = ( Combobox )evt.getTarget();
+            if ( target.getParent() instanceof Row ) {
+                Object value = ( ( Row )target.getParent() ).getValue();
+                if ( value instanceof AnotoPageFieldDTO ) {
+                    Comboitem item = ( Comboitem )evt.getReference();
+                    FieldTypeDTO type = ( FieldTypeDTO )item.getValue();
+                    AnotoPageFieldDTO dto = ( AnotoPageFieldDTO )value;
+                    dto.setType( type );
+                    tryUpdate( dto );
+                }
+            }
+        }
+    }
+
+    public void onCheck( org.zkoss.zk.ui.event.CheckEvent evt )
+    {
+        if ( evt.getTarget() != null && evt.getTarget() instanceof Checkbox ) {
+            Checkbox target = ( Checkbox )evt.getTarget();
+            if ( target.getParent() instanceof Row ) {
+                Object value = ( ( Row )target.getParent() ).getValue();
+                if ( value instanceof AnotoPageFieldDTO ) {
+                    AnotoPageFieldDTO dto = ( AnotoPageFieldDTO )value;
+                    dto.setIcr( evt.isChecked() );
+                    tryUpdate( dto );
+                }
+            }
+        }
+    }
+
+    protected void tryUpdate( AnotoPageFieldDTO dto )
+    {
+        try {
+            getSession().update( getLoggedInUser(), dto );
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage(), "Atualizar Campo" );
         }
     }
 }

@@ -14,6 +14,7 @@ import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -139,7 +140,8 @@ public interface AnodeFacade
 
     List<PgcPenPageDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException;
 
-    List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props, Integer maxRecord ) throws ApplicationException;
+    List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props,
+                                            Integer maxRecord ) throws ApplicationException;
 
     List<PgcPenPageDTO> getPgcPenPages( PGCDTO pgc ) throws ApplicationException;
 
@@ -163,5 +165,15 @@ public interface AnodeFacade
 
     List<PgcAttachmentDTO> getAttachments( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException;
 
-    void addToPage ( AuthenticationDTO auth, PadDTO PAD, String page, List<AnotoPageFieldDTO> fields ) throws ApplicationException;
+    void addToPage( AuthenticationDTO auth, PadDTO PAD, String page, List<AnotoPageFieldDTO> fields ) throws ApplicationException;
+
+    List<FieldTypeDTO> getFieldTypes( AuthenticationDTO auth ) throws ApplicationException;
+
+    void addFields( AuthenticationDTO auth, List<AnotoPageFieldDTO> fields ) throws ApplicationException;
+
+    void refreshFields( AuthenticationDTO auth, List<AnotoPageFieldDTO> fields ) throws ApplicationException;
+
+    List<AnotoPageFieldDTO> getFields( AuthenticationDTO auth, AnotoPageDTO anotoPage ) throws ApplicationException;
+
+    void update( AuthenticationDTO auth ) throws ApplicationException;
 }

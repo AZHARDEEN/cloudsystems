@@ -90,8 +90,7 @@
                                 <hbox>
                                     <vbox>
                                         <label value="Associadas"/>
-                                        <listbox id="listAdded" fixedLayout="true" height="200px" width="200px"
-                                                 droppable="true">
+                                        <listbox id="listAdded" fixedLayout="true" height="200px" width="200px" droppable="true">
                                             <listhead sizable="true">
                                                 <listheader align="left" label="Código"/>
                                             </listhead>
@@ -117,11 +116,13 @@
                                     <toolbarbutton id="btnRefreshFields" label="Atualizar"
                                                    image="/img/icontexto-webdev-add-016x016.png"/>
                                 </toolbar>
-                                <listbox id="listFields" fixedLayout="true" height="300px">
-                                    <listhead sizable="true">
-                                        <listheader align="left" label="Nome"/>
-                                    </listhead>
-                                </listbox>
+                                <grid id="gridFields" fixedLayout="true" height="300px">
+                                    <columns sizable="false">
+                                        <column align="left" label="Nome" id="headerName"/>
+                                        <column align="left" label="Tipo" id="headerType"/>
+                                        <column align="left" label="ICR" width="30px" id="hederIcr"/>
+                                    </columns>
+                                </grid>
                             </tabpanel>
                         </tabpanels>
                     </tabbox>
