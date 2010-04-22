@@ -454,7 +454,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
 
     @TransactionAttribute( TransactionAttributeType.NEVER )
-    public List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props ) throws ApplicationException
+    public List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props, Integer maxRecords ) throws ApplicationException
     {
         authenticate( auth );
         if ( props != null && props.size() > 0 ) {
@@ -468,7 +468,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
                     props.put( "form", entity );
             }
         }
-        List<PgcPage> list = pgcPenPageSession.getAll( props );
+        List<PgcPage> list = pgcPenPageSession.getAll( props, maxRecords );
         if ( SysUtils.isEmpty( list ) )
             return Collections.emptyList();
         List<AnotoResultList> resultList = new ArrayList<AnotoResultList>();

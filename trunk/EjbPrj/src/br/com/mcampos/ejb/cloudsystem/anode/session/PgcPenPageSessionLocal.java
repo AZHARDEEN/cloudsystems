@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface PgcPenPageSessionLocal
 {
-    List<PgcPage> getAll( Properties props ) throws ApplicationException;
+    List<PgcPage> getAll( Properties props, Integer maxRecords ) throws ApplicationException;
 
     PgcPenPage add( PgcPenPage entity ) throws ApplicationException;
 

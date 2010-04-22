@@ -139,7 +139,7 @@ public interface AnodeFacade
 
     List<PgcPenPageDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException;
 
-    List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props ) throws ApplicationException;
+    List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props, Integer maxRecord ) throws ApplicationException;
 
     List<PgcPenPageDTO> getPgcPenPages( PGCDTO pgc ) throws ApplicationException;
 
