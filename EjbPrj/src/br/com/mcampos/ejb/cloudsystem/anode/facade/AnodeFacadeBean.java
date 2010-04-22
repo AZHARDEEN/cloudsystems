@@ -14,9 +14,11 @@ import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPageField;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.FormMedia;
@@ -35,10 +37,12 @@ import br.com.mcampos.ejb.cloudsystem.anode.session.AnodeFormSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.AnodePenSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.PadSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anode.session.PageFieldSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.session.PgcPenPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.cloudsystem.system.FieldTypeSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
@@ -83,6 +87,13 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
     @EJB
     private PgcPenPageSessionLocal pgcPenPageSession;
+
+    @EJB
+    private FieldTypeSessionLocal fieldTypeSession;
+
+    @EJB
+    private PageFieldSessionLocal pageFieldSession;
+
 
     public AnodeFacadeBean()
     {
@@ -454,7 +465,8 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
 
     @TransactionAttribute( TransactionAttributeType.NEVER )
-    public List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props, Integer maxRecords ) throws ApplicationException
+    public List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props,
+                                                   Integer maxRecords ) throws ApplicationException
     {
         authenticate( auth );
         if ( props != null && props.size() > 0 ) {
@@ -475,8 +487,8 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         for ( PgcPage page : list ) {
             AnotoResultList item = new AnotoResultList();
 
-            item.setForm( page.getPgc().getPgcPenPages().get(0).getPenPage().getPage().getPad().getForm().toDTO() );
-            item.setPen( page.getPgc().getPgcPenPages().get(0).getPenPage().getPen().toDTO() );
+            item.setForm( page.getPgc().getPgcPenPages().get( 0 ).getPenPage().getPage().getPad().getForm().toDTO() );
+            item.setPen( page.getPgc().getPgcPenPages().get( 0 ).getPenPage().getPen().toDTO() );
             item.setPgcPage( page.toDTO() );
             if ( resultList.contains( item ) == false )
                 resultList.add( item );
@@ -638,19 +650,67 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return pgcSession.remove( item );
     }
 
+    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PgcAttachmentDTO> getAttachments( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
     {
         authenticate( auth );
         return AnotoUtils.toPgcAttachmentList( pgcSession.getAttachments( DTOFactory.copy( page ) ) );
     }
 
-    public void addToPage ( AuthenticationDTO auth, PadDTO padDTO, String pageAddress, List<AnotoPageFieldDTO> fields ) throws ApplicationException
+    public void addToPage( AuthenticationDTO auth, PadDTO padDTO, String pageAddress,
+                           List<AnotoPageFieldDTO> fields ) throws ApplicationException
     {
         authenticate( auth );
-        AnotoPage page = padSession.getPage( new AnotoPagePK ( pageAddress, padDTO.getForm().getId(), padDTO.getId() ) );
+        AnotoPage page = padSession.getPage( new AnotoPagePK( pageAddress, padDTO.getForm().getId(), padDTO.getId() ) );
         if ( page == null )
             return;
-        padSession.add ( page, fields  );
+        padSession.add( page, fields );
+    }
+
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public List<FieldTypeDTO> getFieldTypes( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth );
+        return fieldTypeSession.toDTOList( fieldTypeSession.getAll() );
+    }
+
+    public void addFields( AuthenticationDTO auth, List<AnotoPageFieldDTO> fields ) throws ApplicationException
+    {
+        authenticate( auth );
+        if ( SysUtils.isEmpty( fields ) )
+            return;
+        List<AnotoPageField> list = AnotoUtils.toAnotoPageField( fields );
+        AnotoPage page = getAnotoPage( fields.get( 0 ).getPage() );
+        pageFieldSession.add( page, list );
+    }
+
+
+    public void refreshFields( AuthenticationDTO auth, List<AnotoPageFieldDTO> fields ) throws ApplicationException
+    {
+        authenticate( auth );
+        if ( SysUtils.isEmpty( fields ) )
+            return;
+
+        AnotoPage page = getAnotoPage( fields.get( 0 ).getPage() );
+        if ( page != null ) {
+            List<AnotoPageField> list = AnotoUtils.toAnotoPageField( fields );
+            pageFieldSession.refresh( page, list );
+        }
+    }
+
+    protected AnotoPage getAnotoPage( AnotoPageDTO dto )
+    {
+        AnotoPage page = getEntityManager().find( AnotoPage.class, new AnotoPagePK( dto ) );
+        return page;
+    }
+
+    public List<AnotoPageFieldDTO> getFields( AuthenticationDTO auth, AnotoPageDTO anotoPage ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoPage page = getAnotoPage( anotoPage );
+        if ( page == null )
+            return Collections.emptyList();
+        return AnotoUtils.toAnotoPageFieldDTO( pageFieldSession.getAll( page ) );
     }
 }
 

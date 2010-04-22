@@ -8,6 +8,7 @@ import br.com.mcampos.controller.anoto.model.FormListModel;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PenListRenderer;
 import br.com.mcampos.controller.anoto.util.PadFile;
+import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
@@ -248,10 +249,13 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
                     pages.add( file.getPageAddress( file.getPages().get( nIndex ) ) );
                 addedDTO = getSession().addToForm( getLoggedInUser(), form, dto, pages );
                 try {
-                    for (String page : pages ) {
-                        List<AnotoPageFieldDTO> fields = file.getFields( page );
+                    AnotoPageDTO anotoPage = new AnotoPageDTO();
+                    anotoPage.setPad( addedDTO );
+                    for ( String page : pages ) {
+                        anotoPage.setPageAddress( page );
+                        List<AnotoPageFieldDTO> fields = file.getFields( anotoPage );
                         if ( SysUtils.isEmpty( fields ) == false )
-                            getSession().addToPage ( getLoggedInUser(), addedDTO, page, fields );
+                            getSession().addToPage( getLoggedInUser(), addedDTO, page, fields );
                     }
                 }
                 catch ( Exception e ) {
@@ -265,7 +269,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             }
         }
         catch ( Exception e ) {
-            showErrorMessage( e.getMessage(), "Adicinar PAD" );
+            showErrorMessage( e.getMessage(), "Adicionar PAD" );
         }
     }
 

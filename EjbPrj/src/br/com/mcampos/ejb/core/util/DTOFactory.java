@@ -859,29 +859,37 @@ public final class DTOFactory implements Serializable
         return entity;
     }
 
-    public static FieldType copy ( FieldTypeDTO dto )
+    public static FieldType copy( FieldTypeDTO dto )
     {
-        FieldType target = new FieldType ( dto.getDescription(), dto.getId() );
+        FieldType target = new FieldType( dto.getDescription(), dto.getId() );
         return target;
     }
 
-    public static AnotoPageField copy ( AnotoPageFieldDTO dto )
+    public static AnotoPageField copy( AnotoPageFieldDTO dto )
     {
-        AnotoPageField target = new AnotoPageField ( );
+        AnotoPageField target = new AnotoPageField();
         if ( dto.getPage() != null )
-            target.setAnotoPage( copy ( dto.getPage() ) );
+            target.setAnotoPage( copy( dto.getPage() ) );
+        target.setHeight( dto.getHeight() );
+        target.setName( dto.getName() );
+        target.setIcr( dto.getIcr() );
+        target.setLeft( dto.getLeft() );
+        target.setTop( dto.getTop() );
+        if ( dto.getType() != null )
+            target.setType( new FieldType( dto.getType().getDescription(), dto.getType().getId() ) );
+        target.setWidth( dto.getWidth() );
         return target;
     }
 
-    public static AnotoPage copy ( AnotoPageDTO dto )
+    public static AnotoPage copy( AnotoPageDTO dto )
     {
-        AnotoPage target = new AnotoPage ( copy ( dto.getPad() ), dto.getPageAddress() );
+        AnotoPage target = new AnotoPage( copy( dto.getPad() ), dto.getPageAddress() );
         return target;
     }
 
-    public static Pad copy ( PadDTO dto )
+    public static Pad copy( PadDTO dto )
     {
-        Pad target = new Pad ( );
+        Pad target = new Pad( copy( dto.getForm() ), copy( dto.getMedia() ) );
         return target;
     }
 }

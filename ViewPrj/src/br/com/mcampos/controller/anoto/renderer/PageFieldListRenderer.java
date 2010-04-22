@@ -16,8 +16,18 @@ public class PageFieldListRenderer implements ListitemRenderer
 
     public void render( Listitem item, Object data ) throws Exception
     {
-        item.setValue ( data );
-        AnotoPageFieldDTO dto = (AnotoPageFieldDTO) data;
-        item.getChildren().add( new Listcell( dto.getName() ) );
+        item.setValue( data );
+        AnotoPageFieldDTO dto = ( AnotoPageFieldDTO )data;
+        int nIndex = 0;
+        if ( item.getChildren().size() == 0 ) {
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+        }
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( "" + ( item.getListbox().getIndexOfItem( item ) + 1 ) );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getName() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getType().getDescription() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getIcr() ? "SIM" : "NÃO" );
     }
 }

@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.utils;
 
 
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
+import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
@@ -13,6 +14,7 @@ import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
+import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPageField;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
@@ -21,13 +23,14 @@ import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AnotoUtils
+public final class AnotoUtils
 {
     public AnotoUtils()
     {
@@ -167,4 +170,26 @@ public class AnotoUtils
         return dtoList;
     }
 
+    public static List<AnotoPageFieldDTO> toAnotoPageFieldDTO( List<AnotoPageField> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<AnotoPageFieldDTO> dtoList = new ArrayList<AnotoPageFieldDTO>( list.size() );
+        for ( AnotoPageField f : list ) {
+            dtoList.add( f.toDTO() );
+        }
+        return dtoList;
+    }
+
+
+    public static List<AnotoPageField> toAnotoPageField( List<AnotoPageFieldDTO> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<AnotoPageField> dtoList = new ArrayList<AnotoPageField>( list.size() );
+        for ( AnotoPageFieldDTO f : list ) {
+            dtoList.add( DTOFactory.copy( f ) );
+        }
+        return dtoList;
+    }
 }

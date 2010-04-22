@@ -1,9 +1,11 @@
 package br.com.mcampos.controller.anoto.util;
 
 
+import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
+import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
@@ -113,23 +115,22 @@ public class PadFile
         return pageElement.getAttributeValue( addressAttributeName );
     }
 
-    public Element getPage ( String pageAddress )
+    public Element getPage( String pageAddress )
     {
-        for ( Element page : getPages() )
-        {
-            if ( getPageAddress(page).equals( pageAddress ) )
+        for ( Element page : getPages() ) {
+            if ( getPageAddress( page ).equals( pageAddress ) )
                 return page;
         }
         return null;
     }
 
-    public List<AnotoPageFieldDTO> getFields ( String pageAddress )
+    public List<AnotoPageFieldDTO> getFields( AnotoPageDTO anotoPage )
     {
-        Element page = getPage ( pageAddress );
-        return getFields ( page );
+        Element page = getPage( anotoPage.getPageAddress() );
+        return getFields( anotoPage, page );
     }
 
-    public List<AnotoPageFieldDTO> getFields ( Element page )
+    public List<AnotoPageFieldDTO> getFields( AnotoPageDTO anotoPage, Element page )
     {
         if ( page == null )
             return Collections.emptyList();
@@ -139,14 +140,17 @@ public class PadFile
             elements = d.getChildren( userAreaName );
         if ( SysUtils.isEmpty( elements ) )
             return Collections.emptyList();
-        List<AnotoPageFieldDTO> fields = new ArrayList<AnotoPageFieldDTO> ( elements.size() );
+        List<AnotoPageFieldDTO> fields = new ArrayList<AnotoPageFieldDTO>( elements.size() );
         for ( Element field : elements ) {
-            AnotoPageFieldDTO dto = new AnotoPageFieldDTO ();
+            AnotoPageFieldDTO dto = new AnotoPageFieldDTO();
+            dto.setPage( anotoPage );
             dto.setName( field.getAttributeValue( "name" ) );
             dto.setTop( Integer.parseInt( field.getAttributeValue( "top" ) ) );
             dto.setLeft( Integer.parseInt( field.getAttributeValue( "left" ) ) );
             dto.setWidth( Integer.parseInt( field.getAttributeValue( "width" ) ) );
             dto.setHeight( Integer.parseInt( field.getAttributeValue( "height" ) ) );
+            dto.setType( new FieldTypeDTO( FieldTypeDTO.typeString ) );
+            dto.setIcr( true );
             fields.add( dto );
         }
         return fields;
