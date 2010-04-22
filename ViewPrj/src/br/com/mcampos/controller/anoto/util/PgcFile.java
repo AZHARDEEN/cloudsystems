@@ -60,6 +60,7 @@ public class PgcFile
     protected PadFile pad;
     protected byte[] bytePgc;
 
+
     public PgcFile()
     {
         super();
@@ -221,14 +222,6 @@ public class PgcFile
             setObject( getPad(), pgc.getMedia().getObject() );
             processProperties();
             processPGC( pgcsPenPage.get( 0 ) );
-            /*
-            locCoord = getCurrentPen().getProperty( KEY_LOCATION_COORDINATES );
-            if ( null != locCoord && 5 < locCoord.length ) {
-                int a = 0;
-                a++;
-                a--;
-            }
-            */
         }
         catch ( PenCreationException e ) {
             return;
@@ -331,6 +324,9 @@ public class PgcFile
                     getSession().addProcessedImage( pgcPenPage.getPgc(), media, nBookIndex, nPageIndex );
             }
         }
+        File file = new File ( renderedImage );
+        if ( file.exists() )
+            file.delete ();
     }
 
     protected void addAttachments( PgcPageDTO pgcPage, Page page ) throws PageException, ApplicationException
@@ -384,7 +380,6 @@ public class PgcFile
             fieldDTO.setHasPenstrokes( pageArea.hasPenStrokes() );
             pageArea.getType();
             if ( fieldDTO.getHasPenstrokes() ) {
-                Renderer renderer;
                 Long minTime = 0L, maxTime = 0L;
                 PenStrokes pss = pageArea.getPenStrokes();
                 Iterator strokesIt = pss.getIterator();
@@ -398,27 +393,57 @@ public class PgcFile
                 fieldDTO.setStartTime( minTime );
                 fieldDTO.setEndTime( maxTime );
                 try {
-                    renderer = RendererFactory.create( pageArea );
-                    String path = basePath + "/" + "field." + getImageFileTypeExtension();
-                    renderer.renderToFile( path, 200 );
-                    MediaDTO media = createMedia( path );
-                    fieldDTO.setMedia( media );
-
-                    String filename = String.format ( "%s\\%03d_%03d_%03d.%s" ,
-                                basePath,
-                                fieldIndex ++,
-                                fieldDTO.getPgcPage().getBookId(),
-                                fieldDTO.getPgcPage().getPageId(),
-                                getImageFileTypeExtension());
-                    renderer.renderToFile( filename, 300 );
+                    getFieldImage( basePath, pageArea, fieldDTO );
+                    //getFieldIcrText( basePath, pageArea, fieldDTO, fieldIndex );
+                    fieldIndex ++;
                 }
                 catch ( Exception e ) {
-                    e = null;
+                    System.out.println ( e.getMessage() );
                 }
             }
             getSession().addPgcField( fieldDTO );
         }
     }
+
+    protected void getFieldImage ( String basePath, PageArea pageArea, PgcFieldDTO fieldDTO ) throws RenderException,
+                                                                NotAllowedException
+    {
+        Renderer renderer;
+        String path;
+
+        renderer = RendererFactory.create( pageArea );
+        path = basePath + "/" + "field." + getImageFileTypeExtension();
+        renderer.renderToFile( path, 200 );
+        MediaDTO media = createMedia( path );
+        fieldDTO.setMedia( media );
+        File file = new File ( path );
+        if ( file.exists() )
+            file.delete();
+    }
+
+    protected void getFieldIcrText ( String basePath, PageArea pageArea, PgcFieldDTO fieldDTO, int fieldIndex ) throws RenderException,
+                                                            NotAllowedException
+    {
+        Renderer renderer;
+        renderer = RendererFactory.create( pageArea );
+        renderer.useForce( false );
+        String filename = String.format ( "%s\\%03d_%03d_%03d_%03d.%s" ,
+                    basePath,
+                    fieldDTO.getPgcPage().getPgc().getId(),
+                    fieldDTO.getPgcPage().getBookId(),
+                    fieldDTO.getPgcPage().getPageId(),
+                    fieldIndex,
+                    "jpg");
+        renderer.renderToFile( filename, 300 );
+        String fieldValue = getFieldValue ( filename );
+    }
+
+    protected String getFieldValue ( String filename )
+    {
+        String value = null;
+        return null;
+    }
+
 
     protected List<MediaDTO> loadBackgroundImages( PgcPenPageDTO pgcPenPage, Page page )
     {

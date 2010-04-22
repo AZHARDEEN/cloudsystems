@@ -25,8 +25,10 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Intbox;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
 
 
@@ -39,6 +41,11 @@ public class AnotoView2Controller extends AnotoLoggedController
     protected Datebox endDate;
     protected Timebox endTime;
     protected Listbox resultList;
+    protected Textbox txtBarcode;
+    protected Intbox  txtFormIdFrom;
+    protected Intbox  txtFormIdTo;
+    protected Combobox cmbMaxRecords;
+    protected Textbox txtFieldValue;
 
     public AnotoView2Controller( char c )
     {
@@ -56,6 +63,7 @@ public class AnotoView2Controller extends AnotoLoggedController
         super.doAfterCompose( comp );
         refresh();
         resultList.setItemRenderer( new PgcPenPageListRenderer() );
+        cmbMaxRecords.setSelectedIndex( 0 );
         configureonOkEvents();
     }
 
@@ -132,7 +140,7 @@ public class AnotoView2Controller extends AnotoLoggedController
     {
         List<AnotoResultList> dtos;
         try {
-            dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop );
+            dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop, Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() ) );
             ListModelList model = getModel();
             model.clear();
             model.addAll( dtos );
@@ -201,6 +209,39 @@ public class AnotoView2Controller extends AnotoLoggedController
         Date eDate = getDate( endDate, endTime );
         if ( eDate != null )
             prop.put( "endDate", eDate );
+
+        /*
+         * Does we have a barcode?
+         */
+        String barCode = txtBarcode.getValue();
+        if ( SysUtils.isEmpty( barCode ) == false )
+            prop.put( "barCode", barCode );
+
+
+        /*
+         * Does we have a barcode?
+         */
+        Integer bookIdFrom = txtFormIdFrom.getValue();
+        if ( SysUtils.isZero( bookIdFrom ) == false ) {
+            /*
+             * Truque. No renderer somamos + 1 ao book id (zero based), porém zero não faz sentido ao usuario
+             */
+            bookIdFrom --;
+            prop.put( "bookIdFrom", bookIdFrom );
+        }
+
+
+        Integer bookIdTo = txtFormIdTo.getValue();
+        if ( SysUtils.isZero( bookIdTo ) == false ) {
+            bookIdTo --;
+            prop.put( "bookIdTo", bookIdTo );
+        }
+
+        String fieldValue = txtFieldValue.getValue();
+        if ( SysUtils.isEmpty( fieldValue ) == false ) {
+            prop.put( "pgcFieldValue", fieldValue );
+        }
+
 
         loadPGC( prop );
     }
@@ -292,6 +333,41 @@ public class AnotoView2Controller extends AnotoLoggedController
                 }
             } );
         endTime.addEventListener( Events.ON_OK, new EventListener()
+            {
+                public void onEvent( Event event )
+                {
+                    onClick$btnFilter();
+                }
+            } );
+        txtBarcode.addEventListener( Events.ON_OK, new EventListener()
+            {
+                public void onEvent( Event event )
+                {
+                    onClick$btnFilter();
+                }
+            } );
+        txtFormIdFrom.addEventListener( Events.ON_OK, new EventListener()
+            {
+                public void onEvent( Event event )
+                {
+                    onClick$btnFilter();
+                }
+            } );
+        txtFormIdTo.addEventListener( Events.ON_OK, new EventListener()
+            {
+                public void onEvent( Event event )
+                {
+                    onClick$btnFilter();
+                }
+            } );
+        cmbMaxRecords.addEventListener( Events.ON_OK, new EventListener()
+            {
+                public void onEvent( Event event )
+                {
+                    onClick$btnFilter();
+                }
+            } );
+        txtFieldValue.addEventListener( Events.ON_OK, new EventListener()
             {
                 public void onEvent( Event event )
                 {

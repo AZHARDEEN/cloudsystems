@@ -24,6 +24,7 @@ public class PgcPenPageListRenderer implements ListitemRenderer
     {
         item.setValue( data );
         AnotoResultList dto = ( AnotoResultList )data;
+        int nIndex = 0;
 
         if ( item.getChildren().size() == 0 ) {
             item.appendChild( new Listcell( ) );
@@ -31,15 +32,18 @@ public class PgcPenPageListRenderer implements ListitemRenderer
             item.appendChild( new Listcell( ) );
             item.appendChild( new Listcell( ) );
             item.appendChild( new Listcell( ) );
+            item.appendChild( new Listcell( ) );
         }
-        ((Listcell)item.getChildren().get( 0 )).setLabel( dto.getForm().toString() );
+
+        ((Listcell)item.getChildren().get( nIndex ++ )).setLabel( "" + ( item.getListbox().getIndexOfItem( item ) + 1 ) );
+        ((Listcell)item.getChildren().get( nIndex ++ )).setLabel( dto.getForm().toString() );
         Integer aux = dto.getPgcPage().getBookId() + 1;
-        ((Listcell)item.getChildren().get( 1 )).setLabel( aux.toString() );
+        ((Listcell)item.getChildren().get( nIndex ++ )).setLabel( aux.toString() );
         aux = dto.getPgcPage().getPageId() + 1;
-        ((Listcell)item.getChildren().get( 2 )).setLabel( aux.toString() );
-        ((Listcell)item.getChildren().get( 3 )).setLabel( dto.getPen().toString() );
+        ((Listcell)item.getChildren().get( nIndex ++ )).setLabel( aux.toString() );
+        ((Listcell)item.getChildren().get( nIndex ++ )).setLabel( dto.getPen().toString() );
         try {
-            ((Listcell)item.getChildren().get( 4 )).setLabel( renderedDateFormat.format( dto.getPgcPage().getPgc().getInsertDate() ) );
+            ((Listcell)item.getChildren().get( nIndex ++ )).setLabel( renderedDateFormat.format( dto.getPgcPage().getPgc().getInsertDate() ) );
         }
         catch ( Exception e ) {
             e = null;
