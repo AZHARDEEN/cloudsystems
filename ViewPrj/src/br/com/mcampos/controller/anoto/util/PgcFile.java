@@ -200,8 +200,7 @@ public class PgcFile
         FormDTO form;
         PGCDTO pgc = getCurrentPgc();
         List<String> addresses = getPageAddresess();
-        PGCDTO insertedPgc = getSession().add( getCurrentPgc(), getPenId(), addresses );
-        String locCoord[];
+        PGCDTO insertedPgc = getSession().add( getCurrentPgc(), addresses );
 
         setCurrentPgc( insertedPgc );
         if ( insertedPgc.getPgcStatus().getId() != PgcStatusDTO.statusOk )
@@ -246,7 +245,7 @@ public class PgcFile
         }
     }
 
-    protected void processPGC( PgcPenPageDTO pgcPenPage )
+    protected void processPGC( PgcPenPageDTO pgcPenPage ) throws ApplicationException
     {
         List<AnotoBook> books = null;
         List<Page> pages = null;
@@ -258,7 +257,10 @@ public class PgcFile
         if ( SysUtils.isEmpty( books ) ) {
             pages = getPages();
             if ( SysUtils.isEmpty( pages ) )
+            {
+                getSession().setPgcStatus( pgcPenPage.getPgc(), 4 );
                 return;
+            }
             nPageIndex = 0;
             for ( Page page : pages ) {
                 processPage( pgcPenPage, 0, nPageIndex, page );
@@ -306,12 +308,21 @@ public class PgcFile
                                    int nPageIndex ) throws RenderException, NotAllowedException, ApplicationException
     {
         Renderer renderer;
+        MediaDTO media;
         List<MediaDTO> backgroundImages = loadBackgroundImages( pgcPenPage, page );
         String renderedImage = basePath + "/renderedImage." + getImageFileTypeExtension();
+        String icrImage;
 
         renderer = RendererFactory.create( page );
         if ( SysUtils.isEmpty( backgroundImages ) ) {
             renderer.renderToFile( renderedImage, 200 );
+            media = createMedia( renderedImage );
+            if ( media != null )
+                getSession().addProcessedImage( pgcPenPage.getPgc(), media, nBookIndex, nPageIndex );
+            icrImage = String.format( "%s/%s.%s", basePath,
+                                     pgcPenPage.getPageAddress(),
+                                     getImageFileTypeExtension() );
+            renderer.renderToFile( icrImage, 300 );
         }
         else {
             for ( MediaDTO image : backgroundImages ) {
@@ -319,9 +330,14 @@ public class PgcFile
                 byte[] object = getSession().getObject( image );
                 renderer.setBackground( getPad().saveBackgroundImage( imagePath, image.getName(), object ) );
                 renderer.renderToFile( renderedImage, 200 );
-                MediaDTO media = createMedia( renderedImage );
+                media = createMedia( renderedImage );
                 if ( media != null )
                     getSession().addProcessedImage( pgcPenPage.getPgc(), media, nBookIndex, nPageIndex );
+                icrImage = String.format( "%s/%s_%s.%s", basePath,
+                                     pgcPenPage.getPageAddress(),
+                                    media.getName(),
+                                     getImageFileTypeExtension() );
+                renderer.renderToFile( icrImage, 300 );
             }
         }
         File file = new File ( renderedImage );

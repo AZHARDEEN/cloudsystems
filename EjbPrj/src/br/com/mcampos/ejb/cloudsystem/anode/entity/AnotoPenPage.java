@@ -27,7 +27,8 @@ import javax.persistence.Table;
                  @NamedQuery( name = AnotoPenPage.pagePensQueryName, query = "select o from AnotoPenPage o where o.page = ?1" ),
                  @NamedQuery( name = AnotoPenPage.formPensQueryName, query = "select o from AnotoPenPage o where o.page.pad.form = ?1" ),
                  @NamedQuery( name = AnotoPenPage.formAndPenQueryName, query = "select o from AnotoPenPage o where o.page.pad.form = ?1 and o.pen = ?2" ),
-                 @NamedQuery( name = AnotoPenPage.pagePenQueryName, query = "select o from AnotoPenPage o where o.page = ?1 and o.pen = ?2" )
+                 @NamedQuery( name = AnotoPenPage.pagePenQueryName, query = "select o from AnotoPenPage o where o.page = ?1 and o.pen = ?2" ),
+                 @NamedQuery( name = AnotoPenPage.penPageAddressQueryName, query = "select o from AnotoPenPage o where o.pen = ?1 and o.pageAddress = ?2" )
                  } )
 @Table( name = "anoto_pen_page" )
 @IdClass( AnotoPenPagePK.class )
@@ -39,6 +40,7 @@ public class AnotoPenPage implements Serializable, EntityCopyInterface<AnotoPenP
     public static final String formAndPenQueryName = "AnotoPenPage.getFormAndPen";
     public static final String pagePenQueryName = "AnotoPenPage.getPagePen";
     public static final String pgcQueryName = "AnotoPenPage.getPenPageFromPGC";
+    public static final String penPageAddressQueryName = "AnotoPenPage.getPenPageAddress";
 
     @Id
     @Column( name = "apg_id_ch", nullable = false, insertable = false, updatable = false )

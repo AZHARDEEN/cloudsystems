@@ -25,7 +25,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = Pad.formPadsNamedQuery, query = "select o from Pad o" ),
-                 @NamedQuery( name = Pad.padFindAllNamedQuery, query = "select o from Pad o where o.form = ?1" ) } )
+                 @NamedQuery( name = Pad.padFindAllNamedQuery, query = "select o from Pad o where o.form.application = ?1" ) } )
 @Table( name = "pad" )
 @IdClass( PadPK.class )
 public class Pad implements Serializable, EntityCopyInterface<PadDTO>, Comparable<Pad>

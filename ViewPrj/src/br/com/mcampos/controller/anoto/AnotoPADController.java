@@ -461,7 +461,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
     {
         if ( SysUtils.isEmpty( fields ) )
             fields = new ArrayList<AnotoPageFieldDTO>();
-        gridFields.setModel( new ListModelList( fields ) );
+        gridFields.setModel( new ListModelList( fields, true ) );
     }
 
     protected void refreshFields( AnotoPageDTO record ) throws ApplicationException
@@ -477,7 +477,8 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
         if ( evt.getTarget() != null && evt.getTarget() instanceof Combobox ) {
             Combobox target = ( Combobox )evt.getTarget();
             if ( target.getParent() instanceof Row ) {
-                Object value = ( ( Row )target.getParent() ).getValue();
+                Row row = ( ( Row )target.getParent() );
+                Object value = row.getValue();
                 if ( value instanceof AnotoPageFieldDTO ) {
                     Comboitem item = ( Comboitem )evt.getReference();
                     FieldTypeDTO type = ( FieldTypeDTO )item.getValue();
@@ -494,7 +495,8 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
         if ( evt.getTarget() != null && evt.getTarget() instanceof Checkbox ) {
             Checkbox target = ( Checkbox )evt.getTarget();
             if ( target.getParent() instanceof Row ) {
-                Object value = ( ( Row )target.getParent() ).getValue();
+                Row row = ( ( Row )target.getParent() );
+                Object value = row.getValue();
                 if ( value instanceof AnotoPageFieldDTO ) {
                     AnotoPageFieldDTO dto = ( AnotoPageFieldDTO )value;
                     dto.setIcr( evt.isChecked() );

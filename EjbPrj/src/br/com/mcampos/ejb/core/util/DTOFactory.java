@@ -779,7 +779,7 @@ public final class DTOFactory implements Serializable
         if ( source == null )
             return null;
 
-        AnotoForm target = new AnotoForm( source.getId(), source.getApplication(), source.getDescription() );
+        AnotoForm target = new AnotoForm( source.getId(), source.getApplication().trim(), source.getDescription().trim() );
 
         return target;
     }
@@ -811,7 +811,12 @@ public final class DTOFactory implements Serializable
     {
         Pgc pgc = new Pgc();
         pgc.setMedia( copy( source.getMedia() ) );
-        pgc.setPenId( source.getPenId() );
+        String penId = source.getPenId();
+        if ( penId != null ) {
+            if ( penId.length() > 16 )
+                penId = penId.substring( 0, 15 );
+        }
+        pgc.setPenId( penId );
         pgc.setTimediff( source.getTimeDiff() );
         return pgc;
     }

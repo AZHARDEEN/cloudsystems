@@ -62,4 +62,6 @@ public interface PGCSessionLocal
     Integer remove( AnotoResultList item ) throws ApplicationException;
 
     List<PgcAttachment> getAttachments( PgcPage page ) throws ApplicationException;
+
+    Boolean isEnabled ( Pgc pgc, String pageAddress );
 }

@@ -130,7 +130,7 @@ public interface AnodeFacade
      * *************************************************************************
      */
 
-    PGCDTO add( PGCDTO dto, String penId, List<String> pages ) throws ApplicationException;
+    PGCDTO add( PGCDTO dto, List<String> pages ) throws ApplicationException;
 
     List<PGCDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException;
 
@@ -175,5 +175,7 @@ public interface AnodeFacade
 
     List<AnotoPageFieldDTO> getFields( AuthenticationDTO auth, AnotoPageDTO anotoPage ) throws ApplicationException;
 
-    void update( AuthenticationDTO auth ) throws ApplicationException;
+    void update( AuthenticationDTO auth, AnotoPageFieldDTO dto ) throws ApplicationException;
+
+    void setPgcStatus ( PGCDTO dto, Integer newStatus  ) throws ApplicationException;
 }

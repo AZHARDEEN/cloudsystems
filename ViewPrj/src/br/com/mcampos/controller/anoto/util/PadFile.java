@@ -38,7 +38,10 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import org.zkoss.zk.ui.Desktop;
+import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.WebApp;
 
 
 public class PadFile
@@ -54,7 +57,7 @@ public class PadFile
     protected Document document;
     protected AnodeFacade session;
     protected FormDTO currentApplication;
-
+    protected static String httpPath;
 
     public PadFile( FormDTO application )
     {
@@ -221,7 +224,27 @@ public class PadFile
 
     protected static String getPath( String path )
     {
-        return Executions.getCurrent().getDesktop().getWebApp().getRealPath( anotoServerPath + "/" + path );
+        Execution exec = Executions.getCurrent();
+
+        if ( exec != null )
+        {
+            Desktop desc = exec.getDesktop();
+            WebApp app = desc.getWebApp();
+            return app.getRealPath( anotoServerPath + "/" + path );
+        }
+        else
+            return getHttpRealPath () + "/" + path;
+    }
+
+    public static String getHttpRealPath ()
+    {
+        return httpPath;
+    }
+
+    public static void setHttpRealPath ( String path )
+    {
+        if ( SysUtils.isEmpty( httpPath ) )
+            httpPath = path;
     }
 
     protected static String getRegisteredPadPath( String appName )
@@ -351,6 +374,7 @@ public class PadFile
         }
         return pen;
     }
+
 
 
 }

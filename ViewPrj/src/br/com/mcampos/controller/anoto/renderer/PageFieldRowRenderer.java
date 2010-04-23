@@ -38,6 +38,8 @@ public class PageFieldRowRenderer implements RowRenderer
         row.setValue( data );
         AnotoPageFieldDTO dto = ( AnotoPageFieldDTO )data;
 
+        if ( row.getChildren() != null && row.getChildren().size() > 0 )
+            row.getChildren().clear();
         new Label( dto.getName() ).setParent( row );
         Combobox cmbTypes = new Combobox();
         cmbTypes.setReadonly( true );
