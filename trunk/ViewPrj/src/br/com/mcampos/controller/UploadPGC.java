@@ -1,13 +1,10 @@
 package br.com.mcampos.controller;
 
 
-import br.com.mcampos.dto.anoto.PGCDTO;
-import br.com.mcampos.dto.system.MediaDTO;
-import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
-import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.util.locator.ServiceLocator;
-import br.com.mcampos.util.locator.ServiceLocatorException;
+import br.com.mcampos.controller.anoto.util.PadFile;
 import br.com.mcampos.controller.anoto.util.PgcFile;
+import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.sysutils.SysUtils;
 
 import com.anoto.api.NoSuchPermissionException;
 
@@ -18,7 +15,6 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -32,8 +28,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class UploadPGC extends HttpServlet
 {
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
-    private static final String TMP_DIR_PATH = "/anoto_res/tmp_dir";
-    private static final String DESTINATION_DIR_PATH = "/files";
+    private static final String TMP_DIR_PATH = "/anoto_res";
 
     public void init( ServletConfig config ) throws ServletException
     {
@@ -123,7 +118,8 @@ public class UploadPGC extends HttpServlet
                         byte[] pgc = new byte[ totalSize ];
                         request.getInputStream().read( pgc );
                         PgcFile pgcFile = createDTO( pgc );
-                        pgcFile.persist();
+                        PadFile.setHttpRealPath( getAnotoPath( request ) );
+                        pgcFile.persist( );
                         System.out.println( "PGC was successfully received: " + header );
                         return true;
                     }
@@ -140,5 +136,11 @@ public class UploadPGC extends HttpServlet
     protected boolean processMultiPart()
     {
         return false;
+    }
+
+    protected String getAnotoPath (HttpServletRequest request)
+    {
+        String realPath = request.getSession().getServletContext().getRealPath( TMP_DIR_PATH );
+        return realPath;
     }
 }

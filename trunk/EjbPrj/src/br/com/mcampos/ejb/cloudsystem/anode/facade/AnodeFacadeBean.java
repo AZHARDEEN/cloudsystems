@@ -497,7 +497,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     }
 
 
-    public PGCDTO add( PGCDTO dto, String penId, List<String> addresses ) throws ApplicationException
+    public PGCDTO add( PGCDTO dto, List<String> addresses ) throws ApplicationException
     {
         //authenticate( auth ); IT´S FREE FOR NOW
         /*Does this media exists??*/
@@ -510,18 +510,24 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         pgc.setPgcStatus( status );
         /*Search for a pen in our database*/
         pgc = pgcSession.add( pgc );
-        verifyBindings( pgc, penId, addresses );
+        verifyBindings( pgc, addresses );
         return pgc.toDTO();
     }
 
-    protected boolean verifyBindings( Pgc pgc, String penId, List<String> addresses ) throws ApplicationException
+    public void setPgcStatus ( PGCDTO dto, Integer newStatus  ) throws ApplicationException
+    {
+        Pgc pgc = pgcSession.get( dto.getId() );
+        if ( pgc != null )
+            pgcSession.setPgcStatus( pgc, newStatus );
+    }
+
+    protected boolean verifyBindings( Pgc pgc, List<String> addresses ) throws ApplicationException
     {
         AnotoPen anotoPen;
-        System.out.println( "Pgc has this pen id: " + penId );
-        anotoPen = penSession.get( penId );
-        if ( anotoPen == null )
-            System.out.println( "No pen id database: " + penId );
+        System.out.println( "Pgc has this pen id: " + pgc.getPenId() );
+        anotoPen = penSession.get( pgc.getPenId() );
         if ( anotoPen == null ) {
+            System.out.println( "No pen id database " + pgc.getPenId() );
             pgcSession.setPgcStatus( pgc, PgcStatus.statusNoPen );
             return false;
         }
@@ -711,6 +717,13 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         if ( page == null )
             return Collections.emptyList();
         return AnotoUtils.toAnotoPageFieldDTO( pageFieldSession.getAll( page ) );
+    }
+
+    public void update( AuthenticationDTO auth, AnotoPageFieldDTO dto ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoPageField entity = DTOFactory.copy ( dto );
+        pageFieldSession.update( entity );
     }
 }
 

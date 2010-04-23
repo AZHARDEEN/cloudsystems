@@ -29,6 +29,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 
@@ -210,6 +211,21 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
 
         attachments = ( List<PgcAttachment> )getResultList( PgcAttachment.findByPage, page );
         return attachments;
+    }
+
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public Boolean isEnabled ( Pgc pgc, String pageAddress )
+    {
+        Query query = getEntityManager().createNamedQuery( AnotoPenPage.penPageAddressQueryName );
+        query.setParameter( 1, pgc ).setParameter( 2, pageAddress );
+        Object obj;
+        try {
+            obj = query.getSingleResult();
+        }
+        catch ( NoResultException e ) {
+            obj = null;
+        }
+        return ( obj != null );
     }
 }
 

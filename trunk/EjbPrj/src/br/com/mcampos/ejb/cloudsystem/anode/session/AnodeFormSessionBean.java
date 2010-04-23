@@ -140,7 +140,7 @@ public class AnodeFormSessionBean extends Crud<Integer, AnotoForm> implements An
     public List<Pad> getPads( AnotoForm form ) throws ApplicationException
     {
         List<Object> parameter = new ArrayList<Object>( 1 );
-        parameter.add( form );
+        parameter.add( form.getApplication() );
         List<Pad> padList = ( List<Pad> )getResultList( Pad.padFindAllNamedQuery, parameter );
         return padList;
     }

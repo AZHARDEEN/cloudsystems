@@ -25,6 +25,7 @@ public class AnotoPageFieldDTO
         super();
         setPage( page );
         setName( name );
+        setType ( type );
     }
 
 

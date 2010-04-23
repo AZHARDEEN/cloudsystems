@@ -22,6 +22,7 @@ public class PgcStatus implements Serializable, EntityCopyInterface<PgcStatusDTO
     public static final Integer statusOk = 1;
     public static final Integer statusNoPen = 2;
     public static final Integer statusNoPenForm = 3;
+    public static final Integer statusNoPages = 4;
 
     @Column( name = "pgs_description_ch", nullable = false )
     private String description;
