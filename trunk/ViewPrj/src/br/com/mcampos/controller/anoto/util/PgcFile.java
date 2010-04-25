@@ -319,9 +319,10 @@ public class PgcFile
             media = createMedia( renderedImage );
             if ( media != null )
                 getSession().addProcessedImage( pgcPenPage.getPgc(), media, nBookIndex, nPageIndex );
-            icrImage = String.format( "%s/%s.%s", basePath,
-                                     pgcPenPage.getPageAddress(),
-                                     getImageFileTypeExtension() );
+            icrImage = String.format( "%s/%s_%s.%s", basePath,
+                                 pgcPenPage.getPageAddress(),
+                                 "icr",
+                                 "JPG" );
             renderer.renderToFile( icrImage, 300 );
         }
         else {
@@ -335,8 +336,8 @@ public class PgcFile
                     getSession().addProcessedImage( pgcPenPage.getPgc(), media, nBookIndex, nPageIndex );
                 icrImage = String.format( "%s/%s_%s.%s", basePath,
                                      pgcPenPage.getPageAddress(),
-                                    media.getName(),
-                                     getImageFileTypeExtension() );
+                                     "icr",
+                                     "JPG" );
                 renderer.renderToFile( icrImage, 300 );
             }
         }

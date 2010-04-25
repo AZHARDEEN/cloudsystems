@@ -116,11 +116,20 @@ public class UploadPGC extends HttpServlet
                         System.out.println( "Total Size is: " + header );
                         int totalSize = Integer.parseInt( header );
                         byte[] pgc = new byte[ totalSize ];
-                        request.getInputStream().read( pgc );
-                        PgcFile pgcFile = createDTO( pgc );
-                        PadFile.setHttpRealPath( getAnotoPath( request ) );
-                        pgcFile.persist( );
-                        System.out.println( "PGC was successfully received: " + header );
+                        int offset = 0;
+                        int nRead;
+                        do {
+                            nRead = request.getInputStream().read( pgc, offset, totalSize - offset );
+                            if ( nRead == -1 )
+                                break;
+                            offset += nRead;
+                        } while ( offset < totalSize );
+                        if ( nRead > 0 ) {
+                            PgcFile pgcFile = createDTO( pgc );
+                            PadFile.setHttpRealPath( getAnotoPath( request ) );
+                            pgcFile.persist( );
+                            System.out.println( "PGC was successfully received: " + offset );
+                        }
                         return true;
                     }
                 }
