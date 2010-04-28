@@ -514,7 +514,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return pgc.toDTO();
     }
 
-    public void setPgcStatus ( PGCDTO dto, Integer newStatus  ) throws ApplicationException
+    public void setPgcStatus( PGCDTO dto, Integer newStatus ) throws ApplicationException
     {
         Pgc pgc = pgcSession.get( dto.getId() );
         if ( pgc != null )
@@ -722,8 +722,17 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public void update( AuthenticationDTO auth, AnotoPageFieldDTO dto ) throws ApplicationException
     {
         authenticate( auth );
-        AnotoPageField entity = DTOFactory.copy ( dto );
+        AnotoPageField entity = DTOFactory.copy( dto );
         pageFieldSession.update( entity );
+    }
+
+
+    public void update( AuthenticationDTO auth, AnotoPageDTO anotoPage ) throws ApplicationException
+    {
+        authenticate( auth );
+
+        AnotoPage page = DTOFactory.copy( anotoPage );
+        padSession.update( page );
     }
 }
 

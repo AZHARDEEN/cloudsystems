@@ -177,5 +177,7 @@ public interface AnodeFacade
 
     void update( AuthenticationDTO auth, AnotoPageFieldDTO dto ) throws ApplicationException;
 
-    void setPgcStatus ( PGCDTO dto, Integer newStatus  ) throws ApplicationException;
+    void setPgcStatus( PGCDTO dto, Integer newStatus ) throws ApplicationException;
+
+    void update( AuthenticationDTO auth, AnotoPageDTO anotoPage ) throws ApplicationException;
 }

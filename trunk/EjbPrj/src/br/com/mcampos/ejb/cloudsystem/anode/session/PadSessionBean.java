@@ -185,12 +185,11 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         return penPage;
     }
 
-    public void add ( AnotoPage page, List<AnotoPageFieldDTO> fields ) throws ApplicationException
+    public void add( AnotoPage page, List<AnotoPageFieldDTO> fields ) throws ApplicationException
     {
-        for ( AnotoPageFieldDTO field : fields )
-        {
+        for ( AnotoPageFieldDTO field : fields ) {
             FieldType type = getEntityManager().find( FieldType.class, field.getType().getId() );
-            AnotoPageField entity = new AnotoPageField ( page, field.getName(), type );
+            AnotoPageField entity = new AnotoPageField( page, field.getName(), type );
             entity.setIcr( field.getIcr() );
             entity.setLeft( field.getLeft() );
             entity.setTop( field.getTop() );
@@ -200,4 +199,15 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         }
     }
 
+    public void update( AnotoPage page )
+    {
+        AnotoPagePK key = new AnotoPagePK( page.getPageAddress(), page.getFormId(), page.getPadId() );
+
+        AnotoPage entity = getEntityManager().find( AnotoPage.class, key );
+        if ( entity != null ) {
+            entity.setDescription( page.getDescription() );
+            entity.setIcrTemplate( page.getIcrTemplate() );
+            getEntityManager().merge( entity );
+        }
+    }
 }

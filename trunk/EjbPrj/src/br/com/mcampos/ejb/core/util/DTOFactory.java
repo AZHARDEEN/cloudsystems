@@ -889,6 +889,8 @@ public final class DTOFactory implements Serializable
     public static AnotoPage copy( AnotoPageDTO dto )
     {
         AnotoPage target = new AnotoPage( copy( dto.getPad() ), dto.getPageAddress() );
+        target.setDescription( dto.getDescription() );
+        target.setIcrTemplate( dto.getIcrTemplate() );
         return target;
     }
 

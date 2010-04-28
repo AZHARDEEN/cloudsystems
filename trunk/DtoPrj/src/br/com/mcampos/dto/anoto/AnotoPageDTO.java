@@ -14,6 +14,7 @@ public class AnotoPageDTO implements Comparable<AnotoPageDTO>, Serializable
     private Integer padId;
     private String pageAddress;
     private String description;
+    private String icrTemplate;
 
     private List<AnotoPenPageDTO> penPages;
 
@@ -123,5 +124,15 @@ public class AnotoPageDTO implements Comparable<AnotoPageDTO>, Serializable
     public PadDTO getPad()
     {
         return pad;
+    }
+
+    public void setIcrTemplate( String icrTemplate )
+    {
+        this.icrTemplate = icrTemplate;
+    }
+
+    public String getIcrTemplate()
+    {
+        return icrTemplate;
     }
 }
