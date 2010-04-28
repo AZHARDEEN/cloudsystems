@@ -59,8 +59,10 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
     private PadDTO padParam;
     protected Label recordId;
     protected Label recordDescription;
+    protected Label recordIcrTemplate;
     protected Textbox editId;
     protected Textbox editDescription;
+    protected Textbox editIcrTemplate;
     protected Button btnAddAttach;
     protected Button btnRemoveAttach;
     protected Button btnProperties;
@@ -170,6 +172,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
         if ( record != null ) {
             recordId.setValue( record.getPageAddress() );
             recordDescription.setValue( record.getDescription() );
+            recordIcrTemplate.setValue( record.getIcrTemplate() );
             listAttachs.setModel( getMediaModel( record ) );
             refreshAttachs( record );
             listAdded.setModel( getPenModel( record ) );
@@ -236,8 +239,11 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
     }
 
     @Override
-    protected void persist( Object e )
+    protected void persist( Object e ) throws ApplicationException
     {
+        if ( isAddNewOperation() == false ) {
+            getSession().update( getLoggedInUser(), ( AnotoPageDTO )e );
+        }
     }
 
     protected void updateItem( Object e )
@@ -421,7 +427,14 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
     @Override
     protected Object saveRecord( Object currentRecord )
     {
-        return null;
+        if ( currentRecord != null ) {
+            AnotoPageDTO dto = ( AnotoPageDTO )currentRecord;
+            if ( dto != null ) {
+                dto.setDescription( editDescription.getValue() );
+                dto.setIcrTemplate( editIcrTemplate.getValue() );
+            }
+        }
+        return currentRecord;
     }
 
     public void onClick$btnRefreshFields()

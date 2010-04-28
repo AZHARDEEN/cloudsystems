@@ -48,5 +48,7 @@ public interface PadSessionLocal
 
     List<AnotoPage> getPages( AnotoForm param ) throws ApplicationException;
 
-    void add ( AnotoPage page, List<AnotoPageFieldDTO> fields ) throws ApplicationException;
+    void add( AnotoPage page, List<AnotoPageFieldDTO> fields ) throws ApplicationException;
+
+    void update( AnotoPage page ) throws ApplicationException;
 }

@@ -20,7 +20,8 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = AnotoPage.anotoPagesGetAllNamedQuery, query = "select o from AnotoPage o order by o.pageAddress " ),
+@NamedQueries( { @NamedQuery( name = AnotoPage.anotoPagesGetAllNamedQuery,
+                              query = "select o from AnotoPage o order by o.pageAddress " ),
                  @NamedQuery( name = AnotoPage.padPagesGetAllNamedQuery,
                               query = "select o from AnotoPage o where o.pad = ?1 order by o.pageAddress" ),
                  @NamedQuery( name = AnotoPage.formPagesGetAllNamedQuery,
@@ -56,6 +57,10 @@ public class AnotoPage implements Serializable, EntityCopyInterface<AnotoPageDTO
 
     @Column( name = "apg_description_ch", nullable = true )
     private String description;
+
+    @Column( name = "apg_icr_template_ch", nullable = true )
+    private String icrTemplate;
+
 
     public AnotoPage()
     {
@@ -126,6 +131,7 @@ public class AnotoPage implements Serializable, EntityCopyInterface<AnotoPageDTO
     {
         AnotoPageDTO dto = new AnotoPageDTO( getPad().toDTO(), getPageAddress() );
         dto.setDescription( getDescription() );
+        dto.setIcrTemplate( getIcrTemplate() );
         return dto;
     }
 
@@ -137,5 +143,15 @@ public class AnotoPage implements Serializable, EntityCopyInterface<AnotoPageDTO
         if ( nRet != 0 )
             return nRet;
         return getPad().compareTo( o.getPad() );
+    }
+
+    public void setIcrTemplate( String icrTemplate )
+    {
+        this.icrTemplate = icrTemplate;
+    }
+
+    public String getIcrTemplate()
+    {
+        return icrTemplate;
     }
 }
