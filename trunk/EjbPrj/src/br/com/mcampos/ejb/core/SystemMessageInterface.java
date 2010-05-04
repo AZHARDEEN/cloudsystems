@@ -14,9 +14,9 @@ public interface SystemMessageInterface
 
 
     /**
-     * Get a default message type id.
+     * Get a default message type formId.
      *
-     * @return the id of system message type
+     * @return the formId of system message type
      */
     Integer getMessageTypeId();
 
@@ -72,7 +72,7 @@ public interface SystemMessageInterface
      * Throws an ApplicationException that cannot cause a rollback transaction.
      * All the system Messages is stored in database
      * A Commom System has it´s own systemMessageType (2)
-     * It´s is important to note that this id is from MessageType = 2
+     * It´s is important to note that this formId is from MessageType = 2
      *
      * @param id - Message ID.
      * @throws ApplicationException
@@ -85,7 +85,7 @@ public interface SystemMessageInterface
      * Throws an Commom System ApplicationException that CAN, and WILL, cause a rollback transaction.
      * All the system Messages is stored in database.
      * A Commom System has it´s own systemMessageType (2)
-     * It´s is important to note that this id is from MessageType = 2
+     * It´s is important to note that this formId is from MessageType = 2
      *
      * @param id - Message ID.
      * @throws ApplicationException

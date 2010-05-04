@@ -72,7 +72,7 @@ public abstract class AbstractSystemMessage extends BasicSessionBean implements 
      * Throws an ApplicationException.
      * Throws an ApplicationException that CAN, and WILL, cause a rollback transaction.
      * All the system Messages is stored in database
-     * It´s is important to note that this id is from MessageType = 2
+     * It´s is important to note that this formId is from MessageType = 2
      *
      * @param id - Message ID.
      * @throws ApplicationException
@@ -88,7 +88,7 @@ public abstract class AbstractSystemMessage extends BasicSessionBean implements 
      * Throws an ApplicationException that cannot cause a rollback transaction.
      * All the system Messages is stored in database
      * A Commom System has it´s own systemMessageType (2)
-     * It´s is important to note that this id is from MessageType = 2
+     * It´s is important to note that this formId is from MessageType = 2
      *
      * @param id - Message ID.
      * @throws ApplicationException

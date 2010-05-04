@@ -248,10 +248,10 @@ public final class DTOFactory implements Serializable
 
         code = document.trim();
         switch ( type ) {
-        case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
-            break;
-        case UserDocument.typeEmail: code = code.toLowerCase();
-            break;
+            case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
+                break;
+            case UserDocument.typeEmail: code = code.toLowerCase();
+                break;
         }
         return code;
     }
@@ -692,7 +692,7 @@ public final class DTOFactory implements Serializable
         target.setCheckmark( source.getCheckmark() );
         target.setDisabled( source.getDisabled() );
         target.setSeparatorBefore( source.getSeparatorBefore() );
-        if ( ( source.getSubMenus().size() > 0 ) && copySubMenu ) {
+        if ( source.getSubMenus() != null && ( source.getSubMenus().size() > 0 ) && copySubMenu ) {
             for ( Menu sm : source.getSubMenus() ) {
                 target.addSubMenu( copy( sm, true ) );
             }
@@ -767,7 +767,7 @@ public final class DTOFactory implements Serializable
         if ( source == null )
             return null;
 
-        FormDTO target = new FormDTO( source.getId(), source.getDescription() );
+        FormDTO target = new FormDTO( source.getFormId(), source.getDescription() );
 
         target.setIp( source.getApplication() );
         return target;
