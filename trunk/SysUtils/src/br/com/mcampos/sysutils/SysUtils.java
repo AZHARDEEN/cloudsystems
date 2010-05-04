@@ -1,11 +1,9 @@
 package br.com.mcampos.sysutils;
 
-import java.lang.reflect.Array;
 
 import java.sql.Timestamp;
 
 import java.util.List;
-import java.util.Vector;
 
 public final class SysUtils
 {
@@ -43,7 +41,8 @@ public final class SysUtils
         return ( new java.sql.Timestamp( today.getTime() ) );
     }
     
-    public static boolean isEmpty ( List list )
+    @SuppressWarnings("unchecked")
+	public static boolean isEmpty ( List list )
     {
         if ( isNull ( list ) )
             return true;

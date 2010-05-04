@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 public class PgcPageDTO implements Serializable, Comparable<PgcPageDTO>
 {
-    private PGCDTO pgc;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3342157668299884134L;
+	private PGCDTO pgc;
     private Integer bookId;
     private Integer pageId;
 

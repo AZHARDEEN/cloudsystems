@@ -10,7 +10,11 @@ import java.util.List;
 
 public class PgcPenPageDTO implements Comparable<PgcPenPageDTO>, Serializable
 {
-    private String pageAddress;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2299155508697834167L;
+	private String pageAddress;
     private Integer formId;
     private Integer padId;
     private String penId;

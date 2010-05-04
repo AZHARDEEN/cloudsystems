@@ -6,7 +6,11 @@ import java.util.ArrayList;
 
 public class SendMailDTO implements Serializable
 {
-    protected ArrayList<String> recipients;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3928505792104885525L;
+	protected ArrayList<String> recipients;
     protected String subject;
     protected String body;
     

@@ -10,7 +10,11 @@ import java.security.InvalidParameterException;
 
 public class PenDTO implements Comparable<PenDTO>, Serializable
 {
-    String id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5445481184895354233L;
+	String id;
     String description;
 
     public PenDTO( String id, String description )

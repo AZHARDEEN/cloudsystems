@@ -12,11 +12,14 @@ import br.com.mcampos.dto.user.login.LoginDTO;
 
 import java.sql.Timestamp;
 
-import java.util.Date;
-
 public class PersonDTO extends UserDTO
 {
-    public static final Integer userTypeIdentification = 1;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7818117741352696884L;
+
+	public static final Integer userTypeIdentification = 1;
 
     private Timestamp birthDate;
     private String fatherName;

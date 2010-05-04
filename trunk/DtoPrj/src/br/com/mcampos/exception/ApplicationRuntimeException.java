@@ -2,7 +2,11 @@ package br.com.mcampos.exception;
 
 public class ApplicationRuntimeException extends RuntimeException implements ExceptionCodeInterface
 {
-    protected Integer errorCode;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8506801667569243776L;
+	protected Integer errorCode;
     
     public ApplicationRuntimeException( Throwable throwable )
     {

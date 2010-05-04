@@ -4,7 +4,11 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class UserStatusDTO extends SimpleTableDTO
 {
-    public static final int statusOk = 1;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5517950894393679963L;
+	public static final int statusOk = 1;
     public static final int statusInativo = 2;
     public static final int statusEmailNotValidated = 3;
     public static final int statusMaxLoginTryCount = 4;

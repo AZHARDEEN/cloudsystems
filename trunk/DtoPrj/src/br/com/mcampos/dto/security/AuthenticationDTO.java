@@ -2,7 +2,11 @@ package br.com.mcampos.dto.security;
 
 public class AuthenticationDTO extends BasicSecurityDTO
 {
-    private Integer userId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -382248201246261519L;
+	private Integer userId;
     private String authenticationId;
 
 

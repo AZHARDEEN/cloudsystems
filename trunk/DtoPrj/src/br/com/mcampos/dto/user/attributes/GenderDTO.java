@@ -2,14 +2,15 @@ package br.com.mcampos.dto.user.attributes;
 
 import br.com.mcampos.dto.core.DisplayNameDTO;
 
-import java.io.Serializable;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class GenderDTO extends DisplayNameDTO implements Comparable< GenderDTO >
 {
-    protected Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3160924071819518136L;
+	protected Integer id;
     protected String  description;
     protected ArrayList<TitleDTO> titles;
     

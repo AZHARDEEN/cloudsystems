@@ -2,11 +2,13 @@ package br.com.mcampos.dto.address;
 
 import br.com.mcampos.dto.core.DisplayNameDTO;
 
-import java.io.Serializable;
-
 public class CountryDTO extends DisplayNameDTO 
 {
-    private String code3;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8118570583075603388L;
+	private String code3;
     private String code;
     private Integer id;
     private Integer numericCode;

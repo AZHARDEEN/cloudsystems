@@ -11,7 +11,11 @@ import java.util.List;
 
 public class PGCDTO implements Comparable<PGCDTO>, Serializable
 {
-    protected Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2416728078192913712L;
+	protected Integer id;
     protected MediaDTO media;
     protected PgcStatusDTO pgcStatus;
     protected String penId;

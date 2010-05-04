@@ -2,11 +2,13 @@ package br.com.mcampos.dto.user.attributes;
 
 import br.com.mcampos.dto.core.DisplayNameDTO;
 
-import java.io.Serializable;
-
 public class TitleDTO extends DisplayNameDTO implements Comparable< TitleDTO >
 {
-    private String abbreviation;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6432837000318062671L;
+	private String abbreviation;
     private String description;
     private Integer id;
 

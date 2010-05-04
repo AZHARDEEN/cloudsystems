@@ -9,7 +9,11 @@ import java.sql.Timestamp;
 
 public class ListUserDTO extends DisplayNameDTO
 {
-    Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8930071511582539882L;
+	Integer id;
     String name;
     String nickName;
     UserTypeDTO userType;

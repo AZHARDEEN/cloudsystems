@@ -2,11 +2,13 @@ package br.com.mcampos.dto.user.attributes;
 
 import br.com.mcampos.dto.core.DisplayNameDTO;
 
-import java.io.Serializable;
-
 public class DocumentTypeDTO extends DisplayNameDTO implements Comparable<DocumentTypeDTO>
 {
-    private Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8436760228037673894L;
+	private Integer id;
     private String mask;
     private String name;
 

@@ -1,11 +1,15 @@
 package br.com.mcampos.dto.user.login;
 
-import br.com.mcampos.dto.core.DisplayNameDTO;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class AccessLogTypeDTO extends SimpleTableDTO
 {
-    public AccessLogTypeDTO( SimpleTableDTO simpleTableDTO )
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4837247897791432960L;
+
+	public AccessLogTypeDTO( SimpleTableDTO simpleTableDTO )
     {
         super( simpleTableDTO );
     }

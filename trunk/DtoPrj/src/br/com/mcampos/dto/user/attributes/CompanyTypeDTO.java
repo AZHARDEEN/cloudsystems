@@ -1,11 +1,15 @@
 package br.com.mcampos.dto.user.attributes;
 
-import br.com.mcampos.dto.core.DisplayNameDTO;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class CompanyTypeDTO extends SimpleTableDTO 
 {
-    public CompanyTypeDTO( SimpleTableDTO simpleTableDTO )
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -808264388565088627L;
+
+	public CompanyTypeDTO( SimpleTableDTO simpleTableDTO )
     {
         super( simpleTableDTO );
     }

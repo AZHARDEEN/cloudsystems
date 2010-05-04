@@ -7,7 +7,11 @@ import java.security.InvalidParameterException;
 
 public abstract class SimpleTableDTO extends DisplayNameDTO implements SimpleTable, Comparable<SimpleTableDTO>
 {
-    protected Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4392620702104070395L;
+	protected Integer id;
     protected String description;
 
 
