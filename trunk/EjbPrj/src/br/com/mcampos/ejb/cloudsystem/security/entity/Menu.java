@@ -37,20 +37,36 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
     public static final String nextSequence = "Menu.nexSequence";
     public static final String findSequence = "Menu.findSequence";
 
+    @Column( name = "mnu_description_ch", nullable = false )
     private String description;
+    @Id
+    @Column( name = "mnu_id_in", nullable = false )
     private Integer id;
+    @Column( name = "mnu_sequence_in", nullable = false )
     private Integer sequence;
+    @Column( name = "mnu_url_ch" )
     private String targetURL;
+    @ManyToOne( fetch = FetchType.EAGER )
+    @JoinColumn( name = "mnu_parent_id" )
     private Menu parentMenu;
+    @OneToMany( mappedBy = "parentMenu", cascade = { CascadeType.REFRESH } )
     private List<Menu> subMenus;
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JoinColumn( name = "med_id_in" )
     private Media media;
 
+    @Column( name = "mnu_separator_before_bt" )
     private Boolean separatorBefore;
+    @Column( name = "mnu_autocheck_bt" )
     private Boolean autocheck;
+    @Column( name = "mnu_checked_bt" )
     private Boolean checked;
+    @Column( name = "mnu_checkmark_bt" )
     private Boolean checkmark;
+    @Column( name = "mnu_disabled_bt" )
     private Boolean disabled;
 
+    @OneToMany( mappedBy = "menu", cascade = { CascadeType.REFRESH } )
     private List<TaskMenu> tasks;
 
 
@@ -58,7 +74,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
     {
     }
 
-    @Column( name = "mnu_description_ch", nullable = false )
     public String getDescription()
     {
         return description;
@@ -69,8 +84,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         this.description = mnu_description_ch;
     }
 
-    @Id
-    @Column( name = "mnu_id_in", nullable = false )
     public Integer getId()
     {
         return id;
@@ -81,7 +94,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         this.id = mnu_id_in;
     }
 
-    @Column( name = "mnu_sequence_in", nullable = false )
     public Integer getSequence()
     {
         return sequence;
@@ -92,7 +104,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         this.sequence = mnu_sequence_in;
     }
 
-    @Column( name = "mnu_url_ch" )
     public String getTargetURL()
     {
         return targetURL;
@@ -103,8 +114,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         this.targetURL = mnu_url_ch;
     }
 
-    @ManyToOne( fetch = FetchType.EAGER )
-    @JoinColumn( name = "mnu_parent_id" )
     public Menu getParentMenu()
     {
         return parentMenu;
@@ -124,7 +133,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         }
     }
 
-    @OneToMany( mappedBy = "parentMenu", cascade = { CascadeType.REFRESH } )
     public List<Menu> getSubMenus()
     {
         return subMenus;
@@ -161,8 +169,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         this.media = media;
     }
 
-    @ManyToOne( fetch = FetchType.LAZY )
-    @JoinColumn( name = "med_id_in" )
     public Media getMedia()
     {
         return media;
@@ -173,7 +179,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         this.separatorBefore = mnu_separator_before_bt;
     }
 
-    @Column( name = "mnu_separator_before_bt" )
     public Boolean getSeparatorBefore()
     {
         return separatorBefore;
@@ -184,7 +189,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         this.autocheck = mnu_autocheck_bt;
     }
 
-    @Column( name = "mnu_autocheck_bt" )
     public Boolean getAutocheck()
     {
         return autocheck;
@@ -195,7 +199,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         this.checked = mnu_checked_bt;
     }
 
-    @Column( name = "mnu_checked_bt" )
     public Boolean getChecked()
     {
         return checked;
@@ -206,7 +209,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         this.checkmark = mnu_checkmark_bt;
     }
 
-    @Column( name = "mnu_checkmark_bt" )
     public Boolean getCheckmark()
     {
         return checkmark;
@@ -217,7 +219,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         this.disabled = mnu_disabled_bt;
     }
 
-    @Column( name = "mnu_disabled_bt" )
     public Boolean getDisabled()
     {
         return disabled;
@@ -248,7 +249,6 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         this.tasks = tasks;
     }
 
-    @OneToMany( mappedBy = "menu", cascade = { CascadeType.REFRESH } )
     public List<TaskMenu> getTasks()
     {
         return tasks;
@@ -256,15 +256,15 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
 
     public void remove( TaskMenu tm )
     {
-        if ( tasks != null )
-            tasks.remove( tm );
+        if ( getTasks() != null )
+            getTasks().remove( tm );
     }
 
 
     public void add( TaskMenu tm )
     {
-        if ( tasks != null )
-            tasks.add( tm );
+        if ( getTasks() != null )
+            getTasks().add( tm );
     }
 
     public MenuDTO toDTO()
