@@ -42,13 +42,13 @@ public interface TaskInterface
 
 
     /**
-     * Obtém o próximo id disponível.
-     * Esta função obtém o próximo número disponível para o id do Menu (Max(id)+1).
+     * Obtém o próximo formId disponível.
+     * Esta função obtém o próximo número disponível para o formId do Menu (Max(formId)+1).
      * Não há necessidade de usar type para inclusão visto que a atualização desta
      * tabela é mímina.
      *
      * @param auth .
-     * @return O próximo id disponível.
+     * @return O próximo formId disponível.
      * @throws ApplicationException
      */
     Integer getNextTaskId( AuthenticationDTO auth ) throws ApplicationException;
@@ -80,7 +80,7 @@ public interface TaskInterface
      * Delete an existing menu.
      *
      * @param auth - authentication dto.
-     * @param id - menu id.
+     * @param id - menu formId.
      * @throws ApplicationException
      */
     void delete( AuthenticationDTO auth, TaskDTO id ) throws ApplicationException;
