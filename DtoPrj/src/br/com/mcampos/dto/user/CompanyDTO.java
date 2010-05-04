@@ -1,11 +1,14 @@
 package br.com.mcampos.dto.user;
 
-import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.dto.user.attributes.CompanyTypeDTO;
 
 public class CompanyDTO extends UserDTO
 {
-    private CompanyTypeDTO companyType;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7380523821618482931L;
+	private CompanyTypeDTO companyType;
     
     
 

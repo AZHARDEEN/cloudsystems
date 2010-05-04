@@ -2,11 +2,13 @@ package br.com.mcampos.dto.user.attributes;
 
 import br.com.mcampos.dto.core.DisplayNameDTO;
 
-import java.io.Serializable;
-
 public class ContactTypeDTO extends DisplayNameDTO
 {
-    private Boolean allowDuplicate;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5242040715166101448L;
+	private Boolean allowDuplicate;
     private String description;
     private Integer id;
     private String mask;

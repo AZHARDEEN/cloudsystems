@@ -7,7 +7,11 @@ import java.util.List;
 
 public class MenuDTO extends SimpleTableDTO
 {
-    private Integer sequence;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 168936835163246759L;
+	private Integer sequence;
     private String targetURL;
     private List<MenuDTO> subMenu;
 

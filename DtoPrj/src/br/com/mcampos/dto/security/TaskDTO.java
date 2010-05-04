@@ -7,7 +7,11 @@ import java.util.List;
 
 public class TaskDTO extends SimpleTableDTO
 {
-    private List<TaskDTO> subtasks;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6871889878864774822L;
+	private List<TaskDTO> subtasks;
     private TaskDTO parent;
     private Integer parentId;
 

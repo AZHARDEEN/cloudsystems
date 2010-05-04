@@ -1,10 +1,13 @@
 package br.com.mcampos.dto.user.attributes;
 
-import br.com.mcampos.dto.core.DisplayNameDTO;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class UserTypeDTO extends SimpleTableDTO
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final Integer userTypePerson = 1;
 		
 		

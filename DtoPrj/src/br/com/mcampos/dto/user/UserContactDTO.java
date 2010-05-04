@@ -6,7 +6,11 @@ import java.io.Serializable;
 
 public class UserContactDTO implements Serializable, Comparable<UserContactDTO>
 {
-    private ContactTypeDTO contactType;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 167543149415195144L;
+	private ContactTypeDTO contactType;
     private String description;
     private String comment;
     

@@ -4,7 +4,11 @@ import br.com.mcampos.dto.core.DisplayNameDTO;
 
 public class CivilStateDTO extends DisplayNameDTO implements Comparable< CivilStateDTO >
 {
-    Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 9017140527037933790L;
+	Integer id;
     String description;
     
     public CivilStateDTO()

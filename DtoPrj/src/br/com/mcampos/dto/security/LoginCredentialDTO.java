@@ -9,7 +9,11 @@ import java.util.ArrayList;
 public class LoginCredentialDTO extends BasicSecurityDTO
 {
 
-    protected String password;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -75732363159814630L;
+	protected String password;
     protected ArrayList<UserDocumentDTO> documents;
 
     public LoginCredentialDTO()

@@ -7,7 +7,11 @@ import java.io.Serializable;
 
 public class FormMediaDTO implements Comparable<FormMediaDTO>, Serializable
 {
-    FormDTO form;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3684852697396820727L;
+	FormDTO form;
     MediaDTO media;
 
 

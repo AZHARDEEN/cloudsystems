@@ -1,8 +1,11 @@
 package br.com.mcampos.dto.core;
 
-import java.io.Serializable;
-
 public abstract class DisplayNameDTO extends BasicDTO
 {
-    public abstract String getDisplayName ();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3498776080885915616L;
+
+	public abstract String getDisplayName ();
 }

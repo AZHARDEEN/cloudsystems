@@ -18,7 +18,11 @@ import java.util.List;
  */
 public class LoginDTO extends BasicDTO
 {
-    Integer userId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -367691736245521363L;
+	Integer userId;
     protected PersonDTO person;
     protected UserStatusDTO userStatus;
     protected Timestamp passwordExpirationDate;

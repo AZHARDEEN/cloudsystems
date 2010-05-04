@@ -11,7 +11,11 @@ import java.util.List;
 
 public class FormDTO extends SimpleTableDTO
 {
-    String application;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8356914268806695133L;
+	String application;
     List<PadDTO> pads;
 
     public FormDTO( SimpleTableDTO simpleTableDTO )

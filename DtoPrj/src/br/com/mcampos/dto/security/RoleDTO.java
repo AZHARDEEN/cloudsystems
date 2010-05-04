@@ -9,7 +9,11 @@ import java.util.List;
 
 public class RoleDTO extends SimpleTableDTO
 {
-    protected List<RoleDTO> childRoles;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3427302022674953632L;
+	protected List<RoleDTO> childRoles;
     protected RoleDTO parent;
 
     public RoleDTO( SimpleTableDTO simpleTableDTO )

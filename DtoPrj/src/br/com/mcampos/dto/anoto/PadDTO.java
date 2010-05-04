@@ -12,7 +12,11 @@ import java.util.List;
 
 public class PadDTO implements Comparable<PadDTO>, Serializable
 {
-    protected Integer formId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1708068170954715628L;
+	protected Integer formId;
     protected Integer id;
 
     protected FormDTO form;

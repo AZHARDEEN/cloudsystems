@@ -10,7 +10,11 @@ import java.util.ArrayList;
 
 public abstract class UserDTO extends DisplayNameDTO implements Comparable<UserDTO>
 {
-    private Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 230335703324655910L;
+	private Integer id;
     private String name;
     private String nickName;
     private String comment;

@@ -4,7 +4,11 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class PgcStatusDTO extends SimpleTableDTO
 {
-    public static final int statusOk = 1;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 9170176440594262681L;
+	public static final int statusOk = 1;
 
     public PgcStatusDTO( SimpleTableDTO simpleTableDTO )
     {

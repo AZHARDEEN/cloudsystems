@@ -4,11 +4,13 @@ import br.com.mcampos.dto.core.DisplayNameDTO;
 
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 
-import java.sql.Timestamp;
-
 public class ListLoginDTO extends DisplayNameDTO
 {
-    Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4025788703084454023L;
+	Integer id;
     String name;
     UserStatusDTO userStatus;
     

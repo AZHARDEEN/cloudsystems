@@ -9,7 +9,11 @@ public class UserDocumentDTO implements Serializable,
                                         Comparable<UserDocumentDTO>
 {
 
-    public static final int typeCPF = 1;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3650266746984444069L;
+	public static final int typeCPF = 1;
     public static final int typeCNPJ = 10;
     public static final int typeIdentity = 2;
     public static final int typeEmail = 6;

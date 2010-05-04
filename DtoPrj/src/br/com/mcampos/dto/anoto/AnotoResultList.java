@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 public class AnotoResultList implements Comparable<AnotoResultList>, Serializable
 {
-    FormDTO form;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3719897012683155546L;
+	FormDTO form;
     PenDTO pen;
     PgcPageDTO pgcPage;
 

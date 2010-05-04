@@ -4,9 +4,13 @@ import br.com.mcampos.dto.core.DisplayNameDTO;
 
 import java.io.Serializable;
 
-public class CityDTO extends DisplayNameDTO implements Comparable< CityDTO >
+public class CityDTO extends DisplayNameDTO implements Comparable< CityDTO >, Serializable
 {
-    private Boolean countryCapital;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6761503201293735988L;
+	private Boolean countryCapital;
     private Integer id;
     private String name;
     private Boolean stateCapital;

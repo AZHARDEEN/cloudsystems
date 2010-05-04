@@ -9,7 +9,11 @@ import java.io.Serializable;
 public class AddressDTO implements Serializable, Comparable<AddressDTO>
 {
 
-    private UserDTO user;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5879723922351784270L;
+	private UserDTO user;
     private AddressTypeDTO addressType;
     private CityDTO  city;
 

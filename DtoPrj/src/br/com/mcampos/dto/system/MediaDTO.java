@@ -5,7 +5,11 @@ import java.io.Serializable;
 
 public class MediaDTO implements Comparable<MediaDTO>, Serializable
 {
-    protected Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7581961457246342172L;
+	protected Integer id;
     private String mimeType;
     private String name;
     private byte[] object;

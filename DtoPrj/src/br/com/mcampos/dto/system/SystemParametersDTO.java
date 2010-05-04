@@ -2,12 +2,15 @@ package br.com.mcampos.dto.system;
 
 import br.com.mcampos.dto.core.DisplayNameDTO;
 
-import java.io.Serializable;
 
 public class SystemParametersDTO extends DisplayNameDTO implements Comparable<SystemParametersDTO>
 {
 
-    private String id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4387801106423854720L;
+	private String id;
     private String description;
     private String value;
     

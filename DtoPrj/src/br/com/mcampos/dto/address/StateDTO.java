@@ -2,11 +2,13 @@ package br.com.mcampos.dto.address;
 
 import br.com.mcampos.dto.core.DisplayNameDTO;
 
-import java.io.Serializable;
-
 public class StateDTO extends DisplayNameDTO implements Comparable< StateDTO >
 {
-    private Integer countryId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1046569607923921204L;
+	private Integer countryId;
     private Integer regionId;
     private String abbreviation;
     private Integer id;

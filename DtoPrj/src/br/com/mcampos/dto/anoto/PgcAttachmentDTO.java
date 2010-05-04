@@ -7,7 +7,11 @@ import java.io.Serializable;
 
 public class PgcAttachmentDTO implements Serializable
 {
-    private Integer type;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3661873524138669352L;
+	private Integer type;
     private Integer sequence;
     private String value;
     private PgcPageDTO pgcPage;

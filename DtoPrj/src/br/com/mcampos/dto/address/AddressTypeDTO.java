@@ -4,7 +4,11 @@ import br.com.mcampos.dto.core.DisplayNameDTO;
 
 public class AddressTypeDTO extends DisplayNameDTO implements Comparable<AddressTypeDTO>
 {
-    Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5920660631361301995L;
+	Integer id;
     String description;
     
     public AddressTypeDTO()

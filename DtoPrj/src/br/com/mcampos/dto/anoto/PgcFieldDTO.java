@@ -7,7 +7,11 @@ import java.io.Serializable;
 
 public class PgcFieldDTO implements Serializable, Comparable<PgcFieldDTO>
 {
-    private String ircText;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8017130948615035955L;
+	private String ircText;
     private String name;
     private String revisedText;
     private PgcPageDTO pgcPage;

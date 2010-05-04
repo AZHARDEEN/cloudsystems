@@ -10,7 +10,11 @@ import java.util.List;
 
 public class AnotoPageDTO implements Comparable<AnotoPageDTO>, Serializable
 {
-    private Integer formId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7818149639504886757L;
+	private Integer formId;
     private Integer padId;
     private String pageAddress;
     private String description;
