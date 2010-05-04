@@ -9,26 +9,29 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "UserStatus.findAll", query = "select o from UserStatus o")
-})
-@Table( name = "\"user_status\"" )
+@NamedQueries( { @NamedQuery( name = "UserStatus.findAll", query = "select o from UserStatus o" ) } )
+@Table( name = "user_status" )
 public class UserStatus implements Serializable
 {
+    @Id
+    @Column( name = "uts_id_in", nullable = false )
     protected Integer id;
+    @Column( name = "uts_description_ch", nullable = false, length = 32 )
     protected String description;
+    @Column( name = "uts_allow_login_bt", nullable = true, columnDefinition = "boolean" )
     protected Boolean allowLogin;
-    
-    
+
+
     public static final int statusOk = 1;
     public static final int statusInativo = 2;
     public static final int statusEmailNotValidated = 3;
     public static final int statusMaxLoginTryCount = 4;
     public static final int statusFullfillRecord = 5;
     public static final int statusExpiredPassword = 6;
-    
-    
+
+
     public UserStatus()
     {
     }
@@ -38,14 +41,13 @@ public class UserStatus implements Serializable
         this.id = id;
     }
 
-    public UserStatus( Integer id, String description  )
+    public UserStatus( Integer id, String description )
     {
         this.id = id;
         this.description = description;
     }
 
 
-    @Column( name="uts_description_ch", nullable = false, length = 32 )
     public String getDescription()
     {
         return description;
@@ -56,8 +58,6 @@ public class UserStatus implements Serializable
         this.description = description;
     }
 
-    @Id
-    @Column( name="uts_id_in", nullable = false )
     public Integer getId()
     {
         return id;
@@ -68,7 +68,6 @@ public class UserStatus implements Serializable
         this.id = id;
     }
 
-    @Column( name="uts_allow_login_bt", nullable = true, columnDefinition = "boolean" )
     public Boolean getAllowLogin()
     {
         return allowLogin;

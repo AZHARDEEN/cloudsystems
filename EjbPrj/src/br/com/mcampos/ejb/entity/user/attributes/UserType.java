@@ -1,8 +1,7 @@
 package br.com.mcampos.ejb.entity.user.attributes;
 
+
 import br.com.mcampos.dto.core.SimpleTableDTO;
-
-
 
 import java.io.Serializable;
 
@@ -13,17 +12,19 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "UserType.findAll", query = "select o from UserType o")
-})
-@Table( name = "\"user_type\"" )
+@NamedQueries( { @NamedQuery( name = "UserType.findAll", query = "select o from UserType o" ) } )
+@Table( name = "user_type" )
 public class UserType implements Serializable
 {
+    @Id
+    @Column( name = "ust_id_in", nullable = false )
     protected String id;
+    @Column( name = "ust_description_ch", nullable = false, length = 32 )
     protected String description;
-    
-    
+
+
     public UserType()
     {
     }
@@ -40,10 +41,9 @@ public class UserType implements Serializable
 
     public UserType( Integer id, String description )
     {
-        init ( id, description );
+        init( id, description );
     }
 
-    @Column( name="ust_description_ch", nullable = false, length = 32 )
     public String getDescription()
     {
         return description;
@@ -54,8 +54,6 @@ public class UserType implements Serializable
         this.description = description;
     }
 
-    @Id
-    @Column( name="ust_id_in", nullable = false )
     public String getId()
     {
         return id;
@@ -66,17 +64,17 @@ public class UserType implements Serializable
         this.id = id;
     }
 
-    protected void init ( Integer id, String description )
+    protected void init( Integer id, String description )
     {
-        if ( description != null && description.length() > 0 ) 
-            this.description = description.trim();
-        this.id = id.toString();
+        if ( description != null && description.length() > 0 )
+            setDescription( description.trim() );
+        setId( id.toString() );
     }
 
-  
-    public void copyFrom ( SimpleTableDTO dto )
+
+    public void copyFrom( SimpleTableDTO dto )
     {
-        setId ( getId ().toString() );
+        setId( getId().toString() );
         setDescription( dto.getDescription() );
     }
 

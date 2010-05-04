@@ -25,10 +25,10 @@ public class UserDocumentSessionBean implements UserDocumentSessionLocal
     {
     }
 
-    /**<code>select o from UserDocument o where o.code = :document and o.documentType.id = :docType</code>
-     * 
+    /**<code>select o from UserDocument o where o.code = :document and o.documentType.formId = :docType</code>
+     *
      * tenta localizar um registro no banco de dados com os dados do documento e o tipo do documento
-     * 
+     *
      * @param dto DTO com os dados a serem localizados no banco de dados
      * @return UserDocument Entity Bean
      * @exception InvalidParameterException
@@ -41,10 +41,10 @@ public class UserDocumentSessionBean implements UserDocumentSessionLocal
     }
 
 
-    /**<code>select o from UserDocument o where o.code = :document and o.documentType.id = :docType</code>
-     * 
+    /**<code>select o from UserDocument o where o.code = :document and o.documentType.formId = :docType</code>
+     *
      * tenta localizar um registro no banco de dados com os dados do documento e o tipo do documento
-     * 
+     *
      * @param entity Entity Bean com os dados a serem localizados no banco de dados
      * @return UserDocument Entity Bean
      * @exception InvalidParameterException
@@ -57,10 +57,10 @@ public class UserDocumentSessionBean implements UserDocumentSessionLocal
     }
     
     
-    /**<code>select o from UserDocument o where o.code = :document and o.documentType.id = :docType</code>
-     * 
+    /**<code>select o from UserDocument o where o.code = :document and o.documentType.formId = :docType</code>
+     *
      * Este é a função privada que realiza a busca por um documento de usuario no banco de dados.
-     * 
+     *
      * @param document Código (Número, ID) do documento
      * @param docTypeId Código sequencial inteiro do tipo do documento
      * @return UserDocument Entity Bean
