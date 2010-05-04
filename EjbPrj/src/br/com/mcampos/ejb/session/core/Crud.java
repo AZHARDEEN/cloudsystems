@@ -120,9 +120,8 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
                 }
             }
             return query.getResultList();
-
         }
-        catch ( NoResultException e ) {
+        catch ( Exception e ) {
             return Collections.emptyList();
         }
     }

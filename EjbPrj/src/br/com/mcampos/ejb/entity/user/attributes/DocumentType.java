@@ -9,43 +9,44 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "DocumentType.findAll", query = "select o from DocumentType o")
-  ,@NamedQuery(name = "DocumentType.find", query = "select o from DocumentType o where o.id = :id")
-})
+@NamedQueries( { @NamedQuery( name = "DocumentType.findAll", query = "select o from DocumentType o" ),
+                 @NamedQuery( name = "DocumentType.find", query = "select o from DocumentType o where o.id = :id" ) } )
 @Table( name = "\"document_type\"" )
 public class DocumentType implements Serializable
 {
+    @Id
+    @Column( name = "doc_id_in", nullable = false )
     private Integer id;
+    @Column( name = "doc_mask_ch", length = 32 )
     private String mask;
+    @Column( name = "doc_name_ch", nullable = false, length = 20 )
     private String name;
 
     public DocumentType()
     {
     }
-    
-    public DocumentType ( Integer id )
+
+    public DocumentType( Integer id )
     {
-        this.id = id;
+        setId( id );
     }
 
     public DocumentType( Integer id, String name, String mask )
     {
-        super ();
-        init ( id, name, mask );
+        super();
+        init( id, name, mask );
     }
 
 
     protected void init( Integer id, String name, String mask )
     {
-        this.id = id;
-        this.mask = mask;
-        this.name = name;
+        setId( id );
+        setMask( mask );
+        setName( name );
     }
 
-    @Id
-    @Column( name="doc_id_in", nullable = false )
     public Integer getId()
     {
         return id;
@@ -56,7 +57,6 @@ public class DocumentType implements Serializable
         this.id = doc_id_in;
     }
 
-    @Column( name="doc_mask_ch", length = 32 )
     public String getMask()
     {
         return mask;
@@ -67,7 +67,6 @@ public class DocumentType implements Serializable
         this.mask = doc_mask_ch;
     }
 
-    @Column( name="doc_name_ch", nullable = false, length = 20 )
     public String getName()
     {
         return name;

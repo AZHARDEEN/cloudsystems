@@ -12,18 +12,26 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "EMailPart.findAll", query = "select o from EMailPart o")
-})
-@Table( name = "\"e_mail_part\"" )
+@NamedQueries( { @NamedQuery( name = "EMailPart.findAll", query = "select o from EMailPart o" ) } )
+@Table( name = "e_mail_part" )
 @IdClass( EMailPartPK.class )
 public class EMailPart implements Serializable
 {
+    @Id
+    @Column( name = "eml_id_in", nullable = false, insertable = false, updatable = false )
     private Integer id;
+    @Id
+    @Column( name = "emp_seq_in", nullable = false )
     private Integer sequencial;
+    @Column( name = "emp_text_tx", nullable = false )
     private String content;
+    @ManyToOne
+    @JoinColumn( name = "emp_id_in" )
     private EMailPartType partType;
+    @ManyToOne
+    @JoinColumn( name = "eml_id_in" )
     private EMail email;
 
     public EMailPart()
@@ -38,8 +46,6 @@ public class EMailPart implements Serializable
         this.content = emp_text_tx;
     }
 
-    @Id
-    @Column( name="eml_id_in", nullable = false, insertable = false, updatable = false )
     public Integer getId()
     {
         return id;
@@ -51,8 +57,6 @@ public class EMailPart implements Serializable
     }
 
 
-    @Id
-    @Column( name="emp_seq_in", nullable = false )
     public Integer getSequencial()
     {
         return sequencial;
@@ -63,7 +67,6 @@ public class EMailPart implements Serializable
         this.sequencial = emp_seq_in;
     }
 
-    @Column( name="emp_text_tx", nullable = false )
     public String getContent()
     {
         return content;
@@ -74,8 +77,6 @@ public class EMailPart implements Serializable
         this.content = emp_text_tx;
     }
 
-    @ManyToOne
-    @JoinColumn( name = "emp_id_in" )
     public EMailPartType getPartType()
     {
         return partType;
@@ -86,8 +87,6 @@ public class EMailPart implements Serializable
         this.partType = EMailPartType;
     }
 
-    @ManyToOne
-    @JoinColumn( name = "eml_id_in" )
     public EMail getEmail()
     {
         return email;
@@ -96,7 +95,7 @@ public class EMailPart implements Serializable
     public void setEmail( EMail EMail )
     {
         this.email = EMail;
-        if (EMail != null) {
+        if ( EMail != null ) {
             this.id = EMail.getId();
         }
     }

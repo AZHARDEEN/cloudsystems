@@ -73,13 +73,15 @@ public class ClientSessionBean implements ClientSessionLocal
         return query.getResultList();
     }
 
-    /** <code>select o from Clients o where o.owner.id = :owner and ( toDate is null or toDate >= now() ) </code> */
+    /**<code>select o from Clients o where o.owner.formId = :owner and ( toDate is null or toDate >= now() ) </code>
+     */
     public List<Client> getClientsFindAllActive( Integer owner )
     {
         return em.createNamedQuery("Clients.findAllActive").setParameter("owner", owner).getResultList();
     }
 
-    /** <code>select o from Clients o where o.owner.id = :owner and ( toDate is null or toDate >= now() ) </code> */
+    /**<code>select o from Clients o where o.owner.formId = :owner and ( toDate is null or toDate >= now() ) </code>
+     */
     public List<Client> getClientsFindAllActiveByRange( Integer owner, int firstResult, int maxResults )
     {
         Query query = em.createNamedQuery("Clients.findAllActive").setParameter("owner", owner);
@@ -92,7 +94,8 @@ public class ClientSessionBean implements ClientSessionLocal
         return query.getResultList();
     }
 
-    /** <code>select o from Clients o where o.owner.id = :owner and o.client.id = :client and ( toDate is null or toDate >= now() ) </code> */
+    /**<code>select o from Clients o where o.owner.formId = :owner and o.client.formId = :client and ( toDate is null or toDate >= now() ) </code>
+     */
     public Client getClientsFind( Integer owner, Integer client )
     {
         return (Client) em.createNamedQuery("Clients.find")

@@ -192,7 +192,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * vinculados as rotinas de cadastramento, validação e confirmação de login.
      *
      * @param login Entity Login
-     * @param templateId id do template no banco de dados
+     * @param templateId formId do template no banco de dados
      * @param flatPassword senha (Este senha é a senha gerada pelo sistema)
      * @throws ApplicationException
      */
@@ -535,10 +535,10 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
             return;
 
         switch ( ( int )( login.getUserStatus().getId() ) ) {
-        case UserStatus.statusMaxLoginTryCount: throwException( 15 );
-        case UserStatus.statusInativo: throwException( 16 );
-        case UserStatus.statusEmailNotValidated: throwException( 17 );
-        default: throwException( 18 );
+            case UserStatus.statusMaxLoginTryCount: throwException( 15 );
+            case UserStatus.statusInativo: throwException( 16 );
+            case UserStatus.statusEmailNotValidated: throwException( 17 );
+            default: throwException( 18 );
         }
     }
 

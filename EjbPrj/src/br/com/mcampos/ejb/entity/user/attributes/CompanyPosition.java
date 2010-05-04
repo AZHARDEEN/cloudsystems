@@ -9,14 +9,16 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "CompanyPosition.findAll", query = "select o from CompanyPosition o")
-})
+@NamedQueries( { @NamedQuery( name = "CompanyPosition.findAll", query = "select o from CompanyPosition o" ) } )
 @Table( name = "\"company_position\"" )
 public class CompanyPosition implements Serializable
 {
+    @Column( name = "cps_description_ch", nullable = false )
     private String description;
+    @Id
+    @Column( name = "cps_id_in", nullable = false )
     private Integer id;
 
     public CompanyPosition()
@@ -29,7 +31,6 @@ public class CompanyPosition implements Serializable
         this.id = id;
     }
 
-    @Column( name="cps_description_ch", nullable = false )
     public String getDescription()
     {
         return description;
@@ -40,8 +41,6 @@ public class CompanyPosition implements Serializable
         this.description = description;
     }
 
-    @Id
-    @Column( name="cps_id_in", nullable = false )
     public Integer getId()
     {
         return id;

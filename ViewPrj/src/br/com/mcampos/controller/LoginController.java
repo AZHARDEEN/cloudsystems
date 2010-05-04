@@ -1,17 +1,16 @@
 package br.com.mcampos.controller;
 
+
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.exception.ApplicationException;
 
-
-import javax.ejb.EJBException;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Textbox;
+
 
 public class LoginController extends BaseLoginOptionsController
 {
@@ -59,9 +58,6 @@ public class LoginController extends BaseLoginOptionsController
                 }
                 else
                     showErrorMessage( "Usuário ou senha inválida." );
-            }
-            catch ( EJBException ejbException ) {
-                showErrorMessage( ejbException.getCause().getMessage() );
             }
             catch ( ApplicationException e ) {
                 showErrorMessage( e.getMessage() );
