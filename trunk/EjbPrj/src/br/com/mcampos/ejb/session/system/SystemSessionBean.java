@@ -232,13 +232,13 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
     }
 
     /**
-     * Obtém o próximo id disponível.
-     * Esta função obtém o próximo número disponível para o id do Menu (Max(id)+1).
+     * Obtém o próximo formId disponível.
+     * Esta função obtém o próximo número disponível para o formId do Menu (Max(formId)+1).
      * Não há necessidade de usar type para inclusão visto que a atualização desta
      * tabela é mímina.
      *
      * @param auth .
-     * @return O próximo id disponível.
+     * @return O próximo formId disponível.
      */
     public Integer getNextMenuId( AuthenticationDTO auth ) throws ApplicationException
     {
@@ -249,7 +249,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
     /**
      * This is a very private function ( there is no AuthenticationDTO)
      * SHOULD NEVER BE PULIC
-     * @return next free id number.
+     * @return next free formId number.
      */
     private Integer getNextMenuId()
     {
@@ -276,7 +276,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
     /**
      * This is a very private function ( there is no AuthenticationDTO)
      * SHOULD NEVER BE PULIC
-     * @return next free id number.
+     * @return next free formId number.
      */
     private Integer getNextSequence( int parentId ) throws ApplicationException
     {

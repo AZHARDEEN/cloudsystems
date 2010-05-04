@@ -17,10 +17,8 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( {
-    @NamedQuery( name = Subtask.findAll, query = "select o from Subtask o" ),
-    @NamedQuery( name = Subtask.findbyTask, query = "select o from Subtask o where o.task = ?1" )
-    } )
+@NamedQueries( { @NamedQuery( name = Subtask.findAll, query = "select o from Subtask o" ),
+                 @NamedQuery( name = Subtask.findbyTask, query = "select o from Subtask o where o.task = ?1" ) } )
 @Table( name = "subtask" )
 @IdClass( SubtaskPK.class )
 public class Subtask implements Serializable
@@ -28,9 +26,17 @@ public class Subtask implements Serializable
     public static final String findAll = "Subtask.findAll";
     public static final String findbyTask = "Subtask.findByTask";
 
+    @Id
+    @Column( name = "stk_id_in", nullable = false, insertable = false, updatable = false )
     private Integer subtaskId;
+    @Id
+    @Column( name = "tsk_id_in", nullable = false, insertable = false, updatable = false )
     private Integer taskId;
+    @ManyToOne
+    @JoinColumn( name = "stk_id_in" )
     private Task subTask;
+    @ManyToOne
+    @JoinColumn( name = "tsk_id_in" )
     private Task task;
 
     public Subtask()
@@ -43,8 +49,6 @@ public class Subtask implements Serializable
         setSubTask( subTask );
     }
 
-    @Id
-    @Column( name = "stk_id_in", nullable = false, insertable = false, updatable = false )
     public Integer getSubtaskId()
     {
         return subtaskId;
@@ -55,8 +59,6 @@ public class Subtask implements Serializable
         this.subtaskId = stk_id_in;
     }
 
-    @Id
-    @Column( name = "tsk_id_in", nullable = false, insertable = false, updatable = false )
     public Integer getTaskId()
     {
         return taskId;
@@ -67,8 +69,6 @@ public class Subtask implements Serializable
         this.taskId = tsk_id_in;
     }
 
-    @ManyToOne
-    @JoinColumn( name = "stk_id_in" )
     public Task getSubTask()
     {
         return subTask;
@@ -82,8 +82,6 @@ public class Subtask implements Serializable
         }
     }
 
-    @ManyToOne
-    @JoinColumn( name = "tsk_id_in" )
     public Task getTask()
     {
         return task;

@@ -31,10 +31,19 @@ public class PermissionAssignment implements Serializable
     public static final String findAll = "PermissionAssignment.findAll";
     public static final String findByRole = "PermissionAssignment.findByRole";
 
+    @Column( name = "prm_id_in", nullable = false )
     private Integer permissonId;
+    @Id
+    @Column( name = "rol_id_in", nullable = false, insertable = false, updatable = false )
     private Integer roleId;
+    @Id
+    @Column( name = "tsk_id_in", nullable = false, insertable = false, updatable = false )
     private Integer taskId;
+    @ManyToOne
+    @JoinColumn( name = "tsk_id_in" )
     private Task task;
+    @ManyToOne
+    @JoinColumn( name = "rol_id_in" )
     private Role role;
 
     public PermissionAssignment()
@@ -48,7 +57,6 @@ public class PermissionAssignment implements Serializable
         setTask( task );
     }
 
-    @Column( name = "prm_id_in", nullable = false )
     public Integer getPermissonId()
     {
         return permissonId;
@@ -59,8 +67,6 @@ public class PermissionAssignment implements Serializable
         this.permissonId = prm_id_in;
     }
 
-    @Id
-    @Column( name = "rol_id_in", nullable = false, insertable = false, updatable = false )
     public Integer getRoleId()
     {
         return roleId;
@@ -71,8 +77,6 @@ public class PermissionAssignment implements Serializable
         this.roleId = rol_id_in;
     }
 
-    @Id
-    @Column( name = "tsk_id_in", nullable = false, insertable = false, updatable = false )
     public Integer getTaskId()
     {
         return taskId;
@@ -83,8 +87,6 @@ public class PermissionAssignment implements Serializable
         this.taskId = tsk_id_in;
     }
 
-    @ManyToOne
-    @JoinColumn( name = "tsk_id_in" )
     public Task getTask()
     {
         return task;
@@ -94,7 +96,7 @@ public class PermissionAssignment implements Serializable
     {
         this.task = task;
         if ( task != null ) {
-            this.taskId = task.getId();
+            setTaskId( task.getId() );
         }
     }
 
@@ -102,11 +104,9 @@ public class PermissionAssignment implements Serializable
     {
         this.role = role;
         if ( role != null )
-            this.roleId = role.getId();
+            setRoleId( role.getId() );
     }
 
-    @ManyToOne
-    @JoinColumn( name = "rol_id_in" )
     public Role getRole()
     {
         return role;

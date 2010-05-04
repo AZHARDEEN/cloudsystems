@@ -9,27 +9,28 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "SystemMessageType.findAll", query = "select o from SystemMessageType o")
-})
-@Table( name = "\"system_message_type\"" )
+@NamedQueries( { @NamedQuery( name = "SystemMessageType.findAll", query = "select o from SystemMessageType o" ) } )
+@Table( name = "system_message_type" )
 public class SystemMessageType implements Serializable
 {
+    @Column( name = "smt_description_ch" )
     private String description;
+    @Id
+    @Column( name = "smt_id_in", nullable = false )
     private Integer id;
 
     public SystemMessageType()
     {
     }
 
-    public SystemMessageType( Integer id, String desc  )
+    public SystemMessageType( Integer id, String desc )
     {
         setDescription( desc );
         setId( id );
     }
 
-    @Column( name="smt_description_ch" )
     public String getDescription()
     {
         return description;
@@ -40,8 +41,6 @@ public class SystemMessageType implements Serializable
         this.description = description;
     }
 
-    @Id
-    @Column( name="smt_id_in", nullable = false )
     public Integer getId()
     {
         return id;
