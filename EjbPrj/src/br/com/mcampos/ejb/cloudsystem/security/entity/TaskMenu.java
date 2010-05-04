@@ -26,9 +26,17 @@ public class TaskMenu implements Serializable, Comparable<TaskMenu>
     public static final String findByTask = "TaskMenu.findByTask";
     public static final String findByMenu = "TaskMenu.findByMenu";
 
+    @Id
+    @Column( name = "mnu_id_in", nullable = false, insertable = false, updatable = false )
     private Integer menuId;
+    @Id
+    @Column( name = "tsk_id_in", nullable = false, insertable = false, updatable = false )
     private Integer taskId;
+    @ManyToOne
+    @JoinColumn( name = "tsk_id_in" )
     private Task task;
+    @ManyToOne
+    @JoinColumn( name = "mnu_id_in" )
     private Menu menu;
 
     public TaskMenu()
@@ -41,8 +49,6 @@ public class TaskMenu implements Serializable, Comparable<TaskMenu>
         setTask( task );
     }
 
-    @Id
-    @Column( name = "mnu_id_in", nullable = false, insertable = false, updatable = false )
     public Integer getMenuId()
     {
         return menuId;
@@ -53,8 +59,6 @@ public class TaskMenu implements Serializable, Comparable<TaskMenu>
         this.menuId = mnu_id_in;
     }
 
-    @Id
-    @Column( name = "tsk_id_in", nullable = false, insertable = false, updatable = false )
     public Integer getTaskId()
     {
         return taskId;
@@ -65,8 +69,6 @@ public class TaskMenu implements Serializable, Comparable<TaskMenu>
         this.taskId = tsk_id_in;
     }
 
-    @ManyToOne
-    @JoinColumn( name = "tsk_id_in" )
     public Task getTask()
     {
         return task;
@@ -76,12 +78,10 @@ public class TaskMenu implements Serializable, Comparable<TaskMenu>
     {
         this.task = task;
         if ( task != null ) {
-            this.taskId = task.getId();
+            setTaskId( task.getId() );
         }
     }
 
-    @ManyToOne
-    @JoinColumn( name = "mnu_id_in" )
     public Menu getMenu()
     {
         return menu;
@@ -91,7 +91,7 @@ public class TaskMenu implements Serializable, Comparable<TaskMenu>
     {
         this.menu = menu;
         if ( menu != null ) {
-            this.menuId = menu.getId();
+            setMenuId( menu.getId() );
         }
     }
 

@@ -22,18 +22,25 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = Task.findAll, query = "select o from Task o" ),
-                 @NamedQuery( name = Task.rootTasks, query = "select o from Task o where o.masterTaskList is EMPTY" ) } )
+                 @NamedQuery( name = Task.rootTasks, query = "select o from Task o where o.masterTaskList IS EMPTY " ) } )
 @Table( name = "task" )
 public class Task implements Serializable, EntityCopyInterface<TaskDTO>, Comparable<Task>
 {
     public static final String findAll = "Task.findAll";
     public static final String rootTasks = "Task.rootTasks";
 
+    @Column( name = "tsk_description_ch", nullable = false )
     private String description;
+    @Id
+    @Column( name = "tsk_id_in", nullable = false )
     private Integer id;
+    @OneToMany( mappedBy = "task", cascade = CascadeType.REFRESH )
     private List<Subtask> subtasks;
+    @OneToMany( mappedBy = "task", cascade = CascadeType.REFRESH )
     private List<PermissionAssignment> permissionAssignmentList;
+    @OneToMany( mappedBy = "task", cascade = CascadeType.REFRESH )
     private List<TaskMenu> taskMenuList;
+    @OneToMany( mappedBy = "subTask", cascade = CascadeType.REFRESH )
     private List<Subtask> masterTaskList;
 
     public Task()
@@ -46,7 +53,6 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>, Compara
         this.id = tsk_id_in;
     }
 
-    @Column( name = "tsk_description_ch", nullable = false )
     public String getDescription()
     {
         return description;
@@ -57,8 +63,6 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>, Compara
         this.description = tsk_description_ch;
     }
 
-    @Id
-    @Column( name = "tsk_id_in", nullable = false )
     public Integer getId()
     {
         return id;
@@ -69,7 +73,6 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>, Compara
         this.id = tsk_id_in;
     }
 
-    @OneToMany( mappedBy = "task", cascade = CascadeType.REFRESH )
     public List<Subtask> getSubtasks()
     {
         return subtasks;
@@ -94,7 +97,6 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>, Compara
         return subtask;
     }
 
-    @OneToMany( mappedBy = "task", cascade = CascadeType.REFRESH )
     public List<PermissionAssignment> getPermissionAssignmentList()
     {
         return permissionAssignmentList;
@@ -119,7 +121,6 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>, Compara
         return permissionAssignment;
     }
 
-    @OneToMany( mappedBy = "task", cascade = CascadeType.REFRESH )
     public List<TaskMenu> getTaskMenuList()
     {
         return taskMenuList;
@@ -160,7 +161,6 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>, Compara
         return subtask;
     }
 
-    @OneToMany( mappedBy = "subTask", cascade = CascadeType.REFRESH )
     public List<Subtask> getMasterTaskList()
     {
         return masterTaskList;

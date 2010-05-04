@@ -25,13 +25,11 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( {
-        @NamedQuery( name = Role.roleGetAll, query = "select o from Role o" ),
-        @NamedQuery( name = Role.roleGetRoot, query = "select o from Role o where o.id = 1" ),
-        @NamedQuery( name = Role.roleGetChilds, query = "select o from Role o where o.parentRole = ?1" )
-                 } )
-@NamedNativeQueries( { @NamedNativeQuery( name = Role.roleMaxId, query = "select coalesce ( max (  rol_id_in ), 0 ) + 1 from role" )
-                       } )
+@NamedQueries( { @NamedQuery( name = Role.roleGetAll, query = "select o from Role o" ),
+                 @NamedQuery( name = Role.roleGetRoot, query = "select o from Role o where o.id = 1" ),
+                 @NamedQuery( name = Role.roleGetChilds, query = "select o from Role o where o.parentRole = ?1" ) } )
+@NamedNativeQueries( { @NamedNativeQuery( name = Role.roleMaxId,
+                                          query = "select coalesce ( max (  rol_id_in ), 0 ) + 1 from role" ) } )
 @Table( name = "role" )
 public class Role implements Serializable, EntityCopyInterface<RoleDTO>
 {
@@ -42,11 +40,18 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>
     public static final String roleGetChilds = "Role.getChilds";
     public static final String roleMaxId = "Role.maxId";
 
+    @Column( name = "rol_description_ch", nullable = false )
     private String description;
+    @Id
+    @Column( name = "rol_id_in", nullable = false )
     private Integer id;
+    @ManyToOne
+    @JoinColumn( name = "rol_parent_id" )
     private Role parentRole;
+    @OneToMany( mappedBy = "parentRole", fetch = FetchType.LAZY )
     private List<Role> childRoles;
 
+    @OneToMany( mappedBy = "role", fetch = FetchType.LAZY )
     private List<PermissionAssignment> permissionAssignmentList;
 
 
@@ -60,7 +65,6 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>
         this.id = rol_id_in;
     }
 
-    @Column( name = "rol_description_ch", nullable = false )
     public String getDescription()
     {
         return description;
@@ -71,8 +75,6 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>
         this.description = rol_description_ch;
     }
 
-    @Id
-    @Column( name = "rol_id_in", nullable = false )
     public Integer getId()
     {
         return id;
@@ -84,8 +86,6 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>
     }
 
 
-    @ManyToOne
-    @JoinColumn( name = "rol_parent_id" )
     public Role getParentRole()
     {
         return parentRole;
@@ -96,7 +96,6 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>
         this.parentRole = role;
     }
 
-    @OneToMany( mappedBy = "parentRole", fetch = FetchType.LAZY )
     public List<Role> getChildRoles()
     {
         if ( childRoles == null )
@@ -123,7 +122,6 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>
         return role;
     }
 
-    @OneToMany( mappedBy = "role", fetch = FetchType.LAZY )
     public List<PermissionAssignment> getPermissionAssignmentList()
     {
         if ( permissionAssignmentList == null )
@@ -152,7 +150,7 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>
 
     public RoleDTO toDTO()
     {
-        RoleDTO dto = new RoleDTO ( getId(), getDescription() );
+        RoleDTO dto = new RoleDTO( getId(), getDescription() );
         if ( getParentRole() != null )
             dto.setParent( getParentRole().toDTO() );
         return dto;
