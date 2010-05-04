@@ -15,20 +15,30 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "State.findAll", query = "select o from State o")
-, @NamedQuery(name = "State.findByCountry", query = "select o from State o where o.countryId = :countryId")
-})
-@Table( name = "\"state\"" )
+@NamedQueries( { @NamedQuery( name = "State.findAll", query = "select o from State o" ),
+                 @NamedQuery( name = "State.findByCountry", query = "select o from State o where o.countryId = :countryId" ) } )
+@Table( name = "state" )
 @IdClass( StatePK.class )
 public class State implements Serializable
 {
+    @Id
+    @Column( name = "ctr_id_in", nullable = false, insertable = false, updatable = false )
     private Integer countryId;
+    @Id
+    @Column( name = "reg_id_in", nullable = false, insertable = false, updatable = false )
     private Integer regionId;
+    @Column( name = "sta_abbreviation_ch", nullable = false, length = 32 )
     private String abbreviation;
+    @Id
+    @Column( name = "sta_id_in", nullable = false )
     private Integer id;
+    @Column( name = "sta_name_ch", nullable = false, length = 128 )
     private String name;
+    @ManyToOne( fetch = FetchType.EAGER, optional = false )
+    @JoinColumns( { @JoinColumn( name = "reg_id_in", referencedColumnName = "reg_id_in" ),
+                    @JoinColumn( name = "ctr_id_in", referencedColumnName = "ctr_id_in" ) } )
     private Region region;
 
     public State()
@@ -42,8 +52,8 @@ public class State implements Serializable
         this.id = id;
         this.name = name;
     }
-    
-    protected void init (  Integer CountrId, Integer regionId, Integer id, String name, String abbreviation )
+
+    protected void init( Integer CountrId, Integer regionId, Integer id, String name, String abbreviation )
     {
         this.countryId = CountrId;
         this.regionId = regionId;
@@ -52,9 +62,6 @@ public class State implements Serializable
         this.abbreviation = abbreviation;
     }
 
-    @Id
-    @Column( name="ctr_id_in", nullable = false, insertable = false,
-             updatable = false )
     public Integer getCountryId()
     {
         return countryId;
@@ -65,9 +72,6 @@ public class State implements Serializable
         this.countryId = ctr_id_in;
     }
 
-    @Id
-    @Column( name="reg_id_in", nullable = false, insertable = false,
-             updatable = false )
     public Integer getRegionId()
     {
         return regionId;
@@ -78,7 +82,6 @@ public class State implements Serializable
         this.regionId = reg_id_in;
     }
 
-    @Column( name="sta_abbreviation_ch", nullable = false, length = 32 )
     public String getAbbreviation()
     {
         return abbreviation;
@@ -89,8 +92,6 @@ public class State implements Serializable
         this.abbreviation = sta_abbreviation_ch;
     }
 
-    @Id
-    @Column( name="sta_id_in", nullable = false )
     public Integer getId()
     {
         return id;
@@ -101,7 +102,6 @@ public class State implements Serializable
         this.id = sta_id_in;
     }
 
-    @Column( name="sta_name_ch", nullable = false, length = 128 )
     public String getName()
     {
         return name;
@@ -112,11 +112,6 @@ public class State implements Serializable
         this.name = sta_name_ch;
     }
 
-    @ManyToOne ( fetch = FetchType.EAGER, optional = false )
-    @JoinColumns({
-    @JoinColumn(name = "reg_id_in", referencedColumnName = "reg_id_in"),
-    @JoinColumn(name = "ctr_id_in", referencedColumnName = "ctr_id_in")
-    })
     public Region getRegion()
     {
         return region;
@@ -125,7 +120,7 @@ public class State implements Serializable
     public void setRegion( Region region )
     {
         this.region = region;
-        if (region != null) {
+        if ( region != null ) {
             this.countryId = region.getCountryId();
             this.regionId = region.getId();
         }
