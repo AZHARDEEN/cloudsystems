@@ -13,15 +13,18 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "EMail.findAll", query = "select o from EMail o")
-})
-@Table( name = "\"e_mail\"" )
+@NamedQueries( { @NamedQuery( name = "EMail.findAll", query = "select o from EMail o" ) } )
+@Table( name = "e_mail" )
 public class EMail implements Serializable
 {
+    @Column( name = "eml_description_ch", nullable = false )
     private String description;
+    @Id
+    @Column( name = "eml_id_in", nullable = false )
     private Integer id;
+    @OneToMany( mappedBy = "email" )
     private List<EMailPart> EMailPartList;
 
     public EMail()
@@ -34,7 +37,6 @@ public class EMail implements Serializable
         this.id = eml_id_in;
     }
 
-    @Column( name="eml_description_ch", nullable = false )
     public String getDescription()
     {
         return description;
@@ -45,8 +47,6 @@ public class EMail implements Serializable
         this.description = eml_description_ch;
     }
 
-    @Id
-    @Column( name="eml_id_in", nullable = false )
     public Integer getId()
     {
         return id;
@@ -57,11 +57,10 @@ public class EMail implements Serializable
         this.id = eml_id_in;
     }
 
-    @OneToMany( mappedBy = "email" )
     public List<EMailPart> getEMailPartList()
     {
         if ( EMailPartList == null )
-            EMailPartList = new ArrayList<EMailPart> ();
+            EMailPartList = new ArrayList<EMailPart>();
         return EMailPartList;
     }
 
@@ -72,15 +71,15 @@ public class EMail implements Serializable
 
     public EMailPart addEMailPart( EMailPart EMailPart )
     {
-        getEMailPartList().add(EMailPart);
-        EMailPart.setEmail(this);
+        getEMailPartList().add( EMailPart );
+        EMailPart.setEmail( this );
         return EMailPart;
     }
 
     public EMailPart removeEMailPart( EMailPart EMailPart )
     {
-        getEMailPartList().remove(EMailPart);
-        EMailPart.setEmail(null);
+        getEMailPartList().remove( EMailPart );
+        EMailPart.setEmail( null );
         return EMailPart;
     }
 }

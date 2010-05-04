@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.entity.user.attributes;
 
+
 import br.com.mcampos.dto.core.SimpleTableDTO;
 
 import java.io.Serializable;
@@ -11,31 +12,32 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "CivilState.findAll", query = "select o from CivilState o")
-})
+@NamedQueries( { @NamedQuery( name = "CivilState.findAll", query = "select o from CivilState o" ) } )
 @Table( name = "\"civil_state\"" )
 public class CivilState implements Serializable
 {
+    @Id
+    @Column( name = "cst_id_in", nullable = false )
     protected Integer id;
+    @Column( name = "cst_description_ch", nullable = false, length = 32 )
     protected String description;
-                     
+
     public CivilState()
     {
     }
-    
 
-    public CivilState ( SimpleTableDTO dto )
+
+    public CivilState( SimpleTableDTO dto )
     {
-        if ( dto != null )
-        {
+        if ( dto != null ) {
             this.id = dto.getId();
             this.description = dto.getDescription();
         }
     }
-    
-    public CivilState ( Integer id )
+
+    public CivilState( Integer id )
     {
         this.id = id;
     }
@@ -46,9 +48,8 @@ public class CivilState implements Serializable
         this.id = id;
         this.description = description;
     }
-    
 
-    @Column( name="cst_description_ch", nullable = false, length = 32 )
+
     public String getDescription()
     {
         return description;
@@ -59,8 +60,6 @@ public class CivilState implements Serializable
         this.description = description;
     }
 
-    @Id
-    @Column( name="cst_id_in", nullable = false )
     public Integer getId()
     {
         return id;
@@ -70,7 +69,7 @@ public class CivilState implements Serializable
     {
         this.id = id;
     }
-    
+
 }
 
 

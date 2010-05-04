@@ -31,19 +31,31 @@ import javax.persistence.Table;
  * @version 1.0
  */
 @Entity
-@NamedQueries( { @NamedQuery( name = "Login.findAll", query = "select o from Login o" ), @NamedQuery( name = "Login.findToken", query = "select o from Login o where o.token = :token" ) } )
-@Table( name = "\"login\"" )
+@NamedQueries( { @NamedQuery( name = "Login.findAll", query = "select o from Login o" ),
+                 @NamedQuery( name = "Login.findToken", query = "select o from Login o where o.token = :token" ) } )
+@Table( name = "login" )
 public class Login implements Serializable
 {
+    @Id
+    @Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
     private Integer userId;
+    @Column( name = "lgi_passwd_exp_dt" )
     private Timestamp passwordExpirationDate;
+    @Column( name = "lgi_password_ch", nullable = false, columnDefinition = "VARCHAR(64)" )
     private String password;
+    @Column( name = "lgi_try_count_in", nullable = true, columnDefinition = "Integer" )
     private Integer tryCount;
+    @Column( name = "lgi_token_ch", nullable = true, columnDefinition = "VARCHAR(32)" )
     private String token;
 
 
+    @OneToOne( fetch = FetchType.EAGER )
+    @JoinColumn( name = "usr_id_in", nullable = false, referencedColumnName = "usr_id_in", columnDefinition = "Integer" )
     protected Person person;
+    @ManyToOne( fetch = FetchType.EAGER, optional = false )
+    @JoinColumn( name = "uts_id_in", nullable = false, referencedColumnName = "uts_id_in", columnDefinition = "Integer" )
     protected UserStatus userStatus;
+    @OneToMany( mappedBy = "login", cascade = CascadeType.ALL )
     protected List<LastUsedPassword> lastUsedPasswords;
 
     public Login()
@@ -60,15 +72,12 @@ public class Login implements Serializable
 
     protected void init( Timestamp usr_passwd_exp_dt, String usr_password_ch, UserStatus userType )
     {
-        this.passwordExpirationDate = usr_passwd_exp_dt;
-        this.password = usr_password_ch;
-        this.userStatus = userType;
-
+        setPasswordExpirationDate( usr_passwd_exp_dt );
+        setPassword( usr_password_ch );
+        setUserStatus( userType );
     }
 
 
-    @Id
-    @Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
     public Integer getUserId()
     {
         return userId;
@@ -79,7 +88,6 @@ public class Login implements Serializable
         this.userId = usr_id_in;
     }
 
-    @Column( name = "lgi_passwd_exp_dt" )
     public Timestamp getPasswordExpirationDate()
     {
         return passwordExpirationDate;
@@ -90,7 +98,6 @@ public class Login implements Serializable
         this.passwordExpirationDate = usr_passwd_exp_dt;
     }
 
-    @Column( name = "lgi_password_ch", nullable = false, columnDefinition = "VARCHAR(64)" )
     public String getPassword()
     {
         return password;
@@ -102,16 +109,11 @@ public class Login implements Serializable
     }
 
 
-    public void setPerson( Person person )
+    public void setPerson( Person p )
     {
-        this.person = person;
-        if ( getPerson() != null ) {
-            person.setLogin( this );
-        }
+        this.person = p;
     }
 
-    @OneToOne( fetch = FetchType.EAGER )
-    @JoinColumn( name = "usr_id_in", nullable = false, referencedColumnName = "usr_id_in", columnDefinition = "Integer" )
     public Person getPerson()
     {
         return person;
@@ -122,8 +124,6 @@ public class Login implements Serializable
         this.userStatus = userType;
     }
 
-    @ManyToOne( fetch = FetchType.EAGER, optional = false )
-    @JoinColumn( name = "uts_id_in", nullable = false, referencedColumnName = "uts_id_in", columnDefinition = "Integer" )
     public UserStatus getUserStatus()
     {
         return userStatus;
@@ -134,7 +134,6 @@ public class Login implements Serializable
         this.tryCount = tryCount;
     }
 
-    @Column( name = "lgi_try_count_in", nullable = true, columnDefinition = "Integer" )
     public Integer getTryCount()
     {
         return tryCount;
@@ -142,11 +141,11 @@ public class Login implements Serializable
 
     public Integer incrementTryCount()
     {
-        if ( tryCount == null )
-            tryCount = new Integer( 1 );
+        if ( getTryCount() == null )
+            setTryCount( new Integer( 1 ) );
         else
-            tryCount += 1;
-        return tryCount;
+            setTryCount( getTryCount() + 1 );
+        return getTryCount();
     }
 
     public void setToken( String token )
@@ -154,7 +153,6 @@ public class Login implements Serializable
         this.token = token;
     }
 
-    @Column( name = "lgi_token_ch", nullable = true, columnDefinition = "VARCHAR(32)" )
     public String getToken()
     {
         return token;
@@ -165,7 +163,6 @@ public class Login implements Serializable
         this.lastUsedPasswords = lastUsedPasswords;
     }
 
-    @OneToMany( mappedBy = "login", cascade = CascadeType.ALL )
     public List<LastUsedPassword> getLastUsedPasswords()
     {
         if ( lastUsedPasswords == null )

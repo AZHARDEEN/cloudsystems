@@ -9,16 +9,18 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "EMailPartType.findAll", query = "select o from EMailPartType o")
-})
-@Table( name = "\"e_mail_part_type\"" )
+@NamedQueries( { @NamedQuery( name = "EMailPartType.findAll", query = "select o from EMailPartType o" ) } )
+@Table( name = "e_mail_part_type" )
 public class EMailPartType implements Serializable
 {
+    @Column( name = "emp_description_ch", nullable = false )
     private String description;
+    @Id
+    @Column( name = "emp_id_in", nullable = false )
     private Integer id;
-    
+
     public static final int partSubject = 1;
     public static final int partBody = 2;
 
@@ -32,7 +34,6 @@ public class EMailPartType implements Serializable
         this.id = emp_id_in;
     }
 
-    @Column( name="emp_description_ch", nullable = false )
     public String getDescription()
     {
         return description;
@@ -43,8 +44,6 @@ public class EMailPartType implements Serializable
         this.description = emp_description_ch;
     }
 
-    @Id
-    @Column( name="emp_id_in", nullable = false )
     public Integer getId()
     {
         return id;

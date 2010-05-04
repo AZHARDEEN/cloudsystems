@@ -16,41 +16,46 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "Gender.findAll", query = "select o from Gender o")
-})
-@Table( name = "\"gender\"" )
+@NamedQueries( { @NamedQuery( name = "Gender.findAll", query = "select o from Gender o" ) } )
+@Table( name = "gender" )
 public class Gender implements Serializable
 {
+    @Id
+    @Column( name = "gnd_id_in", nullable = false )
     protected Integer id;
+    @Column( name = "gnd_description_ch", nullable = false, length = 32 )
     protected String description;
-    protected List<Title> titles; 
-    
+    @ManyToMany( fetch = FetchType.EAGER )
+    @JoinTable( name = "gender_title",
+                joinColumns = @JoinColumn( name = "gnd_id_in", referencedColumnName = "gnd_id_in", nullable = false ),
+                inverseJoinColumns = @JoinColumn( name = "ttl_id_in", referencedColumnName = "ttl_id_in", nullable = false ) )
+    protected List<Title> titles;
+
     public Gender()
     {
-        super ();
+        super();
     }
 
-    public Gender ( Integer id )
+    public Gender( Integer id )
     {
-        super ();
-        this.id = id;
+        super();
+        setId( id );
     }
-    
- 
-    protected void init ( Integer id, String description )
+
+
+    protected void init( Integer id, String description )
     {
-        this.id = id;
-        this.description = description;
+        setId( id );
+        setDescription( description );
     }
-    
+
     public Gender( Integer id, String description )
     {
-        init ( id, description );
+        init( id, description );
     }
 
-    @Column( name="gnd_description_ch", nullable = false, length = 32 )
     public String getDescription()
     {
         return description;
@@ -61,8 +66,6 @@ public class Gender implements Serializable
         this.description = description;
     }
 
-    @Id
-    @Column( name="gnd_id_in", nullable = false )
     public Integer getId()
     {
         return id;
@@ -74,17 +77,11 @@ public class Gender implements Serializable
     }
 
 
-    @ManyToMany( fetch = FetchType.EAGER )
-    @JoinTable ( 
-                name = "gender_title", 
-                joinColumns = @JoinColumn ( name = "gnd_id_in", referencedColumnName = "gnd_id_in", nullable = false ),
-                inverseJoinColumns = @JoinColumn( name = "ttl_id_in", referencedColumnName = "ttl_id_in", nullable = false )
-            )
     public List<Title> getTitles()
     {
         return titles;
     }
-    
+
     public void setTitles( List<Title> titles )
     {
         this.titles = titles;
