@@ -2,15 +2,12 @@ package br.com.mcampos.ejb.entity.user;
 
 
 import br.com.mcampos.ejb.entity.address.AddressType;
-
 import br.com.mcampos.ejb.entity.address.City;
-
 import br.com.mcampos.ejb.entity.user.pk.AddressPK;
 
 import java.io.Serializable;
 
 import java.sql.Timestamp;
-
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,58 +19,71 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "Address.findAll", query = "select o from Address o")
-})
-@Table( name = "\"address\"" )
+@NamedQueries( { @NamedQuery( name = "Address.findAll", query = "select o from Address o" ) } )
+@Table( name = "address" )
 @IdClass( AddressPK.class )
 public class Address implements Serializable, Comparable<Address>
 {
+    @Id
+    @Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
     private Integer userId;
+
+    @Id
+    @Column( name = "adt_id_in", nullable = false, updatable = false, insertable = false )
     private Integer addressTypeId;
-    
-    
+
+    @Column( name = "adr_adress_ch", nullable = false, length = 256 )
     private String address;
+
+    @Column( name = "adr_district_ch", length = 64 )
     private String district;
+
+    @Column( name = "adr_obs_tx" )
     private String comment;
+
+    @Column( name = "adr_to_dt" )
     private Timestamp toDate;
+
+    @Column( name = "adr_zip_code_ch", nullable = false, length = 24 )
     private String zip;
-    
-    
+
+    @ManyToOne
+    @JoinColumn( name = "adt_id_in", referencedColumnName = "adt_id_in", nullable = false )
     private AddressType addressType;
-    private City  city;
+
+    @ManyToOne
+    @JoinColumn( name = "cit_id_in", referencedColumnName = "cit_id_in", nullable = false )
+    private City city;
+
+    @ManyToOne
+    @JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", nullable = false )
     private Users user;
 
     public Address()
     {
-        super ();
+        super();
     }
 
-    public Address( String adr_adress_ch, String adr_district_ch,
-                    String adr_obs_tx, String adr_zip_code_ch,
-                    AddressType adt_id_in, City cit_id_in )
+    public Address( String adr_adress_ch, String adr_district_ch, String adr_obs_tx, String adr_zip_code_ch, AddressType adt_id_in,
+                    City cit_id_in )
     {
-        super ();
-        init ( adr_adress_ch, adr_district_ch, adr_obs_tx,
-                    adr_zip_code_ch, adt_id_in, cit_id_in );
+        super();
+        init( adr_adress_ch, adr_district_ch, adr_obs_tx, adr_zip_code_ch, adt_id_in, cit_id_in );
     }
-    
-    protected  void init( String address, String district,
-                    String comment,
-                    String zip,
-                    AddressType addressType, City city )
+
+    protected void init( String address, String district, String comment, String zip, AddressType addressType, City city )
     {
-        setAddress ( address );
+        setAddress( address );
         setDistrict( district );
         setComment( comment );
-        setZip(zip );
-        setAddressType ( addressType );
-        setCity ( city );
+        setZip( zip );
+        setAddressType( addressType );
+        setCity( city );
     }
-    
 
-    @Column( name="adr_adress_ch", nullable = false, length = 256 )
+
     public String getAddress()
     {
         return address;
@@ -84,7 +94,6 @@ public class Address implements Serializable, Comparable<Address>
         this.address = address;
     }
 
-    @Column( name="adr_district_ch", length = 64 )
     public String getDistrict()
     {
         return district;
@@ -96,7 +105,6 @@ public class Address implements Serializable, Comparable<Address>
     }
 
 
-    @Column( name="adr_obs_tx" )
     public String getComment()
     {
         return comment;
@@ -107,7 +115,6 @@ public class Address implements Serializable, Comparable<Address>
         this.comment = comment;
     }
 
-    @Column( name="adr_to_dt" )
     public Timestamp getToDate()
     {
         return toDate;
@@ -118,7 +125,6 @@ public class Address implements Serializable, Comparable<Address>
         this.toDate = toDt;
     }
 
-    @Column( name="adr_zip_code_ch", nullable = false, length = 24 )
     public String getZip()
     {
         return zip;
@@ -129,22 +135,18 @@ public class Address implements Serializable, Comparable<Address>
         this.zip = zip;
     }
 
-    @ManyToOne
-    @JoinColumn (name = "adt_id_in", referencedColumnName = "adt_id_in", nullable = false )
     public AddressType getAddressType()
     {
         return addressType;
     }
 
-    public void setAddressType( AddressType addressType )
+    public void setAddressType( AddressType type )
     {
-        this.addressType = addressType;
-        if ( this.addressType != null )
-            setAddressTypeId( getAddressType().getId() );
+        this.addressType = type;
+        if ( type != null )
+            setAddressTypeId( type.getId() );
     }
 
-    @ManyToOne
-    @JoinColumn (name = "cit_id_in", referencedColumnName = "cit_id_in", nullable = false )
     public City getCity()
     {
         return city;
@@ -155,18 +157,16 @@ public class Address implements Serializable, Comparable<Address>
         this.city = city;
     }
 
-    @ManyToOne
-    @JoinColumn (name = "usr_id_in", referencedColumnName = "usr_id_in", nullable = false )
     public Users getUser()
     {
         return user;
     }
 
-    public void setUser( Users user )
+    public void setUser( Users u )
     {
-        this.user = user;
-        if ( user != null )
-            this.setUserId( user.getId() );
+        this.user = u;
+        if ( u != null )
+            this.setUserId( u.getId() );
     }
 
     public void setUserId( Integer userId )
@@ -174,20 +174,16 @@ public class Address implements Serializable, Comparable<Address>
         this.userId = userId;
     }
 
-    @Id
-    @Column( name="usr_id_in", nullable = false, insertable = false, updatable = false )
     public Integer getUserId()
     {
         return userId;
     }
 
-    public void setAddressTypeId( Integer addressTypeId )
+    public void setAddressTypeId( Integer type )
     {
-        this.addressTypeId = addressTypeId;
+        this.addressTypeId = type;
     }
 
-    @Id
-    @Column( name="adt_id_in", nullable = false, updatable = false, insertable = false )
     public Integer getAddressTypeId()
     {
         return addressTypeId;
@@ -207,11 +203,11 @@ public class Address implements Serializable, Comparable<Address>
     public boolean equals( Object obj )
     {
         if ( obj instanceof Address ) {
-            Address a = ( Address ) obj;
-            
+            Address a = ( Address )obj;
+
             return getUserId().equals( a.getUserId() ) && getAddressTypeId().equals( a.getAddressTypeId() );
         }
-        else 
+        else
             return false;
     }
 }
