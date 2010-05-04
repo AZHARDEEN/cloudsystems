@@ -13,26 +13,34 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "City.findAll", query = "select o from City o order by o.name")
-, @NamedQuery(name = "City.findByState", query = "select o from City o where o.state.id = :stateId and o.state.countryId = :countryId order by o.name ")
-})
+@NamedQueries( { @NamedQuery( name = "City.findAll", query = "select o from City o order by o.name" ),
+                 @NamedQuery( name = "City.findByState",
+                              query = "select o from City o where o.state.id = :stateId and o.state.countryId = :countryId order by o.name " ) } )
 @Table( name = "\"city\"" )
 public class City implements Serializable
 {
+    @Id
+    @Column( name = "cit_id_in", nullable = false )
     private Integer id;
+    @Column( name = "cit_name_ch", nullable = false )
     private String name;
+    @Column( name = "cit_contry_capital_bt" )
     private Boolean countryCapital;
+    @Column( name = "cit_state_capital_bt" )
     private Boolean stateCapital;
+    @ManyToOne
+    @JoinColumns( { @JoinColumn( name = "sta_id_in", referencedColumnName = "sta_id_in" ),
+                    @JoinColumn( name = "reg_id_in", referencedColumnName = "reg_id_in" ),
+                    @JoinColumn( name = "ctr_id_in", referencedColumnName = "ctr_id_in" ) } )
     private State state;
 
     public City()
     {
-        super ();
+        super();
     }
 
-    @Column( name="cit_contry_capital_bt" )
     public Boolean isCountryCapital()
     {
         return countryCapital;
@@ -43,8 +51,6 @@ public class City implements Serializable
         this.countryCapital = isCapital;
     }
 
-    @Id
-    @Column( name="cit_id_in", nullable = false )
     public Integer getId()
     {
         return id;
@@ -55,7 +61,6 @@ public class City implements Serializable
         this.id = cit_id_in;
     }
 
-    @Column( name="cit_name_ch", nullable = false )
     public String getName()
     {
         return name;
@@ -66,7 +71,6 @@ public class City implements Serializable
         this.name = cit_name_ch;
     }
 
-    @Column( name="cit_state_capital_bt" )
     public Boolean isStateCapital()
     {
         return stateCapital;
@@ -78,12 +82,6 @@ public class City implements Serializable
     }
 
 
-    @ManyToOne
-    @JoinColumns({
-    @JoinColumn(name = "sta_id_in", referencedColumnName = "sta_id_in"),
-    @JoinColumn(name = "reg_id_in", referencedColumnName = "reg_id_in"),
-    @JoinColumn(name = "ctr_id_in", referencedColumnName = "ctr_id_in")
-    })
     public State getState()
     {
         return state;

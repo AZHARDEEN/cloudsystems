@@ -9,36 +9,37 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries( { 
-            @NamedQuery( name = "AddressType.findAll", query = "select o from AddressType o order by o.id" ),
-            @NamedQuery( name = "AddressType.find", query = "select o from AddressType o where o.id = :id " )
-        } )
-@Table( name = "\"address_type\"" )
+@NamedQueries( { @NamedQuery( name = "AddressType.findAll", query = "select o from AddressType o order by o.id" ),
+                 @NamedQuery( name = "AddressType.find", query = "select o from AddressType o where o.id = :id " ) } )
+@Table( name = "address_type" )
 public class AddressType implements Serializable
 {
+    @Id
+    @Column( name = "adt_id_in", nullable = false )
     protected Integer id;
+    @Column( name = "adt_description_ch", nullable = false, length = 32 )
     protected String description;
 
     public AddressType()
     {
-        super ();
+        super();
     }
 
     public AddressType( Integer id )
     {
-        super ();
+        super();
         this.id = id;
     }
 
     public AddressType( Integer id, String description )
     {
-        super ();
+        super();
         setId( id );
         setDescription( description );
     }
-    
-    @Column( name = "adt_description_ch", nullable = false, length = 32 )
+
     public String getDescription()
     {
         return description;
@@ -49,8 +50,6 @@ public class AddressType implements Serializable
         this.description = adt_description_ch;
     }
 
-    @Id
-    @Column( name = "adt_id_in", nullable = false )
     public Integer getId()
     {
         return id;

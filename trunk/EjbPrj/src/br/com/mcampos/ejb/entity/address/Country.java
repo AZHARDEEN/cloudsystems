@@ -12,10 +12,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "Country.findAll", query = "select o from Country o")
-})
+@NamedQueries( { @NamedQuery( name = "Country.findAll", query = "select o from Country o" ) } )
 @Table( name = "\"country\"" )
 public class Country implements Serializable
 {
@@ -27,31 +26,31 @@ public class Country implements Serializable
 
     public Country()
     {
-        super ();
+        super();
     }
 
     public Country( Integer id, String code3, String code, Integer numericCode )
     {
-        super ();
-        init ( id, code3, code, numericCode );
+        super();
+        init( id, code3, code, numericCode );
     }
 
     public Country( Integer id )
     {
         super();
-        this.id = id;
+        setId( id );
     }
 
 
-    protected void init ( Integer id, String code3, String code, Integer numericCode )
+    protected void init( Integer id, String code3, String code, Integer numericCode )
     {
-        this.code3 = code3;
-        this.code = code;
-        this.id = id;
-        this.numericCode = numericCode;
+        setCode3( code3 );
+        setCode( code );
+        setId( id );
+        setNumericCode( numericCode );
     }
 
-    @Column( name="ctr_code3_ch" )
+    @Column( name = "ctr_code3_ch" )
     public String getCode3()
     {
         return code3;
@@ -62,7 +61,7 @@ public class Country implements Serializable
         this.code3 = ctr_code3_ch;
     }
 
-    @Column( name="ctr_code_ch", nullable = false )
+    @Column( name = "ctr_code_ch", nullable = false )
     public String getCode()
     {
         return code;
@@ -74,7 +73,7 @@ public class Country implements Serializable
     }
 
     @Id
-    @Column( name="ctr_id_in", nullable = false )
+    @Column( name = "ctr_id_in", nullable = false )
     public Integer getId()
     {
         return id;
@@ -85,7 +84,7 @@ public class Country implements Serializable
         this.id = ctr_id_in;
     }
 
-    @Column( name="ctr_num_code_in" )
+    @Column( name = "ctr_num_code_in" )
     public Integer getNumericCode()
     {
         return numericCode;
@@ -109,15 +108,15 @@ public class Country implements Serializable
 
     public Region addRegion( Region region )
     {
-        getRegionList().add(region);
-        region.setCountry(this);
+        getRegionList().add( region );
+        region.setCountry( this );
         return region;
     }
 
     public Region removeRegion( Region region )
     {
-        getRegionList().remove(region);
-        region.setCountry(null);
+        getRegionList().remove( region );
+        region.setCountry( null );
         return region;
     }
 }
