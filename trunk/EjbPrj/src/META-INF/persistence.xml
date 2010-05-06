@@ -5,7 +5,7 @@
   <persistence-unit name="EjbPrj">
     <description>Descrição do conector CloudSystems</description>
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>java:/app/jdbc/jdbc/PostgreSQLDS</jta-data-source>
+    <jta-data-source>jdbc/CloudDS</jta-data-source>
     <class>br.com.mcampos.ejb.entity.user.attributes.UserType</class>
     <class>br.com.mcampos.ejb.entity.address.City</class>
     <class>br.com.mcampos.ejb.entity.user.Collaborator</class>
@@ -65,81 +65,5 @@
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField</class>
     <class>br.com.mcampos.ejb.cloudsystem.system.entity.FieldType</class>
-    <properties>
-      <property name="eclipselink.target-server" value="WebLogic 10"/>
-      <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/PostgreSQLDS"/>
-      <property name="eclipselink.cache.type.default" value="SoftWeak"/>
-      <property name="eclipselink.jdbc.native-sql" value="true"/>
-      <property name="eclipselink.target-database" value="PostgreSQL"/>
-      <property name="eclipselink.jdbc.bind-parameters" value="true"/>
-    </properties>
-  </persistence-unit>
-  <persistence-unit name="EjbPrj-Outside" transaction-type="RESOURCE_LOCAL">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>br.com.mcampos.ejb.entity.user.attributes.UserStatus</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.CompanyPosition</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.entity.Menu</class>
-    <class>br.com.mcampos.ejb.entity.security.Subtask</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.UserType</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcAttachment</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.CollaboratorType</class>
-    <class>br.com.mcampos.ejb.entity.system.SystemMessage</class>
-    <class>br.com.mcampos.ejb.entity.address.State</class>
-    <class>br.com.mcampos.ejb.entity.security.SubjectRole</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.entity.Task</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenu</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.Title</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage</class>
-    <class>br.com.mcampos.ejb.entity.system.EMailPart</class>
-    <class>br.com.mcampos.ejb.entity.address.Region</class>
-    <class>br.com.mcampos.ejb.entity.login.Login</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.entity.Role</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen</class>
-    <class>br.com.mcampos.ejb.entity.login.AccessLogType</class>
-    <class>br.com.mcampos.ejb.entity.address.AddressType</class>
-    <class>br.com.mcampos.ejb.entity.system.SystemMessageType</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad</class>
-    <class>br.com.mcampos.ejb.entity.user.UserContact</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.DocumentType</class>
-    <class>br.com.mcampos.ejb.entity.user.UserDocument</class>
-    <class>br.com.mcampos.ejb.entity.user.Collaborator</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.CompanyType</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.form.FormMedia</class>
-    <class>br.com.mcampos.ejb.entity.system.EMail</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.page.BackgroundImage</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.Gender</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.CivilState</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage</class>
-    <class>br.com.mcampos.ejb.cloudsystem.system.entity.FieldType</class>
-    <class>br.com.mcampos.ejb.entity.login.AccessLog</class>
-    <class>br.com.mcampos.ejb.entity.login.LastUsedPassword</class>
-    <class>br.com.mcampos.ejb.entity.user.Address</class>
-    <class>br.com.mcampos.ejb.entity.user.Users</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm</class>
-    <class>br.com.mcampos.ejb.cloudsystem.media.entity.Media</class>
-    <class>br.com.mcampos.ejb.entity.user.Company</class>
-    <class>br.com.mcampos.ejb.entity.system.EMailPartType</class>
-    <class>br.com.mcampos.ejb.entity.address.Country</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus</class>
-    <class>br.com.mcampos.ejb.entity.security.PermissionAssignment</class>
-    <class>br.com.mcampos.ejb.entity.user.Person</class>
-    <class>br.com.mcampos.ejb.entity.system.SystemParameters</class>
-    <class>br.com.mcampos.ejb.entity.user.Client</class>
-    <class>br.com.mcampos.ejb.entity.address.City</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.ContactType</class>
-    <properties>
-      <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="eclipselink.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/db_cloud"/>
-      <property name="eclipselink.jdbc.user" value="cloud"/>
-      <property name="eclipselink.jdbc.password" value="7262A3B2F02512DD110B2821B0B16BC1"/>
-      <property name="eclipselink.logging.level" value="FINER"/>
-      <property name="eclipselink.target-server" value="WebLogic_10"/>
-    </properties>
   </persistence-unit>
 </persistence>
