@@ -40,15 +40,15 @@ import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoForm;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPage;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPageField;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.AnotoPen;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.Pad;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.Pgc;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcAttachment;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcField;
-import br.com.mcampos.ejb.cloudsystem.anode.entity.PgcPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField;
+import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
+import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
 import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
@@ -248,10 +248,10 @@ public final class DTOFactory implements Serializable
 
 		code = document.trim();
 		switch ( type ) {
-			case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
-				break;
-			case UserDocument.typeEmail: code = code.toLowerCase();
-				break;
+		case UserDocument.typeCPF: code = code.replaceAll( "[\\-.\\/]", "" );
+			break;
+		case UserDocument.typeEmail: code = code.toLowerCase();
+			break;
 		}
 		return code;
 	}
@@ -849,7 +849,7 @@ public final class DTOFactory implements Serializable
 		entity.setHasPenstrokes( dto.getHasPenstrokes() );
 		entity.setStartTime( dto.getStartTime() );
 		entity.setEndTime( dto.getEndTime() );
-		entity.setType( dto.getType() );
+		entity.setType( copy( dto.getType() ) );
 		return entity;
 	}
 

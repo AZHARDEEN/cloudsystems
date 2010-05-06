@@ -3,6 +3,7 @@ package br.com.mcampos.controller.anoto;
 
 import br.com.mcampos.controller.anoto.renderer.AttatchmentGridRenderer;
 import br.com.mcampos.controller.anoto.renderer.ComboMediaRenderer;
+import br.com.mcampos.controller.anoto.util.AnotoExport;
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
@@ -44,6 +45,7 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
@@ -488,14 +490,23 @@ public class AnotoViewController extends AnotoLoggedController
 
 	public void onClick$btnExport()
 	{
+		AnotoExport export = new AnotoExport( getLoggedInUser(), currentList );
 
-		Document doc = new Document();
-		Element root = new Element( "Form" );
-		root.setAttribute( "Application", dtoParam.getForm().getApplication() );
-		root.setAttribute( "Description", dtoParam.getForm().getDescription() );
-		Element book = new Element( "Book" );
-		Element pages = new Element( "Pages" );
-		Element page = new Element( "Page" );
+		Document doc;
+		try {
+			doc = export.exportToXML();
+			String xml = doc.toString();
+			xml = "";
+		}
+		catch ( ApplicationException e ) {
+			try {
+				Messagebox.show( e.getMessage() );
+			}
+			catch ( InterruptedException f ) {
+				f = null;
+			}
+			doc = null;
+		}
 
 	}
 
