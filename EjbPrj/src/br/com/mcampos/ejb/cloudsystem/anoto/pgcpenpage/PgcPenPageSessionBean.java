@@ -58,23 +58,21 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<PgcPage> getAll( Properties props, Integer maxRecords ) throws ApplicationException
     {
-        String jpaQuery =   "select distinct \n" +
-                            "	pgc_page.pgc_id_in, \n" +
-                            "	pgc_page.ppg_book_id, \n" +
-                            "	pgc_page.ppg_page_id \n" +
-                            "from \n" +
-                            "	pgc_page JOIN Pgc ON ( pgc.pgc_id_in = pgc_page.pgc_id_in ) \n" +
-                            "	JOIN \n" +
-                            "	pgc_pen_page ON ( pgc_pen_page.pgc_id_in = pgc.pgc_id_in ) \n" +
-                            "	JOIN\n" +
-                            "	anoto_form ON ( anoto_form.frm_id_in = pgc_pen_page.frm_id_in ) \n  ";
+        String jpaQuery = "select distinct \n" +
+            "	pgc_page.* \n" +
+            "from \n" +
+            "	pgc_page JOIN Pgc ON ( pgc.pgc_id_in = pgc_page.pgc_id_in ) \n" +
+            "	JOIN \n" +
+            "	pgc_pen_page ON ( pgc_pen_page.pgc_id_in = pgc.pgc_id_in ) \n" +
+            "	JOIN\n" +
+            "	anoto_form ON ( anoto_form.frm_id_in = pgc_pen_page.frm_id_in ) \n  ";
         String jpaWhere = "";
         AnotoForm form;
         String pen;
         String barCode;
         String fieldValue;
         Integer bookIdFrom, bookIdTo;
-        SimpleDateFormat df = new SimpleDateFormat ( "yyyyMMdd HHmmss" );
+        SimpleDateFormat df = new SimpleDateFormat( "yyyyMMdd HHmmss" );
 
         form = ( AnotoForm )( props != null ? props.get( formParameterName ) : null );
         if ( form != null ) {
@@ -115,9 +113,8 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         barCode = ( String )( props != null ? props.get( barCodeParameterName ) : "" );
         if ( SysUtils.isEmpty( barCode ) == false ) {
             String sqlBarCode = " exists ( select a.pgc_id_in from pgc_attachment a \n" +
-            " where a.pgc_id_in = pgc_page.pgc_id_in and " +
-                        " a.ppg_book_id = pgc_page.ppg_book_id and " +
-                        " a.ppg_page_id = pgc_page.ppg_page_id \n";
+                " where a.pgc_id_in = pgc_page.pgc_id_in and " + " a.ppg_book_id = pgc_page.ppg_book_id and " +
+                " a.ppg_page_id = pgc_page.ppg_page_id \n";
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
             if ( barCode.indexOf( "*" ) >= 0 ) {
@@ -125,15 +122,15 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
                 jpaWhere += sqlBarCode + " and a.pat_value_ch LIKE '" + barCode + "')";
             }
             else
-                jpaWhere += sqlBarCode +  " and a.pat_value_ch = '" + barCode + "' )";
+                jpaWhere += sqlBarCode + " and a.pat_value_ch = '" + barCode + "' )";
         }
 
 
         fieldValue = ( String )( props != null ? props.get( fieldValueParameterName ) : "" );
         if ( SysUtils.isEmpty( fieldValue ) == false ) {
             String sqlFieldValue = " exists ( select a.pgc_id_in from pgc_field a \n" +
-            "	where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " +
-            "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
+                "	where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " +
+                "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
             if ( fieldValue.indexOf( "*" ) >= 0 ) {
@@ -141,7 +138,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
                 jpaWhere += sqlFieldValue + " and coalesce ( pfl_revised_tx, pfl_icr_tx ) LIKE '" + fieldValue + "')";
             }
             else
-                jpaWhere += sqlFieldValue +  " and coalesce ( pfl_revised_tx, pfl_icr_tx ) = '" + fieldValue + "' )";
+                jpaWhere += sqlFieldValue + " and coalesce ( pfl_revised_tx, pfl_icr_tx ) = '" + fieldValue + "' )";
         }
 
 
