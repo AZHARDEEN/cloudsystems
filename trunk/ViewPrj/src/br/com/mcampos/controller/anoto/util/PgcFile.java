@@ -12,6 +12,7 @@ import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.anoto.PgcStatusDTO;
+import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
@@ -272,8 +273,8 @@ public class PgcFile
 		Map<String, IcrField> icrFields = null;
 
 		basePath =
- String.format( "%s/%s/%s/%d", pgcPenPage.getForm().getApplication(), pgcPenPage.getPenPage().getPage().getPad().getMedia()
-				.getName(), page.getPageAddress(), pgcPenPage.getPgc().getId() );
+ String.format( "%s/%s/%s/%d", pgcPenPage.getForm().getApplication(), pgcPenPage.getPenPage().getPage().getPad().getMedia().getName(),
+				page.getPageAddress(), pgcPenPage.getPgc().getId() );
 		basePath = PadFile.getPath( basePath );
 		File file = new File( basePath );
 		if ( file.exists() == false )
@@ -407,7 +408,7 @@ public class PgcFile
 				continue;
 			fieldDTO = new PgcFieldDTO( pgcPage );
 			fieldDTO.setName( pageArea.getName() );
-			fieldDTO.setType( pageArea.getType() );
+			fieldDTO.setType( new FieldTypeDTO( pageArea.getType() ) );
 			fieldDTO.setHasPenstrokes( pageArea.hasPenStrokes() );
 			pageArea.getType();
 			if ( fieldDTO.getHasPenstrokes() ) {
@@ -436,6 +437,7 @@ public class PgcFile
 				if ( field != null )
 					fieldDTO.setIrcText( field.getValue().toString() );
 			}
+			System.out.println( fieldDTO.getName() );
 			getSession().addPgcField( fieldDTO );
 		}
 	}
@@ -463,8 +465,8 @@ public class PgcFile
 		renderer = RendererFactory.create( pageArea );
 		renderer.useForce( false );
 		String filename =
-				  String.format( "%s\\%03d_%03d_%03d_%03d.%s", basePath, fieldDTO.getPgcPage().getPgc().getId(), fieldDTO.getPgcPage()
-								 .getBookId(), fieldDTO.getPgcPage().getPageId(), fieldIndex, "jpg" );
+				  String.format( "%s\\%03d_%03d_%03d_%03d.%s", basePath, fieldDTO.getPgcPage().getPgc().getId(), fieldDTO.getPgcPage().getBookId(),
+								 fieldDTO.getPgcPage().getPageId(), fieldIndex, "jpg" );
 		renderer.renderToFile( filename, 300 );
 		String fieldValue = getFieldValue( filename );
 	}
