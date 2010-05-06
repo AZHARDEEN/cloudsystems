@@ -30,7 +30,7 @@ import javax.persistence.PersistenceContext;
 
 @Stateless( name = "AnotoExportSession", mappedName = "CloudSystems-EjbPrj-AnotoExportSession" )
 @TransactionAttribute( TransactionAttributeType.NEVER )
-public class AnotoExportSessionBean extends AbstractSecurity implements AnotoExportSession
+public class AnotoExportFacadeBean extends AbstractSecurity implements AnotoExportFacade
 {
 	protected static final int SystemMessageTypeId = 8;
 
@@ -47,7 +47,7 @@ public class AnotoExportSessionBean extends AbstractSecurity implements AnotoExp
 	private PgcAttachmentSessionLocal pgcAttachmentSession;
 
 
-	public AnotoExportSessionBean()
+	public AnotoExportFacadeBean()
 	{
 	}
 
