@@ -15,78 +15,78 @@
                             <!-- Por favor, nao mude o id desta div -->
                             <borderlayout>
                                 <north splittable="false" autoscroll="false">
-                                <tabbox>
-                                    <tabs>
-                                        <tab id="tabIcr" label="Dados"/>
-                                        <tab id="tabPgc" label="Propriedades"/>
-                                        <tab id="tabbarCode" label="Cód. Barras"/>
-                                        <tab id="tabPhotos" label="Foto"/>
-                                        <tab id="tabGPS" label="GPS"/>
-                                    </tabs>
-                                    <tabpanels>
-                                        <tabpanel>
-                                            <div id="divIcr">
-                                                <grid width="100%" fixedLayout="true">
-                                                    <columns>
-                                                        <column align="left" width="30%"/>
-                                                        <column align="left"/>
-                                                    </columns>
-                                                    <rows>
-                                                        <row>
-                                                            <label value="Campos do Formulário"/>
-                                                            <combobox id="fields" width="94%"></combobox>
-                                                        </row>
-                                                        <row id="icrInfo">
-                                                            <label value="Reconhecimento"/>
-                                                            <hbox >
-                                                                <label id="icrValue" width="80%"/>
-                                                                <button id="btnScan" label="ICR" />
-                                                            </hbox>
-                                                        </row>
-                                                        <row id="timeInfo">
-                                                            <label value="TimeDiff"/>
-                                                            <vbox >
-                                                                <label id="startTime" width="80%"/>
-                                                                <label id="endTime" width="80%"/>
-                                                            </vbox>
-                                                        </row>
-                                                        <row id="correctedInfo">
-                                                            <label value="Correção"/>
-                                                            <textbox id="correctedValue" width="94%"/>
-                                                        </row>
-                                                    </rows>
-                                                </grid>
-                                            </div>
-                                        </tabpanel>
-                                        <tabpanel>
-                                            <div id="divProperties">
-                                                <grid width="100%" fixedLayout="true" id="gridProperties">
-                                                    <columns>
-                                                        <column align="left" width="30%"/>
-                                                        <column align="left"/>
-                                                    </columns>
-                                                    <rows></rows>
-                                                </grid>
-                                            </div>
-                                        </tabpanel>
-                                        <tabpanel>
-                                            <div id="divAttach">
-                                                <grid width="100%" fixedLayout="true" id="gridAttach">
-                                                    <columns>
-                                                        <column align="left" width="30%"/>
-                                                        <column align="left"/>
-                                                    </columns>
-                                                </grid>
-                                            </div>
-                                        </tabpanel>
-                                    </tabpanels>
-                                </tabbox>
-                            </north>
-                            <center autoscroll="true" flex="true">
-                                <div width="100%" height="100%" align="left">
-                                    <image id="fieldImage" border="normal" align="left" />
-                                </div>
-                            </center>
+                                    <tabbox>
+                                        <tabs>
+                                            <tab id="tabIcr" label="Dados"/>
+                                            <tab id="tabPgc" label="Propriedades"/>
+                                            <tab id="tabbarCode" label="Cód. Barras"/>
+                                            <tab id="tabPhotos" label="Foto"/>
+                                            <tab id="tabGPS" label="GPS"/>
+                                        </tabs>
+                                        <tabpanels>
+                                            <tabpanel>
+                                                <div id="divIcr">
+                                                    <grid width="100%" fixedLayout="true">
+                                                        <columns>
+                                                            <column align="left" width="30%"/>
+                                                            <column align="left"/>
+                                                        </columns>
+                                                        <rows>
+                                                            <row>
+                                                                <label value="Campos do Formulário"/>
+                                                                <combobox id="fields" width="94%"></combobox>
+                                                            </row>
+                                                            <row id="icrInfo">
+                                                                <label value="Reconhecimento"/>
+                                                                <hbox>
+                                                                    <label id="icrValue" width="80%"/>
+                                                                    <button id="btnScan" label="ICR"/>
+                                                                </hbox>
+                                                            </row>
+                                                            <row id="timeInfo">
+                                                                <label value="TimeDiff"/>
+                                                                <vbox>
+                                                                    <label id="startTime" width="80%"/>
+                                                                    <label id="endTime" width="80%"/>
+                                                                </vbox>
+                                                            </row>
+                                                            <row id="correctedInfo">
+                                                                <label value="Correção"/>
+                                                                <textbox id="correctedValue" width="94%"/>
+                                                            </row>
+                                                        </rows>
+                                                    </grid>
+                                                </div>
+                                            </tabpanel>
+                                            <tabpanel>
+                                                <div id="divProperties">
+                                                    <grid width="100%" fixedLayout="true" id="gridProperties">
+                                                        <columns>
+                                                            <column align="left" width="30%"/>
+                                                            <column align="left"/>
+                                                        </columns>
+                                                        <rows></rows>
+                                                    </grid>
+                                                </div>
+                                            </tabpanel>
+                                            <tabpanel>
+                                                <div id="divAttach">
+                                                    <grid width="100%" fixedLayout="true" id="gridAttach">
+                                                        <columns>
+                                                            <column align="left" width="30%"/>
+                                                            <column align="left"/>
+                                                        </columns>
+                                                    </grid>
+                                                </div>
+                                            </tabpanel>
+                                        </tabpanels>
+                                    </tabbox>
+                                </north>
+                                <center autoscroll="true" flex="true">
+                                    <div width="100%" height="100%" align="left">
+                                        <image id="fieldImage" border="normal" align="left"/>
+                                    </div>
+                                </center>
                             </borderlayout>
                         </div>
                     </west>
@@ -95,15 +95,39 @@
                             <borderlayout>
                                 <north autoscroll="false" splittable="false">
                                     <div align="center" width="100%" id="divImageButtons">
+                                        <hbox>
+                                            <button id="btnFit" label="Ajustar" image="/img/icontexto-webdev-search-016x016.png"/>
+                                            <button id="btnZoomIn" label="Mais Zoom"
+                                                    image="/img/icontexto-webdev-search-016x016.png"/>
+                                            <combobox id="cmbZoonRate" width="80px"/>
+                                            <button id="btnZoomOut" label="Menos Zoom"
+                                                    image="/img/icontexto-webdev-alert-016x016.png"/>
+                                            <separator/>
+                                            <button id="btnDeleteBook" label="Excluir Form."
+                                                    image="/img/icontexto-webdev-remove-016x016.png"/>
+                                        </hbox>
+                                    </div>
+                                </north>
+                                <center autoscroll="true">
+                                    <div align="center" id="divCenterImageArea" width="100%" height="100%">
+                                        <image id="pgcImage" align="center" border="normal"></image>
+                                    </div>
+                                </center>
+                                <south autoscroll="false" splittable="false">
+                                    <div align="center" width="100%" id="divOperations">
                                         <grid width="100%">
                                             <columns>
                                                 <column width="100px"/>
                                                 <column/>
                                             </columns>
                                             <rows>
-                                                <row id="rowPaging" >
-                                                    <label value="Seleção"/>
-                                                    <paging id="pagingPages" />
+                                                <row id="rowPaging">
+                                                    <label value="Páginas"/>
+                                                    <hbox>
+                                                        <paging id="pagingPages"/>
+                                                        <button image="/img/icontexto-webdev-file-016x016.png" label="Exportar"
+                                                                id="btnExport"/>
+                                                    </hbox>
                                                 </row>
                                                 <row id="rowBackGroundImages">
                                                     <label value="Imagens de Fundo"/>
@@ -111,26 +135,8 @@
                                                 </row>
                                             </rows>
                                         </grid>
-                                        <hbox>
-                                            <button id="btnFit" label="Ajustar"
-                                                           image="/img/icontexto-webdev-search-016x016.png"/>
-                                            <button id="btnZoomIn" label="Mais Zoom"
-                                                           image="/img/icontexto-webdev-search-016x016.png"/>
-                                            <combobox id="cmbZoonRate" width="80px"/>
-                                            <button id="btnZoomOut" label="Menos Zoom"
-                                                           image="/img/icontexto-webdev-alert-016x016.png"/>
-                                            <separator />
-                                            <button id="btnDeleteBook" label="Excluir Form."
-                                                           image="/img/icontexto-webdev-remove-016x016.png"/>
-
-                                        </hbox>
                                     </div>
-                                </north>
-                                <center autoscroll="true" >
-                                    <div align="center" id="divCenterImageArea" width="100%" height="100%">
-                                        <image id="pgcImage" align="center" border="normal"></image>
-                                    </div>
-                                </center>
+                                </south>
                             </borderlayout>
                         </div>
                     </center>

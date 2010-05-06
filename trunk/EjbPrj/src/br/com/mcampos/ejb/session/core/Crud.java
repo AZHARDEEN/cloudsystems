@@ -12,7 +12,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -20,130 +19,130 @@ import javax.persistence.Query;
 @TransactionAttribute( TransactionAttributeType.SUPPORTS )
 public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
 {
-    @PersistenceContext( unitName = "EjbPrj" )
-    private EntityManager em;
+	@PersistenceContext( unitName = "EjbPrj" )
+	private EntityManager em;
 
 
-    public Crud()
-    {
-        super();
-    }
+	public Crud()
+	{
+		super();
+	}
 
-    @TransactionAttribute( TransactionAttributeType.MANDATORY )
-    public ENTITY add( ENTITY entity ) throws ApplicationException
-    {
-        getEntityManager().persist( entity );
-        getEntityManager().flush();
-        getEntityManager().refresh( entity );
-        return entity;
-    }
+	@TransactionAttribute( TransactionAttributeType.MANDATORY )
+	public ENTITY add( ENTITY entity ) throws ApplicationException
+	{
+		getEntityManager().persist( entity );
+		getEntityManager().flush();
+		getEntityManager().refresh( entity );
+		return entity;
+	}
 
-    @TransactionAttribute( TransactionAttributeType.MANDATORY )
-    public void delete( Class<ENTITY> eClass, KEY key ) throws ApplicationException
-    {
-        ENTITY toDelete = get( eClass, key );
+	@TransactionAttribute( TransactionAttributeType.MANDATORY )
+	public void delete( Class<ENTITY> eClass, KEY key ) throws ApplicationException
+	{
+		ENTITY toDelete = get( eClass, key );
 
-        getEntityManager().remove( toDelete );
-    }
+		getEntityManager().remove( toDelete );
+	}
 
-    public List<ENTITY> getAll( String namedQuery ) throws ApplicationException
-    {
-        if ( namedQuery == null )
-            return Collections.emptyList();
-        try {
-            return ( ( List<ENTITY> )getEntityManager().createNamedQuery( namedQuery ).getResultList() );
-        }
-        catch ( NoResultException e ) {
-            e = null;
-            return Collections.emptyList();
-        }
-    }
+	public List<ENTITY> getAll( String namedQuery ) throws ApplicationException
+	{
+		if ( namedQuery == null )
+			return Collections.emptyList();
+		try {
+			return ( ( List<ENTITY> )getEntityManager().createNamedQuery( namedQuery ).getResultList() );
+		}
+		catch ( Exception e ) {
+			e = null;
+			return Collections.emptyList();
+		}
+	}
 
-    @TransactionAttribute( TransactionAttributeType.MANDATORY )
-    public ENTITY update( ENTITY entity ) throws ApplicationException
-    {
-        ENTITY merged = getEntityManager().merge( entity );
-        return merged;
-    }
+	@TransactionAttribute( TransactionAttributeType.MANDATORY )
+	public ENTITY update( ENTITY entity ) throws ApplicationException
+	{
+		ENTITY merged = getEntityManager().merge( entity );
+		return merged;
+	}
 
-    protected EntityManager getEntityManager()
-    {
-        return em;
-    }
+	protected EntityManager getEntityManager()
+	{
+		return em;
+	}
 
-    public Object getSingleResult( String namedQuery ) throws ApplicationException
-    {
-        return getSingleResult( namedQuery, Collections.emptyList() );
-    }
+	public Object getSingleResult( String namedQuery ) throws ApplicationException
+	{
+		return getSingleResult( namedQuery, Collections.emptyList() );
+	}
 
-    public Object getSingleResult( String namedQuery, List<Object> list ) throws ApplicationException
-    {
-        try {
-            Query query = getEntityManager().createNamedQuery( namedQuery );
-            if ( SysUtils.isEmpty( list ) == false ) {
-                int nIndex = 1;
-                for ( Object obj : list ) {
-                    query.setParameter( nIndex, obj );
-                    nIndex++;
-                }
-            }
-            return query.getSingleResult();
+	public Object getSingleResult( String namedQuery, List<Object> list ) throws ApplicationException
+	{
+		try {
+			Query query = getEntityManager().createNamedQuery( namedQuery );
+			if ( SysUtils.isEmpty( list ) == false ) {
+				int nIndex = 1;
+				for ( Object obj : list ) {
+					query.setParameter( nIndex, obj );
+					nIndex++;
+				}
+			}
+			return query.getSingleResult();
 
-        }
-        catch ( NoResultException e ) {
-            return null;
-        }
-    }
+		}
+		catch ( Exception e ) {
+			return null;
+		}
+	}
 
-    public List<?> getResultList( String namedQuery ) throws ApplicationException
-    {
-        return getResultList( namedQuery, Collections.emptyList() );
-    }
+	public List<?> getResultList( String namedQuery ) throws ApplicationException
+	{
+		return getResultList( namedQuery, Collections.emptyList() );
+	}
 
-    public List<?> getResultList( String namedQuery, Object param ) throws ApplicationException
-    {
-        List<Object> parameter = new ArrayList<Object>( 1 );
-        parameter.add( param );
-        return getResultList( namedQuery, parameter );
-    }
-
-
-    public List<?> getResultList( String namedQuery, List<Object> list ) throws ApplicationException
-    {
-        try {
-            Query query = getEntityManager().createNamedQuery( namedQuery );
-            if ( SysUtils.isEmpty( list ) == false ) {
-                int nIndex = 1;
-                for ( Object obj : list ) {
-                    query.setParameter( nIndex, obj );
-                    nIndex++;
-                }
-            }
-            return query.getResultList();
-        }
-        catch ( Exception e ) {
-            return Collections.emptyList();
-        }
-    }
+	public List<?> getResultList( String namedQuery, Object param ) throws ApplicationException
+	{
+		List<Object> parameter = new ArrayList<Object>( 1 );
+		parameter.add( param );
+		return getResultList( namedQuery, parameter );
+	}
 
 
-    public Integer nextIntegerId( String namedQuery ) throws ApplicationException
-    {
-        Integer id = ( Integer )getSingleResult( namedQuery );
-        if ( SysUtils.isZero( id ) )
-            id = 0;
-        id++;
-        return id;
-    }
+	public List<?> getResultList( String namedQuery, List<Object> list ) throws ApplicationException
+	{
+		try {
+			Query query = getEntityManager().createNamedQuery( namedQuery );
+			if ( SysUtils.isEmpty( list ) == false ) {
+				int nIndex = 1;
+				for ( Object obj : list ) {
+					query.setParameter( nIndex, obj );
+					nIndex++;
+				}
+			}
+			return query.getResultList();
+		}
+		catch ( Exception e ) {
+			return Collections.emptyList();
+		}
+	}
 
-    public ENTITY get( Class<ENTITY> eClass, KEY key ) throws ApplicationException
-    {
-        try {
-            return getEntityManager().find( eClass, key );
-        }
-        catch ( NoResultException e ) {
-            e = null;
-            return null;
-        }
-    }
+
+	public Integer nextIntegerId( String namedQuery ) throws ApplicationException
+	{
+		Integer id = ( Integer )getSingleResult( namedQuery );
+		if ( SysUtils.isZero( id ) )
+			id = 0;
+		id++;
+		return id;
+	}
+
+	public ENTITY get( Class<ENTITY> eClass, KEY key ) throws ApplicationException
+	{
+		try {
+			return getEntityManager().find( eClass, key );
+		}
+		catch ( Exception e ) {
+			e = null;
+			return null;
+		}
+	}
 }
