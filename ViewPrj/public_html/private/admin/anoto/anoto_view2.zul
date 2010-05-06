@@ -3,7 +3,7 @@
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoView2Controller">
         <borderlayout id="borderLayout">
-            <north flex="true" style="background: #D0DEF0">
+            <north style="background: #D0DEF0">
                 <vbox align="center">
                     <label style="font-size:20px;color:#0C7A9A" value="Pesquisa de Formulários"/>
                 </vbox>
@@ -23,7 +23,7 @@
                                     <rows>
                                         <row>
                                             <label value="Aplicação"/>
-                                            <combobox id="cmbApplication" width="99%"/>
+                                            <combobox id="cmbApplication" width="99%" readonly="true"/>
                                             <label value="Data Inicial"/>
                                             <hbox>
                                                 <datebox id="initDate" format="dd/MM/yyyy"/>
@@ -54,11 +54,11 @@
                                             <textbox id="txtFieldValue" width="99%"/>
                                             <label value="Max Registros"/>
                                             <combobox id="cmbMaxRecords" width="50px" readonly="true">
-                                                <comboitem value="20" label="20" />
-                                                <comboitem value="30" label="30" />
-                                                <comboitem value="40" label="40" />
-                                                <comboitem value="50" label="50" />
-                                                <comboitem value="100" label="100" />
+                                                <comboitem value="20" label="20"/>
+                                                <comboitem value="30" label="30"/>
+                                                <comboitem value="40" label="40"/>
+                                                <comboitem value="50" label="50"/>
+                                                <comboitem value="100" label="100"/>
                                             </combobox>
                                         </row>
                                     </rows>
@@ -72,7 +72,7 @@
                             <div id="divResult" width="100%" height="100%">
                                 <listbox id="resultList" fixedLayout="true" vflex="true">
                                     <listhead>
-                                        <listheader id="headSeq" label="Seq" width="50px" />
+                                        <listheader id="headSeq" label="Seq" width="50px"/>
                                         <listheader id="headApplication" label="Aplicação"/>
                                         <listheader id="headFormulario" label="Form." width="40px" align="center"/>
                                         <listheader id="headPagina" label="Pág." width="40px" align="center"/>
