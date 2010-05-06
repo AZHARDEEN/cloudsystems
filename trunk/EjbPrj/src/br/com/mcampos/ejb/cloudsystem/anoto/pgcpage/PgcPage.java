@@ -3,8 +3,8 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pgcpage;
 
 import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
@@ -12,9 +12,9 @@ import java.io.Serializable;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -32,125 +32,125 @@ import javax.persistence.Table;
 @IdClass( PgcPagePK.class )
 public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
 {
-	@Id
-	@Column( name = "pgc_id_in", nullable = false, insertable = false, updatable = false )
-	private Integer pgcId;
+    @Id
+    @Column( name = "pgc_id_in", nullable = false, insertable = false, updatable = false )
+    private Integer pgcId;
 
-	@Id
-	@Column( name = "ppg_book_id", nullable = false )
-	private Integer bookId;
+    @Id
+    @Column( name = "ppg_book_id", nullable = false )
+    private Integer bookId;
 
-	@Id
-	@Column( name = "ppg_page_id", nullable = false )
-	private Integer pageId;
+    @Id
+    @Column( name = "ppg_page_id", nullable = false )
+    private Integer pageId;
 
-	@ManyToOne
-	@JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" )
-	private Pgc pgc;
+    @ManyToOne
+    @JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" )
+    private Pgc pgc;
 
-	@OneToMany( mappedBy = "pgcPage", cascade = CascadeType.ALL )
-	private List<PgcAttachment> attachments;
+    @OneToMany( mappedBy = "pgcPage" )
+    private List<PgcAttachment> attachments;
 
-	@OneToMany( mappedBy = "pgcPage", cascade = CascadeType.ALL )
-	private List<PgcField> fields;
+    @OneToMany( mappedBy = "pgcPage" )
+    private List<PgcField> fields;
 
-	@ManyToOne
-	@JoinColumns( { @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in", nullable = false ),
-					@JoinColumn( name = "pad_id_in", referencedColumnName = "pad_id_in", nullable = false ),
-					@JoinColumn( name = "apg_id_ch", referencedColumnName = "apg_id_ch", nullable = false ) } )
-	private AnotoPage anotoPage;
+    @ManyToOne( fetch = FetchType.EAGER )
+    @JoinColumns( { @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in", nullable = false ),
+                    @JoinColumn( name = "pad_id_in", referencedColumnName = "pad_id_in", nullable = false ),
+                    @JoinColumn( name = "apg_id_ch", referencedColumnName = "apg_id_ch", nullable = false ) } )
+    private AnotoPage anotoPage;
 
 
-	public PgcPage()
-	{
-	}
+    public PgcPage()
+    {
+    }
 
-	public PgcPage( Pgc pgc, Integer bookId, Integer ppg_page_id )
-	{
-		setPgc( pgc );
-		this.bookId = bookId;
-		this.pageId = ppg_page_id;
-	}
+    public PgcPage( Pgc pgc, Integer bookId, Integer ppg_page_id )
+    {
+        setPgc( pgc );
+        this.bookId = bookId;
+        this.pageId = ppg_page_id;
+    }
 
-	public Integer getPgcId()
-	{
-		return pgcId;
-	}
+    public Integer getPgcId()
+    {
+        return pgcId;
+    }
 
-	public void setPgcId( Integer pgc_id_in )
-	{
-		this.pgcId = pgc_id_in;
-	}
+    public void setPgcId( Integer pgc_id_in )
+    {
+        this.pgcId = pgc_id_in;
+    }
 
-	public Integer getBookId()
-	{
-		return bookId;
-	}
+    public Integer getBookId()
+    {
+        return bookId;
+    }
 
-	public void setBookId( Integer ppg_book_id )
-	{
-		this.bookId = ppg_book_id;
-	}
+    public void setBookId( Integer ppg_book_id )
+    {
+        this.bookId = ppg_book_id;
+    }
 
-	public Integer getPageId()
-	{
-		return pageId;
-	}
+    public Integer getPageId()
+    {
+        return pageId;
+    }
 
-	public void setPageId( Integer ppg_page_id )
-	{
-		this.pageId = ppg_page_id;
-	}
+    public void setPageId( Integer ppg_page_id )
+    {
+        this.pageId = ppg_page_id;
+    }
 
-	public void setPgc( Pgc pgc )
-	{
-		this.pgc = pgc;
-		if ( pgc != null )
-			setPgcId( pgc.getId() );
-	}
+    public void setPgc( Pgc pgc )
+    {
+        this.pgc = pgc;
+        if ( pgc != null )
+            setPgcId( pgc.getId() );
+    }
 
-	public Pgc getPgc()
-	{
-		return pgc;
-	}
+    public Pgc getPgc()
+    {
+        return pgc;
+    }
 
-	public void setAttachments( List<PgcAttachment> attachments )
-	{
-		this.attachments = attachments;
-	}
+    public void setAttachments( List<PgcAttachment> attachments )
+    {
+        this.attachments = attachments;
+    }
 
-	public List<PgcAttachment> getAttachments()
-	{
-		return attachments;
-	}
+    public List<PgcAttachment> getAttachments()
+    {
+        return attachments;
+    }
 
-	public void setFields( List<PgcField> fields )
-	{
-		this.fields = fields;
-	}
+    public void setFields( List<PgcField> fields )
+    {
+        this.fields = fields;
+    }
 
-	public List<PgcField> getFields()
-	{
-		return fields;
-	}
+    public List<PgcField> getFields()
+    {
+        return fields;
+    }
 
-	public PgcPageDTO toDTO()
-	{
-		PgcPageDTO dto = new PgcPageDTO();
-		dto.setBookId( getBookId() );
-		dto.setPageId( getPageId() );
-		dto.setPgc( getPgc().toDTO() );
-		dto.setAnotoPage( getAnotoPage().toDTO() );
-		return dto;
-	}
+    public PgcPageDTO toDTO()
+    {
+        PgcPageDTO dto = new PgcPageDTO();
+        dto.setBookId( getBookId() );
+        dto.setPageId( getPageId() );
+        dto.setPgc( getPgc().toDTO() );
+        dto.setAnotoPage( getAnotoPage().toDTO() );
+        return dto;
+    }
 
-	public void setAnotoPage( AnotoPage page )
-	{
-		this.anotoPage = page;
-	}
+    public void setAnotoPage( AnotoPage page )
+    {
+        this.anotoPage = page;
+    }
 
-	public AnotoPage getAnotoPage()
-	{
-		return anotoPage;
-	}
+    public AnotoPage getAnotoPage()
+    {
+        return anotoPage;
+    }
 }

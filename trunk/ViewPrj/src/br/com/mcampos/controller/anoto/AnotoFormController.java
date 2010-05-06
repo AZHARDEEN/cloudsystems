@@ -36,6 +36,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zul.AbstractListModel;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -518,5 +519,25 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
         return listModel;
     }
+
+    public void onClick$btnExport()
+    {
+        try {
+            Listitem item = listAttachs.getSelectedItem();
+
+            if ( item != null && item.getValue() != null ) {
+                PadDTO pad = ( PadDTO )item.getValue();
+                byte[] obj;
+                obj = getSession().getObject( pad.getMedia() );
+                if ( obj != null ) {
+                    Filedownload.save( obj, pad.getMedia().getMimeType(), pad.getMedia().getName() );
+                }
+            }
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Download" );
+        }
+    }
 }
+
 
