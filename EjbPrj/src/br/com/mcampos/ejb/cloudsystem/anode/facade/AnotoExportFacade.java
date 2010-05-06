@@ -13,7 +13,7 @@ import javax.ejb.Remote;
 
 
 @Remote
-public interface AnotoExportSession
+public interface AnotoExportFacade
 {
 	List<PgcFieldDTO> getFields( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException;
 
