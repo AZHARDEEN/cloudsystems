@@ -66,8 +66,8 @@ public class AnotoViewController extends AnotoLoggedController
 	protected Combobox fields;
 	protected Row icrInfo;
 	protected Row correctedInfo;
-	protected Textbox correctedValue;
 	protected Label icrValue;
+	protected Textbox correctedValue;
 	protected Image fieldImage;
 
 	protected float imageRateSize = 0.0F;
