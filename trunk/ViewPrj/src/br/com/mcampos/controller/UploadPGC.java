@@ -15,6 +15,8 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -22,6 +24,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 
@@ -101,7 +106,7 @@ public class UploadPGC extends HttpServlet
     {
         try {
             if ( ServletFileUpload.isMultipartContent( request ) ) {
-                return processMultiPart();
+                return processMultiPart( request );
             }
             else {
                 String header;
@@ -127,7 +132,7 @@ public class UploadPGC extends HttpServlet
                         if ( nRead > 0 ) {
                             PgcFile pgcFile = createDTO( pgc );
                             PadFile.setHttpRealPath( getAnotoPath( request ) );
-                            pgcFile.persist( );
+                            pgcFile.persist();
                             System.out.println( "PGC was successfully received: " + offset );
                         }
                         return true;
@@ -142,12 +147,34 @@ public class UploadPGC extends HttpServlet
         }
     }
 
-    protected boolean processMultiPart()
+    protected boolean processMultiPart( HttpServletRequest request )
     {
-        return false;
+        System.out.println( "Multipart file received " );
+        DiskFileItemFactory factory = new DiskFileItemFactory();
+        factory.setSizeThreshold( 32 * 1024 * 1024 );
+        factory.setRepository( new File( getAnotoPath( request ) ) );
+        ServletFileUpload upload = new ServletFileUpload( factory );
+        upload.setSizeMax( 6 * 1024 * 1024 );
+        List /* FileItem */items;
+        try {
+            items = upload.parseRequest( request );
+            Iterator iter = items.iterator();
+            while ( iter.hasNext() ) {
+                FileItem item = ( FileItem )iter.next();
+                System.out.println( "ItemProperties: \n" );
+                System.out.println( item.getContentType() );
+                System.out.println( item.getFieldName() );
+                System.out.println( item.getSize() );
+                System.out.println( item.getName() );
+            }
+        }
+        catch ( FileUploadException e ) {
+            System.out.println( e.getMessage() );
+        }
+        return true;
     }
 
-    protected String getAnotoPath (HttpServletRequest request)
+    protected String getAnotoPath( HttpServletRequest request )
     {
         String realPath = request.getSession().getServletContext().getRealPath( TMP_DIR_PATH );
         return realPath;
