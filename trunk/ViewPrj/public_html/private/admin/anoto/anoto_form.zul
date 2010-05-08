@@ -5,7 +5,7 @@
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:20px;color:#0C7A9A" value="Anoto - Formulários"/>
+                    <label style="font-size:20px;color:#0C7A9A" value="Formulários"/>
                 </vbox>
             </north>
             <west size="40%" splittable="true" flex="true">

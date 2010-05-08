@@ -20,7 +20,7 @@
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:20px;color:#0C7A9A" value="Anoto - Cadastro de Canetas"/>
+                    <label style="font-size:20px;color:#0C7A9A" value="Cadastro de Canetas"/>
                 </vbox>
             </north>
             <west size="30%" splittable="true" flex="true">
@@ -46,15 +46,15 @@
                             </columns>
                             <rows>
                                 <row>
-                                    <label value = "Código" />
+                                    <label value="Código"/>
                                     <label id="recordId"/>
                                 </row>
                                 <row>
-                                    <label value = "Descrição" />
+                                    <label value="Descrição"/>
                                     <label id="recordDescription"/>
                                 </row>
                                 <row>
-                                    <label value = "Usuário" />
+                                    <label value="Usuário"/>
                                     <label id="recordUser"/>
                                 </row>
                             </rows>
@@ -70,15 +70,15 @@
                             </columns>
                             <rows>
                                 <row>
-                                    <label value = "Código" />
+                                    <label value="Código"/>
                                     <textbox id="editId" width="1" maxlength="16"/>
                                 </row>
                                 <row>
-                                    <label value = "Descrição" />
+                                    <label value="Descrição"/>
                                     <textbox id="editDescription" width="99%" maxlength="64"/>
                                 </row>
                                 <row>
-                                    <label value = "Usuário" />
+                                    <label value="Usuário"/>
                                     <textbox id="editUser" width="99%" maxlength="64"/>
                                 </row>
                             </rows>
