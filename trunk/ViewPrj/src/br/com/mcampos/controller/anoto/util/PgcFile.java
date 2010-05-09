@@ -11,6 +11,7 @@ import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
+import br.com.mcampos.dto.anoto.PgcPropertyDTO;
 import br.com.mcampos.dto.anoto.PgcStatusDTO;
 import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
@@ -173,19 +174,47 @@ public class PgcFile
     }
 
 
-    public void persist() throws ApplicationException
+    public PGCDTO persist( ArrayList<MediaDTO> medias ) throws ApplicationException
     {
         FormDTO form;
         PGCDTO pgc = getCurrentPgc();
+        List<PgcPropertyDTO> properties = new ArrayList<PgcPropertyDTO>();
+
+        try {
+            Iterator it = getCurrentPen().getPropertyIds();
+            while ( it != null && it.hasNext() ) {
+                Short obj = ( Short )it.next();
+                if ( obj != null ) {
+                    PgcPropertyDTO p = new PgcPropertyDTO();
+                    p.setId( obj );
+                    System.out.println( "Propriedade: " + obj );
+                    String[] values = getCurrentPen().getProperty( obj );
+                    if ( values != null && values.length > 0 ) {
+                        for ( String v : values ) {
+                            v = v.replaceAll( "'", "" );
+                            if ( SysUtils.isEmpty( v ) )
+                                continue;
+                            System.out.println( "    " + v );
+
+                            p.add( v );
+                        }
+                    }
+                    properties.add( p );
+                }
+            }
+        }
+        catch ( Exception e ) {
+            e = null;
+        }
         List<String> addresses = getPageAddresess();
-        PGCDTO insertedPgc = getSession().add( getCurrentPgc(), addresses );
+        PGCDTO insertedPgc = getSession().add( getCurrentPgc(), addresses, medias, properties );
 
         setCurrentPgc( insertedPgc );
         if ( insertedPgc.getPgcStatus().getId() != PgcStatusDTO.statusOk )
-            return;
+            return insertedPgc;
         List<PgcPenPageDTO> pgcsPenPage = getSession().getPgcPenPages( insertedPgc );
         if ( SysUtils.isEmpty( pgcsPenPage ) )
-            return;
+            return insertedPgc;
         /*
          * All pgcpenpage MUST belong to one and one only form
          */
@@ -200,12 +229,16 @@ public class PgcFile
             processProperties();
             processPGC( pgcsPenPage.get( 0 ) );
         }
-        catch ( PenCreationException e ) {
-            return;
+        catch ( Exception e ) {
+            System.out.println( e.getMessage() );
+            try {
+                getSession().setPgcStatus( insertedPgc, 5 );
+            }
+            catch ( Exception ex ) {
+                System.out.println( ex.getMessage() );
+            }
         }
-        catch ( NoSuchPropertyException e ) {
-            return;
-        }
+        return insertedPgc;
     }
 
 
@@ -360,6 +393,7 @@ public class PgcFile
             while ( it != null && it.hasNext() ) {
                 Attachment obj = ( Attachment )it.next();
                 dto = new PgcAttachmentDTO( pgcPage );
+                System.out.println( "O pgc recebido possui anexos. Tipo " + obj.getType() );
                 if ( obj.getType() == Attachment.ATTACHMENT_TYPE_BARCODE ) {
                     dto.setType( 1 );
                     byte[] barCodeData = obj.getData();
@@ -377,8 +411,10 @@ public class PgcFile
                     }
                     dto.setValue( sValue );
                 }
-                else
+                else {
                     dto.setType( 2 );
+                    dto.setValue( obj.getData().toString() );
+                }
                 getSession().addPgcAttachment( dto );
             }
         }

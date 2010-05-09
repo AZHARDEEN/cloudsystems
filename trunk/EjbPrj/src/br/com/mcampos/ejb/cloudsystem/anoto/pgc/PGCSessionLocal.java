@@ -5,11 +5,13 @@ import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -32,7 +34,7 @@ public interface PGCSessionLocal
 
     List<Pgc> getSuspended() throws ApplicationException;
 
-	PgcPenPage attach( Pgc pgc, AnotoPenPage penPage ) throws ApplicationException;
+    PgcPenPage attach( Pgc pgc, AnotoPenPage penPage ) throws ApplicationException;
 
     void setPgcStatus( Pgc pgc, Integer newStatus ) throws ApplicationException;
 
@@ -48,7 +50,7 @@ public interface PGCSessionLocal
 
     void add( PgcField pgcField ) throws ApplicationException;
 
-    void add( PgcAttachment pgcField ) throws ApplicationException;
+    void add( PgcPageAttachment pgcField ) throws ApplicationException;
 
     void add( PgcPage entity ) throws ApplicationException;
 
@@ -60,7 +62,15 @@ public interface PGCSessionLocal
 
     Integer remove( AnotoResultList item ) throws ApplicationException;
 
-    List<PgcAttachment> getAttachments( PgcPage page ) throws ApplicationException;
+    List<PgcPageAttachment> getAttachments( PgcPage page ) throws ApplicationException;
 
-    Boolean isEnabled ( Pgc pgc, String pageAddress );
+    List<PgcAttachment> getAttachments( Pgc pgc ) throws ApplicationException;
+
+    List<PgcProperty> getProperties( Pgc pgc ) throws ApplicationException;
+
+    List<PgcProperty> getGPS( Pgc pgc ) throws ApplicationException;
+
+    Boolean isEnabled( Pgc pgc, String pageAddress );
+
+    void add( PgcAttachment attach ) throws ApplicationException;
 }

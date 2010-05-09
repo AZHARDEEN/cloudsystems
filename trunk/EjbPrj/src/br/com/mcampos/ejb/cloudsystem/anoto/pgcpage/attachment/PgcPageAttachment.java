@@ -21,14 +21,15 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = PgcAttachment.findAll, query = "select o from PgcAttachment o" ),
-                 @NamedQuery( name = PgcAttachment.findByPage, query = "select o from PgcAttachment o where o.pgcPage = ?1" ) } )
-@Table( name = "pgc_attachment" )
-@IdClass( PgcAttachmentPK.class )
-public class PgcAttachment implements Serializable, EntityCopyInterface<PgcAttachmentDTO>
+@NamedQueries( { @NamedQuery( name = PgcPageAttachment.findAll, query = "select o from PgcPageAttachment o" ),
+                 @NamedQuery( name = PgcPageAttachment.findByPage,
+                              query = "select o from PgcPageAttachment o where o.pgcPage = ?1" ) } )
+@Table( name = "pgc_page_attachment" )
+@IdClass( PgcPageAttachmentPK.class )
+public class PgcPageAttachment implements Serializable, EntityCopyInterface<PgcAttachmentDTO>
 {
-    public static final String findAll = "PgcAttachment.findAll";
-    public static final String findByPage = "PgcAttachment.findByPage";
+    public static final String findAll = "PgcPageAttachment.findAll";
+    public static final String findByPage = "PgcPageAttachment.findByPage";
 
 
     @Id
@@ -62,7 +63,7 @@ public class PgcAttachment implements Serializable, EntityCopyInterface<PgcAttac
     private Media media;
 
 
-    public PgcAttachment()
+    public PgcPageAttachment()
     {
     }
 

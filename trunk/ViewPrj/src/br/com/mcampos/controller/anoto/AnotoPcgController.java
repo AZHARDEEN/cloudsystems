@@ -27,6 +27,7 @@ import java.util.List;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -62,7 +63,7 @@ public class AnotoPcgController extends LoggedBaseController
         listboxRecord.setItemRenderer( new PgcListRendered() );
         gridProperties.setRowRenderer( new PropertyRowRenderer() );
         gridProperties.setModel( new ListModelList( new ArrayList<GridProperties>() ) );
-        refresh ();
+        refresh();
     }
 
     private File checkAndCreateDir( File directory ) throws Exception
@@ -80,10 +81,9 @@ public class AnotoPcgController extends LoggedBaseController
 
         try {
             pgcFile.uploadPgc( evt );
-            pgcFile.persist();
-            if ( pgcFile.getCurrentPgc() != null && pgcFile.getCurrentPgc().getPgcStatus().getId() != PgcStatusDTO.statusOk )
-            {
-                ListModelList model = (ListModelList) listboxRecord.getModel();
+            pgcFile.persist( null );
+            if ( pgcFile.getCurrentPgc() != null && pgcFile.getCurrentPgc().getPgcStatus().getId() != PgcStatusDTO.statusOk ) {
+                ListModelList model = ( ListModelList )listboxRecord.getModel();
                 if ( model != null )
                     model.add( 0, pgcFile.getCurrentPgc() );
             }
@@ -183,21 +183,41 @@ public class AnotoPcgController extends LoggedBaseController
         }
     }
 
-    public void onClick$btnRefresh ()
+    public void onClick$btnRefresh()
     {
         try {
-            refresh ();
+            refresh();
         }
         catch ( ApplicationException e ) {
-            System.out.println ( e.getMessage() );
+            System.out.println( e.getMessage() );
         }
     }
 
-    protected void refresh () throws ApplicationException
+    protected void refresh() throws ApplicationException
     {
-        List<PGCDTO> medias = getSession().getSuspendedPgc( getLoggedInUser() );
+        List<PGCDTO> medias = getSession().getAllPgc( getLoggedInUser() );
         if ( SysUtils.isEmpty( medias ) )
             medias = new ArrayList<PGCDTO>();
-        listboxRecord.setModel( new ListModelList(  medias, true ) );
+        listboxRecord.setModel( new ListModelList( medias, true ) );
     }
+
+    public void onClick$btnExport()
+    {
+        try {
+            Listitem item = listboxRecord.getSelectedItem();
+
+            if ( item != null && item.getValue() != null ) {
+                PGCDTO pad = ( PGCDTO )item.getValue();
+                byte[] obj;
+                obj = getSession().getObject( pad.getMedia() );
+                if ( obj != null ) {
+                    Filedownload.save( obj, pad.getMedia().getMimeType(), pad.getMedia().getName() );
+                }
+            }
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Download" );
+        }
+    }
+
 }

@@ -38,11 +38,6 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import org.zkoss.zk.ui.Desktop;
-import org.zkoss.zk.ui.Execution;
-import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.WebApp;
-
 
 public class PadFile
 {
@@ -52,7 +47,7 @@ public class PadFile
     protected static final String addressAttributeName = "address";
     protected static final String drawingAreaName = "drawing_area";
     protected static final String userAreaName = "user_area";
-    protected static final String anotoServerPath = "/anoto_res";
+    protected static final String anotoServerPath = "/temp/anoto_res";
 
     protected Document document;
     protected AnodeFacade session;
@@ -224,24 +219,19 @@ public class PadFile
 
     protected static String getPath( String path )
     {
-        Execution exec = Executions.getCurrent();
-
-        if ( exec != null )
-        {
-            Desktop desc = exec.getDesktop();
-            WebApp app = desc.getWebApp();
-            return app.getRealPath( anotoServerPath + "/" + path );
+        if ( SysUtils.isEmpty( getHttpRealPath() ) ) {
+            return ( anotoServerPath + "/" + path );
         }
         else
-            return getHttpRealPath () + "/" + path;
+            return getHttpRealPath() + "/" + path;
     }
 
-    public static String getHttpRealPath ()
+    public static String getHttpRealPath()
     {
         return httpPath;
     }
 
-    public static void setHttpRealPath ( String path )
+    public static void setHttpRealPath( String path )
     {
         if ( SysUtils.isEmpty( httpPath ) )
             httpPath = path;
@@ -374,7 +364,6 @@ public class PadFile
         }
         return pen;
     }
-
 
 
 }

@@ -13,11 +13,13 @@ import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
+import br.com.mcampos.dto.anoto.PgcPropertyDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -130,7 +132,8 @@ public interface AnodeFacade
      * *************************************************************************
      */
 
-    PGCDTO add( PGCDTO dto, List<String> pages ) throws ApplicationException;
+    PGCDTO add( PGCDTO dto, List<String> pages, ArrayList<MediaDTO> medias,
+                List<PgcPropertyDTO> properties ) throws ApplicationException;
 
     List<PGCDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException;
 
@@ -164,6 +167,12 @@ public interface AnodeFacade
     Integer remove( AuthenticationDTO auth, AnotoResultList item ) throws ApplicationException;
 
     List<PgcAttachmentDTO> getAttachments( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException;
+
+    List<MediaDTO> getAttachments( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException;
+
+    List<PgcPropertyDTO> getProperties( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException;
+
+    List<PgcPropertyDTO> getGPS( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException;
 
     void addToPage( AuthenticationDTO auth, PadDTO PAD, String page, List<AnotoPageFieldDTO> fields ) throws ApplicationException;
 

@@ -9,8 +9,8 @@ import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcAttachment;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcAttachmentSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachmentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
@@ -44,7 +44,7 @@ public class AnotoExportFacadeBean extends AbstractSecurity implements AnotoExpo
     private PgcPageSessionLocal pgcPageSession;
 
     @EJB
-    private PgcAttachmentSessionLocal pgcAttachmentSession;
+    private PgcPageAttachmentSessionLocal pgcAttachmentSession;
 
 
     public AnotoExportFacadeBean()
@@ -77,7 +77,7 @@ public class AnotoExportFacadeBean extends AbstractSecurity implements AnotoExpo
     {
         authenticate( auth );
         PgcPage entity = pgcPageSession.get( new PgcPagePK( page ) );
-        List<PgcAttachment> attachs = Collections.emptyList();
+        List<PgcPageAttachment> attachs = Collections.emptyList();
         if ( entity != null )
             attachs = pgcAttachmentSession.getAll( entity );
         return Collections.emptyList();
