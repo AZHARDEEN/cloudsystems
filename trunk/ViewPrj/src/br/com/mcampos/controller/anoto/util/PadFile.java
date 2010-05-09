@@ -47,7 +47,6 @@ public class PadFile
     protected static final String addressAttributeName = "address";
     protected static final String drawingAreaName = "drawing_area";
     protected static final String userAreaName = "user_area";
-    protected static final String anotoServerPath = "/temp/anoto_res";
 
     protected Document document;
     protected AnodeFacade session;
@@ -220,7 +219,7 @@ public class PadFile
     protected static String getPath( String path )
     {
         if ( SysUtils.isEmpty( getHttpRealPath() ) ) {
-            return ( anotoServerPath + "/" + path );
+            return ( AnotoDir.anotoServerPath + "/" + path );
         }
         else
             return getHttpRealPath() + "/" + path;
@@ -262,8 +261,7 @@ public class PadFile
     }
 
 
-    protected boolean register( FormDTO form, String padFileName ) throws IllegalValueException, FormatException,
-                                                                          NotAllowedException
+    protected boolean register( FormDTO form, String padFileName ) throws IllegalValueException, FormatException, NotAllowedException
     {
         String appName = form.getApplication();
 

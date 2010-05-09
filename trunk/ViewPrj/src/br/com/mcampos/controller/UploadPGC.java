@@ -1,6 +1,7 @@
 package br.com.mcampos.controller;
 
 
+import br.com.mcampos.controller.anoto.util.AnotoDir;
 import br.com.mcampos.controller.anoto.util.PadFile;
 import br.com.mcampos.controller.anoto.util.PgcFile;
 import br.com.mcampos.dto.anoto.PGCDTO;
@@ -39,7 +40,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class UploadPGC extends HttpServlet
 {
     private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
-    private static final String TMP_DIR_PATH = "/temp/anoto_res";
 
     public void init( ServletConfig config ) throws ServletException
     {
@@ -60,8 +60,7 @@ public class UploadPGC extends HttpServlet
         doGetPost( request, response, "POST" );
     }
 
-    private void doGetPost( HttpServletRequest request, HttpServletResponse response, String method ) throws ServletException,
-                                                                                                             IOException
+    private void doGetPost( HttpServletRequest request, HttpServletResponse response, String method ) throws ServletException, IOException
     {
         System.out.println( "New pgc received." );
         response.setContentType( CONTENT_TYPE );
@@ -171,9 +170,7 @@ public class UploadPGC extends HttpServlet
         return buffer;
     }
 
-    private boolean persist( HttpServletRequest request, byte[] pgc, ArrayList<MediaDTO> medias ) throws IOException,
-                                                                                                         NoSuchPermissionException,
-                                                                                                         ApplicationException
+    private boolean persist( HttpServletRequest request, byte[] pgc, ArrayList<MediaDTO> medias ) throws IOException, NoSuchPermissionException, ApplicationException
     {
         PgcFile pgcFile = createDTO( pgc );
         PadFile.setHttpRealPath( getAnotoPath() );
@@ -184,8 +181,7 @@ public class UploadPGC extends HttpServlet
         return true;
     }
 
-    private boolean processMultiPart( HttpServletRequest request ) throws IOException, NoSuchPermissionException,
-                                                                          ApplicationException
+    private boolean processMultiPart( HttpServletRequest request ) throws IOException, NoSuchPermissionException, ApplicationException
     {
         System.out.println( "Multipart file received " );
         DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -252,7 +248,7 @@ public class UploadPGC extends HttpServlet
 
     private String getAnotoPath()
     {
-        String realPath = TMP_DIR_PATH;
+        String realPath = AnotoDir.anotoServerPath;
         System.out.println( "Realpath: " + realPath );
         File file = new File( realPath );
         if ( file.exists() == false )
