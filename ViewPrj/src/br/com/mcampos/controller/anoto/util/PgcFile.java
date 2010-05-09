@@ -295,9 +295,7 @@ public class PgcFile
         String basePath;
         Map<String, IcrField> icrFields = null;
 
-        basePath =
-                String.format( "%s/%s/%s/%d", pgcPenPage.getForm().getApplication(), pgcPenPage.getPenPage().getPage().getPad().getMedia()
-                               .getName(), page.getPageAddress(), pgcPenPage.getPgc().getId() );
+        basePath = String.format( "%s/%s/%s/%d", pgcPenPage.getForm().getApplication(), pgcPenPage.getPenPage().getPage().getPad().getMedia().getName(), page.getPageAddress(), pgcPenPage.getPgc().getId() );
         basePath = PadFile.getPath( basePath );
         File file = new File( basePath );
         if ( file.exists() == false )
@@ -320,8 +318,7 @@ public class PgcFile
         }
     }
 
-    private List<MediaDTO> addAnotoImages( PgcPenPageDTO pgcPenPage, Page page, String basePath, int nBookIndex,
-                                           int nPageIndex ) throws RenderException, NotAllowedException, ApplicationException
+    private List<MediaDTO> addAnotoImages( PgcPenPageDTO pgcPenPage, Page page, String basePath, int nBookIndex, int nPageIndex ) throws RenderException, NotAllowedException, ApplicationException
     {
         Renderer renderer;
         MediaDTO media;
@@ -346,15 +343,14 @@ public class PgcFile
                     getSession().addProcessedImage( pgcPenPage.getPgc(), media, nBookIndex, nPageIndex );
             }
         }
-        File file = new File( renderedImage );
-        if ( file.exists() )
-            file.delete();
+        //File file = new File( renderedImage );
+        //if ( file.exists() )
+        //    file.delete();
         return backgroundImages;
     }
 
 
-    private Map<String, IcrField> processIcr( List<MediaDTO> backgroundImages, PgcPenPageDTO pgcPenPage, Page page,
-                                              String basePath ) throws RenderException, NotAllowedException, ApplicationException
+    private Map<String, IcrField> processIcr( List<MediaDTO> backgroundImages, PgcPenPageDTO pgcPenPage, Page page, String basePath ) throws RenderException, NotAllowedException, ApplicationException
     {
         Renderer renderer;
         String icrImage = null;
@@ -376,9 +372,9 @@ public class PgcFile
             }
         }
         icrFields = ICRObject.processImage( pgcPenPage.getPenPage().getPage().getIcrTemplate(), icrImage, A2iaDocument.typeJPEG );
-        File file = new File( icrImage );
-        if ( file.exists() )
-            file.delete();
+        //File file = new File( icrImage );
+        //if ( file.exists() )
+        //    file.delete();
         return icrFields;
     }
 
@@ -420,8 +416,7 @@ public class PgcFile
         }
     }
 
-    private void addFields( PgcPageDTO pgcPage, Page page, String basePath,
-                            Map<String, IcrField> icrFields ) throws ApplicationException, PageAreaException
+    private void addFields( PgcPageDTO pgcPage, Page page, String basePath, Map<String, IcrField> icrFields ) throws ApplicationException, PageAreaException
     {
         Iterator it = page.getPageAreas();
         PageArea pageArea = null;
@@ -469,8 +464,7 @@ public class PgcFile
         }
     }
 
-    private void getFieldImage( String basePath, PageArea pageArea, PgcFieldDTO fieldDTO ) throws RenderException,
-                                                                                                  NotAllowedException
+    private void getFieldImage( String basePath, PageArea pageArea, PgcFieldDTO fieldDTO ) throws RenderException, NotAllowedException
     {
         Renderer renderer;
         String path;
