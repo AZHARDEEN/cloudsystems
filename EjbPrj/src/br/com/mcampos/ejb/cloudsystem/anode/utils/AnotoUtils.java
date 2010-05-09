@@ -19,7 +19,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
@@ -148,12 +148,12 @@ public final class AnotoUtils
     }
 
 
-    public static List<PgcAttachmentDTO> toPgcAttachmentList( List<PgcAttachment> list )
+    public static List<PgcAttachmentDTO> toPgcAttachmentList( List<PgcPageAttachment> list )
     {
         if ( SysUtils.isEmpty( list ) )
             return Collections.emptyList();
         List<PgcAttachmentDTO> dtoList = new ArrayList<PgcAttachmentDTO>( list.size() );
-        for ( PgcAttachment f : list ) {
+        for ( PgcPageAttachment f : list ) {
             dtoList.add( f.toDTO() );
         }
         return dtoList;

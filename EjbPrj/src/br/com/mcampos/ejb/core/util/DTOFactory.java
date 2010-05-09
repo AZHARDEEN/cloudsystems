@@ -46,7 +46,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
@@ -853,9 +853,9 @@ public final class DTOFactory implements Serializable
 		return entity;
 	}
 
-	public static PgcAttachment copy( PgcAttachmentDTO dto )
+	public static PgcPageAttachment copy( PgcAttachmentDTO dto )
 	{
-		PgcAttachment entity = new PgcAttachment();
+		PgcPageAttachment entity = new PgcPageAttachment();
 		entity.setPgcPage( copy( dto.getPgcPage() ) );
 		entity.setSequence( dto.getSequence() );
 		entity.setType( dto.getType() );

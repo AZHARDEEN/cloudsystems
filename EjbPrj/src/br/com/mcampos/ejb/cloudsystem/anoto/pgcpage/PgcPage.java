@@ -4,7 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pgcpage;
 import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
@@ -49,7 +49,7 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
     private Pgc pgc;
 
     @OneToMany( mappedBy = "pgcPage" )
-    private List<PgcAttachment> attachments;
+    private List<PgcPageAttachment> attachments;
 
     @OneToMany( mappedBy = "pgcPage" )
     private List<PgcField> fields;
@@ -114,12 +114,12 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
         return pgc;
     }
 
-    public void setAttachments( List<PgcAttachment> attachments )
+    public void setAttachments( List<PgcPageAttachment> attachments )
     {
         this.attachments = attachments;
     }
 
-    public List<PgcAttachment> getAttachments()
+    public List<PgcPageAttachment> getAttachments()
     {
         return attachments;
     }

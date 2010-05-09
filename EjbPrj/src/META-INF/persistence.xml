@@ -61,9 +61,11 @@
     <class>br.com.mcampos.ejb.cloudsystem.anoto.form.FormMedia</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcAttachment</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField</class>
     <class>br.com.mcampos.ejb.cloudsystem.system.entity.FieldType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty</class>
   </persistence-unit>
 </persistence>

@@ -6,14 +6,16 @@ import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPagePK;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldPK;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
@@ -67,7 +69,7 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     public Pgc add( Pgc entity ) throws ApplicationException
     {
         entity.setInsertDate( new Date() );
-		PgcStatus status;
+        PgcStatus status;
         if ( entity.getPgcStatus() != null )
             status = getEntityManager().find( PgcStatus.class, entity.getPgcStatus().getId() );
         else
@@ -80,7 +82,7 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     {
         if ( pgc == null || penPage == null )
             return null;
-		PgcPenPage entity = new PgcPenPage( penPage, pgc );
+        PgcPenPage entity = new PgcPenPage( penPage, pgc );
         getEntityManager().persist( entity );
         return entity;
     }
@@ -131,7 +133,7 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         getEntityManager().persist( pgcField );
     }
 
-    public void add( PgcAttachment pgcField ) throws ApplicationException
+    public void add( PgcPageAttachment pgcField ) throws ApplicationException
     {
         Integer sequence;
 
@@ -141,13 +143,12 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     }
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    protected Integer getAttachmentSequence( PgcAttachment entity )
+    protected Integer getAttachmentSequence( PgcPageAttachment entity )
     {
         String sql;
 
-        sql = "SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID " +
-                "FROM  PGC_ATTACHMENT " +
-                "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
+        sql =
+"SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID " + "FROM  PGC_PAGE_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
         Query query = getEntityManager().createNativeQuery( sql );
         query.setParameter( 1, entity.getPgcId() );
         query.setParameter( 2, entity.getBookId() );
@@ -186,7 +187,7 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
 
     public void update( PgcField field ) throws ApplicationException
     {
-		PgcField entity = getEntityManager().find( PgcField.class, new PgcFieldPK( field ) );
+        PgcField entity = getEntityManager().find( PgcField.class, new PgcFieldPK( field ) );
         if ( entity != null ) {
             entity.setRevisedText( field.getRevisedText() );
             getEntityManager().merge( entity );
@@ -197,23 +198,58 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     {
         PgcPageDTO dto = item.getPgcPage();
         PgcPagePK key = new PgcPagePK( dto.getPgc().getId(), dto.getBookId(), dto.getPageId() );
-		PgcPage page = getEntityManager().find( PgcPage.class, key );
+        PgcPage page = getEntityManager().find( PgcPage.class, key );
         if ( page != null )
             getEntityManager().remove( page );
         return 1;
     }
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public List<PgcAttachment> getAttachments( PgcPage page ) throws ApplicationException
+    public List<PgcPageAttachment> getAttachments( PgcPage page ) throws ApplicationException
+    {
+        List<PgcPageAttachment> attachments;
+
+        attachments = ( List<PgcPageAttachment> )getResultList( PgcPageAttachment.findByPage, page );
+        return attachments;
+    }
+
+
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public List<PgcAttachment> getAttachments( Pgc pgc ) throws ApplicationException
     {
         List<PgcAttachment> attachments;
 
-        attachments = ( List<PgcAttachment> )getResultList( PgcAttachment.findByPage, page );
+        attachments = ( List<PgcAttachment> )getResultList( PgcAttachment.findAllPgc, pgc.getId() );
+        if ( SysUtils.isEmpty( attachments ) )
+            return Collections.emptyList();
         return attachments;
     }
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public Boolean isEnabled ( Pgc pgc, String pageAddress )
+    public List<PgcProperty> getProperties( Pgc pgc ) throws ApplicationException
+    {
+        List<PgcProperty> attachments;
+
+        attachments = ( List<PgcProperty> )getResultList( PgcProperty.getAllByPgc, pgc.getId() );
+        if ( SysUtils.isEmpty( attachments ) )
+            return Collections.emptyList();
+        return attachments;
+    }
+
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public List<PgcProperty> getGPS( Pgc pgc ) throws ApplicationException
+    {
+        List<PgcProperty> attachments;
+
+        attachments = ( List<PgcProperty> )getResultList( PgcProperty.getAllGPS, pgc.getId() );
+        if ( SysUtils.isEmpty( attachments ) )
+            return Collections.emptyList();
+        return attachments;
+    }
+
+
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public Boolean isEnabled( Pgc pgc, String pageAddress )
     {
         Query query = getEntityManager().createNamedQuery( AnotoPenPage.penPageAddressQueryName );
         query.setParameter( 1, pgc ).setParameter( 2, pageAddress );
@@ -225,6 +261,12 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
             obj = null;
         }
         return ( obj != null );
+    }
+
+
+    public void add( PgcAttachment attach ) throws ApplicationException
+    {
+        getEntityManager().persist( attach );
     }
 }
 

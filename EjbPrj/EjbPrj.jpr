@@ -197,7 +197,8 @@
             </hash>
             <url n="jarURL" path="deploy/EjbPrj.jar"/>
             <hash n="libraryDependencies">
-               <value n="IncludeLibrariesFromOtherContainers" v="true"/>
+               <value n="IncludeLibrariesFromOtherContainers" v="false"/>
+               <list n="unselectedLibraries"/>
             </hash>
             <value n="platformType" v="WEBLOGIC"/>
             <value n="platformVersion" v="10.3.0.0"/>
@@ -346,7 +347,7 @@
    <hash n="oracle.toplink.workbench.addin">
       <hash n="persistence-list">
          <hash n="src$META-INF$persistence.xml">
-            <value n="development-database" v="PostgreSQL"/>
+            <value n="development-database" v="Connection1"/>
          </hash>
       </hash>
       <hash n="toplinkContentSet">

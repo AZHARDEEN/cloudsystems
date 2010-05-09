@@ -253,7 +253,7 @@
             </hash>
             <url n="jarURL" path="deploy/WEB.war"/>
             <hash n="libraryDependencies">
-               <value n="IncludeLibrariesFromOtherContainers" v="true"/>
+               <value n="IncludeLibrariesFromOtherContainers" v="false"/>
             </hash>
             <value n="platformType" v="WEBLOGIC"/>
             <value n="platformVersion" v="10.3.0.0"/>

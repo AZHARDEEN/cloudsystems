@@ -14,9 +14,12 @@
                 <div width="100%" height="100%" id="divListBoxRecord">
                     <!-- Por favor, nao mude o id desta listbox -->
                     <toolbar>
-                        <toolbarbutton id="btnRefresh" label="Atualizar" image="/img/icontexto-webdev-reload-016x016.png"></toolbarbutton>
-                        <toolbarbutton id="btnAddAttach" upload="true,native" label="Enviar PGC" image="/img/icontexto-webdev-arrow-up-016x016.png"></toolbarbutton>
-                        <toolbarbutton id="btnRemove" label="Excluir PGC" image="/img/icontexto-webdev-remove-016x016.png"></toolbarbutton>
+                        <toolbarbutton id="btnRefresh" label="Atualizar" image="/img/icontexto-webdev-reload-016x016.png"/>
+                        <toolbarbutton id="btnAddAttach" upload="true,native" label="Enviar PGC"
+                                       image="/img/icontexto-webdev-arrow-up-016x016.png"/>
+                        <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="Exportar" id="btnExport"/>
+                        <separator/>
+                        <toolbarbutton id="btnRemove" label="Excluir PGC" image="/img/icontexto-webdev-remove-016x016.png"/>
                     </toolbar>
                     <listbox id="listboxRecord" vflex="true">
                         <listhead sizable="true">
