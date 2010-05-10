@@ -83,10 +83,10 @@
                                 <toolbar>
                                     <toolbarbutton id="btnAddAttach" label="Adicionar" disabled="true" upload="true,native"
                                                    image="/img/icontexto-webdev-add-016x016.png"/>
+                                    <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="Exportar" id="btnExport"/>
+                                    <separator/>
                                     <toolbarbutton id="btnRemoveAttach" label="Remover" disabled="true"
                                                    image="/img/icontexto-webdev-remove-016x016.png"/>
-                                    <toolbarbutton id="btnView" label="Visualizar" disabled="true"
-                                                   image="/img/icontexto-webdev-alert-016x016.png"/>
                                 </toolbar>
                                 <listbox id="listAttachs" fixedLayout="true" height="300px">
                                     <listhead sizable="true">

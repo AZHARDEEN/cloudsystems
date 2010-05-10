@@ -42,6 +42,7 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
@@ -528,4 +529,24 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
             showErrorMessage( e.getMessage(), "Atualizar Campo" );
         }
     }
+
+    public void onClick$btnExport()
+    {
+        try {
+            Listitem item = listAttachs.getSelectedItem();
+
+            if ( item != null && item.getValue() != null ) {
+                MediaDTO pad = ( MediaDTO )item.getValue();
+                byte[] obj;
+                obj = getSession().getObject( pad );
+                if ( obj != null ) {
+                    Filedownload.save( obj, pad.getMimeType(), pad.getName() );
+                }
+            }
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Download" );
+        }
+    }
+
 }
