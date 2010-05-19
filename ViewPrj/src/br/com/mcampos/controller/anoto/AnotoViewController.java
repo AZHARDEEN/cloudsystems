@@ -231,7 +231,7 @@ public class AnotoViewController extends AnotoLoggedController
         PgcFieldDTO field = ( PgcFieldDTO )item.getValue();
         if ( field == null )
             return;
-        correctedValue.setText( field.getRevisedText() );
+        correctedValue.setText( ( SysUtils.isEmpty( field.getRevisedText() ) ) ? field.getIrcText() : field.getRevisedText() );
         icrValue.setValue( field.getIrcText() );
         if ( field.getEndTime() != null && field.getStartTime() != null ) {
             Long diff = field.getEndTime() - field.getStartTime();
@@ -300,7 +300,11 @@ public class AnotoViewController extends AnotoLoggedController
         if ( fieldValue == null )
             fieldValue = "";
         if ( value.equals( fieldValue ) == false ) {
-            field.setRevisedText( value );
+            String icrText = field.getIrcText();
+            if ( value.equals( icrText ) )
+                field.setRevisedText( value );
+            else
+                field.setRevisedText( "" );
             try {
                 getSession().update( getLoggedInUser(), field );
             }

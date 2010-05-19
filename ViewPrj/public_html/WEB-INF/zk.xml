@@ -7,7 +7,7 @@
 		Once turned on, the uncompressed JavaScript files will be loaded.
 	-->
  <client-config>
-  <debug-js>true</debug-js>
+  <debug-js>false</debug-js>
  </client-config>
  <session-config>
   <!-- Turn on the following if you want a different timeout

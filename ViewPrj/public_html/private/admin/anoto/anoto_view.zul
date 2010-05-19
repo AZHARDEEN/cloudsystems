@@ -12,7 +12,7 @@
                     </columns>
                     <rows>
                         <row>
-                            <image src="/img/cliente.jpg"/>
+                            <image src="/img/cliente.gif"/>
                             <label style="font-size:20px;color:#0C7A9A" value="Visualização de Formulários"/>
                             <image src="/img/fdigital.jpg"/>
                         </row>
