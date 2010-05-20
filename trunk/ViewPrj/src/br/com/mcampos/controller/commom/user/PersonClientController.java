@@ -1,5 +1,6 @@
 package br.com.mcampos.controller.commom.user;
 
+
 import br.com.mcampos.controller.admin.clients.UserClientController;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.StateDTO;
@@ -12,26 +13,21 @@ import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.dto.user.attributes.GenderDTO;
 import br.com.mcampos.dto.user.attributes.TitleDTO;
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
-import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.exception.ApplicationException;
-import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.CPF;
-
 
 import java.sql.Timestamp;
 
 import java.util.Date;
 import java.util.List;
 
-import java.util.Map;
-
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Textbox;
+
 
 @SuppressWarnings( { "unchecked", "Unnecessary" } )
 public class PersonClientController extends UserClientController
@@ -68,6 +64,7 @@ public class PersonClientController extends UserClientController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
+        /*
         String action = null;
         Map map = Executions.getCurrent().getArg();
 
@@ -90,6 +87,8 @@ public class PersonClientController extends UserClientController
                 showInfo( id );
             }
         }
+        */
+        showInfo( getLoggedInUser().getUserId() );
     }
 
 
@@ -183,8 +182,8 @@ public class PersonClientController extends UserClientController
         dto.setName( name.getValue() );
         dto.setBirthDate( new Timestamp( birthdate.getValue().getTime() ) );
         dto.setBornCity( bornCity.getSelectedItem() != null ? ( CityDTO )bornCity.getSelectedItem().getValue() : null );
-        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() :
-                           null );
+        dto.setCivilState( maritalStatus.getSelectedItem() !=
+                           null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() : null );
         dto.setFatherName( fatherName.getValue() );
         dto.setGender( gender.getSelectedItem() != null ? ( GenderDTO )gender.getSelectedItem().getValue() : null );
         dto.setMotherName( motherName.getValue() );

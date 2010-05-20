@@ -14,6 +14,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -21,8 +23,10 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = Task.findAll, query = "select o from Task o" ),
-                 @NamedQuery( name = Task.rootTasks, query = "select o from Task o where o.masterTaskList IS EMPTY " ) } )
+@NamedQueries( { @NamedQuery( name = Task.findAll, query = "select o from Task o" ) } )
+@NamedNativeQueries( { @NamedNativeQuery( name = Task.rootTasks,
+                                          query = "SELECT * FROM TASK T WHERE NOT EXISTS ( SELECT * FROM SUBTASK S WHERE T.TSK_ID_IN = S.STK_ID_IN )",
+                                          resultClass = Task.class ) } )
 @Table( name = "task" )
 public class Task implements Serializable, EntityCopyInterface<TaskDTO>, Comparable<Task>
 {
