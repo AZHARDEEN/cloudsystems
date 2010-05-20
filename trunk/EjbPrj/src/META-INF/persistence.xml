@@ -58,7 +58,7 @@
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.form.FormMedia</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage</class>

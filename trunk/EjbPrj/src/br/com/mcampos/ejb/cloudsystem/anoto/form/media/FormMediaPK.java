@@ -1,6 +1,7 @@
-package br.com.mcampos.ejb.cloudsystem.anoto.form;
+package br.com.mcampos.ejb.cloudsystem.anoto.form.media;
 
 
+import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 
 import java.io.Serializable;

@@ -15,7 +15,7 @@ import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.dto.system.MediaDTO;
-import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.system.UploadMedia;
@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.DropEvent;
 import org.zkoss.zk.ui.event.Event;
@@ -37,6 +38,7 @@ import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zul.AbstractListModel;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Filedownload;
+import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -48,23 +50,24 @@ import org.zkoss.zul.Textbox;
 
 public class AnotoFormController extends SimpleTableController<FormDTO>
 {
-    private AnodeFacade session;
-    protected Textbox editIP;
-    protected Label recordIP;
+    private AnotoFormFacade session;
+    private Textbox editIP;
+    private Label recordIP;
 
 
-    protected Button btnAddAttach;
-    protected Button btnRemoveAttach;
-    protected Button btnProperties;
-    protected Button btnAddPen;
-    protected Button btnRemovePen;
+    private Button btnAddAttach;
+    private Button btnAddAttachOther;
+    private Button btnRemoveAttach;
+    private Button btnRemoveAttachOther;
+    private Button btnProperties;
 
-    protected Listbox listAttachs;
-    protected Listbox listAvailable;
-    protected Listbox listAdded;
+    private Listbox listAttachs;
+    private Listbox listAttachsOther;
+    private Listbox listAvailable;
+    private Listbox listAdded;
 
-    protected Listheader headerApplication;
-    protected Listheader headerDescription;
+    private Listheader headerApplication;
+    private Listheader headerDescription;
 
 
     public AnotoFormController()
@@ -72,10 +75,10 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         super();
     }
 
-    protected AnodeFacade getSession()
+    private AnotoFormFacade getSession()
     {
         if ( session == null )
-            session = ( AnodeFacade )getRemoteSession( AnodeFacade.class );
+            session = ( AnotoFormFacade )getRemoteSession( AnotoFormFacade.class );
         return session;
     }
 
@@ -91,11 +94,17 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    protected void clearAllFormLists()
+    private void clearAllFormLists()
     {
-        listAdded.getChildren().clear();
-        listAttachs.getChildren().clear();
-        listAvailable.getChildren().clear();
+        try {
+            listAdded.getChildren().clear();
+            listAttachs.getChildren().clear();
+            listAvailable.getChildren().clear();
+            listAttachsOther.getChildren().clear();
+        }
+        catch ( Exception e ) {
+            e = null;
+        }
     }
 
     @Override
@@ -110,7 +119,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         getSession().delete( getLoggedInUser(), ( FormDTO )currentRecord );
     }
 
-    protected boolean validate( FormDTO dto, boolean bNew )
+    private boolean validate( FormDTO dto, boolean bNew )
     {
         if ( SysUtils.isEmpty( dto.getDescription() ) ) {
             showErrorMessage( "A descrição do formulário deve estar preenchida", "Formulário" );
@@ -158,7 +167,9 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     protected List getRecordList() throws ApplicationException
     {
         btnAddAttach.setDisabled( true );
+        btnAddAttachOther.setDisabled( true );
         btnRemoveAttach.setDisabled( true );
+        btnRemoveAttachOther.setDisabled( true );
         btnProperties.setDisabled( true );
         return getSession().getForms( getLoggedInUser() );
     }
@@ -170,6 +181,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         editIP.setValue( "" );
         editIP.setFocus( true );
         btnRemoveAttach.setDisabled( true );
+        btnRemoveAttachOther.setDisabled( true );
         btnProperties.setDisabled( true );
     }
 
@@ -211,7 +223,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             super.showRecord( record );
             listAttachs.setModel( getMediaModel( ( FormDTO )record ) );
             refreshPens( ( FormDTO )record );
-            //listAdded.setModel( getPenModel( ( FormDTO )record ) );
+            refreshOtherAttachs( ( FormDTO )record );
         }
         else {
             clearRecordInfo();
@@ -219,6 +231,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             listAdded.getItems().clear();
         }
         btnAddAttach.setDisabled( record == null );
+        btnAddAttachOther.setDisabled( record == null );
         recordIP.setValue( record != null ? ( ( FormDTO )record ).getApplication() : "" );
     }
 
@@ -282,6 +295,9 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         if ( listAttachs != null ) {
             listAttachs.setItemRenderer( new MediaListRenderer() );
         }
+        if ( listAttachsOther != null ) {
+            listAttachsOther.setItemRenderer( new MediaListRenderer() );
+        }
         if ( listAvailable != null ) {
             listAvailable.setItemRenderer( ( new PenListRenderer() ).setDraggable( true ) );
             listAvailable.addEventListener( Events.ON_DROP, new EventListener()
@@ -310,7 +326,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         headerDescription.setSortDescending( new FormDescriptionApplication( false ) );
     }
 
-    protected AbstractListModel getMediaModel( FormDTO currentForm )
+    private AbstractListModel getMediaModel( FormDTO currentForm )
     {
         if ( currentForm == null )
             return null;
@@ -327,7 +343,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    protected void moveListitem( ListModelList toListbox, ListModelList fromListbox )
+    private void moveListitem( ListModelList toListbox, ListModelList fromListbox )
     {
         if ( getListboxRecord().getSelectedCount() != 1 )
             return;
@@ -375,7 +391,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    protected ListModelList getModel( Listbox target )
+    private ListModelList getModel( Listbox target )
     {
         ListModelList modelList = ( ListModelList )target.getModel();
         if ( modelList == null ) {
@@ -396,7 +412,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     }
 
 
-    protected void refreshPens( FormDTO current )
+    private void refreshPens( FormDTO current )
     {
         listAvailable.setModel( getAvailablePensListModel( current ) );
         listAvailable.invalidate();
@@ -405,7 +421,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     }
 
 
-    protected ListModelList getAvailablePensListModel( FormDTO current )
+    private ListModelList getAvailablePensListModel( FormDTO current )
     {
         List<PenDTO> list;
         try {
@@ -420,7 +436,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    protected ListModelList getPensListModel( FormDTO current )
+    private ListModelList getPensListModel( FormDTO current )
     {
         List<PenDTO> list;
         try {
@@ -435,7 +451,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
     }
 
-    protected ListModelList getFilesListModel( FormDTO current )
+    private ListModelList getFilesListModel( FormDTO current )
     {
         List<MediaDTO> list;
         try {
@@ -482,6 +498,12 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         btnProperties.setDisabled( false );
     }
 
+    public void onSelect$listAttachsOther()
+    {
+        btnRemoveAttachOther.setDisabled( false );
+    }
+
+
     public void onClick$btnProperties()
     {
         Listitem item = listAttachs.getSelectedItem();
@@ -495,7 +517,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     }
 
 
-    protected MediaDTO addPadFile( FormDTO form, MediaDTO newPad ) throws ApplicationException
+    private MediaDTO addPadFile( FormDTO form, MediaDTO newPad ) throws ApplicationException
     {
         MediaDTO dto = getSession().addFile( getLoggedInUser(), form, newPad );
         return dto;
@@ -536,6 +558,89 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Download" );
+        }
+    }
+
+    public void onClick$btnAddAttachOther()
+    {
+        FormDTO currentForm = getValue( getListboxRecord().getSelectedItem() );
+        if ( currentForm == null )
+            return;
+        try {
+            Media[] medias = Fileupload.get( "Escolha os arquivos ", "Arquivos", 3, 6 * 1024 * 1024, true );
+            if ( medias != null && medias.length > 0 ) {
+                MediaDTO[] dtos = new MediaDTO[ medias.length ];
+                for ( int nIndex = 0; nIndex < medias.length; nIndex++ ) {
+                    dtos[ nIndex ] = UploadMedia.getMedia( medias[ nIndex ] );
+                }
+                getSession().addMedias( getLoggedInUser(), currentForm, dtos );
+                ListModelList model = ( ListModelList )listAttachsOther.getModel();
+                if ( model != null ) {
+                    for ( int nIndex = 0; nIndex < dtos.length; nIndex++ ) {
+                        model.add( dtos[ nIndex ] );
+                    }
+                }
+            }
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage(), "Erro ao realizar upload" );
+        }
+    }
+
+    public void onClick$btnRemoveAttachOther()
+    {
+        FormDTO currentForm = getValue( getListboxRecord().getSelectedItem() );
+        Set selected = listAttachsOther.getSelectedItems();
+        if ( selected.isEmpty() )
+            return;
+        ArrayList al = new ArrayList( selected );
+        MediaDTO[] medias = new MediaDTO[ selected.size() ];
+        try {
+            int nIndex = 0;
+            for ( Iterator it = al.iterator(); it.hasNext(); ) {
+                Listitem li = ( Listitem )it.next();
+                MediaDTO dto = ( MediaDTO )li.getValue();
+                medias[ nIndex ] = dto;
+                nIndex++;
+            }
+            getSession().removeMedias( getLoggedInUser(), currentForm, medias );
+            for ( nIndex = 0; nIndex < medias.length; nIndex++ )
+                ( ( ListModelList )listAttachsOther.getModel() ).remove( medias[ nIndex ] );
+            btnRemoveAttachOther.setDisabled( true );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Remover Media" );
+        }
+
+    }
+
+    public void onClick$btnExportOther()
+    {
+        try {
+            Listitem item = listAttachsOther.getSelectedItem();
+
+            if ( item != null && item.getValue() != null ) {
+                MediaDTO media = ( MediaDTO )item.getValue();
+                byte[] obj;
+                obj = getSession().getObject( media );
+                if ( obj != null ) {
+                    Filedownload.save( obj, media.getMimeType(), media.getName() );
+                }
+            }
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Download" );
+        }
+    }
+
+    private void refreshOtherAttachs( FormDTO current )
+    {
+        try {
+            List<MediaDTO> medias = getSession().getMedias( getLoggedInUser(), current );
+            listAttachsOther.setModel( new ListModelList( !SysUtils.isEmpty( medias ) ? medias : new ArrayList<MediaDTO>() ) );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Erro ao obter medias" );
         }
     }
 }

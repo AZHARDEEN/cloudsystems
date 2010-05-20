@@ -14,9 +14,9 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries( { @NamedQuery( name = PgcProperty.getAll, query = "select o from PgcProperty o" ),
                  @NamedQuery( name = PgcProperty.getAllByPgc,
-                              query = "select o from PgcProperty o where o.pgc_id_in = ?1 and o.pgp_id_in <> 16386" ),
+                              query = "select o from PgcProperty o where o.pgc_id_in = ?1 and o.pgp_id_in <> 16386 order by o.pgp_seq_in" ),
                  @NamedQuery( name = PgcProperty.getAllGPS,
-                              query = "select o from PgcProperty o where o.pgc_id_in = ?1 and o.pgp_id_in = 16386" ) } )
+                              query = "select o from PgcProperty o where o.pgc_id_in = ?1 and o.pgp_id_in = 16386 order by o.pgp_seq_in" ) } )
 @Table( name = "pgc_property" )
 @IdClass( PgcPropertyPK.class )
 public class PgcProperty implements Serializable

@@ -1,6 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.anoto.form;
 
 
+import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMediaPK;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;

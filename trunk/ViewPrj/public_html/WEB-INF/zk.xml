@@ -59,4 +59,7 @@
 		<listener-class>org.zkoss.zk.ui.util.Statistic</listener-class>
 	</listener>
 	-->
+ <system-config>
+  <disable-event-thread>false</disable-event-thread>
+ </system-config>
 </zk>
