@@ -13,11 +13,12 @@ import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia;
+import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
@@ -72,6 +73,17 @@ public final class AnotoUtils
         List<MediaDTO> dtoList = new ArrayList<MediaDTO>( list.size() );
         for ( Media f : list ) {
             dtoList.add( f.toDTO() );
+        }
+        return dtoList;
+    }
+
+    public static List<MediaDTO> toMediaListFromFormMedia( List<FormMedia> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<MediaDTO> dtoList = new ArrayList<MediaDTO>( list.size() );
+        for ( FormMedia f : list ) {
+            dtoList.add( f.getMedia().toDTO() );
         }
         return dtoList;
     }
