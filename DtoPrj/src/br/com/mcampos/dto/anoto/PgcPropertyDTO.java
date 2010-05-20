@@ -8,9 +8,11 @@ import java.util.List;
 
 public class PgcPropertyDTO implements Serializable
 {
-    int id;
-    List<String> values = new ArrayList<String>();
-    String value;
+    public final static Integer gpsPropertyId = 16386;
+    private int id;
+    private int sequence;
+    private List<String> values = new ArrayList<String>();
+    private String value;
 
     public PgcPropertyDTO()
     {
@@ -50,5 +52,15 @@ public class PgcPropertyDTO implements Serializable
     public String getValue()
     {
         return value;
+    }
+
+    public void setSequence( int sequence )
+    {
+        this.sequence = sequence;
+    }
+
+    public int getSequence()
+    {
+        return sequence;
     }
 }
