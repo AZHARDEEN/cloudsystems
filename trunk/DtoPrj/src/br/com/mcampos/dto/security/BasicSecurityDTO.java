@@ -5,10 +5,10 @@ import java.io.Serializable;
 public class BasicSecurityDTO implements Serializable
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5553506158590594461L;
-	protected String sessionId;
+     *
+     */
+    private static final long serialVersionUID = -5553506158590594461L;
+    protected String sessionId;
     protected String remoteAddr;
     protected String remoteHost;
 
