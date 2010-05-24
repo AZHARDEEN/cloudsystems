@@ -92,7 +92,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
                     onDrop( event );
                 }
             } );
-        recordEdit.addEventListener( Events.ON_DROP, new EventListener()
+        getRecordEdit().addEventListener( Events.ON_DROP, new EventListener()
             {
                 public void onEvent( Event event ) throws Exception
                 {
@@ -150,7 +150,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         System.out.println( "ShowMenuTask list was gotten: " + dto.toString() );
         if ( SysUtils.isEmpty( tasks ) )
             tasks = new ArrayList<TaskDTO>();
-        listTasks.setModel( new ListModelList(  tasks, true ) );
+        listTasks.setModel( new ListModelList( tasks, true ) );
         System.out.println( "ShowMenuTask model created: " + dto.toString() );
         removeTask.setDisabled( true );
         System.out.println( "ShowMenuTask is done!!!: " + dto.toString() );

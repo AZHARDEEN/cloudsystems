@@ -19,11 +19,11 @@
     <class>br.com.mcampos.ejb.entity.user.Client</class>
     <class>br.com.mcampos.ejb.entity.user.UserDocument</class>
     <class>br.com.mcampos.ejb.entity.user.UserContact</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.Title</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.title.Title</class>
     <class>br.com.mcampos.ejb.entity.login.AccessLog</class>
     <class>br.com.mcampos.ejb.entity.login.AccessLogType</class>
     <class>br.com.mcampos.ejb.entity.user.attributes.CompanyPosition</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.Gender</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.gender.Gender</class>
     <class>br.com.mcampos.ejb.entity.system.SystemMessageType</class>
     <class>br.com.mcampos.ejb.entity.user.attributes.CollaboratorType</class>
     <class>br.com.mcampos.ejb.entity.address.Country</class>

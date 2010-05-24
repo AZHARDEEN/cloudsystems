@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class IcrField implements Serializable, Comparable<IcrField>
 {
+    private Integer fieldIndex;
     private String id;
     private String strType;
     private Object value;
@@ -57,5 +58,15 @@ public class IcrField implements Serializable, Comparable<IcrField>
     public Integer getScore()
     {
         return score;
+    }
+
+    public void setFieldIndex( Integer fieldIndex )
+    {
+        this.fieldIndex = fieldIndex;
+    }
+
+    public Integer getFieldIndex()
+    {
+        return fieldIndex;
     }
 }

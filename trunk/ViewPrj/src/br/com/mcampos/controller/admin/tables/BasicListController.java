@@ -17,7 +17,7 @@ import org.zkoss.zul.ListitemRenderer;
 public abstract class BasicListController<DTO> extends BasicCRUDController implements ListitemRenderer
 {
 
-    protected Listbox listboxRecord;
+    private Listbox listboxRecord;
 
 
     /**
@@ -123,12 +123,6 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
         catch ( ApplicationException e ) {
             e = null;
         }
-    }
-
-    @Override
-    protected void showEditPanel( Boolean bShow )
-    {
-        super.showEditPanel( bShow );
     }
 
     protected void afterDelete( Object currentRecord )

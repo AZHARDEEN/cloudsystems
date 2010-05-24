@@ -8,6 +8,7 @@ import javax.ejb.EJBException;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Div;
 
+
 public abstract class BasicCRUDController extends LoggedBaseController
 {
 
@@ -15,46 +16,46 @@ public abstract class BasicCRUDController extends LoggedBaseController
      * Mapeamento do botão cmdCreate. O nome do botão NÃO pode ser alterado no formulário WEB.
      * O evento onClick$cmdCreate dispara o início do processo de inclusão em um formulário
      */
-    protected Button cmdCreate;
+    private Button cmdCreate;
 
     /**
      * Mapeamento do botão cmdUpdate. O nome do botão NÃO pode ser alterado no formulário WEB.
      * O evento onClick$cmdUpdate dispara o início do processo de alteração de um registro
      * O registro selecionado em um formulário.
      */
-    protected Button cmdUpdate;
+    private Button cmdUpdate;
 
     /**
      * Mapeamento do botão cmdDelete. O nome do botão NÃO pode ser alterado no formulário WEB.
      * O evento onClick$cmdDelete dispara o início do processo de exclusão de um registro em um formulário.
      */
-    protected Button cmdDelete;
+    private Button cmdDelete;
 
     /**
      * Mapeamento do botão cmdRefresh. O nome do botão NÃO pode ser alterado no formulário WEB.
      * O evento onClick$cmdRefresh dispara o processo de atualização geral.
      */
-    protected Button cmdRefresh;
+    private Button cmdRefresh;
 
     /**
      * Mapeamento do div recordView. O nome deste div NÃO pode ser alterado no formulário WEB.
      * O div recordEdit é mostrado somente quando uma ação de inclusão ou alteração é executado
      */
-    protected Div recordView;
+    private Div recordView;
 
     /**
      * Mapeamento do div recordDetail. O nome deste div NÃO pode ser alterado no formulário WEB.
      * O div recordDetail é mostrado somente quando o usuário seleciona um objeto e o sistema entende que
      * existem mais informações para serem exibidas.
      */
-    protected Div recordEdit;
+    private Div recordEdit;
 
     /**
      * Indica se uma ação de inclusão de um novo registro está em andamento. Usado para o diferenciar
      * entre um evento de inclusão (true) ou alteração(false). Só faz sentido quando o sitema está entre
      * um destes dois estados.
      */
-    protected Boolean isAddNewOperation;
+    private Boolean isAddNewOperation;
 
 
     /**
@@ -169,7 +170,7 @@ public abstract class BasicCRUDController extends LoggedBaseController
      *
      * @param bEnable
      */
-    protected void enableOperationsButtons( Boolean bEnable )
+    private void enableOperationsButtons( Boolean bEnable )
     {
         if ( bEnable ) {
             cmdCreate.setDisabled( false );
@@ -242,7 +243,7 @@ public abstract class BasicCRUDController extends LoggedBaseController
         refresh();
     }
 
-    protected void showEditPanel( Boolean bShow )
+    private void showEditPanel( Boolean bShow )
     {
         if ( bShow ) {
             if ( recordView.isVisible() == true )
@@ -264,7 +265,7 @@ public abstract class BasicCRUDController extends LoggedBaseController
      * é chamada com o parâmetro (false)
      * @param isAddNewOperation indica o tipo de operação(inclusão(true) ou alteração(false)
      */
-    protected void setAddNewOperation( Boolean isAddNewOperation )
+    private void setAddNewOperation( Boolean isAddNewOperation )
     {
         this.isAddNewOperation = isAddNewOperation;
     }
@@ -301,6 +302,21 @@ public abstract class BasicCRUDController extends LoggedBaseController
     {
         enableOperationsButtons( true );
         setAddNewOperation( false );
+    }
+
+    protected void hideCreateButton( boolean bHide )
+    {
+        cmdCreate.setVisible( !bHide );
+    }
+
+    protected void hideDeleteButton( boolean bHide )
+    {
+        cmdCreate.setVisible( !bHide );
+    }
+
+    protected Div getRecordEdit()
+    {
+        return recordEdit;
     }
 
 }

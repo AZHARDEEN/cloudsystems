@@ -1,5 +1,9 @@
-package br.com.mcampos.ejb.entity.user.attributes;
+package br.com.mcampos.ejb.cloudsystem.user.gender;
 
+
+import br.com.mcampos.dto.user.attributes.GenderDTO;
+import br.com.mcampos.ejb.cloudsystem.user.title.Title;
+import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
 
@@ -18,10 +22,12 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Gender.findAll", query = "select o from Gender o" ) } )
+@NamedQueries( { @NamedQuery( name = Gender.getAll, query = "select o from Gender o" ) } )
 @Table( name = "gender" )
-public class Gender implements Serializable
+public class Gender implements Serializable, EntityCopyInterface<GenderDTO>
 {
+    public static final String getAll = "Gender.findAll";
+
     @Id
     @Column( name = "gnd_id_in", nullable = false )
     protected Integer id;
@@ -85,5 +91,11 @@ public class Gender implements Serializable
     public void setTitles( List<Title> titles )
     {
         this.titles = titles;
+    }
+
+    public GenderDTO toDTO()
+    {
+        GenderDTO dto = new GenderDTO( getId(), getDescription() );
+        return dto;
     }
 }

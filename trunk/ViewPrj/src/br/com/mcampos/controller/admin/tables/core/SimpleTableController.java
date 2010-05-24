@@ -24,23 +24,26 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
         super();
     }
 
+    @Override
     protected void clearRecordInfo()
     {
         editId.setRawValue( 0 );
         editDescription.setValue( "" );
     }
 
+    @Override
     protected void prepareToInsert()
     {
-        clearRecordInfo ();
+        clearRecordInfo();
         editId.setRawValue( getNextId() );
         editId.setReadonly( false );
         editDescription.setFocus( true );
     }
 
+    @Override
     protected SimpleTableDTO prepareToUpdate( Object currentRecord )
     {
-        SimpleTableDTO dto = (SimpleTableDTO) currentRecord;
+        SimpleTableDTO dto = ( SimpleTableDTO )currentRecord;
 
         //dto = getValue( currentRecord );
 
@@ -50,6 +53,7 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
         return dto;
     }
 
+    @Override
     protected void showRecord( SimpleTableDTO record )
     {
         if ( record != null ) {
@@ -71,6 +75,7 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
         return dto;
     }
 
+    @Override
     public void render( Listitem item, Object value )
     {
         SimpleTableDTO dto = ( SimpleTableDTO )value;

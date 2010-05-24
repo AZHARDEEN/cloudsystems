@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.session.user.attributes;
 
 import br.com.mcampos.dto.user.attributes.TitleDTO;
-import br.com.mcampos.ejb.entity.user.attributes.Title;
+import br.com.mcampos.ejb.cloudsystem.user.title.Title;
 
 import java.util.List;
 

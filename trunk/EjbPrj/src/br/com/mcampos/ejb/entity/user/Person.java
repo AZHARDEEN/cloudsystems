@@ -4,8 +4,8 @@ package br.com.mcampos.ejb.entity.user;
 import br.com.mcampos.ejb.entity.address.City;
 import br.com.mcampos.ejb.entity.login.Login;
 import br.com.mcampos.ejb.entity.user.attributes.CivilState;
-import br.com.mcampos.ejb.entity.user.attributes.Gender;
-import br.com.mcampos.ejb.entity.user.attributes.Title;
+import br.com.mcampos.ejb.cloudsystem.user.gender.Gender;
+import br.com.mcampos.ejb.cloudsystem.user.title.Title;
 import br.com.mcampos.ejb.entity.user.attributes.UserType;
 
 import java.io.Serializable;

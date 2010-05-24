@@ -11,27 +11,28 @@ public class A2iaResult extends A2iaBase
         super( a2ia );
     }
 
-    public String getValueString ( Integer index ) throws COMException
+    public String getValueString( Integer index ) throws COMException
     {
-        Object obj = getIcrObj().getProperty( getId(), getValueAttrString ( index ) );
-        return (String)obj;
+        Object obj = getIcrObj().getProperty( getId(), getValueAttrString( index, "Word" ) );
+        return ( String )obj;
     }
 
-    public Integer getScore ( Integer index ) throws COMException
+    public Integer getScore( Integer index ) throws COMException
     {
-        Object obj = getIcrObj().getProperty( getId(), getScoreAttrString( index ) );
-        return (Integer)obj;
+        Object obj = getIcrObj().getProperty( getId(), getScoreAttrString( index, "Word" ) );
+        return ( Integer )obj;
     }
 
 
-    private static String getValueAttrString ( int field )
+    private static String getValueAttrString( int field, String fieldType )
     {
         String str = attrPrefix + "[" + field + "].fieldTypeInfo.CaseWord.word.result.reco";
         return str;
     }
 
-    private static String getScoreAttrString ( int field )
+    private static String getScoreAttrString( int field, String fieldType )
     {
+
         String str = attrPrefix + "[" + field + "].fieldTypeInfo.CaseWord.word.result.score";
         return str;
     }
