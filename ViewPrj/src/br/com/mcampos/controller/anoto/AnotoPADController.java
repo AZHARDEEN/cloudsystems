@@ -85,8 +85,8 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
-        cmdCreate.setVisible( false );
-        cmdDelete.setVisible( false );
+        hideCreateButton( true );
+        hideDeleteButton( true );
         if ( listAttachs != null ) {
             listAttachs.setItemRenderer( new MediaListRenderer() );
         }

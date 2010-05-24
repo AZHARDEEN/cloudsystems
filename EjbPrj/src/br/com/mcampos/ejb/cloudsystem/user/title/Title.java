@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.entity.user.attributes;
+package br.com.mcampos.ejb.cloudsystem.user.title;
 
 import java.io.Serializable;
 

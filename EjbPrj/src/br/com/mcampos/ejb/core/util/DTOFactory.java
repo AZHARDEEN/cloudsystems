@@ -73,8 +73,8 @@ import br.com.mcampos.ejb.entity.user.attributes.CompanyPosition;
 import br.com.mcampos.ejb.entity.user.attributes.CompanyType;
 import br.com.mcampos.ejb.entity.user.attributes.ContactType;
 import br.com.mcampos.ejb.entity.user.attributes.DocumentType;
-import br.com.mcampos.ejb.entity.user.attributes.Gender;
-import br.com.mcampos.ejb.entity.user.attributes.Title;
+import br.com.mcampos.ejb.cloudsystem.user.gender.Gender;
+import br.com.mcampos.ejb.cloudsystem.user.title.Title;
 import br.com.mcampos.ejb.entity.user.attributes.UserStatus;
 import br.com.mcampos.ejb.entity.user.attributes.UserType;
 

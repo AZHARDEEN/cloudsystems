@@ -2,8 +2,8 @@ package br.com.mcampos.ejb.session.user.attributes;
 
 import br.com.mcampos.dto.user.attributes.TitleDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.entity.user.attributes.Gender;
-import br.com.mcampos.ejb.entity.user.attributes.Title;
+import br.com.mcampos.ejb.cloudsystem.user.gender.Gender;
+import br.com.mcampos.ejb.cloudsystem.user.title.Title;
 
 import java.util.ArrayList;
 import java.util.List;
