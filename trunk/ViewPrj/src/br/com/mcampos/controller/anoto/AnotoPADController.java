@@ -3,6 +3,7 @@ package br.com.mcampos.controller.anoto;
 
 import br.com.mcampos.controller.anoto.model.AnotoPageFieldComparator;
 import br.com.mcampos.controller.anoto.model.PenListModel;
+import br.com.mcampos.controller.anoto.renderer.AnotoPadListRenderer;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PageFieldRowRenderer;
 import br.com.mcampos.controller.anoto.renderer.PenListRenderer;
@@ -47,8 +48,8 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
@@ -156,15 +157,9 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
     }
 
     @Override
-    public void render( Listitem item, Object value )
+    public ListitemRenderer getRenderer()
     {
-        AnotoPageDTO dto = ( AnotoPageDTO )value;
-
-        if ( dto != null ) {
-            item.setValue( value );
-            item.getChildren().add( new Listcell( dto.getPageAddress() ) );
-            item.getChildren().add( new Listcell( dto.getDescription() ) );
-        }
+        return new AnotoPadListRenderer();
     }
 
     @Override

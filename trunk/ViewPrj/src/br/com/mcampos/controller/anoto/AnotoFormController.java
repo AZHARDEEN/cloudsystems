@@ -5,6 +5,7 @@ import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
 import br.com.mcampos.controller.anoto.model.FormApplicationComparator;
 import br.com.mcampos.controller.anoto.model.FormDescriptionApplication;
 import br.com.mcampos.controller.anoto.model.FormListModel;
+import br.com.mcampos.controller.anoto.renderer.AnotoFormListRenderer;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PenListRenderer;
 import br.com.mcampos.controller.anoto.util.PadFile;
@@ -42,9 +43,9 @@ import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
 
 
@@ -204,16 +205,9 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     }
 
     @Override
-    public void render( Listitem item, Object value )
+    protected ListitemRenderer getRenderer()
     {
-        FormDTO dto = ( FormDTO )value;
-
-        if ( dto != null ) {
-            item.setValue( value );
-            item.getChildren().clear();
-            item.getChildren().add( new Listcell( dto.getApplication() ) );
-            item.getChildren().add( new Listcell( dto.getDescription() ) );
-        }
+        return new AnotoFormListRenderer();
     }
 
     @Override

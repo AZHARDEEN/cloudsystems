@@ -3,11 +3,11 @@ package br.com.mcampos.controller.admin.tables.core;
 
 import br.com.mcampos.controller.admin.tables.BasicListController;
 import br.com.mcampos.dto.core.SimpleTableDTO;
+import br.com.mcampos.exception.ApplicationException;
 
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listitem;
+import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
 
 public abstract class SimpleTableController<DTO> extends BasicListController<SimpleTableDTO>
@@ -17,7 +17,7 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
     protected Intbox editId;
     protected Textbox editDescription;
 
-    protected abstract Integer getNextId();
+    protected abstract Integer getNextId() throws ApplicationException;
 
     public SimpleTableController()
     {
@@ -35,7 +35,12 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
     protected void prepareToInsert()
     {
         clearRecordInfo();
-        editId.setRawValue( getNextId() );
+        try {
+            editId.setRawValue( getNextId() );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "GetNextId" );
+        }
         editId.setReadonly( false );
         editDescription.setFocus( true );
     }
@@ -76,15 +81,8 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
     }
 
     @Override
-    public void render( Listitem item, Object value )
+    protected ListitemRenderer getRenderer()
     {
-        SimpleTableDTO dto = ( SimpleTableDTO )value;
-
-        if ( dto != null ) {
-            item.getChildren().clear();
-            item.getChildren().add( new Listcell( dto.getId().toString() ) );
-            item.getChildren().add( new Listcell( dto.getDescription() ) );
-        }
+        return new SimpleTableListRenderer();
     }
-
 }

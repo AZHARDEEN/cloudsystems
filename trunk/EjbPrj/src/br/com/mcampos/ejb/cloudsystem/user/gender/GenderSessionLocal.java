@@ -20,4 +20,6 @@ public interface GenderSessionLocal
     Gender get( Integer key ) throws ApplicationException;
 
     List<Gender> getAll() throws ApplicationException;
+
+    Integer getNextId() throws ApplicationException;
 }

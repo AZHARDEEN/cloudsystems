@@ -8,6 +8,8 @@ import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
 
+import org.zkoss.zul.ListitemRenderer;
+
 
 public class GenderController extends SimpleTableController<GenderDTO>
 {
@@ -21,9 +23,9 @@ public class GenderController extends SimpleTableController<GenderDTO>
     }
 
     @Override
-    protected Integer getNextId()
+    protected Integer getNextId() throws ApplicationException
     {
-        return null;
+        return getSession().getNextId( getLoggedInUser() );
     }
 
     @Override
@@ -33,8 +35,9 @@ public class GenderController extends SimpleTableController<GenderDTO>
     }
 
     @Override
-    protected void delete( Object currentRecord )
+    protected void delete( Object currentRecord ) throws ApplicationException
     {
+        getSession().delete( getLoggedInUser(), ( GenderDTO )currentRecord );
     }
 
     @Override
@@ -44,7 +47,18 @@ public class GenderController extends SimpleTableController<GenderDTO>
     }
 
     @Override
-    protected void persist( Object e )
+    protected void persist( Object e ) throws ApplicationException
     {
+        GenderDTO gender = ( GenderDTO )e;
+        if ( isAddNewOperation() )
+            getSession().add( getLoggedInUser(), gender );
+        else
+            getSession().update( getLoggedInUser(), gender );
+    }
+
+    @Override
+    protected ListitemRenderer getRenderer()
+    {
+        return new GenderListRenderer();
     }
 }

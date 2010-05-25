@@ -22,11 +22,13 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = Gender.getAll, query = "select o from Gender o" ) } )
+@NamedQueries( { @NamedQuery( name = Gender.getAll, query = "select o from Gender o" ),
+                 @NamedQuery( name = Gender.getNextId, query = "select max(o.id) from Gender o" ) } )
 @Table( name = "gender" )
 public class Gender implements Serializable, EntityCopyInterface<GenderDTO>
 {
     public static final String getAll = "Gender.findAll";
+    public static final String getNextId = "Gender.getNextId";
 
     @Id
     @Column( name = "gnd_id_in", nullable = false )

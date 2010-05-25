@@ -4,6 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.user.gender;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.attributes.GenderDTO;
 import br.com.mcampos.ejb.core.AbstractSecurity;
+import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -64,6 +65,40 @@ public class GenderFacadeBean extends AbstractSecurity implements GenderFacade
         for ( Gender gender : genders )
             dtos.add( gender.toDTO() );
         return dtos;
+    }
+
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public Integer getNextId( AuthenticationDTO currentUser ) throws ApplicationException
+    {
+        authenticate( currentUser );
+
+        return genderSession.getNextId();
+    }
+
+    public void add( AuthenticationDTO currentUser, GenderDTO dto ) throws ApplicationException
+    {
+        authenticate( currentUser );
+        Gender gender = genderSession.get( dto.getId() );
+        if ( gender != null )
+            throwException( 1 );
+        gender = DTOFactory.copy( dto );
+        genderSession.add( gender );
+    }
+
+    public void update( AuthenticationDTO currentUser, GenderDTO dto ) throws ApplicationException
+    {
+        authenticate( currentUser );
+        Gender gender = genderSession.get( dto.getId() );
+        if ( gender == null )
+            throwException( 2 );
+        gender.setDescription( dto.getDescription() );
+        genderSession.update( gender );
+    }
+
+    public void delete( AuthenticationDTO currentUser, GenderDTO dto ) throws ApplicationException
+    {
+        authenticate( currentUser );
+        genderSession.delete( dto.getId() );
     }
 }
 

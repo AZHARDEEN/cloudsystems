@@ -14,4 +14,12 @@ import javax.ejb.Remote;
 public interface GenderFacade
 {
     List<GenderDTO> getAll( AuthenticationDTO currentUser ) throws ApplicationException;
+
+    Integer getNextId( AuthenticationDTO currentUser ) throws ApplicationException;
+
+    void add( AuthenticationDTO currentUser, GenderDTO dto ) throws ApplicationException;
+
+    void update( AuthenticationDTO currentUser, GenderDTO dto ) throws ApplicationException;
+
+    void delete( AuthenticationDTO currentUser, GenderDTO dto ) throws ApplicationException;
 }
