@@ -68,6 +68,7 @@
    <value n="defaultPackage" v="ejbprj"/>
    <hash n="ejbModuleContainer">
       <value n="cmpProvider" v="EJB 3.0"/>
+      <value n="dbConnection" v="PostgreSQL"/>
       <value n="ejbVersion" v="3.0"/>
       <list n="serviceFacadeUrls">
          <url path="src/ejbprj/JavaServiceFacade.java"/>
@@ -347,7 +348,7 @@
    <hash n="oracle.toplink.workbench.addin">
       <hash n="persistence-list">
          <hash n="src$META-INF$persistence.xml">
-            <value n="development-database" v="Connection1"/>
+            <value n="development-database" v="PostgreSQL"/>
          </hash>
       </hash>
       <hash n="toplinkContentSet">

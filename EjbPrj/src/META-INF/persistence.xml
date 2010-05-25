@@ -5,7 +5,7 @@
   <persistence-unit name="EjbPrj">
     <description>Descrição do conector CloudSystems</description>
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>jdbc/CloudDS</jta-data-source>
+    <jta-data-source>java:/app/jdbc/jdbc/PostgreSQLDS</jta-data-source>
     <class>br.com.mcampos.ejb.entity.user.attributes.UserType</class>
     <class>br.com.mcampos.ejb.entity.address.City</class>
     <class>br.com.mcampos.ejb.entity.user.Collaborator</class>
@@ -19,9 +19,8 @@
     <class>br.com.mcampos.ejb.entity.user.Client</class>
     <class>br.com.mcampos.ejb.entity.user.UserDocument</class>
     <class>br.com.mcampos.ejb.entity.user.UserContact</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.title.Title</class>
     <class>br.com.mcampos.ejb.entity.login.AccessLog</class>
-    <class>br.com.mcampos.ejb.entity.login.AccessLogType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType</class>
     <class>br.com.mcampos.ejb.entity.user.attributes.CompanyPosition</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.gender.Gender</class>
     <class>br.com.mcampos.ejb.entity.system.SystemMessageType</class>
@@ -67,5 +66,9 @@
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.title.Title</class>
+    <properties>
+      <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/PostgreSQLDS"/>
+    </properties>
   </persistence-unit>
 </persistence>

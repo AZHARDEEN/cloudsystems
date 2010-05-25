@@ -54,13 +54,15 @@ public class ClientSessionBean implements ClientSessionLocal
         return query.getResultList();
     }
 
-    /** <code>select o from Clients o </code> */
+    /**<id>select o from Clients o </id>
+	 */
     public List<Client> getClientsFindAll()
     {
         return em.createNamedQuery("Clients.findAll").getResultList();
     }
 
-    /** <code>select o from Clients o </code> */
+    /**<id>select o from Clients o </id>
+	 */
     public List<Client> getClientsFindAllByRange( int firstResult, int maxResults )
     {
         Query query = em.createNamedQuery("Clients.findAll");
@@ -73,15 +75,15 @@ public class ClientSessionBean implements ClientSessionLocal
         return query.getResultList();
     }
 
-    /**<code>select o from Clients o where o.owner.formId = :owner and ( toDate is null or toDate >= now() ) </code>
-     */
+    /**<id>select o from Clients o where o.owner.formId = :owner and ( toDate is null or toDate >= now() ) </id>
+	 */
     public List<Client> getClientsFindAllActive( Integer owner )
     {
         return em.createNamedQuery("Clients.findAllActive").setParameter("owner", owner).getResultList();
     }
 
-    /**<code>select o from Clients o where o.owner.formId = :owner and ( toDate is null or toDate >= now() ) </code>
-     */
+    /**<id>select o from Clients o where o.owner.formId = :owner and ( toDate is null or toDate >= now() ) </id>
+	 */
     public List<Client> getClientsFindAllActiveByRange( Integer owner, int firstResult, int maxResults )
     {
         Query query = em.createNamedQuery("Clients.findAllActive").setParameter("owner", owner);
@@ -94,8 +96,8 @@ public class ClientSessionBean implements ClientSessionLocal
         return query.getResultList();
     }
 
-    /**<code>select o from Clients o where o.owner.formId = :owner and o.client.formId = :client and ( toDate is null or toDate >= now() ) </code>
-     */
+    /**<id>select o from Clients o where o.owner.formId = :owner and o.client.formId = :client and ( toDate is null or toDate >= now() ) </id>
+	 */
     public Client getClientsFind( Integer owner, Integer client )
     {
         return (Client) em.createNamedQuery("Clients.find")

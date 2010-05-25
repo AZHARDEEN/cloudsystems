@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.admin.tables.TitleController">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.admin.tables.title.TitleController">
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
@@ -45,21 +45,7 @@
                                 </row>
                             </rows>
                         </grid>
-                        <separator/>
-                        <div align="center">
-                            <hbox>
-                                <!-- Por favor, nao mude o id dos botoes -->
-                                <button id="cmdCreate" label="Novo" image="/img/icontexto-webdev-add-032x032.png"
-                                        tooltiptext="Adiciona um novo registro"/>
-                                <button id="cmdUpdate" label="Editar" image="/img/icontexto-webdev-alert-032x032.png"
-                                        tooltiptext="Altera o registro selecionado"/>
-                                <button id="cmdDelete" label="Apagar" image="/img/icontexto-webdev-remove-032x032.png"
-                                        tooltiptext="Exclui o registro selecionado"/>
-                                <separator/>
-                                <button id="cmdRefresh" label="Atualizar" image="/img/icontexto-webdev-reload-032x032.png"
-                                        tooltiptext="Atualiza a lista de registros"/>
-                            </hbox>
-                        </div>
+                        <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
                     </div>
                     <separator/>
                     <!-- Por favor, nao mude o id desta div -->
@@ -85,13 +71,7 @@
                             </rows>
                         </grid>
                         <separator/>
-                        <div align="center">
-                            <hbox>
-                                <!-- Por favor, nao mude o id dos botoes -->
-                                <button id="cmdSave" label="Salvar" image="/img/icontexto-webdev-ok-032x032.png"/>
-                                <button id="cmdCancel" label="Cancelar" image="/img/icontexto-webdev-cancel-032x032.png"/>
-                            </hbox>
-                        </div>
+                        <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
                     </div>
                 </div>
             </center>

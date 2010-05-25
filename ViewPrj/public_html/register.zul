@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
-<zk 
-    xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native"
-    xmlns:w="http://www.zkoss.org/2005/zk/client" >
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native"
+    xmlns:w="http://www.zkoss.org/2005/zk/client">
     <div id="rootParent" apply="br.com.mcampos.controller.RegisterController" align="center" width="100%">
         <script type="text/JavaScript" defer="true">
             <![CDATA[
@@ -14,49 +13,47 @@
                 );
             ]]>
         </script>
-        <panel border="normal" title="Registrar" width="500px" > 
+        <panel id="titleRegister" border="normal" title="##" width="500px">
             <panelchildren>
-                <div align="left" >
+                <div align="left">
                     <grid fixedLayout="false">
                         <columns>
-                            <column width="23%" />
+                            <column width="23%"/>
                             <column/>
                         </columns>
                         <rows>
                             <row spans="2" align="center">Informe os seus dados para o cadastro básico</row>
                             <row>
-                                <label value="Nome completo" />
-                                <textbox id="name" width="99%" maxlength="128" tabindex="1" />
+                                <label id="labelName" value="##Nome completo"/>
+                                <textbox id="name" width="99%" maxlength="128" tabindex="1"/>
                             </row>
                             <row>
-                                <label value="E-mail" />
+                                <label id="labelEmail" value="##E-mail"/>
                                 <textbox id="email" width="99%" maxlength="128" tabindex="2"/>
                             </row>
                             <row>
-                                <label value="Confirme o email" />
+                                <label id="labelReEmail" value="##Confirme o email"/>
                                 <textbox id="re_email" width="99%" maxlength="128" tabindex="3"/>
                             </row>
                             <row>
-                                <label value="CPF"  />        
+                                <label id="labelDocument" value="##CPF"/>
                                 <textbox id="cpf" width="195px" maxlength="14" tabindex="4"/>
                             </row>
                             <row>
-                                <label value="Senha" />
+                                <label id="labelPassword" value="##Senha"/>
                                 <textbox type="password" id="password" width="195px" maxlength="16" tabindex="5"/>
                             </row>
                             <row>
-                                <label value="Confirme a senha" />
+                                <label id="labelRepassword" value="##Confirme a senha"/>
                                 <textbox type="password" id="repassword" width="195px" maxlength="16" tabindex="6"/>
                             </row>
                         </rows>
                     </grid>
                 </div>
-                <separator />
-                <div fulfill="=/resources/captcha.zul" >
-                </div>        
-                <separator />
-                <div fulfill="=/resources/submit_cancel.zul" >
-                </div>
+                <separator/>
+                <div fulfill="=/resources/captcha.zul"></div>
+                <separator/>
+                <div fulfill="=/resources/submit_cancel.zul"></div>
             </panelchildren>
         </panel>
     </div>

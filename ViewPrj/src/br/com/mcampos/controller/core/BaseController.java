@@ -25,6 +25,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Panel;
 
 
 public abstract class BaseController extends GenericForwardComposer
@@ -289,4 +290,30 @@ public abstract class BaseController extends GenericForwardComposer
 		}
 	}
 
+	protected void setLabel( Label comp )
+	{
+		if ( comp != null ) {
+			String value = Labels.getLabel( comp.getId() );
+			if ( SysUtils.isEmpty( value ) == false )
+				comp.setValue( value );
+		}
+	}
+
+	protected void setLabel( Button comp )
+	{
+		if ( comp != null ) {
+			String value = Labels.getLabel( comp.getId() );
+			if ( SysUtils.isEmpty( value ) == false )
+				comp.setLabel( value );
+		}
+	}
+
+	protected void setLabel( Panel comp )
+	{
+		if ( comp != null ) {
+			String value = Labels.getLabel( comp.getId() );
+			if ( SysUtils.isEmpty( value ) == false )
+				comp.setTitle( value );
+		}
+	}
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <zk>
-<div align="center" xmlns="http://www.zkoss.org/2005/zul">
-    <hbox >
-        <button label="Ok" id = "cmdSubmit" image="/img/icontexto-webdev-ok-032x032.png" width="150px" />    
-        <separator width="50px" />
-        <button label="Cancelar" id = "cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png" dir="reverse" width="150px" />
-    </hbox>
-</div>        
+    <div align="center" xmlns="http://www.zkoss.org/2005/zul" apply="br.com.mcampos.controller.commom.SubmitCancelController">
+        <hbox>
+            <button label="##Ok" id="cmdSubmit" image="/img/icontexto-webdev-ok-032x032.png" width="150px"/>
+            <separator width="50px"/>
+            <button label="##Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png" dir="reverse" width="150px"/>
+        </hbox>
+    </div>
 </zk>

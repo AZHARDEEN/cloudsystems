@@ -1,67 +1,45 @@
 package br.com.mcampos.ejb.entity.address;
 
+
+import br.com.mcampos.ejb.cloudsystem.user.SimplePK;
+
 import java.io.Serializable;
 
-public class StatePK implements Serializable
+public class StatePK extends SimplePK implements Serializable
 {
-    private Integer countryId;
-    private Integer regionId;
-    private Integer id;
+	private Integer regionId;
 
-    public StatePK()
-    {
-    }
+	public StatePK()
+	{
+	}
 
-    public StatePK( Integer ctr_id_in, Integer reg_id_in, Integer sta_id_in )
-    {
-        this.countryId = ctr_id_in;
-        this.regionId = reg_id_in;
-        this.id = sta_id_in;
-    }
+	public StatePK( String countryId, Integer regionId, Integer id )
+	{
+		setCountryId( countryId );
+		setRegionId( regionId );
+		setId( id );
+	}
 
-    public boolean equals( Object other )
-    {
-        if (other instanceof StatePK) {
-            final StatePK otherStatePK = (StatePK) other;
-            final boolean areEqual =
-                (otherStatePK.countryId.equals(countryId) && otherStatePK.regionId.equals(regionId) && otherStatePK.id.equals(id));
-            return areEqual;
-        }
-        return false;
-    }
+	@Override
+	public boolean equals( Object other )
+	{
+		if ( other instanceof StatePK ) {
+			final StatePK otherStatePK = ( StatePK )other;
+			final boolean areEqual =
+						 ( otherStatePK.getCountryId().equals( getCountryId() ) && otherStatePK.regionId.equals( regionId ) && otherStatePK.getId().equals( getId() ) );
+			return areEqual;
+		}
+		return false;
+	}
 
-    public int hashCode()
-    {
-        return super.hashCode();
-    }
+	Integer getRegionId()
+	{
+		return regionId;
+	}
 
-    Integer getCountryId()
-    {
-        return countryId;
-    }
+	void setRegionId( Integer reg_id_in )
+	{
+		this.regionId = reg_id_in;
+	}
 
-    void setCountryId( Integer ctr_id_in )
-    {
-        this.countryId = ctr_id_in;
-    }
-
-    Integer getRegionId()
-    {
-        return regionId;
-    }
-
-    void setRegionId( Integer reg_id_in )
-    {
-        this.regionId = reg_id_in;
-    }
-
-    Integer getId()
-    {
-        return id;
-    }
-
-    void setId( Integer sta_id_in )
-    {
-        this.id = sta_id_in;
-    }
 }

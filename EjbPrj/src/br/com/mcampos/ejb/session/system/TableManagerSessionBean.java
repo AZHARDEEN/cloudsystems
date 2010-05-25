@@ -5,7 +5,7 @@ import br.com.mcampos.dto.user.attributes.CompanyPositionDTO;
 import br.com.mcampos.dto.user.attributes.CompanyTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.entity.login.AccessLogType;
+import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
 import br.com.mcampos.ejb.entity.system.SystemParameters;
 
 
@@ -76,7 +76,8 @@ public class TableManagerSessionBean implements TableManagerSession, TableManage
     }
     
 
-    /** <code>select o from SystemParameters o</code> */
+    /**<id>select o from SystemParameters o</id>
+	 */
     @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public List<SystemParametersDTO> getAll() 
     {
