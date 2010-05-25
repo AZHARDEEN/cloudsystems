@@ -39,17 +39,6 @@ public class GenderSessionBean extends Crud<Integer, Gender> implements GenderSe
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public Integer getNextId() throws ApplicationException
     {
-        Integer nextId = null;
-
-        try {
-            nextId = ( Integer )getSingleResult( Gender.getNextId );
-        }
-        catch ( Exception e ) {
-            nextId = null;
-        }
-        if ( nextId == null )
-            nextId = 1;
-        nextId++;
-        return nextId;
+        return nextIntegerId( Gender.getNextId );
     }
 }

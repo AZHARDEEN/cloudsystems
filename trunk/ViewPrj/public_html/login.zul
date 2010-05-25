@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <div align="center" id="rootParent" apply="br.com.mcampos.controller.LoginController">
-        <panel border="normal" title="Login" width="450px">
+        <panel id="titleLogin" border="normal" title="##" width="450px">
             <panelchildren>
                 <div align="left">
                     <grid>
@@ -10,16 +10,16 @@
                             <column/>
                         </columns>
                         <rows>
-                            <row spans="2" align="center">Informe o seu login(email) e sua senha</row>
-                            <row>
-                                <label value="Identificação"/>
-                                <textbox id="identification" width="98%" maxlength="128"
-                                         constraint="no empty: Por favor, entre com a sua identificação."/>
+                            <row spans="2" align="center">
+                                <label id="loginLabelMsg" value="##"/>
                             </row>
                             <row>
-                                <label value="Senha"/>
-                                <textbox id="password" type="password" width="98%" maxlength="16"
-                                         constraint="no empty: Por favor, informe a sua senha."/>
+                                <label id="labelIdentification" value="##"/>
+                                <textbox id="identification" width="98%" maxlength="128"/>
+                            </row>
+                            <row>
+                                <label id="labelPassword" value="##"/>
+                                <textbox id="password" type="password" width="98%" maxlength="16"/>
                             </row>
                         </rows>
                     </grid>
@@ -29,7 +29,7 @@
                     <div fulfill="=/resources/submit_cancel.zul"></div>
                     <separator/>
                     <div align="right">
-                        <toolbarbutton label="Esqueceu a senha?" id="cmdForgotPassword"/>
+                        <toolbarbutton label="##?" id="cmdForgotPassword"/>
                     </div>
                 </div>
             </panelchildren>

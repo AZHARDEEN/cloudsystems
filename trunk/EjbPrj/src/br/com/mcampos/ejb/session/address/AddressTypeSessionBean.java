@@ -71,8 +71,8 @@ public class AddressTypeSessionBean implements AddressTypeSession,
     }
 
 
-    /**<code>select o from AddressType o where o.formId = :formId </code>
-     */
+    /**<id>select o from AddressType o where o.formId = :formId </id>
+	 */
     public AddressTypeDTO get( Integer id )
     {
         AddressType record = ( AddressType ) getEntityManager().createNamedQuery("AddressType.find").setParameter("id", id).getSingleResult();

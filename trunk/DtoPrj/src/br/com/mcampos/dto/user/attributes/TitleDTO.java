@@ -1,75 +1,54 @@
 package br.com.mcampos.dto.user.attributes;
 
-import br.com.mcampos.dto.core.DisplayNameDTO;
+import br.com.mcampos.dto.core.SimpleTableDTO;
 
-public class TitleDTO extends DisplayNameDTO implements Comparable< TitleDTO >
+public class TitleDTO extends SimpleTableDTO
 {
-    /**
-	 * 
+	/**
+	 *
 	 */
 	private static final long serialVersionUID = 6432837000318062671L;
 	private String abbreviation;
-    private String description;
-    private Integer id;
+	private String countryId;
 
 
-    public TitleDTO()
-    {
-        super();
-    }
+	public TitleDTO()
+	{
+		super();
+	}
 
-    public TitleDTO(Integer id, String description, String abbreviation)
-    {
-        super();
-        init ( id, description, abbreviation );
-    }
-    
-    
-    protected void init ( Integer id, String description, String abbreviation )
-    {
-        this.id = id;
-        this.description = description;
-        this.abbreviation = abbreviation;
-    }
-    
+	public TitleDTO( Integer id, String description, String abbreviation )
+	{
+		super();
+		init( id, description, abbreviation );
+	}
 
-    public void setAbbreviation( String abbreviation )
-    {
-        this.abbreviation = abbreviation;
-    }
 
-    public String getAbbreviation()
-    {
-        return abbreviation;
-    }
+	protected void init( Integer id, String description, String abbreviation )
+	{
+		this.id = id;
+		this.description = description;
+		this.abbreviation = abbreviation;
+	}
 
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
 
-    public String getDescription()
-    {
-        return description;
-    }
+	public void setAbbreviation( String abbreviation )
+	{
+		this.abbreviation = abbreviation;
+	}
 
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
+	public String getAbbreviation()
+	{
+		return abbreviation;
+	}
 
-    public Integer getId()
-    {
-        return id;
-    }
+	public void setCountryId( String countryId )
+	{
+		this.countryId = countryId;
+	}
 
-    public String getDisplayName()
-    {
-        return getAbbreviation() + " - " + getDescription();
-    }
-
-    public int compareTo( TitleDTO o )
-    {
-        return getId().compareTo( o.getId() );
-    }
+	public String getCountryId()
+	{
+		return countryId;
+	}
 }

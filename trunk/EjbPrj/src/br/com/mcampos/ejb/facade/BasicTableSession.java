@@ -11,7 +11,6 @@ import br.com.mcampos.dto.user.attributes.CompanyPositionDTO;
 import br.com.mcampos.dto.user.attributes.CompanyTypeDTO;
 import br.com.mcampos.dto.user.attributes.ContactTypeDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
-import br.com.mcampos.dto.user.attributes.TitleDTO;
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
@@ -85,20 +84,6 @@ public interface BasicTableSession
 
     List getAllDocumentType();
 
-
-    /*Title Facede Service*/
-
-    TitleDTO getTitle( Integer id ) throws ApplicationException;
-
-    void addTitle( TitleDTO newRecord ) throws ApplicationException;
-
-    void updateTitle( TitleDTO newRecord ) throws ApplicationException;
-
-    void deleteTitle( Integer id ) throws ApplicationException;
-
-    Integer getTitleMaxPKValue();
-
-    List getAllTitle();
 
     /*UserStatus Facede Service*/
 
@@ -200,5 +185,5 @@ public interface BasicTableSession
 
     List<StateDTO> getAllStates();
 
-    List<CityDTO> getAllStateCities( Integer countryId, Integer stateId ) throws ApplicationException;
+    List<CityDTO> getAllStateCities( String countryId, Integer stateId ) throws ApplicationException;
 }

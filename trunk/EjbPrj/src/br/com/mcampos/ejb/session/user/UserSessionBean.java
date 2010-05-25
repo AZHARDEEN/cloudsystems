@@ -76,7 +76,8 @@ public class UserSessionBean extends AbstractSecurity implements UserSessionLoca
     }
 
 
-    /** <code>select o from Users o</code> */
+    /**<id>select o from Users o</id>
+	 */
     public List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, int firstResult, int maxResults ) throws ApplicationException
     {
         authenticate( auth );

@@ -13,92 +13,92 @@ import org.zkoss.zul.Comboitem;
 
 public class SimpleTableLoaderLocator extends BusinessDelegate
 {
-    public SimpleTableLoaderLocator()
-    {
-        super();
-    }
+	public SimpleTableLoaderLocator()
+	{
+		super();
+	}
 
-    /*
+	/*
      * Para as funções de get and set de session assumiremos que sempre
      * será retornado um objeto e nunca null.
      * */
 
-    protected BasicTableSession getSessionBean()
-    {
-        return ( BasicTableSession )getEJBSession( BasicTableSession.class );
-    }
+	protected BasicTableSession getSessionBean()
+	{
+		return ( BasicTableSession )getEJBSession( BasicTableSession.class );
+	}
 
 
-    public static void loadSimpleDTO( Combobox target, List l, Boolean bDefaultSelected )
-    {
-        Comboitem comboItem;
-        List<DisplayNameDTO> list = l;
+	public static void loadSimpleDTO( Combobox target, List l, Boolean bDefaultSelected )
+	{
+		Comboitem comboItem;
+		List<DisplayNameDTO> list = l;
 
 
-        if ( target == null )
-            return;
-        target.getItems().clear();
-        if ( list == null || list.size() == 0 )
-            return;
-        for ( DisplayNameDTO item : list ) {
-            comboItem = target.appendItem( item.getDisplayName() );
-            if ( comboItem != null )
-                comboItem.setValue( item );
-        }
-        if ( target.getItemCount() > 0 && bDefaultSelected )
-            target.setSelectedIndex( 0 );
-    }
+		if ( target == null )
+			return;
+		target.getItems().clear();
+		if ( list == null || list.size() == 0 )
+			return;
+		for ( DisplayNameDTO item : list ) {
+			comboItem = target.appendItem( item.getDisplayName() );
+			if ( comboItem != null )
+				comboItem.setValue( item );
+		}
+		if ( target.getItemCount() > 0 && bDefaultSelected )
+			target.setSelectedIndex( 0 );
+	}
 
-    public void loadCompanyType( Combobox target )
-    {
-        loadSimpleDTO( target, getSessionBean().getAllCompanyType(), true );
-    }
-
-
-    public void getAddressesType( Combobox target )
-    {
-        List lista = getSessionBean().getAllAddressType();
-        loadSimpleDTO( target, lista, true );
-    }
-
-    public void getStates( Combobox target )
-    {
-        loadSimpleDTO( target, getSessionBean().getAllStates(), true );
-    }
+	public void loadCompanyType( Combobox target )
+	{
+		loadSimpleDTO( target, getSessionBean().getAllCompanyType(), true );
+	}
 
 
-    public void loadCities( Combobox target, Integer countryID, Integer stateID ) throws ApplicationException
-    {
-        loadSimpleDTO( target, getSessionBean().getAllStateCities( countryID, stateID ), true );
-    }
+	public void getAddressesType( Combobox target )
+	{
+		List lista = getSessionBean().getAllAddressType();
+		loadSimpleDTO( target, lista, true );
+	}
+
+	public void getStates( Combobox target )
+	{
+		loadSimpleDTO( target, getSessionBean().getAllStates(), true );
+	}
 
 
-    public void loadStates( Combobox target )
-    {
-        loadSimpleDTO( target, getSessionBean().getAllStates(), true );
-    }
-
-    public void loadContactType( Combobox target )
-    {
-        loadSimpleDTO( target, getSessionBean().getAllContactType(), true );
-    }
+	public void loadCities( Combobox target, String countryID, Integer stateID ) throws ApplicationException
+	{
+		loadSimpleDTO( target, getSessionBean().getAllStateCities( countryID, stateID ), true );
+	}
 
 
-    public void loadGenders( Combobox target )
-    {
-        //loadSimpleDTO( target, getSessionBean().getAllGender(), true );
-    }
+	public void loadStates( Combobox target )
+	{
+		loadSimpleDTO( target, getSessionBean().getAllStates(), true );
+	}
+
+	public void loadContactType( Combobox target )
+	{
+		loadSimpleDTO( target, getSessionBean().getAllContactType(), true );
+	}
 
 
-    public void loadCivilStates( Combobox target )
-    {
-        loadSimpleDTO( target, getSessionBean().getAllCivilState(), true );
-    }
+	public void loadGenders( Combobox target )
+	{
+		//loadSimpleDTO( target, getSessionBean().getAllGender(), true );
+	}
 
-    public void loadDocumentType( Combobox target )
-    {
-        loadSimpleDTO( target, getSessionBean().getAllDocumentType(), true );
-    }
+
+	public void loadCivilStates( Combobox target )
+	{
+		loadSimpleDTO( target, getSessionBean().getAllCivilState(), true );
+	}
+
+	public void loadDocumentType( Combobox target )
+	{
+		loadSimpleDTO( target, getSessionBean().getAllDocumentType(), true );
+	}
 
 }
 

@@ -61,7 +61,8 @@ public class ContactTypeSessionBean implements ContactTypeSession,
             em.remove(contactType);
     }
 
-    /** <code>select o from ContactType o</code> */
+    /**<id>select o from ContactType o</id>
+	 */
      @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public List<ContactTypeDTO> getAll()
     {

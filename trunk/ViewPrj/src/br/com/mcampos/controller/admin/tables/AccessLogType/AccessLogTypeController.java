@@ -3,64 +3,61 @@ package br.com.mcampos.controller.admin.tables.AccessLogType;
 
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
+import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogTypeFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
 
-import org.zkoss.zul.Listitem;
-
 
 public class AccessLogTypeController extends SimpleTableController<AccessLogTypeDTO>
 {
+	private transient AccessLogTypeFacade session;
 
-    public AccessLogTypeController()
-    {
-        super();
-    }
+	public AccessLogTypeFacade getSession()
+	{
+		if ( session == null )
+			session = ( AccessLogTypeFacade )getRemoteSession( AccessLogTypeFacade.class );
+		return session;
+	}
 
-    protected Object createNewRecord()
-    {
-        return new AccessLogTypeDTO();
-    }
+	public AccessLogTypeController()
+	{
+		super();
+	}
 
-    protected void delete( Object currentRecord ) throws ApplicationException
-    {
-        //getLocator().delete( getLoggedInUser(), getValue( ( Listitem )currentRecord ) );
-    }
+	@Override
+	protected Object createNewRecord()
+	{
+		return new AccessLogTypeDTO();
+	}
 
-    protected void persist( Object e ) throws ApplicationException
-    {
-        //getLocator().add( getLoggedInUser(), ( AccessLogTypeDTO )e );
-    }
+	@Override
+	protected Integer getNextId() throws ApplicationException
+	{
+		return getSession().getNextId( getLoggedInUser() );
+	}
 
-    protected void updateItem( Object e ) throws ApplicationException
-    {
-        //getLocator().update( getLoggedInUser(), ( AccessLogTypeDTO )e );
-    }
+	@Override
+	protected List getRecordList() throws ApplicationException
+	{
+		return getSession().getAll( getLoggedInUser() );
+	}
 
-    @Override
-    protected AccessLogTypeDTO getValue( Listitem selecteItem )
-    {
-        return ( AccessLogTypeDTO )super.getValue( selecteItem );
-    }
+	@Override
+	protected void delete( Object currentRecord ) throws ApplicationException
+	{
+		getSession().delete( getLoggedInUser(), ( AccessLogTypeDTO )currentRecord );
+	}
 
-    protected Integer getNextId()
-    {
-        /*
-        try {
-            return getLocator().getNextAccessLogTypeId( getLoggedInUser() );
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Próximo ID" );
-            return 0;
-        }
-        */
-        return 0;
-    }
+	@Override
+	protected void persist( Object e ) throws ApplicationException
+	{
+		AccessLogTypeDTO dto = ( AccessLogTypeDTO )e;
 
-    protected List getRecordList()
-    {
-        //return getLocator().getList( getLoggedInUser() );
-        return null;
-    }
+
+		if ( isAddNewOperation() )
+			getSession().add( getLoggedInUser(), dto );
+		else
+			getSession().update( getLoggedInUser(), dto );
+	}
 }

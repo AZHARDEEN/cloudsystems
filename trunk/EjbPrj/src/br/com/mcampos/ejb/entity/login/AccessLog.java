@@ -1,5 +1,7 @@
 package br.com.mcampos.ejb.entity.login;
 
+import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
+
 import java.io.Serializable;
 
 import java.sql.Timestamp;
