@@ -14,7 +14,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
 
-public abstract class BasicListController<DTO> extends BasicCRUDController implements ListitemRenderer
+public abstract class BasicListController<DTO> extends BasicCRUDController
 {
 
     private Listbox listboxRecord;
@@ -32,6 +32,8 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
     protected abstract void clearRecordInfo();
 
     protected abstract List getRecordList() throws ApplicationException;
+
+    protected abstract ListitemRenderer getRenderer();
 
 
     public BasicListController( char c )
@@ -109,7 +111,7 @@ public abstract class BasicListController<DTO> extends BasicCRUDController imple
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
-        listboxRecord.setItemRenderer( this );
+        listboxRecord.setItemRenderer( getRenderer() );
         refresh();
     }
 

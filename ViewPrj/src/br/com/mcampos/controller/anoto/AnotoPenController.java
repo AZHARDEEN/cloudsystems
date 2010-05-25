@@ -3,6 +3,7 @@ package br.com.mcampos.controller.anoto;
 
 import br.com.mcampos.controller.admin.tables.BasicListController;
 import br.com.mcampos.controller.anoto.model.PenIdComparator;
+import br.com.mcampos.controller.anoto.renderer.AnotoPenListRenderer;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.exception.ApplicationException;
@@ -11,9 +12,8 @@ import java.util.List;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listheader;
-import org.zkoss.zul.Listitem;
+import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
 
 
@@ -71,14 +71,9 @@ public class AnotoPenController extends BasicListController<PenDTO>
     }
 
     @Override
-    public void render( Listitem item, Object value )
+    public ListitemRenderer getRenderer()
     {
-        PenDTO dto = ( PenDTO )value;
-
-        if ( dto != null ) {
-            item.setValue( value );
-            item.getChildren().add( new Listcell( dto.getId() ) );
-        }
+        return new AnotoPenListRenderer();
     }
 
     @Override
