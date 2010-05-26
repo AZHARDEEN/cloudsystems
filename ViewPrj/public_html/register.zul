@@ -24,27 +24,27 @@
                         <rows>
                             <row spans="2" align="center">Informe os seus dados para o cadastro básico</row>
                             <row>
-                                <label id="labelName" value="##Nome completo"/>
+                                <label id="labelName" value="##"/>
                                 <textbox id="name" width="99%" maxlength="128" tabindex="1"/>
                             </row>
                             <row>
-                                <label id="labelEmail" value="##E-mail"/>
+                                <label id="labelEmail" value="##"/>
                                 <textbox id="email" width="99%" maxlength="128" tabindex="2"/>
                             </row>
                             <row>
-                                <label id="labelReEmail" value="##Confirme o email"/>
+                                <label id="labelReEmail" value="##"/>
                                 <textbox id="re_email" width="99%" maxlength="128" tabindex="3"/>
                             </row>
                             <row>
-                                <label id="labelDocument" value="##CPF"/>
+                                <label id="labelDocument" value="##"/>
                                 <textbox id="cpf" width="195px" maxlength="14" tabindex="4"/>
                             </row>
                             <row>
-                                <label id="labelPassword" value="##Senha"/>
+                                <label id="labelPassword" value="##"/>
                                 <textbox type="password" id="password" width="195px" maxlength="16" tabindex="5"/>
                             </row>
                             <row>
-                                <label id="labelRepassword" value="##Confirme a senha"/>
+                                <label id="labelRepassword" value="##"/>
                                 <textbox type="password" id="repassword" width="195px" maxlength="16" tabindex="6"/>
                             </row>
                         </rows>

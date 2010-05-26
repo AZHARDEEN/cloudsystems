@@ -5,7 +5,7 @@
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:20px;color:#0C7A9A" value="Formulários"/>
+                    <label id="labelAnotoFormTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
                 </vbox>
             </north>
             <west size="40%" splittable="true" flex="true">
@@ -14,8 +14,8 @@
                     <!-- Por favor, nao mude o id desta listbox -->
                     <listbox id="listboxRecord" vflex="true">
                         <listhead sizable="true">
-                            <listheader id="headerApplication" align="left" label="Aplicação" sort="auto" width="140px"/>
-                            <listheader id="headerDescription" align="left" label="Descrição" sort="auto"/>
+                            <listheader id="headerApplication" align="left" label="##" sort="auto" width="140px"/>
+                            <listheader id="headerDescription" align="left" label="##" sort="auto"/>
                         </listhead>
                     </listbox>
                 </div>
@@ -32,15 +32,15 @@
                             </columns>
                             <rows>
                                 <row>
-                                    Código
+                                    <label id="labelCode" value="##"/>
                                     <label id="recordId"/>
                                 </row>
                                 <row>
-                                    Aplicação
+                                    <label id="labelApplication" value="##"/>
                                     <label id="recordIP"/>
                                 </row>
                                 <row>
-                                    Descrição
+                                    <label id="labelDescription" value="##"/>
                                     <label id="recordDescription"/>
                                 </row>
                             </rows>
@@ -56,15 +56,15 @@
                             </columns>
                             <rows>
                                 <row>
-                                    Código
+                                    <label id="labelEditCode" value="##"/>
                                     <intbox id="editId" width="99%" value="1"/>
                                 </row>
                                 <row>
-                                    Aplicação
+                                    <label id="labelEditApplication" value="##"/>
                                     <textbox id="editIP" width="99%" value="" maxlength="16"/>
                                 </row>
                                 <row>
-                                    Descrição
+                                    <label id="labelEditDescription" value="##"/>
                                     <textbox id="editDescription" width="99%" value=""/>
                                 </row>
                             </rows>
@@ -73,41 +73,41 @@
                         <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
                     </div>
                     <separator height="30px"/>
-                    <panel id="detailDiv" title="Vínculos">
+                    <panel id="panelLinks" title="##">
                         <panelchildren>
                             <tabbox id="associationTab">
                                 <tabs>
-                                    <tab label="Arquivos PAD"/>
-                                    <tab label="Canetas"/>
-                                    <tab label="Outros Arquivos"/>
+                                    <tab label="##" id="tabPadFile"/>
+                                    <tab label="##" id="tabPen"/>
+                                    <tab label="##" id="tabOtherFiles"/>
                                 </tabs>
                                 <tabpanels>
                                     <tabpanel>
                                         <toolbar>
-                                            <toolbarbutton id="btnAddAttach" label="Adicionar" disabled="true" upload="true,native"
+                                            <toolbarbutton id="btnAddAttach" label="##" disabled="true" upload="true,native"
                                                            image="/img/icontexto-webdev-add-016x016.png"/>
-                                            <toolbarbutton id="btnProperties" label="Propriedades" disabled="true"
+                                            <toolbarbutton id="btnProperties" label="##" disabled="true"
                                                            image="/img/icontexto-webdev-alert-016x016.png"/>
-                                            <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="Exportar"
+                                            <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="##"
                                                            id="btnExport"/>
                                             <separator/>
-                                            <toolbarbutton id="btnRemoveAttach" label="Remover" disabled="true"
+                                            <toolbarbutton id="btnRemoveAttach" label="##" disabled="true"
                                                            image="/img/icontexto-webdev-remove-016x016.png"/>
                                         </toolbar>
                                         <listbox id="listAttachs" fixedLayout="true" height="200px">
                                             <listhead sizable="true">
-                                                <listheader align="left" label="Nome"/>
+                                                <listheader align="left" label="Nome" id="listHeaderName"/>
                                             </listhead>
                                         </listbox>
                                     </tabpanel>
                                     <tabpanel>
                                         <hbox>
                                             <vbox>
-                                                <label value="Associadas"/>
+                                                <label value="##" id="labelLinked"/>
                                                 <listbox id="listAdded" fixedLayout="true" height="200px" width="200px"
                                                          droppable="true">
                                                     <listhead sizable="true">
-                                                        <listheader align="left" label="Código"/>
+                                                        <listheader align="left" label="##" id="listHeaderCode"/>
                                                     </listhead>
                                                 </listbox>
                                             </vbox>
@@ -116,11 +116,11 @@
                                                 <button image="/img/icontexto-webdev-arrow-right-032x032.png" id="btnRemovePen"/>
                                             </vbox>
                                             <vbox>
-                                                <label value="Disponíveis"/>
+                                                <label value="##" id="labelAvailable"/>
                                                 <listbox fixedLayout="true" id="listAvailable" height="200px" width="200px"
                                                          droppable="true">
                                                     <listhead sizable="true">
-                                                        <listheader align="left" label="Código"/>
+                                                        <listheader align="left" label="##" id="listHeadeCodeAvailable"/>
                                                     </listhead>
                                                 </listbox>
                                             </vbox>
@@ -128,17 +128,17 @@
                                     </tabpanel>
                                     <tabpanel>
                                         <toolbar>
-                                            <toolbarbutton id="btnAddAttachOther" label="Adicionar" disabled="true"
+                                            <toolbarbutton id="btnAddAttachOther" label="##" disabled="true"
                                                            image="/img/icontexto-webdev-add-016x016.png"/>
-                                            <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="Exportar"
+                                            <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="##"
                                                            id="btnExportOther"/>
                                             <separator/>
-                                            <toolbarbutton id="btnRemoveAttachOther" label="Remover" disabled="true"
+                                            <toolbarbutton id="btnRemoveAttachOther" label="##" disabled="true"
                                                            image="/img/icontexto-webdev-remove-016x016.png"/>
                                         </toolbar>
                                         <listbox id="listAttachsOther" fixedLayout="true" height="200px">
                                             <listhead sizable="true">
-                                                <listheader align="left" label="Nome"/>
+                                                <listheader align="left" label="##" id="listHeaderNameOther"/>
                                             </listhead>
                                         </listbox>
                                     </tabpanel>

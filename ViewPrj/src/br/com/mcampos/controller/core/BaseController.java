@@ -26,6 +26,7 @@ import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Panel;
+import org.zkoss.zul.impl.LabelElement;
 
 
 public abstract class BaseController extends GenericForwardComposer
@@ -299,7 +300,7 @@ public abstract class BaseController extends GenericForwardComposer
 		}
 	}
 
-	protected void setLabel( Button comp )
+	protected void setLabel( LabelElement comp )
 	{
 		if ( comp != null ) {
 			String value = Labels.getLabel( comp.getId() );
