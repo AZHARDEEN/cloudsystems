@@ -1,4 +1,4 @@
-package br.com.mcampos.controller.anoto;
+package br.com.mcampos.controller.anoto.base;
 
 import br.com.mcampos.controller.admin.tables.BasicListController;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;

@@ -29,18 +29,29 @@ import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Grid;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 
 
 public class AnotoPcgController extends LoggedBaseController
 {
     private AnodeFacade session;
-    protected Button cmdCreate;
-    protected org.zkoss.zul.Image imgTest;
-    protected Listbox listboxRecord;
-    protected Grid gridProperties;
+
+    private Button cmdCreate;
+    private Button cmdRefresh;
+    private Button btnAddAttach;
+    private Button btnExport;
+    private Button cmdDelete;
+
+    private Listheader listHeaderName;
+
+    private Label labelPGCTitle;
+
+    private Listbox listboxRecord;
+    private Grid gridProperties;
 
     public AnotoPcgController()
     {
@@ -64,6 +75,15 @@ public class AnotoPcgController extends LoggedBaseController
         gridProperties.setRowRenderer( new PropertyRowRenderer() );
         gridProperties.setModel( new ListModelList( new ArrayList<GridProperties>() ) );
         refresh();
+        setLabel( cmdCreate );
+        setLabel( cmdRefresh );
+        setLabel( btnAddAttach );
+        setLabel( btnExport );
+        setLabel( cmdDelete );
+
+        setLabel( listHeaderName );
+
+        setLabel( labelPGCTitle );
     }
 
     private File checkAndCreateDir( File directory ) throws Exception
@@ -90,7 +110,7 @@ public class AnotoPcgController extends LoggedBaseController
 
         }
         catch ( Exception e ) {
-            showErrorMessage( e.getMessage(), "Upload Media" );
+            showErrorMessage( e.getMessage() );
         }
     }
 
@@ -101,7 +121,7 @@ public class AnotoPcgController extends LoggedBaseController
             return PenHome.read( is );
         }
         catch ( PenCreationException e ) {
-            showErrorMessage( e.getMessage(), "Load Pen Object" );
+            showErrorMessage( e.getMessage() );
             return null;
         }
     }
@@ -116,7 +136,7 @@ public class AnotoPcgController extends LoggedBaseController
             showProperties( pen, dto );
         }
         catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "" );
+            showErrorMessage( e.getMessage() );
         }
     }
 
@@ -149,7 +169,7 @@ public class AnotoPcgController extends LoggedBaseController
             list.add( prop );
         }
         catch ( NoSuchPermissionException e ) {
-            showErrorMessage( e.getMessage(), "Propriedades" );
+            showErrorMessage( e.getMessage() );
         }
     }
 
@@ -177,13 +197,13 @@ public class AnotoPcgController extends LoggedBaseController
                     }
                 }
                 catch ( ApplicationException e ) {
-                    showErrorMessage( e.getMessage(), "Excluir PGC" );
+                    showErrorMessage( e.getMessage() );
                 }
             }
         }
     }
 
-    public void onClick$btnRefresh()
+    public void onClick$cmdDelete()
     {
         try {
             refresh();
@@ -216,7 +236,7 @@ public class AnotoPcgController extends LoggedBaseController
             }
         }
         catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Download" );
+            showErrorMessage( e.getMessage() );
         }
     }
 

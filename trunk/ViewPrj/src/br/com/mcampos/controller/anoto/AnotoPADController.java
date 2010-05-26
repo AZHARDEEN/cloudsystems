@@ -1,6 +1,7 @@
 package br.com.mcampos.controller.anoto;
 
 
+import br.com.mcampos.controller.anoto.base.AnotoBaseController;
 import br.com.mcampos.controller.anoto.model.AnotoPageFieldComparator;
 import br.com.mcampos.controller.anoto.model.PenListModel;
 import br.com.mcampos.controller.anoto.renderer.AnotoPadListRenderer;
@@ -48,9 +49,11 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
 
 
@@ -59,22 +62,49 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
     public static final String padIdParameterName = "padId";
 
     private PadDTO padParam;
-    protected Label recordId;
-    protected Label recordDescription;
-    protected Label recordIcrTemplate;
-    protected Textbox editId;
-    protected Textbox editDescription;
-    protected Textbox editIcrTemplate;
-    protected Button btnAddAttach;
-    protected Button btnRemoveAttach;
-    protected Button btnProperties;
-    protected Listbox listAttachs;
-    protected Listbox listAvailable;
-    protected Listbox listAdded;
-    protected Grid gridFields;
-    protected Column headerName;
-    protected Column headerType;
-    protected Column headerIcr;
+
+    private Textbox editId;
+    private Textbox editDescription;
+    private Textbox editIcrTemplate;
+
+    private Label recordId;
+    private Label recordDescription;
+    private Label recordIcrTemplate;
+    private Label labelPADTitle;
+    private Label labelAddress;
+    private Label labelDescription;
+    private Label labelICRTemplate;
+    private Label labelEditAddress;
+    private Label labelEditDescription;
+    private Label labelEditICRTemplate;
+    private Label labelAvailable;
+    private Label labelLinked;
+
+    private Listbox listAttachs;
+    private Listbox listAvailable;
+    private Listbox listAdded;
+
+    private Grid gridFields;
+
+    private Column headerName;
+    private Column headerType;
+    private Column headerIcr;
+
+    private Listheader recordListIdSort;
+    private Listheader listHeaderName;
+    private Listheader listHeaderCode;
+    private Listheader listHeadeCodeAvailable;
+
+
+    private Button btnAddAttach;
+    private Button btnRemoveAttach;
+    private Button btnProperties;
+    private Button btnExport;
+    private Button btnRefreshFields;
+
+    private Tab tabPen;
+    private Tab tabFields;
+    private Tab tabPadImage;
 
 
     public AnotoPADController()
@@ -127,6 +157,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
                 headerName.setSortDescending( new AnotoPageFieldComparator( false, AnotoPageFieldComparator.headerName ) );
             }
         }
+        configureLabels();
     }
 
     @Override
@@ -544,4 +575,43 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
         }
     }
 
+    private void configureLabels()
+    {
+        setLabel( btnAddAttach );
+        setLabel( btnRemoveAttach );
+        setLabel( btnProperties );
+        setLabel( btnExport );
+        setLabel( btnRefreshFields );
+
+        setLabel( listHeaderName );
+        setLabel( recordListIdSort );
+        setLabel( listHeaderCode );
+        setLabel( listHeadeCodeAvailable );
+
+        setLabel( labelAvailable );
+        setLabel( recordId );
+        setLabel( recordDescription );
+        setLabel( recordIcrTemplate );
+        setLabel( labelPADTitle );
+        setLabel( labelAddress );
+        setLabel( labelDescription );
+        setLabel( labelICRTemplate );
+        setLabel( labelEditAddress );
+        setLabel( labelEditDescription );
+        setLabel( labelEditICRTemplate );
+        setLabel( labelAvailable );
+        setLabel( labelLinked );
+
+        setLabel( tabPen );
+
+        setLabel( headerName );
+        setLabel( headerType );
+        setLabel( headerIcr );
+
+
+        setLabel( tabPen );
+        setLabel( tabFields );
+        setLabel( tabPadImage );
+
+    }
 }

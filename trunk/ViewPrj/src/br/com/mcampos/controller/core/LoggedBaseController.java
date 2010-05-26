@@ -1,10 +1,11 @@
 package br.com.mcampos.controller.core;
 
+
 import br.com.mcampos.controller.commom.user.PersonClientController;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
-
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.business.LoginLocator;
 
 import org.zkoss.zk.ui.Component;
@@ -15,6 +16,7 @@ import org.zkoss.zul.Messagebox;
 public class LoggedBaseController extends BaseController
 {
     protected static String alternativePath = "/private/index.zul";
+    protected static String errorTitleI3 = "ErrorTitle";
     protected LoginLocator loginLocator;
 
     public LoggedBaseController()
@@ -72,10 +74,18 @@ public class LoggedBaseController extends BaseController
         return loginLocator;
     }
 
-    protected void showErrorMessage( String description, String title )
+    protected void showErrorMessage( String description )
+    {
+        showErrorMessage( description, errorTitleI3 );
+    }
+
+    protected void showErrorMessage( String description, String titleId )
     {
         try {
-            Messagebox.show( description, title, Messagebox.OK, Messagebox.ERROR );
+            String title = getLabel( titleId );
+            if ( SysUtils.isEmpty( title ) )
+                title = getLabel( errorTitleI3 );
+            Messagebox.show( description, SysUtils.isEmpty( title ) ? "Error" : title, Messagebox.OK, Messagebox.ERROR );
         }
         catch ( InterruptedException e ) {
             /*Just ignore it!!!*/

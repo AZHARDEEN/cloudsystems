@@ -1,6 +1,7 @@
 package br.com.mcampos.controller.anoto;
 
 
+import br.com.mcampos.controller.anoto.base.AnotoLoggedController;
 import br.com.mcampos.controller.anoto.renderer.ComboFormRenderer;
 import br.com.mcampos.controller.anoto.renderer.ComboPenRenderer;
 import br.com.mcampos.controller.anoto.renderer.PgcPenPageListRenderer;
@@ -23,29 +24,52 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Intbox;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
 
 
 public class AnotoView2Controller extends AnotoLoggedController
 {
-    protected Combobox cmbApplication;
-    protected Combobox cmbPen;
-    protected Datebox initDate;
-    protected Timebox initTime;
-    protected Datebox endDate;
-    protected Timebox endTime;
-    protected Listbox resultList;
-    protected Textbox txtBarcode;
-    protected Intbox  txtFormIdFrom;
-    protected Intbox  txtFormIdTo;
-    protected Combobox cmbMaxRecords;
-    protected Textbox txtFieldValue;
+    private Combobox cmbApplication;
+    private Combobox cmbPen;
+    private Datebox initDate;
+    private Timebox initTime;
+    private Datebox endDate;
+    private Timebox endTime;
+    private Listbox resultList;
+    private Textbox txtBarcode;
+    private Intbox txtFormIdFrom;
+    private Intbox txtFormIdTo;
+    private Combobox cmbMaxRecords;
+    private Textbox txtFieldValue;
+
+    private Label labelFormView2Title;
+    private Label labelApplication;
+    private Label labelInitDate;
+    private Label labelEndDate;
+    private Label labelPen;
+    private Label labelBarCode;
+    private Label labelTo;
+    private Label labelFieldValue;
+    private Label labelMaxRecords;
+    private Label labelFormNumber;
+
+    private Button btnFilter;
+
+    private Listheader headSeq;
+    private Listheader headApplication;
+    private Listheader headFormulario;
+    private Listheader headPagina;
+    private Listheader headPen;
+    private Listheader headDate;
 
     public AnotoView2Controller( char c )
     {
@@ -61,6 +85,7 @@ public class AnotoView2Controller extends AnotoLoggedController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
+        configureLabels();
         refresh();
         resultList.setItemRenderer( new PgcPenPageListRenderer() );
         cmbMaxRecords.setSelectedIndex( 0 );
@@ -140,7 +165,8 @@ public class AnotoView2Controller extends AnotoLoggedController
     {
         List<AnotoResultList> dtos;
         try {
-            dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop, Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() ) );
+            dtos =
+getSession().getAllPgcPenPage( getLoggedInUser(), prop, Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() ) );
             ListModelList model = getModel();
             model.clear();
             model.addAll( dtos );
@@ -226,14 +252,14 @@ public class AnotoView2Controller extends AnotoLoggedController
             /*
              * Truque. No renderer somamos + 1 ao book id (zero based), porém zero não faz sentido ao usuario
              */
-            bookIdFrom --;
+            bookIdFrom--;
             prop.put( "bookIdFrom", bookIdFrom );
         }
 
 
         Integer bookIdTo = txtFormIdTo.getValue();
         if ( SysUtils.isZero( bookIdTo ) == false ) {
-            bookIdTo --;
+            bookIdTo--;
             prop.put( "bookIdTo", bookIdTo );
         }
 
@@ -271,7 +297,7 @@ public class AnotoView2Controller extends AnotoLoggedController
         return eDate;
     }
 
-    public void onSelect$resultList ()
+    public void onSelect$resultList()
     {
         onClick$btnProperty();
     }
@@ -383,6 +409,30 @@ public class AnotoView2Controller extends AnotoLoggedController
         else {
             showErrorMessage( "Selecione um pgc da lista primeiro", "Visualizar PGC" );
         }
+    }
+
+    private void configureLabels()
+    {
+        setLabel( labelFormView2Title );
+        setLabel( labelApplication );
+        setLabel( labelInitDate );
+        setLabel( labelPen );
+        setLabel( labelEndDate );
+        setLabel( labelBarCode );
+        setLabel( labelTo );
+        setLabel( labelFieldValue );
+        setLabel( labelMaxRecords );
+        setLabel( labelFormNumber );
+
+        setLabel( btnFilter );
+
+        setLabel( headSeq );
+        setLabel( headApplication );
+        setLabel( headFormulario );
+        setLabel( headPagina );
+        setLabel( headPen );
+        setLabel( headDate );
+
     }
 
 }

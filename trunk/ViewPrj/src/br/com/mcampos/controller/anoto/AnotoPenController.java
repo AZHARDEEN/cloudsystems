@@ -19,16 +19,22 @@ import org.zkoss.zul.Textbox;
 
 public class AnotoPenController extends BasicListController<PenDTO>
 {
-    protected Textbox editId;
-    protected Label recordId;
+    private Textbox editId;
+    private Label recordId;
 
 
-    protected Textbox editDescription;
-    protected Label recordDescription;
+    private Textbox editDescription;
+    private Label recordDescription;
 
     private AnodeFacade session;
 
-    protected Listheader headerPenId;
+    private Listheader headerPenId;
+    private Label labelPenTitle;
+    private Label labelCode;
+    private Label labelDescription;
+    private Label labelEditCode;
+    private Label labelEditDescription;
+
 
     public AnotoPenController()
     {
@@ -48,8 +54,6 @@ public class AnotoPenController extends BasicListController<PenDTO>
         if ( record != null ) {
             recordId.setValue( record.getId() );
             recordDescription.setValue( record.getDescription() );
-            //listAvailable.setModel( getAvailableFormsListModel( record ) );
-            //listAdded.setModel( getFormModel( record ) );
         }
         else {
             recordId.setValue( "" );
@@ -139,61 +143,13 @@ public class AnotoPenController extends BasicListController<PenDTO>
         super.doAfterCompose( comp );
         headerPenId.setSortAscending( new PenIdComparator( true ) );
         headerPenId.setSortDescending( new PenIdComparator( false ) );
-        /*We do not need update by now*/
-        //cmdUpdate.setVisible( false );
-    }
-    /*
-    protected void moveListitem( Listbox toListbox, Listbox fromListbox )
-    {
-        if ( getListboxRecord().getSelectedCount() != 1 )
-            return;
-        PenDTO currentPen = getValue( getListboxRecord().getSelectedItem() );
-        Set selected = fromListbox.getSelectedItems();
-        if ( selected.isEmpty() )
-            return;
-        List al = new ArrayList( selected );
-        ArrayList<FormDTO> forms = new ArrayList<FormDTO>( al.size() );
-        try {
-            for ( Iterator it = al.iterator(); it.hasNext(); ) {
-                Listitem li = ( Listitem )it.next();
-                forms.add( ( FormDTO )li.getValue() );
-            }
-            if ( toListbox.equals( listAvailable ) )
-                getSession().removeFromPen( getLoggedInUser(), currentPen, forms );
-            else
-                getSession().insertIntoPen( getLoggedInUser(), currentPen, forms );
 
+        setLabel( headerPenId );
+        setLabel( labelPenTitle );
+        setLabel( labelCode );
+        setLabel( labelDescription );
+        setLabel( labelEditCode );
+        setLabel( labelEditDescription );
 
-            for ( Iterator it = al.iterator(); it.hasNext(); ) {
-                Listitem li = ( Listitem )it.next();
-                li.setSelected( false );
-                toListbox.appendChild( li );
-            }
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Formularios Associados" );
-        }
     }
-
-    public void onDrop( DropEvent evt )
-    {
-        if ( getListboxRecord().getSelectedCount() != 1 )
-            return;
-        if ( evt == null )
-            return;
-        Component dragged = evt.getDragged();
-        Component target = evt.getTarget();
-        if ( dragged == null || !( dragged instanceof Listitem ) || target == null || !( target instanceof Listbox ) )
-            return;
-        ( ( Listitem )dragged ).setSelected( true );
-        if ( target.equals( listAvailable ) ) {
-            //we are removing forms from this pen
-            moveListitem( listAvailable, listAdded );
-        }
-        else {
-            // we are adding forms into this pen
-            moveListitem( listAdded, listAvailable );
-        }
-    }
-    */
 }

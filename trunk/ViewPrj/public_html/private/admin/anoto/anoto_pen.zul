@@ -20,7 +20,7 @@
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:20px;color:#0C7A9A" value="Cadastro de Canetas"/>
+                    <label id="labelPenTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
                 </vbox>
             </north>
             <west size="30%" splittable="true" flex="true">
@@ -29,7 +29,7 @@
                     <!-- Por favor, nao mude o id desta listbox -->
                     <listbox fixedLayout="true" id="listboxRecord" vflex="true">
                         <listhead sizable="true">
-                            <listheader id="headerPenId" align="left" label="Código" sort="auto"/>
+                            <listheader id="headerPenId" align="left" label="##" sort="auto"/>
                         </listhead>
                     </listbox>
                 </div>
@@ -46,16 +46,12 @@
                             </columns>
                             <rows>
                                 <row>
-                                    <label value="Código"/>
+                                    <label value="##" id="labelCode"/>
                                     <label id="recordId"/>
                                 </row>
                                 <row>
-                                    <label value="Descrição"/>
+                                    <label id="labelDescription" value="##"/>
                                     <label id="recordDescription"/>
-                                </row>
-                                <row>
-                                    <label value="Usuário"/>
-                                    <label id="recordUser"/>
                                 </row>
                             </rows>
                         </grid>
@@ -70,16 +66,12 @@
                             </columns>
                             <rows>
                                 <row>
-                                    <label value="Código"/>
+                                    <label value="##" id="labelEditCode"/>
                                     <textbox id="editId" width="1" maxlength="16"/>
                                 </row>
                                 <row>
-                                    <label value="Descrição"/>
+                                    <label id="labelEditDescription" value="##"/>
                                     <textbox id="editDescription" width="99%" maxlength="64"/>
-                                </row>
-                                <row>
-                                    <label value="Usuário"/>
-                                    <textbox id="editUser" width="99%" maxlength="64"/>
                                 </row>
                             </rows>
                         </grid>

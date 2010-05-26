@@ -1,8 +1,11 @@
 package br.com.mcampos.dto.anoto;
 
+
 import br.com.mcampos.dto.system.FieldTypeDTO;
 
-public class AnotoPageFieldDTO
+import java.io.Serializable;
+
+public class AnotoPageFieldDTO implements Serializable
 {
     private Boolean icr;
     private AnotoPageDTO page;
@@ -25,7 +28,7 @@ public class AnotoPageFieldDTO
         super();
         setPage( page );
         setName( name );
-        setType ( type );
+        setType( type );
     }
 
 
@@ -109,7 +112,7 @@ public class AnotoPageFieldDTO
     public FieldTypeDTO getType()
     {
         if ( type == null )
-            type = new FieldTypeDTO ( FieldTypeDTO.typeString );
+            type = new FieldTypeDTO( FieldTypeDTO.typeString );
         return type;
     }
 }
