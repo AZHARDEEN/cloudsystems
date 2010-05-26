@@ -5,84 +5,110 @@ import br.com.mcampos.controller.admin.tables.BasicListController;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.exception.ApplicationException;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
 
 public abstract class SimpleTableController<DTO> extends BasicListController<SimpleTableDTO>
 {
-    protected Label recordId;
-    protected Label recordDescription;
-    protected Intbox editId;
-    protected Textbox editDescription;
+	protected Label recordId;
+	protected Label recordDescription;
+	protected Intbox editId;
+	protected Textbox editDescription;
+	private Label labelCode;
+	private Label labelDescription;
 
-    protected abstract Integer getNextId() throws ApplicationException;
+	private Listheader headerDescription;
 
-    public SimpleTableController()
-    {
-        super();
-    }
+	private Label labelEditCode;
+	private Label labelEditDescription;
 
-    @Override
-    protected void clearRecordInfo()
-    {
-        editId.setRawValue( 0 );
-        editDescription.setRawValue( "" );
-    }
 
-    @Override
-    protected void prepareToInsert()
-    {
-        clearRecordInfo();
-        try {
-            editId.setRawValue( getNextId() );
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "GetNextId" );
-        }
-        editId.setReadonly( false );
-        editDescription.setFocus( true );
-    }
+	protected abstract Integer getNextId() throws ApplicationException;
 
-    @Override
-    protected SimpleTableDTO prepareToUpdate( Object currentRecord )
-    {
-        SimpleTableDTO dto = ( SimpleTableDTO )currentRecord;
+	public SimpleTableController()
+	{
+		super();
+	}
 
-        //dto = getValue( currentRecord );
+	@Override
+	protected void clearRecordInfo()
+	{
+		editId.setRawValue( 0 );
+		editDescription.setRawValue( "" );
+	}
 
-        editId.setValue( dto.getId() );
-        editId.setReadonly( true );
-        editDescription.setValue( dto.getDescription() );
-        return dto;
-    }
+	@Override
+	protected void prepareToInsert()
+	{
+		clearRecordInfo();
+		try {
+			editId.setRawValue( getNextId() );
+		}
+		catch ( ApplicationException e ) {
+			showErrorMessage( e.getMessage(), "GetNextId" );
+		}
+		editId.setReadonly( false );
+		editDescription.setFocus( true );
+	}
 
-    @Override
-    protected void showRecord( SimpleTableDTO record )
-    {
-        if ( record != null ) {
-            recordId.setValue( record.getId().toString() );
-            recordDescription.setValue( record.getDescription() );
-        }
-        else {
-            clearRecordInfo();
-        }
-    }
+	@Override
+	protected SimpleTableDTO prepareToUpdate( Object currentRecord )
+	{
+		SimpleTableDTO dto = ( SimpleTableDTO )currentRecord;
 
-    @Override
-    protected Object saveRecord( Object object )
-    {
-        SimpleTableDTO dto = ( SimpleTableDTO )object;
-        if ( isAddNewOperation() )
-            dto.setId( editId.getValue() );
-        dto.setDescription( editDescription.getValue() );
-        return dto;
-    }
+		//dto = getValue( currentRecord );
 
-    @Override
-    protected ListitemRenderer getRenderer()
-    {
-        return new SimpleTableListRenderer();
-    }
+		editId.setValue( dto.getId() );
+		editId.setReadonly( true );
+		editDescription.setValue( dto.getDescription() );
+		return dto;
+	}
+
+	@Override
+	protected void showRecord( SimpleTableDTO record )
+	{
+		if ( record != null ) {
+			recordId.setValue( record.getId().toString() );
+			recordDescription.setValue( record.getDescription() );
+		}
+		else {
+			clearRecordInfo();
+		}
+	}
+
+	@Override
+	protected Object saveRecord( Object object )
+	{
+		SimpleTableDTO dto = ( SimpleTableDTO )object;
+		if ( isAddNewOperation() )
+			dto.setId( editId.getValue() );
+		dto.setDescription( editDescription.getValue() );
+		return dto;
+	}
+
+	@Override
+	protected ListitemRenderer getRenderer()
+	{
+		return new SimpleTableListRenderer();
+	}
+
+	@Override
+	public void doAfterCompose( Component comp ) throws Exception
+	{
+		super.doAfterCompose( comp );
+		setLabel( labelCode );
+		setLabel( labelDescription );
+		setLabel( headerDescription );
+		setLabel( labelEditCode );
+		setLabel( labelEditDescription );
+	}
+
+	protected Listheader getHeaderDescription()
+	{
+		return headerDescription;
+	}
 }

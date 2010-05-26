@@ -2,7 +2,7 @@
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <div id="rootParent" apply="br.com.mcampos.controller.ValidateEmailController" align="center">
         <div id="login" width="400px">
-            <panel id="titleValidateEmail" border="normal" title="Validar Email">
+            <panel id="titleValidateEmail" border="normal" title="##">
                 <panelchildren>
                     <div align="left">
                         <grid fixedLayout="true">
@@ -15,11 +15,11 @@
                                     <label id="validateEmailLabelMsg" value="##"/>
                                 </row>
                                 <row id="tokenRow">
-                                    <label id="labelCode" value="Código"/>
+                                    <label id="labelCode" value="##"/>
                                     <textbox id="token" width="98%" maxlength="32"/>
                                 </row>
                                 <row>
-                                    <label id="labelPassword" value="Senha"/>
+                                    <label id="labelPassword" value="##"/>
                                     <textbox id="password" type="password" width="98%" maxlength="16"/>
                                 </row>
                             </rows>

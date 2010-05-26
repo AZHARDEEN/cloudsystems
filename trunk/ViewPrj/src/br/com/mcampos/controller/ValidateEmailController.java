@@ -1,21 +1,25 @@
 package br.com.mcampos.controller;
 
-import br.com.mcampos.exception.ApplicationException;
 
+import br.com.mcampos.exception.ApplicationException;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Panel;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 public class ValidateEmailController extends BaseLoginOptionsController
 {
-
-
-    protected Textbox token;
-    protected Textbox password;
-    protected Row tokenRow;
+    private Textbox token;
+    private Textbox password;
+    private Row tokenRow;
+    private Panel titleValidateEmail;
+    private Label validateEmailLabelMsg;
+    private Label labelCode;
+    private Label labelPassword;
 
     protected static String loginCookieName = "LoginCookieName";
 
@@ -46,6 +50,10 @@ public class ValidateEmailController extends BaseLoginOptionsController
         }
         else
             token.setFocus( true );
+        setLabel( titleValidateEmail );
+        setLabel( validateEmailLabelMsg );
+        setLabel( labelCode );
+        setLabel( labelPassword );
     }
 
 
