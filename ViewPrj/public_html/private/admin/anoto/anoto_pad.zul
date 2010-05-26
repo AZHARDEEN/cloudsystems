@@ -5,7 +5,7 @@
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:20px;color:#0C7A9A" value="Dados do Arquivo PAD"/>
+                    <label id="labelPADTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
                 </vbox>
             </north>
             <west size="30%" splittable="true" flex="true">
@@ -14,7 +14,7 @@
                     <!-- Por favor, nao mude o id desta listbox -->
                     <listbox id="listboxRecord" vflex="true">
                         <listhead sizable="true">
-                            <listheader id="recordListIdSort" align="left" label="Endereço" sort="auto" width="140px"/>
+                            <listheader id="recordListIdSort" align="left" label="##" sort="auto" width="140px"/>
                         </listhead>
                     </listbox>
                 </div>
@@ -31,15 +31,15 @@
                             </columns>
                             <rows>
                                 <row>
-                                    Endereço
+                                    <label value="##" id="labelAddress"/>
                                     <label id="recordId"/>
                                 </row>
                                 <row>
-                                    Descrição
+                                    <label id="labelDescription" value="##"/>
                                     <label id="recordDescription"/>
                                 </row>
                                 <row>
-                                    ICR Template
+                                    <label id="labelICRTemplate" value="##"/>
                                     <label id="recordIcrTemplate"/>
                                 </row>
                             </rows>
@@ -55,15 +55,15 @@
                             </columns>
                             <rows>
                                 <row>
-                                    Endereço
+                                    <label value="##" id="labelEditAddress"/>
                                     <textbox id="editId" width="99%" value="" maxlength="16"/>
                                 </row>
                                 <row>
-                                    Descrição
+                                    <label id="labelEditDescription" value="##"/>
                                     <textbox id="editDescription" width="99%" value=""/>
                                 </row>
                                 <row>
-                                    ICR Template
+                                    <label id="labelEditICRTemplate" value="##"/>
                                     <textbox id="editIcrTemplate" width="99%" value="" tooltiptext="Arquivo TBL do ICR"/>
                                 </row>
                             </rows>
@@ -74,33 +74,33 @@
                     <separator height="30px"/>
                     <tabbox id="associationTab">
                         <tabs>
-                            <tab label="Imagens de Fundo"/>
-                            <tab label="Canetas"/>
-                            <tab label="Campos"/>
+                            <tab label="##" id="tabPadImage"/>
+                            <tab label="##" id="tabPen"/>
+                            <tab label="##" id="tabFields"/>
                         </tabs>
                         <tabpanels>
                             <tabpanel>
                                 <toolbar>
-                                    <toolbarbutton id="btnAddAttach" label="Adicionar" disabled="true" upload="true,native"
+                                    <toolbarbutton id="btnAddAttach" label="##" disabled="true" upload="true,native"
                                                    image="/img/icontexto-webdev-add-016x016.png"/>
-                                    <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="Exportar" id="btnExport"/>
+                                    <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="##" id="btnExport"/>
                                     <separator/>
-                                    <toolbarbutton id="btnRemoveAttach" label="Remover" disabled="true"
+                                    <toolbarbutton id="btnRemoveAttach" label="##" disabled="true"
                                                    image="/img/icontexto-webdev-remove-016x016.png"/>
                                 </toolbar>
                                 <listbox id="listAttachs" fixedLayout="true" height="300px">
                                     <listhead sizable="true">
-                                        <listheader align="left" label="Nome"/>
+                                        <listheader align="left" label="##" id="listHeaderName"/>
                                     </listhead>
                                 </listbox>
                             </tabpanel>
                             <tabpanel>
                                 <hbox>
                                     <vbox>
-                                        <label value="Associadas"/>
+                                        <label value="##" id="labelLinked"/>
                                         <listbox id="listAdded" fixedLayout="true" height="200px" width="200px" droppable="true">
                                             <listhead sizable="true">
-                                                <listheader align="left" label="Código"/>
+                                                <listheader align="left" label="##" id="listHeaderCode"/>
                                             </listhead>
                                         </listbox>
                                     </vbox>
@@ -109,11 +109,11 @@
                                         <button image="/img/icontexto-webdev-arrow-right-032x032.png" id="btnRemovePen"/>
                                     </vbox>
                                     <vbox>
-                                        <label value="Disponíveis"/>
+                                        <label value="##" id="labelAvailable"/>
                                         <listbox fixedLayout="true" id="listAvailable" height="200px" width="200px"
                                                  droppable="true">
                                             <listhead sizable="true">
-                                                <listheader align="left" label="Código"/>
+                                                <listheader align="left" label="##" id="listHeadeCodeAvailable"/>
                                             </listhead>
                                         </listbox>
                                     </vbox>
@@ -121,14 +121,13 @@
                             </tabpanel>
                             <tabpanel>
                                 <toolbar>
-                                    <toolbarbutton id="btnRefreshFields" label="Atualizar"
-                                                   image="/img/icontexto-webdev-add-016x016.png"/>
+                                    <toolbarbutton id="btnRefreshFields" label="##" image="/img/icontexto-webdev-add-016x016.png"/>
                                 </toolbar>
                                 <grid id="gridFields" fixedLayout="true" height="300px">
                                     <columns sizable="false">
-                                        <column align="left" label="Nome" id="headerName"/>
-                                        <column align="left" label="Tipo" id="headerType"/>
-                                        <column align="left" label="ICR" width="30px" id="hederIcr"/>
+                                        <column align="left" label="##" id="headerName"/>
+                                        <column align="left" label="##" id="headerType"/>
+                                        <column align="left" label="##" width="30px" id="headerIcr"/>
                                     </columns>
                                 </grid>
                             </tabpanel>

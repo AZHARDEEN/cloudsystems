@@ -6,7 +6,7 @@
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:20px;color:#0C7A9A" value="Lista de Arquivos PCG Suspensos/Pendentes"/>
+                    <label id="labelPGCTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
                 </vbox>
             </north>
             <west size="40%" splittable="true" flex="true">
@@ -14,16 +14,16 @@
                 <div width="100%" height="100%" id="divListBoxRecord">
                     <!-- Por favor, nao mude o id desta listbox -->
                     <toolbar>
-                        <toolbarbutton id="btnRefresh" label="Atualizar" image="/img/icontexto-webdev-reload-016x016.png"/>
-                        <toolbarbutton id="btnAddAttach" upload="true,native" label="Enviar PGC"
+                        <toolbarbutton id="cmdRefresh" label="##" image="/img/icontexto-webdev-reload-016x016.png"/>
+                        <toolbarbutton id="btnAddAttach" upload="true,native" label="##"
                                        image="/img/icontexto-webdev-arrow-up-016x016.png"/>
-                        <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="Exportar" id="btnExport"/>
+                        <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="##" id="btnExport"/>
                         <separator/>
-                        <toolbarbutton id="btnRemove" label="Excluir PGC" image="/img/icontexto-webdev-remove-016x016.png"/>
+                        <toolbarbutton id="cmdDelete" label="##" image="/img/icontexto-webdev-remove-016x016.png"/>
                     </toolbar>
                     <listbox id="listboxRecord" vflex="true">
                         <listhead sizable="true">
-                            <listheader align="left" label="Nome"/>
+                            <listheader align="left" label="##" id="listHeaderName"/>
                         </listhead>
                     </listbox>
                 </div>

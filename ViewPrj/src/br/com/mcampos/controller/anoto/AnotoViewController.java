@@ -1,6 +1,7 @@
 package br.com.mcampos.controller.anoto;
 
 
+import br.com.mcampos.controller.anoto.base.AnotoLoggedController;
 import br.com.mcampos.controller.anoto.renderer.AttatchmentGridRenderer;
 import br.com.mcampos.controller.anoto.renderer.ComboMediaRenderer;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
@@ -44,6 +45,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Filedownload;
@@ -56,6 +58,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.West;
 
@@ -98,6 +101,27 @@ public class AnotoViewController extends AnotoLoggedController
     private Listbox listPgcAttach;
     private Listbox listGPS;
 
+    private Button btnExportAttach;
+    private Button btnFit;
+    private Button btnZoomIn;
+    private Button btnZoomOut;
+    private Button btnDeleteBook;
+    private Button btnExport;
+
+    private Label labelFormViewTitle;
+    private Label labelFormFields;
+    private Label labelRecognition;
+    private Label labelTimeDiff;
+    private Label labelAdjustment;
+    private Label labelPages;
+    private Label labelBackgrounImage;
+
+    private Tab tabIcr;
+    private Tab tabPgc;
+    private Tab tabbarCode;
+    private Tab tabPhotos;
+    private Tab tabGPS;
+
 
     public AnotoViewController( char c )
     {
@@ -113,6 +137,7 @@ public class AnotoViewController extends AnotoLoggedController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
+        configureLabels();
         cmbBackgroundImages.setItemRenderer( new ComboMediaRenderer() );
         gridAttach.setRowRenderer( new AttatchmentGridRenderer() );
         pgcImage.addEventListener( Events.ON_CLICK, new EventListener()
@@ -586,6 +611,32 @@ public class AnotoViewController extends AnotoLoggedController
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Download" );
         }
+    }
+
+
+    private void configureLabels()
+    {
+        setLabel( btnExportAttach );
+        setLabel( btnFit );
+        setLabel( btnZoomIn );
+        setLabel( btnZoomOut );
+        setLabel( btnDeleteBook );
+        setLabel( btnExport );
+
+        setLabel( labelFormViewTitle );
+        setLabel( labelFormFields );
+        setLabel( labelRecognition );
+        setLabel( labelTimeDiff );
+        setLabel( labelAdjustment );
+        setLabel( labelPages );
+        setLabel( labelBackgrounImage );
+
+        setLabel( tabIcr );
+        setLabel( tabPgc );
+        setLabel( tabbarCode );
+        setLabel( tabPhotos );
+        setLabel( tabGPS );
+
     }
 
 

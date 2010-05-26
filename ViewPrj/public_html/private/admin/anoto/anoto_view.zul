@@ -13,7 +13,7 @@
                     <rows>
                         <row>
                             <image src="/img/cliente.jpg"/>
-                            <label style="font-size:20px;color:#0C7A9A" value="Visualização de Formulários"/>
+                            <label id="labelFormViewTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
                             <image src="/img/fdigital.jpg"/>
                         </row>
                     </rows>
@@ -28,11 +28,11 @@
                                 <north splittable="false" autoscroll="true" size="40%">
                                     <tabbox>
                                         <tabs>
-                                            <tab id="tabIcr" label="Dados"/>
-                                            <tab id="tabPgc" label="Propriedades"/>
-                                            <tab id="tabbarCode" label="Cód. Barras"/>
-                                            <tab id="tabPhotos" label="Anexos"/>
-                                            <tab id="tabGPS" label="GPS"/>
+                                            <tab id="tabIcr" label="##"/>
+                                            <tab id="tabPgc" label="##"/>
+                                            <tab id="tabbarCode" label="##"/>
+                                            <tab id="tabPhotos" label="##"/>
+                                            <tab id="tabGPS" label="##"/>
                                         </tabs>
                                         <tabpanels>
                                             <tabpanel>
@@ -44,22 +44,22 @@
                                                         </columns>
                                                         <rows>
                                                             <row>
-                                                                <label value="Campos do Formulário"/>
+                                                                <label value="##" id="labelFormFields"/>
                                                                 <combobox id="fields" width="94%"></combobox>
                                                             </row>
                                                             <row id="icrInfo">
-                                                                <label value="Reconhecimento"/>
+                                                                <label value="##" id="labelRecognition"/>
                                                                 <label id="icrValue" width="80%"/>
                                                             </row>
                                                             <row id="timeInfo">
-                                                                <label value="TimeDiff"/>
+                                                                <label value="##" id="labelTimeDiff"/>
                                                                 <vbox>
                                                                     <label id="startTime" width="80%"/>
                                                                     <label id="endTime" width="80%"/>
                                                                 </vbox>
                                                             </row>
                                                             <row id="correctedInfo">
-                                                                <label value="Correção"/>
+                                                                <label value="##" id="labelAdjustment"/>
                                                                 <textbox id="correctedValue" width="94%"/>
                                                             </row>
                                                         </rows>
@@ -85,7 +85,7 @@
                                             <tabpanel>
                                                 <div id="divPgcAttach">
                                                     <toolbar>
-                                                        <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="Salvar"
+                                                        <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="##"
                                                                        id="btnExportAttach"/>
                                                     </toolbar>
                                                     <listbox height="600px" width="99%" fixedLayout="true" id="listPgcAttach"></listbox>
@@ -114,14 +114,14 @@
                                 <north autoscroll="false" splittable="false">
                                     <div align="center" width="100%" id="divImageButtons">
                                         <hbox>
-                                            <button id="btnFit" label="Ajustar" image="/img/icontexto-webdev-search-016x016.png"/>
-                                            <button id="btnZoomIn" label="Mais Zoom"
+                                            <button id="btnFit" label="##" image="/img/icontexto-webdev-search-016x016.png"/>
+                                            <button id="btnZoomIn" label="##"
                                                     image="/img/icontexto-webdev-search-016x016.png"/>
                                             <combobox id="cmbZoonRate" width="80px"/>
-                                            <button id="btnZoomOut" label="Menos Zoom"
+                                            <button id="btnZoomOut" label="##"
                                                     image="/img/icontexto-webdev-alert-016x016.png"/>
                                             <separator/>
-                                            <button id="btnDeleteBook" label="Excluir Form."
+                                            <button id="btnDeleteBook" label="##"
                                                     image="/img/icontexto-webdev-remove-016x016.png"/>
                                         </hbox>
                                     </div>
@@ -140,15 +140,15 @@
                                             </columns>
                                             <rows>
                                                 <row id="rowPaging">
-                                                    <label value="Páginas"/>
+                                                    <label value="##" id="labelPages"/>
                                                     <hbox>
                                                         <paging id="pagingPages"/>
-                                                        <button image="/img/icontexto-webdev-file-016x016.png" label="Exportar"
+                                                        <button image="/img/icontexto-webdev-file-016x016.png" label="##"
                                                                 id="btnExport"/>
                                                     </hbox>
                                                 </row>
                                                 <row id="rowBackGroundImages">
-                                                    <label value="Imagens de Fundo"/>
+                                                    <label value="Imagens de Fundo" id="labelBackgrounImage" />
                                                     <combobox id="cmbBackgroundImages" width="90%" readonly="true"/>
                                                 </row>
                                             </rows>

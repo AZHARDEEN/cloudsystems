@@ -19,6 +19,8 @@ import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -27,7 +29,7 @@ import javax.ejb.Remote;
 
 
 @Remote
-public interface AnodeFacade
+public interface AnodeFacade extends Serializable
 {
     /*Operação em formulários*/
 
