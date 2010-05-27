@@ -1,13 +1,15 @@
 package br.com.mcampos.controller.admin.system.config.menu;
 
-import br.com.mcampos.controller.admin.users.model.AbstractPagingListModel;
 
+import br.com.mcampos.controller.admin.users.model.AbstractPagingListModel;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
-
 import br.com.mcampos.dto.security.TaskDTO;
+import br.com.mcampos.ejb.cloudsystem.security.menu.MenuFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.BaseComparator;
+import br.com.mcampos.util.locator.ServiceLocator;
+import br.com.mcampos.util.locator.ServiceLocatorException;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,10 +18,11 @@ import java.util.List;
 import org.zkoss.zul.ListModelExt;
 import org.zkoss.zul.event.ListDataEvent;
 
+
 public class TaskListModel extends AbstractPagingListModel<TaskDTO> implements ListModelExt
 {
     private Integer menuId;
-    protected static MenuLocator locator;
+    protected static MenuFacade locator;
     private AuthenticationDTO auth;
     List items = null;
 
@@ -71,11 +74,21 @@ public class TaskListModel extends AbstractPagingListModel<TaskDTO> implements L
         return menuId;
     }
 
-    protected static MenuLocator getLocator()
+    private static MenuFacade getLocator()
     {
         if ( locator == null )
-            locator = new MenuLocator();
+            locator = getRemoteSession();
         return locator;
+    }
+
+    private static MenuFacade getRemoteSession()
+    {
+        try {
+            return ( MenuFacade )ServiceLocator.getInstance().getRemoteSession( MenuFacade.class );
+        }
+        catch ( ServiceLocatorException e ) {
+            throw new NullPointerException( "Invalid EJB Session (possible null)" );
+        }
     }
 
     protected void setAuth( AuthenticationDTO auth )

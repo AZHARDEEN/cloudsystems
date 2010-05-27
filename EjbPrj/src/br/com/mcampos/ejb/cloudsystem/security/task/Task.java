@@ -1,7 +1,8 @@
-package br.com.mcampos.ejb.cloudsystem.security.entity;
+package br.com.mcampos.ejb.cloudsystem.security.task;
 
 
 import br.com.mcampos.dto.security.TaskDTO;
+import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenu;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 import br.com.mcampos.ejb.entity.security.PermissionAssignment;
 import br.com.mcampos.ejb.entity.security.Subtask;

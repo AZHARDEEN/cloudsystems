@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.cloudsystem.security.entity;
+package br.com.mcampos.ejb.cloudsystem.security.taskmenu;
 
 import java.io.Serializable;
 

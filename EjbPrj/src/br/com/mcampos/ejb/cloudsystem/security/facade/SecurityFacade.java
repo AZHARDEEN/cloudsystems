@@ -5,6 +5,6 @@ import javax.ejb.Remote;
 
 
 @Remote
-public interface SecurityFacade extends MenuSecurityFacade, TaskInterface, RoleInterface, PermissionAssignmentInterface, TaskMenuInterface
+public interface SecurityFacade extends TaskInterface, RoleInterface, PermissionAssignmentInterface, TaskMenuInterface
 {
 }

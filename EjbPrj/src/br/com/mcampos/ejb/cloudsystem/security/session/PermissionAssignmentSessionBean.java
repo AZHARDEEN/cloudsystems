@@ -1,8 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.security.session;
 
 
-import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
+import br.com.mcampos.ejb.cloudsystem.security.role.Role;
+import br.com.mcampos.ejb.cloudsystem.security.task.Task;
 import br.com.mcampos.ejb.entity.security.PermissionAssignment;
 import br.com.mcampos.ejb.entity.security.PermissionAssignmentPK;
 import br.com.mcampos.ejb.session.core.Crud;

@@ -1,8 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.security.session;
 
 
-import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
+import br.com.mcampos.ejb.cloudsystem.security.role.Role;
+import br.com.mcampos.ejb.cloudsystem.security.task.Task;
 import br.com.mcampos.exception.ApplicationException;
 
 import javax.ejb.Local;

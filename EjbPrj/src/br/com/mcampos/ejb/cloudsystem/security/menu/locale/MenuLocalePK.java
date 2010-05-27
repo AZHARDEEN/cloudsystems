@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.cloudsystem.security.entity;
+package br.com.mcampos.ejb.cloudsystem.security.menu.locale;
 
 import java.io.Serializable;
 

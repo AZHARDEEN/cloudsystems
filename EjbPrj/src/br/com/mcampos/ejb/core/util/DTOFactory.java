@@ -20,7 +20,6 @@ import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
-import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.system.SystemParametersDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
@@ -51,9 +50,8 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
+import br.com.mcampos.ejb.cloudsystem.security.role.Role;
+import br.com.mcampos.ejb.cloudsystem.security.task.Task;
 import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
 import br.com.mcampos.ejb.cloudsystem.user.gender.Gender;
 import br.com.mcampos.ejb.cloudsystem.user.title.Title;
@@ -685,70 +683,6 @@ public final class DTOFactory implements Serializable
         for ( AddressDTO item : list ) {
             user.addAddress( copy( item ) );
         }
-    }
-
-    public static MenuDTO copy( Menu source, Boolean copySubMenu )
-    {
-        if ( source == null )
-            return null;
-
-        MenuDTO target = new MenuDTO();
-
-        target.setId( source.getId() );
-        target.setDescription( source.getDescription() );
-        target.setSequence( source.getSequence() );
-        target.setTargetURL( source.getTargetURL() );
-        target.setAutocheck( source.getAutocheck() );
-        target.setChecked( source.getChecked() );
-        target.setCheckmark( source.getCheckmark() );
-        target.setDisabled( source.getDisabled() );
-        target.setSeparatorBefore( source.getSeparatorBefore() );
-        if ( source.getSubMenus() != null && ( source.getSubMenus().size() > 0 ) && copySubMenu ) {
-            for ( Menu sm : source.getSubMenus() ) {
-                target.addSubMenu( copy( sm, true ) );
-            }
-        }
-        if ( source.getParentMenu() != null ) {
-            target.setParent( copy( source.getParentMenu(), false ) );
-            target.setParentId( source.getParentMenu().getId() );
-        }
-        return target;
-    }
-
-
-    public static Menu copy( Menu target, MenuDTO source )
-    {
-        if ( source == null || target == null )
-            return null;
-
-        target.setId( source.getId() );
-        target.setDescription( source.getDescription() );
-        target.setSequence( source.getSequence() );
-        target.setTargetURL( source.getTargetURL() );
-        target.setAutocheck( source.getAutocheck() );
-        target.setChecked( source.getChecked() );
-        target.setCheckmark( source.getCheckmark() );
-        target.setDisabled( source.getDisabled() );
-        target.setSeparatorBefore( source.getSeparatorBefore() );
-        return target;
-    }
-
-    public static Menu copy( MenuDTO source )
-    {
-        if ( source == null )
-            return null;
-        Menu target = new Menu();
-
-        target.setId( source.getId() );
-        target.setDescription( source.getDescription() );
-        target.setSequence( source.getSequence() );
-        target.setTargetURL( source.getTargetURL() );
-        target.setAutocheck( source.getAutocheck() );
-        target.setChecked( source.getChecked() );
-        target.setCheckmark( source.getCheckmark() );
-        target.setDisabled( source.getDisabled() );
-        target.setSeparatorBefore( source.getSeparatorBefore() );
-        return target;
     }
 
 

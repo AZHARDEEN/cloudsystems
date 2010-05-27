@@ -38,12 +38,12 @@
     <class>br.com.mcampos.ejb.entity.system.EMail</class>
     <class>br.com.mcampos.ejb.entity.system.EMailPart</class>
     <class>br.com.mcampos.ejb.entity.system.EMailPartType</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.entity.Role</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.entity.Menu</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.role.Role</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.menu.Menu</class>
     <class>br.com.mcampos.ejb.entity.security.SubjectRole</class>
     <class>br.com.mcampos.ejb.entity.security.PermissionAssignment</class>
     <class>br.com.mcampos.ejb.entity.security.Subtask</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.entity.Task</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.task.Task</class>
     <class>br.com.mcampos.ejb.cloudsystem.media.entity.Media</class>
     <class>br.com.mcampos.ejb.cloudsystem.entity.entity.Form</class>
     <class>br.com.mcampos.ejb.cloudsystem.entity.entity.FormMedia</class>
@@ -67,7 +67,7 @@
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.title.Title</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.entity.MenuLocale</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.menu.locale.MenuLocale</class>
     <properties>
       <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/PostgreSQLDS"/>
     </properties>

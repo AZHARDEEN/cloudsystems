@@ -1,8 +1,9 @@
-package br.com.mcampos.ejb.cloudsystem.security.session;
+package br.com.mcampos.ejb.cloudsystem.security.task;
 
 
-import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
 import br.com.mcampos.exception.ApplicationException;
+
+import java.io.Serializable;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import javax.ejb.Local;
 
 
 @Local
-public interface TaskSessionLocal
+public interface TaskSessionLocal extends Serializable
 {
     void delete( Integer key ) throws ApplicationException;
 
@@ -26,5 +27,5 @@ public interface TaskSessionLocal
 
     Task update( Task entity ) throws ApplicationException;
 
-    Integer getNextTaskId( ) throws ApplicationException;
+    Integer getNextTaskId() throws ApplicationException;
 }

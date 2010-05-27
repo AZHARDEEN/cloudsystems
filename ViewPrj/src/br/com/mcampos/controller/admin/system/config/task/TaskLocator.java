@@ -10,6 +10,7 @@ import br.com.mcampos.ejb.cloudsystem.security.facade.TaskInterface;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.business.BusinessDelegate;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TaskLocator extends BusinessDelegate implements TaskInterface
@@ -28,7 +29,7 @@ public class TaskLocator extends BusinessDelegate implements TaskInterface
 
     public List<TaskDTO> getSubTasks( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException
     {
-        return getSessionBean().getSubTasks ( auth, dto );
+        return getSessionBean().getSubTasks( auth, dto );
     }
 
 
@@ -80,39 +81,38 @@ public class TaskLocator extends BusinessDelegate implements TaskInterface
         return getSessionBean().getRoles( auth, dtoTask );
     }
 
-    public List<MenuDTO> getParentMenus ( AuthenticationDTO auth ) throws ApplicationException
+    public List<MenuDTO> getParentMenus( AuthenticationDTO auth ) throws ApplicationException
     {
-        return getSessionBean().getParentMenus( auth );
+        //return getSessionBean().getParentMenus( auth );
+        return Collections.emptyList();
     }
 
-    public RoleDTO getRootRole ( AuthenticationDTO auth ) throws ApplicationException
+    public RoleDTO getRootRole( AuthenticationDTO auth ) throws ApplicationException
     {
-        return getSessionBean().getRootRole ( auth );
+        return getSessionBean().getRootRole( auth );
     }
 
     public void add( AuthenticationDTO auth, TaskDTO dtoTask, MenuDTO menuDTO ) throws ApplicationException
     {
-        getSessionBean().add ( auth, dtoTask, menuDTO );
+        getSessionBean().add( auth, dtoTask, menuDTO );
     }
 
     public void add( AuthenticationDTO auth, TaskDTO dtoTask, RoleDTO roleDTO ) throws ApplicationException
     {
-        getSessionBean().add ( auth, dtoTask, roleDTO );
+        getSessionBean().add( auth, dtoTask, roleDTO );
     }
 
-    public void remove( AuthenticationDTO auth, TaskDTO dtoTask,
-                        MenuDTO menuDTO )throws ApplicationException
+    public void remove( AuthenticationDTO auth, TaskDTO dtoTask, MenuDTO menuDTO ) throws ApplicationException
     {
-        getSessionBean().remove ( auth, dtoTask, menuDTO );
+        getSessionBean().remove( auth, dtoTask, menuDTO );
     }
 
-    public void remove( AuthenticationDTO auth, TaskDTO dtoTask,
-                        RoleDTO roleDTO )throws ApplicationException
+    public void remove( AuthenticationDTO auth, TaskDTO dtoTask, RoleDTO roleDTO ) throws ApplicationException
     {
-        getSessionBean().remove ( auth, dtoTask, roleDTO );
+        getSessionBean().remove( auth, dtoTask, roleDTO );
     }
 
-    protected SecurityFacade getSessionBean ()
+    protected SecurityFacade getSessionBean()
     {
         if ( facade == null )
             facade = ( SecurityFacade )getEJBSession( SecurityFacade.class );

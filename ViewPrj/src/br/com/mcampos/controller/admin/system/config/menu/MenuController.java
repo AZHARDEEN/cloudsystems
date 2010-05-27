@@ -7,6 +7,7 @@ import br.com.mcampos.controller.admin.system.config.task.TaskTreeRenderer;
 import br.com.mcampos.controller.core.BasicTreeCRUDController;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
+import br.com.mcampos.ejb.cloudsystem.security.menu.MenuFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -38,7 +39,7 @@ import org.zkoss.zul.Treerow;
 public class MenuController extends BasicTreeCRUDController<MenuDTO> implements ListitemRenderer
 {
 
-    protected MenuLocator locator;
+    protected MenuFacade locator;
 
 
     protected Label recordId;
@@ -106,17 +107,17 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     }
 
 
-    protected MenuLocator getLocator()
+    protected MenuFacade getSession()
     {
         if ( locator == null )
-            locator = new MenuLocator();
+            locator = ( MenuFacade )getRemoteSession( MenuFacade.class );
         return locator;
     }
 
     protected void refresh()
     {
         try {
-            getTreeList().setModel( new MenuTreeModel( getLocator().getParentMenus( getLoggedInUser() ) ) );
+            getTreeList().setModel( new MenuTreeModel( getSession().getParentMenus( getLoggedInUser() ) ) );
 
             refreshTask();
         }
@@ -145,22 +146,18 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
 
     protected void showMenuTasks( MenuDTO dto ) throws ApplicationException
     {
-        System.out.println( "ShowMenuTask: " + dto.toString() );
-        List<TaskDTO> tasks = getLocator().getMenuTasks( getLoggedInUser(), dto.getId() );
-        System.out.println( "ShowMenuTask list was gotten: " + dto.toString() );
+        List<TaskDTO> tasks = getSession().getMenuTasks( getLoggedInUser(), dto.getId() );
         if ( SysUtils.isEmpty( tasks ) )
             tasks = new ArrayList<TaskDTO>();
         listTasks.setModel( new ListModelList( tasks, true ) );
-        System.out.println( "ShowMenuTask model created: " + dto.toString() );
         removeTask.setDisabled( true );
-        System.out.println( "ShowMenuTask is done!!!: " + dto.toString() );
 
     }
 
     protected int getNextId()
     {
         try {
-            return getLocator().getNextMenuId( getLoggedInUser() );
+            return getSession().getNextMenuId( getLoggedInUser() );
         }
         catch ( ApplicationException e ) {
             e = null;
@@ -230,7 +227,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
                 if ( obj instanceof Treerow && toDTO != null ) {
                     fromDTO.setParent( toDTO );
                     try {
-                        getLocator().update( getLoggedInUser(), fromDTO );
+                        getSession().update( getLoggedInUser(), fromDTO );
                         moveTreeItem( ( ( Treeitem )de.getTarget().getParent() ), ( ( Treeitem )de.getDragged().getParent() ) );
                         MenuDTO parentDTO = toDTO.getParent();
                         if ( parentDTO != null )
@@ -253,7 +250,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
             if ( de.getTarget() instanceof Treerow ) {
                 MenuDTO toDTO = getValue( ( Treeitem )( ( Treerow )de.getTarget() ).getParent() );
                 try {
-                    getLocator().add( getLoggedInUser(), task, toDTO );
+                    getSession().addMenuTask( getLoggedInUser(), toDTO, task );
                     ListModelList model = ( ListModelList )listTasks.getModel();
                     model.add( task );
                 }
@@ -272,7 +269,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         MenuDTO dto = getValue( ( ( Treeitem )e ) );
         if ( dto != null ) {
             try {
-                getLocator().delete( getLoggedInUser(), dto.getId() );
+                getSession().delete( getLoggedInUser(), dto );
             }
             catch ( ApplicationException ex ) {
                 showErrorMessage( ex.getMessage(), "Exclur Menu" );
@@ -285,9 +282,9 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         MenuDTO dto = null;
         try {
             if ( isAddNewOperation() )
-                dto = getLocator().add( getLoggedInUser(), getValue( ( Treeitem )treeItem ) );
+                dto = getSession().add( getLoggedInUser(), getValue( ( Treeitem )treeItem ) );
             else
-                dto = getLocator().update( getLoggedInUser(), getValue( ( ( Treeitem )treeItem ) ) );
+                dto = getSession().update( getLoggedInUser(), getValue( ( ( Treeitem )treeItem ) ) );
 
             if ( dto != null )
                 ( ( Treeitem )treeItem ).setValue( dto );
@@ -306,7 +303,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         if ( isAddNewOperation() ) {
             if ( editSequence.getValue() != 0 ) {
                 try {
-                    editSequence.setValue( getLocator().getNextSequence( getLoggedInUser(), editParent.getValue() ) );
+                    editSequence.setValue( getSession().getNextSequence( getLoggedInUser(), editParent.getValue() ) );
                 }
                 catch ( ApplicationException e ) {
                     e = null;
@@ -387,7 +384,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
     protected void refreshTask()
     {
         try {
-            treeTasks.setModel( new TaskTreeModel( getLoggedInUser(), getLocator().getRootTasks( getLoggedInUser() ) ) );
+            treeTasks.setModel( new TaskTreeModel( getLoggedInUser(), getSession().getRootTasks( getLoggedInUser() ) ) );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Refresh Menu" );
@@ -408,7 +405,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         if ( item != null && menu != null ) {
             try {
                 TaskDTO task = ( TaskDTO )item.getValue();
-                getLocator().remove( getLoggedInUser(), task, menu );
+                getSession().removeMenuTask( getLoggedInUser(), menu, task );
                 if ( task != null ) {
                     ListModelList model = ( ListModelList )listTasks.getModel();
                     if ( model != null )

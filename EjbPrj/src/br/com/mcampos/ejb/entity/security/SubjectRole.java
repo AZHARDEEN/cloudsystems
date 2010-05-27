@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.entity.security;
 
 
-import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
+import br.com.mcampos.ejb.cloudsystem.security.role.Role;
 import br.com.mcampos.ejb.entity.user.Collaborator;
 
 import java.io.Serializable;

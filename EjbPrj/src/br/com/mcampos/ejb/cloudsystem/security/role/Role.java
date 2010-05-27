@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.cloudsystem.security.entity;
+package br.com.mcampos.ejb.cloudsystem.security.role;
 
 
 import br.com.mcampos.dto.security.RoleDTO;
