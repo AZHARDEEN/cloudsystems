@@ -4,6 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.security.entity;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.io.Serializable;
 
@@ -22,6 +23,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -37,32 +39,45 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
     public static final String nextSequence = "Menu.nexSequence";
     public static final String findSequence = "Menu.findSequence";
 
-    @Column( name = "mnu_description_ch", nullable = false )
+    @Column( name = "mnu_description_ch", nullable = false, length = 64 )
     private String description;
+
+    @Transient
+    private String localeDescription;
+
     @Id
     @Column( name = "mnu_id_in", nullable = false )
     private Integer id;
+
     @Column( name = "mnu_sequence_in", nullable = false )
     private Integer sequence;
-    @Column( name = "mnu_url_ch" )
+
+    @Column( name = "mnu_url_ch", length = 1024 )
     private String targetURL;
+
     @ManyToOne( fetch = FetchType.EAGER )
     @JoinColumn( name = "mnu_parent_id" )
     private Menu parentMenu;
+
     @OneToMany( mappedBy = "parentMenu", cascade = { CascadeType.REFRESH } )
     private List<Menu> subMenus;
+
     @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "med_id_in" )
     private Media media;
 
     @Column( name = "mnu_separator_before_bt" )
     private Boolean separatorBefore;
+
     @Column( name = "mnu_autocheck_bt" )
     private Boolean autocheck;
+
     @Column( name = "mnu_checked_bt" )
     private Boolean checked;
+
     @Column( name = "mnu_checkmark_bt" )
     private Boolean checkmark;
+
     @Column( name = "mnu_disabled_bt" )
     private Boolean disabled;
 
@@ -272,7 +287,7 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         MenuDTO target = new MenuDTO();
 
         target.setId( getId() );
-        target.setDescription( getDescription() );
+        target.setDescription( getLocaleDescription() );
         target.setSequence( getSequence() );
         target.setTargetURL( getTargetURL() );
         target.setAutocheck( getAutocheck() );
@@ -283,5 +298,15 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
         if ( getParentMenu() != null )
             target.setParent( getParentMenu().toDTO() );
         return target;
+    }
+
+    public void setLocaleDescription( String localeName )
+    {
+        this.localeDescription = localeName;
+    }
+
+    public String getLocaleDescription()
+    {
+        return ( SysUtils.isEmpty( localeDescription ) ) ? getDescription() : localeDescription;
     }
 }

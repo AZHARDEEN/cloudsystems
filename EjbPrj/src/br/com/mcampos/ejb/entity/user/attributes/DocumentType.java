@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries( { @NamedQuery( name = "DocumentType.findAll", query = "select o from DocumentType o" ),
                  @NamedQuery( name = "DocumentType.find", query = "select o from DocumentType o where o.id = :id" ) } )
-@Table( name = "\"document_type\"" )
+@Table( name = "document_type" )
 public class DocumentType implements Serializable
 {
     @Id

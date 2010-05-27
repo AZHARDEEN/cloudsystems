@@ -26,84 +26,83 @@ import javax.persistence.PersistenceContext;
 public class TitleFacadeBean extends AbstractSecurity implements TitleFacade
 {
 
-	public static final Integer messageId = 10;
+    public static final Integer messageId = 10;
 
-	@PersistenceContext( unitName = "EjbPrj" )
-	private EntityManager em;
+    @PersistenceContext( unitName = "EjbPrj" )
+    private EntityManager em;
 
-	@EJB
-	private TitleSessionLocal titleSession;
-
-
-	public TitleFacadeBean()
-	{
-	}
-
-	protected EntityManager getEntityManager()
-	{
-		return em;
-	}
-
-	public Integer getMessageTypeId()
-	{
-		return messageId;
-	}
-
-	@TransactionAttribute( TransactionAttributeType.NEVER )
-	public List<TitleDTO> getAll( AuthenticationDTO currentUser ) throws ApplicationException
-	{
-		authenticate( currentUser );
-		List<Title> titles = titleSession.getAll();
-		return toDTO( titles );
-	}
+    @EJB
+    private TitleSessionLocal titleSession;
 
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
-	public Integer getNextId( AuthenticationDTO currentUser ) throws ApplicationException
-	{
-		authenticate( currentUser );
-		return titleSession.getNextId();
-	}
+    public TitleFacadeBean()
+    {
+    }
 
-	public void add( AuthenticationDTO currentUser, TitleDTO dto ) throws ApplicationException
-	{
-		authenticate( currentUser );
-		Title entity = titleSession.get( new TitlePK( dto ) );
-		if ( entity != null )
-			throwException( 1 );
-		entity = DTOFactory.copy( dto );
-		titleSession.add( entity );
-	}
+    protected EntityManager getEntityManager()
+    {
+        return em;
+    }
 
-	public void update( AuthenticationDTO currentUser, TitleDTO dto ) throws ApplicationException
-	{
-		authenticate( currentUser );
-		Title entity = titleSession.get( new TitlePK( dto ) );
-		if ( entity == null )
-			throwException( 2 );
-		entity.setAbbreviation( dto.getAbbreviation() );
-		entity.setDescription( dto.getDescription() );
-		titleSession.update( entity );
-	}
+    public Integer getMessageTypeId()
+    {
+        return messageId;
+    }
 
-	public void delete( AuthenticationDTO currentUser, TitleDTO dto ) throws ApplicationException
-	{
-		authenticate( currentUser );
-		TitlePK key = new TitlePK( dto );
-		Title entity = titleSession.get( key );
-		if ( entity == null )
-			throwException( 3 );
-		titleSession.delete( key );
-	}
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public List<TitleDTO> getAll( AuthenticationDTO currentUser ) throws ApplicationException
+    {
+        authenticate( currentUser );
+        List<Title> titles = titleSession.getAll();
+        return toDTO( titles );
+    }
 
-	public static List<TitleDTO> toDTO( List<Title> titles )
-	{
-		if ( SysUtils.isEmpty( titles ) )
-			return Collections.EMPTY_LIST;
-		List<TitleDTO> dtos = new ArrayList<TitleDTO>( titles.size() );
-		for ( Title title : titles )
-			dtos.add( title.toDTO() );
-		return dtos;
-	}
+
+    @TransactionAttribute( TransactionAttributeType.NEVER )
+    public Integer getNextId( AuthenticationDTO currentUser ) throws ApplicationException
+    {
+        authenticate( currentUser );
+        return titleSession.getNextId();
+    }
+
+    public void add( AuthenticationDTO currentUser, TitleDTO dto ) throws ApplicationException
+    {
+        authenticate( currentUser );
+        Title entity = titleSession.get( dto.getId() );
+        if ( entity != null )
+            throwException( 1 );
+        entity = DTOFactory.copy( dto );
+        titleSession.add( entity );
+    }
+
+    public void update( AuthenticationDTO currentUser, TitleDTO dto ) throws ApplicationException
+    {
+        authenticate( currentUser );
+        Title entity = titleSession.get( dto.getId() );
+        if ( entity == null )
+            throwException( 2 );
+        entity.setAbbreviation( dto.getAbbreviation() );
+        entity.setDescription( dto.getDescription() );
+        titleSession.update( entity );
+    }
+
+    public void delete( AuthenticationDTO currentUser, TitleDTO dto ) throws ApplicationException
+    {
+        authenticate( currentUser );
+        Title entity = titleSession.get( dto.getId() );
+        if ( entity == null )
+            throwException( 3 );
+        titleSession.delete( dto.getId() );
+    }
+
+    public static List<TitleDTO> toDTO( List<Title> titles )
+    {
+        if ( SysUtils.isEmpty( titles ) )
+            return Collections.EMPTY_LIST;
+        List<TitleDTO> dtos = new ArrayList<TitleDTO>( titles.size() );
+        for ( Title title : titles )
+            dtos.add( title.toDTO() );
+        return dtos;
+    }
 
 }

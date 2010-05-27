@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.cloudsystem.media.entity;
 
+
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 import br.com.mcampos.sysutils.SysUtils;
@@ -8,8 +9,10 @@ import java.io.Serializable;
 
 import java.security.InvalidParameterException;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +21,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "Media.findAll", query = "select o from Media o" ) } )
@@ -31,13 +35,14 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
     private Integer id;
 
 
-    @Column( name = "med_mime_ch" )
+    @Column( name = "med_mime_ch", length = 64 )
     private String mimeType;
 
 
-    @Column( name = "med_name_ch", nullable = false )
+    @Column( name = "med_name_ch", nullable = false, length = 128 )
     private String name;
 
+    @Basic( fetch = FetchType.LAZY )
     @Lob
     @Column( name = "med_object_bin", nullable = false )
     private byte[] object;
