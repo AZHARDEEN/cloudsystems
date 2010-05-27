@@ -1,8 +1,9 @@
-package br.com.mcampos.ejb.cloudsystem.security.entity;
+package br.com.mcampos.ejb.cloudsystem.security.menu;
 
 
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenu;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -27,7 +28,8 @@ import javax.persistence.Transient;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = Menu.findaAll, query = "select o from Menu o where o.parentMenu is null" ) } )
+@NamedQueries( { @NamedQuery( name = Menu.findaAll, query = "select o from Menu o where o.parentMenu is null" ),
+                 @NamedQuery( name = Menu.nextId, query = "select max(o.id) from Menu o " ) } )
 @NamedNativeQueries( { @NamedNativeQuery( name = Menu.nextSequence,
                                           query = "select coalesce ( max (  mnu_sequence_in ), 0 ) + 1 from menu where coalesce ( mnu_parent_id, 0 ) = ?" ),
                        @NamedNativeQuery( name = Menu.findSequence,
@@ -38,6 +40,7 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
     public static final String findaAll = "Menu.findAll";
     public static final String nextSequence = "Menu.nexSequence";
     public static final String findSequence = "Menu.findSequence";
+    public static final String nextId = "Menu.nextId";
 
     @Column( name = "mnu_description_ch", nullable = false, length = 64 )
     private String description;

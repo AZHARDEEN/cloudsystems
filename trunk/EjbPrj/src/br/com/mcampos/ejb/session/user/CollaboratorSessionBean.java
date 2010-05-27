@@ -5,10 +5,11 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
-import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenu;
+import br.com.mcampos.ejb.cloudsystem.security.menu.Menu;
+import br.com.mcampos.ejb.cloudsystem.security.menu.MenuUtils;
+import br.com.mcampos.ejb.cloudsystem.security.role.Role;
+import br.com.mcampos.ejb.cloudsystem.security.task.Task;
+import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenu;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.security.PermissionAssignment;
@@ -48,8 +49,8 @@ public class CollaboratorSessionBean extends AbstractSecurity implements Collabo
 
         authenticate( auth );
         try {
-            count = ( Long )em.createNamedQuery( "Collaborator.countBusinessEntity" ).setParameter( "personId", auth.getUserId() )
-                    .getSingleResult();
+            count =
+                    ( Long )em.createNamedQuery( "Collaborator.countBusinessEntity" ).setParameter( "personId", auth.getUserId() ).getSingleResult();
             return count.intValue();
         }
         catch ( NoResultException e ) {
@@ -62,8 +63,9 @@ public class CollaboratorSessionBean extends AbstractSecurity implements Collabo
     protected Collaborator getCollaborator( AuthenticationDTO auth, Integer businessId )
     {
         try {
-            Collaborator col = ( Collaborator )em.createNamedQuery( "Collaborator.getBusiness" )
-                .setParameter( "companyId", businessId ).setParameter( "personId", auth.getUserId() ).getSingleResult();
+            Collaborator col =
+                ( Collaborator )em.createNamedQuery( "Collaborator.getBusiness" ).setParameter( "companyId", businessId ).setParameter( "personId",
+                                                                                                                                        auth.getUserId() ).getSingleResult();
             return col;
         }
         catch ( NoResultException e ) {
@@ -122,8 +124,8 @@ public class CollaboratorSessionBean extends AbstractSecurity implements Collabo
         ArrayList<Role> roles = null;
 
         try {
-            resultList = em.createNamedQuery( "SubjectRole.findCollaboratorRoles" ).setParameter( "id", auth.getUserId() )
-                    .getResultList();
+            resultList =
+                    em.createNamedQuery( "SubjectRole.findCollaboratorRoles" ).setParameter( "id", auth.getUserId() ).getResultList();
             if ( resultList.size() > 0 ) {
                 roles = new ArrayList<Role>( resultList.size() );
                 for ( SubjectRole sr : ( List<SubjectRole> )resultList ) {
@@ -148,8 +150,8 @@ public class CollaboratorSessionBean extends AbstractSecurity implements Collabo
         ArrayList<Role> roles = null;
 
         try {
-            resultList = em.createNamedQuery( "SubjectRole.findCollaboratorRoles" )
-                    .setParameter( "id", entity.getPerson().getId() ).getResultList();
+            resultList =
+                    em.createNamedQuery( "SubjectRole.findCollaboratorRoles" ).setParameter( "id", entity.getPerson().getId() ).getResultList();
             if ( resultList.size() > 0 ) {
                 roles = new ArrayList<Role>( resultList.size() );
                 for ( SubjectRole sr : ( List<SubjectRole> )resultList ) {
@@ -180,8 +182,7 @@ public class CollaboratorSessionBean extends AbstractSecurity implements Collabo
                 getMenuList( menuList, childTask.getSubTask() );
             }
         }
-        catch (NoResultException e )
-        {
+        catch ( NoResultException e ) {
             e = null;
         }
     }
@@ -240,7 +241,7 @@ public class CollaboratorSessionBean extends AbstractSecurity implements Collabo
 
         if ( newMenu.getParentMenu() != null ) {
             //this menu has a parent menu.
-            parentDTO = DTOFactory.copy( newMenu.getParentMenu(), false );
+            parentDTO = MenuUtils.copy( newMenu.getParentMenu(), false );
             nIndex = menuList.indexOf( parentDTO );
             if ( nIndex == -1 ) {
                 //parent is not in list. Must Add.
@@ -249,11 +250,11 @@ public class CollaboratorSessionBean extends AbstractSecurity implements Collabo
             else {
                 parentDTO = ( MenuDTO )menuList.get( nIndex );
             }
-            dto = DTOFactory.copy( newMenu, false );
+            dto = MenuUtils.copy( newMenu, false );
             return addMenu( parentDTO.getSubMenu(), dto );
         }
         else {
-            dto = DTOFactory.copy( newMenu, false );
+            dto = MenuUtils.copy( newMenu, false );
             return addMenu( menuList, dto );
         }
     }
@@ -290,8 +291,8 @@ public class CollaboratorSessionBean extends AbstractSecurity implements Collabo
         authenticate( auth );
 
         try {
-            return em.createNamedQuery( "Collaborator.findCompanies" ).setParameter( "personId", auth.getUserId() )
-                .getResultList();
+            return em.createNamedQuery( "Collaborator.findCompanies" ).setParameter( "personId",
+                                                                                     auth.getUserId() ).getResultList();
         }
         catch ( NoResultException e ) {
             e = null;

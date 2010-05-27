@@ -1,7 +1,6 @@
-package br.com.mcampos.ejb.cloudsystem.security.session;
+package br.com.mcampos.ejb.cloudsystem.security.task;
 
 
-import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
 import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;

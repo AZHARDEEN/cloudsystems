@@ -6,14 +6,15 @@ import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
-import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenu;
-import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenuPK;
+import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
+import br.com.mcampos.ejb.cloudsystem.security.menu.Menu;
+import br.com.mcampos.ejb.cloudsystem.security.role.Role;
+import br.com.mcampos.ejb.cloudsystem.security.task.Task;
+import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenu;
+import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenuPK;
+import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenuUtil;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
 import br.com.mcampos.ejb.entity.security.PermissionAssignment;
 import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.exception.ApplicationException;
@@ -45,52 +46,6 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
 
     public SystemSessionBean()
     {
-    }
-
-
-    /**
-     * Obtem a lista dos menus de primeiro nível, ou seja,
-     * aqueles menus que não possuem nenhum parentMenu pai.
-     *
-     * @param auth - dto do usuário autenticado no sistema.
-     * @return a lista de menus
-     */
-    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public List<MenuDTO> getParentMenus( AuthenticationDTO auth ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-
-        List<Menu> list;
-        try {
-            list = ( List<Menu> )getEntityManager().createNamedQuery( "Menu.findAll" ).getResultList();
-            return toMenuDTOList( list );
-        }
-        catch ( NoResultException e ) {
-            e = null;
-            return Collections.emptyList();
-        }
-    }
-
-    protected List<MenuDTO> toMenuDTOList( List<Menu> list )
-    {
-        if ( SysUtils.isEmpty( list ) )
-            return Collections.emptyList();
-        ArrayList<MenuDTO> listDTO = new ArrayList<MenuDTO>( list.size() );
-        for ( Menu m : list ) {
-            listDTO.add( DTOFactory.copy( m, true ) );
-        }
-        return listDTO;
-    }
-
-    protected List<MenuDTO> toMenuDTOListFromTaskMenu( List<TaskMenu> list )
-    {
-        if ( SysUtils.isEmpty( list ) )
-            return Collections.emptyList();
-        ArrayList<MenuDTO> listDTO = new ArrayList<MenuDTO>( list.size() );
-        for ( TaskMenu m : list ) {
-            listDTO.add( DTOFactory.copy( m.getMenu(), false ) );
-        }
-        return listDTO;
     }
 
 
@@ -130,142 +85,6 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
     }
 
 
-    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public List<TaskDTO> getMenuTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-
-        if ( SysUtils.isZero( menuId ) )
-            throwException( 4 );
-
-        try {
-            System.out.println( "SystemSessionBean.getMenuTasks" );
-            Menu menu = getEntityManager().find( Menu.class, menuId );
-            if ( menu != null ) {
-                System.out.println( "SystemSessionBean.Refreshing Menu" );
-                getEntityManager().refresh( menu );
-                System.out.println( "SystemSessionBean.getting Task List" );
-                return toTaskDTOListFromTaskMenu( menu.getTasks() );
-            }
-        }
-        catch ( NoResultException e ) {
-            e = null;
-        }
-        return Collections.emptyList();
-    }
-
-
-    public Boolean validate( MenuDTO dto, Boolean isNew ) throws ApplicationException
-    {
-        if ( dto == null )
-            throwCommomException( 3 );
-        if ( isNew ) {
-            /*this is an insert operation*/
-            if ( SysUtils.isZero( dto.getId() ) )
-                dto.setId( getNextMenuId() );
-            if ( existsSequence( dto.getParentId(), dto.getSequence() ) )
-                dto.setSequence( getNextSequence( dto.getParentId() ) );
-        }
-        else {
-            /*this is an update operation. Must have an id*/
-            if ( SysUtils.isZero( dto.getId() ) )
-                throwCommomException( 4 );
-            Menu entity = getEntityManager().find( Menu.class, dto.getId() );
-            if ( entity == null )
-                throwCommomRuntimeException( 4 );
-            if ( entity.getSequence() != dto.getSequence() ||
-                 ( entity.getParentMenu() != null && entity.getParentMenu().getId() != dto.getParentId() ) ) {
-                /*
-                 * ou a sequence foi alterada ou o menu pai foi alterado.
-                 * Em ambos os casos, deve-se verificar a existencia do para (parent_id + sequence)
-                 */
-                if ( existsSequence( dto.getParentId(), dto.getSequence() ) )
-                    dto.setSequence( getNextSequence( dto.getParentId() ) );
-            }
-        }
-        if ( SysUtils.isEmpty( dto.getDescription() ) )
-            throwException( 6 );
-        return true;
-    }
-
-    /**
-     * Atualiza o parentMenu.
-     * Esta função é usada para atualizar um dto (persistir) no banco de dados.
-     *
-     * @param auth - dto do usuário autenticado no sistema.
-     * @param dto - o item a ser atualizado.
-     */
-    public MenuDTO update( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        validate( dto, false );
-
-        Menu entity;
-
-        entity = getEntityManager().find( Menu.class, dto.getId() );
-        changeParent( entity, dto ); /*this line MUST be before DTOFactory.copy*/
-        DTOFactory.copy( entity, dto );
-        if ( entity.getSubMenus().size() > 0 ) {
-            /*A parent menu cannot have a target url! I guess!!!*/
-            entity.setTargetURL( null );
-        }
-        return DTOFactory.copy( entity, true );
-    }
-
-    protected void changeParent( Menu entity, MenuDTO dto ) throws ApplicationException
-    {
-        Menu newParent = null, oldParent;
-
-        /*Get old parent and new parent, if any*/
-        oldParent = entity.getParentMenu();
-        if ( oldParent != null && oldParent.equals( newParent ) == false ) {
-            oldParent.removeMenu( entity );
-        }
-        if ( SysUtils.isZero( dto.getParentId() ) == false ) {
-            newParent = getEntityManager().find( Menu.class, dto.getParentId() );
-            if ( newParent == null )
-                throwRuntimeException( 3 );
-        }
-        entity.setParentMenu( newParent );
-        if ( oldParent != null )
-            getEntityManager().merge( oldParent );
-    }
-
-    /**
-     * Obtém o próximo formId disponível.
-     * Esta função obtém o próximo número disponível para o formId do Menu (Max(formId)+1).
-     * Não há necessidade de usar type para inclusão visto que a atualização desta
-     * tabela é mímina.
-     *
-     * @param auth .
-     * @return O próximo formId disponível.
-     */
-    public Integer getNextMenuId( AuthenticationDTO auth ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        return getNextMenuId();
-    }
-
-    /**
-     * This is a very private function ( there is no AuthenticationDTO)
-     * SHOULD NEVER BE PULIC
-     * @return next free formId number.
-     */
-    private Integer getNextMenuId()
-    {
-        int id;
-
-        try {
-            id = ( Integer )getEntityManager().createNativeQuery( "SELECT MAX(MNU_ID_IN) FROM MENU" ).getSingleResult();
-            id++;
-        }
-        catch ( Exception e ) {
-            id = 1;
-            e = null;
-        }
-        return id;
-    }
-
     public Integer getNextSequence( AuthenticationDTO auth, Integer parentId ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
@@ -301,36 +120,6 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
         return sequence;
     }
 
-
-    /**
-     * Adiciona um novo registro (Menu) no banco de dados - Persist
-     * Insere um novo menu no banco de dados.
-     *
-     * @param auth.
-     * @param dto - DTO com os dados no novo menu.
-     */
-    public MenuDTO add( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        validate( dto, true );
-
-        Menu entity, parentMenu = null;
-        /*If exists, cannot add*/
-        entity = getEntityManager().find( Menu.class, dto.getId() );
-        if ( entity != null )
-            throwException( 2 );
-
-        if ( SysUtils.isZero( dto.getParentId() ) == false ) {
-            /*Do we have this parent?*/
-            parentMenu = getEntityManager().find( Menu.class, dto.getParentId() );
-            if ( parentMenu == null )
-                throwException( 3 );
-        }
-        entity = DTOFactory.copy( dto );
-        entity.setParentMenu( parentMenu );
-        getEntityManager().persist( entity );
-        return DTOFactory.copy( entity, true );
-    }
 
     public Integer getMessageTypeId()
     {
@@ -620,7 +409,7 @@ public class SystemSessionBean extends AbstractSecurity implements SystemSession
             List<TaskMenu> list = null;
             try {
                 list = getEntityManager().createNamedQuery( TaskMenu.findByTask ).setParameter( 1, taskEntity ).getResultList();
-                return toMenuDTOListFromTaskMenu( list );
+                return TaskMenuUtil.toMenuDTOList( list );
             }
             catch ( NoResultException e ) {
                 return Collections.emptyList();

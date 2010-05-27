@@ -1,7 +1,6 @@
-package br.com.mcampos.ejb.cloudsystem.security.session;
+package br.com.mcampos.ejb.cloudsystem.security.menu;
 
 
-import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -11,9 +10,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 
 @Stateless( name = "MenuSession", mappedName = "CloudSystems-EjbPrj-MenuSession" )
@@ -28,7 +24,9 @@ public class MenuSessionBean extends Crud<Integer, Menu> implements MenuSessionL
     @TransactionAttribute( TransactionAttributeType.MANDATORY )
     public void delete( Integer key ) throws ApplicationException
     {
-        delete( Menu.class, key );
+        Menu menu = get( key );
+        if ( menu != null )
+            delete( Menu.class, key );
     }
 
     public Menu get( Integer key ) throws ApplicationException
@@ -42,33 +40,18 @@ public class MenuSessionBean extends Crud<Integer, Menu> implements MenuSessionL
         return ( List<Menu> )getResultList( Menu.findaAll );
     }
 
-    @TransactionAttribute( TransactionAttributeType.MANDATORY )
-    public Integer getNextSequence( int parentId )
+    public Integer getNextSequence( int parentId ) throws ApplicationException
     {
-        if ( SysUtils.isZero( parentId ) )
-            return 0;
         Integer sequence;
-
-        try {
-            Query q;
-
-            q = getEntityManager().createNamedQuery( "Menu.nexSequence" );
-            q.setParameter( 1, parentId );
-            sequence = ( Integer )q.getSingleResult();
-            /*
-             * In this case, we do not need increment. A native query do it by itsefl.
-             */
-        }
-        catch ( NoResultException e ) {
+        sequence = ( Integer )getSingleResult( Menu.nextSequence );
+        if ( SysUtils.isZero( sequence ) )
             sequence = 1;
-            e = null;
-        }
         return sequence;
     }
 
-    @Override
-    public Menu update( Menu entity ) throws ApplicationException
+
+    public Integer getNextId() throws ApplicationException
     {
-        return super.update( entity );
+        return nextIntegerId( Menu.nextId );
     }
 }

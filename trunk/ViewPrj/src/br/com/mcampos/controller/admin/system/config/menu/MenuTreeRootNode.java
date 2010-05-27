@@ -2,14 +2,17 @@ package br.com.mcampos.controller.admin.system.config.menu;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.ejb.cloudsystem.security.menu.MenuFacade;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.util.locator.ServiceLocator;
+import br.com.mcampos.util.locator.ServiceLocatorException;
 import br.com.mcampos.util.system.tree.SimpleTreeNode;
 
 import java.io.Serializable;
 
 public class MenuTreeRootNode extends SimpleTreeNode implements Serializable
 {
-    MenuLocator locator;
+    MenuFacade locator;
     AuthenticationDTO currentUser;
 
     public MenuTreeRootNode( AuthenticationDTO currentUser )
@@ -18,10 +21,10 @@ public class MenuTreeRootNode extends SimpleTreeNode implements Serializable
         setCurrentUser( currentUser );
     }
 
-    public MenuLocator getLocator()
+    public MenuFacade getLocator()
     {
         if ( locator == null )
-            locator = new MenuLocator();
+            locator = getRemoteSession();
         return locator;
     }
 
@@ -38,5 +41,15 @@ public class MenuTreeRootNode extends SimpleTreeNode implements Serializable
     public void readChildren() throws ApplicationException
     {
         children = getLocator().getParentMenus( getCurrentUser() );
+    }
+
+    private MenuFacade getRemoteSession()
+    {
+        try {
+            return ( MenuFacade )ServiceLocator.getInstance().getRemoteSession( MenuFacade.class );
+        }
+        catch ( ServiceLocatorException e ) {
+            throw new NullPointerException( "Invalid EJB Session (possible null)" );
+        }
     }
 }

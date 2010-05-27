@@ -5,15 +5,18 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Role;
-import br.com.mcampos.ejb.cloudsystem.security.entity.Task;
-import br.com.mcampos.ejb.cloudsystem.security.entity.TaskMenu;
-import br.com.mcampos.ejb.cloudsystem.security.session.MenuSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.security.menu.Menu;
+import br.com.mcampos.ejb.cloudsystem.security.menu.MenuSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.security.menu.MenuUtils;
+import br.com.mcampos.ejb.cloudsystem.security.role.Role;
+import br.com.mcampos.ejb.cloudsystem.security.role.RoleSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.security.session.PermissionAssignmentSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.security.session.RoleSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.security.session.TaskMenuSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.security.session.TaskSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.security.task.Task;
+import br.com.mcampos.ejb.cloudsystem.security.task.TaskSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.security.task.TaskUtil;
+import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenu;
+import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenuSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenuUtil;
 import br.com.mcampos.ejb.cloudsystem.security.util.SecurityUtils;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
@@ -140,16 +143,15 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
     public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        return SecurityUtils.toTaskDTOList( taskSession.getRoots() );
+        return TaskUtil.toTaskDTOList( taskSession.getRoots() );
     }
-
 
 
     @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<TaskDTO> getTasks( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        return SecurityUtils.toTaskDTOList( roleSession.getTasks( dto.getId() ) );
+        return TaskUtil.toTaskDTOList( roleSession.getTasks( dto.getId() ) );
     }
 
     public void add( AuthenticationDTO auth, RoleDTO roleDTO, TaskDTO taskDTO ) throws ApplicationException
@@ -194,43 +196,6 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         return menuSession.getNextSequence( parentId );
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
-    public List<MenuDTO> getParentMenus( AuthenticationDTO auth ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        return SecurityUtils.toMenuDTOList( menuSession.getAll() );
-    }
-
-    public MenuDTO update( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Menu menu = menuSession.get( dto.getId() );
-        if ( menu == null ) {
-            return null;
-        }
-        DTOFactory.copy( menu, dto );
-        if ( dto.getParentId() != null )
-            menu.setParentMenu( menuSession.get( dto.getParentId() ) );
-        menu = menuSession.update( menu );
-        return menu.toDTO();
-    }
-
-    @TransactionAttribute( TransactionAttributeType.NEVER )
-    public Integer getNextMenuId( AuthenticationDTO auth ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        return null;
-    }
-
-    public MenuDTO add( AuthenticationDTO auth, MenuDTO dto ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Menu menu = DTOFactory.copy( dto );
-        if ( dto.getParentId() != null )
-            menu.setParentMenu( menuSession.get( dto.getParentId() ) );
-        menu = menuSession.add( menu );
-        return menu.toDTO();
-    }
 
     public Boolean validate( MenuDTO dto, Boolean isNew ) throws ApplicationException
     {
@@ -243,18 +208,16 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         menuSession.delete( id );
     }
 
-    public List<MenuDTO> getMenus ( AuthenticationDTO auth, RoleDTO dto )throws ApplicationException
+    public List<MenuDTO> getMenus( AuthenticationDTO auth, RoleDTO dto ) throws ApplicationException
     {
         authenticate( auth );
-        List<Menu> menus = new ArrayList<Menu> ();
+        List<Menu> menus = new ArrayList<Menu>();
 
         Role role = roleSession.get( dto.getId() );
-        if ( role != null )
-        {
-            getMenus ( role, menus );
-            if ( menus.size() > 0  )
-            {
-                List<MenuDTO> dtoList = new ArrayList<MenuDTO>( menus.size());
+        if ( role != null ) {
+            getMenus( role, menus );
+            if ( menus.size() > 0 ) {
+                List<MenuDTO> dtoList = new ArrayList<MenuDTO>( menus.size() );
                 for ( Menu m : menus ) {
                     addMenu( dtoList, m );
                 }
@@ -271,7 +234,7 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
 
         if ( newMenu.getParentMenu() != null ) {
             //this menu has a parent menu.
-            parentDTO = DTOFactory.copy( newMenu.getParentMenu(), false );
+            parentDTO = MenuUtils.copy( newMenu.getParentMenu(), false );
             nIndex = menuList.indexOf( parentDTO );
             if ( nIndex == -1 ) {
                 //parent is not in list. Must Add.
@@ -280,11 +243,11 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
             else {
                 parentDTO = ( MenuDTO )menuList.get( nIndex );
             }
-            dto = DTOFactory.copy( newMenu, false );
+            dto = MenuUtils.copy( newMenu, false );
             return addMenu( parentDTO.getSubMenu(), dto );
         }
         else {
-            dto = DTOFactory.copy( newMenu, false );
+            dto = MenuUtils.copy( newMenu, false );
             return addMenu( menuList, dto );
         }
     }
@@ -312,24 +275,22 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
     }
 
 
-    protected void getMenus ( Role role, List<Menu> menus )
+    protected void getMenus( Role role, List<Menu> menus )
     {
-        for ( Role r : role.getChildRoles() )
-        {
+        for ( Role r : role.getChildRoles() ) {
             getEntityManager().refresh( r );
-            getMenus ( r, menus );
+            getMenus( r, menus );
         }
         List<PermissionAssignment> assignmentList = role.getPermissionAssignmentList();
-        for ( PermissionAssignment p : assignmentList )
-        {
+        for ( PermissionAssignment p : assignmentList ) {
             Task t = p.getTask();
             getEntityManager().refresh( t );
             if ( t != null )
-                getMenus ( t, menus );
+                getMenus( t, menus );
         }
     }
 
-    protected void getMenus ( Task t, List<Menu> menus  )
+    protected void getMenus( Task t, List<Menu> menus )
     {
         if ( t != null ) {
             List<Subtask> subtasks = t.getSubtasks();
@@ -337,26 +298,23 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
                 getMenus( s.getSubTask(), menus );
             }
             List<TaskMenu> tmList = t.getTaskMenuList();
-            for ( TaskMenu tm : tmList )
-            {
+            for ( TaskMenu tm : tmList ) {
                 Menu menu = tm.getMenu();
                 if ( menu != null )
-                    getMenu ( menu, menus );
+                    getMenu( menu, menus );
             }
         }
     }
 
-    protected void getMenu ( Menu menu, List<Menu> menus )
+    protected void getMenu( Menu menu, List<Menu> menus )
     {
-        if ( menu != null )
-        {
+        if ( menu != null ) {
             for ( Menu subMenu : menu.getSubMenus() )
-                getMenu ( subMenu, menus );
+                getMenu( subMenu, menus );
             Menu parent = menu.getParentMenu();
-            while ( parent != null )
-            {
+            while ( parent != null ) {
                 if ( menus.contains( parent ) == false )
-                    menus.add ( parent );
+                    menus.add( parent );
                 parent = parent.getParentMenu();
             }
             if ( menus.contains( menu ) == false )
@@ -364,11 +322,10 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         }
     }
 
-    public void removeTask( AuthenticationDTO auth, RoleDTO roleDTO,
-                            TaskDTO taskDTO ) throws ApplicationException
+    public void removeTask( AuthenticationDTO auth, RoleDTO roleDTO, TaskDTO taskDTO ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        Role role = roleSession.get ( roleDTO.getId() );
+        Role role = roleSession.get( roleDTO.getId() );
         Task task = taskSession.get( taskDTO.getId() );
         if ( role != null && task != null )
             permissionSession.delete( role, task );
@@ -378,7 +335,7 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
     public List<TaskDTO> getTasks( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
-        return SecurityUtils.toTaskDTOList( taskSession.getAll() );
+        return TaskUtil.toTaskDTOList( taskSession.getAll() );
     }
 
     public TaskDTO update( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException
@@ -386,7 +343,7 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         authenticate( auth, Role.systemAdmimRoleLevel );
 
         Task entity = DTOFactory.copy( dto );
-        entity = taskSession.update ( entity );
+        entity = taskSession.update( entity );
         return entity.toDTO();
     }
 
@@ -403,11 +360,11 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
         authenticate( auth, Role.systemAdmimRoleLevel );
 
         Task entity = DTOFactory.copy( dto );
-        entity = taskSession.add ( entity );
+        entity = taskSession.add( entity );
         if ( entity != null && dto.getParentId() != null ) {
-            Task masterTask = taskSession.get (dto.getParentId() );
+            Task masterTask = taskSession.get( dto.getParentId() );
             if ( masterTask != null ) {
-                taskSession.add ( masterTask, entity );
+                taskSession.add( masterTask, entity );
             }
         }
         return entity.toDTO();
@@ -430,7 +387,7 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         Task task = taskSession.get( taskId.getId() );
-        return SecurityUtils.toMenuDTOListFromTaskMenu( task.getTaskMenuList() );
+        return TaskMenuUtil.toMenuDTOList( task.getTaskMenuList() );
     }
 
     @TransactionAttribute( TransactionAttributeType.NEVER )
@@ -445,7 +402,7 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         Menu menu = menuSession.get( menuDTO.getId() );
-        Task task = taskSession.get ( dtoTask.getId () );
+        Task task = taskSession.get( dtoTask.getId() );
         taskMenuSession.add( menu, task );
     }
 
@@ -453,25 +410,23 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         Role role = roleSession.get( roleDTO.getId() );
-        Task task = taskSession.get ( dtoTask.getId () );
+        Task task = taskSession.get( dtoTask.getId() );
         permissionSession.add( role, task );
     }
 
-    public void remove( AuthenticationDTO auth, TaskDTO dtoTask,
-                        MenuDTO menuDTO ) throws ApplicationException
+    public void remove( AuthenticationDTO auth, TaskDTO dtoTask, MenuDTO menuDTO ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         Menu menu = menuSession.get( menuDTO.getId() );
-        Task task = taskSession.get ( dtoTask.getId () );
+        Task task = taskSession.get( dtoTask.getId() );
         taskMenuSession.delete( menu, task );
     }
 
-    public void remove( AuthenticationDTO auth, TaskDTO dtoTask,
-                        RoleDTO roleDTO ) throws ApplicationException
+    public void remove( AuthenticationDTO auth, TaskDTO dtoTask, RoleDTO roleDTO ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         Role role = roleSession.get( roleDTO.getId() );
-        Task task = taskSession.get ( dtoTask.getId () );
+        Task task = taskSession.get( dtoTask.getId() );
         permissionSession.delete( role, task );
     }
 
@@ -482,7 +437,7 @@ public class SecurityFacadeBean extends AbstractSecurity implements SecurityFaca
     }
 
     @TransactionAttribute( TransactionAttributeType.NEVER )
-    public List<TaskDTO> getSubTasks (AuthenticationDTO auth, TaskDTO dtoTask) throws ApplicationException
+    public List<TaskDTO> getSubTasks( AuthenticationDTO auth, TaskDTO dtoTask ) throws ApplicationException
     {
         authenticate( auth, Role.systemAdmimRoleLevel );
         Task task = taskSession.get( dtoTask.getId() );

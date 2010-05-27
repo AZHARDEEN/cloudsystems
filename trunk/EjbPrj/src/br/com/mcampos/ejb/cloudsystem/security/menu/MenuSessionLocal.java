@@ -1,8 +1,9 @@
-package br.com.mcampos.ejb.cloudsystem.security.session;
+package br.com.mcampos.ejb.cloudsystem.security.menu;
 
 
-import br.com.mcampos.ejb.cloudsystem.security.entity.Menu;
 import br.com.mcampos.exception.ApplicationException;
+
+import java.io.Serializable;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import javax.ejb.Local;
 
 
 @Local
-public interface MenuSessionLocal
+public interface MenuSessionLocal extends Serializable
 {
     Menu add( Menu entity ) throws ApplicationException;
 
@@ -23,4 +24,6 @@ public interface MenuSessionLocal
     List<Menu> getAll() throws ApplicationException;
 
     Integer getNextSequence( int parentId ) throws ApplicationException;
+
+    Integer getNextId() throws ApplicationException;
 }
