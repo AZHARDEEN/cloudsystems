@@ -13,32 +13,32 @@ import javax.ejb.TransactionAttributeType;
 
 @Stateless( name = "TitleSession", mappedName = "CloudSystems-EjbPrj-TitleSession" )
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
-public class TitleSessionBean extends Crud<TitlePK, Title> implements TitleSessionLocal
+public class TitleSessionBean extends Crud<Integer, Title> implements TitleSessionLocal
 {
-	public TitleSessionBean()
-	{
-	}
+    public TitleSessionBean()
+    {
+    }
 
-	public void delete( TitlePK key ) throws ApplicationException
-	{
-		delete( Title.class, key );
-	}
+    public void delete( Integer key ) throws ApplicationException
+    {
+        delete( Title.class, key );
+    }
 
-	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public Title get( TitlePK key ) throws ApplicationException
-	{
-		return get( Title.class, key );
-	}
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public Title get( Integer key ) throws ApplicationException
+    {
+        return get( Title.class, key );
+    }
 
-	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public List<Title> getAll() throws ApplicationException
-	{
-		return ( List<Title> )getResultList( Title.getAll );
-	}
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public List<Title> getAll() throws ApplicationException
+    {
+        return ( List<Title> )getResultList( Title.getAll );
+    }
 
-	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public Integer getNextId() throws ApplicationException
-	{
-		return nextIntegerId( Title.getNextId );
-	}
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public Integer getNextId() throws ApplicationException
+    {
+        return nextIntegerId( Title.getNextId );
+    }
 }

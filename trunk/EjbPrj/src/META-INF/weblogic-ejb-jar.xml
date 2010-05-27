@@ -7,7 +7,7 @@
         <ejb-name>RegisterFacadeSession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>60</trans-timeout-seconds>
+            <trans-timeout-seconds>300</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
@@ -59,6 +59,9 @@
     <weblogic-enterprise-bean>
         <ejb-name>LoginSession</ejb-name>
         <stateless-session-descriptor/>
+        <transaction-descriptor>
+            <trans-timeout-seconds>300</trans-timeout-seconds>
+        </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
     <weblogic-enterprise-bean>
@@ -103,7 +106,7 @@
         <ejb-name>UserSession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>10</trans-timeout-seconds>
+            <trans-timeout-seconds>300</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
@@ -127,7 +130,7 @@
         <ejb-name>LoginFacadeSession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>10</trans-timeout-seconds>
+            <trans-timeout-seconds>300</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
@@ -143,7 +146,7 @@
         <ejb-name>SystemFacade</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>10</trans-timeout-seconds>
+            <trans-timeout-seconds>300</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>

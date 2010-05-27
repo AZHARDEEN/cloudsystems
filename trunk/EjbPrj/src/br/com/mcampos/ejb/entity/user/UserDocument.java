@@ -18,13 +18,15 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "UserDocument.findAll", query = "select o from UserDocument o" ),
-                 @NamedQuery( name = "UserDocument.findDocument",
+@NamedQueries( { @NamedQuery( name = UserDocument.getAll, query = "select o from UserDocument o" ),
+                 @NamedQuery( name = UserDocument.getByDocument,
                               query = "select o from UserDocument o where o.code = :document and o.documentType.id = :docType" ) } )
 @Table( name = "user_document" )
 @IdClass( UserDocumentPK.class )
 public class UserDocument implements Serializable, Comparable<UserDocument>
 {
+    public static final String getAll = "UserDocument.findAll";
+    public static final String getByDocument = "UserDocument.findDocument";
 
     public static final int typeCPF = 1;
     public static final int typeIdentity = 2;

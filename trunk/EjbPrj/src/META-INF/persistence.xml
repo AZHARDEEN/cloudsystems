@@ -67,6 +67,7 @@
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.title.Title</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.entity.MenuLocale</class>
     <properties>
       <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/PostgreSQLDS"/>
     </properties>

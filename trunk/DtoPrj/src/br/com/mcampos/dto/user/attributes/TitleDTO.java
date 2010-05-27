@@ -4,51 +4,40 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class TitleDTO extends SimpleTableDTO
 {
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 6432837000318062671L;
-	private String abbreviation;
-	private String countryId;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 6432837000318062671L;
+    private String abbreviation;
 
 
-	public TitleDTO()
-	{
-		super();
-	}
+    public TitleDTO()
+    {
+        super();
+    }
 
-	public TitleDTO( Integer id, String description, String abbreviation )
-	{
-		super();
-		init( id, description, abbreviation );
-	}
-
-
-	protected void init( Integer id, String description, String abbreviation )
-	{
-		this.id = id;
-		this.description = description;
-		this.abbreviation = abbreviation;
-	}
+    public TitleDTO( Integer id, String description, String abbreviation )
+    {
+        super();
+        init( id, description, abbreviation );
+    }
 
 
-	public void setAbbreviation( String abbreviation )
-	{
-		this.abbreviation = abbreviation;
-	}
+    protected void init( Integer id, String description, String abbreviation )
+    {
+        this.id = id;
+        this.description = description;
+        this.abbreviation = abbreviation;
+    }
 
-	public String getAbbreviation()
-	{
-		return abbreviation;
-	}
 
-	public void setCountryId( String countryId )
-	{
-		this.countryId = countryId;
-	}
+    public void setAbbreviation( String abbreviation )
+    {
+        this.abbreviation = abbreviation;
+    }
 
-	public String getCountryId()
-	{
-		return countryId;
-	}
+    public String getAbbreviation()
+    {
+        return abbreviation;
+    }
 }
