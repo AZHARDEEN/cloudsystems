@@ -2,69 +2,70 @@ package br.com.mcampos.controller.admin.security;
 
 
 import br.com.mcampos.controller.core.BasicCRUDController;
-import br.com.mcampos.ejb.cloudsystem.security.facade.SecurityFacade;
+import br.com.mcampos.ejb.cloudsystem.security.role.RoleFacade;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Tree;
 
 public abstract class SecutityBaseController extends BasicCRUDController
 {
-    private SecurityFacade securitySession;
-    private Tree tree;
+	private RoleFacade securitySession;
+	private Tree tree;
 
-    protected abstract void showRecord (Object record);
-    protected abstract void clearRecord ();
+	protected abstract void showRecord( Object record );
 
-    public SecutityBaseController( char c )
-    {
-        super( c );
-    }
+	protected abstract void clearRecord();
 
-    public SecutityBaseController()
-    {
-        super();
-    }
+	public SecutityBaseController( char c )
+	{
+		super( c );
+	}
 
-    protected SecurityFacade getSession ()
-    {
-        if ( securitySession == null )
-            securitySession = ( SecurityFacade ) getRemoteSession( SecurityFacade.class );
-        return securitySession;
-    }
+	public SecutityBaseController()
+	{
+		super();
+	}
 
-    @Override
-    public void doAfterCompose( Component comp ) throws Exception
-    {
-        super.doAfterCompose( comp );
-        if ( getTree () != null )
-            refresh();
-    }
+	protected RoleFacade getSession()
+	{
+		if ( securitySession == null )
+			securitySession = ( RoleFacade )getRemoteSession( RoleFacade.class );
+		return securitySession;
+	}
 
-    public void onSelect$tree ()
-    {
-        Object record = getCurrentRecord();
-        if ( record != null )
-            showRecord ( record );
-        else
-            clearRecord ();
-    }
+	@Override
+	public void doAfterCompose( Component comp ) throws Exception
+	{
+		super.doAfterCompose( comp );
+		if ( getTree() != null )
+			refresh();
+	}
 
-    protected void setTree( Tree tree )
-    {
-        this.tree = tree;
-    }
+	public void onSelect$tree()
+	{
+		Object record = getCurrentRecord();
+		if ( record != null )
+			showRecord( record );
+		else
+			clearRecord();
+	}
 
-    protected Tree getTree()
-    {
-        return tree;
-    }
+	protected void setTree( Tree tree )
+	{
+		this.tree = tree;
+	}
 
-    @Override
-    protected Object getCurrentRecord()
-    {
-        Object record = null;
-        if ( tree.getSelectedItem() != null )
-            record = tree.getSelectedItem().getValue();
-        return record;
-    }
+	protected Tree getTree()
+	{
+		return tree;
+	}
+
+	@Override
+	protected Object getCurrentRecord()
+	{
+		Object record = null;
+		if ( tree.getSelectedItem() != null )
+			record = tree.getSelectedItem().getValue();
+		return record;
+	}
 }

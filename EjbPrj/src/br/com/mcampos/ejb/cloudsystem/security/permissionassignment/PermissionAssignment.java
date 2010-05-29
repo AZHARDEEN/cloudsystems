@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.entity.security;
+package br.com.mcampos.ejb.cloudsystem.security.permissionassignment;
 
 
 import br.com.mcampos.ejb.cloudsystem.security.role.Role;

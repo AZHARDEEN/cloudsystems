@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.security.task;
 
 
-import br.com.mcampos.ejb.entity.security.Subtask;
+import br.com.mcampos.ejb.cloudsystem.security.task.subtask.Subtask;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -19,65 +19,65 @@ import javax.persistence.Query;
 @TransactionAttribute( TransactionAttributeType.SUPPORTS )
 public class TaskSessionBean extends Crud<Integer, Task> implements TaskSessionLocal
 {
-    public TaskSessionBean()
-    {
-    }
+	public TaskSessionBean()
+	{
+	}
 
-    @TransactionAttribute( TransactionAttributeType.MANDATORY )
-    public void delete( Integer key ) throws ApplicationException
-    {
-        if ( SysUtils.isZero( key ) )
-            return;
-        super.delete( Task.class, key );
-    }
+	@TransactionAttribute( TransactionAttributeType.MANDATORY )
+	public void delete( Integer key ) throws ApplicationException
+	{
+		if ( SysUtils.isZero( key ) )
+			return;
+		super.delete( Task.class, key );
+	}
 
-    public Task get( Integer key ) throws ApplicationException
-    {
-        if ( SysUtils.isZero( key ) )
-            return null;
-        return super.get( Task.class, key );
-    }
-
-
-    public List<Task> getAll() throws ApplicationException
-    {
-        return ( List<Task> )getResultList( Task.findAll );
-    }
+	public Task get( Integer key ) throws ApplicationException
+	{
+		if ( SysUtils.isZero( key ) )
+			return null;
+		return super.get( Task.class, key );
+	}
 
 
-    public List<Task> getRoots() throws ApplicationException
-    {
-        return ( List<Task> )getResultList( Task.rootTasks );
-    }
+	public List<Task> getAll() throws ApplicationException
+	{
+		return ( List<Task> )getResultList( Task.findAll );
+	}
 
-    @TransactionAttribute( TransactionAttributeType.MANDATORY )
-    public void add( Task master, Task entity ) throws ApplicationException
-    {
-        Subtask st = new Subtask( master, entity );
-        getEntityManager().persist( st );
-        getEntityManager().refresh( master );
-        getEntityManager().refresh( entity );
-    }
 
-    @Override
-    @TransactionAttribute( TransactionAttributeType.MANDATORY )
-    public Task update( Task entity ) throws ApplicationException
-    {
-        Task updated = super.update( entity );
-        return updated;
-    }
+	public List<Task> getRoots() throws ApplicationException
+	{
+		return ( List<Task> )getResultList( Task.rootTasks );
+	}
 
-    public Integer getNextTaskId( ) throws ApplicationException
-    {
-        String sql;
+	@TransactionAttribute( TransactionAttributeType.MANDATORY )
+	public void add( Task master, Task entity ) throws ApplicationException
+	{
+		Subtask st = new Subtask( master, entity );
+		getEntityManager().persist( st );
+		getEntityManager().refresh( master );
+		getEntityManager().refresh( entity );
+	}
 
-        sql = "SELECT COALESCE ( MAX ( TSK_ID_IN ), 0 ) + 1 AS ID FROM TASK";
-        Query query = getEntityManager().createNativeQuery( sql );
-        try {
-            return ( Integer )query.getSingleResult();
-        }
-        catch ( Exception e ) {
-            return 1;
-        }
-    }
+	@Override
+	@TransactionAttribute( TransactionAttributeType.MANDATORY )
+	public Task update( Task entity ) throws ApplicationException
+	{
+		Task updated = super.update( entity );
+		return updated;
+	}
+
+	public Integer getNextTaskId() throws ApplicationException
+	{
+		String sql;
+
+		sql = "SELECT COALESCE ( MAX ( TSK_ID_IN ), 0 ) + 1 AS ID FROM TASK";
+		Query query = getEntityManager().createNativeQuery( sql );
+		try {
+			return ( Integer )query.getSingleResult();
+		}
+		catch ( Exception e ) {
+			return 1;
+		}
+	}
 }

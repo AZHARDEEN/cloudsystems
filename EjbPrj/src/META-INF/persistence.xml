@@ -41,8 +41,8 @@
     <class>br.com.mcampos.ejb.cloudsystem.security.role.Role</class>
     <class>br.com.mcampos.ejb.cloudsystem.security.menu.Menu</class>
     <class>br.com.mcampos.ejb.entity.security.SubjectRole</class>
-    <class>br.com.mcampos.ejb.entity.security.PermissionAssignment</class>
-    <class>br.com.mcampos.ejb.entity.security.Subtask</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.permissionassignment.PermissionAssignment</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.task.subtask.Subtask</class>
     <class>br.com.mcampos.ejb.cloudsystem.security.task.Task</class>
     <class>br.com.mcampos.ejb.cloudsystem.media.entity.Media</class>
     <class>br.com.mcampos.ejb.cloudsystem.entity.entity.Form</class>
