@@ -12,25 +12,23 @@ import javax.ejb.Local;
 @Local
 public interface RoleSessionLocal
 {
-    Role add( Role entity ) throws ApplicationException;
+	Role add( Role entity ) throws ApplicationException;
 
-    Role update( Role entity ) throws ApplicationException;
+	Role update( Role entity ) throws ApplicationException;
 
-    void delete( Integer key ) throws ApplicationException;
+	void delete( Integer key ) throws ApplicationException;
 
-    Role get( Integer key ) throws ApplicationException;
+	Role get( Integer key ) throws ApplicationException;
 
-    List<Role> getAll( ) throws ApplicationException;
+	List<Role> getAll() throws ApplicationException;
 
-    Role getRootRole() throws ApplicationException;
+	Role getRootRole() throws ApplicationException;
 
-    Object getSingleResult( String namedQuery ) throws ApplicationException;
+	Object getSingleResult( String namedQuery ) throws ApplicationException;
 
-    Integer nextIntegerId( String namedQuery ) throws ApplicationException;
+	Integer getMaxId() throws ApplicationException;
 
-    List<Role> getChildRoles( Role role ) throws ApplicationException;
+	List<Role> getChildRoles( Role role ) throws ApplicationException;
 
-    Integer getMaxId ( );
-
-    List<Task> getTasks ( Integer key ) throws ApplicationException;
+	List<Task> getTasks( Integer key ) throws ApplicationException;
 }

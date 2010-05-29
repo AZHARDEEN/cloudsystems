@@ -8,6 +8,7 @@ import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
 import br.com.mcampos.ejb.cloudsystem.security.menu.Menu;
+import br.com.mcampos.ejb.cloudsystem.security.permissionassignment.PermissionAssignment;
 import br.com.mcampos.ejb.cloudsystem.security.role.Role;
 import br.com.mcampos.ejb.cloudsystem.security.task.Task;
 import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenu;
@@ -15,8 +16,6 @@ import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenuPK;
 import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenuUtil;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.entity.security.PermissionAssignment;
-import br.com.mcampos.ejb.entity.security.Subtask;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -39,405 +38,321 @@ import javax.persistence.Query;
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class SystemSessionBean extends AbstractSecurity implements SystemSessionLocal
 {
-    @PersistenceContext( unitName = "EjbPrj" )
-    private EntityManager em;
+	@PersistenceContext( unitName = "EjbPrj" )
+	private EntityManager em;
 
-    private static final int systemMessageType = 6;
+	private static final int systemMessageType = 6;
 
-    public SystemSessionBean()
-    {
-    }
-
-
-    protected List<RoleDTO> toRoleDTOListFromPermission( List<PermissionAssignment> list )
-    {
-        if ( SysUtils.isEmpty( list ) )
-            return Collections.emptyList();
-        ArrayList<RoleDTO> listDTO = new ArrayList<RoleDTO>( list.size() );
-        for ( PermissionAssignment m : list ) {
-            listDTO.add( m.getRole().toDTO() );
-        }
-        return listDTO;
-    }
+	public SystemSessionBean()
+	{
+	}
 
 
-    protected List<TaskDTO> toTaskDTOListFromTaskMenu( List<TaskMenu> list )
-    {
-        if ( SysUtils.isEmpty( list ) )
-            return Collections.emptyList();
-        ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( list.size() );
-        for ( TaskMenu m : list ) {
-            listDTO.add( DTOFactory.copy( m.getTask() ) );
-        }
-        System.out.println( "toTaskDTOListFromTaskMenu" );
-        return listDTO;
-    }
-
-    protected List<TaskDTO> toTaskDTOList( List<Task> list )
-    {
-        if ( SysUtils.isEmpty( list ) )
-            return Collections.emptyList();
-        ArrayList<TaskDTO> listDTO = new ArrayList<TaskDTO>( list.size() );
-        for ( Task m : list ) {
-            listDTO.add( DTOFactory.copy( m ) );
-        }
-        return listDTO;
-    }
+	protected List<RoleDTO> toRoleDTOListFromPermission( List<PermissionAssignment> list )
+	{
+		if ( SysUtils.isEmpty( list ) )
+			return Collections.emptyList();
+		ArrayList<RoleDTO> listDTO = new ArrayList<RoleDTO>( list.size() );
+		for ( PermissionAssignment m : list ) {
+			listDTO.add( m.getRole().toDTO() );
+		}
+		return listDTO;
+	}
 
 
-    public Integer getNextSequence( AuthenticationDTO auth, Integer parentId ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        return getNextSequence( parentId );
-    }
+	public Integer getNextSequence( AuthenticationDTO auth, Integer parentId ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
+		return getNextSequence( parentId );
+	}
 
 
-    /**
-     * This is a very private function ( there is no AuthenticationDTO)
-     * SHOULD NEVER BE PULIC
-     * @return next free formId number.
-     */
-    private Integer getNextSequence( int parentId ) throws ApplicationException
-    {
-        if ( SysUtils.isZero( parentId ) )
-            return 0;
-        Integer sequence;
+	/**
+	 * This is a very private function ( there is no AuthenticationDTO)
+	 * SHOULD NEVER BE PULIC
+	 * @return next free formId number.
+	 */
+	private Integer getNextSequence( int parentId ) throws ApplicationException
+	{
+		if ( SysUtils.isZero( parentId ) )
+			return 0;
+		Integer sequence;
 
-        try {
-            Query q;
+		try {
+			Query q;
 
-            q = getEntityManager().createNamedQuery( "Menu.nexSequence" );
-            q.setParameter( 1, parentId );
-            sequence = ( Integer )q.getSingleResult();
-            /*
+			q = getEntityManager().createNamedQuery( "Menu.nexSequence" );
+			q.setParameter( 1, parentId );
+			sequence = ( Integer )q.getSingleResult();
+			/*
              * In this case, we do not need increment. A native query do it by itsefl.
              */
-        }
-        catch ( NoResultException e ) {
-            sequence = 1;
-            e = null;
-        }
-        return sequence;
-    }
+		}
+		catch ( NoResultException e ) {
+			sequence = 1;
+			e = null;
+		}
+		return sequence;
+	}
 
 
-    public Integer getMessageTypeId()
-    {
-        return systemMessageType;
-    }
+	public Integer getMessageTypeId()
+	{
+		return systemMessageType;
+	}
 
-    public EntityManager getEntityManager()
-    {
-        return em;
-    }
+	public EntityManager getEntityManager()
+	{
+		return em;
+	}
 
-    public void delete( AuthenticationDTO auth, MenuDTO menuId ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        if ( menuId == null )
-            return;
+	public void delete( AuthenticationDTO auth, MenuDTO menuId ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
+		if ( menuId == null )
+			return;
 
-        if ( SysUtils.isZero( menuId.getId() ) )
-            throwException( 4 );
-        Menu entity = getEntityManager().find( Menu.class, menuId.getId() );
-        if ( entity == null )
-            throwException( 4 );
-        getEntityManager().remove( entity );
-    }
-
-
-    /**
-     * Verifica a existência de alguma type do menu no banco de dados.
-     * Existe uma chave única na tabela de menu que garante a unicidade do par (parent_id + type).
-     * Se existir tal combinação, o sistema deverá gerar outra.
-     *
-     * @param parent Id do menu pai (mnu_parent_id_in)
-     * @param sequence A sequencia que deseja pesquisar (mnu_sequence_in)
-     * @return Menu se existir ou null.
-     */
-    protected boolean existsSequence( int parent, int sequence )
-    {
-        Integer menu;
-
-        try {
-            Query q;
-
-            q = getEntityManager().createNamedQuery( "Menu.findSequence" );
-            q.setParameter( 1, parent );
-            q.setParameter( 2, sequence );
-            menu = ( Integer )q.getSingleResult();
-            return ( menu == null || menu == 0 ? false : true );
-        }
-        catch ( NoResultException e ) {
-            e = null;
-            menu = null;
-        }
-        return false;
-    }
+		if ( SysUtils.isZero( menuId.getId() ) )
+			throwException( 4 );
+		Menu entity = getEntityManager().find( Menu.class, menuId.getId() );
+		if ( entity == null )
+			throwException( 4 );
+		getEntityManager().remove( entity );
+	}
 
 
-    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public List<TaskDTO> getTasks( AuthenticationDTO auth ) throws ApplicationException
-    {
-        List<Task> list;
+	/**
+	 * Verifica a existência de alguma type do menu no banco de dados.
+	 * Existe uma chave única na tabela de menu que garante a unicidade do par (parent_id + type).
+	 * Se existir tal combinação, o sistema deverá gerar outra.
+	 *
+	 * @param parent Id do menu pai (mnu_parent_id_in)
+	 * @param sequence A sequencia que deseja pesquisar (mnu_sequence_in)
+	 * @return Menu se existir ou null.
+	 */
+	protected boolean existsSequence( int parent, int sequence )
+	{
+		Integer menu;
 
-        authenticate( auth, Role.systemAdmimRoleLevel );
+		try {
+			Query q;
 
-        try {
-            list = ( List<Task> )getEntityManager().createNamedQuery( "Task.findAll" ).getResultList();
-            return toTaskDTOList( list );
-        }
-        catch ( NoResultException e ) {
-            e = null;
-            return Collections.emptyList();
-        }
-    }
-
-    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
-    {
-        List<Task> list;
-
-        authenticate( auth, Role.systemAdmimRoleLevel );
-
-        try {
-            list = ( List<Task> )getEntityManager().createNamedQuery( Task.rootTasks ).getResultList();
-            return toTaskDTOList( list );
-        }
-        catch ( NoResultException e ) {
-            e = null;
-            return Collections.emptyList();
-        }
-    }
+			q = getEntityManager().createNamedQuery( "Menu.findSequence" );
+			q.setParameter( 1, parent );
+			q.setParameter( 2, sequence );
+			menu = ( Integer )q.getSingleResult();
+			return ( menu == null || menu == 0 ? false : true );
+		}
+		catch ( NoResultException e ) {
+			e = null;
+			menu = null;
+		}
+		return false;
+	}
 
 
-    public TaskDTO update( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Task entity = DTOFactory.copy( dto );
-        getEntityManager().merge( entity );
-        return entity.toDTO();
-    }
+	public Boolean validate( TaskDTO dto, Boolean isNew ) throws ApplicationException
+	{
+		return null;
+	}
 
-    public TaskDTO add( AuthenticationDTO auth, TaskDTO dto ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Task entity = DTOFactory.copy( dto );
-        getEntityManager().persist( entity );
-        if ( dto.getParent() != null ) {
-            Task masterTask = getEntityManager().find( Task.class, dto.getParentId() );
-            if ( masterTask != null ) {
-                Subtask subTask = new Subtask();
-                subTask.setTask( masterTask );
-                subTask.setSubTask( entity );
-                getEntityManager().persist( subTask );
-            }
-        }
-        return entity.toDTO();
-    }
+	public void delete( AuthenticationDTO auth, TaskDTO id ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
+		Task entity = getEntityManager().find( Task.class, id );
+		if ( entity != null )
+			getEntityManager().remove( entity );
+	}
 
-    public Boolean validate( TaskDTO dto, Boolean isNew ) throws ApplicationException
-    {
-        return null;
-    }
+	public Integer getNextTaskId( AuthenticationDTO auth ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
+		String sql;
 
-    public void delete( AuthenticationDTO auth, TaskDTO id ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Task entity = getEntityManager().find( Task.class, id );
-        if ( entity != null )
-            getEntityManager().remove( entity );
-    }
+		sql = "SELECT COALESCE ( MAX ( TSK_ID_IN ), 0 ) + 1 AS ID FROM TASK";
+		Query query = getEntityManager().createNativeQuery( sql );
+		try {
+			return ( Integer )query.getSingleResult();
+		}
+		catch ( Exception e ) {
+			return 1;
+		}
+	}
 
-    public Integer getNextTaskId( AuthenticationDTO auth ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        String sql;
+	public List<AccessLogTypeDTO> getAccessLogTypes( AuthenticationDTO auth ) throws ApplicationException
+	{
+		/*Não existe a necessidade de ser mais que um usuário autenticado para obter a lista de access log type*/
+		authenticate( auth );
+		try {
+			return copyList( ( List<AccessLogType> )em.createNamedQuery( "AccessLogType.findAll" ).getResultList() );
+		}
+		catch ( NoResultException e ) {
+			e = null;
+			return Collections.emptyList();
+		}
+	}
 
-        sql = "SELECT COALESCE ( MAX ( TSK_ID_IN ), 0 ) + 1 AS ID FROM TASK";
-        Query query = getEntityManager().createNativeQuery( sql );
-        try {
-            return ( Integer )query.getSingleResult();
-        }
-        catch ( Exception e ) {
-            return 1;
-        }
-    }
+	protected List<AccessLogTypeDTO> copyList( List<AccessLogType> list )
+	{
+		List<AccessLogTypeDTO> dtos = null;
 
-    public List<AccessLogTypeDTO> getAccessLogTypes( AuthenticationDTO auth ) throws ApplicationException
-    {
-        /*Não existe a necessidade de ser mais que um usuário autenticado para obter a lista de access log type*/
-        authenticate( auth );
-        try {
-            return copyList( ( List<AccessLogType> )em.createNamedQuery( "AccessLogType.findAll" ).getResultList() );
-        }
-        catch ( NoResultException e ) {
-            e = null;
-            return Collections.emptyList();
-        }
-    }
-
-    protected List<AccessLogTypeDTO> copyList( List<AccessLogType> list )
-    {
-        List<AccessLogTypeDTO> dtos = null;
-
-        if ( list == null || list.size() == 0 )
-            return Collections.emptyList();
-        dtos = new ArrayList<AccessLogTypeDTO>( list.size() );
-        for ( AccessLogType item : list )
-            dtos.add( DTOFactory.copy( item ) );
-        return dtos;
-    }
+		if ( list == null || list.size() == 0 )
+			return Collections.emptyList();
+		dtos = new ArrayList<AccessLogTypeDTO>( list.size() );
+		for ( AccessLogType item : list )
+			dtos.add( DTOFactory.copy( item ) );
+		return dtos;
+	}
 
 
-    public Integer getNextAccessLogTypeId( AuthenticationDTO auth ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
+	public Integer getNextAccessLogTypeId( AuthenticationDTO auth ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
 
-        return ( Integer )nativeQuerySingleResult( "Select max( coalesce ( alt_id_in, 0 ) ) + 1 as idMax from access_log_type" );
-    }
+		return ( Integer )nativeQuerySingleResult( "Select max( coalesce ( alt_id_in, 0 ) ) + 1 as idMax from access_log_type" );
+	}
 
-    public AccessLogTypeDTO update( AuthenticationDTO auth, AccessLogTypeDTO dto ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
+	public AccessLogTypeDTO update( AuthenticationDTO auth, AccessLogTypeDTO dto ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
 
-        if ( validate( dto, false ) ) {
-            AccessLogType entity;
-            entity = DTOFactory.copy( dto );
-            getEntityManager().merge( entity );
-            return DTOFactory.copy( entity );
-        }
-        else
-            return null;
-    }
+		if ( validate( dto, false ) ) {
+			AccessLogType entity;
+			entity = DTOFactory.copy( dto );
+			getEntityManager().merge( entity );
+			return DTOFactory.copy( entity );
+		}
+		else
+			return null;
+	}
 
-    public AccessLogTypeDTO add( AuthenticationDTO auth, AccessLogTypeDTO dto ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
+	public AccessLogTypeDTO add( AuthenticationDTO auth, AccessLogTypeDTO dto ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
 
-        if ( validate( dto, true ) ) {
-            AccessLogType entity;
-            entity = DTOFactory.copy( dto );
-            getEntityManager().persist( entity );
-            return DTOFactory.copy( entity );
-        }
-        else
-            return null;
-    }
+		if ( validate( dto, true ) ) {
+			AccessLogType entity;
+			entity = DTOFactory.copy( dto );
+			getEntityManager().persist( entity );
+			return DTOFactory.copy( entity );
+		}
+		else
+			return null;
+	}
 
-    public Boolean validate( AccessLogTypeDTO dto, Boolean isNew ) throws ApplicationException
-    {
-        if ( dto == null )
-            throwCommomException( 3 );
-        AccessLogType entity = ( AccessLogType )get( AccessLogType.class, dto.getId() );
-        if ( isNew ) {
-            if ( entity != null )
-                throwCommomException( 5 );
-        }
-        else {
-            if ( entity == null )
-                throwCommomException( 6 );
-        }
-        if ( SysUtils.isEmpty( dto.getDescription() ) )
-            throwCommomException( 7 );
-        return true;
-    }
+	public Boolean validate( AccessLogTypeDTO dto, Boolean isNew ) throws ApplicationException
+	{
+		if ( dto == null )
+			throwCommomException( 3 );
+		AccessLogType entity = ( AccessLogType )get( AccessLogType.class, dto.getId() );
+		if ( isNew ) {
+			if ( entity != null )
+				throwCommomException( 5 );
+		}
+		else {
+			if ( entity == null )
+				throwCommomException( 6 );
+		}
+		if ( SysUtils.isEmpty( dto.getDescription() ) )
+			throwCommomException( 7 );
+		return true;
+	}
 
-    public void delete( AuthenticationDTO auth, AccessLogTypeDTO id ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        if ( id == null || SysUtils.isZero( id.getId() ) )
-            throwCommomException( 3 );
-        AccessLogType entity = ( AccessLogType )get( AccessLogType.class, id.getId() );
-        if ( entity == null )
-            throwCommomException( 8 );
-        try {
-            getEntityManager().remove( entity );
-        }
-        catch ( EJBException e ) {
-            throwCommomRuntimeException( 9 );
-        }
-    }
+	public void delete( AuthenticationDTO auth, AccessLogTypeDTO id ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
+		if ( id == null || SysUtils.isZero( id.getId() ) )
+			throwCommomException( 3 );
+		AccessLogType entity = ( AccessLogType )get( AccessLogType.class, id.getId() );
+		if ( entity == null )
+			throwCommomException( 8 );
+		try {
+			getEntityManager().remove( entity );
+		}
+		catch ( EJBException e ) {
+			throwCommomRuntimeException( 9 );
+		}
+	}
 
-    protected AccessLogType getAccessLogType( Integer id )
-    {
-        return ( AccessLogType )get( AccessLogType.class, id );
-    }
+	protected AccessLogType getAccessLogType( Integer id )
+	{
+		return ( AccessLogType )get( AccessLogType.class, id );
+	}
 
-    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public TaskDTO getTask( AuthenticationDTO auth, Integer taskId ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Task entity = getEntityManager().find( Task.class, taskId );
-        return entity != null ? entity.toDTO() : null;
-    }
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
+	public TaskDTO getTask( AuthenticationDTO auth, Integer taskId ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
+		Task entity = getEntityManager().find( Task.class, taskId );
+		return entity != null ? entity.toDTO() : null;
+	}
 
-    public void addMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Menu menuEntity = getEntityManager().find( Menu.class, menu.getId() );
-        Task taskEntity = getEntityManager().find( Task.class, task.getId() );
-        if ( menuEntity != null && taskEntity != null ) {
-            TaskMenu tm = new TaskMenu();
+	public void addMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
+		Menu menuEntity = getEntityManager().find( Menu.class, menu.getId() );
+		Task taskEntity = getEntityManager().find( Task.class, task.getId() );
+		if ( menuEntity != null && taskEntity != null ) {
+			TaskMenu tm = new TaskMenu();
 
-            tm.setTask( taskEntity );
-            tm.setMenu( menuEntity );
-            getEntityManager().persist( tm );
-        }
-    }
+			tm.setTask( taskEntity );
+			tm.setMenu( menuEntity );
+			getEntityManager().persist( tm );
+		}
+	}
 
 
-    public void removeMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Menu menuEntity = getEntityManager().find( Menu.class, menu.getId() );
-        Task taskEntity = getEntityManager().find( Task.class, task.getId() );
-        if ( menuEntity != null && taskEntity != null ) {
-            TaskMenu tm = getEntityManager().find( TaskMenu.class, new TaskMenuPK( menu.getId(), task.getId() ) );
+	public void removeMenuTask( AuthenticationDTO auth, MenuDTO menu, TaskDTO task ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
+		Menu menuEntity = getEntityManager().find( Menu.class, menu.getId() );
+		Task taskEntity = getEntityManager().find( Task.class, task.getId() );
+		if ( menuEntity != null && taskEntity != null ) {
+			TaskMenu tm = getEntityManager().find( TaskMenu.class, new TaskMenuPK( menu.getId(), task.getId() ) );
 
-            if ( tm != null )
-                getEntityManager().remove( tm );
-        }
-    }
+			if ( tm != null )
+				getEntityManager().remove( tm );
+		}
+	}
 
-    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public List<MenuDTO> getMenus( AuthenticationDTO auth, TaskDTO dtoTask ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Task taskEntity = getEntityManager().find( Task.class, dtoTask.getId() );
-        if ( taskEntity != null ) {
-            List<TaskMenu> list = null;
-            try {
-                list = getEntityManager().createNamedQuery( TaskMenu.findByTask ).setParameter( 1, taskEntity ).getResultList();
-                return TaskMenuUtil.toMenuDTOList( list );
-            }
-            catch ( NoResultException e ) {
-                return Collections.emptyList();
-            }
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
+	public List<MenuDTO> getMenus( AuthenticationDTO auth, TaskDTO dtoTask ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
+		Task taskEntity = getEntityManager().find( Task.class, dtoTask.getId() );
+		if ( taskEntity != null ) {
+			List<TaskMenu> list = null;
+			try {
+				list = getEntityManager().createNamedQuery( TaskMenu.findByTask ).setParameter( 1, taskEntity ).getResultList();
+				return TaskMenuUtil.toMenuDTOList( list );
+			}
+			catch ( NoResultException e ) {
+				return Collections.emptyList();
+			}
 
-        }
-        return Collections.emptyList();
-    }
+		}
+		return Collections.emptyList();
+	}
 
-    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public List<RoleDTO> getRoles( AuthenticationDTO auth, TaskDTO dtoTask ) throws ApplicationException
-    {
-        authenticate( auth, Role.systemAdmimRoleLevel );
-        Task taskEntity = getEntityManager().find( Task.class, dtoTask.getId() );
-        if ( taskEntity != null ) {
-            List<PermissionAssignment> list = null;
-            try {
-                Query query = getEntityManager().createNamedQuery( PermissionAssignment.findByTask );
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
+	public List<RoleDTO> getRoles( AuthenticationDTO auth, TaskDTO dtoTask ) throws ApplicationException
+	{
+		authenticate( auth, Role.systemAdmimRoleLevel );
+		Task taskEntity = getEntityManager().find( Task.class, dtoTask.getId() );
+		if ( taskEntity != null ) {
+			List<PermissionAssignment> list = null;
+			try {
+				Query query = getEntityManager().createNamedQuery( PermissionAssignment.findByTask );
 
-                query.setParameter( 1, taskEntity );
-                list = query.getResultList();
-                return toRoleDTOListFromPermission( list );
-            }
-            catch ( NoResultException e ) {
-                return Collections.emptyList();
-            }
-        }
-        return Collections.emptyList();
-    }
+				query.setParameter( 1, taskEntity );
+				list = query.getResultList();
+				return toRoleDTOListFromPermission( list );
+			}
+			catch ( NoResultException e ) {
+				return Collections.emptyList();
+			}
+		}
+		return Collections.emptyList();
+	}
 }
 

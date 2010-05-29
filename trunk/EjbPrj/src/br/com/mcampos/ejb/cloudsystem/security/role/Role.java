@@ -3,7 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.security.role;
 
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
-import br.com.mcampos.ejb.entity.security.PermissionAssignment;
+import br.com.mcampos.ejb.cloudsystem.security.permissionassignment.PermissionAssignment;
 
 import java.io.Serializable;
 
