@@ -1,7 +1,8 @@
-package br.com.mcampos.ejb.entity.login;
+package br.com.mcampos.ejb.cloudsystem.user.login;
 
 
-import br.com.mcampos.ejb.entity.user.Person;
+import br.com.mcampos.ejb.cloudsystem.user.person.Person;
+import br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPassword;
 import br.com.mcampos.ejb.entity.user.attributes.UserStatus;
 
 import java.io.Serializable;

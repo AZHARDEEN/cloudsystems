@@ -7,7 +7,7 @@ import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.user.Company;
-import br.com.mcampos.ejb.entity.user.Person;
+import br.com.mcampos.ejb.cloudsystem.user.person.Person;
 import br.com.mcampos.ejb.entity.user.UserDocument;
 import br.com.mcampos.ejb.entity.user.Users;
 

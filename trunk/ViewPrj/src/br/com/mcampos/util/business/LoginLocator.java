@@ -4,7 +4,7 @@ import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.ejb.facade.LoginFacadeSession;
+import br.com.mcampos.ejb.cloudsystem.user.login.LoginFacadeSession;
 
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;

@@ -4,10 +4,7 @@ package br.com.mcampos.controller.admin.clients;
 import br.com.mcampos.controller.admin.users.BaseUserListController;
 import br.com.mcampos.controller.admin.users.model.BaseListModel;
 import br.com.mcampos.controller.core.PageBrowseHistory;
-import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
-import br.com.mcampos.dto.user.PersonDTO;
-import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.HashMap;
@@ -48,15 +45,16 @@ public class UserListController extends BaseUserListController
 
     protected void showInformation( Object obj ) throws ApplicationException
     {
+        /*
         ListUserDTO dto = ( ListUserDTO )obj;
         UserDTO user = getUserLocator().getMyCompany( getLoggedInUser(), dto.getId() );
-
         if ( user != null ) {
             if ( user instanceof PersonDTO )
                 showPersonInfo( ( PersonDTO )user );
             else
                 showCompanyInfo( ( CompanyDTO )user );
         }
+        */
     }
 
     public void onClick$cmdCreate()

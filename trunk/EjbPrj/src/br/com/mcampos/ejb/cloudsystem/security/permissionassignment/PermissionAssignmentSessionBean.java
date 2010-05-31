@@ -5,15 +5,18 @@ import br.com.mcampos.ejb.cloudsystem.security.role.Role;
 import br.com.mcampos.ejb.cloudsystem.security.task.Task;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 
 @Stateless( name = "PermissionAssignmentSessionBean", mappedName = "CloudSystems-EjbPrj-PermissionAssignmentSessionBean" )
-@Local
+@TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class PermissionAssignmentSessionBean extends Crud<PermissionAssignmentPK, PermissionAssignment> implements PermissionAssignmentSessionLocal
 {
 	public PermissionAssignmentSessionBean()
@@ -26,11 +29,13 @@ public class PermissionAssignmentSessionBean extends Crud<PermissionAssignmentPK
 		delete( PermissionAssignment.class, key );
 	}
 
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public PermissionAssignment get( PermissionAssignmentPK key ) throws ApplicationException
 	{
 		return get( PermissionAssignment.class, key );
 	}
 
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<PermissionAssignment> getAll( Role role ) throws ApplicationException
 	{
 		List<PermissionAssignment> permissions;
@@ -59,5 +64,22 @@ public class PermissionAssignmentSessionBean extends Crud<PermissionAssignmentPK
 			getEntityManager().refresh( role );
 			getEntityManager().refresh( task );
 		}
+	}
+
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
+	public List<PermissionAssignment> getPermissionsAssigments( List<Role> roles ) throws ApplicationException
+	{
+		ArrayList<PermissionAssignment> permissions = new ArrayList<PermissionAssignment>();
+		for ( Role role : roles ) {
+			List<PermissionAssignment> list = getAll( role );
+			if ( SysUtils.isEmpty( list ) )
+				continue;
+			for ( PermissionAssignment p : list ) {
+				if ( permissions.contains( p ) )
+					continue;
+				permissions.add( p );
+			}
+		}
+		return permissions;
 	}
 }

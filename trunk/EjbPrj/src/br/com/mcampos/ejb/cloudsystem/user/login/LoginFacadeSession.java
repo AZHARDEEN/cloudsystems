@@ -1,43 +1,29 @@
-package br.com.mcampos.ejb.session.user;
+package br.com.mcampos.ejb.cloudsystem.user.login;
 
 import br.com.mcampos.dto.RegisterDTO;
+
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.dto.user.login.ListLoginDTO;
+
 import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 
 import br.com.mcampos.exception.ApplicationException;
 
-import java.util.List;
+import javax.ejb.EJBException;
+import javax.ejb.Remote;
 
-import javax.ejb.Local;
-
-@Local
-public interface LoginSessionLocal
+@Remote
+public interface LoginFacadeSession
 {
-
     /**
      * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
      * observado que o mesmo depende do relacionamento com a entidade pessoa.
-     * Após incluido o login com os dados mais básicos necessários, o novo usuário do
-     * sistema DEVE completar o registro.
      *
-     * @param dto DTO com os dados básicos para inclusão.
-     * @exception ApplicationException
+     * @param dto
+     * @exception EJBException
      */
     void add( RegisterDTO dto ) throws ApplicationException;
-
-    void delete( Integer id ) throws ApplicationException;
-
-    AuthenticationDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException;
-
-    public void logoutUser( AuthenticationDTO dto ) throws ApplicationException;
-
-    Long getRecordCount();
-
-    void updateLoginStatus( Integer id, Integer newStatus ) throws ApplicationException;
-
 
     /**
      * Altera a senha do usuário. Deve-se imaginar que o usuario não está logado no sistema
@@ -46,19 +32,9 @@ public interface LoginSessionLocal
      * @param document UserDocumentDTO - identificado do usuario via documento (Email)
      * @param oldPassword - A senha antiga a ser alterada
      * @param newPassword - A nova senha
-     * @exception ApplicationException
+     * @exception EJBException
      */
     void changePassword( UserDocumentDTO document, String oldPassword, String newPassword ) throws ApplicationException;
-
-
-    /**
-     * Cria uma nova senha para o usuario logar no sistema e envia esta senha via email.
-     *
-     *
-     * @param document UserDocumentDTO - identificao do usuario via documento (Email)
-     * @exception InvalidParameterException
-     */
-    void makeNewPassword( UserDocumentDTO document ) throws ApplicationException;
 
     /**
      * Valida o email informado no ato do cadastro. Quando o usuario se cadastra no sistema,
@@ -69,9 +45,18 @@ public interface LoginSessionLocal
      * @param token Código gerado pelo sistema e enviado ao email do novo cadastro.
      *              Este token deve ser único no sistema.
      * @param password Senha de validação. Este é a senha informada pelo usuário no ato do cadstro
-     * @exception InvalidParameterException
+     * @exception EJBException
      */
     void validateEmail( String token, String password ) throws ApplicationException;
+
+    /**
+     * Cria uma nova senha para o usuario logar no sistema e envia esta senha via email.
+     *
+     *
+     * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
+     * @exception EJBException
+     */
+    void makeNewPassword( UserDocumentDTO dto ) throws ApplicationException;
 
 
     /**
@@ -79,10 +64,27 @@ public interface LoginSessionLocal
      *
      *
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
-     * @exception InvalidParameterException
+     * @exception EJBException
      */
     void sendValidationEmail( UserDocumentDTO dto ) throws ApplicationException;
 
+
+    /**
+     * Executa o login no aplicativo se possível.
+     *
+     * @param dto Credenciais para realização do login
+     * @return AuthenticationDTO dados do usuário autenticado
+     * @throws ApplicationException
+     */
+    AuthenticationDTO loginUser( LoginCredentialDTO dto ) throws ApplicationException;
+
+    /**
+     * Finaliza a sessão (não confundir com a sessão do browser) do usuário.
+     *
+     * @param dto LoginDTO
+     * @throws ApplicationException
+     */
+    void logoutUser( AuthenticationDTO dto ) throws ApplicationException;
 
     /**
      * Obtem o status do login do usuário corrente (autenticado).
@@ -91,7 +93,6 @@ public interface LoginSessionLocal
      * @return Id do status do usuário
      */
     Integer getStatus( AuthenticationDTO currentUser ) throws ApplicationException;
-
 
     /**
      * Altera o status do usuário no banco de dados.
@@ -102,3 +103,5 @@ public interface LoginSessionLocal
     void setStatus( AuthenticationDTO currentUser, Integer newStatus ) throws ApplicationException;
 
 }
+
+

@@ -2,6 +2,9 @@ package br.com.mcampos.ejb.cloudsystem.security.task;
 
 
 import br.com.mcampos.dto.security.TaskDTO;
+import br.com.mcampos.ejb.cloudsystem.security.menu.Menu;
+import br.com.mcampos.ejb.cloudsystem.security.task.subtask.Subtask;
+import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenu;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -53,5 +56,45 @@ public final class TaskUtil
 			return null;
 		target.setDescription( source.getDescription() );
 		return target;
+	}
+
+
+	public static List<Task> getTasks( List<Task> tasks )
+	{
+		List<Task> allTasks = new ArrayList<Task>();
+		for ( Task Task : tasks ) {
+			getTasks( Task, allTasks );
+		}
+		return allTasks;
+	}
+
+	public static List<Task> getTasks( Task task, List<Task> allTasks )
+	{
+		if ( task == null )
+			return allTasks;
+		if ( SysUtils.isEmpty( task.getSubtasks() ) == false ) {
+			for ( Subtask subTask : task.getSubtasks() )
+				getTasks( subTask.getSubTask(), allTasks );
+		}
+		if ( allTasks.contains( task ) == false )
+			allTasks.add( task );
+		return allTasks;
+	}
+
+	public static List<Menu> toMenuList( List<Task> tasks )
+	{
+		if ( SysUtils.isEmpty( tasks ) )
+			return Collections.emptyList();
+		ArrayList<Menu> menus = new ArrayList<Menu>();
+		for ( Task task : tasks ) {
+			if ( SysUtils.isEmpty( task.getTaskMenuList() ) )
+				continue;
+			for ( TaskMenu m : task.getTaskMenuList() ) {
+				if ( menus.contains( m.getMenu() ) )
+					continue;
+				menus.add( m.getMenu() );
+			}
+		}
+		return menus;
 	}
 }

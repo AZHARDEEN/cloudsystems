@@ -26,4 +26,6 @@ public interface PermissionAssignmentSessionLocal extends Serializable
 	void add( Role role, Task task ) throws ApplicationException;
 
 	void delete( Role role, Task task ) throws ApplicationException;
+
+	List<PermissionAssignment> getPermissionsAssigments( List<Role> roles ) throws ApplicationException;
 }

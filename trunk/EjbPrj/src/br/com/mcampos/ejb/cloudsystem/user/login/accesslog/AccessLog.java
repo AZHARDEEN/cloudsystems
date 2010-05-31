@@ -1,6 +1,8 @@
-package br.com.mcampos.ejb.entity.login;
+package br.com.mcampos.ejb.cloudsystem.user.login.accesslog;
 
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
+
+import br.com.mcampos.ejb.cloudsystem.user.login.Login;
 
 import java.io.Serializable;
 

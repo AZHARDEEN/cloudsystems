@@ -3,7 +3,7 @@ package br.com.mcampos.controller.admin.security.roles;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.RoleDTO;
-import br.com.mcampos.ejb.cloudsystem.security.facade.SecurityFacade;
+import br.com.mcampos.ejb.cloudsystem.security.role.RoleFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.locator.ServiceLocator;
 import br.com.mcampos.util.locator.ServiceLocatorException;
@@ -13,7 +13,7 @@ import org.zkoss.zul.event.TreeDataEvent;
 
 public class RoleModel extends AbstractTreeModel
 {
-	SecurityFacade session;
+	RoleFacade session;
 	AuthenticationDTO currentUser;
 
 	public RoleModel( AuthenticationDTO currentUser, Object root ) throws ApplicationException
@@ -54,17 +54,14 @@ public class RoleModel extends AbstractTreeModel
 
 		if ( role == null )
 			return childs;
-		if ( role.getChildRoles() == null ) {
-			role.setChildRoles( role.getChildRoles() );
-		}
 		childs = ( role.getChildRoles() != null ) ? role.getChildRoles().size() : 0;
 		return childs;
 	}
 
-	protected SecurityFacade getSession()
+	protected RoleFacade getSession()
 	{
 		if ( session == null )
-			session = ( SecurityFacade )getRemoteSession( SecurityFacade.class );
+			session = ( RoleFacade )getRemoteSession( RoleFacade.class );
 		return session;
 	}
 

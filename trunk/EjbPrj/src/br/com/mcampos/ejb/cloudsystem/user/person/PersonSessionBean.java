@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.session.user;
+package br.com.mcampos.ejb.cloudsystem.user.person;
 
 import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.user.PersonDTO;
@@ -7,9 +7,8 @@ import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.address.AddressType;
 import br.com.mcampos.ejb.entity.address.City;
-import br.com.mcampos.ejb.entity.login.Login;
+import br.com.mcampos.ejb.cloudsystem.user.login.Login;
 import br.com.mcampos.ejb.entity.user.Address;
-import br.com.mcampos.ejb.entity.user.Person;
 
 import br.com.mcampos.ejb.entity.user.UserContact;
 import br.com.mcampos.ejb.entity.user.UserDocument;
@@ -19,6 +18,8 @@ import br.com.mcampos.ejb.entity.user.attributes.ContactType;
 import br.com.mcampos.ejb.entity.user.attributes.DocumentType;
 
 import br.com.mcampos.ejb.entity.user.attributes.UserStatus;
+
+import br.com.mcampos.ejb.session.user.UserSessionLocal;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,15 +38,16 @@ import javax.persistence.Query;
 @Stateless( name = "PersonSession", mappedName = "CloudSystems-EjbPrj-PersonSession" )
 public class PersonSessionBean implements PersonSessionLocal
 {
-	@PersistenceContext( unitName = "EjbPrj" )
-	private EntityManager em;
-    
-        
-    @EJB UserSessionLocal userSession;
+    @PersistenceContext( unitName = "EjbPrj" )
+    private EntityManager em;
 
-	public PersonSessionBean()
-	{
-	}
+
+    @EJB
+    UserSessionLocal userSession;
+
+    public PersonSessionBean()
+    {
+    }
 
     protected UserSessionLocal getUserSession()
     {
@@ -59,40 +61,40 @@ public class PersonSessionBean implements PersonSessionLocal
      * @return Person EntityBean
      */
     public Person add( PersonDTO dto )
-	{
-        return add ( DTOFactory.copy( dto ) );
-	}
-    
+    {
+        return add( DTOFactory.copy( dto ) );
+    }
+
     /**
-     * Adiciona um pessoa (Usuario do tipo pessoa) no banco de dados. Esta funcao 
+     * Adiciona um pessoa (Usuario do tipo pessoa) no banco de dados. Esta funcao
      * recebe como parâmetro uma Entity que não está gerenciado pelo EJB.
-     * 
-     * 
+     *
+     *
      * @param entity EntityBean Não gerenciado (Not Managed)
      * @return Person EntityBean
      */
     public Person add( Person entity )
     {
         String splitted[] = splitName( entity.getName() );
-        entity.setFirstName ( splitted[0] );
-        entity.setMiddleName( splitted[1] );
-        entity.setLastName  ( splitted[2] );
+        entity.setFirstName( splitted[ 0 ] );
+        entity.setMiddleName( splitted[ 1 ] );
+        entity.setLastName( splitted[ 2 ] );
         applyRules( entity );
         verifyDocuments( entity );
         em.persist( entity );
         return entity;
     }
-    
 
-    protected String[] splitName ( String name )
+
+    protected String[] splitName( String name )
     {
-        String splitted[] = name.split(" ");
+        String splitted[] = name.split( " " );
         String firstName = null, lastName = null, middleName = null;
         int nIndex;
-        
-        
-        for ( nIndex = 0; nIndex < splitted.length ; nIndex ++) {
-            if ( nIndex == 0)
+
+
+        for ( nIndex = 0; nIndex < splitted.length; nIndex++ ) {
+            if ( nIndex == 0 )
                 firstName = splitted[ nIndex ];
             else if ( nIndex == splitted.length - 1 )
                 lastName = splitted[ nIndex ];
@@ -103,15 +105,15 @@ public class PersonSessionBean implements PersonSessionLocal
                     middleName += " " + splitted[ nIndex ];
             }
         }
-        
-        splitted = new String[3];
-        splitted[0] = firstName;
-        splitted[1] = middleName;
-        splitted[2] = lastName;
-        
+
+        splitted = new String[ 3 ];
+        splitted[ 0 ] = firstName;
+        splitted[ 1 ] = middleName;
+        splitted[ 2 ] = lastName;
+
         return splitted;
     }
-    
+
     /*
 	public Person createPersonForLogin( RegisterDTO dto )
 	{
@@ -139,7 +141,7 @@ public class PersonSessionBean implements PersonSessionLocal
 						bFound = true;
 					}
 				}
-				if ( bFound == false ) 
+				if ( bFound == false )
 				{
 					person.addDocument( DTOFactory.copy ( documentDTO ) );
 				}
@@ -149,96 +151,87 @@ public class PersonSessionBean implements PersonSessionLocal
 	}
 */
 
-	protected void verifyDocuments( Person person )
-	{
-		if ( person.getDocuments() != null ) {
-			for ( UserDocument item : person.getDocuments() ) {
-                if ( getUserSession().getUserByDocument( item  ) != null )
+    protected void verifyDocuments( Person person )
+    {
+        if ( person.getDocuments() != null ) {
+            for ( UserDocument item : person.getDocuments() ) {
+                if ( getUserSession().getUserByDocument( item ) != null )
                     throw new EJBException( "Ja existe um usuário cadastrado com o mesmo documento [" + item.getCode() + "]" +
                                             ". O sistema não permite dois cadastros com os mesmos documentos" );
-			}
-		}
-	}
+            }
+        }
+    }
 
-	protected String toUpperCase( String fieldValue )
-	{
-		if ( fieldValue == null || fieldValue.isEmpty() )
-			return fieldValue;
-		return fieldValue.toUpperCase();
-	}
+    protected String toUpperCase( String fieldValue )
+    {
+        if ( fieldValue == null || fieldValue.isEmpty() )
+            return fieldValue;
+        return fieldValue.toUpperCase();
+    }
 
-	protected String toLowerCase( String fieldValue )
-	{
-		if ( fieldValue == null || fieldValue.isEmpty() )
-			return fieldValue;
-		return fieldValue.toLowerCase();
-	}
+    protected String toLowerCase( String fieldValue )
+    {
+        if ( fieldValue == null || fieldValue.isEmpty() )
+            return fieldValue;
+        return fieldValue.toLowerCase();
+    }
 
-	protected void applyRules( Person person )
-	{
-		person.setFatherName( toUpperCase( person.getFatherName() ) );
-		person.setFirstName( toUpperCase( person.getFirstName() ) );
-		person.setLastName( toUpperCase( person.getLastName() ) );
-		person.setMotherName( toUpperCase( person.getMotherName() ) );
-		person.setName( toUpperCase( person.getName() ) );
-		person.setNickName( toUpperCase( person.getNickName() ) );
-	}
+    protected void applyRules( Person person )
+    {
+        person.setFatherName( toUpperCase( person.getFatherName() ) );
+        person.setFirstName( toUpperCase( person.getFirstName() ) );
+        person.setLastName( toUpperCase( person.getLastName() ) );
+        person.setMotherName( toUpperCase( person.getMotherName() ) );
+        person.setName( toUpperCase( person.getName() ) );
+        person.setNickName( toUpperCase( person.getNickName() ) );
+    }
 
 
-    protected void mergeAddress ( Person person, List<AddressDTO> list )
+    protected void mergeAddress( Person person, List<AddressDTO> list )
     {
         int nIndex;
-        
-        for ( AddressDTO addressDTO: list )
-        {
+
+        for ( AddressDTO addressDTO : list ) {
             Address address = DTOFactory.copy( addressDTO );
             address.setUser( person );
             nIndex = person.getAddresses().indexOf( address );
-            if ( nIndex >= 0 ) 
-            {
-                Address merged = person.getAddresses().get ( nIndex );
+            if ( nIndex >= 0 ) {
+                Address merged = person.getAddresses().get( nIndex );
                 DTOFactory.copy( merged, addressDTO );
-                merged.setCity( em.find ( City.class, addressDTO.getCity().getId() ) );
-                merged.setAddressType( em.find ( AddressType.class, merged.getAddressType().getId() ) );
+                merged.setCity( em.find( City.class, addressDTO.getCity().getId() ) );
+                merged.setAddressType( em.find( AddressType.class, merged.getAddressType().getId() ) );
             }
             else
                 person.addAddress( address );
         }
         ArrayList<Address> removeList = null;
-        for ( Address entity: person.getAddresses() )  
-        {
+        for ( Address entity : person.getAddresses() ) {
             AddressDTO ct = DTOFactory.copy( entity );
-            if ( list.contains( ct ) == false )
-            {
+            if ( list.contains( ct ) == false ) {
                 if ( removeList == null )
                     removeList = new ArrayList<Address>();
                 removeList.add( entity );
                 em.remove( entity );
             }
         }
-        if ( removeList != null && removeList.size() > 0 ) 
-        {
-            for ( Address entity: removeList ) 
-            {
+        if ( removeList != null && removeList.size() > 0 ) {
+            for ( Address entity : removeList ) {
                 person.removeAddress( entity );
             }
         }
     }
 
 
-
-    protected void mergeDocuments ( Person person, List<UserDocumentDTO> list )
+    protected void mergeDocuments( Person person, List<UserDocumentDTO> list )
     {
         int nIndex;
-        
-        for ( UserDocumentDTO dtoItem: list )
-        {
+
+        for ( UserDocumentDTO dtoItem : list ) {
             UserDocument entity = DTOFactory.copy( dtoItem );
             entity.setUsers( person );
             nIndex = person.getDocuments().indexOf( entity );
-            if ( nIndex >= 0 ) 
-            {
-                UserDocument merged = person.getDocuments().get ( nIndex );
+            if ( nIndex >= 0 ) {
+                UserDocument merged = person.getDocuments().get( nIndex );
                 DTOFactory.copy( merged, dtoItem );
                 merged.setDocumentType( em.find( DocumentType.class, merged.getDocumentType().getId() ) );
             }
@@ -246,38 +239,32 @@ public class PersonSessionBean implements PersonSessionLocal
                 person.addDocument( entity );
         }
         ArrayList<UserDocument> removeList = null;
-        for ( UserDocument entity: person.getDocuments() )  
-        {
+        for ( UserDocument entity : person.getDocuments() ) {
             UserDocumentDTO ct = DTOFactory.copy( entity );
-            if ( list.contains( ct ) == false )
-            {
+            if ( list.contains( ct ) == false ) {
                 if ( removeList == null )
                     removeList = new ArrayList<UserDocument>();
                 removeList.add( entity );
                 em.remove( entity );
             }
         }
-        if ( removeList != null && removeList.size() > 0 ) 
-        {
-            for ( UserDocument entity: removeList ) 
-            {
+        if ( removeList != null && removeList.size() > 0 ) {
+            for ( UserDocument entity : removeList ) {
                 person.removeDocument( entity );
             }
         }
     }
 
-    protected void mergeContacts ( Person person, List<UserContactDTO> list )
+    protected void mergeContacts( Person person, List<UserContactDTO> list )
     {
         int nIndex;
-        
-        for ( UserContactDTO dtoItem: list )
-        {
+
+        for ( UserContactDTO dtoItem : list ) {
             UserContact entity = DTOFactory.copy( dtoItem );
             entity.setUser( person );
             nIndex = person.getContacts().indexOf( entity );
-            if ( nIndex >= 0 ) 
-            {
-                UserContact merged = person.getContacts().get ( nIndex );
+            if ( nIndex >= 0 ) {
+                UserContact merged = person.getContacts().get( nIndex );
                 DTOFactory.copy( merged, dtoItem );
                 merged.setContactType( em.find( ContactType.class, merged.getContactType().getId() ) );
             }
@@ -286,114 +273,110 @@ public class PersonSessionBean implements PersonSessionLocal
         }
 
         ArrayList<UserContact> removeList = null;
-        for ( UserContact entity: person.getContacts() )  
-        {
+        for ( UserContact entity : person.getContacts() ) {
             UserContactDTO ct = DTOFactory.copy( entity );
-            if ( list.contains( ct ) == false )
-            {
+            if ( list.contains( ct ) == false ) {
                 if ( removeList == null )
                     removeList = new ArrayList<UserContact>();
                 removeList.add( entity );
                 em.remove( entity );
             }
         }
-        if ( removeList != null && removeList.size() > 0 ) 
-        {
-            for ( UserContact entity: removeList ) 
-            {
+        if ( removeList != null && removeList.size() > 0 ) {
+            for ( UserContact entity : removeList ) {
                 person.removeContact( entity );
             }
         }
     }
 
-	public Person update( PersonDTO dto )
-	{
-		Person person;
+    public Person update( PersonDTO dto )
+    {
+        Person person;
         Login login;
 
 
-	    person = em.find( Person.class, dto.getId() );
-        if ( person == null ) 
-            throw new EJBException ( "Não existe usuario para atualizar" );
-		person = DTOFactory.copy( person, dto ); 
-		applyRules( person );
-        mergeAddress ( person, dto.getAddressList() );
-        mergeDocuments ( person, dto.getDocumentList() );
-        mergeContacts ( person, dto.getContactList() );
+        person = em.find( Person.class, dto.getId() );
+        if ( person == null )
+            throw new EJBException( "Não existe usuario para atualizar" );
+        person = DTOFactory.copy( person, dto );
+        applyRules( person );
+        mergeAddress( person, dto.getAddressList() );
+        mergeDocuments( person, dto.getDocumentList() );
+        mergeContacts( person, dto.getContactList() );
         login = person.getLogin();
-        if ( login == null ) { 
-            login = em.find ( Login.class, person.getId() );
+        if ( login == null ) {
+            login = em.find( Login.class, person.getId() );
         }
         if ( login != null ) {
-            if ( login.getUserStatus().getId() == UserStatus.statusFullfillRecord)
+            if ( login.getUserStatus().getId() == UserStatus.statusFullfillRecord )
                 login.setUserStatus( em.find( UserStatus.class, UserStatus.statusOk ) );
             if ( person.getLogin() == null )
                 person.setLogin( login );
         }
-	    em.merge( person ); 
-		return person;
-	}
+        em.merge( person );
+        return person;
+    }
 
-	public void delete( Integer id )
-	{
-		Person person;
+    public void delete( Integer id )
+    {
+        Person person;
 
-		person = em.find( Person.class, id );
-		em.remove( person );
-	}
+        person = em.find( Person.class, id );
+        em.remove( person );
+    }
 
-	public List<PersonDTO> getAll()
-	{
-		return getDTOList( ( ( List<Person> )em.createNamedQuery( "Person.findAll" ).getResultList() ) );
-	}
+    public List<PersonDTO> getAll()
+    {
+        return getDTOList( ( ( List<Person> )em.createNamedQuery( "Person.findAll" ).getResultList() ) );
+    }
 
 
-	protected List<PersonDTO> getDTOList( List<Person> list )
-	{
-		List<PersonDTO> dtos;
+    protected List<PersonDTO> getDTOList( List<Person> list )
+    {
+        List<PersonDTO> dtos;
 
-		if ( list == null )
-			return Collections.emptyList();
-		dtos = new ArrayList<PersonDTO>( list.size() );
-		for ( Person item : list )
-			dtos.add( DTOFactory.copy( item, true ) );
-		return dtos;
-	}
+        if ( list == null )
+            return Collections.emptyList();
+        dtos = new ArrayList<PersonDTO>( list.size() );
+        for ( Person item : list )
+            dtos.add( DTOFactory.copy( item, true ) );
+        return dtos;
+    }
 
-	public PersonDTO getByDocument( String document )
-	{
-		Query query;
-		UserDocument userDocument;
-		Person person;
-		PersonDTO dto = null;
+    public PersonDTO getByDocument( String document )
+    {
+        Query query;
+        UserDocument userDocument;
+        Person person;
+        PersonDTO dto = null;
 
-		try {
-			query = em.createNamedQuery( "UserDocument.findByDocument" );
-			query.setParameter( "document", document );
-			userDocument = ( UserDocument )query.getSingleResult();
-			if ( userDocument == null )
-				return null;
-			person = em.find( Person.class, userDocument.getUserId() );
-			if ( person != null )
-				dto = DTOFactory.copy( person, true );
-			return dto;
-		}
-		catch ( NoResultException e ) {
-			return null;
-		}
-	}
+        try {
+            query = em.createNamedQuery( "UserDocument.findByDocument" );
+            query.setParameter( "document", document );
+            userDocument = ( UserDocument )query.getSingleResult();
+            if ( userDocument == null )
+                return null;
+            person = em.find( Person.class, userDocument.getUserId() );
+            if ( person != null )
+                dto = DTOFactory.copy( person, true );
+            return dto;
+        }
+        catch ( NoResultException e ) {
+            return null;
+        }
+    }
 
-	public PersonDTO get( Integer userId )
-	{
-		Person person;
+    public PersonDTO get( Integer userId )
+    {
+        Person person;
 
-		person = em.find( Person.class, userId );
-		if ( person != null ) {
-			if ( person.getUserType() != null )
-				em.refresh( person.getUserType() );
-			return DTOFactory.copy( person, true );
-		}
-		else
-			return null;
-	}
+        person = em.find( Person.class, userId );
+        if ( person != null ) {
+            if ( person.getUserType() != null )
+                em.refresh( person.getUserType() );
+            return DTOFactory.copy( person, true );
+        }
+        else
+            return null;
+    }
 }

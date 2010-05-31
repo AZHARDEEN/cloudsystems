@@ -42,7 +42,7 @@ public class RoleFacadeBean extends AbstractSecurity implements RoleFacade
 	@EJB
 	PermissionAssignmentSessionLocal permissionSession;
 
-	RoleFacadeBean()
+	public RoleFacadeBean()
 	{
 	}
 
@@ -56,7 +56,6 @@ public class RoleFacadeBean extends AbstractSecurity implements RoleFacade
 		return messageId;
 	}
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
 	public List<RoleDTO> getRoles( AuthenticationDTO auth ) throws ApplicationException
 	{
 		authenticate( auth, Role.systemAdmimRoleLevel );
@@ -64,7 +63,6 @@ public class RoleFacadeBean extends AbstractSecurity implements RoleFacade
 		return RoleUtils.toRoleDTOList( roles );
 	}
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
 	public RoleDTO getRootRole( AuthenticationDTO auth ) throws ApplicationException
 	{
 		authenticate( auth, Role.systemAdmimRoleLevel );
@@ -72,7 +70,6 @@ public class RoleFacadeBean extends AbstractSecurity implements RoleFacade
 		return role != null ? role.toDTO() : null;
 	}
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
 	public List<RoleDTO> getChildRoles( AuthenticationDTO auth, RoleDTO parent ) throws ApplicationException
 	{
 		authenticate( auth, Role.systemAdmimRoleLevel );
@@ -100,7 +97,6 @@ public class RoleFacadeBean extends AbstractSecurity implements RoleFacade
 		return roleSession.update( role ).toDTO();
 	}
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
 	public Integer getRoleMaxId( AuthenticationDTO auth ) throws ApplicationException
 	{
 		authenticate( auth, Role.systemAdmimRoleLevel );
@@ -113,7 +109,6 @@ public class RoleFacadeBean extends AbstractSecurity implements RoleFacade
 		roleSession.delete( dto.getId() );
 	}
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
 	public List<TaskDTO> getTasks( AuthenticationDTO auth, RoleDTO dto )
 	{
 		return Collections.emptyList();
@@ -124,7 +119,6 @@ public class RoleFacadeBean extends AbstractSecurity implements RoleFacade
 		return Collections.emptyList();
 	}
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
 	public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
 	{
 		authenticate( auth, Role.systemAdmimRoleLevel );

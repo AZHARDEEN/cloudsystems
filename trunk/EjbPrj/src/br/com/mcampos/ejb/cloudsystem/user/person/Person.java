@@ -1,10 +1,11 @@
-package br.com.mcampos.ejb.entity.user;
+package br.com.mcampos.ejb.cloudsystem.user.person;
 
 
 import br.com.mcampos.ejb.cloudsystem.user.gender.Gender;
 import br.com.mcampos.ejb.cloudsystem.user.title.Title;
 import br.com.mcampos.ejb.entity.address.City;
-import br.com.mcampos.ejb.entity.login.Login;
+import br.com.mcampos.ejb.cloudsystem.user.login.Login;
+import br.com.mcampos.ejb.entity.user.Users;
 import br.com.mcampos.ejb.entity.user.attributes.CivilState;
 import br.com.mcampos.ejb.entity.user.attributes.UserType;
 

@@ -1,8 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.security.role;
 
 
-import br.com.mcampos.ejb.cloudsystem.security.permissionassignment.PermissionAssignmentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.security.permissionassignment.PermissionAssignment;
+import br.com.mcampos.ejb.cloudsystem.security.permissionassignment.PermissionAssignmentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.security.task.Task;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
@@ -34,7 +34,13 @@ public class RoleSessionBean extends Crud<Integer, Role> implements RoleSessionL
 	{
 		if ( SysUtils.isZero( key ) )
 			return;
-		super.delete( Role.class, key );
+		Role role = get( key );
+		if ( role != null ) {
+			if ( role.getParentRole() != null )
+				role = role.getParentRole();
+			super.delete( Role.class, key );
+			refresh( role );
+		}
 	}
 
 	public Role get( Integer key ) throws ApplicationException
@@ -53,7 +59,14 @@ public class RoleSessionBean extends Crud<Integer, Role> implements RoleSessionL
 
 	public Role getRootRole() throws ApplicationException
 	{
-		return ( Role )getSingleResult( Role.roleGetRoot );
+		Role role;
+
+		role = ( Role )getSingleResult( Role.roleGetRoot );
+		if ( role.getChildRoles() != null ) {
+			int childs = role.getChildRoles().size();
+			childs = 0;
+		}
+		return role;
 	}
 
 	public List<Role> getChildRoles( Role role ) throws ApplicationException
@@ -92,5 +105,31 @@ public class RoleSessionBean extends Crud<Integer, Role> implements RoleSessionL
 		for ( Role item : role.getChildRoles() )
 			getTasks( item, tasks );
 		return tasks;
+	}
+
+	@Override
+	@TransactionAttribute( TransactionAttributeType.MANDATORY )
+	public Role add( Role entity ) throws ApplicationException
+	{
+		if ( entity.getParentRole() != null ) {
+			Role parent;
+			parent = get( entity.getParentRole().getId() );
+			if ( parent != null )
+				entity.setParentRole( parent );
+		}
+		Role added = super.add( entity );
+		refreshParent( added );
+		return added;
+	}
+
+	@TransactionAttribute( TransactionAttributeType.MANDATORY )
+	private void refreshParent( Role role ) throws ApplicationException
+	{
+		if ( role == null )
+			return;
+		Role parent = role.getParentRole();
+		if ( parent != null ) {
+			refresh( parent );
+		}
 	}
 }

@@ -4,11 +4,11 @@ import br.com.mcampos.dto.user.CompanyDTO;
 
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.entity.user.Collaborator;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.Collaborator;
 import br.com.mcampos.ejb.entity.user.Company;
 
 
-import br.com.mcampos.ejb.entity.user.Person;
+import br.com.mcampos.ejb.cloudsystem.user.person.Person;
 
 import br.com.mcampos.ejb.entity.user.attributes.CollaboratorType;
 import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
