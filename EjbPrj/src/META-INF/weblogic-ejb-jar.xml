@@ -98,7 +98,7 @@
         <ejb-name>UserFacadeSession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>10</trans-timeout-seconds>
+            <trans-timeout-seconds>300</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
@@ -114,7 +114,7 @@
         <ejb-name>CollaboratorSession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>10</trans-timeout-seconds>
+            <trans-timeout-seconds>300</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
@@ -122,7 +122,7 @@
         <ejb-name>ClientSession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>10</trans-timeout-seconds>
+            <trans-timeout-seconds>300</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
@@ -138,7 +138,7 @@
         <ejb-name>CompanySession</ejb-name>
         <stateless-session-descriptor/>
         <transaction-descriptor>
-            <trans-timeout-seconds>10</trans-timeout-seconds>
+            <trans-timeout-seconds>300</trans-timeout-seconds>
         </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
@@ -162,6 +162,61 @@
     </weblogic-enterprise-bean>
     <weblogic-enterprise-bean>
         <ejb-name>SecurityFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>CollaboratorRoleSession</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>GenderFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>UserMenuFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>RoleFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>TaskFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>TitleFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>AccessLogTypeFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>MenuFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>ClientFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>AnotoExportFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
+        <ejb-name>AnotoFormFacade</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>

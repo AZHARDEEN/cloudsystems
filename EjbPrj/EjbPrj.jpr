@@ -68,7 +68,6 @@
    <value n="defaultPackage" v="ejbprj"/>
    <hash n="ejbModuleContainer">
       <value n="cmpProvider" v="EJB 3.0"/>
-      <value n="dbConnection" v="PostgreSQL"/>
       <value n="ejbVersion" v="3.0"/>
       <list n="serviceFacadeUrls">
          <url path="src/ejbprj/JavaServiceFacade.java"/>
@@ -113,6 +112,8 @@
       <list n="technologyScope">
          <string v="EJB"/>
          <string v="Java"/>
+         <string v="TopLink"/>
+         <string v="Database"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.compiler.OjcConfiguration">

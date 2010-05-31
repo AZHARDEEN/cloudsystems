@@ -1,25 +1,18 @@
 package br.com.mcampos.ejb.facade;
 
+
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
-import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
-
 import br.com.mcampos.dto.user.PersonDTO;
-
 import br.com.mcampos.dto.user.UserDTO;
-
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.dto.security.LoginCredentialDTO;
-import br.com.mcampos.dto.system.MenuDTO;
-import br.com.mcampos.dto.user.login.LoginDTO;
-
-import br.com.mcampos.ejb.cloudsystem.security.role.Role;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
 
 import javax.ejb.Remote;
+
 
 @Remote
 public interface UserFacadeSession
@@ -41,6 +34,7 @@ public interface UserFacadeSession
 
     UserDTO getUserByDocument( AuthenticationDTO auth, UserDocumentDTO dto ) throws ApplicationException;
 
+    /*
     UserDTO getMyCompany( AuthenticationDTO auth, Integer userID ) throws ApplicationException;
 
     Integer getMyCompanyCount( AuthenticationDTO auth ) throws ApplicationException;
@@ -50,4 +44,5 @@ public interface UserFacadeSession
 
 
     List<MenuDTO> getMenuList( AuthenticationDTO auth ) throws ApplicationException;
+    */
 }

@@ -39,4 +39,40 @@ public final class RoleUtils
 			role.setParentRole( createEntity( source.getParent() ) );
 		return role;
 	}
+
+	public static List<Role> getRoles( List<Role> roles )
+	{
+		List<Role> allRoles = new ArrayList<Role>();
+		for ( Role role : roles ) {
+			getRoles( role, allRoles );
+		}
+		return allRoles;
+	}
+
+	public static List<Role> getRoles( Role role, List<Role> allRoles )
+	{
+		if ( role == null )
+			return allRoles;
+		if ( SysUtils.isEmpty( role.getChildRoles() ) == false ) {
+			for ( Role subRole : role.getChildRoles() )
+				getRoles( subRole, allRoles );
+		}
+		if ( allRoles.contains( role ) == false )
+			allRoles.add( role );
+		return allRoles;
+	}
+
+	public static RoleDTO copy( Role role, boolean bParent, boolean bChild )
+	{
+		RoleDTO dto = new RoleDTO( role.getId(), role.getDescription() );
+		if ( bParent && role.getParentRole() != null ) {
+			dto.setParent( RoleUtils.copy( role, false, false ) );
+		}
+		if ( bChild && role.getChildRoles() != null ) {
+			for ( Role r : role.getChildRoles() ) {
+				dto.add( copy( r, false, true ) );
+			}
+		}
+		return dto;
+	}
 }

@@ -1,8 +1,8 @@
 package br.com.mcampos.ejb.facade;
 
+
 import br.com.mcampos.dto.core.BasicDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
-import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
@@ -11,16 +11,13 @@ import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.user.Company;
-import br.com.mcampos.ejb.entity.user.Person;
+import br.com.mcampos.ejb.cloudsystem.user.person.Person;
 import br.com.mcampos.ejb.entity.user.Users;
 import br.com.mcampos.ejb.entity.user.attributes.CollaboratorType;
 import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
-import br.com.mcampos.ejb.session.user.CollaboratorSessionLocal;
 import br.com.mcampos.ejb.session.user.CompanySessionLocal;
-import br.com.mcampos.ejb.session.user.PersonSessionLocal;
-
+import br.com.mcampos.ejb.cloudsystem.user.person.PersonSessionLocal;
 import br.com.mcampos.ejb.session.user.UserSessionLocal;
-
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -42,8 +39,10 @@ public class UserFacadeSessionBean implements UserFacadeSession
     CompanySessionLocal company;
     @EJB
     SystemMessagesSessionLocal systemMessage;
+    /*
     @EJB
     CollaboratorSessionLocal collaborator;
+    */
 
     private static final Integer systemMessageTypeId = 3;
 
@@ -140,8 +139,8 @@ public class UserFacadeSessionBean implements UserFacadeSession
             }
             else {
                 /*this is a new entity!*/
-                entity = ( dto instanceof CompanyDTO ) ? company.addBusinessEntity( ( CompanyDTO )dto, loginDTO ) :
-                         person.add( ( PersonDTO )dto );
+                entity =
+                        ( dto instanceof CompanyDTO ) ? company.addBusinessEntity( ( CompanyDTO )dto, loginDTO ) : person.add( ( PersonDTO )dto );
             }
 
             if ( entity instanceof Company ) {
@@ -183,7 +182,7 @@ public class UserFacadeSessionBean implements UserFacadeSession
             systemMessage.throwException( systemMessageTypeId, 26 );
     }
 
-
+    /*
     public UserDTO getMyCompany( AuthenticationDTO auth, Integer businessId ) throws ApplicationException
     {
         if ( auth == null )
@@ -214,4 +213,5 @@ public class UserFacadeSessionBean implements UserFacadeSession
             systemMessage.throwException( systemMessageTypeId, 26 );
         return collaborator.getMenuList( auth );
     }
+    */
 }

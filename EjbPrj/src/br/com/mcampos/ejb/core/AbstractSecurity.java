@@ -1,8 +1,8 @@
 package br.com.mcampos.ejb.core;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
-import br.com.mcampos.ejb.entity.login.AccessLog;
-import br.com.mcampos.ejb.entity.login.Login;
+import br.com.mcampos.ejb.cloudsystem.user.login.accesslog.AccessLog;
+import br.com.mcampos.ejb.cloudsystem.user.login.Login;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 

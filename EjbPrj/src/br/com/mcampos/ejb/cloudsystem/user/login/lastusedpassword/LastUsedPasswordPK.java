@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.entity.login;
+package br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword;
 
 import java.io.Serializable;
 

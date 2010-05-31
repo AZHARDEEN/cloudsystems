@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.facade;
+package br.com.mcampos.ejb.cloudsystem.user.login;
 
 import br.com.mcampos.dto.RegisterDTO;
 
@@ -8,7 +8,6 @@ import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
 
-import br.com.mcampos.ejb.session.user.LoginSessionLocal;
 
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;

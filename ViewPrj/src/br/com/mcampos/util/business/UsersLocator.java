@@ -8,17 +8,14 @@ import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.ejb.cloudsystem.security.role.Role;
 import br.com.mcampos.ejb.facade.UserFacadeSession;
-
 import br.com.mcampos.exception.ApplicationException;
-
-import br.com.mcampos.sysutils.SysUtils;
 
 import java.security.InvalidParameterException;
 
 import java.util.Collections;
 import java.util.List;
+
 
 public class UsersLocator extends BusinessDelegate
 {
@@ -89,6 +86,7 @@ public class UsersLocator extends BusinessDelegate
      * Estas funcoes abaixo são para o uso das minhas empresas
      */
 
+    /*
     public UserDTO getMyCompany( AuthenticationDTO dto, Integer companyId ) throws ApplicationException
     {
         if ( dto == null )
@@ -110,6 +108,7 @@ public class UsersLocator extends BusinessDelegate
             return Collections.EMPTY_LIST;
         return getSessionBean().getMyCompaniesByRange( dto, startNumber, pageSize );
     }
+    */
 
     /**
      * Obtem todas as roles do usuário autenticado.
@@ -121,8 +120,8 @@ public class UsersLocator extends BusinessDelegate
      */
     public List<MenuDTO> getRoles( AuthenticationDTO auth ) throws ApplicationException
     {
-        if ( auth == null )
-            return Collections.EMPTY_LIST;
-        return getSessionBean().getMenuList( auth );
+        //if ( auth == null )
+        return Collections.EMPTY_LIST;
+        //return getSessionBean().getMenuList( auth );
     }
 }

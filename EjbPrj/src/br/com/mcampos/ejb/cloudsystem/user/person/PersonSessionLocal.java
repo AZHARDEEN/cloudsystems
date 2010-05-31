@@ -1,8 +1,7 @@
-package br.com.mcampos.ejb.session.user;
+package br.com.mcampos.ejb.cloudsystem.user.person;
 
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.user.PersonDTO;
-import br.com.mcampos.ejb.entity.user.Person;
 
 import java.util.List;
 

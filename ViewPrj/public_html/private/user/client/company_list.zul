@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <div width="100%" height="100%" id="rootParent">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.user.client.CompanyClientController">
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label id="labelAnotoFormTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
+                    <label id="labelCompanyClientTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
                 </vbox>
             </north>
-            <west size="40%" splittable="true" flex="true">
+            <center flex="true">
                 <!-- Por favor, nao mude o id desta div -->
                 <div width="100%" height="100%" id="divListBoxRecord">
                     <!-- Por favor, nao mude o id desta listbox -->
                     <listbox id="listboxRecord" vflex="true">
                         <listhead sizable="true">
-                            <listheader id="headerCode" align="left" label="##" sort="auto" width="10%"/>
-                            <listheader id="headerName" align="left" label="##" sort="auto" width="50%"/>
-                            <listheader id="headerId" align="left" label="##" sort="auto"/>
+                            <listheader id="listHeaderCode" align="left" label="##" sort="auto" width="10%"/>
+                            <listheader id="listHeaderName" align="left" label="##" sort="auto" width="50%"/>
                         </listhead>
                     </listbox>
                 </div>
-            </west>
-            <center flex="true">
-                <!-- Por favor, nao mude o id desta div -->
             </center>
         </borderlayout>
     </div>

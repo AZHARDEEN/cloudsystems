@@ -1,22 +1,21 @@
 package br.com.mcampos.ejb.cloudsystem.anoto.form;
 
 
+import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMediaPK;
+import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
+import br.com.mcampos.ejb.cloudsystem.anoto.pad.PadPK;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPagePK;
-import br.com.mcampos.ejb.cloudsystem.anoto.pad.PadPK;
-import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -106,7 +105,7 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<FormMedia> getFiles( AnotoForm form ) throws ApplicationException
 	{
-		List<FormMedia> list = ( List<FormMedia> )getResultList( FormMedia.formGetFiles, form );
+		List<FormMedia> list = ( List<FormMedia> )getResultList( FormMedia.formGetFiles, form.getId() );
 		return list;
 	}
 
@@ -138,9 +137,7 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<Pad> getPads( AnotoForm form ) throws ApplicationException
 	{
-		List<Object> parameter = new ArrayList<Object>( 1 );
-		parameter.add( form.getApplication() );
-		List<Pad> padList = ( List<Pad> )getResultList( Pad.padFindAllNamedQuery, parameter );
+		List<Pad> padList = ( List<Pad> )getResultList( Pad.padFindAllNamedQuery, form.getApplication() );
 		return padList;
 	}
 
