@@ -183,7 +183,7 @@ public class AnotoPcgController extends LoggedBaseController
         list.add( prop );
     }
 
-    public void onClick$btnRemove()
+    public void onClick$cmdDelete()
     {
         Listitem item = listboxRecord.getSelectedItem();
         if ( item != null ) {
@@ -200,16 +200,6 @@ public class AnotoPcgController extends LoggedBaseController
                     showErrorMessage( e.getMessage() );
                 }
             }
-        }
-    }
-
-    public void onClick$cmdDelete()
-    {
-        try {
-            refresh();
-        }
-        catch ( ApplicationException e ) {
-            System.out.println( e.getMessage() );
         }
     }
 

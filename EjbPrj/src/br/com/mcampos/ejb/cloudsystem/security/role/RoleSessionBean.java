@@ -36,10 +36,12 @@ public class RoleSessionBean extends Crud<Integer, Role> implements RoleSessionL
 			return;
 		Role role = get( key );
 		if ( role != null ) {
-			if ( role.getParentRole() != null )
-				role = role.getParentRole();
-			super.delete( Role.class, key );
-			refresh( role );
+			Role parent;
+
+			parent = role.getParentRole();
+			if ( parent != null )
+				parent.removeRole( role );
+			getEntityManager().remove( role );
 		}
 	}
 
@@ -111,14 +113,17 @@ public class RoleSessionBean extends Crud<Integer, Role> implements RoleSessionL
 	@TransactionAttribute( TransactionAttributeType.MANDATORY )
 	public Role add( Role entity ) throws ApplicationException
 	{
+		Role parent = null;
+
 		if ( entity.getParentRole() != null ) {
-			Role parent;
 			parent = get( entity.getParentRole().getId() );
-			if ( parent != null )
+			if ( parent != null ) {
 				entity.setParentRole( parent );
+			}
 		}
 		Role added = super.add( entity );
-		refreshParent( added );
+		if ( parent != null )
+			parent.addRole( added );
 		return added;
 	}
 

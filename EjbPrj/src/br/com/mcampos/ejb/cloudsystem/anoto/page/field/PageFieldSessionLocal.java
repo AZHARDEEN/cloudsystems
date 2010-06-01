@@ -4,13 +4,15 @@ package br.com.mcampos.ejb.cloudsystem.anoto.page.field;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.exception.ApplicationException;
 
+import java.io.Serializable;
+
 import java.util.List;
 
 import javax.ejb.Local;
 
 
 @Local
-public interface PageFieldSessionLocal
+public interface PageFieldSessionLocal extends Serializable
 {
     AnotoPageField add( AnotoPageField entity ) throws ApplicationException;
 

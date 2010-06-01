@@ -49,7 +49,7 @@ public class TitleFacadeBean extends AbstractSecurity implements TitleFacade
         return messageId;
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
+     
     public List<TitleDTO> getAll( AuthenticationDTO currentUser ) throws ApplicationException
     {
         authenticate( currentUser );
@@ -58,7 +58,7 @@ public class TitleFacadeBean extends AbstractSecurity implements TitleFacade
     }
 
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
+     
     public Integer getNextId( AuthenticationDTO currentUser ) throws ApplicationException
     {
         authenticate( currentUser );

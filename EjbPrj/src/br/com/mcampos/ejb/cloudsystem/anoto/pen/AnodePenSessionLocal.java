@@ -1,14 +1,17 @@
 package br.com.mcampos.ejb.cloudsystem.anoto.pen;
 
-import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
+
 import br.com.mcampos.exception.ApplicationException;
+
+import java.io.Serializable;
 
 import java.util.List;
 
 import javax.ejb.Local;
 
+
 @Local
-public interface AnodePenSessionLocal
+public interface AnodePenSessionLocal extends Serializable
 {
     public AnotoPen add( AnotoPen entity ) throws ApplicationException;
 

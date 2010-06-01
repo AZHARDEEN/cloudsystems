@@ -29,7 +29,7 @@ import javax.persistence.PersistenceContext;
 
 
 @Stateless( name = "AnotoExportFacade", mappedName = "CloudSystems-EjbPrj-AnotoExportFacade" )
-@TransactionAttribute( TransactionAttributeType.NEVER )
+@TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class AnotoExportFacadeBean extends AbstractSecurity implements AnotoExportFacade
 {
     protected static final int SystemMessageTypeId = 8;
@@ -61,7 +61,6 @@ public class AnotoExportFacadeBean extends AbstractSecurity implements AnotoExpo
         return SystemMessageTypeId;
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PgcFieldDTO> getFields( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
     {
         authenticate( auth );

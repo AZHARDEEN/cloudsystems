@@ -2,10 +2,12 @@ package br.com.mcampos.ejb.cloudsystem.anoto.form;
 
 
 import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia;
-import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
+import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.exception.ApplicationException;
+
+import java.io.Serializable;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ import javax.ejb.Local;
 
 
 @Local
-public interface AnotoFormSessionLocal
+public interface AnotoFormSessionLocal extends Serializable
 {
     AnotoForm add( AnotoForm entity ) throws ApplicationException;
 

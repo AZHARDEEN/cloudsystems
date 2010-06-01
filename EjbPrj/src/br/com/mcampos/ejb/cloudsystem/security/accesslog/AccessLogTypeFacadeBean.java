@@ -37,7 +37,7 @@ public class AccessLogTypeFacadeBean extends AbstractSecurity implements AccessL
 	{
 	}
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
+	 
 	public List<AccessLogTypeDTO> getAll( AuthenticationDTO currentUser ) throws ApplicationException
 	{
 		authenticate( currentUser );
@@ -45,7 +45,7 @@ public class AccessLogTypeFacadeBean extends AbstractSecurity implements AccessL
 		return toDTO( types );
 	}
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
+	 
 	public Integer getNextId( AuthenticationDTO currentUser ) throws ApplicationException
 	{
 		authenticate( currentUser );

@@ -12,7 +12,7 @@
                     </columns>
                     <rows>
                         <row>
-                            <image src="/img/cliente.jpg"/>
+                            <image src="/img/logo_sabanco.jpg"/>
                             <label id="labelFormView2Title" style="font-size:20px;color:#0C7A9A" value="##" width="80%"/>
                             <image src="/img/fdigital.jpg"/>
                         </row>
