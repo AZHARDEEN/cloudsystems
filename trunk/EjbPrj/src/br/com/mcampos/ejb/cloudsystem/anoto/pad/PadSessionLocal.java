@@ -4,11 +4,13 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pad;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.exception.ApplicationException;
+
+import java.io.Serializable;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ import javax.ejb.Local;
 
 
 @Local
-public interface PadSessionLocal
+public interface PadSessionLocal extends Serializable
 {
     public Pad get( PadPK key ) throws ApplicationException;
 
@@ -24,7 +26,7 @@ public interface PadSessionLocal
 
     List<AnotoPage> getPages() throws ApplicationException;
 
-	AnotoPage getPage( AnotoPagePK key );
+    AnotoPage getPage( AnotoPagePK key );
 
     List<Media> getImages( AnotoPage page ) throws ApplicationException;
 
@@ -42,7 +44,7 @@ public interface PadSessionLocal
 
     List<AnotoPage> getPages( String address ) throws ApplicationException;
 
-	AnotoPenPage getPenPage( AnotoPen pen, AnotoPage page ) throws ApplicationException;
+    AnotoPenPage getPenPage( AnotoPen pen, AnotoPage page ) throws ApplicationException;
 
     List<AnotoPage> getPages( AnotoForm param ) throws ApplicationException;
 

@@ -48,7 +48,7 @@ public class GenderFacadeBean extends AbstractSecurity implements GenderFacade
     }
 
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
+     
     public List<GenderDTO> getAll( AuthenticationDTO currentUser ) throws ApplicationException
     {
         authenticate( currentUser );
@@ -67,7 +67,7 @@ public class GenderFacadeBean extends AbstractSecurity implements GenderFacade
         return dtos;
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
+     
     public Integer getNextId( AuthenticationDTO currentUser ) throws ApplicationException
     {
         authenticate( currentUser );

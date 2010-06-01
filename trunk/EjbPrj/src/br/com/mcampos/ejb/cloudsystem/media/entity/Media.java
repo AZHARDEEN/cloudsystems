@@ -105,6 +105,7 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
         return this;
     }
 
+    @Override
     public MediaDTO toDTO()
     {
         MediaDTO target = new MediaDTO( getId(), getName() );
@@ -141,6 +142,7 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
         return format;
     }
 
+    @Override
     public int compareTo( Media o )
     {
         if ( o == null )
@@ -148,21 +150,5 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
         if ( getId() == null )
             return 1;
         return getId().compareTo( o.getId() );
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return getId() == null ? 0 : getId().hashCode();
-    }
-
-    @Override
-    public boolean equals( Object obj )
-    {
-        if ( obj == null || ( obj instanceof Media ) == false )
-            return false;
-        if ( getId() == null )
-            return false;
-        return getId().equals( ( ( Media )obj ).getId() );
     }
 }

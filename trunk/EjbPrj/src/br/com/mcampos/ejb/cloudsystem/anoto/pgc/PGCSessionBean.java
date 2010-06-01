@@ -44,8 +44,17 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
 
     public void delete( Integer key ) throws ApplicationException
     {
+        deleteProperty( key );
         delete( Pgc.class, key );
     }
+
+    private void deleteProperty( int id ) throws ApplicationException
+    {
+        Query query = getEntityManager().createNamedQuery( PgcProperty.deleteFromPGC );
+        query.setParameter( 1, id );
+        query.executeUpdate();
+    }
+
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public Pgc get( Integer key ) throws ApplicationException

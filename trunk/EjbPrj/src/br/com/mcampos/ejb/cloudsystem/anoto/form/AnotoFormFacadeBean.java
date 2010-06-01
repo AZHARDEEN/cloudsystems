@@ -135,7 +135,6 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         }
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
     public FormDTO get( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
         authenticate( auth );
@@ -145,7 +144,6 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         return form != null ? form.toDTO() : null;
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
@@ -188,21 +186,18 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         return formSession.removePadFile( form, media ).toDTO();
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PadDTO> getPads( FormDTO form ) throws ApplicationException
     {
         AnotoForm entity = formSession.get( form.getId() );
         return AnotoUtils.toPadList( formSession.getPads( entity ) );
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PenDTO> getAvailablePens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );
         return AnotoUtils.toPenList( formSession.getAvailablePens( DTOFactory.copy( form ) ) );
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<PenDTO> getPens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );
@@ -226,7 +221,6 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         formSession.removeFile( anotoForm, entity );
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<MediaDTO> getFiles( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );
@@ -243,7 +237,6 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         return AnotoUtils.toMediaList( medias );
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<AnotoPageDTO> getPages( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );
@@ -252,14 +245,12 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         return AnotoUtils.toPageList( padSession.getPages( entity ) );
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
     public Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
         return formSession.nextId();
     }
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
     public byte[] getObject( MediaDTO key ) throws ApplicationException
     {
         return mediaSession.getObject( key.getId() );
@@ -320,7 +311,6 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
     }
 
 
-    @TransactionAttribute( TransactionAttributeType.NEVER )
     public List<MediaDTO> getMedias( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );

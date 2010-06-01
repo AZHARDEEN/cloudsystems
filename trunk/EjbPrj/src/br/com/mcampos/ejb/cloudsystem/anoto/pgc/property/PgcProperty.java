@@ -15,6 +15,7 @@ import javax.persistence.Table;
 @NamedQueries( { @NamedQuery( name = PgcProperty.getAll, query = "select o from PgcProperty o" ),
                  @NamedQuery( name = PgcProperty.getAllByPgc,
                               query = "select o from PgcProperty o where o.pgc_id_in = ?1 and o.pgp_id_in <> 16386 order by o.pgp_seq_in" ),
+                 @NamedQuery( name = PgcProperty.deleteFromPGC, query = "delete from PgcProperty o where o.pgc_id_in = ?1 " ),
                  @NamedQuery( name = PgcProperty.getAllGPS,
                               query = "select o from PgcProperty o where o.pgc_id_in = ?1 and o.pgp_id_in = 16386 order by o.pgp_seq_in" ) } )
 @Table( name = "pgc_property" )
@@ -24,6 +25,7 @@ public class PgcProperty implements Serializable
     public static final String getAll = "PgcProperty.findAll";
     public static final String getAllByPgc = "PgcProperty.findAllByPgc";
     public static final String getAllGPS = "PgcProperty.findAllGPS";
+    public static final String deleteFromPGC = "PgcProperty.deleteFromPGC";
 
     @Id
     @Column( name = "pgc_id_in", nullable = false )

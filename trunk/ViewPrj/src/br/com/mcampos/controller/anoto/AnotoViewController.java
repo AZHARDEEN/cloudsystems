@@ -160,10 +160,8 @@ public class AnotoViewController extends AnotoLoggedController
     protected void preparePaging()
     {
         if ( currentList == null || currentList.size() == 1 ) {
-            rowPaging.setVisible( false );
             return;
         }
-        rowPaging.setVisible( true );
         int nIndex = currentList.indexOf( dtoParam );
         pagingPages.setTotalSize( currentList.size() );
         pagingPages.setPageSize( 1 );
@@ -233,18 +231,14 @@ public class AnotoViewController extends AnotoLoggedController
     protected void showFields( AnotoResultList target ) throws ApplicationException
     {
         currentFields = getSession().getFields( getLoggedInUser(), target.getPgcPage() );
-        if ( SysUtils.isEmpty( currentFields ) ) {
-            westView.setVisible( false );
-            return;
-        }
-        westView.setVisible( true );
         if ( SysUtils.isEmpty( fields.getChildren() ) == false )
             fields.getChildren().clear();
         for ( PgcFieldDTO field : currentFields ) {
             Comboitem item = fields.appendItem( field.toString() );
             item.setValue( field );
         }
-        fields.setSelectedIndex( 0 );
+        if ( fields.getItemCount() > 0 )
+            fields.setSelectedIndex( 0 );
         onSelect$fields();
     }
 

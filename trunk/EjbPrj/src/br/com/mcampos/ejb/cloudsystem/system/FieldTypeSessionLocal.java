@@ -5,13 +5,15 @@ import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
 import br.com.mcampos.exception.ApplicationException;
 
+import java.io.Serializable;
+
 import java.util.List;
 
 import javax.ejb.Local;
 
 
 @Local
-public interface FieldTypeSessionLocal
+public interface FieldTypeSessionLocal extends Serializable
 {
     FieldType add( FieldType entity ) throws ApplicationException;
 

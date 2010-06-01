@@ -60,7 +60,7 @@ public class MenuFacadeBean extends AbstractSecurity implements MenuFacade
 	}
 
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
+	 
 	public List<TaskDTO> getMenuTasks( AuthenticationDTO auth, Integer menuId ) throws ApplicationException
 	{
 		authenticate( auth, Role.systemAdmimRoleLevel );
@@ -90,7 +90,7 @@ public class MenuFacadeBean extends AbstractSecurity implements MenuFacade
 		return MenuUtils.copy( menu, true );
 	}
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
+	 
 	public Integer getNextMenuId( AuthenticationDTO auth ) throws ApplicationException
 	{
 		authenticate( auth, Role.systemAdmimRoleLevel );
@@ -170,14 +170,14 @@ public class MenuFacadeBean extends AbstractSecurity implements MenuFacade
 	}
 
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
+	 
 	public List<TaskDTO> getRootTasks( AuthenticationDTO auth ) throws ApplicationException
 	{
 		authenticate( auth, Role.systemAdmimRoleLevel );
 		return TaskUtil.toTaskDTOList( getTaskSession().getRoots() );
 	}
 
-	@TransactionAttribute( TransactionAttributeType.NEVER )
+	 
 	public List<MenuDTO> getParentMenus( AuthenticationDTO auth ) throws ApplicationException
 	{
 		authenticate( auth, Role.systemAdmimRoleLevel );

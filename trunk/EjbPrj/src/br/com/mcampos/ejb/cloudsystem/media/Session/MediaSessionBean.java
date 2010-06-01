@@ -38,9 +38,13 @@ public class MediaSessionBean extends Crud<Integer, Media> implements MediaSessi
     public byte[] getObject( Integer key ) throws ApplicationException
     {
         Media entity = get( key );
-        if ( entity != null )
-            return entity.getObject();
-        else
-            return null;
+        byte[] object = null;
+
+        if ( entity != null ) {
+            if ( entity.getObject() != null && entity.getObject().length > 0 )
+                object = entity.getObject();
+        }
+
+        return object;
     }
 }
