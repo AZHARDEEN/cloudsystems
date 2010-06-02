@@ -17,4 +17,7 @@ public interface PgcPageAttachmentSessionLocal
 	PgcPageAttachment get( PgcPageAttachmentPK key ) throws ApplicationException;
 
 	List<PgcPageAttachment> getAll( PgcPage page ) throws ApplicationException;
+
+	List<PgcPageAttachment> getAll( String barCodeValue, String pageAddress, Integer padId,
+									Integer currentPGC ) throws ApplicationException;
 }
