@@ -252,6 +252,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
     {
         clearRecordInfo();
         editId.setDisabled( true );
+        editIcrTemplate.setValue( "" );
     }
 
     @Override
@@ -262,6 +263,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
         editId.setValue( dto.getPageAddress() );
         editId.setDisabled( true );
         editDescription.setValue( dto.getDescription() );
+        editIcrTemplate.setValue( dto.getIcrTemplate() );
         return null;
     }
 

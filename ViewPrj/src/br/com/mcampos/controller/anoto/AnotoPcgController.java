@@ -203,6 +203,17 @@ public class AnotoPcgController extends LoggedBaseController
         }
     }
 
+    public void onClick$cmdRefresh()
+    {
+        try {
+            refresh();
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage() );
+        }
+    }
+
+
     protected void refresh() throws ApplicationException
     {
         List<PGCDTO> medias = getSession().getAllPgc( getLoggedInUser() );

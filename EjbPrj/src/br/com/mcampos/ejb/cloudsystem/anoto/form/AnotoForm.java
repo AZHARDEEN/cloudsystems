@@ -38,6 +38,12 @@ public class AnotoForm implements Serializable, EntityCopyInterface<FormDTO>, Co
     @Temporal( TemporalType.DATE )
     private Date insertDate;
 
+    @Column( name = "frm_icr_image_bt" )
+    private Boolean icrImage;
+
+    @Column( name = "frm_image_filepath_ch", length = 1024 )
+    private String imagePath;
+
     public AnotoForm()
     {
     }
@@ -83,7 +89,9 @@ public class AnotoForm implements Serializable, EntityCopyInterface<FormDTO>, Co
     {
         FormDTO dto = new FormDTO( this.getId(), this.getDescription() );
 
-        dto.setIp( this.getApplication() );
+        dto.setApplication( this.getApplication() );
+        dto.setIcrImage( getIcrImage() );
+        dto.setImagePath( getImagePath() );
         return dto;
     }
 
@@ -100,5 +108,25 @@ public class AnotoForm implements Serializable, EntityCopyInterface<FormDTO>, Co
     public int compareTo( AnotoForm o )
     {
         return getId().compareTo( o.getId() );
+    }
+
+    public void setIcrImage( Boolean icrImage )
+    {
+        this.icrImage = icrImage;
+    }
+
+    public Boolean getIcrImage()
+    {
+        return icrImage;
+    }
+
+    public void setImagePath( String imagePath )
+    {
+        this.imagePath = imagePath;
+    }
+
+    public String getImagePath()
+    {
+        return imagePath;
     }
 }

@@ -12,11 +12,13 @@ import java.util.List;
 public class FormDTO extends SimpleTableDTO
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8356914268806695133L;
-	String application;
+     *
+     */
+    private static final long serialVersionUID = -8356914268806695133L;
+    String application;
     List<PadDTO> pads;
+    private Boolean icrImage;
+    private String imagePath;
 
     public FormDTO( SimpleTableDTO simpleTableDTO )
     {
@@ -38,7 +40,7 @@ public class FormDTO extends SimpleTableDTO
         super();
     }
 
-    public FormDTO setIp( String ip )
+    public FormDTO setApplication( String ip )
     {
         if ( SysUtils.isEmpty( ip ) )
             throw new InvalidParameterException( "O ip do formulário não pode ser nulo ou vazio" );
@@ -65,5 +67,27 @@ public class FormDTO extends SimpleTableDTO
     public String toString()
     {
         return getId() + "-" + getApplication() + "-" + getDescription();
+    }
+
+    public void setIcrImage( Boolean icrImage )
+    {
+        this.icrImage = icrImage;
+    }
+
+    public Boolean getIcrImage()
+    {
+        if ( icrImage == null )
+            icrImage = false;
+        return icrImage;
+    }
+
+    public void setImagePath( String imagePath )
+    {
+        this.imagePath = imagePath;
+    }
+
+    public String getImagePath()
+    {
+        return imagePath;
     }
 }

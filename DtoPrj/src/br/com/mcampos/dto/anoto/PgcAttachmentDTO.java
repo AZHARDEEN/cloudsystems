@@ -7,8 +7,9 @@ import java.io.Serializable;
 
 public class PgcAttachmentDTO implements Serializable
 {
+    public static final Integer typeBarCode = 1;
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -3661873524138669352L;
 	private Integer type;

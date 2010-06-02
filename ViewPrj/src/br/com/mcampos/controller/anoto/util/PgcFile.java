@@ -56,7 +56,7 @@ public class PgcFile
 {
     private static final short KEY_LOCATION_COORDINATES = 16386;
 
-    private String imageFileTypeExtension = "png";
+    private String imageFileTypeExtension = "jpg";
 
     private List<MediaDTO> pgcs;
     private String penId;
@@ -308,30 +308,26 @@ public class PgcFile
             PgcPageDTO dto = new PgcPageDTO( pgcPenPage.getPgc(), nBookIndex, nPageIndex );
             dto.setAnotoPage( new AnotoPageDTO( pgcPenPage.getPenPage().getPage().getPad(), page.getPageAddress() ) );
             getSession().add( dto );
-            List<MediaDTO> backImages = addAnotoImages( pgcPenPage, page, basePath, nBookIndex, nPageIndex );
-            if ( SysUtils.isEmpty( pgcPenPage.getPenPage().getPage().getIcrTemplate() ) == false ) {
-                File icrTemplateFile = new File( pgcPenPage.getPenPage().getPage().getIcrTemplate() );
-                if ( icrTemplateFile.exists() && icrTemplateFile.isFile() ) {
-                    try {
-                        icrFields = processIcr( pgcPenPage, page, basePath );
-                    }
-                    catch ( Exception e ) {
-                        System.out.println( e.getMessage() );
-                    }
-                }
-            }
+            icrFields = processIcr( pgcPenPage, page, basePath );
             addFields( dto, page, basePath, icrFields );
-            addAttachments( dto, page );
+            List<PgcAttachmentDTO> attachs = addAttachments( dto, page );
+            addAnotoImages( pgcPenPage, page, basePath, nBookIndex, nPageIndex, attachs );
         }
         catch ( Exception e ) {
             System.out.println( e.getMessage() );
             e.printStackTrace();
             return;
         }
+        if ( pgcPenPage.getForm().getIcrImage() == false ) {
+            if ( file.exists() )
+                file.delete();
+            file.deleteOnExit();
+        }
     }
 
-    private List<MediaDTO> addAnotoImages( PgcPenPageDTO pgcPenPage, Page page, String basePath, int nBookIndex,
-                                           int nPageIndex ) throws RenderException, NotAllowedException, ApplicationException
+    private List<MediaDTO> addAnotoImages( PgcPenPageDTO pgcPenPage, Page page, String basePath, int nBookIndex, int nPageIndex,
+                                           List<PgcAttachmentDTO> attachs ) throws RenderException, NotAllowedException,
+                                                                                   ApplicationException
     {
         Renderer renderer;
         MediaDTO media;
@@ -347,21 +343,48 @@ public class PgcFile
         }
         else {
             for ( MediaDTO image : backgroundImages ) {
-                String imagePath = basePath + "/background";
+                String imagePath = basePath;
                 byte[] object = getSession().getObject( image );
-                renderer.setBackground( getPad().saveBackgroundImage( imagePath, image.getName(), object ) );
+                String backImage = getPad().saveBackgroundImage( imagePath, image.getName(), object );
+                renderer.setBackground( backImage );
                 renderer.renderToFile( renderedImage );
                 media = createMedia( renderedImage );
                 if ( media != null )
                     getSession().addProcessedImage( pgcPenPage.getPgc(), media, nBookIndex, nPageIndex );
+                File backFile = new File( backImage );
+                if ( backFile.exists() )
+                    backFile.delete();
+                backFile.deleteOnExit();
             }
         }
-        //File file = new File( renderedImage );
-        //if ( file.exists() )
-        //    file.delete();
+        File file = new File( renderedImage );
+        if ( SysUtils.isEmpty( pgcPenPage.getForm().getImagePath() ) == false && SysUtils.isEmpty( attachs ) == false ) {
+            for ( PgcAttachmentDTO attach : attachs ) {
+                if ( attach.getType().equals( PgcAttachmentDTO.typeBarCode ) && SysUtils.isEmpty( attach.getValue() ) == false ) {
+                    String targetFilename = pgcPenPage.getForm().getImagePath();
+
+                    if ( targetFilename.endsWith( "/" ) == false && targetFilename.endsWith( "\\" ) == false )
+                        targetFilename += "/";
+                    targetFilename += attach.getValue().trim() + "." + getImageFileTypeExtension();
+                    File dest = new File( targetFilename );
+                    file.renameTo( dest );
+                }
+            }
+        }
+        if ( file.exists() )
+            file.delete();
         return backgroundImages;
     }
 
+    private boolean hasTemplate( PgcPenPageDTO pgcPenPage )
+    {
+        if ( SysUtils.isEmpty( pgcPenPage.getPenPage().getPage().getIcrTemplate() ) )
+            return false;
+        File icrTemplateFile = new File( pgcPenPage.getPenPage().getPage().getIcrTemplate() );
+        if ( icrTemplateFile.exists() == false || icrTemplateFile.isFile() == false )
+            return false;
+        return true;
+    }
 
     private Map<String, IcrField> processIcr( PgcPenPageDTO pgcPenPage, Page page, String basePath ) throws RenderException,
                                                                                                             NotAllowedException,
@@ -371,21 +394,37 @@ public class PgcFile
         String icrImage = null;
         Map<String, IcrField> icrFields = null;
 
-        renderer = RendererFactory.create( page );
-        icrImage = String.format( "%s/%s_%s.%s", basePath, pgcPenPage.getPageAddress(), "icr", "JPG" );
-        renderer.renderToFile( icrImage, 300 );
-        icrFields = ICRObject.processImage( pgcPenPage.getPenPage().getPage().getIcrTemplate(), icrImage, A2iaDocument.typeJPEG );
-        //File file = new File( icrImage );
-        //if ( file.exists() )
-        //    file.delete();
+        if ( pgcPenPage.getForm().getIcrImage() == false ) {
+            if ( hasTemplate( pgcPenPage ) == false )
+                return icrFields;
+        }
+        try {
+            renderer = RendererFactory.create( page );
+            icrImage = String.format( "%s/%s_%s.%s", basePath, pgcPenPage.getPageAddress(), "icr", "JPG" );
+            renderer.renderToFile( icrImage, 300 );
+            if ( hasTemplate( pgcPenPage ) ) {
+                String template = pgcPenPage.getPenPage().getPage().getIcrTemplate();
+                icrFields = ICRObject.processImage( template, icrImage, A2iaDocument.typeJPEG );
+            }
+        }
+        catch ( Exception e ) {
+            System.out.println( e.getMessage() );
+            icrFields = null;
+        }
+        if ( pgcPenPage.getForm().getIcrImage() == false ) {
+            File file = new File( icrImage );
+            if ( file.exists() )
+                file.delete();
+        }
         return icrFields;
     }
 
 
-    private void addAttachments( PgcPageDTO pgcPage, Page page ) throws PageException, ApplicationException
+    private List<PgcAttachmentDTO> addAttachments( PgcPageDTO pgcPage, Page page ) throws PageException, ApplicationException
     {
         PgcAttachmentDTO dto;
         int barcodeType;
+        List<PgcAttachmentDTO> attachs = new ArrayList<PgcAttachmentDTO>();
 
         if ( page.hasAttachments() ) {
             Iterator it = page.getAttachments();
@@ -415,8 +454,10 @@ public class PgcFile
                     dto.setValue( obj.getData().toString() );
                 }
                 getSession().addPgcAttachment( dto );
+                attachs.add( dto );
             }
         }
+        return attachs;
     }
 
     private void addFields( PgcPageDTO pgcPage, Page page, String basePath,

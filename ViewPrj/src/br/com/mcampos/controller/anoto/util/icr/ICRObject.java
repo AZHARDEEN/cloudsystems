@@ -1,6 +1,8 @@
 package br.com.mcampos.controller.anoto.util.icr;
 
 
+import br.com.mcampos.sysutils.SysUtils;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -20,6 +22,8 @@ public class ICRObject
         A2iaChannel channel;
         A2iaRequest request;
 
+        if ( SysUtils.isEmpty( a2iaTableDef ) )
+            return null;
 
         try {
             A2ia icrObj = A2ia.createInstance();
