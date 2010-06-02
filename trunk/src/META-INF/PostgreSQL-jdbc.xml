@@ -11,8 +11,11 @@
     <name>user</name>
     <value>cloud</value>
    </property>
+   <property>
+    <name>password</name>
+    <value>cloud</value>
+   </property>
   </properties>
-  <password-encrypted>7262A3B2F02512DD110B2821B0B16BC1</password-encrypted>
  </jdbc-driver-params>
  <jdbc-connection-pool-params>
   <test-table-name>SQL SELECT 1</test-table-name>

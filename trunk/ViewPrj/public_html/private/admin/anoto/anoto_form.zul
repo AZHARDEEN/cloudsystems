@@ -27,7 +27,7 @@
                     <div id="recordView" width="100%">
                         <grid width="100%">
                             <columns>
-                                <column align="left" width="100px"/>
+                                <column align="left" width="160px"/>
                                 <column align="left"/>
                             </columns>
                             <rows>
@@ -42,6 +42,14 @@
                                 <row>
                                     <label id="labelDescription" value="##"/>
                                     <label id="recordDescription"/>
+                                </row>
+                                <row>
+                                    <label id="labelIcrImage" value="##"/>
+                                    <label id="recordIcrImage"/>
+                                </row>
+                                <row>
+                                    <label id="labelImagePath" value="##"/>
+                                    <label id="recordImagePath"/>
                                 </row>
                             </rows>
                         </grid>
@@ -66,6 +74,14 @@
                                 <row>
                                     <label id="labelEditDescription" value="##"/>
                                     <textbox id="editDescription" width="99%" value=""/>
+                                </row>
+                                <row>
+                                    <label id="labelEditIcrImage" value="##"/>
+                                    <checkbox id="editIcrImage" width="99%" checked="false"/>
+                                </row>
+                                <row>
+                                    <label id="labelEditImagePath" value="##"/>
+                                    <textbox id="editImagePath" width="99%" value=""/>
                                 </row>
                             </rows>
                         </grid>
