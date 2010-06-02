@@ -48,6 +48,10 @@
                                     <label id="recordIcrImage"/>
                                 </row>
                                 <row>
+                                    <label id="labelConcatPgc" value="##"/>
+                                    <label id="recordConcatPgc"/>
+                                </row>
+                                <row>
                                     <label id="labelImagePath" value="##"/>
                                     <label id="recordImagePath"/>
                                 </row>
@@ -78,6 +82,10 @@
                                 <row>
                                     <label id="labelEditIcrImage" value="##"/>
                                     <checkbox id="editIcrImage" width="99%" checked="false"/>
+                                </row>
+                                <row>
+                                    <label id="labelEditConcatPgc" value="##"/>
+                                    <checkbox id="editConcatPgc" width="99%" checked="false"/>
                                 </row>
                                 <row>
                                     <label id="labelEditImagePath" value="##"/>
