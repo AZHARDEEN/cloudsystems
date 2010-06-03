@@ -62,6 +62,7 @@
       <string v="oracle.tip.tools.ide.fabric.addin.SCAContentSetProvider/sca-content"/>
       <string v="oracle.bpm.fusion.repository.BPMProjectSettings/bpmProjectsProcessesContentSet"/>
       <string v="oracle.bpm.fusion.repository.BPMProjectSettings/bpmProjectsOrganizationContentSet"/>
+      <string v="oracle.adfnmc.core.contentset.NmcContentSetProvider/nmcContentSet"/>
    </list>
    <value n="defaultPackage" v="viewprj"/>
    <hash n="ejbModuleContainer">
@@ -167,6 +168,8 @@
          <string v="-Xlint:-serial"/>
          <string v="-Xlint:-unchecked"/>
       </list>
+      <value n="source" v="Default"/>
+      <value n="target" v="Default"/>
    </hash>
    <hash n="oracle.jdeveloper.deploy.dt.DeploymentProfiles">
       <hash n="profileDefinitions">

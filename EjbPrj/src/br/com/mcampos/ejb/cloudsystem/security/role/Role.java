@@ -43,6 +43,7 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>, Compara
 
     @Column( name = "rol_description_ch", nullable = false )
     private String description;
+
     @Id
     @Column( name = "rol_id_in", nullable = false )
     private Integer id;
@@ -171,4 +172,5 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>, Compara
         else
             return false;
     }
+
 }
