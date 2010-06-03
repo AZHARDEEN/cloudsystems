@@ -68,5 +68,9 @@
     <class>br.com.mcampos.ejb.cloudsystem.security.menu.locale.MenuLocale</class>
     <class>br.com.mcampos.ejb.cloudsystem.client.Client</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.role.CollaboratorRole</class>
+    <properties>
+      <property name="eclipselink.cache.type.default" value="NONE"/>
+      <property name="eclipselink.cache.shared.default" value="false"/>
+    </properties>
   </persistence-unit>
 </persistence>
