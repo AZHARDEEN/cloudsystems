@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.admin.system.config.task.TaskController">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.admin.security.task.TaskController">
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <vbox align="center">
-                    <label style="font-size:20px;color:#0C7A9A" value="Manutenção - Tarefas do Sistema"/>
+                    <label id="labelTaskTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
                 </vbox>
             </north>
             <west size="40%" splittable="true" flex="true">
                 <!-- Por favor, nao mude o id deste TreeControl -->
                 <tree fixedLayout="true" id="treeList" width="100%" height="100%" zclass="z-dottree">
                     <treecols sizable="true">
-                        <treecol label="Tarefa" width="1"/>
+                        <treecol id="treecolTask" label="##" width="1"/>
                     </treecols>
                     <treechildren id="rootTree"></treechildren>
                 </tree>
@@ -21,9 +21,9 @@
                 <!-- Por favor, nao mude o id desta div -->
                 <tabbox>
                     <tabs>
-                        <tab label="Detalhes" />
-                        <tab label="Menu" />
-                        <tab label="Role" />
+                        <tab id="tabData" label="##" />
+                        <tab id="tabMenu" label="##" />
+                        <tab id="tabRole" label="##" />
                     </tabs>
                     <tabpanels>
                         <tabpanel >
@@ -37,15 +37,15 @@
                                         </columns>
                                         <rows>
                                             <row>
-                                                Código
+                                                <label id="labelCode" value="##"/>
                                                 <label id="recordId"/>
                                             </row>
                                             <row>
-                                                Descrição
+                                                <label id="labelDescription" value="##"/>
                                                 <label id="recordDescription"/>
                                             </row>
                                             <row>
-                                                Tarefa Associada
+                                                <label id="labelParent" value="##"/>
                                                 <label id="recordParent"/>
                                             </row>
                                         </rows>
@@ -54,30 +54,30 @@
                                     <separator />
                                     <tabbox id="associationTab">
                                         <tabs>
-                                            <tab label="Menu"/>
-                                            <tab label="Roles"/>
+                                            <tab id="tabFreeMenus" label="##"/>
+                                            <tab id="tabFreeRoles" label="##"/>
                                         </tabs>
                                         <tabpanels>
                                             <tabpanel>
                                                 <toolbar >
-                                                    <toolbarbutton id="removeMenu" image="/img/icontexto-webdev-remove-016x016.png" label="Remover Menu" disabled="true"/>
+                                                    <toolbarbutton id="removeMenu" image="/img/icontexto-webdev-remove-016x016.png" label="##" disabled="true"/>
                                                 </toolbar>
                                                 <listbox fixedLayout="true" id="listMenu" height="300px">
                                                     <listhead sizable="true">
-                                                        <listheader id="listHeaderMenuId" align="left" label="Cód" sort="auto"
+                                                        <listheader id="listHeaderMenuId" align="left" label="##" sort="auto"
                                                                     width="10%"/>
-                                                        <listheader id="listHeaderMenuDesc" align="left" label="Descrição" sort="auto"
+                                                        <listheader id="listHeaderMenuDesc" align="left" label="##" sort="auto"
                                                                     width="20%"/>
-                                                        <listheader id="listHeaderMenuUrl" align="left" label="URL" sort="auto"
+                                                        <listheader id="listHeaderMenuUrl" align="left" label="##" sort="auto"
                                                                     width="50%"/>
-                                                        <listheader id="listHeaderMenuParent" align="left" label="Menu Pai" sort="auto"
+                                                        <listheader id="listHeaderMenuParent" align="left" label="##" sort="auto"
                                                                     width="20%"/>
                                                     </listhead>
                                                 </listbox>
                                             </tabpanel>
                                             <tabpanel>
                                                 <toolbar >
-                                                    <toolbarbutton id="removeRole" image="/img/icontexto-webdev-remove-016x016.png" label="Remover Role" disabled="true"/>
+                                                    <toolbarbutton id="removeRole" image="/img/icontexto-webdev-remove-016x016.png" label="##" disabled="true"/>
                                                 </toolbar>
                                                 <listbox fixedLayout="true" id="listRole" height="300px">
                                                     <listhead sizable="true">
@@ -102,15 +102,15 @@
                                         </columns>
                                         <rows>
                                             <row>
-                                                Código
+                                                <label id="labelEditCode" value="##"/>
                                                 <intbox id="editId" width="100px" constraint="no negative"/>
                                             </row>
                                             <row>
-                                                Descrição
+                                                <label id="labelEditDescription" value="##"/>
                                                 <textbox id="editDescription" width="99%"/>
                                             </row>
                                             <row>
-                                                Tarefa Associada
+                                                <label id="labelEditParent" value="##"/>
                                                 <intbox id="editParent" width="100px" droppable="true"/>
                                             </row>
                                         </rows>
@@ -124,7 +124,7 @@
                             <div >
                                 <tree fixedLayout="true" id="treeMenu" width="100%" height="100%" zclass="z-dottree">
                                     <treecols sizable="true">
-                                        <treecol label="Menu" width="1"/>
+                                        <treecol label="treecolMenu" width="1"/>
                                     </treecols>
                                     <treechildren id="rootTreeMenu"></treechildren>
                                 </tree>
@@ -134,7 +134,7 @@
                             <div >
                                 <tree fixedLayout="true" id="treeRole" width="100%" height="100%" zclass="z-dottree">
                                     <treecols sizable="true">
-                                        <treecol label="Role" width="1"/>
+                                        <treecol label="treecolRole" width="1"/>
                                     </treecols>
                                     <treechildren id="rootTreeRole"></treechildren>
                                 </tree>

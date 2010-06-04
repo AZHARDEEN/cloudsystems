@@ -2,9 +2,9 @@ package br.com.mcampos.controller.admin.security.roles;
 
 
 import br.com.mcampos.controller.admin.security.SecutityBaseController;
-import br.com.mcampos.controller.admin.system.config.task.TaskListRenderer;
-import br.com.mcampos.controller.admin.system.config.task.TaskTreeModel;
-import br.com.mcampos.controller.admin.system.config.task.TaskTreeRenderer;
+import br.com.mcampos.controller.admin.security.task.TaskListRenderer;
+import br.com.mcampos.controller.admin.security.task.TaskTreeModel;
+import br.com.mcampos.controller.admin.security.task.TaskTreeRenderer;
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;
@@ -363,6 +363,11 @@ public class RoleController extends SecutityBaseController implements IDropEvent
 
     public void onCheck$chkShowChildTasks()
     {
-
+        RoleDTO role = ( RoleDTO )getTree().getSelectedItem().getValue();
+        try {
+            loadTasks(role);
+        } catch (ApplicationException e) {
+            showErrorMessage(e.getMessage());
+        }
     }
 }

@@ -54,4 +54,34 @@ public class MenuSessionBean extends Crud<Integer, Menu> implements MenuSessionL
     {
         return nextIntegerId( Menu.nextId );
     }
+
+    @Override
+    public Menu update(Menu entity) throws ApplicationException {
+        Menu menu = super.update(entity);
+        Menu parent;
+
+        parent = menu.getParentMenu();
+        if ( parent != null ) {
+            parent.addMenu(menu);
+        }
+        return menu;
+    }
+
+    @Override
+    public Menu add(Menu entity) throws ApplicationException
+    {
+        Menu menu = super.add(entity);
+        setParent(menu);
+        return menu;
+    }
+
+    private void setParent ( Menu menu )
+    {
+        Menu parent;
+
+        parent = menu.getParentMenu();
+        if ( parent != null ) {
+            parent.addMenu(menu);
+        }
+    }
 }

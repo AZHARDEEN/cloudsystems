@@ -1,4 +1,4 @@
-package br.com.mcampos.controller.admin.system.config.menu;
+package br.com.mcampos.controller.admin.security.menu;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;

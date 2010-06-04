@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div align="center">
+        <hbox>
+            <toolbar>
+                <toolbarbutton id="cmdCreate" image="/img/icontexto-webdev-add-016x016.png" label="##" />
+                <toolbarbutton id="cmdUpdate" image="/img/icontexto-webdev-add-016x016.png" label="##" />
+                <toolbarbutton id="cmdDelete" image="/img/icontexto-webdev-add-016x016.png" label="##" />
+                <separator  bar="true" orient="horizontal" />
+                <button id="cmdRefresh" label="Atualizar" image="/img/icontexto-webdev-reload-016x016.png"
+                        tooltiptext="Atualiza a lista de registros"/>
+            </toolbar>
+        </hbox>
+    </div>
+</zk>

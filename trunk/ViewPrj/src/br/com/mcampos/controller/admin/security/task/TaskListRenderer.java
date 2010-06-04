@@ -1,4 +1,4 @@
-package br.com.mcampos.controller.admin.system.config.task;
+package br.com.mcampos.controller.admin.security.task;
 
 
 import br.com.mcampos.dto.security.TaskDTO;
