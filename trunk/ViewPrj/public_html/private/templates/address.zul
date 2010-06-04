@@ -1,51 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk>
-<div xmlns="http://www.zkoss.org/2005/zul" >
-    <grid fixedLayout="true">
-        <columns>
-            <column width="20%"/>
-            <column/>
-        </columns>
-        <rows>
-            <row>
-                <label value="Tipo" />
-                <hbox>
-                    <combobox id="addressType" value="Residencial" >
-                        <comboitem label="Residencial" value="1" />
-                    </combobox>
-                </hbox>
-            </row>
-            <row>
-                <label value="CEP" />
-                <hbox>
-                <textbox id="zip" width="100px" maxlength="10" />
-                </hbox>
-            </row>
-            <row>
-                <label value="Endereço" />
-                <textbox id="address" width="99%" maxlength="255" multiline="true" rows="2" />
-            </row>
-            <row>
-                <label value="Bairro" />
-                <textbox id="hood" width="99%" maxlength="128" />
-            </row>
-            <row>
-                <label value="Estado"  />
-                <combobox id="state" width="94%" autodrop="true" >
-                </combobox>
-            </row>
-            <row>
-                <label value="Cidade"  />
-                <combobox id="city" width="94%" autodrop="false" draggable="false" droppable="false" >
-                </combobox>
-            </row>
-            <row>
-                <label value="Observação"  />
-                <textbox id="addressComment" width="99%" rows="2" >
-                </textbox>
-            </row>
-        </rows>
-    </grid>
-</div>
+    <div xmlns="http://www.zkoss.org/2005/zul" apply=" br.com.mcampos.controller.commom.AddressController">
+        <grid fixedLayout="true">
+            <columns>
+                <column width="20%"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <label value="##" id="labelAddressType"/>
+                    <hbox>
+                        <combobox id="addressType" value="Residencial">
+                            <comboitem label="Residencial" value="1"/>
+                        </combobox>
+                    </hbox>
+                </row>
+                <row>
+                    <label value="##" id="labelAddressZipCode"/>
+                    <hbox>
+                        <textbox id="zip" width="100px" maxlength="10"/>
+                    </hbox>
+                </row>
+                <row>
+                    <label value="##" id="labelAddress"/>
+                    <textbox id="address" width="99%" maxlength="255" multiline="true" rows="2"/>
+                </row>
+                <row>
+                    <label value="##" id="labelAddressDistrict"/>
+                    <textbox id="hood" width="99%" maxlength="128"/>
+                </row>
+                <row>
+                    <label value="##" id="labelAddressState"/>
+                    <combobox id="state" width="94%" autodrop="true"></combobox>
+                </row>
+                <row>
+                    <label value="##" id="labelAddressCity"/>
+                    <combobox id="city" width="94%" autodrop="false" draggable="false" droppable="false"></combobox>
+                </row>
+                <row>
+                    <label value="Observação" id="labelAddressObs"/>
+                    <textbox id="##" width="99%" rows="2"></textbox>
+                </row>
+            </rows>
+        </grid>
+    </div>
 </zk>

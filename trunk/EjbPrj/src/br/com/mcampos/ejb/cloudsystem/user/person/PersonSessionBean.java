@@ -5,7 +5,7 @@ import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserContactDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.entity.address.AddressType;
+import br.com.mcampos.ejb.cloudsystem.address.addresstype.entity.AddressType;
 import br.com.mcampos.ejb.entity.address.City;
 import br.com.mcampos.ejb.cloudsystem.user.login.Login;
 import br.com.mcampos.ejb.entity.user.Address;

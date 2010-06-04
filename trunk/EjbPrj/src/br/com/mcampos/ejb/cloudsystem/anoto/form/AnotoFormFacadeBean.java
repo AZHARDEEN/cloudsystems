@@ -46,7 +46,7 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
     public static final Integer messageId = 9;
 
     @PersistenceContext( unitName = "EjbPrj" )
-    private EntityManager em;
+    private transient EntityManager em;
 
 
     @EJB

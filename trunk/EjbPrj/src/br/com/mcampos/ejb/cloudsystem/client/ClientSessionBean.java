@@ -51,7 +51,7 @@ public class ClientSessionBean extends Crud<ClientPK, Client> implements ClientS
 
     public List<Client> getAllCompanyClients( Company company ) throws ApplicationException
     {
-        return ( List<Client> )getResultList( Client.getAllCompany );
+        return ( List<Client> )getResultList( Client.getAllCompany, company );
     }
 
     public List<Client> getAllPersonClients( Company company ) throws ApplicationException

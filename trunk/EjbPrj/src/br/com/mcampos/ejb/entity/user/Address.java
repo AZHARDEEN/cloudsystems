@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.entity.user;
 
 
-import br.com.mcampos.ejb.entity.address.AddressType;
+import br.com.mcampos.ejb.cloudsystem.address.addresstype.entity.AddressType;
 import br.com.mcampos.ejb.entity.address.City;
 import br.com.mcampos.ejb.entity.user.pk.AddressPK;
 

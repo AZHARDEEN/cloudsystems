@@ -13,7 +13,7 @@
     <class>br.com.mcampos.ejb.entity.user.attributes.ContactType</class>
     <class>br.com.mcampos.ejb.entity.user.Users</class>
     <class>br.com.mcampos.ejb.entity.address.Region</class>
-    <class>br.com.mcampos.ejb.entity.address.AddressType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.address.addresstype.entity.AddressType</class>
     <class>br.com.mcampos.ejb.entity.user.Company</class>
     <class>br.com.mcampos.ejb.entity.user.UserDocument</class>
     <class>br.com.mcampos.ejb.entity.user.UserContact</class>
