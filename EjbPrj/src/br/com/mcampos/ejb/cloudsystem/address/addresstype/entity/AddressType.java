@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.entity.address;
+package br.com.mcampos.ejb.cloudsystem.address.addresstype.entity;
 
 import java.io.Serializable;
 
@@ -11,14 +11,18 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "AddressType.findAll", query = "select o from AddressType o order by o.id" ),
-                 @NamedQuery( name = "AddressType.find", query = "select o from AddressType o where o.id = :id " ) } )
+@NamedQueries( { @NamedQuery( name = AddressType.getAll, query = "select o from AddressType o order by o.id" ),
+                 @NamedQuery( name = AddressType.nextId, query = "select max(o.id) from AddressType o" ) } )
 @Table( name = "address_type" )
 public class AddressType implements Serializable
 {
+    public static final String getAll = "AddressType.findAll";
+    public static final String nextId = "AddressType.nextId";
+
     @Id
     @Column( name = "adt_id_in", nullable = false )
     protected Integer id;
+
     @Column( name = "adt_description_ch", nullable = false, length = 32 )
     protected String description;
 

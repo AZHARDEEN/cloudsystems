@@ -25,9 +25,9 @@ import javax.persistence.TemporalType;
 @Entity
 @NamedQueries( { @NamedQuery( name = Client.getAll, query = "select o from Client o where o.company = ?1" ),
                  @NamedQuery( name = Client.getAllCompany,
-                              query = "select o from Client o where o.company = ?1 and o.client.userType.id = 2" ),
+                              query = "select o from Client o where o.company = ?1 and o.client.userType.id = '2'" ),
                  @NamedQuery( name = Client.getAllPerson,
-                              query = "select o from Client o where o.company = ?1 and o.client.userType.id = 1" ) } )
+                              query = "select o from Client o where o.company = ?1 and o.client.userType.id = '1'" ) } )
 @Table( name = "client" )
 @IdClass( ClientPK.class )
 public class Client implements Serializable

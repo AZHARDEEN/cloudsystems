@@ -5,12 +5,12 @@ import br.com.mcampos.dto.core.DisplayNameDTO;
 public class AddressTypeDTO extends DisplayNameDTO implements Comparable<AddressTypeDTO>
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5920660631361301995L;
-	Integer id;
+     *
+     */
+    private static final long serialVersionUID = 5920660631361301995L;
+    Integer id;
     String description;
-    
+
     public AddressTypeDTO()
     {
         super();
@@ -47,14 +47,14 @@ public class AddressTypeDTO extends DisplayNameDTO implements Comparable<Address
     {
         return id;
     }
-    
-    public int compareTo ( AddressTypeDTO target )
+
+    public int compareTo( AddressTypeDTO target )
     {
         if ( target == null || target.getId() == null )
             return 1;
         if ( getId() == null )
             return -1;
-        return getId ().compareTo(target.getId() );
+        return getId().compareTo( target.getId() );
     }
 
     @Override
@@ -62,12 +62,18 @@ public class AddressTypeDTO extends DisplayNameDTO implements Comparable<Address
     {
         if ( obj == null )
             return false;
-        
+
         if ( obj instanceof AddressTypeDTO ) {
-            AddressTypeDTO dto = ( AddressTypeDTO ) obj;
-            
+            AddressTypeDTO dto = ( AddressTypeDTO )obj;
+
             return getId().equals( dto.getId() );
         }
         return super.equals( obj );
+    }
+
+    @Override
+    public String toString()
+    {
+        return getDescription();
     }
 }

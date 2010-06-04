@@ -3,16 +3,19 @@ package br.com.mcampos.controller.user.client;
 
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.ejb.cloudsystem.client.ClientFacade;
-import br.com.mcampos.exception.ApplicationException;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listheader;
+import org.zkoss.zul.Listitem;
 
 public class CompanyClientController extends LoggedBaseController
 {
+    private static final String companyRecordPage = "/private/user/client/company_record.zul";
+
     private ClientFacade clientSession;
 
     private Label labelCompanyClientTitle;
@@ -21,6 +24,33 @@ public class CompanyClientController extends LoggedBaseController
     private Listheader headerId;
 
     private Listbox listboxRecord;
+
+
+    /**
+     * Mapeamento do botão cmdCreate. O nome do botão NÃO pode ser alterado no formulário WEB.
+     * O evento onClick$cmdCreate dispara o início do processo de inclusão em um formulário
+     */
+    private Button cmdCreate;
+
+    /**
+     * Mapeamento do botão cmdUpdate. O nome do botão NÃO pode ser alterado no formulário WEB.
+     * O evento onClick$cmdUpdate dispara o início do processo de alteração de um registro
+     * O registro selecionado em um formulário.
+     */
+    private Button cmdUpdate;
+
+    /**
+     * Mapeamento do botão cmdDelete. O nome do botão NÃO pode ser alterado no formulário WEB.
+     * O evento onClick$cmdDelete dispara o início do processo de exclusão de um registro em um formulário.
+     */
+    private Button cmdDelete;
+
+    /**
+     * Mapeamento do botão cmdRefresh. O nome do botão NÃO pode ser alterado no formulário WEB.
+     * O evento onClick$cmdRefresh dispara o processo de atualização geral.
+     */
+    private Button cmdRefresh;
+
 
     public CompanyClientController( char c )
     {
@@ -45,7 +75,13 @@ public class CompanyClientController extends LoggedBaseController
         setLabel( labelCompanyClientTitle );
         setLabel( listHeaderCode );
         setLabel( listHeaderName );
+
         setLabel( headerId );
+
+        setLabel( cmdCreate );
+        setLabel( cmdUpdate );
+        setLabel( cmdDelete );
+        setLabel( cmdRefresh );
     }
 
     public ClientFacade getSession()
@@ -55,7 +91,7 @@ public class CompanyClientController extends LoggedBaseController
         return clientSession;
     }
 
-    private void refresh() throws ApplicationException
+    private void refresh()
     {
         if ( listboxRecord == null )
             return;
@@ -65,6 +101,65 @@ public class CompanyClientController extends LoggedBaseController
             listboxRecord.setModel( model );
         }
         model.clear();
-        model.addAll( getSession().getCompanies( getLoggedInUser() ) );
+        try {
+            model.addAll( getSession().getCompanies( getLoggedInUser() ) );
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage() );
+        }
+    }
+
+    public void onClick$cmdRefresh()
+    {
+        refresh();
+    }
+
+    public void onClick$cmdCreate()
+    {
+        loadCompanyRecordPage();
+    }
+
+    public void onClick$cmdUpdate()
+    {
+        Object item = getCurrentRecord();
+
+        if ( item == null ) {
+            showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
+            return;
+        }
+        loadCompanyRecordPage();
+    }
+
+    private void loadCompanyRecordPage()
+    {
+        gotoPage( companyRecordPage, getRootParent().getParent() );
+    }
+
+
+    public void onClick$cmdDelete()
+    {
+        Object item = getCurrentRecord();
+
+        if ( item == null ) {
+            showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
+            return;
+        }
+    }
+
+    private Object getCurrentRecord()
+    {
+        Listitem currentItem = getListbox().getSelectedItem();
+        Object item = null;
+
+        if ( currentItem != null )
+            item = currentItem.getValue();
+        return item;
+    }
+
+    private Listbox getListbox()
+    {
+        return listboxRecord;
     }
 }
+
+
