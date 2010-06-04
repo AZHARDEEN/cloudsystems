@@ -4,7 +4,6 @@
              xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
   <persistence-unit name="EjbPrj">
     <description>Descrição do conector CloudSystems</description>
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/CloudDS</jta-data-source>
     <class>br.com.mcampos.ejb.entity.user.attributes.UserType</class>
     <class>br.com.mcampos.ejb.entity.address.City</class>

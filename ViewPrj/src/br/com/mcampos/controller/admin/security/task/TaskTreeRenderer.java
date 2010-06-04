@@ -1,7 +1,7 @@
-package br.com.mcampos.controller.admin.system.config.menu;
+package br.com.mcampos.controller.admin.security.task;
 
 
-import br.com.mcampos.dto.system.MenuDTO;
+import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.util.system.IDropEvent;
 
 import org.zkoss.zk.ui.event.DropEvent;
@@ -13,13 +13,13 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
 
-public class MenuTreeRenderer implements TreeitemRenderer
+public class TaskTreeRenderer implements TreeitemRenderer
 {
     protected Boolean draggable;
     protected Boolean droppable;
     protected IDropEvent dropEvent;
 
-    public MenuTreeRenderer( IDropEvent evt, Boolean bDraggable, Boolean bDroppable )
+    public TaskTreeRenderer( IDropEvent evt, Boolean bDraggable, Boolean bDroppable )
     {
         super();
         draggable = bDraggable;
@@ -29,30 +29,17 @@ public class MenuTreeRenderer implements TreeitemRenderer
 
     public void render( Treeitem item, Object data ) throws Exception
     {
-        Treerow tr = null;
-
-
         item.setValue( data );
-        if ( item.getTreerow() == null ) {
-            tr = new Treerow();
-            tr.setParent( item );
-        }
-        else {
-            tr = item.getTreerow();
-            tr.getChildren().clear();
-        }
-        configureTreeitem( item );
-    }
-
-    protected void configureTreeitem( Treeitem item )
-    {
-        MenuDTO data = (MenuDTO)item.getValue();
+        TaskDTO dto = (TaskDTO ) data;
         Treerow row;
 
         row = item.getTreerow();
-        row.appendChild( new Treecell( data.toString() ) );
-        row.appendChild( new Treecell( data.getSequence().toString() ) );
-
+        if ( row == null )
+        {
+            row = new Treerow ();
+            item.appendChild( row );
+        }
+        row.appendChild( new Treecell( dto.toString() ) );
         if ( draggable )
             row.setDraggable( "true" );
         if ( droppable ) {
@@ -67,6 +54,5 @@ public class MenuTreeRenderer implements TreeitemRenderer
                     } );
             }
         }
-
     }
 }

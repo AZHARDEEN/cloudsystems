@@ -1,9 +1,9 @@
-package br.com.mcampos.controller.admin.system.config.menu;
+package br.com.mcampos.controller.admin.security.menu;
 
 
-import br.com.mcampos.controller.admin.system.config.task.TaskListRenderer;
-import br.com.mcampos.controller.admin.system.config.task.TaskTreeModel;
-import br.com.mcampos.controller.admin.system.config.task.TaskTreeRenderer;
+import br.com.mcampos.controller.admin.security.task.TaskListRenderer;
+import br.com.mcampos.controller.admin.security.task.TaskTreeModel;
+import br.com.mcampos.controller.admin.security.task.TaskTreeRenderer;
 import br.com.mcampos.controller.core.BasicTreeCRUDController;
 import br.com.mcampos.dto.security.TaskDTO;
 import br.com.mcampos.dto.system.MenuDTO;

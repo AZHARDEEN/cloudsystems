@@ -1,12 +1,12 @@
-package br.com.mcampos.controller.admin.system.config.task;
+package br.com.mcampos.controller.admin.security.task;
 
 
+import br.com.mcampos.controller.admin.security.menu.MenuListRenderer;
+import br.com.mcampos.controller.admin.security.menu.MenuTreeModel;
+import br.com.mcampos.controller.admin.security.menu.MenuTreeRenderer;
 import br.com.mcampos.controller.admin.security.roles.RoleListRenderer;
 import br.com.mcampos.controller.admin.security.roles.RoleModel;
 import br.com.mcampos.controller.admin.security.roles.RoleRenderer;
-import br.com.mcampos.controller.admin.system.config.menu.MenuListRenderer;
-import br.com.mcampos.controller.admin.system.config.menu.MenuTreeModel;
-import br.com.mcampos.controller.admin.system.config.menu.MenuTreeRenderer;
 import br.com.mcampos.controller.core.BasicTreeCRUDController;
 import br.com.mcampos.dto.security.RoleDTO;
 import br.com.mcampos.dto.security.TaskDTO;
@@ -21,34 +21,62 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listheader;
+import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
+import org.zkoss.zul.Treecol;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
 
 public class TaskController extends BasicTreeCRUDController<TaskDTO> implements IDropEvent
 {
-	protected TaskFacade locator;
+	private TaskFacade locator;
 
-	Label recordId;
-	Label recordDescription;
-	Label recordParent;
+	private Label recordId;
+	private Label recordDescription;
+	private Label recordParent;
 
+    /*Labels*/
+    private Button removeMenu;
+    private Button removeRole;
+    private Label labelTaskTitle;
+    private Label labelCode;
+    private Label labelDescription;
+    private Label labelParent;
+    private Label labelEditCode;
+    private Label labelEditDescription;
+    private Label labelEditParent;
+    private Listheader listHeaderMenuId;
+    private Listheader listHeaderMenuDesc;
+    private Listheader listHeaderMenuUrl;
+    private Listheader listHeaderMenuParent;
+    private Listheader listHeaderRoleId;
+    private Listheader listHeaderRoleDesc;
+    private Listheader listHeaderRoleParent;
 
-	Intbox editId;
-	Textbox editDescription;
-	Intbox editParent;
+    private Tab tabData;
+    private Tab tabFreeRole;
+    private Tab tabFreeMenus;
+    private Treecol treecolTask;
+    private Treecol treecolMenu;
+    private Treecol treecolRole;
 
-	protected Listbox listMenu;
-	protected Listbox listRole;
-	protected Tree treeMenu;
-	protected Tree treeRole;
+	private Intbox editId;
+	private Textbox editDescription;
+	private Intbox editParent;
+
+	private Listbox listMenu;
+	private Listbox listRole;
+	private Tree treeMenu;
+	private Tree treeRole;
 
 	public TaskController( char c )
 	{
@@ -242,6 +270,7 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO> implements 
 	public void doAfterCompose( Component comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
+        setLabel ();
 		getTreeList().setTreeitemRenderer( new TaskTreeRenderer( this, true, true ) );
 		listMenu.setItemRenderer( new MenuListRenderer() );
 		listRole.setItemRenderer( new RoleListRenderer() );
@@ -279,4 +308,31 @@ public class TaskController extends BasicTreeCRUDController<TaskDTO> implements 
 			}
 		}
 	}
+
+    private void setLabel () {
+        setLabel ( removeMenu );
+        setLabel ( removeRole );
+        setLabel ( labelTaskTitle );
+        setLabel ( labelCode );
+        setLabel ( labelDescription );
+        setLabel ( labelParent );
+        setLabel ( labelEditCode );
+        setLabel ( labelEditDescription );
+        setLabel ( labelEditParent );
+        setLabel ( listHeaderMenuId );
+        setLabel ( listHeaderMenuDesc );
+        setLabel ( listHeaderMenuUrl );
+        setLabel ( listHeaderMenuParent );
+        setLabel ( listHeaderRoleId );
+        setLabel ( listHeaderRoleDesc );
+        setLabel ( listHeaderRoleParent );
+
+        setLabel ( tabData );
+        setLabel ( tabFreeRole );
+        setLabel ( tabFreeMenus );
+        setLabel ( treecolTask );
+        setLabel ( treecolMenu );
+        setLabel ( treecolRole );
+
+    }
 }
