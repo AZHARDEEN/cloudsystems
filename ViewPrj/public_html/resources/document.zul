@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <div id = "divDocumentList" 
-apply="br.com.mcampos.controller.core.DocumentListController" 
+apply="br.com.mcampos.controller.commom.DocumentListController" 
 xmlns="http://www.zkoss.org/2005/zul">
 	<listbox fixedLayout="true" id="documentList" rows= "4">
 		<listhead sizable="true" >

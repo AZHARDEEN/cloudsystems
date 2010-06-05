@@ -64,6 +64,7 @@
       <string v="oracle.tip.tools.ide.fabric.addin.SCAContentSetProvider/sca-content"/>
       <string v="oracle.bpm.fusion.repository.BPMProjectSettings/bpmProjectsProcessesContentSet"/>
       <string v="oracle.bpm.fusion.repository.BPMProjectSettings/bpmProjectsOrganizationContentSet"/>
+      <string v="oracle.adfnmc.core.contentset.NmcContentSetProvider/nmcContentSet"/>
    </list>
    <value n="defaultPackage" v="ejbprj"/>
    <hash n="ejbModuleContainer">

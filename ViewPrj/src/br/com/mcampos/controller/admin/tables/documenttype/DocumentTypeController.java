@@ -1,16 +1,19 @@
-package br.com.mcampos.controller.admin.tables;
+package br.com.mcampos.controller.admin.tables.documenttype;
 
 
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
-import br.com.mcampos.dto.user.attributes.UserTypeDTO;
-import br.com.mcampos.ejb.cloudsystem.user.usertype.facade.UserTypeFacade;
+import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
+import br.com.mcampos.ejb.cloudsystem.user.documenttype.DocumentTypeFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
 
-public class UserTypeController extends SimpleTableController<UserTypeDTO>
+import org.zkoss.zul.ListitemRenderer;
+
+
+public class DocumentTypeController extends SimpleTableController<DocumentTypeDTO>
 {
-	private UserTypeFacade session;
+	private DocumentTypeFacade session;
 
 	protected Integer getNextId() throws ApplicationException
 	{
@@ -27,29 +30,36 @@ public class UserTypeController extends SimpleTableController<UserTypeDTO>
 	protected void delete( Object currentRecord ) throws ApplicationException
 	{
 		if ( currentRecord != null ) {
-			UserTypeDTO dto = ( UserTypeDTO )currentRecord;
+			DocumentTypeDTO dto = ( DocumentTypeDTO )currentRecord;
 			getSession().delete( getLoggedInUser(), dto.getId() );
 		}
 	}
 
 	protected Object createNewRecord()
 	{
-		return new UserTypeDTO();
+		return new DocumentTypeDTO();
 	}
 
 	protected void persist( Object e ) throws ApplicationException
 	{
 		if ( isAddNewOperation() ) {
-			getSession().add( getLoggedInUser(), ( UserTypeDTO )e );
+			getSession().add( getLoggedInUser(), ( DocumentTypeDTO )e );
 		}
 		else
-			getSession().update( getLoggedInUser(), ( UserTypeDTO )e );
+			getSession().update( getLoggedInUser(), ( DocumentTypeDTO )e );
+
 	}
 
-	public UserTypeFacade getSession()
+	public DocumentTypeFacade getSession()
 	{
 		if ( session == null )
-			session = ( UserTypeFacade )getRemoteSession( UserTypeFacade.class );
+			session = ( DocumentTypeFacade )getRemoteSession( DocumentTypeFacade.class );
 		return session;
+	}
+
+	@Override
+	protected ListitemRenderer getRenderer()
+	{
+		return new DocumentTypeListRenderer();
 	}
 }

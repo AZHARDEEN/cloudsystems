@@ -21,11 +21,15 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
 	private Label labelCode;
 	private Label labelDescription;
 
-	private Listheader headerDescription;
-
 	private Label labelEditCode;
 	private Label labelEditDescription;
 
+	/*
+	 * Labels
+	 */
+	private Listheader recordListDescSort;
+	private Listheader recordListIdSort;
+	private Listheader headerDescription;
 
 	protected abstract Integer getNextId() throws ApplicationException;
 
@@ -102,9 +106,13 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
 		super.doAfterCompose( comp );
 		setLabel( labelCode );
 		setLabel( labelDescription );
-		setLabel( headerDescription );
 		setLabel( labelEditCode );
 		setLabel( labelEditDescription );
+
+		setLabel( headerDescription );
+		setLabel( recordListDescSort );
+		setLabel( recordListIdSort );
+		setLabel( headerDescription );
 	}
 
 	protected Listheader getHeaderDescription()

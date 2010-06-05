@@ -1,55 +1,27 @@
 package br.com.mcampos.dto.user.attributes;
 
-import br.com.mcampos.dto.core.DisplayNameDTO;
+import br.com.mcampos.dto.core.SimpleTableDTO;
 
-public class CivilStateDTO extends DisplayNameDTO implements Comparable< CivilStateDTO >
+public class CivilStateDTO extends SimpleTableDTO
 {
-    /**
-	 * 
+	/**
+	 *
 	 */
 	private static final long serialVersionUID = 9017140527037933790L;
-	Integer id;
-    String description;
-    
-    public CivilStateDTO()
-    {
-        super();
-    }
 
-    public CivilStateDTO( Integer id, String description )
-    {
-        super();
-        this.id = id;
-        this.description = description;
-    }
 
-    public String getDisplayName()
-    {
-        return getDescription();
-    }
+	public CivilStateDTO( Integer id )
+	{
+		super( id );
+	}
 
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
+	public CivilStateDTO()
+	{
+		super();
+	}
 
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public int compareTo( CivilStateDTO o )
-    {
-        return getId().compareTo( o.getId() );
-    }
+	public CivilStateDTO( Integer id, String description )
+	{
+		super( id, description );
+	}
 }
