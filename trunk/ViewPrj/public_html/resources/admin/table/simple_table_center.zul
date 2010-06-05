@@ -10,11 +10,11 @@
                 </columns>
                 <rows>
                     <row>
-                        Código
+                        <label id="labelCode" value="##"/>
                         <label id="recordId"/>
                     </row>
                     <row>
-                        Descrição
+                        <label id="labelDescription" value="##"/>
                         <label id="recordDescription"/>
                     </row>
                 </rows>
@@ -30,11 +30,11 @@
                 </columns>
                 <rows>
                     <row>
-                        Código
+                        <label id="labelEditCode" value="##"/>
                         <intbox id="editId" width="99%" value="1"/>
                     </row>
                     <row>
-                        Descrição
+                        <label id="labelEditDescription" value="##"/>
                         <textbox id="editDescription" width="99%" value=""/>
                     </row>
                 </rows>
@@ -44,6 +44,8 @@
         </div>
     </div>
 </zk>
+
+
 
 
 

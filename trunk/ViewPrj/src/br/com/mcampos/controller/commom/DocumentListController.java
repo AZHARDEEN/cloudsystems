@@ -1,26 +1,44 @@
-package br.com.mcampos.controller.core;
+package br.com.mcampos.controller.commom;
 
 
+import br.com.mcampos.controller.core.BaseController;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 
 import java.util.Iterator;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
 
-public class DocumentListController extends BaseClientListController
+public class DocumentListController extends BaseController
 {
 	private Listbox documentList;
 	private Combobox documentType;
 	private Textbox documentId;
 	private Textbox documentComent;
+
+	/*
+	 * LABELS
+	 */
+	private Listheader headerDocumentType;
+	private Listheader headerDocumentDescription;
+	private Listheader headerDocumentObs;
+	private Label labelDocumentType;
+	private Label labelDocumentCode;
+	private Label labelDocumentObs;
+	private Button addDocument;
+	private Button updateDocument;
+	private Button removeDocument;
+
 
 	public DocumentListController( char c )
 	{
@@ -184,6 +202,21 @@ public class DocumentListController extends BaseClientListController
 		/*
          * TODO: selecionar o tipo de documento pelo tipo de usuário (Pessoa Física ou Jurídica)
          */
+		setLabels();
+	}
+
+
+	private void setLabels()
+	{
+		setLabel( headerDocumentType );
+		setLabel( headerDocumentDescription );
+		setLabel( headerDocumentObs );
+		setLabel( labelDocumentType );
+		setLabel( labelDocumentCode );
+		setLabel( labelDocumentObs );
+		setLabel( addDocument );
+		setLabel( updateDocument );
+		setLabel( removeDocument );
 	}
 
 }

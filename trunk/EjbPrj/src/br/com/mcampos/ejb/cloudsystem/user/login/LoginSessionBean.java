@@ -19,7 +19,7 @@ import br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPasswo
 import br.com.mcampos.ejb.entity.system.SystemParameters;
 import br.com.mcampos.ejb.cloudsystem.user.person.Person;
 import br.com.mcampos.ejb.entity.user.UserDocument;
-import br.com.mcampos.ejb.entity.user.attributes.UserStatus;
+import br.com.mcampos.ejb.cloudsystem.user.userstatus.entity.UserStatus;
 import br.com.mcampos.ejb.session.system.EmailSessionLocal;
 import br.com.mcampos.ejb.session.system.SendMailSessionLocal;
 import br.com.mcampos.ejb.session.system.SystemParametersSessionLocal;

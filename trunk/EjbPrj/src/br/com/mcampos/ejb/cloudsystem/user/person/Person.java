@@ -6,8 +6,8 @@ import br.com.mcampos.ejb.cloudsystem.user.title.Title;
 import br.com.mcampos.ejb.entity.address.City;
 import br.com.mcampos.ejb.cloudsystem.user.login.Login;
 import br.com.mcampos.ejb.entity.user.Users;
-import br.com.mcampos.ejb.entity.user.attributes.CivilState;
-import br.com.mcampos.ejb.entity.user.attributes.UserType;
+import br.com.mcampos.ejb.cloudsystem.user.civilstate.entity.CivilState;
+import br.com.mcampos.ejb.cloudsystem.user.usertype.entity.UserType;
 
 import java.io.Serializable;
 

@@ -4,8 +4,8 @@
         <!-- Por favor, nao mude o id desta listbox -->
         <listbox fixedLayout="true" id="listboxRecord">
             <listhead sizable="true">
-                <listheader id="recordListIdSort" align="left" label="Código" sort="auto" width="15%"/>
-                <listheader id="recordListDescSort" align="left" label="Descrição" sort="auto"/>
+                <listheader id="recordListIdSort" align="left" label="##" sort="auto" width="15%"/>
+                <listheader id="recordListDescSort" align="left" label="##" sort="auto"/>
             </listhead>
         </listbox>
     </div>

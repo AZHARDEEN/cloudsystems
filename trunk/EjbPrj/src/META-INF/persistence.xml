@@ -5,11 +5,11 @@
   <persistence-unit name="EjbPrj">
     <description>Descrição do conector CloudSystems</description>
     <jta-data-source>jdbc/CloudDS</jta-data-source>
-    <class>br.com.mcampos.ejb.entity.user.attributes.UserType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.usertype.entity.UserType</class>
     <class>br.com.mcampos.ejb.entity.address.City</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.Collaborator</class>
     <class>br.com.mcampos.ejb.entity.system.SystemParameters</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.DocumentType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.documenttype.entity.DocumentType</class>
     <class>br.com.mcampos.ejb.entity.user.attributes.ContactType</class>
     <class>br.com.mcampos.ejb.entity.user.Users</class>
     <class>br.com.mcampos.ejb.entity.address.Region</class>
@@ -25,14 +25,14 @@
     <class>br.com.mcampos.ejb.entity.user.attributes.CollaboratorType</class>
     <class>br.com.mcampos.ejb.entity.address.Country</class>
     <class>br.com.mcampos.ejb.entity.address.State</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.CivilState</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.civilstate.entity.CivilState</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.login.Login</class>
     <class>br.com.mcampos.ejb.entity.user.attributes.CompanyType</class>
     <class>br.com.mcampos.ejb.entity.system.SystemMessage</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.person.Person</class>
     <class>br.com.mcampos.ejb.entity.user.Address</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPassword</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.UserStatus</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.userstatus.entity.UserStatus</class>
     <class>br.com.mcampos.ejb.entity.system.EMail</class>
     <class>br.com.mcampos.ejb.entity.system.EMailPart</class>
     <class>br.com.mcampos.ejb.entity.system.EMailPartType</class>

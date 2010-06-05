@@ -15,9 +15,9 @@ import br.com.mcampos.ejb.entity.user.UserDocument;
 
 
 import br.com.mcampos.ejb.entity.user.attributes.ContactType;
-import br.com.mcampos.ejb.entity.user.attributes.DocumentType;
+import br.com.mcampos.ejb.cloudsystem.user.documenttype.entity.DocumentType;
 
-import br.com.mcampos.ejb.entity.user.attributes.UserStatus;
+import br.com.mcampos.ejb.cloudsystem.user.userstatus.entity.UserStatus;
 
 import br.com.mcampos.ejb.session.user.UserSessionLocal;
 

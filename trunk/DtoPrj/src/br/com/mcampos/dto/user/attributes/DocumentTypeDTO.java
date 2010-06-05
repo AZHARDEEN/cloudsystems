@@ -1,126 +1,64 @@
 package br.com.mcampos.dto.user.attributes;
 
-import br.com.mcampos.dto.core.DisplayNameDTO;
+import br.com.mcampos.dto.core.SimpleTableDTO;
 
-public class DocumentTypeDTO extends DisplayNameDTO implements Comparable<DocumentTypeDTO>
+public class DocumentTypeDTO extends SimpleTableDTO
 {
-    /**
-	 * 
+	/**
+	 *
 	 */
 	private static final long serialVersionUID = 8436760228037673894L;
-	private Integer id;
-    private String mask;
-    private String name;
+	private String mask;
 
 
 	public static final int typeCPF = 1;
-    public static final int typeCNPJ = 10;
+	public static final int typeCNPJ = 10;
 	public static final int typeIdentity = 2;
 	public static final int typeEmail = 6;
 
-    public DocumentTypeDTO()
-    {
-        super();
-    }
-	
-	public DocumentTypeDTO( Integer id  )
+	public DocumentTypeDTO()
 	{
-		setId ( id );
-	}
-    
-    public DocumentTypeDTO( Integer id, String name, String mask )
-    {
-        super ();
-        init ( id, name, mask );
-    }
-    
-    protected void init ( Integer id, String name, String mask )
-    {
-        this.id = id;
-        this.name = name;
-        this.mask = mask;
-    }
-    
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setMask( String mask )
-    {
-        this.mask = mask;
-    }
-
-    public String getMask()
-    {
-        return mask;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public String getDisplayName()
-    {
-        return getName();
-    }
-	
-	public static DocumentTypeDTO createDocumentTypeCPF ( )
-	{
-		return new DocumentTypeDTO ( typeCPF );
+		super();
 	}
 
-	public static DocumentTypeDTO createDocumentTypeIdentity ( )
+	public DocumentTypeDTO( Integer id )
 	{
-		return new DocumentTypeDTO ( typeIdentity );
+		super( id );
 	}
 
-	public static DocumentTypeDTO createDocumentTypeEmail ( )
+	public DocumentTypeDTO( Integer id, String name, String mask )
 	{
-		return new DocumentTypeDTO ( typeEmail );
+		super( id, name );
+		setMask( mask );
 	}
 
-    public static DocumentTypeDTO createDocumentTypeCNPJ ( )
-    {
-        return new DocumentTypeDTO ( typeCNPJ );
-    }
+	public void setMask( String mask )
+	{
+		this.mask = mask;
+	}
 
+	public String getMask()
+	{
+		return mask;
+	}
 
-    public int compareTo( DocumentTypeDTO o )
-    {
-        if ( o == null || o.getId() == null )
-            return 1;
-        if ( getId() == null )
-            return -1;
-                           
-        return getId().compareTo( o.getId() );
-    }
+	public static DocumentTypeDTO createDocumentTypeCPF()
+	{
+		return new DocumentTypeDTO( typeCPF );
+	}
 
-    @Override
-    public boolean equals( Object obj )
-    {
-        if ( obj == null )
-            return false;
-        
-        if ( obj instanceof DocumentTypeDTO  ) 
-        {
-            DocumentTypeDTO dto = ( DocumentTypeDTO ) obj;
-            
-            return ( getId().equals( dto.getId() ) );
-        }
-        else
-            return super.equals( obj );
-    }
+	public static DocumentTypeDTO createDocumentTypeIdentity()
+	{
+		return new DocumentTypeDTO( typeIdentity );
+	}
+
+	public static DocumentTypeDTO createDocumentTypeEmail()
+	{
+		return new DocumentTypeDTO( typeEmail );
+	}
+
+	public static DocumentTypeDTO createDocumentTypeCNPJ()
+	{
+		return new DocumentTypeDTO( typeCNPJ );
+	}
 }
