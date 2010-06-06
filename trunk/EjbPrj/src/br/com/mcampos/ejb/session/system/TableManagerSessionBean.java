@@ -9,9 +9,9 @@ import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
 import br.com.mcampos.ejb.entity.system.SystemParameters;
 
 
-import br.com.mcampos.ejb.entity.user.attributes.CompanyPosition;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.companyposition.entity.CompanyPosition;
 
-import br.com.mcampos.ejb.entity.user.attributes.CompanyType;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyType;
 
 import java.util.ArrayList;
 import java.util.Collections;

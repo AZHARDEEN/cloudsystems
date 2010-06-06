@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.entity.user;
 
 
-import br.com.mcampos.ejb.cloudsystem.user.usertype.entity.UserType;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
 
 import java.io.Serializable;
 

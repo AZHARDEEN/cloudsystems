@@ -3,7 +3,7 @@ package br.com.mcampos.controller.admin.tables.documenttype;
 
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
-import br.com.mcampos.ejb.cloudsystem.user.documenttype.DocumentTypeFacade;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.facade.DocumentTypeFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;

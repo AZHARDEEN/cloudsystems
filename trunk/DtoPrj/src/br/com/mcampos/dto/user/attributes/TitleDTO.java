@@ -25,9 +25,9 @@ public class TitleDTO extends SimpleTableDTO
 
     protected void init( Integer id, String description, String abbreviation )
     {
-        this.id = id;
-        this.description = description;
-        this.abbreviation = abbreviation;
+        setId( id );
+        setDescription( description );
+        setAbbreviation( abbreviation );
     }
 
 

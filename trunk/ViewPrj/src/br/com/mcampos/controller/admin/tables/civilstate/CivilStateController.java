@@ -3,7 +3,7 @@ package br.com.mcampos.controller.admin.tables.civilstate;
 
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
 import br.com.mcampos.dto.user.attributes.CivilStateDTO;
-import br.com.mcampos.ejb.cloudsystem.user.civilstate.facade.CivilStateFacade;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.facade.CivilStateFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;

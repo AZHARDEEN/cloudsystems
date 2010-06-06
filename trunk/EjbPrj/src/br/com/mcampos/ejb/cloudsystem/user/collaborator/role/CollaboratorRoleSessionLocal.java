@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.user.collaborator.role;
 
 
-import br.com.mcampos.ejb.cloudsystem.user.collaborator.Collaborator;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;

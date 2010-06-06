@@ -5,34 +5,33 @@
   <persistence-unit name="EjbPrj">
     <description>Descrição do conector CloudSystems</description>
     <jta-data-source>jdbc/CloudDS</jta-data-source>
-    <class>br.com.mcampos.ejb.cloudsystem.user.usertype.entity.UserType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType</class>
     <class>br.com.mcampos.ejb.entity.address.City</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.Collaborator</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator</class>
     <class>br.com.mcampos.ejb.entity.system.SystemParameters</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.documenttype.entity.DocumentType</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.ContactType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.entity.DocumentType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.entity.ContactType</class>
     <class>br.com.mcampos.ejb.entity.user.Users</class>
     <class>br.com.mcampos.ejb.entity.address.Region</class>
     <class>br.com.mcampos.ejb.cloudsystem.address.addresstype.entity.AddressType</class>
-    <class>br.com.mcampos.ejb.entity.user.Company</class>
     <class>br.com.mcampos.ejb.entity.user.UserDocument</class>
     <class>br.com.mcampos.ejb.entity.user.UserContact</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.login.accesslog.AccessLog</class>
     <class>br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.CompanyPosition</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.gender.Gender</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.companyposition.entity.CompanyPosition</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender</class>
     <class>br.com.mcampos.ejb.entity.system.SystemMessageType</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.CollaboratorType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.type.entity.entity.CollaboratorType</class>
     <class>br.com.mcampos.ejb.entity.address.Country</class>
     <class>br.com.mcampos.ejb.entity.address.State</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.civilstate.entity.CivilState</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.entity.CivilState</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.login.Login</class>
-    <class>br.com.mcampos.ejb.entity.user.attributes.CompanyType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyType</class>
     <class>br.com.mcampos.ejb.entity.system.SystemMessage</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.person.Person</class>
     <class>br.com.mcampos.ejb.entity.user.Address</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPassword</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.userstatus.entity.UserStatus</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus</class>
     <class>br.com.mcampos.ejb.entity.system.EMail</class>
     <class>br.com.mcampos.ejb.entity.system.EMailPart</class>
     <class>br.com.mcampos.ejb.entity.system.EMailPartType</class>
@@ -42,11 +41,6 @@
     <class>br.com.mcampos.ejb.cloudsystem.security.task.subtask.Subtask</class>
     <class>br.com.mcampos.ejb.cloudsystem.security.task.Task</class>
     <class>br.com.mcampos.ejb.cloudsystem.media.entity.Media</class>
-    <class>br.com.mcampos.ejb.cloudsystem.entity.entity.Form</class>
-    <class>br.com.mcampos.ejb.cloudsystem.entity.entity.FormMedia</class>
-    <class>br.com.mcampos.ejb.cloudsystem.entity.entity.FormPen</class>
-    <class>br.com.mcampos.ejb.cloudsystem.entity.entity.FormPenMedia</class>
-    <class>br.com.mcampos.ejb.cloudsystem.entity.entity.Pen</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.page.BackgroundImage</class>
@@ -63,9 +57,9 @@
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.title.Title</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title</class>
     <class>br.com.mcampos.ejb.cloudsystem.security.menu.locale.MenuLocale</class>
-    <class>br.com.mcampos.ejb.cloudsystem.client.Client</class>
+    <class>br.com.mcampos.ejb.cloudsystem.client.entity.Client</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.role.CollaboratorRole</class>
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>

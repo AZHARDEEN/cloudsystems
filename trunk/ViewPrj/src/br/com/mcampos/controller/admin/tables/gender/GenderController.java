@@ -3,7 +3,7 @@ package br.com.mcampos.controller.admin.tables.gender;
 
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
 import br.com.mcampos.dto.user.attributes.GenderDTO;
-import br.com.mcampos.ejb.cloudsystem.user.gender.GenderFacade;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.facade.GenderFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;

@@ -1,13 +1,13 @@
 package br.com.mcampos.ejb.cloudsystem.user.person;
 
 
-import br.com.mcampos.ejb.cloudsystem.user.gender.Gender;
-import br.com.mcampos.ejb.cloudsystem.user.title.Title;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title;
 import br.com.mcampos.ejb.entity.address.City;
 import br.com.mcampos.ejb.cloudsystem.user.login.Login;
 import br.com.mcampos.ejb.entity.user.Users;
-import br.com.mcampos.ejb.cloudsystem.user.civilstate.entity.CivilState;
-import br.com.mcampos.ejb.cloudsystem.user.usertype.entity.UserType;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.entity.CivilState;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
 
 import java.io.Serializable;
 

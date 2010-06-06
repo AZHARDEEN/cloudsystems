@@ -4,7 +4,7 @@ package br.com.mcampos.controller.admin.tables.title;
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.dto.user.attributes.TitleDTO;
-import br.com.mcampos.ejb.cloudsystem.user.title.TitleFacade;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.title.facade.TitleFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;

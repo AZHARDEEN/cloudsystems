@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.client;
 
 
 import br.com.mcampos.dto.user.ListUserDTO;
+import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.sysutils.SysUtils;
 
