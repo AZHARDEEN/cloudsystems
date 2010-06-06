@@ -1,35 +1,30 @@
 package br.com.mcampos.dto.user.attributes;
 
-import br.com.mcampos.dto.core.DisplayNameDTO;
+import br.com.mcampos.dto.core.SimpleTableDTO;
 
-public class ContactTypeDTO extends DisplayNameDTO
+public class ContactTypeDTO extends SimpleTableDTO
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5242040715166101448L;
-	private Boolean allowDuplicate;
-    private String description;
-    private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 5242040715166101448L;
+    private Boolean allowDuplicate;
     private String mask;
-    
-    
+
+
+    public ContactTypeDTO( Integer id, String description )
+    {
+        super( id, description );
+    }
+
+    public ContactTypeDTO( Integer id )
+    {
+        super( id );
+    }
+
     public ContactTypeDTO()
     {
         super();
-    }
-    
-    public ContactTypeDTO ( Integer id, String description, String mask, Boolean allowDuplicate )
-    {
-        init ( id, description, mask, allowDuplicate );
-    }
-    
-    protected void init ( Integer id, String description, String mask, Boolean allowDuplicate )
-    {
-        this.id = id;
-        this.description = description;
-        this.mask = mask;
-        this.allowDuplicate = allowDuplicate;
     }
 
     public void setAllowDuplicate( Boolean allowDuplicate )
@@ -42,26 +37,6 @@ public class ContactTypeDTO extends DisplayNameDTO
         return allowDuplicate;
     }
 
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    public Integer getId()
-    {
-        return id;
-    }
-
     public void setMask( String mask )
     {
         this.mask = mask;
@@ -70,10 +45,5 @@ public class ContactTypeDTO extends DisplayNameDTO
     public String getMask()
     {
         return mask;
-    }
-
-    public String getDisplayName()
-    {
-        return getDescription();
     }
 }

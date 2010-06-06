@@ -24,6 +24,8 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Panel;
 import org.zkoss.zul.impl.LabelElement;
@@ -321,5 +323,21 @@ public abstract class BaseController extends GenericForwardComposer
     protected String getLabel( String labelId )
     {
         return Labels.getLabel( labelId );
+    }
+
+    protected void loadCombobox( Combobox combo, List list )
+    {
+        if ( combo == null || SysUtils.isEmpty( list ) )
+            return;
+
+        if ( combo.getChildren() != null )
+            combo.getChildren().clear();
+        if ( SysUtils.isEmpty( list ) == false ) {
+            for ( Object dto : list ) {
+                Comboitem item = combo.appendItem( dto.toString() );
+                if ( item != null )
+                    item.setValue( dto );
+            }
+        }
     }
 }

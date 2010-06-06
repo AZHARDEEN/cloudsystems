@@ -1,14 +1,13 @@
 package br.com.mcampos.teste.importacao;
 
+
 import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.address.AddressTypeDTO;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserContactDTO;
-import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.attributes.CivilStateDTO;
 import br.com.mcampos.dto.user.attributes.ContactTypeDTO;
-import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.dto.user.attributes.GenderDTO;
 import br.com.mcampos.dto.user.attributes.TitleDTO;
 
@@ -292,20 +291,17 @@ public class ImportSindicato
                     importSindicato.addDocument( dto, splitarray[ 18 ], 4 );
 
                     if ( splitarray[ 11 ].length() > 0 )
-                        dto.add( new UserContactDTO( new ContactTypeDTO( 1, null, null, null ),
-                                                     splitarray[ 11 ].replaceAll( "[ .-]", "" ),
+                        dto.add( new UserContactDTO( new ContactTypeDTO( 1 ), splitarray[ 11 ].replaceAll( "[ .-]", "" ),
                                                      "Conteudo Oringinal: " + splitarray[ 11 ] ) );
                     if ( splitarray[ 12 ].length() > 0 && splitarray[ 11 ].equals( splitarray[ 12 ] ) == false )
-                        dto.add( new UserContactDTO( new ContactTypeDTO( 2, null, null, null ),
-                                                     splitarray[ 12 ].replaceAll( "[ .-]", "" ),
+                        dto.add( new UserContactDTO( new ContactTypeDTO( 2 ), splitarray[ 12 ].replaceAll( "[ .-]", "" ),
                                                      "Conteudo Oringinal: " + splitarray[ 12 ] ) );
                     if ( splitarray[ 13 ].length() > 0 && splitarray[ 13 ].equals( splitarray[ 12 ] ) == false &&
                          splitarray[ 13 ].equals( splitarray[ 11 ] ) == false )
-                        dto.add( new UserContactDTO( new ContactTypeDTO( 3, null, null, null ),
-                                                     splitarray[ 13 ].replaceAll( "[ .-]", "" ),
+                        dto.add( new UserContactDTO( new ContactTypeDTO( 3 ), splitarray[ 13 ].replaceAll( "[ .-]", "" ),
                                                      "Conteudo Oringinal: " + splitarray[ 13 ] ) );
                     if ( splitarray[ 14 ].length() > 0 )
-                        dto.add( new UserContactDTO( new ContactTypeDTO( 4, null, null, null ), splitarray[ 14 ], null ) );
+                        dto.add( new UserContactDTO( new ContactTypeDTO( 4 ), splitarray[ 14 ], null ) );
 
                     try {
                         //importSindicato.getLocator().add ( dto );

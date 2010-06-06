@@ -3,6 +3,7 @@ package br.com.mcampos.controller.commom;
 
 import br.com.mcampos.controller.core.BaseController;
 import br.com.mcampos.dto.user.attributes.ContactTypeDTO;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.facade.ContactTypeFacade;
 
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +22,8 @@ import org.zkoss.zul.Textbox;
 
 public class ContactListController extends BaseController
 {
+    private ContactTypeFacade session;
+
     private Listbox contactList;
     private Combobox contactType;
     private Textbox contactId;
@@ -76,6 +79,7 @@ public class ContactListController extends BaseController
     {
         super.doAfterCompose( comp );
         setLabels();
+        loadCombobox( contactType, getSession().getAll() );
     }
 
     private void setLabels()
@@ -212,4 +216,10 @@ public class ContactListController extends BaseController
         }
     }
 
+    public ContactTypeFacade getSession()
+    {
+        if ( session == null )
+            session = ( ContactTypeFacade )getRemoteSession( ContactTypeFacade.class );
+        return session;
+    }
 }

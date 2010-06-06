@@ -2,7 +2,7 @@ package br.com.mcampos.controller.user.client;
 
 
 import br.com.mcampos.controller.core.LoggedBaseController;
-import br.com.mcampos.ejb.cloudsystem.client.ClientFacade;
+import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Button;
@@ -14,7 +14,8 @@ import org.zkoss.zul.Listitem;
 
 public class CompanyClientController extends LoggedBaseController
 {
-    private static final String companyRecordPage = "/private/user/client/company_record.zul";
+    private static final String addClientPage = "/private/user/client/add_company.zul";
+    private static final String updateClientPage = "/private/user/client/update_company.zul";
 
     private ClientFacade clientSession;
 
@@ -116,7 +117,7 @@ public class CompanyClientController extends LoggedBaseController
 
     public void onClick$cmdCreate()
     {
-        loadCompanyRecordPage();
+        loadCompanyRecordPage( addClientPage );
     }
 
     public void onClick$cmdUpdate()
@@ -127,12 +128,12 @@ public class CompanyClientController extends LoggedBaseController
             showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
             return;
         }
-        loadCompanyRecordPage();
+        loadCompanyRecordPage( updateClientPage );
     }
 
-    private void loadCompanyRecordPage()
+    private void loadCompanyRecordPage( String page )
     {
-        gotoPage( companyRecordPage, getRootParent().getParent() );
+        gotoPage( page, getRootParent().getParent() );
     }
 
 

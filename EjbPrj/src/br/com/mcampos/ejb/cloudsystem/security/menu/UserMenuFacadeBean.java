@@ -10,7 +10,7 @@ import br.com.mcampos.ejb.cloudsystem.security.role.Role;
 import br.com.mcampos.ejb.cloudsystem.security.role.RoleUtils;
 import br.com.mcampos.ejb.cloudsystem.security.task.Task;
 import br.com.mcampos.ejb.cloudsystem.security.task.TaskUtil;
-import br.com.mcampos.ejb.cloudsystem.user.collaborator.Collaborator;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.role.CollaboratorRole;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.role.CollaboratorRoleSessionLocal;
