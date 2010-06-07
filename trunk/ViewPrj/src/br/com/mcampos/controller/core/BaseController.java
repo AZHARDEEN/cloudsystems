@@ -9,6 +9,7 @@ import br.com.mcampos.util.system.CloudSystemSessionListener;
 
 import java.lang.reflect.Field;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -34,8 +35,11 @@ import org.zkoss.zul.impl.LabelElement;
 public abstract class BaseController extends GenericForwardComposer
 {
     public static final String browseHistoryParameterName = "browseHistory";
-    protected Component rootParent;
     public static final String bookmarkId = "bookmark";
+
+    private Component rootParent;
+    private transient HashMap<String, Object> arguments = new HashMap<String, Object>();
+    private static final String basePage = "/private/index.zul";
 
     public BaseController( char c )
     {
@@ -47,7 +51,7 @@ public abstract class BaseController extends GenericForwardComposer
         super();
     }
 
-    public String getCookie( String name )
+    protected String getCookie( String name )
     {
         Cookie[] cookies = ( ( HttpServletRequest )Executions.getCurrent().getNativeRequest() ).getCookies();
 
@@ -60,7 +64,7 @@ public abstract class BaseController extends GenericForwardComposer
         return null;
     }
 
-    public void setCookie( String name, String value )
+    protected void setCookie( String name, String value )
     {
         //add cookie
         HttpServletResponse response = ( HttpServletResponse )Executions.getCurrent().getNativeResponse();
@@ -69,7 +73,7 @@ public abstract class BaseController extends GenericForwardComposer
     }
 
 
-    public void setCookie( String name, String value, int days )
+    protected void setCookie( String name, String value, int days )
     {
         //add cookie
         HttpServletResponse response = ( HttpServletResponse )Executions.getCurrent().getNativeResponse();
@@ -78,7 +82,7 @@ public abstract class BaseController extends GenericForwardComposer
         response.addCookie( userCookie );
     }
 
-    public String getSessionID()
+    protected String getSessionID()
     {
         Object obj;
 
@@ -94,12 +98,12 @@ public abstract class BaseController extends GenericForwardComposer
     }
 
 
-    public Object getSessionAttribute( String name )
+    protected Object getSessionAttribute( String name )
     {
         return ( Sessions.getCurrent() != null ) ? Sessions.getCurrent().getAttribute( name ) : null;
     }
 
-    public void setSessionAttribute( String name, Object value )
+    protected void setSessionAttribute( String name, Object value )
     {
         if ( Sessions.getCurrent() != null )
             Sessions.getCurrent().setAttribute( name, value );
@@ -117,27 +121,27 @@ public abstract class BaseController extends GenericForwardComposer
         return bookmarkHelper;
     }
 
-    public void setLoggedInUser( AuthenticationDTO user )
+    protected void setLoggedInUser( AuthenticationDTO user )
     {
         setSessionAttribute( CloudSystemSessionListener.userSessionId, user );
     }
 
-    public AuthenticationDTO getLoggedInUser()
+    protected AuthenticationDTO getLoggedInUser()
     {
         return ( AuthenticationDTO )getSessionAttribute( CloudSystemSessionListener.userSessionId );
     }
 
-    public Boolean isUserLogged()
+    protected Boolean isUserLogged()
     {
         return getLoggedInUser() != null ? true : false;
     }
 
-    public void setParameter( String name, Object value )
+    protected void setSessionParameter( String name, Object value )
     {
         setSessionAttribute( name, value );
     }
 
-    public Object getParameter( String name )
+    protected Object getSessionParameter( String name )
     {
         Object value;
 
@@ -145,27 +149,36 @@ public abstract class BaseController extends GenericForwardComposer
         return value;
     }
 
-    public void clearParameter( String name )
+    protected void clearSessionParameter( String name )
     {
-        setParameter( name, null );
+        setSessionParameter( name, null );
+    }
+
+    protected Object getParameter( String name )
+    {
+        Map map = Executions.getCurrent().getArg();
+        Object param = null;
+
+        if ( map != null )
+            param = ( String )map.get( name );
+        if ( param == null )
+            param = Executions.getCurrent().getParameter( name );
+        return param;
     }
 
 
     protected void gotoPage( String uri )
     {
-        //Executions.getCurrent().sendRedirect( uri );
-        //Executions.createComponents( uri, self, null);
-        gotoPage( uri, null, null );
+        gotoPage( uri, null, arguments );
     }
 
     protected void gotoPage( String uri, Component parent )
     {
-        gotoPage( uri, parent, null );
+        gotoPage( uri, parent, arguments );
     }
 
     protected void gotoPage( String uri, Component parent, Map parameters )
     {
-        //Executions.getCurrent().sendRedirect( uri );
         if ( parent != null ) {
             try {
                 if ( SysUtils.isEmpty( parent.getChildren() ) == false )
@@ -177,22 +190,32 @@ public abstract class BaseController extends GenericForwardComposer
             setBookmark( uri, parent, parameters );
             Executions.getCurrent().createComponents( uri, parent, parameters );
         }
-        else
-            Executions.getCurrent().sendRedirect( uri );
+        else {
+            redirect( uri );
+        }
     }
 
     protected void gotoPage( PageBrowseHistory history )
     {
+        Component rootComponent;
+
         if ( history == null )
             return;
         if ( history.getRoot() != null ) {
-            if ( SysUtils.isEmpty( history.getRoot().getChildren() ) == false )
-                history.getRoot().getChildren().clear();
-            Executions.getCurrent().createComponents( history.getUri(), history.getRoot(), history.getParameter() );
+            rootComponent = history.getRoot();
+            if ( rootComponent != null && SysUtils.isEmpty( rootComponent.getChildren() ) == false ) {
+                if ( desktop.equals( rootComponent.getDesktop() ) ) {
+                    history.getRoot().getChildren().clear();
+                    Executions.getCurrent().createComponents( history.getUri(), history.getRoot(), history.getParameter() );
+                }
+                else {
+                    redirect( basePage );
+                }
+            }
         }
-        else
-            Executions.getCurrent().sendRedirect( history.getUri() );
-
+        else {
+            redirect( history.getUri() );
+        }
     }
 
     protected void gotoPage( String uri, Map parameters )
@@ -200,14 +223,20 @@ public abstract class BaseController extends GenericForwardComposer
         gotoPage( uri, null, parameters );
     }
 
-    public Component getRootParent()
+    protected Component getRootParent()
     {
         return rootParent;
     }
 
     protected void redirect( String uri )
     {
+        clearBookmark();
         Executions.getCurrent().sendRedirect( uri );
+    }
+
+    protected void clearBookmark()
+    {
+        clearSessionParameter( browseHistoryParameterName );
     }
 
     protected void removeMe()
@@ -253,7 +282,7 @@ public abstract class BaseController extends GenericForwardComposer
     }
 
 
-    public void setLanguage( String setLang ) throws Exception
+    protected void setLanguage( String setLang ) throws Exception
     {
 
         System.out.println( "Org Language: " + session.getAttribute( "preflang" ) );
@@ -339,5 +368,10 @@ public abstract class BaseController extends GenericForwardComposer
                     item.setValue( dto );
             }
         }
+    }
+
+    protected void setParameter( String name, Object value )
+    {
+        arguments.put( name, value );
     }
 }

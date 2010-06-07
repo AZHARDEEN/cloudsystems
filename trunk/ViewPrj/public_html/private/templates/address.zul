@@ -31,6 +31,10 @@
                     <textbox id="hood" width="99%" maxlength="128"/>
                 </row>
                 <row>
+                    <label value="##" id="labelAddressCountry"/>
+                    <combobox id="country" width="94%" autodrop="true"></combobox>
+                </row>
+                <row>
                     <label value="##" id="labelAddressState"/>
                     <combobox id="state" width="94%" autodrop="true"></combobox>
                 </row>
@@ -39,8 +43,8 @@
                     <combobox id="city" width="94%" autodrop="false" draggable="false" droppable="false"></combobox>
                 </row>
                 <row>
-                    <label value="Observação" id="labelAddressObs"/>
-                    <textbox id="##" width="99%" rows="2"></textbox>
+                    <label value="##" id="labelAddressObs"/>
+                    <textbox id="addressComment" width="99%" rows="2"></textbox>
                 </row>
             </rows>
         </grid>

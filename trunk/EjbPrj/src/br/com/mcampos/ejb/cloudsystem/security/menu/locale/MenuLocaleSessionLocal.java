@@ -2,7 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.security.menu.locale;
 
 
 import br.com.mcampos.ejb.cloudsystem.security.menu.Menu;
-import br.com.mcampos.ejb.entity.address.Country;
+import br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;

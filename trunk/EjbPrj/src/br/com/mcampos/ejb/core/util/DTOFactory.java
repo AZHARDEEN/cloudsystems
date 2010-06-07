@@ -2,7 +2,6 @@ package br.com.mcampos.ejb.core.util;
 
 
 import br.com.mcampos.dto.RegisterDTO;
-import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
@@ -33,7 +32,6 @@ import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
-import br.com.mcampos.ejb.cloudsystem.address.addresstype.AddressTypeUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
@@ -43,9 +41,13 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
+import br.com.mcampos.ejb.cloudsystem.locality.state.entity.State;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
 import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
+import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
+import br.com.mcampos.ejb.cloudsystem.user.address.AddressUtil;
+import br.com.mcampos.ejb.cloudsystem.user.address.entity.Address;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.CivilStateUtil;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.companyposition.entity.CompanyPosition;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyType;
@@ -56,15 +58,12 @@ import br.com.mcampos.ejb.cloudsystem.user.attribute.title.TitleUtil;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
-import br.com.mcampos.ejb.cloudsystem.user.login.Login;
-import br.com.mcampos.ejb.cloudsystem.user.person.Person;
-import br.com.mcampos.ejb.entity.address.City;
-import br.com.mcampos.ejb.entity.address.Country;
-import br.com.mcampos.ejb.entity.address.Region;
-import br.com.mcampos.ejb.entity.address.State;
-import br.com.mcampos.ejb.entity.system.SystemParameters;
-import br.com.mcampos.ejb.entity.user.Address;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
+import br.com.mcampos.ejb.cloudsystem.user.login.Login;
+import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
+import br.com.mcampos.ejb.entity.address.City;
+import br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country;
+import br.com.mcampos.ejb.entity.system.SystemParameters;
 import br.com.mcampos.ejb.entity.user.UserContact;
 import br.com.mcampos.ejb.entity.user.UserDocument;
 import br.com.mcampos.ejb.entity.user.Users;
@@ -126,7 +125,8 @@ public final class DTOFactory implements Serializable
     {
         Person person;
 
-        person = new Person( dto.getName() );
+        person = new Person();
+        person.setName( dto.getName() );
         copyDocuments( person, dto );
         return person;
     }
@@ -139,7 +139,7 @@ public final class DTOFactory implements Serializable
         dto.setId( entity.getId() );
 
         for ( Address item : entity.getAddresses() )
-            dto.add( copy( item ) );
+            dto.add( AddressUtil.copy( item ) );
         for ( UserDocument item : entity.getDocuments() )
             dto.add( copy( item ) );
         for ( UserContact item : entity.getContacts() )
@@ -171,22 +171,6 @@ public final class DTOFactory implements Serializable
     }
 
 
-    public static AddressDTO copy( Address entity )
-    {
-
-        AddressDTO addr = new AddressDTO();
-
-        addr.setAddress( entity.getAddress() );
-        addr.setAddressType( AddressTypeUtil.copy( entity.getAddressType() ) );
-        addr.setCity( copy( entity.getCity() ) );
-        addr.setComment( entity.getComment() );
-        addr.setDistrict( entity.getDistrict() );
-        addr.setZip( entity.getZip() );
-
-        return addr;
-    }
-
-
     public static UserDocumentDTO copy( UserDocument entity )
     {
         UserDocumentDTO dto = new UserDocumentDTO();
@@ -204,31 +188,6 @@ public final class DTOFactory implements Serializable
         dto.setDescription( entity.getDescription() );
         dto.setComment( entity.getComment() );
         return dto;
-    }
-
-
-    public static Address copy( AddressDTO dto )
-    {
-
-        Address entity = new Address();
-        entity.setAddress( dto.getAddress() );
-        entity.setDistrict( dto.getDistrict() );
-        entity.setComment( dto.getComment() );
-        entity.setZip( dto.getZip() );
-        entity.setAddressType( AddressTypeUtil.createEntity( dto.getAddressType() ) );
-        entity.setCity( copy( dto.getCity() ) );
-        return entity;
-    }
-
-
-    public static Address copy( Address address, AddressDTO dto )
-    {
-        address.setAddress( dto.getAddress() );
-        address.setDistrict( dto.getDistrict() );
-        address.setComment( dto.getComment() );
-        address.setZip( dto.getZip() );
-        address.setCity( copy( dto.getCity() ) );
-        return address;
     }
 
 
@@ -338,13 +297,8 @@ public final class DTOFactory implements Serializable
     public static State copy( StateDTO dto )
     {
         State entity;
-        Region region;
-        Country country;
 
-        country = new Country();
-        country.setId( dto.getCountryId() );
-        region = new Region( country, dto.getRegionId() );
-        entity = new State( region, dto.getId(), dto.getAbbreviation(), dto.getName() );
+        entity = new State();
         return entity;
     }
 
@@ -356,10 +310,8 @@ public final class DTOFactory implements Serializable
             return null;
 
         dto = new StateDTO();
-        dto.setCountryId( entity.getCountryId() );
-        dto.setRegionId( entity.getRegionId() );
         dto.setId( entity.getId() );
-        dto.setName( entity.getName() );
+        dto.setDescription( entity.getDescription() );
         dto.setAbbreviation( entity.getAbbreviation() );
         return dto;
     }
@@ -563,11 +515,10 @@ public final class DTOFactory implements Serializable
         user.setNickName( dto.getNickName() );
 
         if ( copyLists ) {
-            copyAddresses( user, dto );
+            UserUtil.addAddresses( user, dto );
             copyDocuments( user, dto );
             copyContacts( user, dto );
         }
-
         return user;
     }
 
@@ -585,7 +536,7 @@ public final class DTOFactory implements Serializable
         copyDocuments( user, list );
     }
 
-    protected static void copyDocuments( Users user, RegisterDTO dto )
+    public static void copyDocuments( Users user, RegisterDTO dto )
     {
         List<UserDocumentDTO> list = dto.getDocuments();
         copyDocuments( user, list );
@@ -600,17 +551,6 @@ public final class DTOFactory implements Serializable
         user.getContacts().clear();
         for ( UserContactDTO item : list ) {
             user.addContact( copy( item ) );
-        }
-    }
-
-
-    protected static void copyAddresses( Users user, UserDTO dto )
-    {
-        List<AddressDTO> list = dto.getAddressList();
-
-        user.getAddresses().clear();
-        for ( AddressDTO item : list ) {
-            user.addAddress( copy( item ) );
         }
     }
 

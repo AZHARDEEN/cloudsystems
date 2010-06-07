@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.entity.user;
 
 
+import br.com.mcampos.ejb.cloudsystem.user.address.entity.Address;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
 
 import java.io.Serializable;
@@ -186,13 +187,16 @@ public abstract class Users implements Serializable, Comparable<Users>
     public Address addAddress( Address address )
     {
         address.setUser( this );
-        getAddresses().add( address );
+        if ( getAddresses().contains( address ) == false ) {
+            getAddresses().add( address );
+        }
         return address;
     }
 
     public Address removeAddress( Address address )
     {
         getAddresses().remove( address );
+        address.setUser( null );
         return address;
     }
 

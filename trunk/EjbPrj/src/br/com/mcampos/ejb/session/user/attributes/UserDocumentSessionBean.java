@@ -79,6 +79,7 @@ public class UserDocumentSessionBean implements UserDocumentSessionLocal
             doc = ( UserDocument )query.getSingleResult();
         }
         catch ( Exception e ) {
+            e.printStackTrace();
             e = null;
         }
         return doc;

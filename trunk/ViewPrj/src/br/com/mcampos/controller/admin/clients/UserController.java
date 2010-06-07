@@ -187,7 +187,6 @@ public abstract class UserController extends LoggedBaseController
     {
         user.getAddressList().clear();
         AddressDTO dto = new AddressDTO();
-        dto.setUser( user );
         dto.setAddressType( ( AddressTypeDTO )getAddressType().getSelectedItem().getValue() );
         dto.setCity( ( CityDTO )getCity().getSelectedItem().getValue() );
         dto.setAddress( getAddress().getValue() );

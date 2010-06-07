@@ -1,17 +1,17 @@
 package br.com.mcampos.controller.commom;
 
 
-import br.com.mcampos.controller.core.BaseController;
-import br.com.mcampos.ejb.cloudsystem.address.addresstype.facade.AddressTypeFacade;
+import br.com.mcampos.controller.core.LoggedBaseController;
+import br.com.mcampos.ejb.cloudsystem.user.address.facade.AddressFacade;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Label;
 
 
-public class AddressController extends BaseController
+public class AddressController extends LoggedBaseController
 {
-    private AddressTypeFacade session;
+    private AddressFacade session;
 
     private Label labelAddressType;
     private Label labelAddressZipCode;
@@ -22,6 +22,8 @@ public class AddressController extends BaseController
     private Label labelAddressObs;
 
     private Combobox addressType;
+    private Combobox state;
+    private Combobox country;
 
     public AddressController()
     {
@@ -44,13 +46,14 @@ public class AddressController extends BaseController
         setLabel( labelAddressState );
         setLabel( labelAddressCity );
         setLabel( labelAddressObs );
-        loadCombobox( addressType, getSession().getAll() );
+        loadCombobox( addressType, getSession().getTypes() );
+        loadCombobox( country, getSession().getCountries() );
     }
 
-    private AddressTypeFacade getSession()
+    private AddressFacade getSession()
     {
         if ( session == null )
-            session = ( AddressTypeFacade )getRemoteSession( AddressTypeFacade.class );
+            session = ( AddressFacade )getRemoteSession( AddressFacade.class );
         return session;
     }
 }

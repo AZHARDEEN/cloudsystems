@@ -57,13 +57,7 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
     {
         if ( namedQuery == null )
             return Collections.emptyList();
-        try {
-            return ( ( List<ENTITY> )getEntityManager().createNamedQuery( namedQuery ).getResultList() );
-        }
-        catch ( Exception e ) {
-            e = null;
-            return Collections.emptyList();
-        }
+        return ( List<ENTITY> )getResultList( namedQuery );
     }
 
     @TransactionAttribute( TransactionAttributeType.MANDATORY )

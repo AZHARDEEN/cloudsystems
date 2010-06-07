@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.user.collaborator.entity;
 
 
-import br.com.mcampos.ejb.cloudsystem.user.person.Person;
+import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.type.entity.entity.CollaboratorType;
 

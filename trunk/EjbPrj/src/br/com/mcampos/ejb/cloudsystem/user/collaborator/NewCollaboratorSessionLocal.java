@@ -3,7 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.user.collaborator;
 
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.CollaboratorPK;
-import br.com.mcampos.ejb.cloudsystem.user.person.Person;
+import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
