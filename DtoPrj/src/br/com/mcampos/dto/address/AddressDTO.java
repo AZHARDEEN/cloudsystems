@@ -1,8 +1,6 @@
 package br.com.mcampos.dto.address;
 
 
-import br.com.mcampos.dto.user.UserDTO;
-
 import java.io.Serializable;
 
 
@@ -10,12 +8,11 @@ public class AddressDTO implements Serializable, Comparable<AddressDTO>
 {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5879723922351784270L;
-	private UserDTO user;
+     *
+     */
+    private static final long serialVersionUID = 5879723922351784270L;
     private AddressTypeDTO addressType;
-    private CityDTO  city;
+    private CityDTO city;
 
     private String address;
     private String district;
@@ -25,16 +22,6 @@ public class AddressDTO implements Serializable, Comparable<AddressDTO>
     public AddressDTO()
     {
         super();
-    }
-
-    public void setUser( UserDTO user )
-    {
-        this.user = user;
-    }
-
-    public UserDTO getUser()
-    {
-        return user;
     }
 
     public void setAddressType( AddressTypeDTO addressType )
@@ -106,14 +93,8 @@ public class AddressDTO implements Serializable, Comparable<AddressDTO>
     public boolean equals( Object obj )
     {
         if ( obj instanceof AddressDTO ) {
-            AddressDTO dto = ( AddressDTO ) obj;
-            if ( getUser() != null ) {
-                return getUser().equals( dto.getUser() ) 
-                    && getAddressType().equals( dto.getAddressType() );
-            }
-            else {
-                return getAddressType().equals( dto.getAddressType() );
-            }
+            AddressDTO dto = ( AddressDTO )obj;
+            return getAddressType().equals( dto.getAddressType() );
         }
         return false;
     }

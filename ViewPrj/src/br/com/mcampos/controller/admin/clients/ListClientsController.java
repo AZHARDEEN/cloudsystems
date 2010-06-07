@@ -83,7 +83,7 @@ public class ListClientsController extends BaseUserListController
             return;
         dto = ( ListUserDTO )item.getValue();
         if ( dto != null ) {
-            setParameter( "client_id", dto.getId() );
+            setSessionParameter( "client_id", dto.getId() );
             if ( dto.getUserType().getId() == 1 )
                 gotoPage( personZulPage + "?who=updateClient" );
             else

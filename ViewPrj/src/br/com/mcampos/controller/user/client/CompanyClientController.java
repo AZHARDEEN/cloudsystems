@@ -14,8 +14,7 @@ import org.zkoss.zul.Listitem;
 
 public class CompanyClientController extends LoggedBaseController
 {
-    private static final String addClientPage = "/private/user/client/add_company.zul";
-    private static final String updateClientPage = "/private/user/client/update_company.zul";
+    private static final String addClientPage = "/private/user/client/persist_company.zul";
 
     private ClientFacade clientSession;
 
@@ -117,7 +116,7 @@ public class CompanyClientController extends LoggedBaseController
 
     public void onClick$cmdCreate()
     {
-        loadCompanyRecordPage( addClientPage );
+        loadCompanyRecordPage();
     }
 
     public void onClick$cmdUpdate()
@@ -128,12 +127,12 @@ public class CompanyClientController extends LoggedBaseController
             showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
             return;
         }
-        loadCompanyRecordPage( updateClientPage );
+        loadCompanyRecordPage();
     }
 
-    private void loadCompanyRecordPage( String page )
+    private void loadCompanyRecordPage()
     {
-        gotoPage( page, getRootParent().getParent() );
+        gotoPage( addClientPage, getRootParent().getParent() );
     }
 
 

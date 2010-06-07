@@ -2,7 +2,7 @@ package br.com.mcampos.teste.importacao;
 
 import br.com.mcampos.dto.user.PersonDTO;
 
-import br.com.mcampos.ejb.cloudsystem.user.person.Person;
+import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 
 import java.lang.reflect.Field;
 

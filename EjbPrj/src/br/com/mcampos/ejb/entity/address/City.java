@@ -1,6 +1,8 @@
 package br.com.mcampos.ejb.entity.address;
 
 
+import br.com.mcampos.ejb.cloudsystem.locality.state.entity.State;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;

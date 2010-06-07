@@ -1,25 +1,24 @@
 package br.com.mcampos.dto.user;
 
+
 import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.core.DisplayNameDTO;
-
-import br.com.mcampos.dto.core.SimpleTableDTO;
-
+import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 
 import java.util.ArrayList;
 
 public abstract class UserDTO extends DisplayNameDTO implements Comparable<UserDTO>
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 230335703324655910L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 230335703324655910L;
+    private Integer id;
     private String name;
     private String nickName;
     private String comment;
-    private SimpleTableDTO userType;
-    
+    private UserTypeDTO userType;
+
     private ArrayList<AddressDTO> addressList;
     private ArrayList<UserDocumentDTO> documentList;
     private ArrayList<UserContactDTO> contactList;
@@ -33,7 +32,7 @@ public abstract class UserDTO extends DisplayNameDTO implements Comparable<UserD
     {
         return null;
     }
-    
+
     public void setId( Integer id )
     {
         this.id = id;
@@ -75,12 +74,12 @@ public abstract class UserDTO extends DisplayNameDTO implements Comparable<UserD
     }
 
 
-    public void setUserType( SimpleTableDTO userType )
+    public void setUserType( UserTypeDTO userType )
     {
         this.userType = userType;
     }
 
-    public SimpleTableDTO getUserType()
+    public UserTypeDTO getUserType()
     {
         return userType;
     }
@@ -96,15 +95,13 @@ public abstract class UserDTO extends DisplayNameDTO implements Comparable<UserD
             addressList = new ArrayList<AddressDTO>();
         return addressList;
     }
-    
-    public void add ( AddressDTO dto )
+
+    public void add( AddressDTO dto )
     {
         if ( dto == null )
             return;
-        dto.setUser( this );
         /*exists some address with same type???*/
-        for ( AddressDTO item: getAddressList() ) 
-        {
+        for ( AddressDTO item : getAddressList() ) {
             if ( item.getAddressType().compareTo( dto.getAddressType() ) == 0 ) {
                 getAddressList().remove( item );
                 break;
@@ -121,7 +118,7 @@ public abstract class UserDTO extends DisplayNameDTO implements Comparable<UserD
     public ArrayList<UserDocumentDTO> getDocumentList()
     {
         if ( documentList == null )
-            documentList = new ArrayList<UserDocumentDTO> ();
+            documentList = new ArrayList<UserDocumentDTO>();
         return documentList;
     }
 
@@ -133,17 +130,16 @@ public abstract class UserDTO extends DisplayNameDTO implements Comparable<UserD
     public ArrayList<UserContactDTO> getContactList()
     {
         if ( contactList == null )
-            contactList = new ArrayList<UserContactDTO> ();
+            contactList = new ArrayList<UserContactDTO>();
         return contactList;
     }
 
-    public void add ( UserDocumentDTO dto )
+    public void add( UserDocumentDTO dto )
     {
         if ( dto == null )
             return;
         dto.setUserId( this.getId() );
-        for ( UserDocumentDTO item: getDocumentList() ) 
-        {
+        for ( UserDocumentDTO item : getDocumentList() ) {
             if ( item.getDocumentType().compareTo( dto.getDocumentType() ) == 0 ) {
                 getDocumentList().remove( item );
                 break;
@@ -153,7 +149,7 @@ public abstract class UserDTO extends DisplayNameDTO implements Comparable<UserD
     }
 
 
-    public void add ( UserContactDTO dto )
+    public void add( UserContactDTO dto )
     {
         if ( dto == null )
             return;
@@ -173,12 +169,11 @@ public abstract class UserDTO extends DisplayNameDTO implements Comparable<UserD
     @Override
     public boolean equals( Object obj )
     {
-        if ( obj instanceof UserDTO ) 
-        {
-            UserDTO dto = ( UserDTO ) obj;
-            
+        if ( obj instanceof UserDTO ) {
+            UserDTO dto = ( UserDTO )obj;
+
             if ( dto.getId() != null )
-                return dto.getId().equals( dto.getId () );
+                return dto.getId().equals( dto.getId() );
             else
                 return false;
         }

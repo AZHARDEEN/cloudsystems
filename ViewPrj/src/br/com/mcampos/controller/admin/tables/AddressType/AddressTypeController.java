@@ -3,7 +3,7 @@ package br.com.mcampos.controller.admin.tables.AddressType;
 
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
 import br.com.mcampos.dto.address.AddressTypeDTO;
-import br.com.mcampos.ejb.cloudsystem.address.addresstype.facade.AddressTypeFacade;
+import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.facade.AddressTypeFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;

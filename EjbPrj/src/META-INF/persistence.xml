@@ -5,62 +5,62 @@
   <persistence-unit name="EjbPrj">
     <description>Descrição do conector CloudSystems</description>
     <jta-data-source>jdbc/CloudDS</jta-data-source>
-    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType</class>
-    <class>br.com.mcampos.ejb.entity.address.City</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator</class>
-    <class>br.com.mcampos.ejb.entity.system.SystemParameters</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.entity.DocumentType</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.entity.ContactType</class>
-    <class>br.com.mcampos.ejb.entity.user.Users</class>
-    <class>br.com.mcampos.ejb.entity.address.Region</class>
-    <class>br.com.mcampos.ejb.cloudsystem.address.addresstype.entity.AddressType</class>
-    <class>br.com.mcampos.ejb.entity.user.UserDocument</class>
     <class>br.com.mcampos.ejb.entity.user.UserContact</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.login.accesslog.AccessLog</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.companyposition.entity.CompanyPosition</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender</class>
-    <class>br.com.mcampos.ejb.entity.system.SystemMessageType</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.type.entity.entity.CollaboratorType</class>
-    <class>br.com.mcampos.ejb.entity.address.Country</class>
-    <class>br.com.mcampos.ejb.entity.address.State</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.entity.CivilState</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.login.Login</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyType</class>
-    <class>br.com.mcampos.ejb.entity.system.SystemMessage</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.person.Person</class>
-    <class>br.com.mcampos.ejb.entity.user.Address</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPassword</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage</class>
+    <class>br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country</class>
     <class>br.com.mcampos.ejb.entity.system.EMail</class>
-    <class>br.com.mcampos.ejb.entity.system.EMailPart</class>
-    <class>br.com.mcampos.ejb.entity.system.EMailPartType</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.role.Role</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.menu.Menu</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.permissionassignment.PermissionAssignment</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.task.subtask.Subtask</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.task.Task</class>
-    <class>br.com.mcampos.ejb.cloudsystem.media.entity.Media</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.page.BackgroundImage</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.login.accesslog.AccessLog</class>
+    <class>br.com.mcampos.ejb.entity.address.City</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.role.CollaboratorRole</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.address.entity.Address</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.type.entity.entity.CollaboratorType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPassword</class>
+    <class>br.com.mcampos.ejb.entity.user.Users</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType</class>
+    <class>br.com.mcampos.ejb.entity.system.SystemMessageType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.entity.DocumentType</class>
+    <class>br.com.mcampos.ejb.entity.system.SystemMessage</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressType</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField</class>
-    <class>br.com.mcampos.ejb.cloudsystem.system.entity.FieldType</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title</class>
-    <class>br.com.mcampos.ejb.cloudsystem.security.menu.locale.MenuLocale</class>
+    <class>br.com.mcampos.ejb.cloudsystem.locality.state.entity.State</class>
+    <class>br.com.mcampos.ejb.entity.user.UserDocument</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.task.subtask.Subtask</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.login.Login</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.permissionassignment.PermissionAssignment</class>
+    <class>br.com.mcampos.ejb.entity.system.EMailPart</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.person.entity.Person</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.task.Task</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.page.BackgroundImage</class>
     <class>br.com.mcampos.ejb.cloudsystem.client.entity.Client</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.role.CollaboratorRole</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.menu.locale.MenuLocale</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.companyposition.entity.CompanyPosition</class>
+    <class>br.com.mcampos.ejb.entity.system.SystemParameters</class>
+    <class>br.com.mcampos.ejb.entity.system.EMailPartType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField</class>
+    <class>br.com.mcampos.ejb.cloudsystem.media.entity.Media</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.role.Role</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment</class>
+    <class>br.com.mcampos.ejb.cloudsystem.system.entity.FieldType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.entity.ContactType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment</class>
+    <class>br.com.mcampos.ejb.cloudsystem.security.menu.Menu</class>
+    <class>br.com.mcampos.ejb.entity.address.Region</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.entity.CivilState</class>
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>
