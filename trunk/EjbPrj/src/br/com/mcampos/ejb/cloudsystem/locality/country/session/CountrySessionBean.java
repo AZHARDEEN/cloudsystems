@@ -32,4 +32,9 @@ public class CountrySessionBean extends Crud<String, Country> implements Country
         return getAll( Country.getAll );
     }
 
+    public List<Country> getAllWithCities() throws ApplicationException
+    {
+        return getAll( Country.getAllWithCities );
+    }
+
 }

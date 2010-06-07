@@ -16,7 +16,7 @@
   <rows>
    <row>
     <label value="##" id="labelDocumentType"/>
-    <combobox id="documentType" width="150px"></combobox>
+    <combobox id="documentType" width="150px" readonly="true"></combobox>
    </row>
    <row>
     <label value="##" id="labelDocumentCode"/>

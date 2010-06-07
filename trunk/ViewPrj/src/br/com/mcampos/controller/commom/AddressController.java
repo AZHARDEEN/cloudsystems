@@ -20,6 +20,7 @@ public class AddressController extends LoggedBaseController
     private Label labelAddressState;
     private Label labelAddressCity;
     private Label labelAddressObs;
+    private Label labelAddressCountry;
 
     private Combobox addressType;
     private Combobox state;
@@ -46,6 +47,7 @@ public class AddressController extends LoggedBaseController
         setLabel( labelAddressState );
         setLabel( labelAddressCity );
         setLabel( labelAddressObs );
+        setLabel( labelAddressCountry );
         loadCombobox( addressType, getSession().getTypes() );
         loadCombobox( country, getSession().getCountries() );
     }

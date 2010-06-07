@@ -1,20 +1,17 @@
 package br.com.mcampos.ejb.session.user;
 
+
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.ejb.core.AbstractSecurity;
-import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
+import br.com.mcampos.ejb.core.AbstractSecurity;
+import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.entity.user.UserDocument;
 import br.com.mcampos.ejb.entity.user.Users;
-
-
-import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
 import br.com.mcampos.ejb.session.user.attributes.UserDocumentSessionLocal;
-
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.ArrayList;
@@ -22,15 +19,18 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+
 @Stateless( name = "UserSession", mappedName = "CloudSystems-EjbPrj-UserSession" )
+@TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class UserSessionBean extends AbstractSecurity implements UserSessionLocal
 {
 
@@ -77,7 +77,7 @@ public class UserSessionBean extends AbstractSecurity implements UserSessionLoca
 
 
     /**<id>select o from Users o</id>
-	 */
+     */
     public List<ListUserDTO> getUsersByRange( AuthenticationDTO auth, int firstResult, int maxResults ) throws ApplicationException
     {
         authenticate( auth );

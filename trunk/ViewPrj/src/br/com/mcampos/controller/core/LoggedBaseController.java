@@ -1,7 +1,7 @@
 package br.com.mcampos.controller.core;
 
 
-import br.com.mcampos.controller.commom.user.PersonClientController;
+import br.com.mcampos.controller.commom.user.PersonController;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 import br.com.mcampos.exception.ApplicationException;
@@ -46,7 +46,7 @@ public class LoggedBaseController extends BaseController
                 switch ( status ) {
                 case UserStatusDTO.statusFullfillRecord:
                     String path = page.getRequestPath();
-                    if ( path.endsWith( "person.zul" ) == false || ( this instanceof PersonClientController ) == false ) {
+                    if ( path.endsWith( "person.zul" ) == false || ( this instanceof PersonController ) == false ) {
                         redirect( "/private/user/person.zul?who=myself" );
                     }
                     else

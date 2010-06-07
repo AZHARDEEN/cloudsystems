@@ -22,9 +22,12 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 
 @Stateless( name = "UserFacadeSession", mappedName = "CloudSystems-EjbPrj-UserFacadeSession" )
+@TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class UserFacadeSessionBean implements UserFacadeSession
 {
 

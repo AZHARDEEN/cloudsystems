@@ -1,8 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.security.menu.locale;
 
 
-import br.com.mcampos.ejb.cloudsystem.security.menu.Menu;
 import br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country;
+import br.com.mcampos.ejb.cloudsystem.security.menu.Menu;
 
 import java.io.Serializable;
 
@@ -41,11 +41,11 @@ public class MenuLocale implements Serializable
     private String description;
 
 
-    @ManyToOne
+    @ManyToOne( optional = false )
     @JoinColumn( name = "ctr_code_ch", nullable = false )
     private Country country;
 
-    @ManyToOne
+    @ManyToOne( optional = false )
     @JoinColumn( name = "mnu_id_in", nullable = false )
     private Menu menu;
 

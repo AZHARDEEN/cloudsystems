@@ -20,6 +20,8 @@ public interface CountrySessionLocal extends Serializable
 
     List<Country> getAll() throws ApplicationException;
 
+    List<Country> getAllWithCities() throws ApplicationException;
+
     Country add( Country entity ) throws ApplicationException;
 
     Country update( Country entity ) throws ApplicationException;

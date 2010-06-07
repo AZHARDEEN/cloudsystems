@@ -2,9 +2,9 @@ package br.com.mcampos.ejb.cloudsystem.locality.state.session;
 
 
 import br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country;
+import br.com.mcampos.ejb.cloudsystem.locality.region.entity.Region;
 import br.com.mcampos.ejb.cloudsystem.locality.state.entity.State;
 import br.com.mcampos.ejb.cloudsystem.locality.state.entity.StatePK;
-import br.com.mcampos.ejb.entity.address.Region;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -12,9 +12,12 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 
 @Stateless( name = "StateSession", mappedName = "CloudSystems-EjbPrj-StateSession" )
+@TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class StateSessionBean extends Crud<StatePK, State> implements StateSessionLocal
 {
 
@@ -38,16 +41,17 @@ public class StateSessionBean extends Crud<StatePK, State> implements StateSessi
     @Override
     public List<State> getAll( Region region ) throws ApplicationException
     {
+        if ( region == null )
+            return Collections.emptyList();
         return ( List<State> )getResultList( State.getAllByRegion, region );
     }
 
     @Override
     public List<State> getAll( Country country ) throws ApplicationException
     {
-        if ( country != null )
-            return ( List<State> )getResultList( State.getAllByRegion, country );
-        else
+        if ( country == null )
             return Collections.emptyList();
+        return ( List<State> )getResultList( State.getAllByCountry, country );
     }
 
     private void linkToRegion( State entity )

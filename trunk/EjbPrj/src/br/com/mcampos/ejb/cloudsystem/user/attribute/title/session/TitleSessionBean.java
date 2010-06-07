@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.user.attribute.title.session;
 
 
+import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
@@ -33,6 +34,12 @@ public class TitleSessionBean extends Crud<Integer, Title> implements TitleSessi
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<Title> getAll() throws ApplicationException
+    {
+        return ( List<Title> )getResultList( Title.getAll );
+    }
+
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public List<Title> getAll( Gender gender ) throws ApplicationException
     {
         return ( List<Title> )getResultList( Title.getAll );
     }

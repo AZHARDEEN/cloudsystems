@@ -1,22 +1,21 @@
 package br.com.mcampos.ejb.session.system.SystemMessage;
 
-import br.com.mcampos.ejb.entity.system.SystemMessage;
 
+import br.com.mcampos.ejb.entity.system.SystemMessage;
 import br.com.mcampos.ejb.entity.system.SystemMessagePK;
 import br.com.mcampos.exception.ApplicationException;
-
 import br.com.mcampos.exception.ApplicationRuntimeException;
 
-import java.util.List;
-
-import javax.ejb.Local;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+
 
 @Stateless( name = "SystemMessagesSession", mappedName = "CloudSystems-EjbPrj-SystemMessagesSession" )
+@TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class SystemMessagesSessionBean implements SystemMessagesSessionLocal
 {
     @PersistenceContext( unitName = "EjbPrj" )

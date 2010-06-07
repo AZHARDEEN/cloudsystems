@@ -16,7 +16,7 @@
   <rows>
    <row>
     <label value="##" id="labelContactType"/>
-    <combobox id="contactType" width="150px"></combobox>
+    <combobox id="contactType" width="150px" readonly="true"></combobox>
    </row>
    <row>
     <label value="##" id="labelContactDescription"/>

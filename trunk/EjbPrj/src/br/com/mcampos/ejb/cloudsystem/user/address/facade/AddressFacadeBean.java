@@ -14,7 +14,6 @@ import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.session.AddressTy
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -66,15 +65,12 @@ public class AddressFacadeBean extends AbstractSecurity implements AddressFacade
     {
         Country country = countrySession.get( dto.getId() );
 
-        if ( country != null )
-            return StateUtil.toDTOList( stateSession.getAll( country ) );
-        else
-            return Collections.emptyList();
+        return StateUtil.toDTOList( stateSession.getAll( country ) );
     }
 
     public List<CountryDTO> getCountries() throws ApplicationException
     {
-        List<Country> countries = countrySession.getAll();
+        List<Country> countries = countrySession.getAllWithCities();
 
         return CountryUtil.toDTOList( countries );
     }

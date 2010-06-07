@@ -48,11 +48,11 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
     @Column( name = "udc_additional_ch" )
     private String additionalInfo;
 
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.LAZY, optional = false )
     @JoinColumn( name = "usr_id_in", updatable = false, nullable = false )
     private Users users;
 
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne( fetch = FetchType.LAZY, optional = false )
     @JoinColumn( name = "doc_id_in", referencedColumnName = "doc_id_in", nullable = false )
     private DocumentType documentType;
 

@@ -10,6 +10,8 @@ public class StateDTO extends SimpleTableDTO
     private static final long serialVersionUID = 1046569607923921204L;
     private String abbreviation;
 
+    private RegionDTO region;
+
     public StateDTO()
     {
         super();
@@ -29,5 +31,15 @@ public class StateDTO extends SimpleTableDTO
     public String toString()
     {
         return getAbbreviation() + " - " + getDescription();
+    }
+
+    public void setRegion( RegionDTO region )
+    {
+        this.region = region;
+    }
+
+    public RegionDTO getRegion()
+    {
+        return region;
     }
 }

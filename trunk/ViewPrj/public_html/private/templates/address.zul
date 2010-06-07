@@ -11,7 +11,7 @@
                 <row>
                     <label value="##" id="labelAddressType"/>
                     <hbox>
-                        <combobox id="addressType" value="Residencial">
+                        <combobox id="addressType" value="Residencial" readonly="true">
                             <comboitem label="Residencial" value="1"/>
                         </combobox>
                     </hbox>
@@ -32,15 +32,15 @@
                 </row>
                 <row>
                     <label value="##" id="labelAddressCountry"/>
-                    <combobox id="country" width="94%" autodrop="true"></combobox>
+                    <combobox id="country" width="300px" readonly="true"></combobox>
                 </row>
                 <row>
                     <label value="##" id="labelAddressState"/>
-                    <combobox id="state" width="94%" autodrop="true"></combobox>
+                    <combobox id="state" width="300px" readonly="true"></combobox>
                 </row>
                 <row>
                     <label value="##" id="labelAddressCity"/>
-                    <combobox id="city" width="94%" autodrop="false" draggable="false" droppable="false"></combobox>
+                    <combobox id="city" width="500px" readonly="true"></combobox>
                 </row>
                 <row>
                     <label value="##" id="labelAddressObs"/>

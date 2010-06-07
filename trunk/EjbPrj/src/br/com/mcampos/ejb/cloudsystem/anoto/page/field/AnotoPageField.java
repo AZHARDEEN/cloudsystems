@@ -63,15 +63,15 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
     private Integer height;
 
 
-    @ManyToOne
-    @JoinColumn( name = "flt_id_in", referencedColumnName = "flt_id_in" )
+    @ManyToOne( optional = false )
+    @JoinColumn( name = "flt_id_in", referencedColumnName = "flt_id_in", columnDefinition = "Integer" )
     private FieldType type;
 
-    @ManyToOne
-    @JoinColumns( { @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in" ),
-                    @JoinColumn( name = "pad_id_in", referencedColumnName = "pad_id_in" ),
-                    @JoinColumn( name = "apg_id_ch", referencedColumnName = "apg_id_ch" ) } )
-	private AnotoPage anotoPage;
+    @ManyToOne( optional = false )
+    @JoinColumns( { @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in", columnDefinition = "Integer" ),
+                    @JoinColumn( name = "pad_id_in", referencedColumnName = "pad_id_in", columnDefinition = "Integer" ),
+                    @JoinColumn( name = "apg_id_ch", referencedColumnName = "apg_id_ch", columnDefinition = "Integer" ) } )
+    private AnotoPage anotoPage;
 
 
     public AnotoPageField()

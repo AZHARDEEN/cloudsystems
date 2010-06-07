@@ -5,7 +5,7 @@ import br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.entity.CivilStat
 import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title;
 import br.com.mcampos.ejb.cloudsystem.user.login.Login;
-import br.com.mcampos.ejb.entity.address.City;
+import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
 import br.com.mcampos.ejb.entity.user.Users;
 
 import java.io.Serializable;

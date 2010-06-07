@@ -1,45 +1,60 @@
-<grid fixedLayout="true" width="100%">
-    <columns>
-        <column width="90px" />
-        <column/>
-    </columns>
-    <rows>
-        <row>
-            <label value="Sexo" width="90px" />
-            <!--
-            <combobox id="gender" readonly="true" 
-                use="br.com.mcampos.web.resources.GenderComboBox"
-                onCreate="gender.setChildCombo ( title );"
-                onSelect="gender.loadTitles( );" >
-            </combobox>
-            -->
-            <combobox id="gender" readonly="true" >
-            </combobox>
-        </row>
-        <row>
-            <label value="Tratamento" width="90px" />
-            <combobox id="title" readonly="true" >
-            </combobox>
-        </row>
-        <row>
-            <label value="Estado Civil" width="90px" />
-            <combobox id="maritalStatus" readonly="true" constraint="no empty" >
-            </combobox>
-        </row>
-        <row>
-            <label value="Data de Nascimento" width="90px" />
-            <hbox >
-                <datebox id="birthdate" constraint="no future, no empty, no today" format="dd/MM/yyyy" />
-                <label value = "DD/MM/YYYY"  />
-            </hbox>
-        </row>
-        <row>
-            <label value="Nome do Pai" width="90px" />
-            <textbox id="fatherName" width="99%" constraint="no empty" maxlength="255"/>
-        </row>
-        <row>
-            <label value="Nome da Mãe" width="90px" />
-            <textbox id="motherName" width="99%" constraint="no empty" maxlength="255"/>
-        </row>
-    </rows>
-</grid>
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div align="left">
+        <grid fixedLayout="true">
+            <columns>
+                <column width="20%"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <label value="Nome Completo"/>
+                    <textbox id="name" width="99%" maxlength="128"/>
+                </row>
+                <row>
+                    <label value="CPF"/>
+                    <hbox>
+                        <textbox id="cpf" width="200px" maxlength="14"/>
+                    </hbox>
+                </row>
+                <row>
+                    <label value="Sexo"/>
+                    <combobox id="gender" width="200px" readonly="true"></combobox>
+                </row>
+                <row>
+                    <label value="Tratamento"/>
+                    <combobox id="title" width="200px" readonly="true"></combobox>
+                </row>
+                <row>
+                    <label value="Estado Civil"/>
+                    <combobox id="maritalStatus" width="200px" readonly="true"></combobox>
+                </row>
+                <row>
+                    <label value="Data Nascimento"/>
+                    <hbox>
+                        <datebox id="birthdate" format="dd/MM/yyyy"/>
+                        <div align="center">
+                            <label value="DD/MM/YYYY. Ex.: 25/12/2009"/>
+                        </div>
+                    </hbox>
+                </row>
+                <row>
+                    <label value="Naturalidade"/>
+                    <vbox width="100%">
+                        <combobox id="bornCountry" width="300px" readonly="true"></combobox>
+                        <combobox id="bornState" width="300px" readonly="true"></combobox>
+                        <combobox id="bornCity" width="500px" readonly="true"></combobox>
+                    </vbox>
+                </row>
+                <row>
+                    <label value="Nome do Pai"/>
+                    <textbox id="fatherName" width="99%" maxlength="128"/>
+                </row>
+                <row>
+                    <label value="Nome da Mãe"/>
+                    <textbox id="motherName" width="99%" maxlength="128"/>
+                </row>
+            </rows>
+        </grid>
+    </div>
+</zk>

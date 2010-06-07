@@ -1,16 +1,14 @@
 package br.com.mcampos.controller.user.person;
 
 
-import br.com.mcampos.controller.commom.user.PersonClientController;
+import br.com.mcampos.controller.commom.user.PersonController;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.ejb.cloudsystem.user.person.facade.PersonFacade;
 
 import org.zkoss.zk.ui.Component;
 
-public class MyRecord extends PersonClientController
+public class MyRecord extends PersonController
 {
-    private PersonFacade session;
-
     public MyRecord()
     {
         super();
@@ -29,10 +27,4 @@ public class MyRecord extends PersonClientController
         showInfo( dto );
     }
 
-    private PersonFacade getSession()
-    {
-        if ( session == null )
-            session = ( PersonFacade )getRemoteSession( PersonFacade.class );
-        return session;
-    }
 }
