@@ -2,8 +2,8 @@ package br.com.mcampos.ejb.cloudsystem.locality.state;
 
 
 import br.com.mcampos.dto.address.StateDTO;
+import br.com.mcampos.ejb.cloudsystem.locality.region.RegionUtil;
 import br.com.mcampos.ejb.cloudsystem.locality.state.entity.State;
-import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -31,8 +31,8 @@ public class StateUtil
     {
         if ( dto == null )
             return null;
-        DTOFactory.copy( entity );
         entity.setDescription( dto.getDescription() );
+        entity.setAbbreviation( dto.getAbbreviation() );
         return entity;
     }
 
@@ -44,6 +44,7 @@ public class StateUtil
         dto.setId( entity.getId() );
         dto.setDescription( entity.getDescription() );
         dto.setAbbreviation( entity.getAbbreviation() );
+        dto.setRegion( RegionUtil.copy( entity.getRegion() ) );
         return dto;
     }
 

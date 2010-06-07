@@ -1,16 +1,30 @@
 package br.com.mcampos.ejb.cloudsystem.locality.country.entity;
 
+
+import br.com.mcampos.ejb.cloudsystem.locality.region.entity.Region;
+
 import java.io.Serializable;
 
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
+@Entity
+@NamedQueries( { @NamedQuery( name = Country.getAll, query = "select o from Country o" ),
+                 @NamedQuery( name = Country.getAllWithCities, query = "select o from Country o where o.regions IS NOT EMPTY" ) } )
 @Table( name = "country" )
 public class Country implements Serializable
 {
     public static final String getAll = "Country.findAll";
+    public static final String getAllWithCities = "Country.findAllWithCities";
 
     @Column( name = "ctr_code3_ch" )
     private String code3;
@@ -21,6 +35,9 @@ public class Country implements Serializable
 
     @Column( name = "ctr_num_code_in" )
     private Integer numericCode;
+
+    @OneToMany( mappedBy = "country", fetch = FetchType.LAZY )
+    private List<Region> regions;
 
 
     public Country()
@@ -57,5 +74,15 @@ public class Country implements Serializable
     public void setNumericCode( Integer ctr_num_code_in )
     {
         this.numericCode = ctr_num_code_in;
+    }
+
+    public void setRegions( List<Region> regions )
+    {
+        this.regions = regions;
+    }
+
+    public List<Region> getRegions()
+    {
+        return regions;
     }
 }

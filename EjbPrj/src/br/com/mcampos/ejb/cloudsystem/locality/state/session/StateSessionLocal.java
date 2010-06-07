@@ -4,7 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.locality.state.session;
 import br.com.mcampos.ejb.cloudsystem.locality.state.entity.State;
 import br.com.mcampos.ejb.cloudsystem.locality.state.entity.StatePK;
 import br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country;
-import br.com.mcampos.ejb.entity.address.Region;
+import br.com.mcampos.ejb.cloudsystem.locality.region.entity.Region;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;

@@ -45,11 +45,11 @@ public class Pad implements Serializable, EntityCopyInterface<PadDTO>, Comparabl
     @Temporal( TemporalType.DATE )
     private Date insertDate;
 
-    @ManyToOne
-    @JoinColumn( name = "frm_id_in" )
+    @ManyToOne( optional = false )
+    @JoinColumn( name = "frm_id_in", columnDefinition = "Integer" )
     private AnotoForm form;
 
-    @ManyToOne
+    @ManyToOne( optional = false )
     @JoinColumn( name = "pad_id_in" )
     private Media media;
 

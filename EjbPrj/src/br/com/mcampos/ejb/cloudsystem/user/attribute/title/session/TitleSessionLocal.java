@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.user.attribute.title.session;
 
 
+import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -21,6 +22,8 @@ public interface TitleSessionLocal
     Title get( Integer key ) throws ApplicationException;
 
     List<Title> getAll() throws ApplicationException;
+
+    List<Title> getAll( Gender gender ) throws ApplicationException;
 
     Integer getNextId() throws ApplicationException;
 

@@ -4,7 +4,6 @@ package br.com.mcampos.ejb.core.util;
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
-import br.com.mcampos.dto.address.StateDTO;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
@@ -41,7 +40,8 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
-import br.com.mcampos.ejb.cloudsystem.locality.state.entity.State;
+import br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country;
+import br.com.mcampos.ejb.cloudsystem.locality.state.StateUtil;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
 import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
@@ -61,8 +61,7 @@ import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.User
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.login.Login;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
-import br.com.mcampos.ejb.entity.address.City;
-import br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country;
+import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
 import br.com.mcampos.ejb.entity.system.SystemParameters;
 import br.com.mcampos.ejb.entity.user.UserContact;
 import br.com.mcampos.ejb.entity.user.UserDocument;
@@ -254,10 +253,10 @@ public final class DTOFactory implements Serializable
             return null;
         city = new CityDTO();
         city.setId( entity.getId() );
-        city.setName( entity.getName() );
+        city.setDescription( entity.getDescription() );
         city.setCountryCapital( entity.isCountryCapital() );
         city.setStateCapital( entity.isStateCapital() );
-        city.setState( copy( entity.getState() ) );
+        city.setState( StateUtil.copy( entity.getState() ) );
         return city;
     }
 
@@ -269,7 +268,7 @@ public final class DTOFactory implements Serializable
             city = new City();
             city.setId( dto.getId() );
             if ( dto.getState() != null )
-                city.setState( copy( dto.getState() ) );
+                city.setState( StateUtil.createEntity( dto.getState() ) );
         }
         return city;
     }
@@ -290,29 +289,6 @@ public final class DTOFactory implements Serializable
         dto.setId( entity.getId() );
         dto.setCode3( entity.getCode3() );
         dto.setNumericCode( entity.getNumericCode() );
-        return dto;
-    }
-
-
-    public static State copy( StateDTO dto )
-    {
-        State entity;
-
-        entity = new State();
-        return entity;
-    }
-
-    public static StateDTO copy( State entity )
-    {
-        StateDTO dto;
-
-        if ( entity == null )
-            return null;
-
-        dto = new StateDTO();
-        dto.setId( entity.getId() );
-        dto.setDescription( entity.getDescription() );
-        dto.setAbbreviation( entity.getAbbreviation() );
         return dto;
     }
 

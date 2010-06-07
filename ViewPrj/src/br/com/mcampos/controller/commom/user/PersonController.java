@@ -3,6 +3,8 @@ package br.com.mcampos.controller.commom.user;
 
 import br.com.mcampos.controller.admin.clients.UserController;
 import br.com.mcampos.dto.address.CityDTO;
+import br.com.mcampos.dto.address.CountryDTO;
+import br.com.mcampos.dto.address.StateDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
@@ -12,11 +14,13 @@ import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.dto.user.attributes.GenderDTO;
 import br.com.mcampos.dto.user.attributes.TitleDTO;
 import br.com.mcampos.dto.user.attributes.UserStatusDTO;
+import br.com.mcampos.ejb.cloudsystem.user.person.facade.PersonFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.CPF;
 
 import java.sql.Timestamp;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -29,8 +33,10 @@ import org.zkoss.zul.Textbox;
 
 
 @SuppressWarnings( { "unchecked", "Unnecessary" } )
-public class PersonClientController extends UserController
+public class PersonController extends UserController
 {
+    private PersonFacade session;
+
     private Textbox name;
     private Textbox cpf;
     private Combobox gender;
@@ -41,6 +47,7 @@ public class PersonClientController extends UserController
     private Textbox motherName;
     private Combobox bornState;
     private Combobox bornCity;
+    private Combobox bornCountry;
 
     private PersonDTO currentDTO;
 
@@ -49,12 +56,12 @@ public class PersonClientController extends UserController
      * TODO: implementar dependentes ao cadastro.
      */
 
-    public PersonClientController( char c )
+    public PersonController( char c )
     {
         super( c );
     }
 
-    public PersonClientController()
+    public PersonController()
     {
         super();
     }
@@ -63,30 +70,9 @@ public class PersonClientController extends UserController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
-        /*
-        String action = null;
-        Map map = Executions.getCurrent().getArg();
-
-        if ( map != null )
-            action = ( String )map.get( "who" );
-        if ( SysUtils.isEmpty( action ) )
-            action = Executions.getCurrent().getParameter( "who" );
-        if ( action != null ) {
-            if ( action.equals( "myself" ) ) {
-                showInfo( getLoggedInUser().getUserId() );
-            }
-            else if ( action.equals( "new" ) ) {
-                clearParameter( "client_id" );
-            }
-        }
-        else {
-            Integer id = ( Integer )getSessionAttribute( "client_id" );
-            if ( id != null ) {
-                clearParameter( "client_id" );
-                showInfo( id );
-            }
-        }
-        */
+        loadCombobox( bornCountry, getSession().getCountries() );
+        loadCombobox( gender, getSession().getGenders() );
+        loadCombobox( maritalStatus, getSession().getCivilStates() );
     }
 
 
@@ -169,8 +155,8 @@ public class PersonClientController extends UserController
         dto.setName( name.getValue() );
         dto.setBirthDate( new Timestamp( birthdate.getValue().getTime() ) );
         dto.setBornCity( bornCity.getSelectedItem() != null ? ( CityDTO )bornCity.getSelectedItem().getValue() : null );
-        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() :
-                           null );
+        dto.setCivilState( maritalStatus.getSelectedItem() !=
+                           null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() : null );
         dto.setFatherName( fatherName.getValue() );
         dto.setGender( gender.getSelectedItem() != null ? ( GenderDTO )gender.getSelectedItem().getValue() : null );
         dto.setMotherName( motherName.getValue() );
@@ -209,12 +195,12 @@ public class PersonClientController extends UserController
 
     public void onSelect$gender()
     {
-        Comboitem item;
-
-        item = gender.getSelectedItem();
-        if ( item == null )
-            return;
-
+        Comboitem item = gender.getSelectedItem();
+        if ( item != null ) {
+            GenderDTO dto = ( GenderDTO )item.getValue();
+            if ( dto != null )
+                loadCombobox( title, dto.getTitles() );
+        }
     }
 
 
@@ -223,8 +209,28 @@ public class PersonClientController extends UserController
         Comboitem item;
 
         item = bornState.getSelectedItem();
-        if ( item == null )
-            return;
+        if ( item != null ) {
+            StateDTO dto = ( StateDTO )item.getValue();
+            if ( dto != null ) {
+                findStateComboitem( dto, bornState, bornCity );
+            }
+        }
+    }
+
+    public void onSelect$bornCountry()
+    {
+        Comboitem item;
+
+        item = bornCountry.getSelectedItem();
+        if ( item != null ) {
+            CountryDTO dto = ( CountryDTO )item.getValue();
+            if ( dto != null ) {
+
+                List<StateDTO> states;
+                states = getStates( dto );
+                loadCombobox( bornState, states );
+            }
+        }
     }
 
 
@@ -240,6 +246,7 @@ public class PersonClientController extends UserController
             item = ( GenderDTO )comboItem.getValue();
             if ( item.compareTo( targetDTO ) == 0 ) {
                 gender.setSelectedItem( comboItem );
+                onSelect$gender();
                 break;
             }
         }
@@ -283,6 +290,7 @@ public class PersonClientController extends UserController
     protected void findBithCityComboitem( CityDTO dto ) throws ApplicationException
     {
         if ( dto != null ) {
+            findCountryComboitem( dto.getState().getRegion().getCountry(), bornCountry, bornState );
             findStateComboitem( dto.getState(), bornState, bornCity );
             findCityComboitem( dto, bornCity );
         }
@@ -327,5 +335,35 @@ public class PersonClientController extends UserController
             cpf.setFocus( true );
         }
         return bRet;
+    }
+
+    protected PersonFacade getSession()
+    {
+        if ( session == null )
+            session = ( PersonFacade )getRemoteSession( PersonFacade.class );
+        return session;
+    }
+
+    protected List<StateDTO> getStates( CountryDTO country )
+    {
+        try {
+            return getSession().getStates( country );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
+            return Collections.emptyList();
+        }
+    }
+
+
+    protected List<CityDTO> getCities( StateDTO state )
+    {
+        try {
+            return getSession().getCities( state );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
+            return Collections.emptyList();
+        }
     }
 }

@@ -2,7 +2,9 @@ package br.com.mcampos.ejb.cloudsystem.user.attribute.gender;
 
 
 import br.com.mcampos.dto.user.attributes.GenderDTO;
+import br.com.mcampos.dto.user.attributes.TitleDTO;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.title.TitleUtil;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class GenderUtil
         if ( entity == null )
             return null;
         GenderDTO dto = new GenderDTO( entity.getId(), entity.getDescription() );
+        dto.setTitles( ( ArrayList<TitleDTO> )TitleUtil.toDTOList( entity.getTitles() ) );
         return dto;
     }
 

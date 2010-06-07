@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.locality.state.entity;
 
 
-import br.com.mcampos.ejb.entity.address.Region;
+import br.com.mcampos.ejb.cloudsystem.locality.region.entity.Region;
 
 import java.io.Serializable;
 

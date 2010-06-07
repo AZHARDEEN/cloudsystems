@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.entity.address;
+package br.com.mcampos.ejb.cloudsystem.locality.region.entity;
 
 //~--- JDK imports ------------------------------------------------------------
 
@@ -24,48 +24,44 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Region.findAll", query = "select o from Region o" ),
-                 @NamedQuery( name = "Region.findByCountry", query = "select o from Region o where o.countryId = :countryId" ) } )
-@Table( name = "\"region\"" )
+@NamedQueries( { @NamedQuery( name = Region.getAll, query = "select o from Region o where o.country = ?1" ),
+                 @NamedQuery( name = Region.nextId, query = "select max ( o.id ) from Region o where o.country = ?1" ) } )
+@Table( name = "region" )
 @IdClass( RegionPK.class )
 public class Region implements Serializable
 {
-    @Column( name = "reg_abbreviation_ch", nullable = false )
-    private String abbreviation;
-
-    @ManyToOne
-    @JoinColumn( name = "ctr_code_ch", nullable = false, insertable = true, updatable = true )
-    private Country country;
+    public static final String getAll = "Region.findAll";
+    public static final String nextId = "Region.nextId";
 
     @Id
     @Column( name = "ctr_code_ch", nullable = false, insertable = false, updatable = false )
     private String countryId;
 
-    @Column( name = "reg_flag_bin" )
-    private String flag;
+    @ManyToOne( optional = false )
+    @JoinColumn( name = "ctr_code_ch", nullable = false, insertable = true, updatable = true )
+    private Country country;
 
     @Id
     @Column( name = "reg_id_in", nullable = false )
     private Integer id;
 
+    @Column( name = "reg_abbreviation_ch", nullable = false )
+    private String abbreviation;
+
+    @Column( name = "reg_flag_bin" )
+    private String flag;
+
     @Column( name = "reg_name_ch", nullable = false )
-    private String name;
+    private String description;
 
     @OneToMany( mappedBy = "region" )
     private List<State> stateList;
+
 
     public Region()
     {
     }
 
-    public Region( Country country, String reg_abbreviation_ch, String reg_flag_bin, Integer reg_id_in, String reg_name_ch )
-    {
-        this.country = country;
-        this.abbreviation = reg_abbreviation_ch;
-        this.flag = reg_flag_bin;
-        this.id = reg_id_in;
-        this.name = reg_name_ch;
-    }
 
     public Region( Country country, Integer id )
     {
@@ -114,14 +110,14 @@ public class Region implements Serializable
         this.id = reg_id_in;
     }
 
-    public String getName()
+    public String getDescription()
     {
-        return name;
+        return description;
     }
 
-    public void setName( String reg_name_ch )
+    public void setDescription( String reg_name_ch )
     {
-        this.name = reg_name_ch;
+        this.description = reg_name_ch;
     }
 
     public List<State> getStateList()

@@ -5,13 +5,13 @@ import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.address.AddressTypeDTO;
 import br.com.mcampos.dto.address.CityDTO;
+import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
 import br.com.mcampos.dto.user.UserContactDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.attributes.ContactTypeDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
-import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.MultilineMessageBox;
 
 import java.util.List;
@@ -36,11 +36,17 @@ public abstract class UserController extends LoggedBaseController
     private Combobox addressType;
     private Combobox state;
     private Combobox city;
+    private Combobox country;
     private Textbox zip;
     private Textbox address;
     private Textbox hood;
     private Textbox addressComment;
     private Button cmdSubmit;
+
+
+    protected abstract List<StateDTO> getStates( CountryDTO dto );
+
+    protected abstract List<CityDTO> getCities( StateDTO dto );
 
 
     public UserController( char c )
@@ -205,12 +211,8 @@ public abstract class UserController extends LoggedBaseController
             address.setValue( item.getAddress() );
             hood.setValue( item.getDistrict() );
             addressComment.setValue( item.getComment() );
-            try {
-                findStateComboitem( item.getCity().getState(), getState(), getCity() );
-            }
-            catch ( ApplicationException e ) {
-                showErrorMessage( e.getMessage() );
-            }
+            findCountryComboitem( item.getCity().getState().getRegion().getCountry(), country, getState() );
+            findStateComboitem( item.getCity().getState(), getState(), getCity() );
             findCityComboitem( item.getCity(), getCity() );
             break; /*Just now, There must be only One!!!! Teoria do highlander*/
         }
@@ -234,12 +236,12 @@ public abstract class UserController extends LoggedBaseController
     }
 
     @SuppressWarnings( "unchecked" )
-    protected void findStateComboitem( StateDTO targetDTO, Combobox comboState, Combobox comboCity ) throws ApplicationException
+    protected void findStateComboitem( StateDTO targetDTO, Combobox comboState, Combobox comboCity )
     {
         List<Comboitem> comboList;
         StateDTO item;
 
-        if ( targetDTO == null || comboState == null || comboCity == null )
+        if ( targetDTO == null || comboState == null )
             return;
 
         comboList = ( List<Comboitem> )comboState.getItems();
@@ -247,6 +249,8 @@ public abstract class UserController extends LoggedBaseController
             item = ( StateDTO )comboItem.getValue();
             if ( item.compareTo( targetDTO ) == 0 ) {
                 comboState.setSelectedItem( comboItem );
+                if ( comboCity != null )
+                    loadCombobox( comboCity, getCities( item ) );
                 break;
             }
         }
@@ -262,6 +266,25 @@ public abstract class UserController extends LoggedBaseController
             item = ( CityDTO )comboItem.getValue();
             if ( item.compareTo( targetDTO ) == 0 ) {
                 comboCity.setSelectedItem( comboItem );
+                break;
+            }
+        }
+    }
+
+    protected void findCountryComboitem( CountryDTO targetDTO, Combobox comboCountry, Combobox comboState )
+    {
+        List<Comboitem> comboList;
+        CountryDTO item;
+
+        if ( targetDTO == null || comboCountry == null )
+            return;
+        comboList = ( List<Comboitem> )comboCountry.getItems();
+        for ( Comboitem comboItem : comboList ) {
+            item = ( CountryDTO )comboItem.getValue();
+            if ( item.compareTo( targetDTO ) == 0 ) {
+                comboCountry.setSelectedItem( comboItem );
+                if ( comboState != null )
+                    loadCombobox( comboState, getStates( targetDTO ) );
                 break;
             }
         }

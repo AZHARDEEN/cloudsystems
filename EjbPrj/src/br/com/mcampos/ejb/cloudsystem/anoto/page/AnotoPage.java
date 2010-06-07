@@ -50,9 +50,9 @@ public class AnotoPage implements Serializable, EntityCopyInterface<AnotoPageDTO
     private String pageAddress;
 
 
-    @ManyToOne
-    @JoinColumns( { @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in" ),
-                    @JoinColumn( name = "pad_id_in", referencedColumnName = "pad_id_in" ) } )
+    @ManyToOne( optional = false )
+    @JoinColumns( { @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in", columnDefinition = "Integer" ),
+                    @JoinColumn( name = "pad_id_in", referencedColumnName = "pad_id_in", columnDefinition = "Integer" ) } )
     private Pad pad;
 
     @Column( name = "apg_description_ch", nullable = true )

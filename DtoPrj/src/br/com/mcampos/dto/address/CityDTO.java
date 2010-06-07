@@ -1,27 +1,28 @@
 package br.com.mcampos.dto.address;
 
+
 import br.com.mcampos.dto.core.DisplayNameDTO;
 
 import java.io.Serializable;
 
-public class CityDTO extends DisplayNameDTO implements Comparable< CityDTO >, Serializable
+public class CityDTO extends DisplayNameDTO implements Comparable<CityDTO>, Serializable
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 6761503201293735988L;
-	private Boolean countryCapital;
+     *
+     */
+    private static final long serialVersionUID = 6761503201293735988L;
+    private Boolean countryCapital;
     private Integer id;
-    private String name;
+    private String description;
     private Boolean stateCapital;
-    
-    private StateDTO state; 
-    
+
+    private StateDTO state;
+
     public CityDTO()
     {
         super();
     }
-    
+
     public void setCountryCapital( Boolean countryCapital )
     {
         this.countryCapital = countryCapital;
@@ -42,14 +43,14 @@ public class CityDTO extends DisplayNameDTO implements Comparable< CityDTO >, Se
         return id;
     }
 
-    public void setName( String name )
+    public void setDescription( String name )
     {
-        this.name = name;
+        this.description = name;
     }
 
-    public String getName()
+    public String getDescription()
     {
-        return name;
+        return description;
     }
 
     public void setStateCapital( Boolean stateCapital )
@@ -61,10 +62,17 @@ public class CityDTO extends DisplayNameDTO implements Comparable< CityDTO >, Se
     {
         return stateCapital;
     }
-    
+
+    @Override
     public String getDisplayName()
     {
-        return getName();
+        return getDescription();
+    }
+
+    @Override
+    public int compareTo( CityDTO target )
+    {
+        return getId().compareTo( target.getId() );
     }
 
     public void setState( StateDTO state )
@@ -77,8 +85,9 @@ public class CityDTO extends DisplayNameDTO implements Comparable< CityDTO >, Se
         return state;
     }
 
-    public int compareTo( CityDTO target )
+    @Override
+    public String toString()
     {
-        return getId().compareTo(target.getId());
+        return getDescription();
     }
 }

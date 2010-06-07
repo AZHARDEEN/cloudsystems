@@ -2,6 +2,9 @@ package br.com.mcampos.controller.user;
 
 
 import br.com.mcampos.controller.admin.clients.UserController;
+import br.com.mcampos.dto.address.CityDTO;
+import br.com.mcampos.dto.address.CountryDTO;
+import br.com.mcampos.dto.address.StateDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
@@ -9,6 +12,7 @@ import br.com.mcampos.dto.user.attributes.CompanyTypeDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.util.CNPJ;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
@@ -240,6 +244,16 @@ public class CompanyController extends UserController
     protected boolean isNewParam()
     {
         return isParam( "new" );
+    }
+
+    protected List<StateDTO> getStates( CountryDTO dto )
+    {
+        return Collections.emptyList();
+    }
+
+    protected List<CityDTO> getCities( StateDTO dto )
+    {
+        return Collections.emptyList();
     }
 }
 

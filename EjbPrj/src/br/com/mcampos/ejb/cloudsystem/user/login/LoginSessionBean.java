@@ -9,17 +9,17 @@ import br.com.mcampos.dto.system.SendMailDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus;
+import br.com.mcampos.ejb.cloudsystem.user.login.accesslog.AccessLog;
+import br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPassword;
+import br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPasswordPK;
+import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.cloudsystem.user.person.session.PersonSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.core.util.RandomString;
-import br.com.mcampos.ejb.cloudsystem.user.login.accesslog.AccessLog;
-import br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPassword;
-import br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPasswordPK;
 import br.com.mcampos.ejb.entity.system.SystemParameters;
-import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.entity.user.UserDocument;
-import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus;
 import br.com.mcampos.ejb.session.system.EmailSessionLocal;
 import br.com.mcampos.ejb.session.system.SendMailSessionLocal;
 import br.com.mcampos.ejb.session.system.SystemParametersSessionLocal;
@@ -39,6 +39,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -50,6 +52,7 @@ import org.jasypt.util.text.BasicTextEncryptor;
 
 
 @Stateless( name = "LoginSession", mappedName = "CloudSystems-EjbPrj-LoginSession" )
+@TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class LoginSessionBean extends AbstractSecurity implements LoginSessionLocal
 {
     private static final String encprytPassword = "Nj9nQ6jz6Bt3";
@@ -61,7 +64,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
     PersonSessionLocal personSession;
 
     @EJB
-	UserSessionLocal userSession;
+    UserSessionLocal userSession;
 
     @EJB
     SendMailSessionLocal sendMail;

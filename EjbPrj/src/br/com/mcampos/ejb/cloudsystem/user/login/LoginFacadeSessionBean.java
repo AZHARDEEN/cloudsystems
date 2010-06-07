@@ -1,27 +1,27 @@
 package br.com.mcampos.ejb.cloudsystem.user.login;
 
+
 import br.com.mcampos.dto.RegisterDTO;
-
 import br.com.mcampos.dto.security.AuthenticationDTO;
-import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.security.LoginCredentialDTO;
-import br.com.mcampos.dto.user.login.LoginDTO;
+import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
-
-
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 @Stateless( name = "LoginFacadeSession", mappedName = "CloudSystems-EjbPrj-LoginFacadeSession" )
+@TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class LoginFacadeSessionBean implements LoginFacadeSession
 {
     @EJB
     SystemMessagesSessionLocal systemMessage;
+
     @EJB
     LoginSessionLocal login;
 
