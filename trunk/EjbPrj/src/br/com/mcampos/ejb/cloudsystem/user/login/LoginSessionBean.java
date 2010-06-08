@@ -19,7 +19,7 @@ import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.core.util.RandomString;
 import br.com.mcampos.ejb.entity.system.SystemParameters;
-import br.com.mcampos.ejb.entity.user.UserDocument;
+import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 import br.com.mcampos.ejb.session.system.EmailSessionLocal;
 import br.com.mcampos.ejb.session.system.SendMailSessionLocal;
 import br.com.mcampos.ejb.session.system.SystemParametersSessionLocal;

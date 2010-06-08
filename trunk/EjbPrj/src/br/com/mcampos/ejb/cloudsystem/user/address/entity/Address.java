@@ -3,7 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.user.address.entity;
 
 import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressType;
 import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
-import br.com.mcampos.ejb.entity.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 
 import java.io.Serializable;
 

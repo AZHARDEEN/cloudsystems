@@ -4,8 +4,8 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.ejb.entity.user.UserDocument;
-import br.com.mcampos.ejb.entity.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 
 import br.com.mcampos.exception.ApplicationException;
 

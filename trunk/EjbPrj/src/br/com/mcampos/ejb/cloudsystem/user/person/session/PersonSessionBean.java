@@ -15,8 +15,8 @@ import br.com.mcampos.ejb.cloudsystem.user.login.Login;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
-import br.com.mcampos.ejb.entity.user.UserContact;
-import br.com.mcampos.ejb.entity.user.UserDocument;
+import br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact;
+import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 import br.com.mcampos.ejb.session.user.UserSessionLocal;
 
 import java.util.ArrayList;

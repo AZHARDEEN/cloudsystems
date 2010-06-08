@@ -9,7 +9,7 @@ import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.GenderUtil;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.title.TitleUtil;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.entity.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 
 public class PersonUtil extends UserUtil
 {

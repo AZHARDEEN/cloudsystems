@@ -9,9 +9,9 @@ import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.entity.user.UserDocument;
-import br.com.mcampos.ejb.entity.user.Users;
-import br.com.mcampos.ejb.session.user.attributes.UserDocumentSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.document.session.UserDocumentSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.ArrayList;
