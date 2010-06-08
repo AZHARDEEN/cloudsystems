@@ -1,8 +1,8 @@
-package br.com.mcampos.ejb.entity.user;
+package br.com.mcampos.ejb.cloudsystem.user.contact.entity;
 
 
 import br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.entity.ContactType;
-import br.com.mcampos.ejb.entity.user.pk.UserContactPK;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 
 import java.io.Serializable;
 

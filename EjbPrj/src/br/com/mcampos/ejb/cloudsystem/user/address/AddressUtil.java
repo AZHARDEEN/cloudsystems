@@ -5,7 +5,7 @@ import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.AddressTypeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.address.entity.Address;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.entity.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;

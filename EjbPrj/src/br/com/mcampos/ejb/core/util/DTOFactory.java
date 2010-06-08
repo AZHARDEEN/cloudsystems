@@ -2,8 +2,6 @@ package br.com.mcampos.ejb.core.util;
 
 
 import br.com.mcampos.dto.RegisterDTO;
-import br.com.mcampos.dto.address.CityDTO;
-import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
@@ -40,8 +38,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
-import br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country;
-import br.com.mcampos.ejb.cloudsystem.locality.state.StateUtil;
+import br.com.mcampos.ejb.cloudsystem.locality.city.CityUtil;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
 import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
@@ -60,12 +57,12 @@ import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatu
 import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.login.Login;
+import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
-import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
 import br.com.mcampos.ejb.entity.system.SystemParameters;
-import br.com.mcampos.ejb.entity.user.UserContact;
-import br.com.mcampos.ejb.entity.user.UserDocument;
-import br.com.mcampos.ejb.entity.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact;
+import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 
 import java.io.Serializable;
 
@@ -78,56 +75,6 @@ public final class DTOFactory implements Serializable
     public DTOFactory()
     {
         super();
-    }
-
-
-    public static Person copy( PersonDTO dto )
-    {
-        Person person;
-
-        person = new Person();
-
-        /*Copy users base class*/
-        copy( person, dto, true );
-        person.setCivilState( CivilStateUtil.createEntity( ( dto.getCivilState() ) ) );
-        person.setGender( copy( dto.getGender() ) );
-        person.setBirthDate( dto.getBirthDate() );
-        person.setTitle( TitleUtil.createEntity( dto.getTitle() ) );
-        person.setFirstName( dto.getFirstName() );
-        person.setMiddleName( dto.getMiddleName() );
-        person.setLastName( dto.getLastName() );
-        person.setFatherName( dto.getFatherName() );
-        person.setMotherName( dto.getMotherName() );
-        person.setBornCity( copy( dto.getBornCity() ) );
-
-
-        return person;
-    }
-
-    public static Person copy( Person person, PersonDTO dto )
-    {
-        copy( person, dto, false );
-
-        person.setBirthDate( dto.getBirthDate() );
-        person.setBornCity( copy( dto.getBornCity() ) );
-        person.setCivilState( CivilStateUtil.createEntity( dto.getCivilState() ) );
-        person.setFatherName( dto.getFatherName() );
-        person.setGender( copy( dto.getGender() ) );
-        person.setInsertDate( null );
-        person.setMotherName( dto.getMotherName() );
-        person.setTitle( TitleUtil.createEntity( dto.getTitle() ) );
-        return person;
-    }
-
-
-    public static Person copy( RegisterDTO dto )
-    {
-        Person person;
-
-        person = new Person();
-        person.setName( dto.getName() );
-        copyDocuments( person, dto );
-        return person;
     }
 
     protected static UserDTO copy( UserDTO dto, Users entity )
@@ -155,7 +102,7 @@ public final class DTOFactory implements Serializable
 
         copy( person, entity );
         person.setBirthDate( entity.getBirthDate() );
-        person.setBornCity( copy( entity.getBornCity() ) );
+        person.setBornCity( CityUtil.copy( entity.getBornCity() ) );
         person.setFirstName( entity.getFirstName() );
         person.setMiddleName( entity.getMiddleName() );
         person.setLastName( entity.getLastName() );
@@ -244,55 +191,6 @@ public final class DTOFactory implements Serializable
         return entity;
     }
 
-    public static CityDTO copy( City entity )
-    {
-        CityDTO city;
-
-
-        if ( entity == null )
-            return null;
-        city = new CityDTO();
-        city.setId( entity.getId() );
-        city.setDescription( entity.getDescription() );
-        city.setCountryCapital( entity.isCountryCapital() );
-        city.setStateCapital( entity.isStateCapital() );
-        city.setState( StateUtil.copy( entity.getState() ) );
-        return city;
-    }
-
-    public static City copy( CityDTO dto )
-    {
-        City city = null;
-
-        if ( dto != null ) {
-            city = new City();
-            city.setId( dto.getId() );
-            if ( dto.getState() != null )
-                city.setState( StateUtil.createEntity( dto.getState() ) );
-        }
-        return city;
-    }
-
-
-    public static Country copy( CountryDTO dto )
-    {
-        Country country = new Country();
-        country.setCode3( dto.getCode3() );
-        country.setId( dto.getId() );
-        country.setNumericCode( dto.getNumericCode() );
-        return country;
-    }
-
-    public static CountryDTO copy( Country entity )
-    {
-        CountryDTO dto = new CountryDTO();
-        dto.setId( entity.getId() );
-        dto.setCode3( entity.getCode3() );
-        dto.setNumericCode( entity.getNumericCode() );
-        return dto;
-    }
-
-
     public static Gender copy( GenderDTO dto )
     {
         Gender gender;
@@ -370,7 +268,7 @@ public final class DTOFactory implements Serializable
         login.setPassword( dto.getPassword() );
         login.setPasswordExpirationDate( dto.getPasswordExpirationDate() );
         login.setUserStatus( copy( dto.getUserStatus() ) );
-        login.setPerson( copy( dto.getPerson() ) );
+        login.setPerson( PersonUtil.createEntity( dto.getPerson() ) );
         return login;
     }
 

@@ -13,7 +13,7 @@ import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.cloudsystem.user.person.session.PersonSessionLocal;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.entity.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
 import br.com.mcampos.ejb.session.user.UserSessionLocal;
 import br.com.mcampos.exception.ApplicationException;

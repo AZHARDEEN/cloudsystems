@@ -1,8 +1,8 @@
-package br.com.mcampos.ejb.entity.user;
+package br.com.mcampos.ejb.cloudsystem.user.document.entity;
 
 
 import br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.entity.DocumentType;
-import br.com.mcampos.ejb.entity.user.pk.UserDocumentPK;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 
 import java.io.Serializable;
 

@@ -6,7 +6,6 @@ import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.ejb.cloudsystem.user.address.AddressUtil;
 import br.com.mcampos.ejb.cloudsystem.user.address.entity.Address;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.UserTypeUtil;
-import br.com.mcampos.ejb.entity.user.Users;
 
 import java.util.List;
 

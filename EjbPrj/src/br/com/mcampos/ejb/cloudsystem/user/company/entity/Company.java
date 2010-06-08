@@ -3,7 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.user.company.entity;
 
 import br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyType;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
-import br.com.mcampos.ejb.entity.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 
 import java.io.Serializable;
 

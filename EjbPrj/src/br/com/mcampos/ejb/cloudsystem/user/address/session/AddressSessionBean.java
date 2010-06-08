@@ -5,7 +5,7 @@ import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressTyp
 import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.session.AddressTypeSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.address.entity.Address;
 import br.com.mcampos.ejb.cloudsystem.user.address.entity.AddressPK;
-import br.com.mcampos.ejb.entity.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 

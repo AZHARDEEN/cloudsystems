@@ -1,8 +1,8 @@
-package br.com.mcampos.ejb.session.user.attributes;
+package br.com.mcampos.ejb.cloudsystem.user.document.session;
 
 
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.ejb.entity.user.UserDocument;
+import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.security.InvalidParameterException;

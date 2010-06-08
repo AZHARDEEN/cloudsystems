@@ -2,7 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.client.entity;
 
 
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
-import br.com.mcampos.ejb.entity.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 
 import java.io.Serializable;
 

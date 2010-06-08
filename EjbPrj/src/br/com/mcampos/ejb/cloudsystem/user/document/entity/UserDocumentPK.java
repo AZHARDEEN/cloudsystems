@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.entity.user.pk;
+package br.com.mcampos.ejb.cloudsystem.user.document.entity;
 
 import java.io.Serializable;
 
