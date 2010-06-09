@@ -1,8 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.user.document.entity;
 
 
-import br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.entity.DocumentType;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.entity.DocumentType;
 
 import java.io.Serializable;
 
@@ -20,6 +20,7 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = UserDocument.getAll, query = "select o from UserDocument o" ),
+                 @NamedQuery( name = UserDocument.deleteFromUser, query = "delete from UserDocument o where o.user = ?1" ),
                  @NamedQuery( name = UserDocument.getByDocument,
                               query = "select o from UserDocument o where o.code = :document and o.documentType.id = :docType" ) } )
 @Table( name = "user_document" )
@@ -27,6 +28,7 @@ import javax.persistence.Table;
 public class UserDocument implements Serializable, Comparable<UserDocument>
 {
     public static final String getAll = "UserDocument.findAll";
+    public static final String deleteFromUser = "UserDocument.deleteByUser";
     public static final String getByDocument = "UserDocument.findDocument";
 
     public static final int typeCPF = 1;
@@ -50,7 +52,7 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
 
     @ManyToOne( fetch = FetchType.LAZY, optional = false )
     @JoinColumn( name = "usr_id_in", updatable = false, nullable = false )
-    private Users users;
+    private Users user;
 
     @ManyToOne( fetch = FetchType.LAZY, optional = false )
     @JoinColumn( name = "doc_id_in", referencedColumnName = "doc_id_in", nullable = false )
@@ -115,14 +117,14 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
         this.userId = userId;
     }
 
-    public Users getUsers()
+    public Users getUser()
     {
-        return users;
+        return user;
     }
 
-    public void setUsers( Users users )
+    public void setUser( Users users )
     {
-        this.users = users;
+        this.user = users;
         if ( users != null ) {
             setUserId( users.getId() );
         }

@@ -1,7 +1,6 @@
 package br.com.mcampos.ejb.core.util;
 
 
-import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
@@ -16,16 +15,8 @@ import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.system.SystemParametersDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
-import br.com.mcampos.dto.user.PersonDTO;
-import br.com.mcampos.dto.user.UserContactDTO;
-import br.com.mcampos.dto.user.UserDTO;
-import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.attributes.CompanyPositionDTO;
 import br.com.mcampos.dto.user.attributes.CompanyTypeDTO;
-import br.com.mcampos.dto.user.attributes.GenderDTO;
-import br.com.mcampos.dto.user.attributes.TitleDTO;
-import br.com.mcampos.dto.user.attributes.UserStatusDTO;
-import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
@@ -38,36 +29,20 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
-import br.com.mcampos.ejb.cloudsystem.locality.city.CityUtil;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
 import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
-import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
-import br.com.mcampos.ejb.cloudsystem.user.address.AddressUtil;
-import br.com.mcampos.ejb.cloudsystem.user.address.entity.Address;
-import br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.CivilStateUtil;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.companyposition.entity.CompanyPosition;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyType;
-import br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.ContactTypeUtil;
-import br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.DocumentTypeUtil;
-import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
-import br.com.mcampos.ejb.cloudsystem.user.attribute.title.TitleUtil;
-import br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title;
-import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus;
-import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.UserStatusUtil;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.UserTypeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.login.Login;
 import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
-import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.entity.system.SystemParameters;
-import br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact;
-import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
-import br.com.mcampos.ejb.cloudsystem.user.Users;
 
 import java.io.Serializable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public final class DTOFactory implements Serializable
@@ -77,188 +52,6 @@ public final class DTOFactory implements Serializable
         super();
     }
 
-    protected static UserDTO copy( UserDTO dto, Users entity )
-    {
-        dto.setName( entity.getName() );
-        dto.setNickName( entity.getNickName() );
-        dto.setUserType( copy( entity.getUserType() ) );
-        dto.setId( entity.getId() );
-
-        for ( Address item : entity.getAddresses() )
-            dto.add( AddressUtil.copy( item ) );
-        for ( UserDocument item : entity.getDocuments() )
-            dto.add( copy( item ) );
-        for ( UserContact item : entity.getContacts() )
-            dto.add( copy( item ) );
-
-
-        return dto;
-    }
-
-
-    public static PersonDTO copy( Person entity, Boolean mustCopyLogin )
-    {
-        PersonDTO person = new PersonDTO();
-
-        copy( person, entity );
-        person.setBirthDate( entity.getBirthDate() );
-        person.setBornCity( CityUtil.copy( entity.getBornCity() ) );
-        person.setFirstName( entity.getFirstName() );
-        person.setMiddleName( entity.getMiddleName() );
-        person.setLastName( entity.getLastName() );
-        person.setFatherName( entity.getFatherName() );
-        person.setMotherName( entity.getMotherName() );
-        person.setCivilState( CivilStateUtil.copy( entity.getCivilState() ) );
-        person.setGender( copy( entity.getGender() ) );
-        person.setTitle( TitleUtil.copy( entity.getTitle() ) );
-        if ( mustCopyLogin )
-            person.setLogin( copy( entity.getLogin(), false ) );
-        return person;
-    }
-
-
-    public static UserDocumentDTO copy( UserDocument entity )
-    {
-        UserDocumentDTO dto = new UserDocumentDTO();
-        dto.setDocumentType( DocumentTypeUtil.copy( entity.getDocumentType() ) );
-        dto.setCode( entity.getCode() );
-        dto.setAdditionalInfo( entity.getAdditionalInfo() );
-        return dto;
-    }
-
-
-    public static UserContactDTO copy( UserContact entity )
-    {
-        UserContactDTO dto = new UserContactDTO();
-        dto.setContactType( ContactTypeUtil.copy( entity.getContactType() ) );
-        dto.setDescription( entity.getDescription() );
-        dto.setComment( entity.getComment() );
-        return dto;
-    }
-
-
-    protected static String applyDocumentRules( String document, int type )
-    {
-        String code;
-
-
-        code = document.trim();
-        switch ( type ) {
-        case UserDocument.typeCPF:
-            code = code.replaceAll( "[\\-.\\/]", "" );
-            break;
-        case UserDocument.typeEmail:
-            code = code.toLowerCase();
-            break;
-        }
-        return code;
-    }
-
-    public static UserDocument copy( UserDocumentDTO dto )
-    {
-        UserDocument entity = new UserDocument();
-        entity.setCode( applyDocumentRules( dto.getCode(), dto.getDocumentType().getId() ) );
-        entity.setAdditionalInfo( dto.getAdditionalInfo() );
-        entity.setDocumentType( DocumentTypeUtil.createEntity( dto.getDocumentType() ) );
-        return entity;
-    }
-
-
-    public static UserDocument copy( UserDocument entity, UserDocumentDTO dto )
-    {
-        String code = applyDocumentRules( dto.getCode(), dto.getDocumentType().getId() );
-        entity.setCode( code );
-        entity.setAdditionalInfo( dto.getAdditionalInfo() );
-        return entity;
-    }
-
-
-    public static UserContact copy( UserContactDTO dto )
-    {
-        UserContact entity = new UserContact();
-        entity.setContactType( ContactTypeUtil.createEntity( dto.getContactType() ) );
-        entity.setDescription( dto.getDescription() );
-        entity.setComment( dto.getComment() );
-        return entity;
-    }
-
-
-    public static UserContact copy( UserContact entity, UserContactDTO dto )
-    {
-        entity.setContactType( ContactTypeUtil.createEntity( dto.getContactType() ) );
-        entity.setDescription( dto.getDescription() );
-        entity.setComment( dto.getComment() );
-        return entity;
-    }
-
-    public static Gender copy( GenderDTO dto )
-    {
-        Gender gender;
-        ArrayList<Title> titles;
-
-        if ( dto == null )
-            return null;
-        gender = new Gender( dto.getId(), dto.getDescription() );
-        if ( dto.getTitles() != null ) {
-            titles = new ArrayList<Title>( dto.getTitles().size() );
-            for ( TitleDTO title : dto.getTitles() ) {
-                titles.add( TitleUtil.createEntity( title ) );
-            }
-            gender.setTitles( titles );
-        }
-        return gender;
-    }
-
-    public static GenderDTO copy( Gender entity )
-    {
-        if ( entity == null )
-            return null;
-
-        ArrayList<TitleDTO> titles = new ArrayList<TitleDTO>( entity.getTitles().size() );
-
-        for ( Title title : entity.getTitles() ) {
-            titles.add( TitleUtil.copy( title ) );
-        }
-        GenderDTO dto = new GenderDTO( entity.getId(), entity.getDescription() );
-        dto.setTitles( titles );
-        return dto;
-    }
-
-
-    public static UserStatus copy( UserStatusDTO dto )
-    {
-        UserStatus entity = new UserStatus();
-
-        entity.setId( dto.getId() );
-        entity.setDescription( dto.getDescription() );
-        entity.setAllowLogin( dto.getAllowLogin() );
-        return entity;
-    }
-
-
-    public static UserStatusDTO copy( UserStatus entity )
-    {
-        UserStatusDTO dto = new UserStatusDTO();
-
-        dto.setId( entity.getId() );
-        dto.setDescription( entity.getDescription() );
-        dto.setAllowLogin( entity.getAllowLogin() );
-        return dto;
-    }
-
-
-    public static UserTypeDTO copy( UserType entity )
-    {
-        if ( entity != null )
-            return new UserTypeDTO( entity.getId(), entity.getDescription() );
-        else
-            return null;
-    }
-
-    public static UserType copy( UserTypeDTO dto )
-    {
-        return new UserType( dto.getId(), dto.getDescription() );
-    }
 
     public static Login copy( LoginDTO dto )
     {
@@ -267,7 +60,7 @@ public final class DTOFactory implements Serializable
 
         login.setPassword( dto.getPassword() );
         login.setPasswordExpirationDate( dto.getPasswordExpirationDate() );
-        login.setUserStatus( copy( dto.getUserStatus() ) );
+        login.setUserStatus( UserStatusUtil.createEntity( dto.getUserStatus() ) );
         login.setPerson( PersonUtil.createEntity( dto.getPerson() ) );
         return login;
     }
@@ -282,10 +75,10 @@ public final class DTOFactory implements Serializable
             return null;
 
         LoginDTO login = new LoginDTO();
-        login.setUserStatus( copy( entity.getUserStatus() ) );
+        login.setUserStatus( UserStatusUtil.copy( entity.getUserStatus() ) );
         login.setUserId( entity.getUserId() );
         if ( mustCopyPerson )
-            login.setPerson( copy( entity.getPerson(), false ) );
+            login.setPerson( PersonUtil.copy( entity.getPerson() ) );
         return login;
     }
 
@@ -308,7 +101,7 @@ public final class DTOFactory implements Serializable
         dto.setName( entity.getName() );
         dto.setNickName( entity.getNickName() );
         dto.setId( entity.getId() );
-        dto.setUserType( copy( entity.getUserType() ) );
+        dto.setUserType( UserTypeUtil.copy( entity.getUserType() ) );
         dto.setLastUpdate( entity.getUpdateDate() == null ? entity.getInsertDate() : entity.getUpdateDate() );
         return dto;
     }
@@ -317,7 +110,10 @@ public final class DTOFactory implements Serializable
     {
         ListLoginDTO dto;
 
-        dto = new ListLoginDTO( entity.getPerson().getId(), entity.getPerson().getName(), copy( entity.getUserStatus() ) );
+        dto = new ListLoginDTO();
+        dto.setId( entity.getPerson().getId() );
+        dto.setName( entity.getPerson().getName() );
+        dto.setUserStatus( UserStatusUtil.copy( entity.getUserStatus() ) );
         return dto;
     }
 
@@ -360,7 +156,7 @@ public final class DTOFactory implements Serializable
     {
         Company company = new Company();
 
-        copy( company, dto, true );
+        //copy( company, dto, true );
 
         company.setId( dto.getId() );
         company.setCompanyType( copy( dto.getCompanyType() ) );
@@ -374,58 +170,10 @@ public final class DTOFactory implements Serializable
     {
         CompanyDTO company = new CompanyDTO();
 
-        copy( company, entity );
+        //copy( company, entity );
         company.setCompanyType( copy( entity.getCompanyType() ) );
 
         return company;
-    }
-
-
-    protected static Users copy( Users user, UserDTO dto, Boolean copyLists )
-    {
-        user.setName( dto.getName() );
-        user.setComment( dto.getComment() );
-        user.setId( dto.getId() );
-        user.setNickName( dto.getNickName() );
-
-        if ( copyLists ) {
-            UserUtil.addAddresses( user, dto );
-            copyDocuments( user, dto );
-            copyContacts( user, dto );
-        }
-        return user;
-    }
-
-    protected static void copyDocuments( Users user, List<UserDocumentDTO> list )
-    {
-        user.getDocuments().clear();
-        for ( UserDocumentDTO item : list ) {
-            user.addDocument( copy( item ) );
-        }
-    }
-
-    protected static void copyDocuments( Users user, UserDTO dto )
-    {
-        List<UserDocumentDTO> list = dto.getDocumentList();
-        copyDocuments( user, list );
-    }
-
-    public static void copyDocuments( Users user, RegisterDTO dto )
-    {
-        List<UserDocumentDTO> list = dto.getDocuments();
-        copyDocuments( user, list );
-    }
-
-
-    protected static void copyContacts( Users user, UserDTO dto )
-    {
-        List<UserContactDTO> list = dto.getContactList();
-
-
-        user.getContacts().clear();
-        for ( UserContactDTO item : list ) {
-            user.addContact( copy( item ) );
-        }
     }
 
 

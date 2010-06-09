@@ -12,6 +12,7 @@ import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.attributes.ContactTypeDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.MultilineMessageBox;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public abstract class UserController extends LoggedBaseController
     }
 
 
-    protected abstract Boolean persist();
+    protected abstract Boolean persist() throws ApplicationException;
 
 
     protected void preparePage()
@@ -420,8 +421,13 @@ public abstract class UserController extends LoggedBaseController
     {
         if ( validate() == false )
             return;
-        if ( persist() == true )
-            removeMe();
+        try {
+            if ( persist() == true )
+                removeMe();
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
+        }
 
     }
 }

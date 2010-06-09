@@ -1,8 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.user.contact.entity;
 
 
-import br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.entity.ContactType;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.entity.ContactType;
 
 import java.io.Serializable;
 
@@ -18,11 +18,14 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "UserContact.findAll", query = "select o from UserContact o" ) } )
+@NamedQueries( { @NamedQuery( name = "UserContact.findAll", query = "select o from UserContact o" ),
+                 @NamedQuery( name = UserContact.deleteFromUser, query = "delete from UserContact o where o.user = ?1" ) } )
 @Table( name = "user_contact" )
 @IdClass( UserContactPK.class )
 public class UserContact implements Serializable, Comparable<UserContact>
 {
+    public static final String deleteFromUser = "UserContact.deleteFromUser";
+
     @Id
     @Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
     private Integer userId;
@@ -37,11 +40,11 @@ public class UserContact implements Serializable, Comparable<UserContact>
     @Column( name = "uct_observation_tx" )
     private String comment;
 
-    @ManyToOne
+    @ManyToOne( optional = false )
     @JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", nullable = false )
     private Users user;
 
-    @ManyToOne
+    @ManyToOne( optional = false )
     @JoinColumn( name = "cct_id_in", referencedColumnName = "cct_id_in", nullable = false )
     protected ContactType contactType;
 

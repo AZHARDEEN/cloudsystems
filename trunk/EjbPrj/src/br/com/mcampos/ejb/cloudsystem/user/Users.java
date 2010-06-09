@@ -3,9 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.user;
 
 import br.com.mcampos.ejb.cloudsystem.user.address.entity.Address;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
-
 import br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact;
-
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 
 import java.io.Serializable;
@@ -15,7 +13,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -67,13 +64,13 @@ public abstract class Users implements Serializable, Comparable<Users>
     @JoinColumn( name = "ust_id_in", nullable = false, referencedColumnName = "ust_id_in", columnDefinition = "Integer" )
     private UserType userType;
 
-    @OneToMany( mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL )
+    @OneToMany( mappedBy = "user", fetch = FetchType.EAGER )
     private List<Address> addresses;
 
-    @OneToMany( mappedBy = "users", fetch = FetchType.EAGER, cascade = { CascadeType.ALL } )
+    @OneToMany( mappedBy = "user", fetch = FetchType.EAGER )
     private List<UserDocument> documents;
 
-    @OneToMany( mappedBy = "user", fetch = FetchType.EAGER, cascade = { CascadeType.ALL } )
+    @OneToMany( mappedBy = "user", fetch = FetchType.EAGER )
     private List<UserContact> contacts;
 
     public Users()
@@ -219,7 +216,7 @@ public abstract class Users implements Serializable, Comparable<Users>
 
     public UserDocument addDocument( UserDocument item )
     {
-        item.setUsers( this );
+        item.setUser( this );
         getDocuments().add( item );
         return item;
     }

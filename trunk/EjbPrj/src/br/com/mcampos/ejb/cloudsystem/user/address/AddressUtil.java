@@ -2,10 +2,10 @@ package br.com.mcampos.ejb.cloudsystem.user.address;
 
 
 import br.com.mcampos.dto.address.AddressDTO;
+import br.com.mcampos.ejb.cloudsystem.locality.city.CityUtil;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.AddressTypeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.address.entity.Address;
-import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class AddressUtil
         entity.setComment( dto.getComment() );
         entity.setZip( dto.getZip() );
         entity.setAddressType( AddressTypeUtil.createEntity( dto.getAddressType() ) );
-        entity.setCity( DTOFactory.copy( dto.getCity() ) );
+        entity.setCity( CityUtil.createEntity( dto.getCity() ) );
         return entity;
     }
 
@@ -48,7 +48,7 @@ public class AddressUtil
         AddressDTO dto = new AddressDTO();
         dto.setAddress( entity.getAddress() );
         dto.setAddressType( AddressTypeUtil.copy( entity.getAddressType() ) );
-        dto.setCity( DTOFactory.copy( entity.getCity() ) );
+        dto.setCity( CityUtil.copy( entity.getCity() ) );
         dto.setComment( entity.getComment() );
         dto.setDistrict( entity.getDistrict() );
         dto.setZip( entity.getZip() );

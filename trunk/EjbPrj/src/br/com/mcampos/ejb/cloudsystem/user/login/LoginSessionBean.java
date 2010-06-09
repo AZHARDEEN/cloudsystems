@@ -10,16 +10,17 @@ import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus;
+import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 import br.com.mcampos.ejb.cloudsystem.user.login.accesslog.AccessLog;
 import br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPassword;
 import br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPasswordPK;
+import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.cloudsystem.user.person.session.PersonSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.ejb.core.util.RandomString;
 import br.com.mcampos.ejb.entity.system.SystemParameters;
-import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 import br.com.mcampos.ejb.session.system.EmailSessionLocal;
 import br.com.mcampos.ejb.session.system.SendMailSessionLocal;
 import br.com.mcampos.ejb.session.system.SystemParametersSessionLocal;
@@ -115,7 +116,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
         person = ( Person )getUserSession().findByDocumentList( dto.getDocuments() );
         if ( person == null ) {
-            person = getPersonSession().add( DTOFactory.copy( dto ) );
+            person = getPersonSession().add( PersonUtil.copy( dto ) );
         }
         if ( person.getLogin() != null )
             throwRuntimeException( 5 );

@@ -2,7 +2,9 @@ package br.com.mcampos.ejb.cloudsystem.user.document.session;
 
 
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
+import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
 
@@ -32,4 +34,8 @@ public interface UserDocumentSessionLocal extends Serializable
      */
     UserDocument find( UserDocument entity );
 
+
+    void delete( Users user ) throws ApplicationException;
+
+    UserDocument add( UserDocument doc ) throws ApplicationException;
 }

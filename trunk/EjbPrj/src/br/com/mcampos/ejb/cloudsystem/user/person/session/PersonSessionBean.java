@@ -5,18 +5,20 @@ import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserContactDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
 import br.com.mcampos.ejb.cloudsystem.user.address.AddressUtil;
 import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressType;
 import br.com.mcampos.ejb.cloudsystem.user.address.entity.Address;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.entity.ContactType;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.entity.DocumentType;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus;
-import br.com.mcampos.ejb.cloudsystem.user.login.Login;
-import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
-import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
+import br.com.mcampos.ejb.cloudsystem.user.contact.UserContactUtil;
 import br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact;
+import br.com.mcampos.ejb.cloudsystem.user.document.UserDocumentUtil;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
+import br.com.mcampos.ejb.cloudsystem.user.login.Login;
+import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
+import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.session.user.UserSessionLocal;
 
 import java.util.ArrayList;
@@ -63,7 +65,7 @@ public class PersonSessionBean implements PersonSessionLocal
      */
     public Person add( PersonDTO dto )
     {
-        return add( DTOFactory.copy( dto ) );
+        return add( PersonUtil.createEntity( dto ) );
     }
 
     /**
@@ -228,12 +230,12 @@ public class PersonSessionBean implements PersonSessionLocal
         int nIndex;
 
         for ( UserDocumentDTO dtoItem : list ) {
-            UserDocument entity = DTOFactory.copy( dtoItem );
-            entity.setUsers( person );
+            UserDocument entity = UserDocumentUtil.createEntity( dtoItem, person );
+            entity.setUser( person );
             nIndex = person.getDocuments().indexOf( entity );
             if ( nIndex >= 0 ) {
                 UserDocument merged = person.getDocuments().get( nIndex );
-                DTOFactory.copy( merged, dtoItem );
+                UserDocumentUtil.update( merged, dtoItem );
                 merged.setDocumentType( em.find( DocumentType.class, merged.getDocumentType().getId() ) );
             }
             else
@@ -241,7 +243,7 @@ public class PersonSessionBean implements PersonSessionLocal
         }
         ArrayList<UserDocument> removeList = null;
         for ( UserDocument entity : person.getDocuments() ) {
-            UserDocumentDTO ct = DTOFactory.copy( entity );
+            UserDocumentDTO ct = UserDocumentUtil.copy( entity );
             if ( list.contains( ct ) == false ) {
                 if ( removeList == null )
                     removeList = new ArrayList<UserDocument>();
@@ -261,12 +263,12 @@ public class PersonSessionBean implements PersonSessionLocal
         int nIndex;
 
         for ( UserContactDTO dtoItem : list ) {
-            UserContact entity = DTOFactory.copy( dtoItem );
+            UserContact entity = UserContactUtil.createEntity( dtoItem, person );
             entity.setUser( person );
             nIndex = person.getContacts().indexOf( entity );
             if ( nIndex >= 0 ) {
                 UserContact merged = person.getContacts().get( nIndex );
-                DTOFactory.copy( merged, dtoItem );
+                UserContactUtil.update( merged, dtoItem );
                 merged.setContactType( em.find( ContactType.class, merged.getContactType().getId() ) );
             }
             else
@@ -275,7 +277,7 @@ public class PersonSessionBean implements PersonSessionLocal
 
         ArrayList<UserContact> removeList = null;
         for ( UserContact entity : person.getContacts() ) {
-            UserContactDTO ct = DTOFactory.copy( entity );
+            UserContactDTO ct = UserContactUtil.copy( entity );
             if ( list.contains( ct ) == false ) {
                 if ( removeList == null )
                     removeList = new ArrayList<UserContact>();
@@ -299,7 +301,7 @@ public class PersonSessionBean implements PersonSessionLocal
         person = em.find( Person.class, dto.getId() );
         if ( person == null )
             throw new EJBException( "Não existe usuario para atualizar" );
-        person = DTOFactory.copy( person, dto );
+        person = PersonUtil.update( person, dto );
         applyRules( person );
         mergeAddress( person, dto.getAddressList() );
         mergeDocuments( person, dto.getDocumentList() );
@@ -340,7 +342,7 @@ public class PersonSessionBean implements PersonSessionLocal
             return Collections.emptyList();
         dtos = new ArrayList<PersonDTO>( list.size() );
         for ( Person item : list )
-            dtos.add( DTOFactory.copy( item, true ) );
+            dtos.add( PersonUtil.copy( item ) );
         return dtos;
     }
 
@@ -359,7 +361,7 @@ public class PersonSessionBean implements PersonSessionLocal
                 return null;
             person = em.find( Person.class, userDocument.getUserId() );
             if ( person != null )
-                dto = DTOFactory.copy( person, true );
+                dto = PersonUtil.copy( person );
             return dto;
         }
         catch ( NoResultException e ) {
@@ -375,7 +377,7 @@ public class PersonSessionBean implements PersonSessionLocal
         if ( person != null ) {
             if ( person.getUserType() != null )
                 em.refresh( person.getUserType() );
-            return DTOFactory.copy( person, true );
+            return PersonUtil.copy( person );
         }
         else
             return null;

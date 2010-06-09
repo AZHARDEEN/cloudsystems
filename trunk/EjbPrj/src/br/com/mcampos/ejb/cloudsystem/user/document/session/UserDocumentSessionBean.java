@@ -2,30 +2,31 @@ package br.com.mcampos.ejb.cloudsystem.user.document.session;
 
 
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.session.DocumentTypeSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
+import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocumentPK;
+import br.com.mcampos.ejb.session.core.Crud;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.security.InvalidParameterException;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 
 @Stateless( name = "UserDocumentSession", mappedName = "CloudSystems-EjbPrj-UserDocumentSession" )
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
-public class UserDocumentSessionBean implements UserDocumentSessionLocal
+public class UserDocumentSessionBean extends Crud<UserDocumentPK, UserDocument> implements UserDocumentSessionLocal
 {
-    @PersistenceContext( unitName = "EjbPrj" )
-    private EntityManager em;
+    @EJB
+    DocumentTypeSessionLocal docmentTypeSession;
 
-    public UserDocumentSessionBean()
-    {
-    }
 
     /**<id>select o from UserDocument o where o.id = :document and o.documentType.formId = :docType</id>
      *
@@ -76,7 +77,7 @@ public class UserDocumentSessionBean implements UserDocumentSessionLocal
             throw new InvalidParameterException( "O parametro nao pode ser nulo ou vazio " );
 
         try {
-            Query query = em.createNamedQuery( UserDocument.getByDocument );
+            Query query = getEntityManager().createNamedQuery( UserDocument.getByDocument );
             query.setParameter( "document", document );
             query.setParameter( "docType", docTypeId );
             doc = ( UserDocument )query.getSingleResult();
@@ -88,4 +89,19 @@ public class UserDocumentSessionBean implements UserDocumentSessionLocal
         return doc;
     }
 
+    public void delete( Users user ) throws ApplicationException
+    {
+        Query query = getEntityManager().createNamedQuery( UserDocument.deleteFromUser );
+        query.setParameter( 1, user ).executeUpdate();
+    }
+
+    @Override
+    public UserDocument add( UserDocument entity ) throws ApplicationException
+    {
+        if ( entity.getDocumentType() != null )
+            entity.setDocumentType( docmentTypeSession.get( entity.getDocumentType().getId() ) );
+        entity = super.add( entity );
+        entity.getUser().addDocument( entity );
+        return entity;
+    }
 }

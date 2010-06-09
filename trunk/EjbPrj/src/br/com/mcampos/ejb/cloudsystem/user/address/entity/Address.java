@@ -1,9 +1,9 @@
 package br.com.mcampos.ejb.cloudsystem.user.address.entity;
 
 
-import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressType;
 import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressType;
 
 import java.io.Serializable;
 
@@ -21,12 +21,14 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = Address.getAll, query = "select o from Address o where o.user = ?1" ) } )
+@NamedQueries( { @NamedQuery( name = Address.getAll, query = "select o from Address o where o.user = ?1" ),
+                 @NamedQuery( name = Address.deleteFromUser, query = "delete from Address o where o.user = ?1" ) } )
 @Table( name = "address" )
 @IdClass( AddressPK.class )
 public class Address implements Serializable, Comparable<Address>
 {
     public static final String getAll = "Address.findAll";
+    public static final String deleteFromUser = "Address.deleteFromUser";
 
     @Id
     @Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
@@ -51,15 +53,15 @@ public class Address implements Serializable, Comparable<Address>
     @Column( name = "adr_zip_code_ch", nullable = false, length = 24 )
     private String zip;
 
-    @ManyToOne
+    @ManyToOne( optional = false )
     @JoinColumn( name = "adt_id_in", referencedColumnName = "adt_id_in", nullable = false )
     private AddressType addressType;
 
-    @ManyToOne
+    @ManyToOne( optional = false )
     @JoinColumn( name = "cit_id_in", referencedColumnName = "cit_id_in", nullable = false )
     private City city;
 
-    @ManyToOne
+    @ManyToOne( optional = false )
     @JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", nullable = false )
     private Users user;
 
