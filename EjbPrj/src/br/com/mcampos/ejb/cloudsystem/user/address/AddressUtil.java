@@ -65,4 +65,15 @@ public class AddressUtil
         }
         return listDTO;
     }
+
+    public static List<Address> toEntityList( Users user, List<AddressDTO> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        ArrayList<Address> listDTO = new ArrayList<Address>( list.size() );
+        for ( AddressDTO m : list ) {
+            listDTO.add( createEntity( m, user ) );
+        }
+        return listDTO;
+    }
 }

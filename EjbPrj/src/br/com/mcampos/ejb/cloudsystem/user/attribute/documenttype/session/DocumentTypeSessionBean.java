@@ -16,38 +16,38 @@ import javax.ejb.TransactionAttributeType;
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class DocumentTypeSessionBean extends Crud<Integer, DocumentType> implements DocumentTypeSessionLocal
 {
-	public DocumentTypeSessionBean()
-	{
-	}
+    public DocumentTypeSessionBean()
+    {
+    }
 
 
-	public void delete( Integer key ) throws ApplicationException
-	{
-		delete( DocumentType.class, key );
-	}
+    public void delete( Integer key ) throws ApplicationException
+    {
+        delete( DocumentType.class, key );
+    }
 
-	public DocumentType get( Integer key ) throws ApplicationException
-	{
-		return null;
-	}
+    public DocumentType get( Integer key ) throws ApplicationException
+    {
+        return get( DocumentType.class, key );
+    }
 
-	public List<DocumentType> getAll() throws ApplicationException
-	{
-		return getAll( DocumentType.getAll );
-	}
+    public List<DocumentType> getAll() throws ApplicationException
+    {
+        return getAll( DocumentType.getAll );
+    }
 
-	public Integer nextIntegerId() throws ApplicationException
-	{
-		return null;
-	}
+    public Integer nextIntegerId() throws ApplicationException
+    {
+        return null;
+    }
 
-	public DocumentType add( DocumentType entity ) throws ApplicationException
-	{
-		return add( entity );
-	}
+    public DocumentType add( DocumentType entity ) throws ApplicationException
+    {
+        return add( entity );
+    }
 
-	public DocumentType update( DocumentType entity ) throws ApplicationException
-	{
-		return update( entity );
-	}
+    public DocumentType update( DocumentType entity ) throws ApplicationException
+    {
+        return update( entity );
+    }
 }

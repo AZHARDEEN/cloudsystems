@@ -7,6 +7,8 @@ import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 
@@ -16,4 +18,6 @@ public interface UserContactSessionLocal extends Serializable
     void delete( Users user ) throws ApplicationException;
 
     UserContact add( UserContact contact ) throws ApplicationException;
+
+    void refresh( Users user, List<UserContact> contacts ) throws ApplicationException;
 }

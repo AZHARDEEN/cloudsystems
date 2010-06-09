@@ -1,6 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.user.address.session;
 
 
+import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
+import br.com.mcampos.ejb.cloudsystem.locality.city.session.CitySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressType;
 import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.session.AddressTypeSessionLocal;
@@ -25,6 +27,9 @@ public class AddressSessionBean extends Crud<AddressPK, Address> implements Addr
 {
     @EJB
     private AddressTypeSessionLocal addressTypeSession;
+
+    @EJB
+    private CitySessionLocal citySession;
 
     public AddressSessionBean()
     {
@@ -56,6 +61,7 @@ public class AddressSessionBean extends Crud<AddressPK, Address> implements Addr
     public Address add( Address entity ) throws ApplicationException
     {
         setAddressType( entity );
+        setCity( entity );
         Address address = super.add( entity );
         address.getUser().addAddress( address );
         return address;
@@ -66,6 +72,14 @@ public class AddressSessionBean extends Crud<AddressPK, Address> implements Addr
         if ( entity.getAddressType() != null ) {
             AddressType addrType = addressTypeSession.get( entity.getAddressType().getId() );
             entity.setAddressType( addrType );
+        }
+    }
+
+    private void setCity( Address entity ) throws ApplicationException
+    {
+        if ( entity.getCity() != null ) {
+            City c = citySession.get( entity.getCity().getId() );
+            entity.setCity( c );
         }
     }
 
@@ -89,7 +103,20 @@ public class AddressSessionBean extends Crud<AddressPK, Address> implements Addr
 
     public void delete( Users user ) throws ApplicationException
     {
+        if ( user == null )
+            return;
         Query query = getEntityManager().createNamedQuery( Address.deleteFromUser );
         query.setParameter( 1, user ).executeUpdate();
+        user.getAddresses().clear();
+    }
+
+    public void refresh( Users user, List<Address> addresses ) throws ApplicationException
+    {
+        if ( user == null )
+            return;
+        delete( user );
+        for ( Address d : addresses ) {
+            add( d );
+        }
     }
 }

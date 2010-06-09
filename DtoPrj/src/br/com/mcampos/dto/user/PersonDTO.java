@@ -5,21 +5,18 @@ import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.user.attributes.CivilStateDTO;
 import br.com.mcampos.dto.user.attributes.GenderDTO;
 import br.com.mcampos.dto.user.attributes.TitleDTO;
-
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
-
-import br.com.mcampos.dto.user.login.LoginDTO;
 
 import java.sql.Timestamp;
 
 public class PersonDTO extends UserDTO
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -7818117741352696884L;
+     *
+     */
+    private static final long serialVersionUID = -7818117741352696884L;
 
-	public static final Integer userTypeIdentification = 1;
+    public static final Integer userTypeIdentification = 1;
 
     private Timestamp birthDate;
     private String fatherName;
@@ -34,8 +31,6 @@ public class PersonDTO extends UserDTO
     private TitleDTO title;
 
     private CityDTO bornCity;
-
-    private LoginDTO login;
 
     public PersonDTO()
     {
@@ -151,16 +146,6 @@ public class PersonDTO extends UserDTO
     public TitleDTO getTitle()
     {
         return title;
-    }
-
-    public void setLogin( LoginDTO login )
-    {
-        this.login = login;
-    }
-
-    public LoginDTO getLogin()
-    {
-        return login;
     }
 
     public void setBornCity( CityDTO bornCity )

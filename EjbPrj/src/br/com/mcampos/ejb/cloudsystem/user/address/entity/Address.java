@@ -4,6 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.user.address.entity;
 import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressType;
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.io.Serializable;
 
@@ -83,9 +84,9 @@ public class Address implements Serializable, Comparable<Address>
         return address;
     }
 
-    public void setAddress( String address )
+    public void setAddress( String value )
     {
-        this.address = address;
+        this.address = ( !SysUtils.isEmpty( value ) ) ? value.trim() : null;
     }
 
     public String getDistrict()
@@ -93,9 +94,9 @@ public class Address implements Serializable, Comparable<Address>
         return district;
     }
 
-    public void setDistrict( String district )
+    public void setDistrict( String value )
     {
-        this.district = district;
+        this.district = ( !SysUtils.isEmpty( value ) ) ? value.trim() : null;
     }
 
 
@@ -104,9 +105,10 @@ public class Address implements Serializable, Comparable<Address>
         return comment;
     }
 
-    public void setComment( String comment )
+    public void setComment( String value )
     {
-        this.comment = comment;
+        this.comment = ( !SysUtils.isEmpty( value ) ) ? value.trim() : null;
+        ;
     }
 
     public Timestamp getToDate()
@@ -124,9 +126,14 @@ public class Address implements Serializable, Comparable<Address>
         return zip;
     }
 
-    public void setZip( String zip )
+    public void setZip( String value )
     {
-        this.zip = zip;
+        if ( !SysUtils.isEmpty( value ) ) {
+            value = value.replaceAll( "[\\-.\\/]", "" );
+            this.zip = value.trim();
+        }
+        else
+            this.zip = null;
     }
 
     public AddressType getAddressType()

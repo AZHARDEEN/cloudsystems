@@ -94,10 +94,12 @@ public class NewPersonSessionBean extends Crud<Integer, Person> implements NewPe
             person.setTitle( titleSession.get( person.getTitle().getId() ) );
         if ( person.getBornCity() != null )
             person.setBornCity( citySession.get( person.getBornCity().getId() ) );
+        /*
         for ( Address addr : person.getAddresses() ) {
             Address managed = addressSession.add( addr );
             person.getAddresses().set( person.getAddresses().indexOf( addr ), managed );
         }
+        */
 
 
     }

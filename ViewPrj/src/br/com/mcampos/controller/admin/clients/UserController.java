@@ -69,39 +69,17 @@ public abstract class UserController extends LoggedBaseController
     }
 
 
-    public void onSelect$state()
-    {
-        Comboitem item;
-
-        item = state.getSelectedItem();
-        if ( item == null )
-            return;
-    }
-
-    public void setAddressType( Combobox addressType )
-    {
-        this.addressType = addressType;
-    }
-
     public Combobox getAddressType()
     {
         return addressType;
     }
 
-    public void setState( Combobox state )
-    {
-        this.state = state;
-    }
 
     public Combobox getState()
     {
         return state;
     }
 
-    public void setCity( Combobox city )
-    {
-        this.city = city;
-    }
 
     public Combobox getCity()
     {
@@ -195,7 +173,10 @@ public abstract class UserController extends LoggedBaseController
         user.getAddressList().clear();
         AddressDTO dto = new AddressDTO();
         dto.setAddressType( ( AddressTypeDTO )getAddressType().getSelectedItem().getValue() );
-        dto.setCity( ( CityDTO )getCity().getSelectedItem().getValue() );
+        if ( getCity().getSelectedItem() != null )
+            dto.setCity( ( CityDTO )getCity().getSelectedItem().getValue() );
+        else
+            dto.setCity( null );
         dto.setAddress( getAddress().getValue() );
         dto.setDistrict( getHood().getValue() );
         dto.setComment( getAddressComment().getValue() );

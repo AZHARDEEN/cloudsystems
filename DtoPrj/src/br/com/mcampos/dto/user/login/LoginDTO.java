@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Esta classe representa o DTO da entidade Login.
  *
@@ -19,10 +20,10 @@ import java.util.List;
 public class LoginDTO extends BasicDTO
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -367691736245521363L;
-	Integer userId;
+     *
+     */
+    private static final long serialVersionUID = -367691736245521363L;
+    Integer userId;
     protected PersonDTO person;
     protected UserStatusDTO userStatus;
     protected Timestamp passwordExpirationDate;
@@ -75,7 +76,6 @@ public class LoginDTO extends BasicDTO
     {
         this.person = person;
         if ( person != null ) {
-            person.setLogin( this );
             this.setUserId( person.getUserId() );
         }
     }

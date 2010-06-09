@@ -60,6 +60,6 @@
 	</listener>
 	-->
  <system-config>
-  <disable-event-thread>false</disable-event-thread>
+  <disable-event-thread>true</disable-event-thread>
  </system-config>
 </zk>

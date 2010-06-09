@@ -1,10 +1,10 @@
-package br.com.mcampos.ejb.cloudsystem.user.address.facade;
+package br.com.mcampos.ejb.cloudsystem.user;
 
 
-import br.com.mcampos.dto.address.AddressTypeDTO;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
+import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.ejb.cloudsystem.locality.city.CityUtil;
 import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
 import br.com.mcampos.ejb.cloudsystem.locality.city.session.CitySessionLocal;
@@ -15,8 +15,12 @@ import br.com.mcampos.ejb.cloudsystem.locality.state.StateUtil;
 import br.com.mcampos.ejb.cloudsystem.locality.state.entity.State;
 import br.com.mcampos.ejb.cloudsystem.locality.state.entity.StatePK;
 import br.com.mcampos.ejb.cloudsystem.locality.state.session.StateSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.AddressTypeUtil;
-import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.session.AddressTypeSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.address.AddressUtil;
+import br.com.mcampos.ejb.cloudsystem.user.address.session.AddressSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.contact.UserContactUtil;
+import br.com.mcampos.ejb.cloudsystem.user.contact.session.UserContactSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.document.UserDocumentUtil;
+import br.com.mcampos.ejb.cloudsystem.user.document.session.UserDocumentSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -24,52 +28,34 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 
-@Stateless( name = "AddressFacade", mappedName = "CloudSystems-EjbPrj-AddressFacade" )
-@Remote
-public class AddressFacadeBean extends AbstractSecurity implements AddressFacade
+public abstract class UserFacadeUtil extends AbstractSecurity
 {
-    public static final Integer messageId = 23;
-
-    @PersistenceContext( unitName = "EjbPrj" )
-    private transient EntityManager em;
+    @EJB
+    protected AddressSessionLocal addressSession;
 
     @EJB
-    private AddressTypeSessionLocal addressTypeSession;
+    protected UserDocumentSessionLocal documentSession;
 
     @EJB
-    private StateSessionLocal stateSession;
+    protected UserContactSessionLocal contactSession;
 
     @EJB
-    private CountrySessionLocal countrySession;
+    protected CountrySessionLocal countrySession;
+
+    @EJB
+    protected StateSessionLocal stateSession;
 
     @EJB
     private CitySessionLocal citySession;
 
 
-    public AddressFacadeBean()
+    protected void refreshUserAttributes( Users user, UserDTO dto ) throws ApplicationException
     {
-    }
-
-    protected EntityManager getEntityManager()
-    {
-        return em;
-    }
-
-    public Integer getMessageTypeId()
-    {
-        return messageId;
-    }
-
-    public List<AddressTypeDTO> getTypes() throws ApplicationException
-    {
-        return AddressTypeUtil.toDTOList( addressTypeSession.getAll() );
+        documentSession.refresh( user, UserDocumentUtil.toEntityList( user, dto.getDocumentList() ) );
+        addressSession.refresh( user, AddressUtil.toEntityList( user, dto.getAddressList() ) );
+        contactSession.refresh( user, UserContactUtil.toEntityList( user, dto.getContactList() ) );
     }
 
     public List<StateDTO> getStates( CountryDTO dto ) throws ApplicationException
@@ -86,7 +72,6 @@ public class AddressFacadeBean extends AbstractSecurity implements AddressFacade
         return CountryUtil.toDTOList( countries );
     }
 
-
     public List<CityDTO> getCities( StateDTO dto ) throws ApplicationException
     {
         if ( dto != null ) {
@@ -96,4 +81,5 @@ public class AddressFacadeBean extends AbstractSecurity implements AddressFacade
         }
         return Collections.emptyList();
     }
+
 }

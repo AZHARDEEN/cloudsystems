@@ -510,8 +510,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
         try {
             now = new Timestamp( Calendar.getInstance().getTime().getTime() );
-            lastUsedPassword =
-                    getEntityManager().find( LastUsedPassword.class, new LastUsedPasswordPK( login.getPassword(), login.getUserId() ) );
+            lastUsedPassword = getEntityManager()
+                    .find( LastUsedPassword.class, new LastUsedPasswordPK( login.getPassword(), login.getUserId() ) );
             if ( lastUsedPassword == null ) {
                 lastUsedPassword = new LastUsedPassword( now, login.getPassword(), null, login.getUserId() );
                 lastUsedPassword.setLogin( login );
@@ -602,8 +602,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         try {
             List retList;
 
-            retList =
-                    getEntityManager().createNamedQuery( "LastUsedPassword.findAll" ).setParameter( "id", login.getUserId() ).getResultList();
+            retList = getEntityManager().createNamedQuery( "LastUsedPassword.findAll" ).setParameter( "id", login.getUserId() )
+                    .getResultList();
             list = ( List<LastUsedPassword> )retList;
             passwordEncryptor = new BasicPasswordEncryptor();
             for ( LastUsedPassword password : list ) {
@@ -683,8 +683,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         Login login = null;
 
         try {
-            login =
-                    ( Login )getEntityManager().createNamedQuery( "Login.findToken" ).setParameter( "token", token ).getSingleResult();
+            login = ( Login )getEntityManager().createNamedQuery( "Login.findToken" ).setParameter( "token", token )
+                    .getSingleResult();
         }
         catch ( NoResultException e ) {
             e = null;
