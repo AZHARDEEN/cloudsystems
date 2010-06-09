@@ -3,10 +3,10 @@ package br.com.mcampos.ejb.cloudsystem.user.attribute.gender.facade;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.attributes.GenderDTO;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.GenderUtil;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.session.GenderSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
-import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -50,7 +50,6 @@ public class GenderFacadeBean extends AbstractSecurity implements GenderFacade
     }
 
 
-     
     public List<GenderDTO> getAll( AuthenticationDTO currentUser ) throws ApplicationException
     {
         authenticate( currentUser );
@@ -69,7 +68,7 @@ public class GenderFacadeBean extends AbstractSecurity implements GenderFacade
         return dtos;
     }
 
-     
+
     public Integer getNextId( AuthenticationDTO currentUser ) throws ApplicationException
     {
         authenticate( currentUser );
@@ -83,7 +82,7 @@ public class GenderFacadeBean extends AbstractSecurity implements GenderFacade
         Gender gender = genderSession.get( dto.getId() );
         if ( gender != null )
             throwException( 1 );
-        gender = DTOFactory.copy( dto );
+        gender = GenderUtil.createEntity( dto );
         genderSession.add( gender );
     }
 

@@ -8,12 +8,13 @@ import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.cloudsystem.user.person.session.PersonSessionLocal;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
 import br.com.mcampos.ejb.session.user.UserSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
@@ -108,7 +109,7 @@ public class UserFacadeSessionBean implements UserFacadeSession
         entity = user.getUserByDocument( dto );
         if ( user != null ) {
             if ( user instanceof Person )
-                return ( DTOFactory.copy( ( Person )user, true ) );
+                return ( PersonUtil.copy( ( Person )user ) );
             else
                 return ( DTOFactory.copy( ( Company )user ) );
         }

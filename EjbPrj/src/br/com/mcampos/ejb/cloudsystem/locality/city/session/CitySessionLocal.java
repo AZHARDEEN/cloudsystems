@@ -16,4 +16,6 @@ import javax.ejb.Local;
 public interface CitySessionLocal extends Serializable
 {
     List<City> getAll( State state ) throws ApplicationException;
+
+    City get( Integer id ) throws ApplicationException;
 }

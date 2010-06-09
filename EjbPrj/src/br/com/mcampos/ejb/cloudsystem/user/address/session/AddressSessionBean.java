@@ -1,11 +1,11 @@
 package br.com.mcampos.ejb.cloudsystem.user.address.session;
 
 
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressType;
 import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.session.AddressTypeSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.address.entity.Address;
 import br.com.mcampos.ejb.cloudsystem.user.address.entity.AddressPK;
-import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -15,6 +15,8 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+
+import javax.persistence.Query;
 
 
 @Stateless( name = "AddressSession", mappedName = "CloudSystems-EjbPrj-AddressSession" )
@@ -55,6 +57,7 @@ public class AddressSessionBean extends Crud<AddressPK, Address> implements Addr
     {
         setAddressType( entity );
         Address address = super.add( entity );
+        address.getUser().addAddress( address );
         return address;
     }
 
@@ -62,8 +65,7 @@ public class AddressSessionBean extends Crud<AddressPK, Address> implements Addr
     {
         if ( entity.getAddressType() != null ) {
             AddressType addrType = addressTypeSession.get( entity.getAddressType().getId() );
-            if ( addrType != null )
-                entity.setAddressType( addrType );
+            entity.setAddressType( addrType );
         }
     }
 
@@ -83,5 +85,11 @@ public class AddressSessionBean extends Crud<AddressPK, Address> implements Addr
             if ( user != null )
                 user.removeAddress( entity );
         }
+    }
+
+    public void delete( Users user ) throws ApplicationException
+    {
+        Query query = getEntityManager().createNamedQuery( Address.deleteFromUser );
+        query.setParameter( 1, user ).executeUpdate();
     }
 }

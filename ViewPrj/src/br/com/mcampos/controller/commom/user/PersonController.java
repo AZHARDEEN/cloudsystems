@@ -5,7 +5,6 @@ import br.com.mcampos.controller.admin.clients.UserController;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
-import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
@@ -13,7 +12,6 @@ import br.com.mcampos.dto.user.attributes.CivilStateDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.dto.user.attributes.GenderDTO;
 import br.com.mcampos.dto.user.attributes.TitleDTO;
-import br.com.mcampos.dto.user.attributes.UserStatusDTO;
 import br.com.mcampos.ejb.cloudsystem.user.person.facade.PersonFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.CPF;
@@ -25,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
@@ -146,17 +143,16 @@ public class PersonController extends UserController
 
 
     @Override
-    protected Boolean persist()
+    protected Boolean persist() throws ApplicationException
     {
-        AuthenticationDTO currentUser;
         PersonDTO dto = getCurrentDTO();
 
 
         dto.setName( name.getValue() );
         dto.setBirthDate( new Timestamp( birthdate.getValue().getTime() ) );
         dto.setBornCity( bornCity.getSelectedItem() != null ? ( CityDTO )bornCity.getSelectedItem().getValue() : null );
-        dto.setCivilState( maritalStatus.getSelectedItem() !=
-                           null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() : null );
+        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() :
+                           null );
         dto.setFatherName( fatherName.getValue() );
         dto.setGender( gender.getSelectedItem() != null ? ( GenderDTO )gender.getSelectedItem().getValue() : null );
         dto.setMotherName( motherName.getValue() );
@@ -166,7 +162,8 @@ public class PersonController extends UserController
         addContacts( dto );
         addDocuments( dto );
 
-        currentUser = getLoggedInUser();
+        /*
+        AuthenticationDTO currentUser = getLoggedInUser();
         try {
             if ( getLoginLocator().getStatus( currentUser ) == UserStatusDTO.statusFullfillRecord ) {
                 getLoginLocator().setStatus( currentUser, UserStatusDTO.statusOk );
@@ -180,6 +177,8 @@ public class PersonController extends UserController
             showErrorMessage( e.getMessage() );
             return false;
         }
+        */
+        return true;
     }
 
     public void setMaritalStatus( Combobox maritalStatus )
@@ -337,7 +336,7 @@ public class PersonController extends UserController
         return bRet;
     }
 
-    protected PersonFacade getSession()
+    private PersonFacade getSession()
     {
         if ( session == null )
             session = ( PersonFacade )getRemoteSession( PersonFacade.class );

@@ -5,13 +5,14 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
+import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
+import br.com.mcampos.ejb.cloudsystem.user.document.session.UserDocumentSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
-import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
-import br.com.mcampos.ejb.cloudsystem.user.Users;
-import br.com.mcampos.ejb.cloudsystem.user.document.session.UserDocumentSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.ArrayList;
@@ -121,7 +122,7 @@ public class UserSessionBean extends AbstractSecurity implements UserSessionLoca
             if ( entity.getUserType() != null )
                 getEntityManager().refresh( entity.getUserType() );
             if ( entity instanceof Person )
-                return DTOFactory.copy( ( Person )entity, true );
+                return PersonUtil.copy( ( Person )entity );
             else
                 return DTOFactory.copy( ( Company )entity );
         }

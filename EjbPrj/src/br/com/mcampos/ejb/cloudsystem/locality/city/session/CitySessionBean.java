@@ -26,6 +26,11 @@ public class CitySessionBean extends Crud<Integer, City> implements CitySessionL
             list = ( List<City> )getResultList( City.getAllByState, state );
         return list;
     }
+
+    public City get( Integer id ) throws ApplicationException
+    {
+        return get( City.class, id );
+    }
 }
 
 

@@ -3,7 +3,6 @@ package br.com.mcampos.ejb.cloudsystem.locality.country;
 
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country;
-import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -31,7 +30,6 @@ public class CountryUtil
     {
         if ( dto == null )
             return null;
-        DTOFactory.copy( entity );
         entity.setCode3( dto.getCode3() );
         entity.setNumericCode( dto.getNumericCode() );
         return entity;
