@@ -20,8 +20,9 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = State.getAll, query = "select o from State o" ),
-                 @NamedQuery( name = State.getAllByCountry, query = "select o from State o where o.region.country = ?1" ),
-                 @NamedQuery( name = State.getAllByRegion, query = "select o from State o where o.region = ?1" ) } )
+                 @NamedQuery( name = State.getAllByCountry, query = "select o from State o where o.region.country = ?1 order by o.abbreviation " ),
+                 @NamedQuery( name = State.getAllByRegion,
+                              query = "select o from State o where o.region = ?1 order by o.abbreviation" ) } )
 @Table( name = "state" )
 @IdClass( StatePK.class )
 public class State implements Serializable

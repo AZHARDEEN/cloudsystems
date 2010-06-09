@@ -1,4 +1,4 @@
-package br.com.mcampos.controller.user;
+package br.com.mcampos.controller.commom.user;
 
 
 import br.com.mcampos.controller.admin.clients.UserController;
@@ -10,6 +10,8 @@ import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.attributes.CompanyTypeDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
+import br.com.mcampos.ejb.cloudsystem.user.company.facade.CompanyFacade;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.CNPJ;
 
 import java.util.Collections;
@@ -22,8 +24,10 @@ import org.zkoss.zul.Textbox;
 
 
 @SuppressWarnings( { "unchecked", "Unnecessary" } )
-public class CompanyController extends UserController
+public abstract class CompanyController extends UserController
 {
+    private CompanyFacade session;
+
     protected String actionParam;
     private Textbox cnpj;
     private Combobox companyType;
@@ -101,17 +105,13 @@ public class CompanyController extends UserController
 
         dto.setName( name.getValue() );
         dto.setNickName( nickName.getValue() );
-        addAddresses( dto );
         item = companyType.getSelectedItem();
-
         if ( item != null ) {
             dto.setCompanyType( ( CompanyTypeDTO )item.getValue() );
         }
-
         addAddresses( dto );
         addContacts( dto );
         addDocuments( dto );
-
         return true;
     }
 
@@ -231,29 +231,34 @@ public class CompanyController extends UserController
         return ( ( getActionParam() != null ) && getActionParam().equals( param ) );
     }
 
-    protected boolean isMyselfParam()
+    protected List<StateDTO> getStates( CountryDTO country )
     {
-        return isParam( "myself" );
+        try {
+            return getSession().getStates( country );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
+            return Collections.emptyList();
+        }
     }
 
-    protected boolean isBusinessParam()
+
+    protected List<CityDTO> getCities( StateDTO state )
     {
-        return isParam( "businessEntity" );
+        try {
+            return getSession().getCities( state );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
+            return Collections.emptyList();
+        }
     }
 
-    protected boolean isNewParam()
+    private CompanyFacade getSession()
     {
-        return isParam( "new" );
-    }
-
-    protected List<StateDTO> getStates( CountryDTO dto )
-    {
-        return Collections.emptyList();
-    }
-
-    protected List<CityDTO> getCities( StateDTO dto )
-    {
-        return Collections.emptyList();
+        if ( session == null )
+            session = ( CompanyFacade )getRemoteSession( CompanyFacade.class );
+        return session;
     }
 }
 

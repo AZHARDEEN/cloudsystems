@@ -32,6 +32,6 @@ public interface PersonFacade extends Serializable
 
     List<CityDTO> getCities( StateDTO state ) throws ApplicationException;
 
-    void updateMyRecord( AuthenticationDTO auth, PersonDTO dto ) throws ApplicationException;
+    PersonDTO updateMyRecord( AuthenticationDTO auth, PersonDTO dto ) throws ApplicationException;
 
 }

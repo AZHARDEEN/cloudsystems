@@ -12,6 +12,8 @@ import br.com.mcampos.sysutils.SysUtils;
 
 import java.security.InvalidParameterException;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -93,15 +95,58 @@ public class UserDocumentSessionBean extends Crud<UserDocumentPK, UserDocument> 
     {
         Query query = getEntityManager().createNamedQuery( UserDocument.deleteFromUser );
         query.setParameter( 1, user ).executeUpdate();
+        user.getDocuments().clear();
     }
 
     @Override
     public UserDocument add( UserDocument entity ) throws ApplicationException
     {
-        if ( entity.getDocumentType() != null )
-            entity.setDocumentType( docmentTypeSession.get( entity.getDocumentType().getId() ) );
+        linkToDocumentType( entity );
         entity = super.add( entity );
         entity.getUser().addDocument( entity );
+        linkToUser( entity );
         return entity;
+    }
+
+    private void linkToDocumentType( UserDocument entity ) throws ApplicationException
+    {
+        if ( entity == null || entity.getDocumentType() == null )
+            return;
+        entity.setDocumentType( docmentTypeSession.get( entity.getDocumentType().getId() ) );
+    }
+
+    public void refresh( Users user, List<UserDocument> documents ) throws ApplicationException
+    {
+        if ( user == null )
+            return;
+        delete( user );
+        for ( UserDocument d : documents ) {
+            add( d );
+        }
+    }
+
+    private void linkToUser( UserDocument entity )
+    {
+        if ( entity != null ) {
+            Users user = entity.getUser();
+            if ( user != null )
+                user.addDocument( entity );
+        }
+    }
+
+    private void unlinkToUser( UserDocument entity )
+    {
+        if ( entity != null ) {
+            Users user = entity.getUser();
+            if ( user != null )
+                user.removeDocument( entity );
+        }
+    }
+
+    @Override
+    public UserDocument update( UserDocument entity ) throws ApplicationException
+    {
+        linkToDocumentType( entity );
+        return super.update( entity );
     }
 }

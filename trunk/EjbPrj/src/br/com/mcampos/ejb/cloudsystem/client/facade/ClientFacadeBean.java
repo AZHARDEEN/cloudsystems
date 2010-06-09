@@ -2,16 +2,17 @@ package br.com.mcampos.ejb.cloudsystem.client.facade;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
-import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.client.ClientUtil;
 import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
-import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
+import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
-import br.com.mcampos.ejb.core.AbstractSecurity;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
+import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
+import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
+import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -33,7 +34,7 @@ public class ClientFacadeBean extends AbstractSecurity implements ClientFacade
     public static final Integer messageId = 16;
 
     @PersistenceContext( unitName = "EjbPrj" )
-    private EntityManager em;
+    private transient EntityManager em;
 
     @EJB
     private ClientSessionLocal clientSession;
@@ -43,6 +44,7 @@ public class ClientFacadeBean extends AbstractSecurity implements ClientFacade
 
     @EJB
     private NewCollaboratorSessionLocal collaboratorSession;
+
 
     public ClientFacadeBean()
     {
@@ -99,5 +101,11 @@ public class ClientFacadeBean extends AbstractSecurity implements ClientFacade
         Company company = getCompany( auth );
         List<Client> list = clientSession.getAllPersonClients( company );
         return ClientUtil.toUserDTOList( list );
+    }
+
+    public CompanyDTO add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException
+    {
+        Company myCompany = getCompany( auth );
+        return null;
     }
 }

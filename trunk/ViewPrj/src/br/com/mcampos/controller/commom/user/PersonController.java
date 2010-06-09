@@ -30,7 +30,7 @@ import org.zkoss.zul.Textbox;
 
 
 @SuppressWarnings( { "unchecked", "Unnecessary" } )
-public class PersonController extends UserController
+public abstract class PersonController extends UserController
 {
     private PersonFacade session;
 
@@ -151,8 +151,8 @@ public class PersonController extends UserController
         dto.setName( name.getValue() );
         dto.setBirthDate( new Timestamp( birthdate.getValue().getTime() ) );
         dto.setBornCity( bornCity.getSelectedItem() != null ? ( CityDTO )bornCity.getSelectedItem().getValue() : null );
-        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() :
-                           null );
+        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem()
+                           .getValue() : null );
         dto.setFatherName( fatherName.getValue() );
         dto.setGender( gender.getSelectedItem() != null ? ( GenderDTO )gender.getSelectedItem().getValue() : null );
         dto.setMotherName( motherName.getValue() );

@@ -4,13 +4,15 @@ package br.com.mcampos.ejb.cloudsystem.user.attribute.gender.session;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
 import br.com.mcampos.exception.ApplicationException;
 
+import java.io.Serializable;
+
 import java.util.List;
 
 import javax.ejb.Local;
 
 
 @Local
-public interface GenderSessionLocal
+public interface GenderSessionLocal extends Serializable
 {
     Gender add( Gender entity ) throws ApplicationException;
 

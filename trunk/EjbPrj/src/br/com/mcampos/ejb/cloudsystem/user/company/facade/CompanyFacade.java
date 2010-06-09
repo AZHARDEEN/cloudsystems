@@ -1,7 +1,6 @@
-package br.com.mcampos.ejb.cloudsystem.user.address.facade;
+package br.com.mcampos.ejb.cloudsystem.user.company.facade;
 
 
-import br.com.mcampos.dto.address.AddressTypeDTO;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
@@ -15,10 +14,8 @@ import javax.ejb.Remote;
 
 
 @Remote
-public interface AddressFacade extends Serializable
+public interface CompanyFacade extends Serializable
 {
-    List<AddressTypeDTO> getTypes() throws ApplicationException;
-
     List<StateDTO> getStates( CountryDTO country ) throws ApplicationException;
 
     List<CountryDTO> getCountries() throws ApplicationException;

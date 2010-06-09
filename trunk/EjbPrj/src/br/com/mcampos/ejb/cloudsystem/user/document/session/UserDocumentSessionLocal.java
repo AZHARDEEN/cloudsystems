@@ -8,6 +8,8 @@ import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 
@@ -38,4 +40,6 @@ public interface UserDocumentSessionLocal extends Serializable
     void delete( Users user ) throws ApplicationException;
 
     UserDocument add( UserDocument doc ) throws ApplicationException;
+
+    void refresh( Users user, List<UserDocument> documents ) throws ApplicationException;
 }

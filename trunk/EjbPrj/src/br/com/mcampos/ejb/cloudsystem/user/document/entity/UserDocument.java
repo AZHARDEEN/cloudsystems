@@ -87,6 +87,11 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
         this.documentId = doc_id_in;
     }
 
+    public void setDocumentId( DocumentType type )
+    {
+        this.documentId = type != null ? type.getId() : null;
+    }
+
     public String getAdditionalInfo()
     {
         return additionalInfo;
@@ -134,8 +139,7 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
     public void setDocumentType( DocumentType documentType )
     {
         this.documentType = documentType;
-        if ( this.documentType != null )
-            setDocumentId( this.documentType.getId() );
+        setDocumentId( documentType );
     }
 
     public DocumentType getDocumentType()
@@ -164,5 +168,14 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
         }
         else
             return false;
+    }
+
+    @Override
+    public String toString()
+    {
+        String retValue;
+
+        retValue = String.format( "User: %d. Id: %d. code: %s. Info: %s", userId, documentId, code, additionalInfo );
+        return retValue;
     }
 }

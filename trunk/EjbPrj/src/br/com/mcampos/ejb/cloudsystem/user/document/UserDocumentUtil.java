@@ -1,9 +1,15 @@
 package br.com.mcampos.ejb.cloudsystem.user.document;
 
+
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.DocumentTypeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
+import br.com.mcampos.sysutils.SysUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class UserDocumentUtil
 {
@@ -53,4 +59,16 @@ public class UserDocumentUtil
         }
         return code;
     }
+
+    public static List<UserDocument> toEntityList( Users user, List<UserDocumentDTO> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        ArrayList<UserDocument> listDTO = new ArrayList<UserDocument>( list.size() );
+        for ( UserDocumentDTO m : list ) {
+            listDTO.add( createEntity( m, user ) );
+        }
+        return listDTO;
+    }
+
 }

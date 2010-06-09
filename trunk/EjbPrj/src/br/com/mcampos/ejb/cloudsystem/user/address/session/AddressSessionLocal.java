@@ -27,4 +27,6 @@ public interface AddressSessionLocal extends Serializable
     Address add( Address entity ) throws ApplicationException;
 
     Address update( Address entity ) throws ApplicationException;
+
+    void refresh( Users user, List<Address> addresses ) throws ApplicationException;
 }
