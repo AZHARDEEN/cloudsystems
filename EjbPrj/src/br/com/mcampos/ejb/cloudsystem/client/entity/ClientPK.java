@@ -17,12 +17,17 @@ public class ClientPK implements Serializable
         this.clientId = usr_id_in;
     }
 
+    public ClientPK( Client client )
+    {
+        setCompanyId( client.getCompanyId() );
+        setClientId( client.getClientId() );
+    }
+
     public boolean equals( Object other )
     {
         if ( other instanceof ClientPK ) {
             final ClientPK otherClientsPK = ( ClientPK )other;
-            final boolean areEqual =
-                ( otherClientsPK.companyId.equals( companyId ) && otherClientsPK.clientId.equals( clientId ) );
+            final boolean areEqual = ( otherClientsPK.companyId.equals( companyId ) && otherClientsPK.clientId.equals( clientId ) );
             return areEqual;
         }
         return false;

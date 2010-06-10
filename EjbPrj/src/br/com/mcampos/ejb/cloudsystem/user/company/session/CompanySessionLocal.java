@@ -14,6 +14,8 @@ public interface CompanySessionLocal extends Serializable
 {
     Company get( Integer key ) throws ApplicationException;
 
+    Company get( Company company ) throws ApplicationException;
+
     Company add( Company entity ) throws ApplicationException;
 
     Company update( Company entity ) throws ApplicationException;
