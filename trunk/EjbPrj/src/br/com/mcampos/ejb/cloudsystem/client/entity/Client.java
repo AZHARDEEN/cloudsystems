@@ -1,8 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.client.entity;
 
 
-import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 
 import java.io.Serializable;
 
@@ -23,25 +23,31 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = Client.getAll, query = "select o from Client o where o.company = ?1" ),
+@NamedQueries( { @NamedQuery( name = Client.getAll, query = "select o from Client o where o.company = ?1 and o.endDate is null" ),
                  @NamedQuery( name = Client.getAllCompany,
-                              query = "select o from Client o where o.company = ?1 and o.client.userType.id = '2'" ),
+                              query = "select o from Client o where o.company = ?1 and o.client.userType.id = '2' and o.endDate is null" ),
+                 @NamedQuery( name = Client.nextId,
+                              query = "select max (o.clientId) from Client o where o.company = ?1 and o.endDate is null " ),
+                 @NamedQuery( name = Client.getClient,
+                              query = "select o from Client o where o.company = ?1 and o.client = ?2 and o.endDate is null " ),
                  @NamedQuery( name = Client.getAllPerson,
-                              query = "select o from Client o where o.company = ?1 and o.client.userType.id = '1'" ) } )
+                              query = "select o from Client o where o.company = ?1 and o.client.userType.id = '1' and o.endDate is null" ) } )
 @Table( name = "client" )
 @IdClass( ClientPK.class )
 public class Client implements Serializable
 {
     public static final String getAll = "Clients.findAll";
+    public static final String nextId = "Clients.nextId";
+    public static final String getClient = "Clients.getClient";
     public static final String getAllCompany = "Clients.findAllCompany";
     public static final String getAllPerson = "Clients.findAllPerson";
 
     @Id
-    @Column( name = "cli_id_in", nullable = false, insertable = false, updatable = false )
+    @Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
     private Integer companyId;
 
     @Id
-    @Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
+    @Column( name = "cli_seq_in", nullable = false )
     private Integer clientId;
 
     @Column( name = "cli_from_dt", nullable = false )
@@ -53,11 +59,11 @@ public class Client implements Serializable
     private Date endDate;
 
     @ManyToOne( fetch = FetchType.EAGER, optional = false )
-    @JoinColumn( name = "cli_id_in", referencedColumnName = "usr_id_in", insertable = true, updatable = true )
+    @JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", insertable = true, updatable = true )
     private Company company;
 
     @ManyToOne( fetch = FetchType.EAGER, optional = false )
-    @JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", insertable = true, updatable = true )
+    @JoinColumn( name = "cli_id_in", referencedColumnName = "usr_id_in", insertable = true, updatable = true )
     private Users client;
 
 
@@ -116,6 +122,8 @@ public class Client implements Serializable
     public void setCompany( Company company )
     {
         this.company = company;
+        if ( company != null )
+            setCompanyId( company.getId() );
     }
 
     public Company getCompany()

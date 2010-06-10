@@ -38,6 +38,8 @@ public abstract class UserUtil
 
     protected static UserDTO update( UserDTO dto, Users entity )
     {
+        if ( dto == null || entity == null )
+            return null;
         dto.setName( entity.getName() );
         dto.setNickName( entity.getNickName() );
         dto.setUserType( UserTypeUtil.copy( entity.getUserType() ) );

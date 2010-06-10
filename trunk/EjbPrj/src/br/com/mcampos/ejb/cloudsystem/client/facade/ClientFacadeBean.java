@@ -7,13 +7,15 @@ import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.client.ClientUtil;
 import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
 import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.UserFacadeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.company.CompanyUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
+import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.document.UserDocumentUtil;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
-import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -30,7 +32,7 @@ import javax.persistence.PersistenceContext;
 
 @Stateless( name = "ClientFacade", mappedName = "CloudSystems-EjbPrj-ClientFacade" )
 @TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
-public class ClientFacadeBean extends AbstractSecurity implements ClientFacade
+public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
 {
     public static final Integer messageId = 16;
 
@@ -45,6 +47,9 @@ public class ClientFacadeBean extends AbstractSecurity implements ClientFacade
 
     @EJB
     private NewCollaboratorSessionLocal collaboratorSession;
+
+    @EJB
+    private CompanySessionLocal companySession;
 
 
     public ClientFacadeBean()
@@ -108,6 +113,15 @@ public class ClientFacadeBean extends AbstractSecurity implements ClientFacade
     {
         Company myCompany = getCompany( auth );
         Company clientNotManaged = CompanyUtil.createEntity( dto );
-        return null;
+        clientNotManaged.setDocuments( UserDocumentUtil.toEntityList( clientNotManaged, dto.getDocumentList() ) );
+        Company managedCompany = companySession.get( clientNotManaged );
+        if ( managedCompany == null ) {
+            clientNotManaged.getDocuments().clear();
+            managedCompany = companySession.add( clientNotManaged );
+            refreshUserAttributes( managedCompany, dto );
+        }
+        Client client = new Client( myCompany, managedCompany );
+        clientSession.add( client );
+        return CompanyUtil.copy( managedCompany );
     }
 }

@@ -2,6 +2,7 @@ package br.com.mcampos.controller.user.client;
 
 
 import br.com.mcampos.controller.core.LoggedBaseController;
+import br.com.mcampos.controller.user.UserListRenderer;
 import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
 
 import org.zkoss.zk.ui.Component;
@@ -66,6 +67,7 @@ public class CompanyClientController extends LoggedBaseController
     public void doAfterCompose( Component component ) throws Exception
     {
         super.doAfterCompose( component );
+        listboxRecord.setItemRenderer( new UserListRenderer() );
         configureLabels();
         refresh();
     }

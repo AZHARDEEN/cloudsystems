@@ -5,6 +5,7 @@ import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyTypeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.UserTypeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 
@@ -22,11 +23,12 @@ public class CompanyUtil extends UserUtil
         return update( new Company(), dto );
     }
 
-    public static Company update( Company Company, CompanyDTO dto )
+    public static Company update( Company company, CompanyDTO dto )
     {
-        update( ( ( Users )Company ), ( ( UserDTO )dto ) );
-        Company.setUserType( UserTypeUtil.createEntity( dto.getUserType() ) );
-        return Company;
+        update( ( ( Users )company ), ( ( UserDTO )dto ) );
+        company.setUserType( UserTypeUtil.createEntity( dto.getUserType() ) );
+        company.setCompanyType( CompanyTypeUtil.createEntity( dto.getCompanyType() ) );
+        return company;
     }
 
 
