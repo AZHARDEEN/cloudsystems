@@ -9,6 +9,7 @@ import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
 import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
+import br.com.mcampos.ejb.cloudsystem.user.company.CompanyUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
@@ -106,6 +107,7 @@ public class ClientFacadeBean extends AbstractSecurity implements ClientFacade
     public CompanyDTO add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException
     {
         Company myCompany = getCompany( auth );
+        Company clientNotManaged = CompanyUtil.createEntity( dto );
         return null;
     }
 }

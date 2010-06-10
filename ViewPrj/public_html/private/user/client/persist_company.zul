@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <div width="100%" height="100%" id="rootParent" fulfill="=/private/user/client/company_record.zul"></div>
+    <div width="100%" height="100%" id="rootParent" fulfill="=/private/user/client/company_record.zul"
+         apply="br.com.mcampos.controller.user.client.AddClientController"></div>
 </zk>

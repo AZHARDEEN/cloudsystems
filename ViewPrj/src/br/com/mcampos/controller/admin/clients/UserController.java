@@ -34,14 +34,14 @@ public abstract class UserController extends LoggedBaseController
     private Listbox documentList;
 
 
-    private Combobox addressType;
-    private Combobox state;
-    private Combobox city;
-    private Combobox country;
-    private Textbox zip;
-    private Textbox address;
-    private Textbox hood;
-    private Textbox addressComment;
+    protected Combobox addressType;
+    protected Combobox state;
+    protected Combobox city;
+    protected Combobox country;
+    protected Textbox zip;
+    protected Textbox address;
+    protected Textbox hood;
+    protected Textbox addressComment;
     private Button cmdSubmit;
 
 
