@@ -2,11 +2,16 @@ package br.com.mcampos.ejb.cloudsystem.user.company.facade;
 
 
 import br.com.mcampos.dto.user.CompanyDTO;
+import br.com.mcampos.dto.user.attributes.CompanyTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.user.UserFacadeUtil;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyTypeSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyTypeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.CompanyUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.exception.ApplicationException;
+
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Remote;
@@ -28,6 +33,9 @@ public class CompanyFacadeBean extends UserFacadeUtil implements CompanyFacade
     @EJB
     private CompanySessionLocal companySession;
 
+    @EJB
+    private CompanyTypeSessionLocal companyTypeSession;
+
     protected EntityManager getEntityManager()
     {
         return em;
@@ -46,4 +54,9 @@ public class CompanyFacadeBean extends UserFacadeUtil implements CompanyFacade
         refreshUserAttributes( company, dto );
     }
 
+    public List<CompanyTypeDTO> getCompanyTypes() throws ApplicationException
+    {
+        List list = companyTypeSession.getAll();
+        return CompanyTypeUtil.toDTOList( list );
+    }
 }

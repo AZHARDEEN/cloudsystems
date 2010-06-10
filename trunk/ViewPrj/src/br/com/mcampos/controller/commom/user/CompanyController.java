@@ -28,12 +28,11 @@ public abstract class CompanyController extends UserController
 {
     private CompanyFacade session;
 
-    protected String actionParam;
-    private Textbox cnpj;
-    private Combobox companyType;
+    protected Textbox cnpj;
+    protected Combobox companyType;
     protected CompanyDTO currentDTO;
-    private Textbox name;
-    private Textbox nickName;
+    protected Textbox name;
+    protected Textbox nickName;
 
 
     public CompanyController()
@@ -50,6 +49,20 @@ public abstract class CompanyController extends UserController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
+        loadCombobox( companyType, getSession().getCompanyTypes() );
+        debugInfo();
+    }
+
+    private void debugInfo()
+    {
+        name.setValue( "Teste de razao social" );
+        nickName.setValue( "teste" );
+        companyType.setValue( "Sociedade Empresária Limitada" );
+        zip.setValue( "70000000" );
+        address.setValue( "Qualquer endereço" );
+        hood.setValue( "ASA SUL" );
+        addressComment.setValue( "debug comment" );
+        cnpj.setValue( "33444555000181" );
     }
 
     public void setCurrentDTO( CompanyDTO currentDTO )
@@ -98,7 +111,7 @@ public abstract class CompanyController extends UserController
     }
 
     @Override
-    protected Boolean persist()
+    protected Boolean persist() throws ApplicationException
     {
         CompanyDTO dto = getCurrentDTO();
         Comboitem item;
@@ -216,20 +229,6 @@ public abstract class CompanyController extends UserController
         }
     }
 
-    protected void setActionParam( String actionParam )
-    {
-        this.actionParam = actionParam;
-    }
-
-    protected String getActionParam()
-    {
-        return actionParam;
-    }
-
-    protected boolean isParam( String param )
-    {
-        return ( ( getActionParam() != null ) && getActionParam().equals( param ) );
-    }
 
     protected List<StateDTO> getStates( CountryDTO country )
     {

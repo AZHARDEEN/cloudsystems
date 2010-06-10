@@ -1,12 +1,15 @@
 package br.com.mcampos.controller.user.client;
 
+
 import br.com.mcampos.controller.commom.user.CompanyController;
-import br.com.mcampos.dto.user.CompanyDTO;
-import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacadeBean;
+import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
+import br.com.mcampos.exception.ApplicationException;
+
+import org.zkoss.zk.ui.Component;
 
 public class AddClientController extends CompanyController
 {
-    private ClientFacadeBean session;
+    private ClientFacade session;
 
 
     AddClientController( char c )
@@ -19,21 +22,25 @@ public class AddClientController extends CompanyController
         super();
     }
 
-    private ClientFacadeBean getSession()
+    private ClientFacade getSession()
     {
         if ( session == null )
-            session = ( ClientFacadeBean )getRemoteSession( ClientFacadeBean.class );
+            session = ( ClientFacade )getRemoteSession( ClientFacade.class );
         return session;
     }
 
     @Override
-    protected Boolean persist()
+    protected Boolean persist() throws ApplicationException
     {
         if ( super.persist() == false )
             return false;
-        CompanyDTO dto = getCurrentDTO();
-
-        getSession();
+        getSession().add( getLoggedInUser(), getCurrentDTO() );
         return true;
+    }
+
+    @Override
+    public void doAfterCompose( Component comp ) throws Exception
+    {
+        super.doAfterCompose( comp );
     }
 }
