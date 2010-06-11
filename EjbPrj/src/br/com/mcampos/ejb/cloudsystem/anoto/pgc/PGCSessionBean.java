@@ -156,8 +156,7 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     {
         String sql;
 
-        sql =
-"SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID " + "FROM  PGC_PAGE_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
+        sql = "SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID " + "FROM  PGC_PAGE_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
         Query query = getEntityManager().createNativeQuery( sql );
         query.setParameter( 1, entity.getPgcId() );
         query.setParameter( 2, entity.getBookId() );

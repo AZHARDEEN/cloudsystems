@@ -43,7 +43,7 @@ public class MenuSessionBean extends Crud<Integer, Menu> implements MenuSessionL
     public Integer getNextSequence( int parentId ) throws ApplicationException
     {
         Integer sequence;
-        sequence = ( Integer )getSingleResult( Menu.nextSequence );
+        sequence = ( Integer )getSingleResult( Menu.nextSequence, parentId );
         if ( SysUtils.isZero( sequence ) )
             sequence = 1;
         return sequence;
@@ -56,32 +56,28 @@ public class MenuSessionBean extends Crud<Integer, Menu> implements MenuSessionL
     }
 
     @Override
-    public Menu update(Menu entity) throws ApplicationException {
-        Menu menu = super.update(entity);
-        Menu parent;
-
-        parent = menu.getParentMenu();
-        if ( parent != null ) {
-            parent.addMenu(menu);
-        }
+    public Menu update( Menu entity ) throws ApplicationException
+    {
+        Menu menu = super.update( entity );
+        setParent( menu );
         return menu;
     }
 
     @Override
-    public Menu add(Menu entity) throws ApplicationException
+    public Menu add( Menu entity ) throws ApplicationException
     {
-        Menu menu = super.add(entity);
-        setParent(menu);
-        return menu;
+        setParent( entity );
+        return super.add( entity );
     }
 
-    private void setParent ( Menu menu )
+    private void setParent( Menu menu ) throws ApplicationException
     {
-        Menu parent;
+        if ( menu == null || menu.getParentMenu() == null )
+            return;
 
-        parent = menu.getParentMenu();
+        Menu parent = get( menu.getParentMenu().getId() );
         if ( parent != null ) {
-            parent.addMenu(menu);
+            parent.addMenu( menu );
         }
     }
 }

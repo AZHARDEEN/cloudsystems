@@ -19,8 +19,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 
@@ -36,24 +34,8 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
     public static final String bookIdFromParameterName = "bookIdFrom";
     public static final String bookIdToParameterName = "bookIdTo";
     public static final String fieldValueParameterName = "pgcFieldValue";
+    public static final String revisedStatusParameterName = "revisedStatus";
 
-    @PersistenceContext( unitName = "EjbPrj" )
-    private EntityManager em;
-
-
-    public PgcPenPageSessionBean()
-    {
-    }
-
-    protected EntityManager getEntityManager()
-    {
-        return em;
-    }
-
-    public Integer getMessageTypeId()
-    {
-        return 9;
-    }
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<PgcPage> getAll( Properties props, Integer maxRecords ) throws ApplicationException
@@ -69,6 +51,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         String jpaWhere = "";
         AnotoForm form;
         String pen;
+        String revisedStatus;
         String barCode;
         String fieldValue;
         Integer bookIdFrom, bookIdTo;
@@ -110,11 +93,17 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
                 jpaWhere += "pgc.pgc_pen_id = '" + pen + "'";
         }
 
+        revisedStatus = ( String )( props != null ? props.get( revisedStatusParameterName ) : "" );
+        if ( SysUtils.isEmpty( revisedStatus ) == false ) {
+            if ( jpaWhere.length() > 0 )
+                jpaWhere += " AND ";
+            jpaWhere += "pgc_page.rst_id_in = " + revisedStatus;
+        }
+
         barCode = ( String )( props != null ? props.get( barCodeParameterName ) : "" );
         if ( SysUtils.isEmpty( barCode ) == false ) {
             String sqlBarCode = " exists ( select a.pgc_id_in from pgc_attachment a \n" +
-                " where a.pgc_id_in = pgc_page.pgc_id_in and " + " a.ppg_book_id = pgc_page.ppg_book_id and " +
-                " a.ppg_page_id = pgc_page.ppg_page_id \n";
+                " where a.pgc_id_in = pgc_page.pgc_id_in and " + " a.ppg_book_id = pgc_page.ppg_book_id and " + " a.ppg_page_id = pgc_page.ppg_page_id \n";
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
             if ( barCode.indexOf( "*" ) >= 0 ) {
@@ -129,8 +118,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         fieldValue = ( String )( props != null ? props.get( fieldValueParameterName ) : "" );
         if ( SysUtils.isEmpty( fieldValue ) == false ) {
             String sqlFieldValue = " exists ( select a.pgc_id_in from pgc_field a \n" +
-                "	where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " +
-                "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
+                "	where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " + "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
             if ( fieldValue.indexOf( "*" ) >= 0 ) {
@@ -158,6 +146,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
 
         if ( jpaWhere.length() > 0 )
             jpaQuery += " WHERE " + jpaWhere + " ORDER BY PGC_ID_IN DESC, PPG_BOOK_ID ASC, PPG_PAGE_ID ASC ";
+        System.out.println( jpaQuery );
         Query query = getEntityManager().createNativeQuery( jpaQuery, PgcPage.class );
         query.setMaxResults( maxRecords );
         List<PgcPage> list = ( List<PgcPage> )query.getResultList();

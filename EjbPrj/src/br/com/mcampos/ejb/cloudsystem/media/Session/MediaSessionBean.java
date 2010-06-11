@@ -20,6 +20,7 @@ public class MediaSessionBean extends Crud<Integer, Media> implements MediaSessi
     @Override
     public Media add( Media entity ) throws ApplicationException
     {
+        entity.setId( null );
         return super.add( entity );
     }
 

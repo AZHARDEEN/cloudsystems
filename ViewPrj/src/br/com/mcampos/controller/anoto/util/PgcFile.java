@@ -16,6 +16,7 @@ import br.com.mcampos.dto.anoto.PgcStatusDTO;
 import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
+import br.com.mcampos.ejb.cloudsystem.anoto.upload.UploadFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.locator.ServiceLocator;
@@ -63,7 +64,7 @@ public class PgcFile
 
     private List<MediaDTO> pgcs;
     private String penId;
-    private AnodeFacade session;
+    private UploadFacade session;
     private PGCDTO currentPgc;
     private Pen currentPen;
     private PadFile pad;
@@ -159,10 +160,10 @@ public class PgcFile
     }
 
 
-    private AnodeFacade getRemoteSession()
+    private UploadFacade getRemoteSession()
     {
         try {
-            return ( AnodeFacade )ServiceLocator.getInstance().getRemoteSession( AnodeFacade.class );
+            return ( UploadFacade )ServiceLocator.getInstance().getRemoteSession( UploadFacade.class );
         }
         catch ( ServiceLocatorException e ) {
             throw new NullPointerException( "Invalid EJB Session (possible null)" );
@@ -170,7 +171,7 @@ public class PgcFile
     }
 
 
-    private AnodeFacade getSession()
+    private UploadFacade getSession()
     {
         if ( session == null )
             session = getRemoteSession();
@@ -300,9 +301,9 @@ public class PgcFile
         String basePath;
         Map<String, IcrField> icrFields = null;
 
-        basePath =
-                String.format( "%s/%s/%s/%d", pgcPenPage.getForm().getApplication(), pgcPenPage.getPenPage().getPage().getPad().getMedia().getName(),
-                               page.getPageAddress(), pgcPenPage.getPgc().getId() );
+        basePath = String.format( "%s/%s/%s/%d", pgcPenPage.getForm().getApplication(),
+                                  pgcPenPage.getPenPage().getPage().getPad().getMedia().getName(), page.getPageAddress(),
+                                  pgcPenPage.getPgc().getId() );
         basePath = PadFile.getPath( basePath );
         File file = new File( basePath );
         if ( file.exists() == false )

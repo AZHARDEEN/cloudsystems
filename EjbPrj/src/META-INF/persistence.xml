@@ -66,6 +66,8 @@
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>
+      <property name="eclipselink.target-server" value="WebLogic 10"/>
+      <property name="eclipselink.target-database" value="PostgreSQL"/>
     </properties>
   </persistence-unit>
 </persistence>
