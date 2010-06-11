@@ -22,6 +22,13 @@ public class AnotoPagePK implements Serializable
         setPadId( dto.getPadId() );
     }
 
+    public AnotoPagePK( AnotoPage entity )
+    {
+        setPageAddress( entity.getPageAddress() );
+        setFormId( entity.getFormId() );
+        setPadId( entity.getPadId() );
+    }
+
 
     public AnotoPagePK( String apg_id_ch, Integer frm_id_in, Integer pad_id_in )
     {

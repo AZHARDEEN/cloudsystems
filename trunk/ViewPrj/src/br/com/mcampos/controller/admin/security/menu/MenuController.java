@@ -283,11 +283,11 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         try {
             if ( isAddNewOperation() )
                 dto = getSession().add( getLoggedInUser(), getValue( ( Treeitem )treeItem ) );
-            else
+            else {
                 dto = getSession().update( getLoggedInUser(), getValue( ( ( Treeitem )treeItem ) ) );
-
-            if ( dto != null )
-                ( ( Treeitem )treeItem ).setValue( dto );
+                if ( dto != null )
+                    ( ( Treeitem )treeItem ).setValue( dto );
+            }
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Inserir Menu" );
@@ -301,7 +301,7 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
             return;
         }
         if ( isAddNewOperation() ) {
-            if ( editSequence.getValue() != 0 ) {
+            if ( editSequence.getValue() == 0 ) {
                 try {
                     editSequence.setValue( getSession().getNextSequence( getLoggedInUser(), editParent.getValue() ) );
                 }
