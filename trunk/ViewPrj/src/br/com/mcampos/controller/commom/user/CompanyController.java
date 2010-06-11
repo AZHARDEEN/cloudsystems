@@ -50,7 +50,7 @@ public abstract class CompanyController extends UserController
     {
         super.doAfterCompose( comp );
         loadCombobox( companyType, getSession().getCompanyTypes() );
-        debugInfo();
+        //debugInfo();
     }
 
     private void debugInfo()

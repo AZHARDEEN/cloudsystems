@@ -11,10 +11,10 @@ public class ClientPK implements Serializable
     {
     }
 
-    public ClientPK( Integer cli_id_in, Integer usr_id_in )
+    public ClientPK( Integer companyId, Integer clientId )
     {
-        this.companyId = cli_id_in;
-        this.clientId = usr_id_in;
+        setCompanyId( companyId );
+        setClientId( clientId );
     }
 
     public ClientPK( Client client )
@@ -27,7 +27,8 @@ public class ClientPK implements Serializable
     {
         if ( other instanceof ClientPK ) {
             final ClientPK otherClientsPK = ( ClientPK )other;
-            final boolean areEqual = ( otherClientsPK.companyId.equals( companyId ) && otherClientsPK.clientId.equals( clientId ) );
+            final boolean areEqual =
+                ( otherClientsPK.companyId.equals( companyId ) && otherClientsPK.clientId.equals( clientId ) );
             return areEqual;
         }
         return false;

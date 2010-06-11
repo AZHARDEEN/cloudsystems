@@ -1,0 +1,81 @@
+
+--Alteração em 10/06/2010
+
+DROP TABLE resivion_status cascade;
+
+CREATE TABLE revision_status
+(
+	rst_id_in            INTEGER NOT NULL ,
+	rst_description_ch   VARCHAR(64) NOT NULL ,
+CONSTRAINT  XPKresivion_status PRIMARY KEY (rst_id_in)
+);
+
+insert into revision_status ( rst_id_in, rst_description_ch ) values ( 1, 'Sem revisão' );
+insert into revision_status ( rst_id_in, rst_description_ch ) values ( 2, 'Em revisão' );
+insert into revision_status ( rst_id_in, rst_description_ch ) values ( 3, 'Revisado' );
+
+
+alter table pgc
+add column rst_id_in            INTEGER NOT NULL default 1;
+
+alter table pgc
+add CONSTRAINT FK_RevisionStatus_Pgc FOREIGN KEY (rst_id_in) REFERENCES revision_status (rst_id_in);
+
+CREATE  INDEX XIF3pgc ON pgc
+(rst_id_in   ASC);
+
+
+
+DROP TABLE IF EXISTS client CASCADE ;
+
+
+
+CREATE TABLE client
+(
+	usr_id_in            INTEGER NOT NULL ,
+	cli_id_in            INTEGER NOT NULL ,
+	cli_from_dt          TIMESTAMP NOT NULL ,
+	cli_to_dt            TIMESTAMP NULL ,
+	cli_seq_in           INTEGER NOT NULL ,
+CONSTRAINT  XPKClients PRIMARY KEY (usr_id_in,cli_seq_in),
+CONSTRAINT FK_Company_Client FOREIGN KEY (usr_id_in) REFERENCES company (usr_id_in),
+CONSTRAINT FK_User_Client FOREIGN KEY (cli_id_in) REFERENCES users (usr_id_in)
+)
+	TABLESPACE tb_cloud_data;
+
+
+
+COMMENT ON TABLE client IS 'Tabela de clientes. Um cliente está sempre vinculado a uma EMPRESA nunca a uma pessoa.';
+
+
+
+
+COMMENT ON COLUMN client.usr_id_in IS 'Usar sequence: seq_usuario';
+
+
+
+
+COMMENT ON COLUMN client.cli_id_in IS 'Usar sequence: seq_usuario';
+
+
+
+CREATE  INDEX XIF1Clients ON client
+(usr_id_in   ASC);
+
+
+
+CREATE  INDEX XIF2Clients ON client
+(cli_id_in   ASC);
+
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON client TO cloud;
+
+
+alter table pgc_page
+add column rst_id_in            INTEGER NOT NULL default 1;
+
+alter table pgc_page
+add CONSTRAINT FK_RevisionStatus_Pgc FOREIGN KEY (rst_id_in) REFERENCES revision_status (rst_id_in);
+
+

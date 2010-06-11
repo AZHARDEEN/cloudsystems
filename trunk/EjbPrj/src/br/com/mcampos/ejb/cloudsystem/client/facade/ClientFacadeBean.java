@@ -2,10 +2,11 @@ package br.com.mcampos.ejb.cloudsystem.client.facade;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.user.ClientDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
-import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.client.ClientUtil;
 import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
+import br.com.mcampos.ejb.cloudsystem.client.entity.ClientPK;
 import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.UserFacadeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
@@ -52,10 +53,6 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
     private CompanySessionLocal companySession;
 
 
-    public ClientFacadeBean()
-    {
-    }
-
     protected EntityManager getEntityManager()
     {
         return em;
@@ -88,28 +85,28 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
         return list.get( 0 ).getCompany();
     }
 
-    public List<ListUserDTO> getClients( AuthenticationDTO auth ) throws ApplicationException
+    public List<ClientDTO> getClients( AuthenticationDTO auth ) throws ApplicationException
     {
         Company company = getCompany( auth );
         List<Client> list = clientSession.getAll( company );
-        return ClientUtil.toUserDTOList( list );
+        return ClientUtil.toDTOList( list );
     }
 
-    public List<ListUserDTO> getCompanies( AuthenticationDTO auth ) throws ApplicationException
+    public List<ClientDTO> getCompanies( AuthenticationDTO auth ) throws ApplicationException
     {
         Company company = getCompany( auth );
         List<Client> list = clientSession.getAllCompanyClients( company );
-        return ClientUtil.toUserDTOList( list );
+        return ClientUtil.toDTOList( list );
     }
 
-    public List<ListUserDTO> getPeople( AuthenticationDTO auth ) throws ApplicationException
+    public List<ClientDTO> getPeople( AuthenticationDTO auth ) throws ApplicationException
     {
         Company company = getCompany( auth );
         List<Client> list = clientSession.getAllPersonClients( company );
-        return ClientUtil.toUserDTOList( list );
+        return ClientUtil.toDTOList( list );
     }
 
-    public CompanyDTO add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException
+    public ClientDTO add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException
     {
         Company myCompany = getCompany( auth );
         Company clientNotManaged = CompanyUtil.createEntity( dto );
@@ -121,7 +118,19 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
             refreshUserAttributes( managedCompany, dto );
         }
         Client client = new Client( myCompany, managedCompany );
-        clientSession.add( client );
-        return CompanyUtil.copy( managedCompany );
+        client = clientSession.add( client );
+        return ClientUtil.copy( client );
     }
+
+    public void delete( AuthenticationDTO auth, ClientDTO dto ) throws ApplicationException
+    {
+        Company myCompany = getCompany( auth );
+        if ( myCompany == null )
+            throwException( 5 );
+        Company client = companySession.get( dto.getClient().getId() );
+        if ( client == null )
+            throwException( 6 );
+        clientSession.delete( new ClientPK( myCompany.getId(), dto.getClientId() ) );
+    }
+
 }

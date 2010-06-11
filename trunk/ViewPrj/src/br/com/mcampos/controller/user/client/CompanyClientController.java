@@ -2,8 +2,9 @@ package br.com.mcampos.controller.user.client;
 
 
 import br.com.mcampos.controller.core.LoggedBaseController;
-import br.com.mcampos.controller.user.UserListRenderer;
+import br.com.mcampos.dto.user.ClientDTO;
 import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
+import br.com.mcampos.exception.ApplicationException;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Button;
@@ -67,7 +68,7 @@ public class CompanyClientController extends LoggedBaseController
     public void doAfterCompose( Component component ) throws Exception
     {
         super.doAfterCompose( component );
-        listboxRecord.setItemRenderer( new UserListRenderer() );
+        listboxRecord.setItemRenderer( new ClientListRenderer() );
         configureLabels();
         refresh();
     }
@@ -129,7 +130,7 @@ public class CompanyClientController extends LoggedBaseController
             showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
             return;
         }
-        loadCompanyRecordPage();
+        //loadCompanyRecordPage();
     }
 
     private void loadCompanyRecordPage()
@@ -138,7 +139,7 @@ public class CompanyClientController extends LoggedBaseController
     }
 
 
-    public void onClick$cmdDelete()
+    public void onClick$cmdDelete() throws ApplicationException
     {
         Object item = getCurrentRecord();
 
@@ -146,6 +147,13 @@ public class CompanyClientController extends LoggedBaseController
             showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
             return;
         }
+        ClientDTO dto = ( ClientDTO )item;
+        if ( dto == null )
+            return;
+        getSession().delete( getLoggedInUser(), dto );
+        ListModelList model = ( ListModelList )getListbox().getModel();
+        if ( model != null )
+            model.remove( dto );
     }
 
     private Object getCurrentRecord()
