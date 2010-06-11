@@ -26,8 +26,7 @@ import javax.persistence.TemporalType;
 @NamedQueries( { @NamedQuery( name = Client.getAll, query = "select o from Client o where o.company = ?1 and o.endDate is null" ),
                  @NamedQuery( name = Client.getAllCompany,
                               query = "select o from Client o where o.company = ?1 and o.client.userType.id = '2' and o.endDate is null" ),
-                 @NamedQuery( name = Client.nextId,
-                              query = "select max (o.clientId) from Client o where o.company = ?1 and o.endDate is null " ),
+                 @NamedQuery( name = Client.nextId, query = "select max (o.clientId) from Client o where o.company = ?1 " ),
                  @NamedQuery( name = Client.getClient,
                               query = "select o from Client o where o.company = ?1 and o.client = ?2 and o.endDate is null " ),
                  @NamedQuery( name = Client.getAllPerson,
@@ -51,11 +50,11 @@ public class Client implements Serializable
     private Integer clientId;
 
     @Column( name = "cli_from_dt", nullable = false )
-    @Temporal( TemporalType.DATE )
+    @Temporal( TemporalType.TIMESTAMP )
     private Date insertDate;
 
     @Column( name = "cli_to_dt", nullable = true )
-    @Temporal( TemporalType.DATE )
+    @Temporal( TemporalType.TIMESTAMP )
     private Date endDate;
 
     @ManyToOne( fetch = FetchType.EAGER, optional = false )
