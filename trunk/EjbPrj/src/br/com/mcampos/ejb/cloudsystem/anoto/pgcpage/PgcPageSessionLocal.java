@@ -3,10 +3,13 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pgcpage;
 
 import br.com.mcampos.exception.ApplicationException;
 
+import java.io.Serializable;
+
 import javax.ejb.Local;
 
+
 @Local
-public interface PgcPageSessionLocal
+public interface PgcPageSessionLocal extends Serializable
 {
     void delete( PgcPagePK key ) throws ApplicationException;
 

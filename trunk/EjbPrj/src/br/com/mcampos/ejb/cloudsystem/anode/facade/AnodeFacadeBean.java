@@ -27,7 +27,6 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pad.PadSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField;
-import br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageFieldPK;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.field.PageFieldSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnodePenSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
@@ -38,17 +37,12 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachmentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.system.FieldTypeSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
@@ -56,7 +50,6 @@ import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -99,9 +92,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
     @EJB
     private PageFieldSessionLocal pageFieldSession;
-
-    @EJB
-    private PgcPageAttachmentSessionLocal pageAttachSession;
 
 
     public FormDTO add( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
@@ -364,7 +354,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return AnotoUtils.toPageList( padSession.getPages() );
     }
 
-
     public List<MediaDTO> getImages( AnotoPageDTO page ) throws ApplicationException
     {
         return AnotoUtils.toMediaList( padSession.getImages( getPageEntity( page ) ) );
@@ -383,7 +372,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         Media imageEntity = mediaSession.add( DTOFactory.copy( image ) );
         return padSession.addImage( getPageEntity( page ), imageEntity ).toDTO();
     }
-
 
     protected List<AnotoPen> loadPenEntityList( List<PenDTO> pens ) throws ApplicationException
     {
@@ -409,7 +397,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         padSession.addPens( getPageEntity( page ), entities );
     }
 
-
     public List<PenDTO> getAvailablePens( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
     {
         authenticate( auth );
@@ -429,20 +416,17 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return AnotoUtils.toPenList( padSession.getPens( getPageEntity( page ) ) );
     }
 
-
     public List<PGCDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
         return AnotoUtils.toPgcList( pgcSession.getAll() );
     }
 
-
     public List<PGCDTO> getSuspendedPgc( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
         return AnotoUtils.toPgcList( pgcSession.getSuspended() );
     }
-
 
     public List<PgcPenPageDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException
     {
@@ -452,7 +436,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         AnotoPenPage entity = padSession.getPenPage( pen, page );
         return AnotoUtils.toPgcPenPageList( pgcSession.getAll( entity ) );
     }
-
 
     public List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props,
                                                    Integer maxRecords ) throws ApplicationException
@@ -483,81 +466,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
                 resultList.add( item );
         }
         return resultList;
-    }
-
-    public PGCDTO add( PGCDTO dto, List<String> addresses, ArrayList<MediaDTO> medias,
-                       List<PgcPropertyDTO> properties ) throws ApplicationException
-    {
-        //authenticate( auth ); IT´S FREE FOR NOW
-        /*Does this media exists??*/
-        Pgc pgc = DTOFactory.copy( dto );
-        Media media = mediaSession.add( pgc.getMedia() );
-        pgc.setMedia( media );
-        pgc.setInsertDate( new Date() );
-        PgcStatus status = new PgcStatus( 1 );
-        pgc.setPgcStatus( status );
-        /*Search for a pen in our database*/
-        pgc = pgcSession.add( pgc );
-        addPgcAttachment( pgc, medias );
-        addProperties( pgc, properties );
-        verifyBindings( pgc, addresses );
-        return pgc.toDTO();
-    }
-
-
-    private void addPgcAttachment( Pgc pgc, ArrayList<MediaDTO> medias ) throws ApplicationException
-    {
-        Media media;
-
-        if ( SysUtils.isEmpty( medias ) == false ) {
-            for ( MediaDTO m : medias ) {
-                media = mediaSession.add( DTOFactory.copy( m ) );
-                PgcAttachment attach = new PgcAttachment();
-                attach.setMediaId( media.getId() );
-                attach.setPgcId( pgc.getId() );
-                getEntityManager().persist( attach );
-            }
-        }
-    }
-
-    private void addProperties( Pgc pgc, List<PgcPropertyDTO> properties ) throws ApplicationException
-    {
-        int nSequence = 1;
-
-        for ( PgcPropertyDTO p : properties ) {
-            for ( String s : p.getValues() ) {
-                s = s.replaceAll( "'", "" );
-                if ( SysUtils.isEmpty( s ) )
-                    continue;
-                PgcProperty property = new PgcProperty();
-                property.setPgc_id_in( pgc.getId() );
-                property.setPgp_id_in( p.getId() );
-                property.setPpg_value_ch( s );
-                property.setPgp_seq_in( nSequence );
-                nSequence++;
-                getEntityManager().persist( property );
-            }
-        }
-    }
-
-    public void setPgcStatus( PGCDTO dto, Integer newStatus ) throws ApplicationException
-    {
-        Pgc pgc = pgcSession.get( dto.getId() );
-        if ( pgc != null )
-            pgcSession.setPgcStatus( pgc, newStatus );
-    }
-
-    protected boolean verifyBindings( Pgc pgc, List<String> addresses ) throws ApplicationException
-    {
-        AnotoPen anotoPen;
-        System.out.println( "Pgc has this pen id: " + pgc.getPenId() );
-        anotoPen = penSession.get( pgc.getPenId() );
-        if ( anotoPen == null ) {
-            System.out.println( "No pen id database " + pgc.getPenId() );
-            pgcSession.setPgcStatus( pgc, PgcStatus.statusNoPen );
-            return false;
-        }
-        return hasAnotoPages( pgc, addresses, anotoPen );
     }
 
     protected boolean hasAnotoPages( Pgc pgc, List<String> addresses, AnotoPen anotoPen ) throws ApplicationException
@@ -598,17 +506,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return AnotoUtils.toPenPageList( list );
     }
 
-    public List<PgcPenPageDTO> getPgcPenPages( PGCDTO pgc ) throws ApplicationException
-    {
-        List<PgcPenPage> list = null;
-        Pgc entity = pgcSession.get( pgc.getId() );
-        if ( entity != null ) {
-            list = pgcSession.get( entity );
-        }
-        return AnotoUtils.toPgcPenPageList( list );
-    }
-
-
     public void delete( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException
     {
         authenticate( auth );
@@ -617,51 +514,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             pgcPenPageSession.delete( entity );
             pgcSession.delete( pgc.getId() );
         }
-    }
-
-    public void addProcessedImage( PGCDTO pgc, MediaDTO media, int book, int page ) throws ApplicationException
-    {
-        Pgc entity = pgcSession.get( pgc.getId() );
-        if ( entity != null ) {
-            Media mediaEntity = mediaSession.add( DTOFactory.copy( media ) );
-            PgcProcessedImage pi = new PgcProcessedImage( new PgcPage( entity, book, page ), mediaEntity, book, page );
-            pgcSession.add( pi );
-        }
-    }
-
-    public void addPgcField( PgcFieldDTO dto ) throws ApplicationException
-    {
-
-        PgcField field = DTOFactory.copy( dto );
-        AnotoPageField pageField = pageFieldSession.get( new AnotoPageFieldPK( dto.getPgcPage().getAnotoPage(), dto.getName() ) );
-        if ( pageField == null ) {
-            field.setType( pageField.getType() );
-            if ( pageField.getType().getId() == FieldType.typeBoolean || pageField.hasIcr() == false )
-                field.setMedia( null );
-        }
-        else
-            field.setType( getEntityManager().find( FieldType.class, field.getType().getId() ) );
-        Media media = null;
-        if ( dto.getMedia() != null )
-            media = mediaSession.add( DTOFactory.copy( dto.getMedia() ) );
-        field.setMedia( media );
-        pgcSession.add( field );
-    }
-
-    public void addPgcAttachment( PgcAttachmentDTO dto ) throws ApplicationException
-    {
-        Media media = null;
-        if ( dto.getMedia() != null )
-            media = mediaSession.add( DTOFactory.copy( dto.getMedia() ) );
-        PgcPageAttachment entity = DTOFactory.copy( dto );
-        entity.setMedia( media );
-        pgcSession.add( entity );
-    }
-
-    public void add( PgcPageDTO dto ) throws ApplicationException
-    {
-        PgcPage entity = DTOFactory.copy( dto );
-        pgcSession.add( entity );
     }
 
     public List<MediaDTO> getImages( PgcPageDTO page ) throws ApplicationException
@@ -677,7 +529,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             return Collections.emptyList();
         return AnotoUtils.toPgcFieldList( fields );
     }
-
 
     public void update( AuthenticationDTO auth, PgcFieldDTO field ) throws ApplicationException
     {
@@ -757,7 +608,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             return Collections.emptyList();
     }
 
-
     public void addToPage( AuthenticationDTO auth, PadDTO padDTO, String pageAddress,
                            List<AnotoPageFieldDTO> fields ) throws ApplicationException
     {
@@ -783,7 +633,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         AnotoPage page = getAnotoPage( fields.get( 0 ).getPage() );
         pageFieldSession.add( page, list );
     }
-
 
     public void refreshFields( AuthenticationDTO auth, List<AnotoPageFieldDTO> fields ) throws ApplicationException
     {
@@ -820,26 +669,12 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         pageFieldSession.update( entity );
     }
 
-
     public void update( AuthenticationDTO auth, AnotoPageDTO anotoPage ) throws ApplicationException
     {
         authenticate( auth );
 
         AnotoPage page = DTOFactory.copy( anotoPage );
         padSession.update( page );
-    }
-
-
-    public List<PgcAttachmentDTO> getBarCodes( String barCodeValue, String pageAddress, Integer padId,
-                                               Integer currentPGC ) throws ApplicationException
-    {
-        if ( SysUtils.isEmpty( barCodeValue ) )
-            return Collections.emptyList();
-
-        List<PgcPageAttachment> entities;
-
-        entities = pageAttachSession.getAll( barCodeValue, pageAddress, padId, currentPGC );
-        return AnotoUtils.toPgcAttachmentList( entities );
     }
 }
 
