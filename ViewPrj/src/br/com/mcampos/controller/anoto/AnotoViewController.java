@@ -60,7 +60,6 @@ import org.zkoss.zul.Paging;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
-import org.zkoss.zul.West;
 
 import sun.awt.image.BufferedImageGraphicsConfig;
 
@@ -80,7 +79,7 @@ public class AnotoViewController extends AnotoLoggedController
 
     protected float imageRateSize = 0.0F;
     protected static final int targetWidth = 570;
-    protected BufferedImage currentImage;
+    protected transient BufferedImage currentImage;
 
 
     private AnotoResultList dtoParam;
@@ -92,9 +91,7 @@ public class AnotoViewController extends AnotoLoggedController
     private Listbox listProperties;
     private Paging pagingPages;
     private Row rowBackGroundImages;
-    private Row rowPaging;
     private Combobox cmbBackgroundImages;
-    private West westView;
     private Grid gridAttach;
     private Combobox cmbZoonRate;
     private Label startTime;

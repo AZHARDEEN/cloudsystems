@@ -178,13 +178,9 @@ public class PgcFile
         return session;
     }
 
-
-    public PGCDTO persist( ArrayList<MediaDTO> medias ) throws ApplicationException
+    private List<PgcPropertyDTO> getProperties()
     {
-        FormDTO form;
-        PGCDTO pgc = getCurrentPgc();
         List<PgcPropertyDTO> properties = new ArrayList<PgcPropertyDTO>();
-
         try {
             Iterator it = getCurrentPen().getPropertyIds();
             while ( it != null && it.hasNext() ) {
@@ -212,9 +208,17 @@ public class PgcFile
             System.out.println( e.getMessage() );
             e = null;
         }
-        List<String> addresses = getPageAddresess();
-        PGCDTO insertedPgc = getSession().add( getCurrentPgc(), addresses, medias, properties );
+        return properties;
+    }
 
+    public PGCDTO persist( ArrayList<MediaDTO> medias ) throws ApplicationException
+    {
+        FormDTO form;
+        PGCDTO pgc = getCurrentPgc();
+
+        List<String> addresses = getPageAddresess();
+        List<PgcPropertyDTO> properties = getProperties();
+        PGCDTO insertedPgc = getSession().add( getCurrentPgc(), addresses, medias, properties );
         setCurrentPgc( insertedPgc );
         if ( insertedPgc.getPgcStatus().getId() != PgcStatusDTO.statusOk )
             return insertedPgc;
@@ -301,9 +305,9 @@ public class PgcFile
         String basePath;
         Map<String, IcrField> icrFields = null;
 
-        basePath = String.format( "%s/%s/%s/%d", pgcPenPage.getForm().getApplication(),
-                                  pgcPenPage.getPenPage().getPage().getPad().getMedia().getName(), page.getPageAddress(),
-                                  pgcPenPage.getPgc().getId() );
+        basePath =
+                String.format( "%s/%s/%s/%d", pgcPenPage.getForm().getApplication(), pgcPenPage.getPenPage().getPage().getPad().getMedia().getName(),
+                               page.getPageAddress(), pgcPenPage.getPgc().getId() );
         basePath = PadFile.getPath( basePath );
         File file = new File( basePath );
         if ( file.exists() == false )

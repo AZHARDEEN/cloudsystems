@@ -1,42 +1,59 @@
 package br.com.mcampos.ejb.cloudsystem.anoto.upload;
 
 
+import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
+import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
+import br.com.mcampos.dto.anoto.PgcFieldDTO;
+import br.com.mcampos.dto.anoto.PgcPageDTO;
+import br.com.mcampos.dto.anoto.PgcPenPageDTO;
 import br.com.mcampos.dto.anoto.PgcPropertyDTO;
 import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
+import br.com.mcampos.ejb.cloudsystem.anoto.pad.PadSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPagePK;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageFieldPK;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.field.PageFieldSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnodePenSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachmentSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
 import br.com.mcampos.ejb.core.AbstractSecurity;
-
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
-
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 
 @Stateless( name = "UploadFacade", mappedName = "CloudSystems-EjbPrj-UploadFacade" )
-@Remote
+@TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
 {
     public static final Integer messageId = 25;
@@ -54,6 +71,14 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
     @EJB
     private AnodePenSessionLocal penSession;
 
+    @EJB
+    private PadSessionLocal padSession;
+
+    @EJB
+    private PgcPageAttachmentSessionLocal pageAttachSession;
+
+    @EJB
+    private PageFieldSessionLocal pageFieldSession;
 
     protected EntityManager getEntityManager()
     {
@@ -158,4 +183,100 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
         }
         return true;
     }
+
+
+    public void setPgcStatus( PGCDTO dto, Integer newStatus ) throws ApplicationException
+    {
+        Pgc pgc = pgcSession.get( dto.getId() );
+        if ( pgc != null )
+            pgcSession.setPgcStatus( pgc, newStatus );
+    }
+
+    public List<PgcPenPageDTO> getPgcPenPages( PGCDTO pgc ) throws ApplicationException
+    {
+        List<PgcPenPage> list = null;
+        Pgc entity = pgcSession.get( pgc.getId() );
+        if ( entity != null ) {
+            list = pgcSession.get( entity );
+        }
+        return AnotoUtils.toPgcPenPageList( list );
+    }
+
+    public void add( PgcPageDTO dto ) throws ApplicationException
+    {
+        PgcPage entity = DTOFactory.copy( dto );
+        pgcSession.add( entity );
+    }
+
+
+    public List<PgcAttachmentDTO> getBarCodes( String barCodeValue, String pageAddress, Integer padId,
+                                               Integer currentPGC ) throws ApplicationException
+    {
+        if ( SysUtils.isEmpty( barCodeValue ) )
+            return Collections.emptyList();
+
+        List<PgcPageAttachment> entities;
+
+        entities = pageAttachSession.getAll( barCodeValue, pageAddress, padId, currentPGC );
+        return AnotoUtils.toPgcAttachmentList( entities );
+    }
+
+    public byte[] getObject( MediaDTO key ) throws ApplicationException
+    {
+        return mediaSession.getObject( key.getId() );
+    }
+
+    public void addProcessedImage( PGCDTO pgc, MediaDTO media, int book, int page ) throws ApplicationException
+    {
+        Pgc entity = pgcSession.get( pgc.getId() );
+        if ( entity != null ) {
+            Media mediaEntity = mediaSession.add( DTOFactory.copy( media ) );
+            PgcProcessedImage pi = new PgcProcessedImage( new PgcPage( entity, book, page ), mediaEntity, book, page );
+            pgcSession.add( pi );
+        }
+    }
+
+    public void addPgcAttachment( PgcAttachmentDTO dto ) throws ApplicationException
+    {
+        Media media = null;
+        if ( dto.getMedia() != null )
+            media = mediaSession.add( DTOFactory.copy( dto.getMedia() ) );
+        PgcPageAttachment entity = DTOFactory.copy( dto );
+        entity.setMedia( media );
+        pgcSession.add( entity );
+    }
+
+
+    public void addPgcField( PgcFieldDTO dto ) throws ApplicationException
+    {
+
+        PgcField field = DTOFactory.copy( dto );
+        AnotoPageField pageField = pageFieldSession.get( new AnotoPageFieldPK( dto.getPgcPage().getAnotoPage(), dto.getName() ) );
+        if ( pageField == null ) {
+            field.setType( pageField.getType() );
+            if ( pageField.getType().getId() == FieldType.typeBoolean || pageField.hasIcr() == false )
+                field.setMedia( null );
+        }
+        else
+            field.setType( getEntityManager().find( FieldType.class, field.getType().getId() ) );
+        Media media = null;
+        if ( dto.getMedia() != null )
+            media = mediaSession.add( DTOFactory.copy( dto.getMedia() ) );
+        field.setMedia( media );
+        pgcSession.add( field );
+    }
+
+    public List<MediaDTO> getImages( AnotoPageDTO page ) throws ApplicationException
+    {
+        return AnotoUtils.toMediaList( padSession.getImages( getPageEntity( page ) ) );
+    }
+
+    private AnotoPage getPageEntity( AnotoPageDTO page )
+    {
+        AnotoPagePK key = new AnotoPagePK( page );
+        AnotoPage entity = padSession.getPage( key );
+        return entity;
+    }
+
 }
+

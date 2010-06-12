@@ -10,6 +10,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPagePK;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldPK;
@@ -26,6 +27,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -38,6 +40,9 @@ import javax.persistence.Query;
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLocal
 {
+    @EJB
+    private PgcPageSessionLocal pgcPageSession;
+
     public PGCSessionBean()
     {
     }
@@ -156,7 +161,8 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     {
         String sql;
 
-        sql = "SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID " + "FROM  PGC_PAGE_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
+        sql =
+"SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID " + "FROM  PGC_PAGE_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
         Query query = getEntityManager().createNativeQuery( sql );
         query.setParameter( 1, entity.getPgcId() );
         query.setParameter( 2, entity.getBookId() );
@@ -187,9 +193,11 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<PgcField> getFields( PgcPage page ) throws ApplicationException
     {
-        List<PgcField> fields;
+        List<PgcField> fields = Collections.emptyList();
 
-        fields = ( List<PgcField> )getResultList( PgcField.findPageFields, page );
+        PgcPage merged = pgcPageSession.get( new PgcPagePK( page ) );
+        if ( merged != null )
+            fields = ( List<PgcField> )getResultList( PgcField.findPageFields, merged );
         return fields;
     }
 
