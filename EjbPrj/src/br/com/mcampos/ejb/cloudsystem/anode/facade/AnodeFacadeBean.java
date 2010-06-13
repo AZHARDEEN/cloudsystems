@@ -20,12 +20,14 @@ import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.PadPK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.PadSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPagePK;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPageUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.field.PageFieldSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnodePenSessionLocal;
@@ -37,12 +39,17 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldPK;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus;
+import br.com.mcampos.ejb.cloudsystem.media.MediaUtil;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
-import br.com.mcampos.ejb.cloudsystem.system.FieldTypeSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.system.fieldtype.session.FieldTypeSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
@@ -93,6 +100,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     @EJB
     private PageFieldSessionLocal pageFieldSession;
 
+    @EJB
+    private PgcFieldSessionLocal pgcFieldSession;
+
 
     public FormDTO add( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
@@ -100,7 +110,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         if ( entity == null )
             throwCommomException( 3 );
         try {
-            return formSession.add( DTOFactory.copy( entity ) ).toDTO();
+            return formSession.add( AnotoFormUtil.createEntity( entity ) ).toDTO();
         }
         catch ( EJBException e ) {
             throwException( 1 );
@@ -112,7 +122,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     {
         authenticate( auth );
         List<AnotoPen> entities = loadPenEntityList( pens );
-        formSession.add( DTOFactory.copy( form ), entities );
+        AnotoForm aForm = formSession.get( form.getId() );
+        if ( form != null )
+            formSession.add( aForm, entities );
     }
 
 
@@ -125,7 +137,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             if ( SysUtils.isEmpty( list ) == false )
                 throwRuntimeException( 1 );
         }
-        formSession.remove( DTOFactory.copy( form ), entities );
+        AnotoForm aForm = formSession.get( form.getId() );
+        if ( aForm != null )
+            formSession.remove( aForm, entities );
     }
 
 
@@ -160,7 +174,13 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public FormDTO update( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
         authenticate( auth );
-        return formSession.update( DTOFactory.copy( entity ) ).toDTO();
+        AnotoForm aForm = formSession.get( entity.getId() );
+        if ( aForm != null ) {
+            AnotoFormUtil.update( aForm, entity );
+            return formSession.update( aForm ).toDTO();
+        }
+        else
+            return null;
     }
 
 
@@ -175,7 +195,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
          */
         AnotoForm form = formSession.get( entity.getId() );
         pad.setFormat( "pad" );
-        Media media = mediaSession.add( DTOFactory.copy( pad ) );
+        Media media = mediaSession.add( MediaUtil.createEntity( pad ) );
         Pad padentity = formSession.addPadFile( form, media, pages );
         return padentity.toDTO();
     }
@@ -207,13 +227,21 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public List<PenDTO> getAvailablePens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );
-        return AnotoUtils.toPenList( formSession.getAvailablePens( DTOFactory.copy( form ) ) );
+        AnotoForm aForm = formSession.get( form.getId() );
+        if ( aForm != null )
+            return AnotoUtils.toPenList( formSession.getAvailablePens( aForm ) );
+        else
+            return Collections.emptyList();
     }
 
     public List<PenDTO> getPens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
     {
         authenticate( auth );
-        return AnotoUtils.toPenList( formSession.getPens( DTOFactory.copy( form ) ) );
+        AnotoForm aForm = formSession.get( form.getId() );
+        if ( aForm != null )
+            return AnotoUtils.toPenList( formSession.getPens( aForm ) );
+        else
+            return Collections.emptyList();
     }
 
 
@@ -237,7 +265,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public MediaDTO addFile( AuthenticationDTO auth, FormDTO form, MediaDTO media ) throws ApplicationException
     {
         authenticate( auth );
-        Media entity = mediaSession.add( DTOFactory.copy( media ) );
+        Media entity = mediaSession.add( MediaUtil.createEntity( media ) );
         AnotoForm anotoForm = formSession.get( form.getId() );
         return formSession.addFile( anotoForm, entity ).getMedia().toDTO();
     }
@@ -246,7 +274,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public void removeFile( AuthenticationDTO auth, FormDTO form, MediaDTO media ) throws ApplicationException
     {
         authenticate( auth );
-        Media entity = mediaSession.add( DTOFactory.copy( media ) );
+        Media entity = mediaSession.add( MediaUtil.createEntity( media ) );
         AnotoForm anotoForm = formSession.get( form.getId() );
         formSession.removeFile( anotoForm, entity );
     }
@@ -369,7 +397,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public MediaDTO addToPage( AuthenticationDTO auth, AnotoPageDTO page, MediaDTO image ) throws ApplicationException
     {
         authenticate( auth );
-        Media imageEntity = mediaSession.add( DTOFactory.copy( image ) );
+        Media imageEntity = mediaSession.add( MediaUtil.createEntity( image ) );
         return padSession.addImage( getPageEntity( page ), imageEntity ).toDTO();
     }
 
@@ -518,13 +546,13 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
     public List<MediaDTO> getImages( PgcPageDTO page ) throws ApplicationException
     {
-        return AnotoUtils.toMediaList( pgcSession.getImages( DTOFactory.copy( page ) ) );
+        return AnotoUtils.toMediaList( pgcSession.getImages( PgcPageUtil.createEntity( page ) ) );
     }
 
     public List<PgcFieldDTO> getFields( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
     {
         authenticate( auth );
-        List<PgcField> fields = pgcSession.getFields( DTOFactory.copy( page ) );
+        List<PgcField> fields = pgcSession.getFields( PgcPageUtil.createEntity( page ) );
         if ( SysUtils.isEmpty( fields ) )
             return Collections.emptyList();
         return AnotoUtils.toPgcFieldList( fields );
@@ -533,7 +561,11 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public void update( AuthenticationDTO auth, PgcFieldDTO field ) throws ApplicationException
     {
         authenticate( auth );
-        pgcSession.update( DTOFactory.copy( field ) );
+        PgcField pgcField = pgcFieldSession.get( new PgcFieldPK( field ) );
+        if ( pgcField != null ) {
+            PgcFieldUtil.update( pgcField, field );
+            pgcFieldSession.update( pgcField );
+        }
     }
 
     public Integer remove( AuthenticationDTO auth, AnotoResultList item ) throws ApplicationException
@@ -545,7 +577,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public List<PgcAttachmentDTO> getAttachments( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
     {
         authenticate( auth );
-        return AnotoUtils.toPgcAttachmentList( pgcSession.getAttachments( DTOFactory.copy( page ) ) );
+        return AnotoUtils.toPgcAttachmentList( pgcSession.getAttachments( PgcPageUtil.createEntity( page ) ) );
     }
 
     public List<MediaDTO> getAttachments( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException
@@ -673,7 +705,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     {
         authenticate( auth );
 
-        AnotoPage page = DTOFactory.copy( anotoPage );
+        AnotoPage page = AnotoPageUtil.createEntity( anotoPage );
         padSession.update( page );
     }
 }

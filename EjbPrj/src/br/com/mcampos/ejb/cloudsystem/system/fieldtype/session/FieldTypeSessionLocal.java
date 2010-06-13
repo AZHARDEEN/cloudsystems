@@ -1,8 +1,8 @@
-package br.com.mcampos.ejb.cloudsystem.system;
+package br.com.mcampos.ejb.cloudsystem.system.fieldtype.session;
 
 
 import br.com.mcampos.dto.system.FieldTypeDTO;
-import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
+import br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;

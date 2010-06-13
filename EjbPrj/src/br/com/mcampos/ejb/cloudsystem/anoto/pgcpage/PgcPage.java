@@ -6,6 +6,8 @@ import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
+import br.com.mcampos.ejb.cloudsystem.system.revisedstatus.RevisionStatusUtil;
+import br.com.mcampos.ejb.cloudsystem.system.revisedstatus.entity.RevisionStatus;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
@@ -59,6 +61,10 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
                     @JoinColumn( name = "pad_id_in", referencedColumnName = "pad_id_in", nullable = false ),
                     @JoinColumn( name = "apg_id_ch", referencedColumnName = "apg_id_ch", nullable = false ) } )
     private AnotoPage anotoPage;
+
+    @ManyToOne( optional = false )
+    @JoinColumn( name = "rst_id_in", referencedColumnName = "rst_id_in", nullable = false, columnDefinition = "Integer" )
+    private RevisionStatus revisionStatus;
 
 
     public PgcPage()
@@ -141,6 +147,7 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
         dto.setPageId( getPageId() );
         dto.setPgc( getPgc().toDTO() );
         dto.setAnotoPage( getAnotoPage().toDTO() );
+        dto.setRevisionStatus( RevisionStatusUtil.copy( getRevisionStatus() ) );
         return dto;
     }
 
@@ -152,5 +159,15 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
     public AnotoPage getAnotoPage()
     {
         return anotoPage;
+    }
+
+    public void setRevisionStatus( RevisionStatus revisionStatus )
+    {
+        this.revisionStatus = revisionStatus;
+    }
+
+    public RevisionStatus getRevisionStatus()
+    {
+        return revisionStatus;
     }
 }

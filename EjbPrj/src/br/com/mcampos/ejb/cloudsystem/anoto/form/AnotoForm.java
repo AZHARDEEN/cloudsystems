@@ -20,128 +20,134 @@ import javax.persistence.TemporalType;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "Form.findAll", query = "select o from AnotoForm o" ),
-				 @NamedQuery( name = "Form.nextId", query = "select MAX(o.id) from AnotoForm o" ) } )
+                 @NamedQuery( name = "Form.nextId", query = "select MAX(o.id) from AnotoForm o" ) } )
 @Table( name = "anoto_form" )
 public class AnotoForm implements Serializable, EntityCopyInterface<FormDTO>, Comparable<AnotoForm>
 {
-	@Id
-	@Column( name = "frm_id_in", nullable = false )
-	private Integer id;
+    @Id
+    @Column( name = "frm_id_in", nullable = false )
+    private Integer id;
 
-	@Column( name = "frm_description_ch", nullable = false )
-	private String description;
+    @Column( name = "frm_description_ch", nullable = false )
+    private String description;
 
-	@Column( name = "frm_ip_ch", nullable = false )
-	private String application;
+    @Column( name = "frm_ip_ch", nullable = false )
+    private String application;
 
-	@Column( name = "frm_insert_dt", nullable = false, insertable = true, updatable = false )
-	@Temporal( TemporalType.DATE )
-	private Date insertDate;
+    @Column( name = "frm_insert_dt", nullable = false, insertable = true, updatable = false )
+    @Temporal( TemporalType.DATE )
+    private Date insertDate;
 
-	@Column( name = "frm_icr_image_bt" )
-	private Boolean icrImage;
+    @Column( name = "frm_icr_image_bt" )
+    private Boolean icrImage;
 
-	@Column( name = "frm_image_filepath_ch", length = 1024 )
-	private String imagePath;
+    @Column( name = "frm_image_filepath_ch", length = 1024 )
+    private String imagePath;
 
-	@Column( name = "frm_concat_pgc_bt" )
-	private Boolean concatenatePgc;
+    @Column( name = "frm_concat_pgc_bt" )
+    private Boolean concatenatePgc;
 
 
-	public AnotoForm()
-	{
-	}
+    public AnotoForm()
+    {
+    }
 
-	public AnotoForm( Integer id, String application, String description )
-	{
-		setDescription( description );
-		setId( id );
-		setApplication( application );
-	}
+    public AnotoForm( Integer id, String application, String description )
+    {
+        setDescription( description );
+        setId( id );
+        setApplication( application );
+    }
 
-	public String getDescription()
-	{
-		return description;
-	}
+    public AnotoForm( Integer id, String application )
+    {
+        setId( id );
+        setApplication( application );
+    }
 
-	public void setDescription( String description )
-	{
-		this.description = description;
-	}
+    public String getDescription()
+    {
+        return description;
+    }
 
-	public Integer getId()
-	{
-		return id;
-	}
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
 
-	public void setId( Integer id )
-	{
-		this.id = id;
-	}
+    public Integer getId()
+    {
+        return id;
+    }
 
-	public String getApplication()
-	{
-		return application;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public void setApplication( String application )
-	{
-		this.application = application;
-	}
+    public String getApplication()
+    {
+        return application;
+    }
 
-	public FormDTO toDTO()
-	{
-		FormDTO dto = new FormDTO( this.getId(), this.getDescription() );
+    public void setApplication( String application )
+    {
+        this.application = application;
+    }
 
-		dto.setApplication( this.getApplication() );
-		dto.setIcrImage( getIcrImage() );
-		dto.setImagePath( getImagePath() );
-		dto.setConcatenatePgc( getConcatenatePgc() );
-		return dto;
-	}
+    public FormDTO toDTO()
+    {
+        FormDTO dto = new FormDTO( this.getId(), this.getDescription() );
 
-	public void setInsertDate( Date insertDate )
-	{
-		this.insertDate = insertDate;
-	}
+        dto.setApplication( this.getApplication() );
+        dto.setIcrImage( getIcrImage() );
+        dto.setImagePath( getImagePath() );
+        dto.setConcatenatePgc( getConcatenatePgc() );
+        return dto;
+    }
 
-	public Date getInsertDate()
-	{
-		return insertDate;
-	}
+    public void setInsertDate( Date insertDate )
+    {
+        this.insertDate = insertDate;
+    }
 
-	public int compareTo( AnotoForm o )
-	{
-		return getId().compareTo( o.getId() );
-	}
+    public Date getInsertDate()
+    {
+        return insertDate;
+    }
 
-	public void setIcrImage( Boolean icrImage )
-	{
-		this.icrImage = icrImage;
-	}
+    public int compareTo( AnotoForm o )
+    {
+        return getId().compareTo( o.getId() );
+    }
 
-	public Boolean getIcrImage()
-	{
-		return icrImage;
-	}
+    public void setIcrImage( Boolean icrImage )
+    {
+        this.icrImage = icrImage;
+    }
 
-	public void setImagePath( String imagePath )
-	{
-		this.imagePath = imagePath;
-	}
+    public Boolean getIcrImage()
+    {
+        return icrImage;
+    }
 
-	public String getImagePath()
-	{
-		return imagePath;
-	}
+    public void setImagePath( String imagePath )
+    {
+        this.imagePath = imagePath;
+    }
 
-	public void setConcatenatePgc( Boolean concatenatePgc )
-	{
-		this.concatenatePgc = concatenatePgc;
-	}
+    public String getImagePath()
+    {
+        return imagePath;
+    }
 
-	public Boolean getConcatenatePgc()
-	{
-		return concatenatePgc;
-	}
+    public void setConcatenatePgc( Boolean concatenatePgc )
+    {
+        this.concatenatePgc = concatenatePgc;
+    }
+
+    public Boolean getConcatenatePgc()
+    {
+        return concatenatePgc;
+    }
 }

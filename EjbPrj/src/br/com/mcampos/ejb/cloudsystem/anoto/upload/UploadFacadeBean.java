@@ -21,18 +21,22 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PgcUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachmentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus;
+import br.com.mcampos.ejb.cloudsystem.media.MediaUtil;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
-import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
+import br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
@@ -95,7 +99,7 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
     {
         //authenticate( auth ); IT´S FREE FOR NOW
         /*Does this media exists??*/
-        Pgc pgc = DTOFactory.copy( dto );
+        Pgc pgc = PgcUtil.createEntity( dto );
         Media media = mediaSession.add( pgc.getMedia() );
         pgc.setMedia( media );
         pgc.setInsertDate( new Date() );
@@ -116,7 +120,7 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
 
         if ( SysUtils.isEmpty( medias ) == false ) {
             for ( MediaDTO m : medias ) {
-                media = mediaSession.add( DTOFactory.copy( m ) );
+                media = mediaSession.add( MediaUtil.createEntity( m ) );
                 PgcAttachment attach = new PgcAttachment();
                 attach.setMediaId( media.getId() );
                 attach.setPgcId( pgc.getId() );
@@ -204,7 +208,7 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
 
     public void add( PgcPageDTO dto ) throws ApplicationException
     {
-        PgcPage entity = DTOFactory.copy( dto );
+        PgcPage entity = PgcPageUtil.createEntity( dto );
         pgcSession.add( entity );
     }
 
@@ -230,7 +234,7 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
     {
         Pgc entity = pgcSession.get( pgc.getId() );
         if ( entity != null ) {
-            Media mediaEntity = mediaSession.add( DTOFactory.copy( media ) );
+            Media mediaEntity = mediaSession.add( MediaUtil.createEntity( media ) );
             PgcProcessedImage pi = new PgcProcessedImage( new PgcPage( entity, book, page ), mediaEntity, book, page );
             pgcSession.add( pi );
         }
@@ -240,7 +244,7 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
     {
         Media media = null;
         if ( dto.getMedia() != null )
-            media = mediaSession.add( DTOFactory.copy( dto.getMedia() ) );
+            media = mediaSession.add( MediaUtil.createEntity( dto.getMedia() ) );
         PgcPageAttachment entity = DTOFactory.copy( dto );
         entity.setMedia( media );
         pgcSession.add( entity );
@@ -250,7 +254,7 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
     public void addPgcField( PgcFieldDTO dto ) throws ApplicationException
     {
 
-        PgcField field = DTOFactory.copy( dto );
+        PgcField field = PgcFieldUtil.createEntity( dto );
         AnotoPageField pageField = pageFieldSession.get( new AnotoPageFieldPK( dto.getPgcPage().getAnotoPage(), dto.getName() ) );
         if ( pageField == null ) {
             field.setType( pageField.getType() );
@@ -261,7 +265,7 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
             field.setType( getEntityManager().find( FieldType.class, field.getType().getId() ) );
         Media media = null;
         if ( dto.getMedia() != null )
-            media = mediaSession.add( DTOFactory.copy( dto.getMedia() ) );
+            media = mediaSession.add( MediaUtil.createEntity( dto.getMedia() ) );
         field.setMedia( media );
         pgcSession.add( field );
     }

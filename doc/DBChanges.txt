@@ -24,6 +24,7 @@ add CONSTRAINT FK_RevisionStatus_Pgc FOREIGN KEY (rst_id_in) REFERENCES revision
 CREATE  INDEX XIF3pgc ON pgc
 (rst_id_in   ASC);
 
+GRANT SELECT, INSERT, UPDATE, DELETE ON revision_status TO cloud;
 
 
 DROP TABLE IF EXISTS client CASCADE ;

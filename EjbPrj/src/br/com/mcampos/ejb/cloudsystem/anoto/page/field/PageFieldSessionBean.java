@@ -2,7 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anoto.page.field;
 
 
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
-import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
+import br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;

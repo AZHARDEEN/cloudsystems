@@ -3,10 +3,10 @@ package br.com.mcampos.ejb.cloudsystem.media.facade;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.ejb.cloudsystem.media.MediaUtil;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.core.AbstractSecurity;
-import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -52,7 +52,7 @@ public class MediaFacadeBean extends AbstractSecurity implements MediaFacade
     public MediaDTO add( AuthenticationDTO auth, MediaDTO entity ) throws ApplicationException
     {
         authenticate( auth );
-        MediaDTO retDTO = ( media.add( DTOFactory.copy( entity ) ) ).toDTO();
+        MediaDTO retDTO = ( media.add( MediaUtil.createEntity( entity ) ) ).toDTO();
         return retDTO;
     }
 
@@ -62,7 +62,7 @@ public class MediaFacadeBean extends AbstractSecurity implements MediaFacade
         media.delete( key );
     }
 
-     
+
     public byte[] getObject( AuthenticationDTO auth, Integer key ) throws ApplicationException
     {
         authenticate( auth );
@@ -70,7 +70,7 @@ public class MediaFacadeBean extends AbstractSecurity implements MediaFacade
 
     }
 
-     
+
     public List<MediaDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
