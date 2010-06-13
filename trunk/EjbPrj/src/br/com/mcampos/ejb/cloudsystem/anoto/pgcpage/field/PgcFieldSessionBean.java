@@ -16,33 +16,30 @@ import javax.ejb.TransactionAttributeType;
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements PgcFieldSessionLocal
 {
-	public PgcFieldSessionBean()
-	{
-	}
+    public void delete( PgcFieldPK key ) throws ApplicationException
+    {
+        PgcField entity = get( key );
+        PgcPage parent = null;
 
-	public void delete( PgcFieldPK key ) throws ApplicationException
-	{
-		PgcField entity = get( key );
-		PgcPage parent = null;
+        if ( entity != null ) {
+            parent = entity.getPgcPage();
+            delete( PgcField.class, key );
+            if ( parent != null )
+                getEntityManager().refresh( parent );
+        }
+    }
 
-		if ( entity != null ) {
-			parent = entity.getPgcPage();
-			delete( PgcField.class, key );
-			if ( parent != null )
-				getEntityManager().refresh( parent );
-		}
-	}
-
-	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public PgcField get( PgcFieldPK key ) throws ApplicationException
-	{
-		return get( PgcField.class, key );
-	}
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public PgcField get( PgcFieldPK key ) throws ApplicationException
+    {
+        return get( PgcField.class, key );
+    }
 
 
-	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public List<PgcField> getAll( PgcPage pgcPage ) throws ApplicationException
-	{
-		return ( List<PgcField> )getResultList( PgcField.findPageFields, pgcPage );
-	}
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public List<PgcField> getAll( PgcPage pgcPage ) throws ApplicationException
+    {
+        pgcPage = getEntityManager().merge( pgcPage );
+        return ( List<PgcField> )getResultList( PgcField.findPageFields, pgcPage );
+    }
 }

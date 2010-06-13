@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.cloudsystem.system.entity;
+package br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity;
 
 
 import br.com.mcampos.dto.system.FieldTypeDTO;
@@ -41,10 +41,9 @@ public class FieldType implements Serializable, Comparable<FieldType>, EntityCop
     {
     }
 
-    public FieldType( String flt_description_ch, Integer flt_id_in )
+    public FieldType( Integer flt_id_in )
     {
-        this.description = flt_description_ch;
-        this.id = flt_id_in;
+        setId( flt_id_in );
     }
 
     public String getDescription()

@@ -13,7 +13,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.BackgroundImagePK;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
-import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
+import br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 

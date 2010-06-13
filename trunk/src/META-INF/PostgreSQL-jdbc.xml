@@ -4,18 +4,19 @@
                   xmlns="http://www.bea.com/ns/weblogic/jdbc-data-source">
  <name>PostgreSQL</name>
  <jdbc-driver-params>
-  <url>jdbc:postgresql://127.0.0.1:5432/db_cloud</url>
+  <url>jdbc:postgresql://127.0.0.1:5432/db_cloud?user=cloud&amp;password=cloud</url>
   <driver-name>org.postgresql.Driver</driver-name>
   <properties>
    <property>
     <name>user</name>
-    <value>cloud</value>
+    <value></value>
    </property>
    <property>
     <name>password</name>
     <value>cloud</value>
    </property>
   </properties>
+  <password-encrypted>A857C5B13F00E3D5</password-encrypted>
  </jdbc-driver-params>
  <jdbc-connection-pool-params>
   <test-table-name>SQL SELECT 1</test-table-name>

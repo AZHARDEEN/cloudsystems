@@ -51,7 +51,7 @@
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment</class>
-    <class>br.com.mcampos.ejb.cloudsystem.system.entity.FieldType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.entity.ContactType</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title</class>
@@ -63,11 +63,13 @@
     <class>br.com.mcampos.ejb.cloudsystem.locality.state.entity.State</class>
     <class>br.com.mcampos.ejb.cloudsystem.locality.region.entity.Region</class>
     <class>br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country</class>
+    <class>br.com.mcampos.ejb.cloudsystem.system.revisedstatus.entity.RevisionStatus</class>
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>
       <property name="eclipselink.target-server" value="WebLogic 10"/>
       <property name="eclipselink.target-database" value="PostgreSQL"/>
+      <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/PostgreSQLDS"/>
     </properties>
   </persistence-unit>
 </persistence>

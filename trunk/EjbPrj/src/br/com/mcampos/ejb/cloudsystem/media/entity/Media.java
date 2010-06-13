@@ -57,6 +57,11 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
     {
     }
 
+    public Media( Integer id )
+    {
+        setId( id );
+    }
+
 
     public Integer getId()
     {

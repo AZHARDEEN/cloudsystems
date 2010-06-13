@@ -10,7 +10,6 @@ import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
-import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.cloudsystem.user.person.session.PersonSessionLocal;
@@ -37,13 +36,7 @@ public class UserFacadeSessionBean implements UserFacadeSession
     @EJB
     PersonSessionLocal person;
     @EJB
-    CompanySessionLocal company;
-    @EJB
     SystemMessagesSessionLocal systemMessage;
-    /*
-    @EJB
-    CollaboratorSessionLocal collaborator;
-    */
 
     private static final Integer systemMessageTypeId = 3;
 
@@ -116,50 +109,11 @@ public class UserFacadeSessionBean implements UserFacadeSession
         return null;
     }
 
-    protected void testParam( BasicDTO dto ) throws ApplicationException
-    {
-        if ( dto == null )
-            systemMessage.throwException( systemMessageTypeId, 26 );
-    }
-
-    protected void testParam( AuthenticationDTO auth, BasicDTO dto ) throws ApplicationException
+    private void testParam( AuthenticationDTO auth, BasicDTO dto ) throws ApplicationException
     {
         if ( auth == null )
             systemMessage.throwException( systemMessageTypeId, 26 );
         if ( dto == null )
             systemMessage.throwException( systemMessageTypeId, 26 );
     }
-
-    /*
-    public UserDTO getMyCompany( AuthenticationDTO auth, Integer businessId ) throws ApplicationException
-    {
-        if ( auth == null )
-            systemMessage.throwException( systemMessageTypeId, 26 );
-        return collaborator.getBusinessEntity( auth, businessId );
-    }
-
-    public Integer getMyCompanyCount( AuthenticationDTO auth ) throws ApplicationException
-    {
-        if ( auth == null )
-            systemMessage.throwException( systemMessageTypeId, 26 );
-        return collaborator.getBusinessEntityCount( auth );
-    }
-
-
-    public List<ListUserDTO> getMyCompaniesByRange( AuthenticationDTO auth, Integer startNumber,
-                                                    Integer pageSize ) throws ApplicationException
-    {
-        if ( auth == null )
-            systemMessage.throwException( systemMessageTypeId, 26 );
-        return collaborator.getBusinessEntityByRange( auth, startNumber, pageSize );
-    }
-
-
-    public List<MenuDTO> getMenuList( AuthenticationDTO auth ) throws ApplicationException
-    {
-        if ( auth == null )
-            systemMessage.throwException( systemMessageTypeId, 26 );
-        return collaborator.getMenuList( auth );
-    }
-    */
 }

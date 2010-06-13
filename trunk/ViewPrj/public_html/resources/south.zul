@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<window xmlns="http://www.zkoss.org/2005/zul" width="100%" border="none" apply="br.com.mcampos.controller.SouthController">
-    <span style="font-size:small">
-        <label id="labelCopyright" value="##"/>
-    </span>
-</window>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window width="100%" border="none" apply="br.com.mcampos.controller.SouthController">
+        <span style="font-size:small">
+            <label id="labelCopyright" value="##" width="70%"/>
+        </span>
+    </window>
+</zk>

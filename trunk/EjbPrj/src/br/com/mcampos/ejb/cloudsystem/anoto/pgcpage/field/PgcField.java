@@ -4,7 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
-import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
+import br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;

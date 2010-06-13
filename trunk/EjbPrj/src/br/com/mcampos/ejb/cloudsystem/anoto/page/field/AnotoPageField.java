@@ -3,7 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.anoto.page.field;
 
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
-import br.com.mcampos.ejb.cloudsystem.system.entity.FieldType;
+import br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;

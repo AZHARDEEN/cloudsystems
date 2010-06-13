@@ -1,6 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field;
 
 
+import br.com.mcampos.dto.anoto.PgcFieldDTO;
+
 import java.io.Serializable;
 
 public class PgcFieldPK implements Serializable
@@ -14,7 +16,7 @@ public class PgcFieldPK implements Serializable
     {
     }
 
-    public PgcFieldPK ( PgcField entity )
+    public PgcFieldPK( PgcField entity )
     {
         setBookId( entity.getBookId() );
         setPageId( entity.getPageId() );
@@ -23,12 +25,22 @@ public class PgcFieldPK implements Serializable
     }
 
 
+    public PgcFieldPK( PgcFieldDTO entity )
+    {
+        setBookId( entity.getPgcPage().getBookId() );
+        setPageId( entity.getPgcPage().getPageId() );
+        setPgcId( entity.getPgcPage().getPgc().getId() );
+        setName( entity.getName() );
+    }
+
+
     public boolean equals( Object other )
     {
-        if (other instanceof PgcFieldPK) {
-            final PgcFieldPK otherPgcFieldPK = (PgcFieldPK) other;
+        if ( other instanceof PgcFieldPK ) {
+            final PgcFieldPK otherPgcFieldPK = ( PgcFieldPK )other;
             final boolean areEqual =
-                (otherPgcFieldPK.bookId.equals(bookId) && otherPgcFieldPK.name.equals(name) && otherPgcFieldPK.pageId.equals(pageId) && otherPgcFieldPK.pgcId.equals(pgcId));
+                ( otherPgcFieldPK.bookId.equals( bookId ) && otherPgcFieldPK.name.equals( name ) && otherPgcFieldPK.pageId.equals( pageId ) &&
+                  otherPgcFieldPK.pgcId.equals( pgcId ) );
             return areEqual;
         }
         return false;

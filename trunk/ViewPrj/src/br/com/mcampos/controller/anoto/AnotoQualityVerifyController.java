@@ -1,11 +1,12 @@
 package br.com.mcampos.controller.anoto;
 
 
-import br.com.mcampos.controller.anoto.base.AnotoLoggedController;
+import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.ejb.cloudsystem.anoto.facade.ReviseFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -34,7 +35,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vbox;
 
 
-public class AnotoQualityVerifyController extends AnotoLoggedController
+public class AnotoQualityVerifyController extends LoggedBaseController
 {
 
     public static final String paramName = "viewCurrentItem";
@@ -49,6 +50,8 @@ public class AnotoQualityVerifyController extends AnotoLoggedController
     private List<PgcFieldDTO> currentFields;
 
     private Paging pagingPages;
+
+    private ReviseFacade session;
 
     public AnotoQualityVerifyController( char c )
     {
@@ -106,6 +109,8 @@ public class AnotoQualityVerifyController extends AnotoLoggedController
     {
         currentFields = getSession().getFields( getLoggedInUser(), target.getPgcPage() );
 
+        if ( gridQuality.getRows() != null && gridQuality.getRows().getChildren() != null )
+            gridQuality.getRows().getChildren().clear();
         for ( PgcFieldDTO field : currentFields ) {
             Row row = createRow( field );
             if ( row == null )
@@ -207,19 +212,39 @@ public class AnotoQualityVerifyController extends AnotoLoggedController
         pagingPages.setActivePage( nIndex );
     }
 
-    public void onPaging$pagingPages()
+    private void setRevising( AnotoResultList target ) throws ApplicationException
     {
-        dtoParam = currentList.get( pagingPages.getActivePage() );
+        if ( target == null || target.getPgcPage().getRevisionStatus().getId() == 2 )
+            return;
+        getSession().setStatus( getLoggedInUser(), target.getPgcPage(), 2 );
+        target.getPgcPage().getRevisionStatus().setId( 2 );
+    }
+
+
+    public void onPaging$pagingPages( Event evt )
+    {
         try {
-            process( dtoParam );
+            dtoParam = currentList.get( pagingPages.getActivePage() );
+            if ( dtoParam != null ) {
+                setRevising( dtoParam );
+                process( dtoParam );
+            }
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Paging" );
         }
+        evt.stopPropagation();
     }
 
     public void onCtrlKey$rootParent( Event evt )
     {
 
+    }
+
+    public ReviseFacade getSession()
+    {
+        if ( session == null )
+            session = ( ReviseFacade )getRemoteSession( ReviseFacade.class );
+        return session;
     }
 }
