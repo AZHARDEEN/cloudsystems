@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.user.client.CompanyClientController">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.user.CollaboratorController">
         <borderlayout id="borderLayout">
             <north flex="true" style="background: #D0DEF0">
                 <grid>
@@ -13,7 +13,7 @@
                     <rows>
                         <row>
                             <image id="imageClienteLogo"/>
-                            <label id="labelCompanyClientTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
+                            <label id="labelCollaboratorTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
                             <image id="imageCompanyLogo"/>
                         </row>
                     </rows>
@@ -31,9 +31,6 @@
                             <toolbarbutton id="cmdDelete" image="/img/icontexto-webdev-remove-016x016.png" label="##"/>
                             <separator bar="true" orient="vertical"/>
                             <toolbarbutton id="cmdRefresh" label="##" image="/img/icontexto-webdev-reload-016x016.png"/>
-                            <separator bar="true" orient="vertical"/>
-                            <toolbarbutton id="cmdCollaborator" label="##"
-                                           image="/img/icontexto-webdev-emoticon-smile-016x016.png"/>
                         </toolbar>
                     </div>
                     <listbox id="listboxRecord" vflex="true">

@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.user.collaborator.facade;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.CollaboratorUtil;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
@@ -56,5 +57,12 @@ public class CollaboratorFacadeBean extends AbstractSecurity implements Collabor
             throwException( 1 );
         List<Collaborator> list = collaboratorSession.get( person );
         return CollaboratorUtil.toCompanyDTOList( list );
+    }
+
+    public List<ListUserDTO> getCollaborators( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth );
+
+
     }
 }

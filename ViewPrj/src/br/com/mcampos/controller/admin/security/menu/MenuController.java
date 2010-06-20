@@ -252,7 +252,8 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
                 try {
                     getSession().addMenuTask( getLoggedInUser(), toDTO, task );
                     ListModelList model = ( ListModelList )listTasks.getModel();
-                    model.add( task );
+                    if ( model != null )
+                        model.add( task );
                 }
                 catch ( ApplicationException e ) {
                     showErrorMessage( e.getMessage(), "OnDrop Error" );

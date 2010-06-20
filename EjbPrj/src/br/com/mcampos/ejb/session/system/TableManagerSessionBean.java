@@ -76,8 +76,8 @@ public class TableManagerSessionBean implements TableManagerSession, TableManage
     }
     
 
-    /**<id>select o from SystemParameters o</id>
-	 */
+    /**<penId>select o from SystemParameters o</penId>
+     */
     @TransactionAttribute ( value = TransactionAttributeType.NOT_SUPPORTED )
     public List<SystemParametersDTO> getAll() 
     {

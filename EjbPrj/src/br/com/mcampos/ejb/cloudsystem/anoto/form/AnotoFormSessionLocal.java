@@ -5,6 +5,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
@@ -17,7 +18,7 @@ import javax.ejb.Local;
 @Local
 public interface AnotoFormSessionLocal extends Serializable
 {
-    AnotoForm add( AnotoForm entity ) throws ApplicationException;
+    AnotoForm add( AnotoForm entity, Company company ) throws ApplicationException;
 
     void delete( Integer key ) throws ApplicationException;
 

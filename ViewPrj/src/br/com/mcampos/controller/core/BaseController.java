@@ -160,7 +160,7 @@ public abstract class BaseController extends GenericForwardComposer
         Object param = null;
 
         if ( map != null )
-            param = ( String )map.get( name );
+            param = map.get( name );
         if ( param == null )
             param = Executions.getCurrent().getParameter( name );
         return param;

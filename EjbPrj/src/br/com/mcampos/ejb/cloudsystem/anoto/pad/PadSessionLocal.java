@@ -20,7 +20,9 @@ import javax.ejb.Local;
 @Local
 public interface PadSessionLocal extends Serializable
 {
-    public Pad get( PadPK key ) throws ApplicationException;
+    Pad add( Pad pad ) throws ApplicationException;
+
+    Pad get( PadPK key ) throws ApplicationException;
 
     List<AnotoPage> getPages( Pad pad ) throws ApplicationException;
 

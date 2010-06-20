@@ -32,15 +32,7 @@ public interface AnodeFacade extends Serializable
 {
     /*Operação em formulários*/
 
-    FormDTO add( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
-
-    void delete( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
-
-    FormDTO get( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
-
     List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException;
-
-    FormDTO update( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException;
 
     Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException;
 
@@ -73,15 +65,7 @@ public interface AnodeFacade extends Serializable
      * *************************************************************************
      */
 
-    PenDTO add( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
-
-    void delete( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
-
-    PenDTO get( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
-
     List<PenDTO> getPens( AuthenticationDTO auth ) throws ApplicationException;
-
-    PenDTO update( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
 
     /* *************************************************************************
      * *************************************************************************
@@ -146,8 +130,6 @@ public interface AnodeFacade extends Serializable
                                             Integer maxRecord ) throws ApplicationException;
 
     void delete( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException;
-
-
 
 
     List<MediaDTO> getImages( PgcPageDTO page ) throws ApplicationException;

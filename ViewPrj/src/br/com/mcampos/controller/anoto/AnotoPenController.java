@@ -6,6 +6,7 @@ import br.com.mcampos.controller.anoto.model.PenIdComparator;
 import br.com.mcampos.controller.anoto.renderer.AnotoPenListRenderer;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
+import br.com.mcampos.ejb.cloudsystem.anoto.pen.facade.AnotoPenFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
     private Textbox editDescription;
     private Label recordDescription;
 
-    private AnodeFacade session;
+    private AnotoPenFacade session;
 
     private Listheader headerPenId;
     private Label labelPenTitle;
@@ -41,10 +42,10 @@ public class AnotoPenController extends BasicListController<PenDTO>
         super();
     }
 
-    protected AnodeFacade getSession()
+    protected AnotoPenFacade getSession()
     {
         if ( session == null )
-            session = ( AnodeFacade )getRemoteSession( AnodeFacade.class );
+            session = ( AnotoPenFacade )getRemoteSession( AnotoPenFacade.class );
         return session;
     }
 

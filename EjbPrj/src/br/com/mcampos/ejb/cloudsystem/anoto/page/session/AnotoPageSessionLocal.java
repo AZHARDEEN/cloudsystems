@@ -14,4 +14,6 @@ import javax.ejb.Local;
 public interface AnotoPageSessionLocal extends Serializable
 {
     AnotoPage get( AnotoPagePK key ) throws ApplicationException;
+
+    AnotoPage add( AnotoPage anotoPage ) throws ApplicationException;
 }

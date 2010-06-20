@@ -21,6 +21,8 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.MediaUtil;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -61,6 +63,8 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
     private PadSessionLocal padSession;
     @EJB
     private FormMediaSessionLocal formMediaSession;
+    @EJB
+    private NewCollaboratorSessionLocal collaboratorSession;
 
 
     public AnotoFormFacadeBean()
@@ -83,8 +87,11 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         authenticate( auth );
         if ( entity == null )
             throwCommomException( 3 );
+        Collaborator collaborator = collaboratorSession.get( auth.getCurrentCompany(), auth.getUserId() );
+        if ( collaborator == null )
+            throwException( 5 );
         try {
-            return formSession.add( AnotoFormUtil.createEntity( entity ) ).toDTO();
+            return formSession.add( AnotoFormUtil.createEntity( entity ), collaborator.getCompany() ).toDTO();
         }
         catch ( EJBException e ) {
             throwException( 1 );
