@@ -274,9 +274,11 @@ public abstract class UserController extends LoggedBaseController
 
     protected Boolean validate()
     {
+
         if ( validateAddress() == false ) {
             return false;
         }
+
         return true;
     }
 

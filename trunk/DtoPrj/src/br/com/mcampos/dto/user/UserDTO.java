@@ -4,6 +4,7 @@ package br.com.mcampos.dto.user;
 import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.core.DisplayNameDTO;
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
 
@@ -178,5 +179,11 @@ public abstract class UserDTO extends DisplayNameDTO implements Comparable<UserD
                 return false;
         }
         return super.equals( obj );
+    }
+
+    @Override
+    public String toString()
+    {
+        return SysUtils.isEmpty( getNickName() ) ? getName() : getNickName();
     }
 }

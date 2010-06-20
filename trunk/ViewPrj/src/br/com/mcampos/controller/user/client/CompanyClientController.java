@@ -16,7 +16,10 @@ import org.zkoss.zul.Listitem;
 
 public class CompanyClientController extends LoggedBaseController
 {
+    public static final String clientParamName = "client";
+
     private static final String addClientPage = "/private/user/client/persist_company.zul";
+    private static final String collaboratorPage = "/private/user/collaborator/collaborator_list.zul";
 
     private ClientFacade clientSession;
 
@@ -53,6 +56,8 @@ public class CompanyClientController extends LoggedBaseController
      */
     private Button cmdRefresh;
 
+    private Button cmdCollaborator;
+
 
     public CompanyClientController( char c )
     {
@@ -85,6 +90,7 @@ public class CompanyClientController extends LoggedBaseController
         setLabel( cmdUpdate );
         setLabel( cmdDelete );
         setLabel( cmdRefresh );
+        setLabel( cmdCollaborator );
     }
 
     public ClientFacade getSession()
@@ -154,6 +160,16 @@ public class CompanyClientController extends LoggedBaseController
         ListModelList model = ( ListModelList )getListbox().getModel();
         if ( model != null )
             model.remove( dto );
+    }
+
+    public void onClick$cmdCollaborator()
+    {
+        if ( getListbox().getSelectedItem() == null ) {
+            showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
+            return;
+        }
+        setParameter( clientParamName, getListbox().getSelectedItem().getValue() );
+        gotoPage( collaboratorPage, getRootParent().getParent() );
     }
 
     private Object getCurrentRecord()

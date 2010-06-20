@@ -30,7 +30,7 @@ public class UserDocumentSessionBean extends Crud<UserDocumentPK, UserDocument> 
     DocumentTypeSessionLocal docmentTypeSession;
 
 
-    /**<id>select o from UserDocument o where o.id = :document and o.documentType.formId = :docType</id>
+    /**<penId>select o from UserDocument o where o.penId = :document and o.documentType.formId = :docType</penId>
      *
      * tenta localizar um registro no banco de dados com os dados do documento e o tipo do documento
      *
@@ -46,7 +46,7 @@ public class UserDocumentSessionBean extends Crud<UserDocumentPK, UserDocument> 
     }
 
 
-    /**<id>select o from UserDocument o where o.id = :document and o.documentType.formId = :docType</id>
+    /**<penId>select o from UserDocument o where o.penId = :document and o.documentType.formId = :docType</penId>
      *
      * tenta localizar um registro no banco de dados com os dados do documento e o tipo do documento
      *
@@ -62,7 +62,7 @@ public class UserDocumentSessionBean extends Crud<UserDocumentPK, UserDocument> 
     }
 
 
-    /**<id>select o from UserDocument o where o.id = :document and o.documentType.formId = :docType</id>
+    /**<penId>select o from UserDocument o where o.penId = :document and o.documentType.formId = :docType</penId>
      *
      * Este é a função privada que realiza a busca por um documento de usuario no banco de dados.
      *

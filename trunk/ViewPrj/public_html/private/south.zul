@@ -5,7 +5,7 @@
             <grid id="gridSouthToolbar">
                 <columns>
                     <column width="40%"/>
-                    <column width="4%"/>
+                    <column width="5%"/>
                     <column width="20%"/>
                     <column width="20%"/>
                 </columns>
@@ -13,8 +13,7 @@
                     <row>
                         <label id="labelCopyright" value="##"/>
                         <label id="labelVersion" value="##"/>
-                        <label id="labelCurrentCompany" value="##"/>
-                        <combobox id="companies" readonly="true" visible="false"/>
+                        <combobox id="companies" readonly="true" width="99%"/>
                     </row>
                 </rows>
             </grid>

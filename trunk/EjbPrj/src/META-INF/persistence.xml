@@ -64,6 +64,8 @@
     <class>br.com.mcampos.ejb.cloudsystem.locality.region.entity.Region</class>
     <class>br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country</class>
     <class>br.com.mcampos.ejb.cloudsystem.system.revisedstatus.entity.RevisionStatus</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.form.user.entity.AnotoFormUser</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser</class>
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>

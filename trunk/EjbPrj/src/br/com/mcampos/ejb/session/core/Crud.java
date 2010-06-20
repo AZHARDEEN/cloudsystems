@@ -32,14 +32,19 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
     public ENTITY add( ENTITY entity ) throws ApplicationException
     {
         getEntityManager().persist( entity );
-        return refresh( entity );
+        return entity;
     }
 
     public ENTITY refresh( ENTITY entity ) throws ApplicationException
     {
         if ( entity != null ) {
             getEntityManager().flush();
-            getEntityManager().refresh( entity );
+            try {
+                getEntityManager().refresh( entity );
+            }
+            catch ( Exception e ) {
+                e = null;
+            }
         }
         return entity;
     }
@@ -144,6 +149,22 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
 
         try {
             id = ( Integer )getSingleResult( namedQuery );
+            if ( SysUtils.isZero( id ) )
+                id = 0;
+            id++;
+        }
+        catch ( Exception e ) {
+            id = 1;
+        }
+        return id;
+    }
+
+    protected Integer nextIntegerId( String namedQuery, Object param ) throws ApplicationException
+    {
+        Integer id;
+
+        try {
+            id = ( Integer )getSingleResult( namedQuery, param );
             if ( SysUtils.isZero( id ) )
                 id = 0;
             id++;

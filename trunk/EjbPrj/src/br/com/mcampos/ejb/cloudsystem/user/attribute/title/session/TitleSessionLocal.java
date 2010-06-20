@@ -5,13 +5,15 @@ import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title;
 import br.com.mcampos.exception.ApplicationException;
 
+import java.io.Serializable;
+
 import java.util.List;
 
 import javax.ejb.Local;
 
 
 @Local
-public interface TitleSessionLocal
+public interface TitleSessionLocal extends Serializable
 {
     Title add( Title entity ) throws ApplicationException;
 

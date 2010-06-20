@@ -15,10 +15,8 @@ import br.com.mcampos.ejb.cloudsystem.user.company.CompanyUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.document.UserDocumentUtil;
-import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
-import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.List;
 
@@ -66,23 +64,8 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
     protected Company getCompany( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
-        Person person;
-        person = personSession.get( auth.getUserId() );
-        if ( person == null )
-            throwException( 1 );
-        List<Collaborator> list = collaboratorSession.get( person );
-        if ( SysUtils.isEmpty( list ) )
-            throwException( 2 );
-        /*
-         * O colaborador possui vínculo ativo com mais de uma empresa
-         */
-        if ( list.size() > 1 ) {
-            /*
-             * TODO: vinculo com mais de uma empresa
-             */
-            throwException( 99 );
-        }
-        return list.get( 0 ).getCompany();
+        Collaborator coll = collaboratorSession.get( auth.getCurrentCompany(), auth.getUserId() );
+        return coll.getCompany();
     }
 
     public List<ClientDTO> getClients( AuthenticationDTO auth ) throws ApplicationException

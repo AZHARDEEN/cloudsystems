@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.anoto.pen;
 
 
+import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import javax.ejb.Local;
 @Local
 public interface AnodePenSessionLocal extends Serializable
 {
-    public AnotoPen add( AnotoPen entity ) throws ApplicationException;
+    public AnotoPen add( AnotoPen entity, Person person ) throws ApplicationException;
 
     public void delete( String key ) throws ApplicationException;
 

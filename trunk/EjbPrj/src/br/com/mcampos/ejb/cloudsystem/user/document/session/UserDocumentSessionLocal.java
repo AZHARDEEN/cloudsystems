@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface UserDocumentSessionLocal extends Serializable
 {
-    /**<id>select o from UserDocument o where o.id = :document and o.documentType.formId = :docType</id>
+    /**<penId>select o from UserDocument o where o.penId = :document and o.documentType.formId = :docType</penId>
      *
      * tenta localizar um registro no banco de dados com os dados do documento e o tipo do documento
      *
@@ -26,7 +26,7 @@ public interface UserDocumentSessionLocal extends Serializable
      */
     UserDocument find( UserDocumentDTO dto );
 
-    /**<id>select o from UserDocument o where o.id = :document and o.documentType.formId = :docType</id>
+    /**<penId>select o from UserDocument o where o.penId = :document and o.documentType.formId = :docType</penId>
      *
      * tenta localizar um registro no banco de dados com os dados do documento e o tipo do documento
      *

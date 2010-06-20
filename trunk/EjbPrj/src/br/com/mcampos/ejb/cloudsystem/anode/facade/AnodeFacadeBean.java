@@ -20,7 +20,6 @@ import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.PadPK;
@@ -61,7 +60,6 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -103,21 +101,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     @EJB
     private PgcFieldSessionLocal pgcFieldSession;
 
-
-    public FormDTO add( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
-    {
-        authenticate( auth );
-        if ( entity == null )
-            throwCommomException( 3 );
-        try {
-            return formSession.add( AnotoFormUtil.createEntity( entity ) ).toDTO();
-        }
-        catch ( EJBException e ) {
-            throwException( 1 );
-            return null;
-        }
-    }
-
     public void addPens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException
     {
         authenticate( auth );
@@ -143,46 +126,11 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     }
 
 
-    public void delete( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
-    {
-        authenticate( auth );
-        if ( entity == null )
-            throwCommomException( 3 );
-        try {
-            formSession.delete( entity.getId() );
-        }
-        catch ( Exception e ) {
-            throwRuntimeException( 2 );
-        }
-    }
-
-    public FormDTO get( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
-    {
-        authenticate( auth );
-        if ( entity == null || SysUtils.isZero( entity.getId() ) )
-            throwCommomException( 3 );
-        AnotoForm form = formSession.get( entity.getId() );
-        return form != null ? form.toDTO() : null;
-    }
-
     public List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
         return AnotoUtils.toFormList( formSession.getAll() );
     }
-
-    public FormDTO update( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
-    {
-        authenticate( auth );
-        AnotoForm aForm = formSession.get( entity.getId() );
-        if ( aForm != null ) {
-            AnotoFormUtil.update( aForm, entity );
-            return formSession.update( aForm ).toDTO();
-        }
-        else
-            return null;
-    }
-
 
     public PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad, List<String> pages ) throws ApplicationException
     {
@@ -305,34 +253,10 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
      */
 
 
-    public PenDTO add( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException
-    {
-        authenticate( auth );
-        return penSession.add( DTOFactory.copy( entity ) ).toDTO();
-    }
-
-    public void delete( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException
-    {
-        authenticate( auth );
-        penSession.delete( entity.getId() );
-    }
-
-    public PenDTO get( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException
-    {
-        authenticate( auth );
-        return penSession.get( entity.getId() ).toDTO();
-    }
-
     public List<PenDTO> getPens( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
         return AnotoUtils.toPenList( penSession.getAll() );
-    }
-
-    public PenDTO update( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException
-    {
-        authenticate( auth );
-        return penSession.update( DTOFactory.copy( entity ) ).toDTO();
     }
 
     /* *************************************************************************

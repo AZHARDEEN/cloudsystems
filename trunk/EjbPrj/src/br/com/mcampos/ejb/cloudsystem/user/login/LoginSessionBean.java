@@ -703,7 +703,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
     }
 
 
-    /**<id>select o from Users o</id>
+    /**<penId>select o from Users o</penId>
      */
     @SuppressWarnings( "unckecked" )
     public List<ListLoginDTO> getLoginByRange( int firstResult, int maxResults )
