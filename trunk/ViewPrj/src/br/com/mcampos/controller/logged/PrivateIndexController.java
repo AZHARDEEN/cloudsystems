@@ -165,6 +165,10 @@ public class PrivateIndexController extends LoggedBaseController
     public void onNotify( Event evt ) throws ApplicationException
     {
         if ( evt.getName().equals( Events.ON_NOTIFY ) && evt.getData() instanceof CompanyDTO ) {
+            if ( mainMenu == null )
+                return;
+            if ( mainMenu.getChildren() != null )
+                mainMenu.getChildren().clear();
             List<MenuDTO> menus = getUserLocator().getMenus( getLoggedInUser() );
             for ( MenuDTO item : menus ) {
                 addMenu( item, mainMenu );

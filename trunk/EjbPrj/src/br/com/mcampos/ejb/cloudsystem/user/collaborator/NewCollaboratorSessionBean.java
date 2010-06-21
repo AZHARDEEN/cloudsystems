@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.user.collaborator;
 
 
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.CollaboratorPK;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
@@ -64,9 +65,9 @@ public class NewCollaboratorSessionBean extends Crud<CollaboratorPK, Collaborato
     }
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public List<Collaborator> get( Company company ) throws ApplicationException
+    public List<Collaborator> get( Users user ) throws ApplicationException
     {
-        return ( List<Collaborator> )getResultList( Collaborator.getAllCompanyCollaborator, company );
+        return ( List<Collaborator> )getResultList( Collaborator.getAllCompanyCollaborator, user );
     }
 
 

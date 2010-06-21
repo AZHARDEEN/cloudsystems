@@ -3,13 +3,20 @@ package br.com.mcampos.controller.user;
 
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.user.ClientDTO;
+import br.com.mcampos.dto.user.collaborator.CollaboratorDTO;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.facade.CollaboratorFacade;
+import br.com.mcampos.sysutils.SysUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listheader;
+
 
 public class CollaboratorController extends LoggedBaseController
 {
@@ -51,6 +58,7 @@ public class CollaboratorController extends LoggedBaseController
      */
     private Button cmdRefresh;
 
+
     public CollaboratorController( char c )
     {
         super( c );
@@ -73,6 +81,7 @@ public class CollaboratorController extends LoggedBaseController
         setLabel( cmdUpdate );
         setLabel( cmdDelete );
         setLabel( cmdRefresh );
+
     }
 
     @Override
@@ -81,9 +90,16 @@ public class CollaboratorController extends LoggedBaseController
         super.doAfterCompose( comp );
         configureLabels();
         currentClient = ( ClientDTO )getParameter( clientParamName );
-        List < ;
-        if ( currentClient != null ) {
 
+        if ( currentClient != null ) {
+            List<CollaboratorDTO> list = getSession().getCollaborators( getLoggedInUser(), currentClient.getClientId() );
+            ListModelList model = ( ListModelList )listboxRecord.getModel();
+            if ( model == null ) {
+                model = new ListModelList( new ArrayList<CollaboratorDTO>(), true );
+                listboxRecord.setModel( model );
+            }
+            if ( SysUtils.isEmpty( list ) == false )
+                model.addAll( list );
         }
     }
 
@@ -93,4 +109,5 @@ public class CollaboratorController extends LoggedBaseController
             session = ( CollaboratorFacade )getRemoteSession( CollaboratorFacade.class );
         return session;
     }
+
 }

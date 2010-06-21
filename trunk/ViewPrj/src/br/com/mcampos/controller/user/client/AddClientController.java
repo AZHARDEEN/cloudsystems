@@ -6,10 +6,12 @@ import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Label;
 
 public class AddClientController extends CompanyController
 {
     private ClientFacade session;
+    private Label labelCompanyRecordTitle;
 
 
     AddClientController( char c )
@@ -42,5 +44,8 @@ public class AddClientController extends CompanyController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
+        setLabel( labelCompanyRecordTitle );
     }
+
+
 }

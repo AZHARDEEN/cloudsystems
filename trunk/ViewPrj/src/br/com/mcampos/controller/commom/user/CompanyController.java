@@ -5,6 +5,7 @@ import br.com.mcampos.controller.admin.clients.UserController;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
@@ -13,14 +14,19 @@ import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.user.company.facade.CompanyFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.CNPJ;
+import br.com.mcampos.util.system.UploadMedia;
 
 import java.util.Collections;
 import java.util.List;
 
+import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Toolbarbutton;
 
 
 @SuppressWarnings( { "unchecked", "Unnecessary" } )
@@ -33,6 +39,7 @@ public abstract class CompanyController extends UserController
     protected CompanyDTO currentDTO;
     protected Textbox name;
     protected Textbox nickName;
+    private Toolbarbutton cmdUpload;
 
 
     public CompanyController()
@@ -51,6 +58,7 @@ public abstract class CompanyController extends UserController
         super.doAfterCompose( comp );
         loadCombobox( companyType, getSession().getCompanyTypes() );
         //debugInfo();
+        setLabel( cmdUpload );
     }
 
     private void debugInfo()
@@ -125,14 +133,10 @@ public abstract class CompanyController extends UserController
         addAddresses( dto );
         addContacts( dto );
         addDocuments( dto );
+        dto.setMedias( medias );
         return true;
     }
 
-    @Override
-    protected void preparePage()
-    {
-        super.preparePage();
-    }
 
     @Override
     protected Boolean validate()
@@ -259,5 +263,24 @@ public abstract class CompanyController extends UserController
             session = ( CompanyFacade )getRemoteSession( CompanyFacade.class );
         return session;
     }
+
+    public void onClick$cmdUpload( Event evt )
+    {
+        String uploadMessage = getLabel( "uploadImageMessage" );
+        String titleMessage = getLabel( "uploadImageTitle" );
+        try {
+            Media[] uploadMedias = Fileupload.get( uploadMessage, titleMessage, 1, 100 * 1024, true );
+            if ( uploadMedias != null && uploadMedias.length > 0 ) {
+                medias = new MediaDTO[ uploadMedias.length ];
+                for ( int nIndex = 0; nIndex < uploadMedias.length; nIndex++ ) {
+                    medias[ nIndex ] = UploadMedia.getMedia( uploadMedias[ nIndex ] );
+                }
+            }
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage() );
+        }
+    }
+
 }
 

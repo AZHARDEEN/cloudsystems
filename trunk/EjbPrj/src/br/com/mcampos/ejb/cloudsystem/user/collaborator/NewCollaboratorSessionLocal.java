@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.user.collaborator;
 
 
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.CollaboratorPK;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
@@ -30,4 +31,6 @@ public interface NewCollaboratorSessionLocal extends Serializable
     Collaborator get( Integer companyId, Integer userId ) throws ApplicationException;
 
     Collaborator get( Company company, Person person ) throws ApplicationException;
+
+    List<Collaborator> get( Users user ) throws ApplicationException;
 }

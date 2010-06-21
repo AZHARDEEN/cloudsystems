@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.user.collaborator.entity;
 
 
-import br.com.mcampos.ejb.cloudsystem.user.collaborator.type.entity.entity.CollaboratorType;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.type.entity.CollaboratorType;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 
@@ -23,7 +23,7 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "Collaborator.findAll", query = "select o from Collaborator o where o.toDate is null " ),
-                 @NamedQuery( name = Collaborator.hasCollaborator,
+                 @NamedQuery( name = Collaborator.getAllCompanyCollaborator,
                               query = "select o from Collaborator o where o.company = ?1 and o.toDate is null" ),
                  @NamedQuery( name = "Collaborator.isManager",
                               query = "select o.collaboratorId from Collaborator o where o.company.id = :companyId and o.collaboratorType.id = 1 and o.person.id = :personId and ( o.toDate is null or o.toDate >= CURRENT_TIMESTAMP )" ),

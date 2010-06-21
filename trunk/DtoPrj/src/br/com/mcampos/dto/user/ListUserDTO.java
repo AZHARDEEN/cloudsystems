@@ -1,8 +1,8 @@
 package br.com.mcampos.dto.user;
 
+
 import br.com.mcampos.dto.core.DisplayNameDTO;
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
-
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.sql.Timestamp;
@@ -10,17 +10,16 @@ import java.sql.Timestamp;
 public class ListUserDTO extends DisplayNameDTO
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8930071511582539882L;
-	Integer id;
+     *
+     */
+    private static final long serialVersionUID = -8930071511582539882L;
+    Integer id;
     String name;
     String nickName;
     UserTypeDTO userType;
     Timestamp lastUpdate;
-    
-    
-    
+
+
     public ListUserDTO()
     {
         super();
@@ -28,12 +27,10 @@ public class ListUserDTO extends DisplayNameDTO
 
     public String getDisplayName()
     {
-        if ( getUserType().getId() == 1 ) 
-        {
-            return getName ();
+        if ( getUserType().getId() == 1 ) {
+            return getName();
         }
-        else 
-        {
+        else {
             return SysUtils.isEmpty( getNickName() ) ? getName() : getNickName();
         }
     }

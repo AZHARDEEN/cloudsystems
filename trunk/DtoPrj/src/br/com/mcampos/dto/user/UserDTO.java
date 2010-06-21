@@ -3,6 +3,7 @@ package br.com.mcampos.dto.user;
 
 import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.core.DisplayNameDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.attributes.UserTypeDTO;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -23,6 +24,8 @@ public abstract class UserDTO extends DisplayNameDTO implements Comparable<UserD
     private ArrayList<AddressDTO> addressList;
     private ArrayList<UserDocumentDTO> documentList;
     private ArrayList<UserContactDTO> contactList;
+
+    private MediaDTO[] medias;
 
     public UserDTO()
     {
@@ -185,5 +188,15 @@ public abstract class UserDTO extends DisplayNameDTO implements Comparable<UserD
     public String toString()
     {
         return SysUtils.isEmpty( getNickName() ) ? getName() : getNickName();
+    }
+
+    public void setMedias( MediaDTO[] medias )
+    {
+        this.medias = medias;
+    }
+
+    public MediaDTO[] getMedias()
+    {
+        return medias;
     }
 }

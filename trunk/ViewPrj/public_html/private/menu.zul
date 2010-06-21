@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <div width="100%" apply="br.com.mcampos.controller.MenuController" align="center" id="divMainMenu">
-        <menubar id="mainMenu" width="100%">
-            <!--<![CDATA[
-        <menu label="Empresas" id="myCompany" >
-            <menupopup>
-                <menuitem label="Minhas Empresas" id="mnuBusinessEntity" />
-                <menuitem label="Selecionar Empresa" id="mnuChangeBusinessEntity" />
-            </menupopup>
-        </menu>
-        <menu label="Segurança" id="secutiry" >
-            <menupopup>
-                <menuitem label="Meu Cadastro" id="mnuMyRecord"  />
-                <menuitem label="Altera Senha" id="mnuChangePasswod" />
-                <menuseparator />
-                <menuitem label="Logout" id="mnuLogout" image="/img/logout_16x16.png" />
-            </menupopup>
-        </menu>
-            ]]>-->
-        </menubar>
+        <menubar id="mainMenu" width="100%"></menubar>
     </div>
 </zk>

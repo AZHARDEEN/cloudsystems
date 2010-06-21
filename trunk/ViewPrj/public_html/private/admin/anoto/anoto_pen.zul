@@ -18,7 +18,7 @@
             ]]>
         </script>
         <borderlayout id="borderLayout">
-            <north flex="true" style="background: #D0DEF0">
+            <north style="background: #D0DEF0">
                 <vbox align="center">
                     <label id="labelPenTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
                 </vbox>
