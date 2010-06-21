@@ -5,6 +5,7 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
@@ -90,7 +91,7 @@ public class UserSessionBean extends AbstractSecurity implements UserSessionLoca
             query = query.setMaxResults( maxResults );
         }
         try {
-            return copy( query.getResultList() );
+            return UserUtil.copy( query.getResultList() );
         }
         catch ( NoResultException e ) {
             e = null;
@@ -98,19 +99,6 @@ public class UserSessionBean extends AbstractSecurity implements UserSessionLoca
         }
     }
 
-
-    protected List<ListUserDTO> copy( List<Users> list )
-    {
-        List<ListUserDTO> dtos = null;
-
-        if ( list == null )
-            return dtos;
-        dtos = new ArrayList<ListUserDTO>( list.size() );
-        for ( Users item : list )
-            dtos.add( DTOFactory.copy( item ) );
-        return dtos;
-
-    }
 
     public UserDTO get( AuthenticationDTO auth, Integer id ) throws ApplicationException
     {

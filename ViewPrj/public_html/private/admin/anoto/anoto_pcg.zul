@@ -4,7 +4,7 @@
     <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoPcgController">
         <style dynamic="true">.alert_label { background: yellow }</style>
         <borderlayout id="borderLayout">
-            <north flex="true" style="background: #D0DEF0">
+            <north style="background: #D0DEF0">
                 <grid>
                     <columns>
                         <column width="20%" align="center"/>

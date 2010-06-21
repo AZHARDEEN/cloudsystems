@@ -7,7 +7,6 @@ import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.system.SystemParametersDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
-import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.attributes.CompanyPositionDTO;
 import br.com.mcampos.dto.user.attributes.CompanyTypeDTO;
 import br.com.mcampos.dto.user.login.AccessLogTypeDTO;
@@ -21,11 +20,9 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
 import br.com.mcampos.ejb.cloudsystem.system.fieldtype.FieldTypeUtil;
-import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.companyposition.entity.CompanyPosition;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyType;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.UserStatusUtil;
-import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.UserTypeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.login.Login;
 import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
@@ -82,18 +79,6 @@ public final class DTOFactory implements Serializable
         return new SystemParametersDTO( entity.getId(), entity.getDescription(), entity.getValue() );
     }
 
-    public static ListUserDTO copy( Users entity )
-    {
-        ListUserDTO dto = new ListUserDTO();
-
-
-        dto.setName( entity.getName() );
-        dto.setNickName( entity.getNickName() );
-        dto.setId( entity.getId() );
-        dto.setUserType( UserTypeUtil.copy( entity.getUserType() ) );
-        dto.setLastUpdate( entity.getUpdateDate() == null ? entity.getInsertDate() : entity.getUpdateDate() );
-        return dto;
-    }
 
     public static ListLoginDTO copy( Login entity )
     {

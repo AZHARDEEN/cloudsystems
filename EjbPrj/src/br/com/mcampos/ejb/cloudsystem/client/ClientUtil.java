@@ -4,7 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.client;
 import br.com.mcampos.dto.user.ClientDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
-import br.com.mcampos.ejb.core.util.DTOFactory;
+import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public final class ClientUtil
             return Collections.emptyList();
         ArrayList<ListUserDTO> listDTO = new ArrayList<ListUserDTO>( list.size() );
         for ( Client m : list ) {
-            listDTO.add( DTOFactory.copy( m.getClient() ) );
+            listDTO.add( UserUtil.copy( m.getClient() ) );
         }
         return listDTO;
     }
@@ -46,7 +46,7 @@ public final class ClientUtil
     public static ClientDTO copy( Client client )
     {
         ClientDTO dto = new ClientDTO();
-        dto.setClient( DTOFactory.copy( client.getClient() ) );
+        dto.setClient( UserUtil.copy( client.getClient() ) );
         dto.setClientId( client.getClientId() );
         dto.setCompanyId( client.getCompanyId() );
         dto.setInsertDate( client.getInsertDate() );

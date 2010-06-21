@@ -1,48 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <panel border="normal" title="Cadastro de Empresas (Pessoa Jurídica)" width="100%" id="main">
-        <panelchildren>
-            <div align="left">
-                <grid fixedLayout="false">
-                    <columns>
-                        <column width="150px"/>
-                        <column/>
-                    </columns>
-                    <rows>
-                        <row>
-                            <label value="Razão Social"/>
-                            <textbox id="name" width="99%" maxlength="128"/>
-                        </row>
-                        <row>
-                            <label value="Nome de Fantasia"/>
-                            <textbox id="nickName" width="99%" maxlength="128"/>
-                        </row>
-                        <row>
-                            <label value="CNPJ"/>
-                            <textbox id="cnpj" width="200px" maxlength="19"/>
-                        </row>
-                        <row>
-                            <label value="Tipo"/>
-                            <combobox id="companyType" width="94%"/>
-                        </row>
-                    </rows>
-                </grid>
-            </div>
-            <div align="left">
-                <tabbox id="registerTab">
-                    <tabs>
-                        <tab label="Endereço"/>
-                        <tab label="Documentos"/>
-                        <tab label="Contatos"/>
-                    </tabs>
-                    <tabpanels>
-                        <tabpanel fulfill="=/private/templates/Address.zul"></tabpanel>
-                        <tabpanel fulfill="=/private/templates/document.zul"></tabpanel>
-                        <tabpanel fulfill="=/private/templates/contact.zul"></tabpanel>
-                    </tabpanels>
-                </tabbox>
-            </div>
-            <div fulfill="=/resources/submit_cancel.zul"></div>
-        </panelchildren>
-    </panel>
+    <div align="left" id="main">
+        <tabbox id="registerTab">
+            <tabs>
+                <tab label="Dados"/>
+                <tab label="Endereço"/>
+                <tab label="Documentos"/>
+                <tab label="Contatos"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <div align="left">
+                        <grid fixedLayout="false">
+                            <columns>
+                                <column width="150px"/>
+                                <column/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <label value="Razão Social"/>
+                                    <textbox id="name" width="99%" maxlength="128"/>
+                                </row>
+                                <row>
+                                    <label value="Nome de Fantasia"/>
+                                    <textbox id="nickName" width="99%" maxlength="128"/>
+                                </row>
+                                <row>
+                                    <label value="CNPJ"/>
+                                    <textbox id="cnpj" width="200px" maxlength="19"/>
+                                </row>
+                                <row>
+                                    <label value="Tipo"/>
+                                    <combobox id="companyType" width="94%"/>
+                                </row>
+                                <row>
+                                    <label id="labelLogo" value="Logo"/>
+                                    <hbox>
+                                        <image id="imageLogo"/>
+                                        <toolbarbutton id="cmdUpload" label="##"/>
+                                    </hbox>
+                                </row>
+                            </rows>
+                        </grid>
+                    </div>
+                </tabpanel>
+                <tabpanel fulfill="=/private/templates/Address.zul"></tabpanel>
+                <tabpanel fulfill="=/private/templates/document.zul"></tabpanel>
+                <tabpanel fulfill="=/private/templates/contact.zul"></tabpanel>
+            </tabpanels>
+        </tabbox>
+        <div fulfill="=/resources/submit_cancel.zul"></div>
+    </div>
 </zk>

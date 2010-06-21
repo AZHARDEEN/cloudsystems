@@ -1,4 +1,6 @@
-package br.com.mcampos.dto.user;
+package br.com.mcampos.dto.user.collaborator;
+
+import br.com.mcampos.dto.user.ListUserDTO;
 
 import java.io.Serializable;
 

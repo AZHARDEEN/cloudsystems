@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.cloudsystem.user.collaborator.type.entity.entity;
+package br.com.mcampos.ejb.cloudsystem.user.collaborator.type.entity;
 
 
 import java.io.Serializable;
@@ -12,12 +12,16 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "CollaboratorType.findAll", query = "select o from CollaboratorType o" ) } )
+@NamedQueries( { @NamedQuery( name = CollaboratorType.getAll, query = "select o from CollaboratorType o" ),
+                 @NamedQuery( name = CollaboratorType.nextId, query = "select max(o.id) from CollaboratorType o" ) } )
 @Table( name = "collaborator_type" )
 public class CollaboratorType implements Serializable
 {
     public static final int typeManager = 1;
     public static final int typeEmployee = 2;
+
+    public static final String getAll = "CollaboratorType.findAll";
+    public static final String nextId = "CollaboratorType.nextId";
 
     @Column( name = "clt_description_ch", nullable = false )
     private String description;
@@ -29,10 +33,9 @@ public class CollaboratorType implements Serializable
     {
     }
 
-    public CollaboratorType( Integer id, String description )
+    public CollaboratorType( Integer id )
     {
-        this.description = description;
-        this.id = id;
+        setId( id );
     }
 
     public String getDescription()

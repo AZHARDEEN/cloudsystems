@@ -12,7 +12,7 @@
     <class>br.com.mcampos.ejb.cloudsystem.user.login.accesslog.AccessLog</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.role.CollaboratorRole</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.address.entity.Address</class>
-    <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.type.entity.entity.CollaboratorType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.type.entity.CollaboratorType</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPassword</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.Users</class>
     <class>br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType</class>
@@ -66,6 +66,8 @@
     <class>br.com.mcampos.ejb.cloudsystem.system.revisedstatus.entity.RevisionStatus</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.form.user.entity.AnotoFormUser</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.media.entity.UserMedia</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.media.type.entity.UserMediaType</class>
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>

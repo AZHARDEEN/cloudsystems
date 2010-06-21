@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.user;
 
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.address.AddressDTO;
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserContactDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
@@ -15,6 +16,8 @@ import br.com.mcampos.ejb.cloudsystem.user.document.UserDocumentUtil;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class UserUtil
@@ -147,4 +150,32 @@ public abstract class UserUtil
         }
         return user;
     }
+
+    public static ListUserDTO copy( Users entity )
+    {
+        if ( entity == null )
+            return null;
+
+        ListUserDTO dto = new ListUserDTO();
+
+        dto.setName( entity.getName() );
+        dto.setNickName( entity.getNickName() );
+        dto.setId( entity.getId() );
+        dto.setUserType( UserTypeUtil.copy( entity.getUserType() ) );
+        dto.setLastUpdate( entity.getUpdateDate() == null ? entity.getInsertDate() : entity.getUpdateDate() );
+        return dto;
+    }
+
+    public static List<ListUserDTO> copy( List<Users> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<ListUserDTO> dtos = new ArrayList<ListUserDTO>( list.size() );
+        for ( Users item : list )
+            dtos.add( copy( item ) );
+        return dtos;
+
+    }
+
+
 }
