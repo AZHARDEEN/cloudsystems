@@ -15,7 +15,6 @@ import br.com.mcampos.ejb.cloudsystem.user.company.CompanyUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.document.UserDocumentUtil;
-import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -40,9 +39,6 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
 
     @EJB
     private ClientSessionLocal clientSession;
-
-    @EJB
-    private NewPersonSessionLocal personSession;
 
     @EJB
     private NewCollaboratorSessionLocal collaboratorSession;
