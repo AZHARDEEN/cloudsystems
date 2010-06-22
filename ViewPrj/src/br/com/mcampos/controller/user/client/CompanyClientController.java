@@ -7,12 +7,14 @@ import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Window;
 
 public class CompanyClientController extends LoggedBaseController
 {
@@ -58,6 +60,8 @@ public class CompanyClientController extends LoggedBaseController
 
     private Button cmdCollaborator;
 
+    private Button cmdUploadLogo;
+
 
     public CompanyClientController( char c )
     {
@@ -91,6 +95,8 @@ public class CompanyClientController extends LoggedBaseController
         setLabel( cmdDelete );
         setLabel( cmdRefresh );
         setLabel( cmdCollaborator );
+
+        setLabel( cmdUploadLogo );
     }
 
     public ClientFacade getSession()
@@ -170,6 +176,22 @@ public class CompanyClientController extends LoggedBaseController
         }
         setParameter( clientParamName, getListbox().getSelectedItem().getValue() );
         gotoPage( collaboratorPage, getRootParent().getParent() );
+    }
+
+    public void onClick$cmdUploadLogo()
+    {
+        if ( getListbox().getSelectedItem() == null ) {
+            showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
+            return;
+        }
+        try {
+            final Window winLogo = ( Window )Executions.createComponents( "/private/user/client/update_logo.zul", null, null );
+            winLogo.doModal();
+            showErrorMessage( "Teste" );
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage() );
+        }
     }
 
     private Object getCurrentRecord()

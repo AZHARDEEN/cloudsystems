@@ -34,6 +34,7 @@
                             <separator bar="true" orient="vertical"/>
                             <toolbarbutton id="cmdCollaborator" label="##"
                                            image="/img/icontexto-webdev-emoticon-smile-016x016.png"/>
+                            <toolbarbutton id="cmdUploadLogo" label="##"/>
                         </toolbar>
                     </div>
                     <listbox id="listboxRecord" vflex="true">

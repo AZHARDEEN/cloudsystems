@@ -99,7 +99,7 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
 
     public void setDescription( String mnu_description_ch )
     {
-        this.description = mnu_description_ch;
+        this.description = SysUtils.trim( mnu_description_ch );
     }
 
     public Integer getId()
@@ -129,7 +129,7 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
 
     public void setTargetURL( String mnu_url_ch )
     {
-        this.targetURL = mnu_url_ch;
+        this.targetURL = SysUtils.trim( mnu_url_ch );
     }
 
     public Menu getParentMenu()
@@ -305,7 +305,7 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
 
     public void setLocaleDescription( String localeName )
     {
-        this.localeDescription = localeName;
+        this.localeDescription = SysUtils.trim( localeName );
     }
 
     public String getLocaleDescription()

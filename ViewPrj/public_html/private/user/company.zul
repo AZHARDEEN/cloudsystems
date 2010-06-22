@@ -33,13 +33,6 @@
                                     <label value="Tipo"/>
                                     <combobox id="companyType" width="94%"/>
                                 </row>
-                                <row>
-                                    <label id="labelLogo" value="Logo"/>
-                                    <hbox>
-                                        <image id="imageLogo"/>
-                                        <toolbarbutton id="cmdUpload" label="##"/>
-                                    </hbox>
-                                </row>
                             </rows>
                         </grid>
                     </div>

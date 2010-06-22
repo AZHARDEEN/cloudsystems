@@ -5,11 +5,17 @@ import java.sql.Timestamp;
 
 import java.util.List;
 
+
 public final class SysUtils
 {
     public SysUtils()
     {
         super();
+    }
+
+    public static String trim( String s )
+    {
+        return ( isEmpty( s ) ? null : s.trim() );
     }
 
     public static boolean isEmpty( String s )
@@ -40,11 +46,11 @@ public final class SysUtils
         java.util.Date today = new java.util.Date();
         return ( new java.sql.Timestamp( today.getTime() ) );
     }
-    
-    @SuppressWarnings("unchecked")
-	public static boolean isEmpty ( List list )
+
+    @SuppressWarnings( "unchecked" )
+    public static boolean isEmpty( List list )
     {
-        if ( isNull ( list ) )
+        if ( isNull( list ) )
             return true;
         if ( list.size() == 0 )
             return true;
