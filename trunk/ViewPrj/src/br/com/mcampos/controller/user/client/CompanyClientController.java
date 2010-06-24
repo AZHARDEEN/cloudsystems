@@ -2,6 +2,7 @@ package br.com.mcampos.controller.user.client;
 
 
 import br.com.mcampos.controller.core.LoggedBaseController;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.ClientDTO;
 import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
 import br.com.mcampos.exception.ApplicationException;
@@ -184,10 +185,14 @@ public class CompanyClientController extends LoggedBaseController
             showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
             return;
         }
+        ;
         try {
             final Window winLogo = ( Window )Executions.createComponents( "/private/user/client/update_logo.zul", null, null );
+            winLogo.setAttribute( "client", getListbox().getSelectedItem().getValue() );
             winLogo.doModal();
-            showErrorMessage( "Teste" );
+            if ( winLogo != null )
+                winLogo.detach();
+
         }
         catch ( Exception e ) {
             showErrorMessage( e.getMessage() );
@@ -207,6 +212,17 @@ public class CompanyClientController extends LoggedBaseController
     private Listbox getListbox()
     {
         return listboxRecord;
+    }
+
+    public void onSelect$listboxRecord() throws ApplicationException
+    {
+        Object item = getCurrentRecord();
+        if ( item == null )
+            return;
+        ClientDTO dto = ( ClientDTO )item;
+        MediaDTO logo = getSession().getLogo( getLoggedInUser(), dto );
+        if ( logo != null )
+            setClientLogo( logo.getObject() );
     }
 }
 

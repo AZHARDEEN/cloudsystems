@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <borderlayout id="borderLayout">
-        <north flex="true" style="background: #D0DEF0">
+        <north style="background: #D0DEF0">
             <grid>
                 <columns>
                     <column width="20%" align="center"/>

@@ -6,6 +6,7 @@ import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.locator.ServiceLocator;
 import br.com.mcampos.util.locator.ServiceLocatorException;
 import br.com.mcampos.util.system.CloudSystemSessionListener;
+import br.com.mcampos.util.system.ImageUtil;
 
 import java.lang.reflect.Field;
 
@@ -27,6 +28,7 @@ import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
+import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Panel;
 import org.zkoss.zul.impl.LabelElement;
@@ -40,6 +42,9 @@ public abstract class BaseController extends GenericForwardComposer
     private Component rootParent;
     private transient HashMap<String, Object> arguments = new HashMap<String, Object>();
     private static final String basePage = "/private/index.zul";
+
+    private Image imageClienteLogo;
+    private Image imageCompanyLogo;
 
     public BaseController( char c )
     {
@@ -373,5 +378,11 @@ public abstract class BaseController extends GenericForwardComposer
     protected void setParameter( String name, Object value )
     {
         arguments.put( name, value );
+    }
+
+    protected void setClientLogo( byte[] image )
+    {
+        if ( imageClienteLogo != null )
+            ImageUtil.loadImage( imageClienteLogo, image );
     }
 }

@@ -42,7 +42,7 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
     @Column( name = "med_name_ch", nullable = false, length = 128 )
     private String name;
 
-    @Basic( fetch = FetchType.LAZY )
+    @Basic( fetch = FetchType.LAZY, optional = false )
     @Lob
     @Column( name = "med_object_bin", nullable = false )
     private byte[] object;
