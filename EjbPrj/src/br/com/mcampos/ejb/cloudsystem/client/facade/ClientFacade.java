@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.client.facade;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.ClientDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.exception.ApplicationException;
@@ -25,4 +26,8 @@ public interface ClientFacade extends Serializable
     ClientDTO add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException;
 
     void delete( AuthenticationDTO auth, ClientDTO dto ) throws ApplicationException;
+
+    MediaDTO getLogo( AuthenticationDTO auth, ClientDTO dto ) throws ApplicationException;
+
+    void setLogo( AuthenticationDTO auth, ClientDTO dto, MediaDTO media ) throws ApplicationException;
 }

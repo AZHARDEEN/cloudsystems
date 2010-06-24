@@ -2,12 +2,16 @@ package br.com.mcampos.ejb.cloudsystem.client.facade;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.ClientDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.ejb.cloudsystem.client.ClientUtil;
 import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
 import br.com.mcampos.ejb.cloudsystem.client.entity.ClientPK;
 import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.media.MediaUtil;
+import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.user.UserFacadeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
@@ -15,6 +19,10 @@ import br.com.mcampos.ejb.cloudsystem.user.company.CompanyUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.document.UserDocumentUtil;
+import br.com.mcampos.ejb.cloudsystem.user.media.entity.UserMedia;
+import br.com.mcampos.ejb.cloudsystem.user.media.session.UserMediaSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.media.type.entity.UserMediaType;
+import br.com.mcampos.ejb.cloudsystem.user.media.type.session.UserMediaTypeSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -34,6 +42,7 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
 {
     public static final Integer messageId = 16;
 
+
     @PersistenceContext( unitName = "EjbPrj" )
     private transient EntityManager em;
 
@@ -45,6 +54,15 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
 
     @EJB
     private CompanySessionLocal companySession;
+
+    @EJB
+    private MediaSessionLocal mediaSession;
+
+    @EJB
+    private UserMediaSessionLocal userMediaSession;
+
+    @EJB
+    private UserMediaTypeSessionLocal userMediaTypeSession;
 
 
     protected EntityManager getEntityManager()
@@ -110,6 +128,40 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
         if ( client == null )
             throwException( 6 );
         clientSession.delete( new ClientPK( myCompany.getId(), dto.getClientId() ) );
+    }
+
+    public MediaDTO getLogo( AuthenticationDTO auth, ClientDTO dto ) throws ApplicationException
+    {
+        Company myCompany = getCompany( auth );
+        Client client = clientSession.get( new ClientPK( myCompany.getId(), dto.getClientId() ) );
+        if ( client == null )
+            throwException( 6 );
+        UserMedia u = userMediaSession.get( client.getClient(), getLogoMediaType() );
+        MediaDTO m = ( u != null && u.getMedia() != null ) ? u.getMedia().toDTO() : null;
+        if ( m != null ) /*Lazy Load Object*/
+            m.setObject( u.getMedia().getObject() );
+        return m;
+    }
+
+    public void setLogo( AuthenticationDTO auth, ClientDTO dto, MediaDTO mediaDto ) throws ApplicationException
+    {
+        Company myCompany = getCompany( auth );
+        Client client = clientSession.get( new ClientPK( myCompany.getId(), dto.getClientId() ) );
+        if ( client == null )
+            throwException( 6 );
+        Media media = MediaUtil.createEntity( mediaDto );
+        mediaSession.add( media );
+
+        UserMedia userMedia = new UserMedia();
+        userMedia.setMedia( media );
+        userMedia.setUser( client.getClient() );
+        userMedia.setType( getLogoMediaType() );
+        userMediaSession.add( userMedia );
+    }
+
+    private UserMediaType getLogoMediaType() throws ApplicationException
+    {
+        return userMediaTypeSession.get( UserMediaType.typeLogo );
     }
 
 }

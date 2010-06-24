@@ -12,7 +12,7 @@
                 <row>
                     <label id="labelLogo" value="Logo"/>
                     <image id="imageClienteLogo"/>
-                    <toolbarbutton id="cmdUpload"/>
+                    <toolbarbutton id="cmdUpload" label="upload" upload="true,native"/>
                 </row>
             </rows>
         </grid>

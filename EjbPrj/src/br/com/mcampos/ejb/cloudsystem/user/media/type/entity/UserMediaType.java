@@ -20,6 +20,9 @@ public class UserMediaType implements Serializable
     public static final String getAll = "UserMediaType.findAll";
     public static final String nextId = "UserMediaType.nextId";
 
+    public static final Integer typeLogo = 1;
+
+
     @Column( name = "umt_description_ch", nullable = false )
     private String description;
 

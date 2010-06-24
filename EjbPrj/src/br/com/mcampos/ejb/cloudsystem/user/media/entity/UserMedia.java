@@ -7,7 +7,7 @@ import br.com.mcampos.ejb.cloudsystem.user.media.type.entity.UserMediaType;
 
 import java.io.Serializable;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,20 +18,28 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "UserMedia.findAll", query = "select o from UserMedia o" ) } )
-@Table( name = "\"user_media\"" )
+@NamedQueries( { @NamedQuery( name = UserMedia.getAll, query = "select o from UserMedia o" ),
+                 @NamedQuery( name = UserMedia.getType,
+                              query = "select o from UserMedia o where o.user = ?1 and o.type = ?2 and o.version = ( select max ( p.version ) from UserMedia p where p.user = ?1 and p.type = ?2 ) " ) } )
+@Table( name = "user_media" )
 @IdClass( UserMediaPK.class )
 public class UserMedia implements Serializable
 {
+    public static final String getAll = "UserMedia.findAll";
+    public static final String getType = "UserMedia.getType";
+
     @Id
     @Column( name = "med_id_in", nullable = false, updatable = false, insertable = false )
     private Integer mediaId;
 
     @Column( name = "umd_insert_dt", nullable = false )
-    private Timestamp insertDate;
+    @Temporal( value = TemporalType.TIMESTAMP )
+    private Date insertDate;
 
     @Column( name = "umd_version_in" )
     private Integer version;
@@ -42,7 +50,7 @@ public class UserMedia implements Serializable
 
     @ManyToOne( optional = false )
     @JoinColumn( name = "umt_id_in" )
-    private UserMediaType userMediaType;
+    private UserMediaType type;
 
     @ManyToOne( optional = false )
     @JoinColumn( name = "med_id_in" )
@@ -67,12 +75,12 @@ public class UserMedia implements Serializable
         this.mediaId = med_id_in;
     }
 
-    public Timestamp getInsertDate()
+    public Date getInsertDate()
     {
         return insertDate;
     }
 
-    public void setInsertDate( Timestamp umd_insert_dt )
+    public void setInsertDate( Date umd_insert_dt )
     {
         this.insertDate = umd_insert_dt;
     }
@@ -98,14 +106,14 @@ public class UserMedia implements Serializable
         this.userId = usr_id_in;
     }
 
-    public UserMediaType getUserMediaType()
+    public UserMediaType getType()
     {
-        return userMediaType;
+        return type;
     }
 
-    public void setUserMediaType( UserMediaType userMediaType )
+    public void setType( UserMediaType userMediaType )
     {
-        this.userMediaType = userMediaType;
+        this.type = userMediaType;
     }
 
     public void setMedia( Media media )
