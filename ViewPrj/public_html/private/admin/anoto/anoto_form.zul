@@ -44,6 +44,10 @@
                                     <label id="recordDescription"/>
                                 </row>
                                 <row>
+                                    <label id="labelFormUser" value="##"/>
+                                    <label id="recordFormUser"/>
+                                </row>
+                                <row>
                                     <label id="labelIcrImage" value="##"/>
                                     <label id="recordIcrImage"/>
                                 </row>
@@ -78,6 +82,18 @@
                                 <row>
                                     <label id="labelEditDescription" value="##"/>
                                     <textbox id="editDescription" width="99%" value=""/>
+                                </row>
+                                <row>
+                                    <label id="labelEditFormUser" value="##"/>
+                                    <vbox width="100%">
+                                        <hbox width="100%">
+                                            <label id="labelUserCode" value="##" width="100px"/>
+                                            <intbox id="editUserId" width="100px"/>
+                                        </hbox>
+                                        <hbox width="100%">
+                                            <textbox id="editUserName" width="400px"/>
+                                        </hbox>
+                                    </vbox>
                                 </row>
                                 <row>
                                     <label id="labelEditIcrImage" value="##"/>

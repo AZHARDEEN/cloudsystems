@@ -53,6 +53,10 @@
                                     <label id="labelDescription" value="##"/>
                                     <label id="recordDescription"/>
                                 </row>
+                                <row>
+                                    <label id="labelPenUser" value="##"/>
+                                    <label id="recordPenUser"/>
+                                </row>
                             </rows>
                         </grid>
                         <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
@@ -72,6 +76,22 @@
                                 <row>
                                     <label id="labelEditDescription" value="##"/>
                                     <textbox id="editDescription" width="99%" maxlength="64"/>
+                                </row>
+                                <row>
+                                    <label id="labelEditPenUser" value="##"/>
+                                    <vbox width="100%">
+                                        <hbox width="100%">
+                                            <label id="labelUserCode" value="##" width="100px"/>
+                                            <intbox id="editUserId" width="100px"/>
+                                        </hbox>
+                                        <hbox width="100%">
+                                            <label id="labelUserDocument" value="##" width="100px"/>
+                                            <textbox id="editUserDocumentCode" width="400px" maxlength="128"/>
+                                        </hbox>
+                                        <hbox width="100%">
+                                            <textbox id="editUserName" width="400px"/>
+                                        </hbox>
+                                    </vbox>
                                 </row>
                             </rows>
                         </grid>

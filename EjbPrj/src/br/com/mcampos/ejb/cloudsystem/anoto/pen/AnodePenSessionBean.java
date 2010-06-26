@@ -53,10 +53,12 @@ public class AnodePenSessionBean extends Crud<String, AnotoPen> implements Anode
     {
         entity.setInsertDate( new Date() );
         entity = super.add( entity );
-        person = personSession.get( person.getId() );
-        if ( entity != null && person != null ) {
-            AnotoPenUser user = new AnotoPenUser( entity, person );
-            user = penUserSession.add( user );
+        if ( person != null ) {
+            person = personSession.get( person.getId() );
+            if ( entity != null && person != null ) {
+                AnotoPenUser user = new AnotoPenUser( entity, person );
+                user = penUserSession.add( user );
+            }
         }
         return entity;
     }

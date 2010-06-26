@@ -3,7 +3,6 @@ package br.com.mcampos.ejb.core.util;
 
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
-import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.system.SystemParametersDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
@@ -15,7 +14,6 @@ import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPageUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField;
-import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
@@ -163,14 +161,6 @@ public final class DTOFactory implements Serializable
         target.setImagePath( source.getImagePath() );
         target.setConcatenatePgc( source.getConcatenatePgc() );
         return target;
-    }
-
-
-    public static AnotoPen copy( PenDTO entity )
-    {
-        if ( entity == null )
-            return null;
-        return new AnotoPen( entity.getId(), entity.getDescription() );
     }
 
 

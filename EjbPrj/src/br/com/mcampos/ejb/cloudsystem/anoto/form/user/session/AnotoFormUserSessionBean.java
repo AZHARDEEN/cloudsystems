@@ -9,6 +9,7 @@ import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.Date;
 
@@ -54,6 +55,14 @@ public class AnotoFormUserSessionBean extends Crud<AnotoFormUserPK, AnotoFormUse
 
     private Integer nextSequence( AnotoForm form ) throws ApplicationException
     {
-        return nextIntegerId( AnotoFormUser.nextSequence, form );
+        Integer id = nextIntegerId( AnotoFormUser.nextSequence, form );
+        if ( SysUtils.isZero( id ) )
+            id = 1;
+        return id;
+    }
+
+    public AnotoFormUser get( Integer formId ) throws ApplicationException
+    {
+        return ( AnotoFormUser )getSingleResult( AnotoFormUser.getFormUser, formId );
     }
 }

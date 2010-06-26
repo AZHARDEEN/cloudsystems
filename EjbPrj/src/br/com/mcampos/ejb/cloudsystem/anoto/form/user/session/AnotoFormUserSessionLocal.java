@@ -16,4 +16,6 @@ public interface AnotoFormUserSessionLocal extends Serializable
     AnotoFormUser add( AnotoFormUser entity ) throws ApplicationException;
 
     void delete( AnotoFormUserPK key ) throws ApplicationException;
+
+    AnotoFormUser get( Integer formId ) throws ApplicationException;
 }

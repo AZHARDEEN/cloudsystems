@@ -16,4 +16,8 @@ public interface AnotoPenUserSessionLocal extends Serializable
     AnotoPenUser add( AnotoPenUser entity ) throws ApplicationException;
 
     void delete( AnotoPenUserPK key ) throws ApplicationException;
+
+    void delete( AnotoPenUser entity ) throws ApplicationException;
+
+    AnotoPenUser getUser( String penId ) throws ApplicationException;
 }

@@ -11,10 +11,11 @@ public class AnotoPenUserPK implements Serializable
     {
     }
 
-    public AnotoPenUserPK( Integer apu_seq_in, String pen_id_ch )
+    public AnotoPenUserPK( AnotoPenUser entity )
     {
-        this.sequence = apu_seq_in;
-        this.penId = pen_id_ch;
+        this.sequence = entity.getSequence();
+        this.penId = entity.getPenId();
+
     }
 
     public boolean equals( Object other )

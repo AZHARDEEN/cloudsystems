@@ -149,4 +149,23 @@ public class UserDocumentSessionBean extends Crud<UserDocumentPK, UserDocument> 
         linkToDocumentType( entity );
         return super.update( entity );
     }
+
+    public UserDocument findEmail( String email )
+    {
+        UserDocument document = find( email, UserDocument.typeEmail );
+        return document;
+    }
+
+    public UserDocument findCPF( String cpf )
+    {
+        UserDocument document = find( cpf, UserDocument.typeCPF );
+        return document;
+    }
+
+    public UserDocument findCNPJ( String cnpj )
+    {
+        UserDocument document = find( cnpj, UserDocument.typeCNPJ );
+        return document;
+    }
+
 }

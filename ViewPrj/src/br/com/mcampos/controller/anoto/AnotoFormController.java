@@ -16,6 +16,7 @@ import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -41,6 +42,7 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Fileupload;
+import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -88,6 +90,9 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     private Label labelImagePath;
     private Label labelConcatPgc;
     private Label labelEditConcatPgc;
+    private Label labelFormUser;
+    private Label labelEditFormUser;
+    private Label labelUserCode;
 
 
     private Panel panelLinks;
@@ -104,8 +109,12 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     private Label recordImagePath;
     private Label recordIcrImage;
     private Label recordConcatPgc;
+    private Label recordFormUser;
     private Textbox editIP;
     private Label recordIP;
+    private Intbox editUserId;
+    private Textbox editUserName;
+    private ListUserDTO formUser;
 
 
     public AnotoFormController()
@@ -224,6 +233,8 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         editIcrImage.setChecked( false );
         editConcatPgc.setChecked( false );
         editImagePath.setText( "" );
+        editUserId.setValue( 0 );
+        editUserName.setValue( "" );
     }
 
     @Override
@@ -236,6 +247,15 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         editIcrImage.setChecked( dto.getIcrImage() );
         editImagePath.setText( dto.getImagePath() );
         editConcatPgc.setChecked( dto.getConcatenatePgc() );
+        if ( dto.getCompany() != null && dto.getCompany().getUser() != null ) {
+            ListUserDTO user = dto.getCompany().getUser();
+            editUserId.setValue( user.getId() );
+            editUserName.setValue( user.getDisplayName() );
+        }
+        else {
+            editUserId.setValue( 0 );
+            editUserName.setValue( "" );
+        }
         return dto;
     }
 
@@ -259,11 +279,12 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     @Override
     protected void showRecord( SimpleTableDTO record )
     {
+        FormDTO formDTO = ( ( FormDTO )record );
         if ( record != null ) {
             super.showRecord( record );
-            listAttachs.setModel( getMediaModel( ( FormDTO )record ) );
-            refreshPens( ( FormDTO )record );
-            refreshOtherAttachs( ( FormDTO )record );
+            listAttachs.setModel( getMediaModel( formDTO ) );
+            refreshPens( formDTO );
+            refreshOtherAttachs( formDTO );
         }
         else {
             clearRecordInfo();
@@ -272,10 +293,12 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
         btnAddAttach.setDisabled( record == null );
         btnAddAttachOther.setDisabled( record == null );
-        recordIP.setValue( record != null ? ( ( FormDTO )record ).getApplication() : "" );
-        recordIcrImage.setValue( record != null ? ( ( FormDTO )record ).getIcrImage().toString() : "" );
-        recordConcatPgc.setValue( record != null ? ( ( FormDTO )record ).getConcatenatePgc().toString() : "" );
-        recordImagePath.setValue( record != null ? ( ( FormDTO )record ).getImagePath() : "" );
+        recordIP.setValue( formDTO != null ? formDTO.getApplication() : "" );
+        recordIcrImage.setValue( formDTO != null ? formDTO.getIcrImage().toString() : "" );
+        recordConcatPgc.setValue( formDTO != null ? formDTO.getConcatenatePgc().toString() : "" );
+        recordImagePath.setValue( formDTO != null ? formDTO.getImagePath() : "" );
+        recordFormUser.setValue( ( formDTO != null && formDTO.getCompany() != null ) ?
+                                 formDTO.getCompany().getUser().getDisplayName() : "" );
     }
 
     public void onUpload$btnAddAttach( UploadEvent evt )
@@ -716,6 +739,9 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         setLabel( labelImagePath );
         setLabel( labelConcatPgc );
         setLabel( labelEditConcatPgc );
+        setLabel( labelFormUser );
+        setLabel( labelEditFormUser );
+        setLabel( labelUserCode );
 
         setLabel( panelLinks );
         setLabel( tabPadFile );
@@ -724,6 +750,22 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
 
         setLabel( btnExport );
         setLabel( btnExportOther );
+    }
+
+
+    public void onOK$editUserId() throws ApplicationException
+    {
+        Integer id = editUserId.getValue();
+
+        formUser = getSession().findUser( getLoggedInUser(), id );
+        showUser( formUser );
+    }
+
+    private ListUserDTO showUser( ListUserDTO dto )
+    {
+        editUserName.setValue( dto != null ? dto.getName() : "" );
+        editUserId.setValue( dto != null ? dto.getId() : 0 );
+        return dto;
     }
 }
 

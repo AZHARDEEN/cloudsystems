@@ -42,10 +42,9 @@ public class AnotoPen implements Serializable, EntityCopyInterface<PenDTO>
     {
     }
 
-    public AnotoPen( String pen_id_in, String description )
+    public AnotoPen( String pen_id_in )
     {
         setId( pen_id_in );
-        setDescription( description );
     }
 
     public String getId()
@@ -62,7 +61,7 @@ public class AnotoPen implements Serializable, EntityCopyInterface<PenDTO>
 
     public PenDTO toDTO()
     {
-        return new PenDTO( getId(), getDescription() );
+        return AnotoPenUtil.copy( this );
     }
 
     public void setInsertDate( Date insertDate )

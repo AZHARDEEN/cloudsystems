@@ -26,6 +26,12 @@ public interface UserDocumentSessionLocal extends Serializable
      */
     UserDocument find( UserDocumentDTO dto );
 
+    UserDocument findEmail( String email );
+
+    UserDocument findCPF( String cpf );
+
+    UserDocument findCNPJ( String cnpj );
+
     /**<penId>select o from UserDocument o where o.penId = :document and o.documentType.formId = :docType</penId>
      *
      * tenta localizar um registro no banco de dados com os dados do documento e o tipo do documento
