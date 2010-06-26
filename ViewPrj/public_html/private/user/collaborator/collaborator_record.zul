@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <borderlayout id="borderLayout">
+        <north style="background: #D0DEF0">
+            <grid>
+                <columns>
+                    <column width="20%" align="center"/>
+                    <column width="60%" align="center"/>
+                    <column width="20%" align="center"/>
+                </columns>
+                <rows>
+                    <row>
+                        <image id="imageClienteLogo"/>
+                        <label id="labelCollaboratorRecordTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
+                        <image id="imageCompanyLogo"/>
+                    </row>
+                </rows>
+            </grid>
+        </north>
+        <center flex="true" fulfill="=/private/user/person.zul"></center>
+    </borderlayout>
+</zk>

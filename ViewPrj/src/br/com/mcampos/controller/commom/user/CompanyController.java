@@ -34,6 +34,8 @@ public abstract class CompanyController extends UserController
     protected Textbox name;
     protected Textbox nickName;
 
+    protected abstract CompanyDTO searchByDocument( String document, Integer type ) throws Exception;
+
 
     public CompanyController()
     {
@@ -85,6 +87,7 @@ public abstract class CompanyController extends UserController
         getCmdSubmit().setLabel( "Atualizar" );
         name.setValue( dto.getName() );
         nickName.setValue( dto.getNickName() );
+        findCompanyType( dto.getCompanyType() );
         showDocuments( dto.getDocumentList() );
         showAddresses( dto.getAddressList() );
         showContacts( dto.getContactList() );
@@ -97,13 +100,10 @@ public abstract class CompanyController extends UserController
             CompanyTypeDTO item;
 
             comboList = ( List<Comboitem> )companyType.getItems();
-
             for ( Comboitem comboItem : comboList ) {
                 item = ( CompanyTypeDTO )comboItem.getValue();
-
                 if ( item.equals( dto ) ) {
                     companyType.setSelectedItem( comboItem );
-
                     break;
                 }
             }
@@ -216,10 +216,14 @@ public abstract class CompanyController extends UserController
         document = cnpj.getValue();
 
         if ( ( document != null ) && ( document.isEmpty() == false ) ) {
-            UserDTO dto = null;
-
-            if ( ( dto != null ) && ( dto instanceof CompanyDTO ) ) {
-                showInfo( ( CompanyDTO )dto );
+            try {
+                CompanyDTO dto = searchByDocument( document, DocumentTypeDTO.typeCNPJ );
+                if ( dto != null ) {
+                    showInfo( ( CompanyDTO )dto );
+                }
+            }
+            catch ( Exception e ) {
+                showErrorMessage( e.getMessage() );
             }
         }
     }

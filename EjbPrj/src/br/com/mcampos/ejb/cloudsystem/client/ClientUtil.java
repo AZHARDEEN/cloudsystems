@@ -52,4 +52,5 @@ public final class ClientUtil
         dto.setInsertDate( client.getInsertDate() );
         return dto;
     }
+
 }

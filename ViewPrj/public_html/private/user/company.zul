@@ -18,16 +18,16 @@
                             </columns>
                             <rows>
                                 <row>
+                                    <label value="CNPJ"/>
+                                    <textbox id="cnpj" width="200px" maxlength="19"/>
+                                </row>
+                                <row>
                                     <label value="Razão Social"/>
                                     <textbox id="name" width="99%" maxlength="128"/>
                                 </row>
                                 <row>
                                     <label value="Nome de Fantasia"/>
                                     <textbox id="nickName" width="99%" maxlength="128"/>
-                                </row>
-                                <row>
-                                    <label value="CNPJ"/>
-                                    <textbox id="cnpj" width="200px" maxlength="19"/>
                                 </row>
                                 <row>
                                     <label value="Tipo"/>

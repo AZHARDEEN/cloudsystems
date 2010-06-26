@@ -1,4 +1,4 @@
-package br.com.mcampos.controller.user;
+package br.com.mcampos.controller.user.collaborator;
 
 
 import br.com.mcampos.controller.core.LoggedBaseController;
