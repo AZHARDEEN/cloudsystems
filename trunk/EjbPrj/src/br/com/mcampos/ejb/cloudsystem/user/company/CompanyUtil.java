@@ -42,10 +42,11 @@ public class CompanyUtil extends UserUtil
         return Company;
     }
 
-    public static CompanyDTO copy( Company Company )
+    public static CompanyDTO copy( Company company )
     {
         CompanyDTO dto = new CompanyDTO();
-        update( ( UserDTO )dto, ( Users )Company );
+        dto.setCompanyType( CompanyTypeUtil.copy( company.getCompanyType() ) );
+        update( ( UserDTO )dto, ( Users )company );
         return dto;
     }
 }

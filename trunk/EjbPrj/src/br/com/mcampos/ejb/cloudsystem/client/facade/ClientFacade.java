@@ -25,9 +25,15 @@ public interface ClientFacade extends Serializable
 
     ClientDTO add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException;
 
+    ClientDTO update( AuthenticationDTO auth, Integer clientSequence, CompanyDTO dto ) throws ApplicationException;
+
     void delete( AuthenticationDTO auth, ClientDTO dto ) throws ApplicationException;
 
     MediaDTO getLogo( AuthenticationDTO auth, ClientDTO dto ) throws ApplicationException;
 
     void setLogo( AuthenticationDTO auth, ClientDTO dto, MediaDTO media ) throws ApplicationException;
+
+    CompanyDTO get( AuthenticationDTO auth, Integer companyID ) throws ApplicationException;
+
+    CompanyDTO get( AuthenticationDTO auth, String document, Integer docTpe ) throws ApplicationException;
 }

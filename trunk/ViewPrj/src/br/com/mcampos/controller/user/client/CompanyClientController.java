@@ -22,6 +22,7 @@ public class CompanyClientController extends LoggedBaseController
     public static final String clientParamName = "client";
 
     private static final String addClientPage = "/private/user/client/persist_company.zul";
+    private static final String updateClientPage = "/private/user/client/update_company.zul";
     private static final String collaboratorPage = "/private/user/collaborator/collaborator_list.zul";
 
     private ClientFacade clientSession;
@@ -132,7 +133,7 @@ public class CompanyClientController extends LoggedBaseController
 
     public void onClick$cmdCreate()
     {
-        loadCompanyRecordPage();
+        loadCompanyRecordPage( addClientPage );
     }
 
     public void onClick$cmdUpdate()
@@ -143,12 +144,13 @@ public class CompanyClientController extends LoggedBaseController
             showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
             return;
         }
-        //loadCompanyRecordPage();
+        setParameter( "client", item );
+        loadCompanyRecordPage( updateClientPage );
     }
 
-    private void loadCompanyRecordPage()
+    private void loadCompanyRecordPage( String page )
     {
-        gotoPage( addClientPage, getRootParent().getParent() );
+        gotoPage( page, getRootParent().getParent() );
     }
 
 
@@ -161,8 +163,6 @@ public class CompanyClientController extends LoggedBaseController
             return;
         }
         ClientDTO dto = ( ClientDTO )item;
-        if ( dto == null )
-            return;
         getSession().delete( getLoggedInUser(), dto );
         ListModelList model = ( ListModelList )getListbox().getModel();
         if ( model != null )
