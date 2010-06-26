@@ -4,13 +4,17 @@ package br.com.mcampos.ejb.cloudsystem.anoto.form;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
+import br.com.mcampos.dto.anoto.LinkedUserDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMediaSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.user.entity.AnotoFormUser;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.user.session.AnotoFormUserSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.PadSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
@@ -21,8 +25,9 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.MediaUtil;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
-import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
+import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
+import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
+import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -32,7 +37,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -64,7 +68,9 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
     @EJB
     private FormMediaSessionLocal formMediaSession;
     @EJB
-    private NewCollaboratorSessionLocal collaboratorSession;
+    private CompanySessionLocal companySession;
+    @EJB
+    private AnotoFormUserSessionLocal formUserSession;
 
 
     public AnotoFormFacadeBean()
@@ -87,16 +93,11 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         authenticate( auth );
         if ( entity == null )
             throwCommomException( 3 );
-        Collaborator collaborator = collaboratorSession.get( auth.getCurrentCompany(), auth.getUserId() );
-        if ( collaborator == null )
-            throwException( 5 );
-        try {
-            return formSession.add( AnotoFormUtil.createEntity( entity ), collaborator.getCompany() ).toDTO();
-        }
-        catch ( EJBException e ) {
-            throwException( 1 );
-            return null;
-        }
+        Company company = null;
+        if ( entity.getCompany() != null && entity.getCompany().getUser() != null )
+            company = companySession.get( entity.getCompany().getUser().getId() );
+        return linkToUser( formSession.add( AnotoFormUtil.createEntity( entity ), company ).toDTO() );
+
     }
 
     private AnotoForm getExistent( FormDTO dto ) throws ApplicationException
@@ -142,12 +143,10 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         authenticate( auth );
         if ( entity == null )
             throwCommomException( 3 );
-        try {
-            formSession.delete( entity.getId() );
-        }
-        catch ( Exception e ) {
-            throwRuntimeException( 2 );
-        }
+        AnotoForm form = formSession.get( entity.getId() );
+        if ( form == null )
+            throwException( 4 );
+        formSession.delete( entity.getId() );
     }
 
     public FormDTO get( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
@@ -156,13 +155,40 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         if ( entity == null || SysUtils.isZero( entity.getId() ) )
             throwCommomException( 3 );
         AnotoForm form = formSession.get( entity.getId() );
-        return form != null ? form.toDTO() : null;
+        return linkToUser( form != null ? form.toDTO() : null );
     }
+
+    private List<FormDTO> linkToUser( List<FormDTO> pens ) throws ApplicationException
+    {
+        if ( SysUtils.isEmpty( pens ) )
+            return Collections.emptyList();
+        for ( FormDTO pen : pens ) {
+            linkToUser( pen );
+        }
+        return pens;
+    }
+
+    private FormDTO linkToUser( FormDTO form ) throws ApplicationException
+    {
+        if ( form == null )
+            return null;
+        AnotoFormUser penUser = formUserSession.get( form.getId() );
+        if ( penUser != null ) {
+            LinkedUserDTO user = new LinkedUserDTO();
+            user.setUser( UserUtil.copy( penUser.getCompany() ) );
+            form.setCompany( user );
+        }
+        else {
+            form.setCompany( null );
+        }
+        return form;
+    }
+
 
     public List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
-        return AnotoUtils.toFormList( formSession.getAll() );
+        return linkToUser( AnotoUtils.toFormList( formSession.getAll() ) );
     }
 
     public FormDTO update( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
@@ -170,7 +196,7 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         authenticate( auth );
         AnotoForm form = getExistent( entity );
         AnotoFormUtil.update( form, entity );
-        return formSession.update( form ).toDTO();
+        return linkToUser( formSession.update( form ).toDTO() );
     }
 
     public PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad, List<String> pages ) throws ApplicationException
@@ -336,6 +362,15 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
             throwException( 1 );
         List<FormMedia> formMedias = formMediaSession.get( formEntity );
         return AnotoUtils.toMediaListFromFormMedia( formMedias );
+    }
+
+    public ListUserDTO findUser( AuthenticationDTO auth, Integer userId ) throws ApplicationException
+    {
+        if ( userId == null )
+            return null;
+        authenticate( auth );
+        Company company = companySession.get( userId );
+        return company != null ? UserUtil.copy( company ) : null;
     }
 }
 

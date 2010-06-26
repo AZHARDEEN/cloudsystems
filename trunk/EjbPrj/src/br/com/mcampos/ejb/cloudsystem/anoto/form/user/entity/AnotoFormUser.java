@@ -24,12 +24,16 @@ import javax.persistence.TemporalType;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "AnotoFormUser.findAll", query = "select o from AnotoFormUser o" ),
-                 @NamedQuery( name = AnotoFormUser.nextSequence, query = "select o from AnotoFormUser o where o.form = ?1 " ) } )
+                 @NamedQuery( name = AnotoFormUser.nextSequence,
+                              query = "select max (o.sequence) from AnotoFormUser o where o.form = ?1 " ),
+                 @NamedQuery( name = AnotoFormUser.getFormUser,
+                              query = "select o from AnotoFormUser o where o.form.id = ?1 and o.toDate is null " ) } )
 @Table( name = "anoto_form_user" )
 @IdClass( AnotoFormUserPK.class )
 public class AnotoFormUser implements Serializable
 {
     public static final String nextSequence = "AnotoFormUser.nextSequence";
+    public static final String getFormUser = "AnotoFormUser.getFormUser";
 
     @Column( name = "afu_from_dt", nullable = false )
     @Temporal( value = TemporalType.TIMESTAMP )

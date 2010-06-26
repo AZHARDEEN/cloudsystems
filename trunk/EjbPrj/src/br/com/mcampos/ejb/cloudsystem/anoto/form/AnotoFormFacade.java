@@ -7,6 +7,7 @@ import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
@@ -63,4 +64,6 @@ public interface AnotoFormFacade extends Serializable
     void removeMedias( AuthenticationDTO auth, FormDTO form, MediaDTO[] medias ) throws ApplicationException;
 
     List<MediaDTO> getMedias( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
+
+    ListUserDTO findUser( AuthenticationDTO auth, Integer userId ) throws ApplicationException;
 }

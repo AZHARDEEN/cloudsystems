@@ -11,11 +11,13 @@ import java.security.InvalidParameterException;
 public class PenDTO implements Comparable<PenDTO>, Serializable
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5445481184895354233L;
-	String id;
-    String description;
+     *
+     */
+    private static final long serialVersionUID = -5445481184895354233L;
+    private String id;
+    private String description;
+    private LinkedUserDTO user;
+
 
     public PenDTO( String id, String description )
     {
@@ -77,5 +79,17 @@ public class PenDTO implements Comparable<PenDTO>, Serializable
     public String getDescription()
     {
         return description;
+    }
+
+    public void setUser( LinkedUserDTO user )
+    {
+        this.user = user;
+        if ( this.user != null )
+            this.user.setLinkCode( this );
+    }
+
+    public LinkedUserDTO getUser()
+    {
+        return user;
     }
 }

@@ -11,96 +11,110 @@ import java.util.List;
 
 public class FormDTO extends SimpleTableDTO
 {
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = -8356914268806695133L;
-	String application;
-	List<PadDTO> pads;
-	private Boolean icrImage;
-	private String imagePath;
-	private Boolean concatenatePgc;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -8356914268806695133L;
+    String application;
+    List<PadDTO> pads;
+    private Boolean icrImage;
+    private String imagePath;
+    private Boolean concatenatePgc;
 
-	public FormDTO( SimpleTableDTO simpleTableDTO )
-	{
-		super( simpleTableDTO );
-	}
+    private LinkedUserDTO company;
 
-	public FormDTO( Integer integer, String string )
-	{
-		super( integer, string );
-	}
+    public FormDTO( SimpleTableDTO simpleTableDTO )
+    {
+        super( simpleTableDTO );
+    }
 
-	public FormDTO( Integer integer )
-	{
-		super( integer );
-	}
+    public FormDTO( Integer integer, String string )
+    {
+        super( integer, string );
+    }
 
-	public FormDTO()
-	{
-		super();
-	}
+    public FormDTO( Integer integer )
+    {
+        super( integer );
+    }
 
-	public FormDTO setApplication( String ip )
-	{
-		if ( SysUtils.isEmpty( ip ) )
-			throw new InvalidParameterException( "O ip do formulário não pode ser nulo ou vazio" );
-		this.application = ip;
-		return this;
-	}
+    public FormDTO()
+    {
+        super();
+    }
 
-	public String getApplication()
-	{
-		return application;
-	}
+    public FormDTO setApplication( String ip )
+    {
+        if ( SysUtils.isEmpty( ip ) )
+            throw new InvalidParameterException( "O ip do formulário não pode ser nulo ou vazio" );
+        this.application = ip;
+        return this;
+    }
 
-	public void setPads( List<PadDTO> pads )
-	{
-		this.pads = pads;
-	}
+    public String getApplication()
+    {
+        return application;
+    }
 
-	public List<PadDTO> getPads()
-	{
-		return pads;
-	}
+    public void setPads( List<PadDTO> pads )
+    {
+        this.pads = pads;
+    }
 
-	@Override
-	public String toString()
-	{
-		return getId() + "-" + getApplication() + "-" + getDescription();
-	}
+    public List<PadDTO> getPads()
+    {
+        return pads;
+    }
 
-	public void setIcrImage( Boolean icrImage )
-	{
-		this.icrImage = icrImage;
-	}
+    @Override
+    public String toString()
+    {
+        return getId() + "-" + getApplication() + "-" + getDescription();
+    }
 
-	public Boolean getIcrImage()
-	{
-		if ( icrImage == null )
-			icrImage = false;
-		return icrImage;
-	}
+    public void setIcrImage( Boolean icrImage )
+    {
+        this.icrImage = icrImage;
+    }
 
-	public void setImagePath( String imagePath )
-	{
-		this.imagePath = imagePath;
-	}
+    public Boolean getIcrImage()
+    {
+        if ( icrImage == null )
+            icrImage = false;
+        return icrImage;
+    }
 
-	public String getImagePath()
-	{
-		return imagePath;
-	}
+    public void setImagePath( String imagePath )
+    {
+        this.imagePath = imagePath;
+    }
 
-	public void setConcatenatePgc( Boolean concatenatePgc )
-	{
-		this.concatenatePgc = concatenatePgc;
-	}
+    public String getImagePath()
+    {
+        return imagePath;
+    }
 
-	public Boolean getConcatenatePgc()
-	{
-		if ( concatenatePgc == null )
-			concatenatePgc = false;
-		return concatenatePgc;
-	}
+    public void setConcatenatePgc( Boolean concatenatePgc )
+    {
+        this.concatenatePgc = concatenatePgc;
+    }
+
+    public Boolean getConcatenatePgc()
+    {
+        if ( concatenatePgc == null )
+            concatenatePgc = false;
+        return concatenatePgc;
+    }
+
+    public void setCompany( LinkedUserDTO company )
+    {
+        this.company = company;
+        if ( this.company != null )
+            this.company.setLinkCode( this );
+    }
+
+    public LinkedUserDTO getCompany()
+    {
+        return company;
+    }
 }

@@ -23,11 +23,19 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "AnotoPenUser.findAll", query = "select o from AnotoPenUser o" ) } )
-@Table( name = "\"anoto_pen_user\"" )
+@NamedQueries( { @NamedQuery( name = AnotoPenUser.getAll, query = "select o from AnotoPenUser o" ),
+                 @NamedQuery( name = AnotoPenUser.getPenUser,
+                              query = "select o from AnotoPenUser o where o.pen.id = ?1 and o.toDate is null" ),
+                 @NamedQuery( name = AnotoPenUser.nextSequence,
+                              query = "select max (o.sequence) from AnotoPenUser o where o.pen = ?1" ) } )
+@Table( name = "anoto_pen_user" )
 @IdClass( AnotoPenUserPK.class )
 public class AnotoPenUser implements Serializable
 {
+    public static final String getAll = "AnotoPenUser.findAll";
+    public static final String getPenUser = "AnotoPenUser.penUser";
+    public static final String nextSequence = "AnotoPenUser.nextSequence";
+
     @Column( name = "apu_from_dt", nullable = false )
     @Temporal( value = TemporalType.TIMESTAMP )
     private Date fromDate;

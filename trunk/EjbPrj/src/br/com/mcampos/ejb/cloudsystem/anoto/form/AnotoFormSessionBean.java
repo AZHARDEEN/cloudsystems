@@ -86,7 +86,7 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
     {
         entity.setInsertDate( new Date() );
         entity = super.add( entity );
-        if ( entity != null ) {
+        if ( entity != null && company != null ) {
             AnotoFormUser formUser = new AnotoFormUser();
             formUser.setForm( entity );
             formUser.setCompany( company );
