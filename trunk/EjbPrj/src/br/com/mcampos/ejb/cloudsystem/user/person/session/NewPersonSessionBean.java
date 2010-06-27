@@ -17,10 +17,13 @@ import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+
 
 @Stateless( name = "NewPersonSession", mappedName = "CloudSystems-EjbPrj-NewPersonSession" )
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
@@ -137,5 +140,24 @@ public class NewPersonSessionBean extends Crud<Integer, Person> implements NewPe
             UserContact managed = userContactSesion.add( addr );
             person.getContacts().set( person.getContacts().indexOf( addr ), managed );
         }
+    }
+
+    public Person find( Person targetPerson ) throws ApplicationException
+    {
+        if ( targetPerson == null )
+            return null;
+        if ( targetPerson.getId() != null ) {
+            /*We have an id*/
+            return get( targetPerson.getId() );
+        }
+        List<UserDocument> documents = targetPerson.getDocuments();
+        if ( SysUtils.isEmpty( documents ) )
+            return null;
+        for ( UserDocument document : documents ) {
+            UserDocument doc = userDocumentSession.find( document );
+            if ( doc != null )
+                return ( Person )doc.getUser();
+        }
+        return null;
     }
 }

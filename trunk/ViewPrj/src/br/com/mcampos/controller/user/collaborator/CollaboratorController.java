@@ -2,9 +2,10 @@ package br.com.mcampos.controller.user.collaborator;
 
 
 import br.com.mcampos.controller.core.LoggedBaseController;
-import br.com.mcampos.dto.user.ClientDTO;
+import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.dto.user.collaborator.CollaboratorDTO;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.facade.CollaboratorFacade;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -16,11 +17,14 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listheader;
+import org.zkoss.zul.Listitem;
 
 
 public class CollaboratorController extends LoggedBaseController
 {
     public static final String clientParamName = "client";
+    private static final String addPage = "/private/user/collaborator/add_collaborator.zul";
+    private static final String updatePage = "/private/user/collaborator/update_collaborator.zul";
 
     private CollaboratorFacade session;
 
@@ -29,9 +33,9 @@ public class CollaboratorController extends LoggedBaseController
     private Listheader listHeaderName;
     private Listheader headerId;
 
-    private Listbox listboxRecord;
+    private CompanyDTO company;
 
-    private ClientDTO currentClient;
+    private Listbox listboxRecord;
 
     /**
      * Mapeamento do botão cmdCreate. O nome do botão NÃO pode ser alterado no formulário WEB.
@@ -88,19 +92,10 @@ public class CollaboratorController extends LoggedBaseController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
+        company = ( CompanyDTO )getParameter( clientParamName );
+        getListbox().setItemRenderer( new CollaboratorListRenderer() );
+        refresh();
         configureLabels();
-        currentClient = ( ClientDTO )getParameter( clientParamName );
-
-        if ( currentClient != null ) {
-            List<CollaboratorDTO> list = getSession().getCollaborators( getLoggedInUser(), currentClient.getClientId() );
-            ListModelList model = ( ListModelList )listboxRecord.getModel();
-            if ( model == null ) {
-                model = new ListModelList( new ArrayList<CollaboratorDTO>(), true );
-                listboxRecord.setModel( model );
-            }
-            if ( SysUtils.isEmpty( list ) == false )
-                model.addAll( list );
-        }
     }
 
     public CollaboratorFacade getSession()
@@ -110,4 +105,75 @@ public class CollaboratorController extends LoggedBaseController
         return session;
     }
 
+
+    public void onClick$cmdCreate()
+    {
+        if ( company == null )
+            return;
+        setParameter( "company", company.getId() );
+        gotoPage( addPage, getRootParent().getParent() );
+    }
+
+
+    public void onClick$cmdUpdate()
+    {
+        if ( company == null )
+            return;
+        CollaboratorDTO dto = getCurrentRecord();
+        if ( dto == null ) {
+            showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
+            return;
+        }
+        setParameter( "collaborator", dto );
+        gotoPage( updatePage, getRootParent().getParent() );
+    }
+
+
+    public void onClick$cmdDelete()
+    {
+        if ( company == null )
+            return;
+        CollaboratorDTO dto = getCurrentRecord();
+        if ( dto == null ) {
+            showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
+            return;
+        }
+        getSession();
+    }
+
+    public void onClick$cmdRefresh() throws ApplicationException
+    {
+        refresh();
+    }
+
+    private void refresh() throws ApplicationException
+    {
+        if ( company == null )
+            return;
+        List<CollaboratorDTO> list = getSession().getCollaborators( getLoggedInUser(), company.getId() );
+        ListModelList model = ( ListModelList )listboxRecord.getModel();
+        if ( model == null ) {
+            model = new ListModelList( new ArrayList<CollaboratorDTO>(), true );
+            listboxRecord.setModel( model );
+        }
+        model.clear();
+        if ( SysUtils.isEmpty( list ) == false ) {
+            model.addAll( list );
+        }
+    }
+
+    private CollaboratorDTO getCurrentRecord()
+    {
+        Listitem currentItem = getListbox().getSelectedItem();
+        Object item = null;
+
+        if ( currentItem != null )
+            item = currentItem.getValue();
+        return ( CollaboratorDTO )item;
+    }
+
+    private Listbox getListbox()
+    {
+        return listboxRecord;
+    }
 }

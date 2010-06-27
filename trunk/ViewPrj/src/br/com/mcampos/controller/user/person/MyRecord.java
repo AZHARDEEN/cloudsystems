@@ -46,4 +46,5 @@ public class MyRecord extends PersonController
         getSession().updateMyRecord( getLoggedInUser(), dto );
         return true;
     }
+
 }

@@ -19,4 +19,6 @@ public interface NewPersonSessionLocal extends Serializable
     void delete( Integer key ) throws ApplicationException;
 
     Person get( Integer key ) throws ApplicationException;
+
+    Person find( Person targetPerson ) throws ApplicationException;
 }

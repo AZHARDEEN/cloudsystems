@@ -22,7 +22,6 @@ import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.document.UserDocumentUtil;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
-import br.com.mcampos.ejb.cloudsystem.user.document.session.UserDocumentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.media.entity.UserMedia;
 import br.com.mcampos.ejb.cloudsystem.user.media.session.UserMediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.media.type.entity.UserMediaType;
@@ -68,9 +67,6 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
 
     @EJB
     private UserMediaTypeSessionLocal userMediaTypeSession;
-
-    @EJB
-    private UserDocumentSessionLocal userDocumentSession;
 
 
     protected EntityManager getEntityManager()
@@ -193,7 +189,7 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
         UserDocumentDTO doc = new UserDocumentDTO();
         doc.setCode( document );
         doc.setDocumentType( new DocumentTypeDTO( docTpe ) );
-        UserDocument userDocument = userDocumentSession.find( doc );
+        UserDocument userDocument = documentSession.find( doc );
         if ( userDocument == null || userDocument.getUser() instanceof Person )
             return null;
         return CompanyUtil.copy( ( Company )userDocument.getUser() );

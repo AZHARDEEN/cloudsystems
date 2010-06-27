@@ -4,6 +4,7 @@ package br.com.mcampos.controller.user.client;
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.ClientDTO;
+import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -169,13 +170,15 @@ public class CompanyClientController extends LoggedBaseController
             model.remove( dto );
     }
 
-    public void onClick$cmdCollaborator()
+    public void onClick$cmdCollaborator() throws ApplicationException
     {
         if ( getListbox().getSelectedItem() == null ) {
             showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
             return;
         }
-        setParameter( clientParamName, getListbox().getSelectedItem().getValue() );
+        ClientDTO client = ( ClientDTO )getListbox().getSelectedItem().getValue();
+        CompanyDTO company = getSession().get( getLoggedInUser(), client.getCompanyId() );
+        setParameter( clientParamName, company );
         gotoPage( collaboratorPage, getRootParent().getParent() );
     }
 

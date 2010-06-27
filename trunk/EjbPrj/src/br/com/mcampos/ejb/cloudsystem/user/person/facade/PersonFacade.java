@@ -34,4 +34,5 @@ public interface PersonFacade extends Serializable
 
     PersonDTO updateMyRecord( AuthenticationDTO auth, PersonDTO dto ) throws ApplicationException;
 
+    PersonDTO get( AuthenticationDTO auth, String document, Integer docTpe ) throws ApplicationException;
 }

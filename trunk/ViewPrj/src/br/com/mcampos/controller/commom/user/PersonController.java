@@ -14,6 +14,7 @@ import br.com.mcampos.dto.user.attributes.GenderDTO;
 import br.com.mcampos.dto.user.attributes.TitleDTO;
 import br.com.mcampos.ejb.cloudsystem.user.person.facade.PersonFacade;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.CPF;
 
 import java.sql.Timestamp;
@@ -47,7 +48,6 @@ public abstract class PersonController extends UserController
     private Combobox bornCountry;
 
     private PersonDTO currentDTO;
-
 
     /*
      * TODO: implementar dependentes ao cadastro.
@@ -151,8 +151,8 @@ public abstract class PersonController extends UserController
         dto.setName( name.getValue() );
         dto.setBirthDate( new Timestamp( birthdate.getValue().getTime() ) );
         dto.setBornCity( bornCity.getSelectedItem() != null ? ( CityDTO )bornCity.getSelectedItem().getValue() : null );
-        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem()
-                           .getValue() : null );
+        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() :
+                           null );
         dto.setFatherName( fatherName.getValue() );
         dto.setGender( gender.getSelectedItem() != null ? ( GenderDTO )gender.getSelectedItem().getValue() : null );
         dto.setMotherName( motherName.getValue() );
@@ -161,23 +161,6 @@ public abstract class PersonController extends UserController
         addAddresses( dto );
         addContacts( dto );
         addDocuments( dto );
-
-        /*
-        AuthenticationDTO currentUser = getLoggedInUser();
-        try {
-            if ( getLoginLocator().getStatus( currentUser ) == UserStatusDTO.statusFullfillRecord ) {
-                getLoginLocator().setStatus( currentUser, UserStatusDTO.statusOk );
-                setLoggedInUser( currentUser );
-                Executions.sendRedirect( "/private/index.zul" );
-                return false;
-            }
-            return true;
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage() );
-            return false;
-        }
-        */
         return true;
     }
 
@@ -363,6 +346,24 @@ public abstract class PersonController extends UserController
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage() );
             return Collections.emptyList();
+        }
+    }
+
+    public void onBlur$cpf()
+    {
+        String document;
+
+        document = cpf.getValue();
+        if ( SysUtils.isEmpty( document ) == false ) {
+            try {
+                PersonDTO dto = getSession().get( getLoggedInUser(), document, DocumentTypeDTO.typeCPF );
+                if ( dto != null ) {
+                    showInfo( dto );
+                }
+            }
+            catch ( Exception e ) {
+                showErrorMessage( e.getMessage() );
+            }
         }
     }
 }
