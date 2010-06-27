@@ -12,6 +12,7 @@ import br.com.mcampos.dto.user.attributes.CompanyTypeDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.user.company.facade.CompanyFacade;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.CNPJ;
 
 import java.util.Collections;
@@ -214,12 +215,11 @@ public abstract class CompanyController extends UserController
         String document;
 
         document = cnpj.getValue();
-
-        if ( ( document != null ) && ( document.isEmpty() == false ) ) {
+        if ( SysUtils.isEmpty( document ) == false ) {
             try {
                 CompanyDTO dto = searchByDocument( document, DocumentTypeDTO.typeCNPJ );
                 if ( dto != null ) {
-                    showInfo( ( CompanyDTO )dto );
+                    showInfo( dto );
                 }
             }
             catch ( Exception e ) {

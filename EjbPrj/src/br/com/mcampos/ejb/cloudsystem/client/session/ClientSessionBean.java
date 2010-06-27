@@ -84,4 +84,9 @@ public class ClientSessionBean extends Crud<ClientPK, Client> implements ClientS
         Client c = ( Client )getSingleResult( Client.getClient, param );
         return c;
     }
+
+    public Client get( Company myCompany, Users client ) throws ApplicationException
+    {
+        return getClient( myCompany, client );
+    }
 }

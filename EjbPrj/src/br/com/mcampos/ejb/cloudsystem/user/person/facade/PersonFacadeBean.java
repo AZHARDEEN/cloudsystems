@@ -3,7 +3,9 @@ package br.com.mcampos.ejb.cloudsystem.user.person.facade;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.PersonDTO;
+import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.attributes.CivilStateDTO;
+import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.dto.user.attributes.GenderDTO;
 import br.com.mcampos.ejb.cloudsystem.user.UserFacadeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.CivilStateUtil;
@@ -12,6 +14,9 @@ import br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.session.CivilSta
 import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.GenderUtil;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.session.GenderSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
+import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
+import br.com.mcampos.ejb.cloudsystem.user.document.session.UserDocumentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
@@ -49,6 +54,9 @@ public class PersonFacadeBean extends UserFacadeUtil implements PersonFacade
 
     @EJB
     private NewPersonSessionLocal personSession;
+
+    @EJB
+    private UserDocumentSessionLocal userDocumentSession;
 
     public PersonFacadeBean()
     {
@@ -111,4 +119,15 @@ public class PersonFacadeBean extends UserFacadeUtil implements PersonFacade
     }
 
 
+    public PersonDTO get( AuthenticationDTO auth, String document, Integer docTpe ) throws ApplicationException
+    {
+        authenticate( auth );
+        UserDocumentDTO doc = new UserDocumentDTO();
+        doc.setCode( document );
+        doc.setDocumentType( new DocumentTypeDTO( docTpe ) );
+        UserDocument userDocument = userDocumentSession.find( doc );
+        if ( userDocument == null || userDocument.getUser() instanceof Company )
+            return null;
+        return PersonUtil.copy( ( Person )userDocument.getUser() );
+    }
 }

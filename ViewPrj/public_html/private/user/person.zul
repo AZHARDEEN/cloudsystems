@@ -14,28 +14,24 @@
                 );
             ]]>
         </script>
-        <panel border="normal" title="Cadastro" width="100%" id="main">
-            <panelchildren>
-                <div align="left">
-                    <tabbox id="registerTab">
-                        <tabs>
-                            <tab label="Dados Pessoais"/>
-                            <tab label="Endereço"/>
-                            <tab label="Documentos"/>
-                            <tab label="Contatos"/>
-                        </tabs>
-                        <tabpanels>
-                            <tabpanel fulfill="=/private/templates/personal.zul"></tabpanel>
-                            <tabpanel fulfill="=/private/templates/address.zul"></tabpanel>
-                            <tabpanel fulfill="=/private/templates/document.zul"></tabpanel>
-                            <tabpanel fulfill="=/private/templates/contact.zul"></tabpanel>
-                        </tabpanels>
-                    </tabbox>
-                </div>
-                <separator/>
-                <div fulfill="=/resources/submit_cancel.zul"/>
-            </panelchildren>
-        </panel>
+        <div align="left">
+            <tabbox id="registerTab">
+                <tabs>
+                    <tab label="Dados Pessoais"/>
+                    <tab label="Endereço"/>
+                    <tab label="Documentos"/>
+                    <tab label="Contatos"/>
+                </tabs>
+                <tabpanels>
+                    <tabpanel fulfill="=/private/templates/personal.zul"></tabpanel>
+                    <tabpanel fulfill="=/private/templates/address.zul"></tabpanel>
+                    <tabpanel fulfill="=/private/templates/document.zul"></tabpanel>
+                    <tabpanel fulfill="=/private/templates/contact.zul"></tabpanel>
+                </tabpanels>
+            </tabbox>
+        </div>
+        <separator/>
+        <div fulfill="=/resources/submit_cancel.zul"/>
     </div>
 </zk>
 

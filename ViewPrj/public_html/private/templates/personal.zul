@@ -19,14 +19,12 @@
             </columns>
             <rows>
                 <row>
-                    <label value="Nome Completo"/>
-                    <textbox id="name" width="99%" maxlength="128"/>
+                    <label value="CPF"/>
+                    <textbox id="cpf" width="200px" maxlength="14"/>
                 </row>
                 <row>
-                    <label value="CPF"/>
-                    <hbox>
-                        <textbox id="cpf" width="200px" maxlength="14"/>
-                    </hbox>
+                    <label value="Nome Completo"/>
+                    <textbox id="name" width="99%" maxlength="128"/>
                 </row>
                 <row>
                     <label value="Sexo"/>

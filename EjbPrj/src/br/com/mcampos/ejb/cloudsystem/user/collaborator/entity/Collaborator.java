@@ -7,7 +7,7 @@ import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 
 import java.io.Serializable;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 @Entity
@@ -47,17 +49,19 @@ public class Collaborator implements Serializable
 
 
     @Column( name = "col_from_dt", nullable = false )
-    private Timestamp fromDate;
+    @Temporal( value = TemporalType.TIMESTAMP )
+    private Date fromDate;
 
     @Column( name = "col_id_in", nullable = false, insertable = false, updatable = false )
     private Integer collaboratorId;
 
     @Id
     @Column( name = "col_seq_in", nullable = false )
-    private Integer collaboratorSequence;
+    private Integer sequence;
 
     @Column( name = "col_to_dt" )
-    private Timestamp toDate;
+    @Temporal( value = TemporalType.TIMESTAMP )
+    private Date toDate;
 
     @Column( name = "cps_id_in", nullable = false )
     private Integer companyPosition;
@@ -83,12 +87,12 @@ public class Collaborator implements Serializable
     }
 
 
-    public Timestamp getFromDate()
+    public Date getFromDate()
     {
         return fromDate;
     }
 
-    public void setFromDate( Timestamp col_from_dt )
+    public void setFromDate( Date col_from_dt )
     {
         this.fromDate = col_from_dt;
     }
@@ -103,12 +107,12 @@ public class Collaborator implements Serializable
         this.collaboratorId = col_id_in;
     }
 
-    public Timestamp getToDate()
+    public Date getToDate()
     {
         return toDate;
     }
 
-    public void setToDate( Timestamp col_to_dt )
+    public void setToDate( Date col_to_dt )
     {
         this.toDate = col_to_dt;
     }
@@ -167,13 +171,13 @@ public class Collaborator implements Serializable
         return person;
     }
 
-    public void setCollaboratorSequence( Integer collaboratorSequence )
+    public void setSequence( Integer collaboratorSequence )
     {
-        this.collaboratorSequence = collaboratorSequence;
+        this.sequence = collaboratorSequence;
     }
 
-    public Integer getCollaboratorSequence()
+    public Integer getSequence()
     {
-        return collaboratorSequence;
+        return sequence;
     }
 }

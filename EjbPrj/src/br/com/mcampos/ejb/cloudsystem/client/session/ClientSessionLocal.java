@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.client.session;
 
 import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
 import br.com.mcampos.ejb.cloudsystem.client.entity.ClientPK;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -21,6 +22,8 @@ public interface ClientSessionLocal extends Serializable
     void delete( ClientPK key ) throws ApplicationException;
 
     Client get( ClientPK key ) throws ApplicationException;
+
+    Client get( Company myCompany, Users client ) throws ApplicationException;
 
     List<Client> getAll( Company company ) throws ApplicationException;
 

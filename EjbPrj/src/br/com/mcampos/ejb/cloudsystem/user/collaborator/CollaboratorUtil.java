@@ -49,7 +49,7 @@ public class CollaboratorUtil
 
         dto.setCompany( UserUtil.copy( entity.getCompany() ) );
         dto.setCollaborator( UserUtil.copy( entity.getPerson() ) );
-        dto.setSequence( entity.getCollaboratorSequence() );
+        dto.setSequence( entity.getSequence() );
         return dto;
     }
 }

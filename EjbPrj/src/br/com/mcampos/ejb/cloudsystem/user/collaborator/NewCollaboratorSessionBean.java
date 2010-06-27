@@ -13,6 +13,7 @@ import br.com.mcampos.exception.ApplicationException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -83,4 +84,10 @@ public class NewCollaboratorSessionBean extends Crud<CollaboratorPK, Collaborato
         return get( company, person );
     }
 
+    @Override
+    public Collaborator add( Collaborator entity ) throws ApplicationException
+    {
+        entity.setFromDate( new Date() );
+        return super.add( entity );
+    }
 }
