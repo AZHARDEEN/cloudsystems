@@ -23,11 +23,15 @@ public class CollaboratorType implements Serializable
     public static final String getAll = "CollaboratorType.findAll";
     public static final String nextId = "CollaboratorType.nextId";
 
-    @Column( name = "clt_description_ch", nullable = false )
+    @Column( name = "clt_description_ch", nullable = false, length = 32 )
     private String description;
+
     @Id
     @Column( name = "clt_id_in", nullable = false )
     private Integer id;
+
+    @Column( name = "clt_inherit_role_bt", nullable = true )
+    private Boolean inheritRole;
 
     public CollaboratorType()
     {
@@ -56,5 +60,15 @@ public class CollaboratorType implements Serializable
     public void setId( Integer id )
     {
         this.id = id;
+    }
+
+    public void setInheritRole( Boolean inheritRole )
+    {
+        this.inheritRole = inheritRole;
+    }
+
+    public Boolean getInheritRole()
+    {
+        return inheritRole;
     }
 }

@@ -33,4 +33,6 @@ public interface NewCollaboratorSessionLocal extends Serializable
     Collaborator get( Company company, Person person ) throws ApplicationException;
 
     List<Collaborator> get( Users user ) throws ApplicationException;
+
+    List<Collaborator> get( Users user, Integer collaboratorType ) throws ApplicationException;
 }

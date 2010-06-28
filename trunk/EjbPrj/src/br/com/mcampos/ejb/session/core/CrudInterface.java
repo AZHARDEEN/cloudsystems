@@ -16,6 +16,8 @@ public interface CrudInterface<KEY, ENTITY> extends Serializable
 
     void delete( Class<ENTITY> eClass, KEY key ) throws ApplicationException;
 
+    void delete( ENTITY entity ) throws ApplicationException;
+
     ENTITY get( Class<ENTITY> eClass, KEY key ) throws ApplicationException;
 
     List<ENTITY> getAll( String namedQuery ) throws ApplicationException;

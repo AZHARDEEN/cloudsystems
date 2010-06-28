@@ -58,6 +58,14 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         getEntityManager().remove( toDelete );
     }
 
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    public void delete( ENTITY entity ) throws ApplicationException
+    {
+        if ( entity != null )
+            getEntityManager().remove( entity );
+    }
+
+
     public List<ENTITY> getAll( String namedQuery ) throws ApplicationException
     {
         if ( namedQuery == null )

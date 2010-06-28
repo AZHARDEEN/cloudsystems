@@ -4,6 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.user.collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.CollaboratorPK;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.role.session.CollaboratorRoleSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
@@ -32,13 +33,27 @@ public class NewCollaboratorSessionBean extends Crud<CollaboratorPK, Collaborato
     @EJB
     private CompanySessionLocal companySession;
 
+    @EJB
+    private CollaboratorRoleSessionLocal collaboratorRoleSession;
+
     public NewCollaboratorSessionBean()
     {
     }
 
     public void delete( CollaboratorPK key ) throws ApplicationException
     {
-        delete( Collaborator.class, key );
+        Collaborator collaborator = get( key );
+        if ( collaborator != null ) {
+            collaborator.setToDate( new Date() );
+            removeRoles( collaborator );
+        }
+    }
+
+    private void removeRoles( Collaborator collaborator ) throws ApplicationException
+    {
+        if ( collaborator == null )
+            return;
+        collaboratorRoleSession.delete( collaborator );
     }
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
@@ -71,6 +86,15 @@ public class NewCollaboratorSessionBean extends Crud<CollaboratorPK, Collaborato
         return ( List<Collaborator> )getResultList( Collaborator.getAllCompanyCollaborator, user );
     }
 
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public List<Collaborator> get( Users user, Integer collaboratorType ) throws ApplicationException
+    {
+        ArrayList<Object> param = new ArrayList<Object>( 2 );
+        param.add( user );
+        param.add( collaboratorType );
+        return ( List<Collaborator> )getResultList( Collaborator.getAllCompanyCollaboratorType, param );
+    }
+
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public Collaborator get( Integer companyId, Integer userId ) throws ApplicationException
@@ -88,6 +112,14 @@ public class NewCollaboratorSessionBean extends Crud<CollaboratorPK, Collaborato
     public Collaborator add( Collaborator entity ) throws ApplicationException
     {
         entity.setFromDate( new Date() );
-        return super.add( entity );
+        entity.setSequence( nextSequence( entity.getCompany() ) );
+        entity = super.add( entity );
+        collaboratorRoleSession.setDefaultRoles( entity );
+        return entity;
+    }
+
+    private Integer nextSequence( Company company ) throws ApplicationException
+    {
+        return nextIntegerId( Collaborator.nextSequence, company );
     }
 }

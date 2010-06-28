@@ -31,6 +31,7 @@ public final class CollaboratorTypeUtil
         if ( dto == null )
             return null;
         entity.setDescription( dto.getDescription() );
+        entity.setInheritRole( dto.getInheritRole() );
         return entity;
     }
 
@@ -39,6 +40,7 @@ public final class CollaboratorTypeUtil
         if ( entity == null )
             return null;
         CollaboratorTypeDTO dto = new CollaboratorTypeDTO( entity.getId(), entity.getDescription() );
+        dto.setInheritRole( entity.getInheritRole() );
         return dto;
     }
 

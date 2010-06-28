@@ -28,7 +28,8 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries( { @NamedQuery( name = Role.roleGetAll, query = "select o from Role o" ),
                  @NamedQuery( name = Role.roleGetRoot, query = "select o from Role o where o.id = 1" ),
-                 @NamedQuery( name = Role.roleGetChilds, query = "select o from Role o where o.parentRole = ?1" ) } )
+                 @NamedQuery( name = Role.roleGetChilds, query = "select o from Role o where o.parentRole = ?1" ),
+                 @NamedQuery( name = Role.roleDefaults, query = "select o from Role o where o.isDefault = true" ) } )
 @NamedNativeQueries( { @NamedNativeQuery( name = Role.roleMaxId,
                                           query = "select coalesce ( max (  rol_id_in ), 0 ) + 1 from role" ) } )
 @Table( name = "role" )
@@ -40,6 +41,7 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>, Compara
     public static final String roleGetRoot = "Role.getRoot";
     public static final String roleGetChilds = "Role.getChilds";
     public static final String roleMaxId = "Role.maxId";
+    public static final String roleDefaults = "Role.getDefaultRoles";
 
     @Column( name = "rol_description_ch", nullable = false )
     private String description;
@@ -54,6 +56,9 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>, Compara
 
     @OneToMany( mappedBy = "parentRole", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH )
     private List<Role> childRoles;
+
+    @Column( name = "rol_default_bt", nullable = true )
+    private Boolean isDefault;
 
     @OneToMany( mappedBy = "role", fetch = FetchType.EAGER )
     private List<PermissionAssignment> permissionAssignmentList;
@@ -173,4 +178,13 @@ public class Role implements Serializable, EntityCopyInterface<RoleDTO>, Compara
             return false;
     }
 
+    public void setAsDefault( Boolean isDefault )
+    {
+        this.isDefault = isDefault;
+    }
+
+    public Boolean isDefault()
+    {
+        return isDefault;
+    }
 }

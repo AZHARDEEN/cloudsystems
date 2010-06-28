@@ -25,6 +25,7 @@ public class CollaboratorController extends LoggedBaseController
     public static final String clientParamName = "client";
     private static final String addPage = "/private/user/collaborator/add_collaborator.zul";
     private static final String updatePage = "/private/user/collaborator/update_collaborator.zul";
+    private static final String rolePage = "/private/user/collaborator/collaborator_role.zul";
 
     private CollaboratorFacade session;
 
@@ -32,6 +33,8 @@ public class CollaboratorController extends LoggedBaseController
     private Listheader listHeaderCode;
     private Listheader listHeaderName;
     private Listheader headerId;
+
+    private Button cmdManageRoles;
 
     private CompanyDTO company;
 
@@ -86,6 +89,8 @@ public class CollaboratorController extends LoggedBaseController
         setLabel( cmdDelete );
         setLabel( cmdRefresh );
 
+        setLabel( cmdManageRoles );
+
     }
 
     @Override
@@ -138,7 +143,14 @@ public class CollaboratorController extends LoggedBaseController
             showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
             return;
         }
-        getSession();
+        try {
+            getSession().delete( getLoggedInUser(), dto );
+            ListModelList model = getModel();
+            model.remove( dto );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
+        }
     }
 
     public void onClick$cmdRefresh() throws ApplicationException
@@ -146,20 +158,40 @@ public class CollaboratorController extends LoggedBaseController
         refresh();
     }
 
+
+    public void onClick$cmdManageRoles() throws ApplicationException
+    {
+        if ( getListbox().getSelectedItem() == null ) {
+            showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
+            return;
+        }
+        CollaboratorDTO client = getCurrentRecord();
+        if ( client != null ) {
+            setParameter( "collaborator", client );
+            gotoPage( rolePage, getRootParent().getParent() );
+        }
+    }
+
     private void refresh() throws ApplicationException
     {
         if ( company == null )
             return;
         List<CollaboratorDTO> list = getSession().getCollaborators( getLoggedInUser(), company.getId() );
+        ListModelList model = getModel();
+        model.clear();
+        if ( SysUtils.isEmpty( list ) == false ) {
+            model.addAll( list );
+        }
+    }
+
+    private ListModelList getModel()
+    {
         ListModelList model = ( ListModelList )listboxRecord.getModel();
         if ( model == null ) {
             model = new ListModelList( new ArrayList<CollaboratorDTO>(), true );
             listboxRecord.setModel( model );
         }
-        model.clear();
-        if ( SysUtils.isEmpty( list ) == false ) {
-            model.addAll( list );
-        }
+        return model;
     }
 
     private CollaboratorDTO getCurrentRecord()

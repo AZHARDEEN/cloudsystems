@@ -31,6 +31,8 @@
                             <toolbarbutton id="cmdDelete" image="/img/icontexto-webdev-remove-016x016.png" label="##"/>
                             <separator bar="true" orient="vertical"/>
                             <toolbarbutton id="cmdRefresh" label="##" image="/img/icontexto-webdev-reload-016x016.png"/>
+                            <separator bar="true" orient="vertical"/>
+                            <toolbarbutton id="cmdManageRoles" label="##"/>
                         </toolbar>
                     </div>
                     <listbox id="listboxRecord" vflex="true">

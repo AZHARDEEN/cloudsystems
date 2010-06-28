@@ -262,6 +262,7 @@ public class RoleController extends SecutityBaseController implements IDropEvent
         setLabel( tabData );
         setLabel( tabFreeTasks );
         setLabel( treeColTask );
+        setLabel( removeTask );
     }
 
     public void onDrop( DropEvent evt )
@@ -365,9 +366,10 @@ public class RoleController extends SecutityBaseController implements IDropEvent
     {
         RoleDTO role = ( RoleDTO )getTree().getSelectedItem().getValue();
         try {
-            loadTasks(role);
-        } catch (ApplicationException e) {
-            showErrorMessage(e.getMessage());
+            loadTasks( role );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
         }
     }
 }

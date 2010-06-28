@@ -27,18 +27,14 @@ import javax.persistence.TemporalType;
 @NamedQueries( { @NamedQuery( name = "Collaborator.findAll", query = "select o from Collaborator o where o.toDate is null " ),
                  @NamedQuery( name = Collaborator.getAllCompanyCollaborator,
                               query = "select o from Collaborator o where o.company = ?1 and o.toDate is null" ),
-                 @NamedQuery( name = "Collaborator.isManager",
-                              query = "select o.collaboratorId from Collaborator o where o.company.id = :companyId and o.collaboratorType.id = 1 and o.person.id = :personId and ( o.toDate is null or o.toDate >= CURRENT_TIMESTAMP )" ),
+                 @NamedQuery( name = Collaborator.getAllCompanyCollaboratorType,
+                              query = "select o from Collaborator o where o.company = ?1 and o.collaboratorType.id = ?2 and o.toDate is null" ),
                  @NamedQuery( name = Collaborator.hasCollaborator,
                               query = "select o from Collaborator o where o.company = ?1 and o.person = ?2 and o.toDate is null " ),
                  @NamedQuery( name = Collaborator.findCompanies,
                               query = "select o from Collaborator o where o.person.id = ?1 and o.collaboratorType.id = 1 and o.toDate is null" ),
-                 @NamedQuery( name = "Collaborator.countBusinessEntity",
-                              query = "select count(o) from Collaborator o where o.person.id = :personId and o.collaboratorType.id = 1 and ( o.toDate is null or o.toDate >= CURRENT_TIMESTAMP ) " ),
-                 @NamedQuery( name = "Collaborator.getBusinessList",
-                              query = "select o from Collaborator o where o.collaboratorType.id = 1 and o.person.id = :personId and ( o.toDate is null or o.toDate >= CURRENT_TIMESTAMP )" ),
-                 @NamedQuery( name = "Collaborator.getBusiness",
-                              query = "select o from Collaborator o where o.company.id = :companyId and o.collaboratorType.id = 1 and o.person.id = :personId and ( o.toDate is null or o.toDate >= CURRENT_TIMESTAMP )" ) } )
+                 @NamedQuery( name = Collaborator.nextSequence,
+                              query = "select max(o.sequence) from Collaborator o where o.company = ?1" ) } )
 @Table( name = "collaborator" )
 @IdClass( CollaboratorPK.class )
 public class Collaborator implements Serializable
@@ -46,6 +42,8 @@ public class Collaborator implements Serializable
     public static final String findCompanies = "Collaborator.findCompanies";
     public static final String hasCollaborator = "Collaborator.hasCollaborator";
     public static final String getAllCompanyCollaborator = "Collaborator.getAllCompanyCollaborator";
+    public static final String getAllCompanyCollaboratorType = "Collaborator.getAllCompanyCollaboratorType";
+    public static final String nextSequence = "Collaborator.nextSequence";
 
 
     @Column( name = "col_from_dt", nullable = false )
