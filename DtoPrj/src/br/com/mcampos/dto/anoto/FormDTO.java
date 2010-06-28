@@ -21,8 +21,6 @@ public class FormDTO extends SimpleTableDTO
     private String imagePath;
     private Boolean concatenatePgc;
 
-    private LinkedUserDTO company;
-
     public FormDTO( SimpleTableDTO simpleTableDTO )
     {
         super( simpleTableDTO );
@@ -104,17 +102,5 @@ public class FormDTO extends SimpleTableDTO
         if ( concatenatePgc == null )
             concatenatePgc = false;
         return concatenatePgc;
-    }
-
-    public void setCompany( LinkedUserDTO company )
-    {
-        this.company = company;
-        if ( this.company != null )
-            this.company.setLinkCode( this );
-    }
-
-    public LinkedUserDTO getCompany()
-    {
-        return company;
     }
 }

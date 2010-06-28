@@ -65,5 +65,14 @@ public interface AnotoFormFacade extends Serializable
 
     List<MediaDTO> getMedias( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
 
-    ListUserDTO findUser( AuthenticationDTO auth, Integer userId ) throws ApplicationException;
+    List<ListUserDTO> getCompanies( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
+    /*
+     * FUNCOES USADAS EM SELECIONAR CLIENTE (PESSOA JUDIRICA)
+     */
+
+    ListUserDTO getCompany( AuthenticationDTO auth, FormDTO form, Integer userId ) throws ApplicationException;
+
+    void addCompany( AuthenticationDTO auth, FormDTO form, ListUserDTO dto ) throws ApplicationException;
+
+    void deleteCompany( AuthenticationDTO auth, FormDTO form, ListUserDTO dto ) throws ApplicationException;
 }

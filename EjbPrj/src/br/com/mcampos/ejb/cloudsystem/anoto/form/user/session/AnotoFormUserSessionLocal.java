@@ -7,6 +7,8 @@ import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 
@@ -15,7 +17,11 @@ public interface AnotoFormUserSessionLocal extends Serializable
 {
     AnotoFormUser add( AnotoFormUser entity ) throws ApplicationException;
 
+    AnotoFormUser add( Integer formId, Integer companyId ) throws ApplicationException;
+
     void delete( AnotoFormUserPK key ) throws ApplicationException;
 
-    AnotoFormUser get( Integer formId ) throws ApplicationException;
+    void delete( Integer formId, Integer companyId ) throws ApplicationException;
+
+    List<AnotoFormUser> get( Integer formId ) throws ApplicationException;
 }

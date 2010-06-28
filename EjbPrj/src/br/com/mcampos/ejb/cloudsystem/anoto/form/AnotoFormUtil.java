@@ -1,15 +1,18 @@
 package br.com.mcampos.ejb.cloudsystem.anoto.form;
 
+
 import br.com.mcampos.dto.anoto.FormDTO;
+import br.com.mcampos.dto.user.ListUserDTO;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.user.entity.AnotoFormUser;
+import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
+import br.com.mcampos.sysutils.SysUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class AnotoFormUtil
 {
-    public AnotoFormUtil()
-    {
-        super();
-    }
-
-
     public static AnotoForm createEntity( FormDTO source )
     {
         if ( source == null )
@@ -32,4 +35,14 @@ public class AnotoFormUtil
         return target;
     }
 
+
+    public static List<ListUserDTO> toListUserDTO( List<AnotoFormUser> list )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        List<ListUserDTO> dtos = new ArrayList<ListUserDTO>( list.size() );
+        for ( AnotoFormUser item : list )
+            dtos.add( UserUtil.copy( item.getCompany() ) );
+        return dtos;
+    }
 }

@@ -44,10 +44,6 @@
                                     <label id="recordDescription"/>
                                 </row>
                                 <row>
-                                    <label id="labelFormUser" value="##"/>
-                                    <label id="recordFormUser"/>
-                                </row>
-                                <row>
                                     <label id="labelIcrImage" value="##"/>
                                     <label id="recordIcrImage"/>
                                 </row>
@@ -84,18 +80,6 @@
                                     <textbox id="editDescription" width="99%" value=""/>
                                 </row>
                                 <row>
-                                    <label id="labelEditFormUser" value="##"/>
-                                    <vbox width="100%">
-                                        <hbox width="100%">
-                                            <label id="labelUserCode" value="##" width="100px"/>
-                                            <intbox id="editUserId" width="100px"/>
-                                        </hbox>
-                                        <hbox width="100%">
-                                            <textbox id="editUserName" width="400px"/>
-                                        </hbox>
-                                    </vbox>
-                                </row>
-                                <row>
                                     <label id="labelEditIcrImage" value="##"/>
                                     <checkbox id="editIcrImage" width="99%" checked="false"/>
                                 </row>
@@ -118,6 +102,7 @@
                             <tabbox id="associationTab">
                                 <tabs>
                                     <tab label="##" id="tabPadFile"/>
+                                    <tab label="##" id="tabFormUsers"/>
                                     <tab label="##" id="tabPen"/>
                                     <tab label="##" id="tabOtherFiles"/>
                                 </tabs>
@@ -137,6 +122,20 @@
                                         <listbox id="listAttachs" fixedLayout="true" height="200px">
                                             <listhead sizable="true">
                                                 <listheader align="left" label="Nome" id="listHeaderName"/>
+                                            </listhead>
+                                        </listbox>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <toolbar>
+                                            <toolbarbutton id="btnAddUser" label="##" disabled="true" upload="true,native"
+                                                           image="/img/icontexto-webdev-add-016x016.png"/>
+                                            <toolbarbutton id="btnRemoveUser" label="##" disabled="true"
+                                                           image="/img/icontexto-webdev-remove-016x016.png"/>
+                                        </toolbar>
+                                        <listbox id="listUsers" fixedLayout="true" height="200px">
+                                            <listhead sizable="true">
+                                                <listheader align="left" label="Código" id="listUserCode" width="20%"/>
+                                                <listheader align="left" label="Nome" id="listUserName"/>
                                             </listhead>
                                         </listbox>
                                     </tabpanel>

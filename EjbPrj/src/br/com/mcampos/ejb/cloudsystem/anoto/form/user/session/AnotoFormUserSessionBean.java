@@ -11,7 +11,9 @@ import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -44,13 +46,19 @@ public class AnotoFormUserSessionBean extends Crud<AnotoFormUserPK, AnotoFormUse
     @Override
     public AnotoFormUser add( AnotoFormUser entity ) throws ApplicationException
     {
-        AnotoForm form = formSession.get( entity.getFormId() );
-        Company company = companySession.get( entity.getUserId() );
-        entity.setForm( form );
-        entity.setCompany( company );
         entity.setFromDate( new Date() );
         entity.setSequence( nextSequence( entity.getForm() ) );
         return super.add( entity );
+    }
+
+    public AnotoFormUser add( Integer formId, Integer companyId ) throws ApplicationException
+    {
+        AnotoFormUser entity = new AnotoFormUser();
+        AnotoForm form = formSession.get( formId );
+        Company company = companySession.get( companyId );
+        entity.setForm( form );
+        entity.setCompany( company );
+        return add( entity );
     }
 
     private Integer nextSequence( AnotoForm form ) throws ApplicationException
@@ -61,8 +69,27 @@ public class AnotoFormUserSessionBean extends Crud<AnotoFormUserPK, AnotoFormUse
         return id;
     }
 
-    public AnotoFormUser get( Integer formId ) throws ApplicationException
+    public List<AnotoFormUser> get( Integer formId ) throws ApplicationException
     {
-        return ( AnotoFormUser )getSingleResult( AnotoFormUser.getFormUser, formId );
+        return ( List<AnotoFormUser> )getResultList( AnotoFormUser.getFormUser, formId );
+    }
+
+    public List<AnotoFormUser> get( Integer formId, Integer companyId ) throws ApplicationException
+    {
+        ArrayList<Object> param = new ArrayList<Object>( 2 );
+        param.add( formId );
+        param.add( companyId );
+        return ( List<AnotoFormUser> )getResultList( AnotoFormUser.getUser, param );
+    }
+
+
+    public void delete( Integer formId, Integer companyId ) throws ApplicationException
+    {
+        List<AnotoFormUser> users = get( formId, companyId );
+        if ( SysUtils.isEmpty( users ) == false ) {
+            for ( AnotoFormUser user : users ) {
+                user.setToDate( new Date() );
+            }
+        }
     }
 }

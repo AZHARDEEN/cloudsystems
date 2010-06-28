@@ -9,6 +9,7 @@ import br.com.mcampos.controller.anoto.renderer.AnotoFormListRenderer;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PenListRenderer;
 import br.com.mcampos.controller.anoto.util.PadFile;
+import br.com.mcampos.controller.user.UserListRenderer;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.FormDTO;
@@ -32,6 +33,7 @@ import java.util.Set;
 
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.DropEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -42,7 +44,6 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Fileupload;
-import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -52,6 +53,7 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Panel;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 
 public class AnotoFormController extends SimpleTableController<FormDTO>
@@ -66,17 +68,22 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     private Button btnProperties;
     private Button btnExport;
     private Button btnExportOther;
+    private Button btnAddUser;
+    private Button btnRemoveUser;
 
     private Listbox listAttachs;
     private Listbox listAttachsOther;
     private Listbox listAvailable;
     private Listbox listAdded;
+    private Listbox listUsers;
 
     private Listheader headerApplication;
     private Listheader listHeaderName;
     private Listheader listHeadeCodeAvailable;
     private Listheader listHeaderCode;
     private Listheader listHeaderNameOther;
+    private Listheader listUserCode;
+    private Listheader listUserName;
 
 
     private Label labelAnotoFormTitle;
@@ -97,6 +104,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
 
     private Panel panelLinks;
     private Tab tabPadFile;
+    private Tab tabFormUsers;
     private Tab tabPen;
     private Tab tabOtherFiles;
 
@@ -109,12 +117,8 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     private Label recordImagePath;
     private Label recordIcrImage;
     private Label recordConcatPgc;
-    private Label recordFormUser;
     private Textbox editIP;
     private Label recordIP;
-    private Intbox editUserId;
-    private Textbox editUserName;
-    private ListUserDTO formUser;
 
 
     public AnotoFormController()
@@ -144,10 +148,11 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     private void clearAllFormLists()
     {
         try {
-            listAdded.getChildren().clear();
-            listAttachs.getChildren().clear();
-            listAvailable.getChildren().clear();
-            listAttachsOther.getChildren().clear();
+            listAdded.getItems().clear();
+            listAttachs.getItems().clear();
+            listAvailable.getItems().clear();
+            listAttachsOther.getItems().clear();
+            listUsers.getItems().clear();
         }
         catch ( Exception e ) {
             e = null;
@@ -218,6 +223,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         btnRemoveAttach.setDisabled( true );
         btnRemoveAttachOther.setDisabled( true );
         btnProperties.setDisabled( true );
+        btnAddUser.setDisabled( true );
         return getSession().getForms( getLoggedInUser() );
     }
 
@@ -230,11 +236,10 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         btnRemoveAttach.setDisabled( true );
         btnRemoveAttachOther.setDisabled( true );
         btnProperties.setDisabled( true );
+        btnAddUser.setDisabled( true );
         editIcrImage.setChecked( false );
         editConcatPgc.setChecked( false );
         editImagePath.setText( "" );
-        editUserId.setValue( 0 );
-        editUserName.setValue( "" );
     }
 
     @Override
@@ -247,15 +252,6 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         editIcrImage.setChecked( dto.getIcrImage() );
         editImagePath.setText( dto.getImagePath() );
         editConcatPgc.setChecked( dto.getConcatenatePgc() );
-        if ( dto.getCompany() != null && dto.getCompany().getUser() != null ) {
-            ListUserDTO user = dto.getCompany().getUser();
-            editUserId.setValue( user.getId() );
-            editUserName.setValue( user.getDisplayName() );
-        }
-        else {
-            editUserId.setValue( 0 );
-            editUserName.setValue( "" );
-        }
         return dto;
     }
 
@@ -285,6 +281,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             listAttachs.setModel( getMediaModel( formDTO ) );
             refreshPens( formDTO );
             refreshOtherAttachs( formDTO );
+            refreshUsers( formDTO );
         }
         else {
             clearRecordInfo();
@@ -293,12 +290,11 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
         btnAddAttach.setDisabled( record == null );
         btnAddAttachOther.setDisabled( record == null );
+        btnAddUser.setDisabled( record == null );
         recordIP.setValue( formDTO != null ? formDTO.getApplication() : "" );
         recordIcrImage.setValue( formDTO != null ? formDTO.getIcrImage().toString() : "" );
         recordConcatPgc.setValue( formDTO != null ? formDTO.getConcatenatePgc().toString() : "" );
         recordImagePath.setValue( formDTO != null ? formDTO.getImagePath() : "" );
-        recordFormUser.setValue( ( formDTO != null && formDTO.getCompany() != null ) ?
-                                 formDTO.getCompany().getUser().getDisplayName() : "" );
     }
 
     public void onUpload$btnAddAttach( UploadEvent evt )
@@ -364,6 +360,9 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         }
         if ( listAttachsOther != null ) {
             listAttachsOther.setItemRenderer( new MediaListRenderer() );
+        }
+        if ( listUsers != null ) {
+            listUsers.setItemRenderer( new UserListRenderer() );
         }
         if ( listAvailable != null ) {
             listAvailable.setItemRenderer( ( new PenListRenderer() ).setDraggable( true ) );
@@ -541,8 +540,10 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     {
         FormDTO currentForm = getValue( getListboxRecord().getSelectedItem() );
         Set selected = listAttachs.getSelectedItems();
-        if ( selected.isEmpty() )
+        if ( selected.isEmpty() ) {
+            showErrorMessage( "noCurrentRecordMessage" );
             return;
+        }
         List al = new ArrayList( selected );
         PadFile padFile = new PadFile( currentForm );
         try {
@@ -555,6 +556,7 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
             }
             btnRemoveAttach.setDisabled( true );
             btnProperties.setDisabled( true );
+            btnRemoveUser.setDisabled( true );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Remover Media" );
@@ -568,22 +570,71 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         btnProperties.setDisabled( false );
     }
 
+    public void onSelect$listUsers()
+    {
+        btnRemoveUser.setDisabled( false );
+    }
+
     public void onSelect$listAttachsOther()
     {
         btnRemoveAttachOther.setDisabled( false );
+    }
+
+    public void onClick$btnAddUser()
+    {
+        FormDTO currentForm = getValue( getListboxRecord().getSelectedItem() );
+        if ( currentForm == null ) {
+            showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
+            return;
+        }
+        try {
+            final Window win = ( Window )Executions.createComponents( "/private/admin/anoto/dlg_select_company.zul", null, null );
+            win.setAttribute( "form", currentForm );
+            win.doModal();
+            if ( win != null )
+                win.detach();
+
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage() );
+        }
+    }
+
+    public void onClick$btnRemoveUser()
+    {
+        FormDTO currentForm = getValue( getListboxRecord().getSelectedItem() );
+        if ( listUsers.getSelectedItem() == null ) {
+            showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
+            return;
+        }
+        ListUserDTO dto = ( ListUserDTO )listUsers.getSelectedItem().getValue();
+        if ( currentForm == null || dto == null ) {
+            showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
+            return;
+        }
+        try {
+            if ( dto.getId().equals( getLoggedInUser().getCurrentCompany() ) == false )
+                getSession().deleteCompany( getLoggedInUser(), currentForm, dto );
+            else
+                showErrorMessage( "Não é permitido excluir a empresa corrente" );
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage() );
+        }
     }
 
 
     public void onClick$btnProperties()
     {
         Listitem item = listAttachs.getSelectedItem();
-
-        if ( item != null && item.getValue() != null ) {
-            PadDTO pad = ( PadDTO )item.getValue();
-            Properties params = new Properties();
-            params.put( AnotoPADController.padIdParameterName, pad );
-            gotoPage( "/private/admin/anoto/anoto_pad.zul", getRootParent().getParent(), params );
+        if ( item == null ) {
+            showErrorMessage( "noCurrentRecordMessage" );
+            return;
         }
+        PadDTO pad = ( PadDTO )item.getValue();
+        Properties params = new Properties();
+        params.put( AnotoPADController.padIdParameterName, pad );
+        gotoPage( "/private/admin/anoto/anoto_pad.zul", getRootParent().getParent(), params );
     }
 
 
@@ -616,14 +667,16 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     {
         try {
             Listitem item = listAttachs.getSelectedItem();
+            if ( item == null ) {
+                showErrorMessage( "noCurrentRecordMessage" );
+                return;
+            }
 
-            if ( item != null && item.getValue() != null ) {
-                PadDTO pad = ( PadDTO )item.getValue();
-                byte[] obj;
-                obj = getSession().getObject( pad.getMedia() );
-                if ( obj != null ) {
-                    Filedownload.save( obj, pad.getMedia().getMimeType(), pad.getMedia().getName() );
-                }
+            PadDTO pad = ( PadDTO )item.getValue();
+            byte[] obj;
+            obj = getSession().getObject( pad.getMedia() );
+            if ( obj != null ) {
+                Filedownload.save( obj, pad.getMedia().getMimeType(), pad.getMedia().getName() );
             }
         }
         catch ( ApplicationException e ) {
@@ -634,8 +687,10 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     public void onClick$btnAddAttachOther()
     {
         FormDTO currentForm = getValue( getListboxRecord().getSelectedItem() );
-        if ( currentForm == null )
+        if ( currentForm == null ) {
+            showErrorMessage( "noCurrentRecordMessage" );
             return;
+        }
         try {
             Media[] medias = Fileupload.get( "Escolha os arquivos ", "Arquivos", 3, 6 * 1024 * 1024, true );
             if ( medias != null && medias.length > 0 ) {
@@ -661,8 +716,10 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     {
         FormDTO currentForm = getValue( getListboxRecord().getSelectedItem() );
         Set selected = listAttachsOther.getSelectedItems();
-        if ( selected.isEmpty() )
+        if ( selected.isEmpty() ) {
+            showErrorMessage( "noCurrentRecordMessage" );
             return;
+        }
         ArrayList al = new ArrayList( selected );
         MediaDTO[] medias = new MediaDTO[ selected.size() ];
         try {
@@ -688,14 +745,16 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
     {
         try {
             Listitem item = listAttachsOther.getSelectedItem();
+            if ( item == null ) {
+                showErrorMessage( "noCurrentRecordMessage" );
+                return;
+            }
 
-            if ( item != null && item.getValue() != null ) {
-                MediaDTO media = ( MediaDTO )item.getValue();
-                byte[] obj;
-                obj = getSession().getObject( media );
-                if ( obj != null ) {
-                    Filedownload.save( obj, media.getMimeType(), media.getName() );
-                }
+            MediaDTO media = ( MediaDTO )item.getValue();
+            byte[] obj;
+            obj = getSession().getObject( media );
+            if ( obj != null ) {
+                Filedownload.save( obj, media.getMimeType(), media.getName() );
             }
         }
         catch ( ApplicationException e ) {
@@ -708,6 +767,17 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
         try {
             List<MediaDTO> medias = getSession().getMedias( getLoggedInUser(), current );
             listAttachsOther.setModel( new ListModelList( !SysUtils.isEmpty( medias ) ? medias : new ArrayList<MediaDTO>() ) );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Erro ao obter medias" );
+        }
+    }
+
+    private void refreshUsers( FormDTO current )
+    {
+        try {
+            List<ListUserDTO> users = getSession().getCompanies( getLoggedInUser(), current );
+            listUsers.setModel( new ListModelList( !SysUtils.isEmpty( users ) ? users : new ArrayList<MediaDTO>() ) );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Erro ao obter medias" );
@@ -750,22 +820,12 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
 
         setLabel( btnExport );
         setLabel( btnExportOther );
-    }
 
-
-    public void onOK$editUserId() throws ApplicationException
-    {
-        Integer id = editUserId.getValue();
-
-        formUser = getSession().findUser( getLoggedInUser(), id );
-        showUser( formUser );
-    }
-
-    private ListUserDTO showUser( ListUserDTO dto )
-    {
-        editUserName.setValue( dto != null ? dto.getName() : "" );
-        editUserId.setValue( dto != null ? dto.getId() : 0 );
-        return dto;
+        setLabel( btnAddUser );
+        setLabel( btnRemoveUser );
+        setLabel( listUserCode );
+        setLabel( listUserName );
+        setLabel( tabFormUsers );
     }
 }
 
