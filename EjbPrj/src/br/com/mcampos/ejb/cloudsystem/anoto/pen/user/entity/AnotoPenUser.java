@@ -52,11 +52,11 @@ public class AnotoPenUser implements Serializable
     @Column( name = "pen_id_ch", nullable = false, insertable = false, updatable = false )
     private String penId;
 
-    @Column( name = "usr_id_in", nullable = false )
+    @Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
     private Integer personId;
 
     @ManyToOne( optional = false, fetch = FetchType.LAZY )
-    @JoinColumn( name = "usr_id_in", columnDefinition = "Integer" )
+    @JoinColumn( name = "usr_id_in", columnDefinition = "Integer", nullable = false )
     private Person person;
 
     @ManyToOne( optional = false )

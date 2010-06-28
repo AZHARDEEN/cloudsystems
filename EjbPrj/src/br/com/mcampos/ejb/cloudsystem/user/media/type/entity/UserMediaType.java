@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = UserMediaType.getAll, query = "select o from UserMediaType o" ),
-                 @NamedQuery( name = UserMediaType.nextId, query = "select max(o) from UserMediaType o" ) } )
+                 @NamedQuery( name = UserMediaType.nextId, query = "select max(o.id) from UserMediaType o" ) } )
 @Table( name = "user_media_type" )
 public class UserMediaType implements Serializable
 {
