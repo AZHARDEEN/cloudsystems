@@ -4,6 +4,8 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class CollaboratorTypeDTO extends SimpleTableDTO
 {
+    private Boolean inheritRole;
+
     public CollaboratorTypeDTO( SimpleTableDTO simpleTableDTO )
     {
         super( simpleTableDTO );
@@ -22,5 +24,15 @@ public class CollaboratorTypeDTO extends SimpleTableDTO
     public CollaboratorTypeDTO()
     {
         super();
+    }
+
+    public void setInheritRole( Boolean inheritRole )
+    {
+        this.inheritRole = inheritRole;
+    }
+
+    public Boolean getInheritRole()
+    {
+        return inheritRole;
     }
 }

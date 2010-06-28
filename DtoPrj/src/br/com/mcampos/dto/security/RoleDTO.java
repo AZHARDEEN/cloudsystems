@@ -15,6 +15,7 @@ public class RoleDTO extends SimpleTableDTO
     private static final long serialVersionUID = 3427302022674953632L;
     protected List<RoleDTO> childRoles;
     protected RoleDTO parent;
+    protected Boolean isDefault;
 
 
     public RoleDTO( SimpleTableDTO simpleTableDTO )
@@ -65,5 +66,15 @@ public class RoleDTO extends SimpleTableDTO
     public RoleDTO getParent()
     {
         return parent;
+    }
+
+    public void setDefault( Boolean isDefault )
+    {
+        this.isDefault = isDefault;
+    }
+
+    public Boolean isDefault()
+    {
+        return isDefault;
     }
 }

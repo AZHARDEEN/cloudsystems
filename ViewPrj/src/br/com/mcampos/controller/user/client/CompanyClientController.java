@@ -25,6 +25,7 @@ public class CompanyClientController extends LoggedBaseController
     private static final String addClientPage = "/private/user/client/persist_company.zul";
     private static final String updateClientPage = "/private/user/client/update_company.zul";
     private static final String collaboratorPage = "/private/user/collaborator/collaborator_list.zul";
+    private static final String rolePage = "/private/user/client/client_role.zul";
 
     private ClientFacade clientSession;
 
@@ -65,6 +66,8 @@ public class CompanyClientController extends LoggedBaseController
 
     private Button cmdUploadLogo;
 
+    private Button cmdManageRoles;
+
 
     public CompanyClientController( char c )
     {
@@ -100,6 +103,7 @@ public class CompanyClientController extends LoggedBaseController
         setLabel( cmdCollaborator );
 
         setLabel( cmdUploadLogo );
+        setLabel( cmdManageRoles );
     }
 
     public ClientFacade getSession()
@@ -182,13 +186,28 @@ public class CompanyClientController extends LoggedBaseController
         gotoPage( collaboratorPage, getRootParent().getParent() );
     }
 
+    public void onClick$cmdManageRoles() throws ApplicationException
+    {
+        if ( getListbox().getSelectedItem() == null ) {
+            showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
+            return;
+        }
+        ClientDTO client = ( ClientDTO )getListbox().getSelectedItem().getValue();
+        if ( client != null ) {
+            CompanyDTO company = getSession().get( getLoggedInUser(), client.getCompanyId() );
+            if ( company != null ) {
+                setParameter( clientParamName, company );
+                gotoPage( rolePage, getRootParent().getParent() );
+            }
+        }
+    }
+
     public void onClick$cmdUploadLogo()
     {
         if ( getListbox().getSelectedItem() == null ) {
             showErrorMessage( getLabel( "noCurrentRecordMessage" ) );
             return;
         }
-        ;
         try {
             final Window winLogo = ( Window )Executions.createComponents( "/private/user/client/update_logo.zul", null, null );
             winLogo.setAttribute( "client", getListbox().getSelectedItem().getValue() );

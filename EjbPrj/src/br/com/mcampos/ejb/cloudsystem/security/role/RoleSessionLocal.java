@@ -33,4 +33,6 @@ public interface RoleSessionLocal extends Serializable
     List<Role> getChildRoles( Role role ) throws ApplicationException;
 
     List<Task> getTasks( Integer key ) throws ApplicationException;
+
+    List<Role> getDefaultRoles() throws ApplicationException;
 }

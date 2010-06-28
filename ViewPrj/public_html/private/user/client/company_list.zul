@@ -35,6 +35,7 @@
                             <toolbarbutton id="cmdCollaborator" label="##"
                                            image="/img/icontexto-webdev-emoticon-smile-016x016.png"/>
                             <toolbarbutton id="cmdUploadLogo" label="##"/>
+                            <toolbarbutton id="cmdManageRoles" label="##"/>
                         </toolbar>
                     </div>
                     <listbox id="listboxRecord" vflex="true">

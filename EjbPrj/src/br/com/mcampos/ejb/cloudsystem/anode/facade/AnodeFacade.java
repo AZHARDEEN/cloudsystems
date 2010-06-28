@@ -34,27 +34,11 @@ public interface AnodeFacade extends Serializable
 
     List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException;
 
-    Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException;
-
-    PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad, List<String> pages ) throws ApplicationException;
-
-    MediaDTO removeFromForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException;
-
     List<PadDTO> getPads( FormDTO form ) throws ApplicationException;
 
     List<PenDTO> getAvailablePens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
 
     List<PenDTO> getPens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
-
-    void addPens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException;
-
-    void removePens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException;
-
-    MediaDTO addFile( AuthenticationDTO auth, FormDTO form, MediaDTO media ) throws ApplicationException;
-
-    void removeFile( AuthenticationDTO auth, FormDTO form, MediaDTO media ) throws ApplicationException;
-
-    List<MediaDTO> getFiles( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
 
     /* *************************************************************************
      * *************************************************************************
