@@ -164,7 +164,7 @@ public class PrivateIndexController extends LoggedBaseController
 
     public void onNotify( Event evt ) throws ApplicationException
     {
-        if ( evt.getName().equals( Events.ON_NOTIFY ) && evt.getData() instanceof CompanyDTO ) {
+        if ( evt.getData() instanceof CompanyDTO ) {
             if ( mainMenu == null )
                 return;
             if ( mainMenu.getChildren() != null )
@@ -173,7 +173,7 @@ public class PrivateIndexController extends LoggedBaseController
             for ( MenuDTO item : menus ) {
                 addMenu( item, mainMenu );
             }
-            mainMenu.invalidate();
+            //mainMenu.invalidate();
         }
     }
 }

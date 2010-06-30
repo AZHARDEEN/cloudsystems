@@ -10,7 +10,9 @@ import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus;
+import br.com.mcampos.ejb.cloudsystem.user.document.UserDocumentUtil;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
+import br.com.mcampos.ejb.cloudsystem.user.document.session.UserDocumentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.login.accesslog.AccessLog;
 import br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPassword;
 import br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPasswordPK;
@@ -59,22 +61,25 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
     private static final String encprytPassword = "Nj9nQ6jz6Bt3";
 
     @PersistenceContext( unitName = "EjbPrj" )
-    private EntityManager em;
+    private transient EntityManager em;
 
     @EJB
-    PersonSessionLocal personSession;
+    private PersonSessionLocal personSession;
 
     @EJB
-    UserSessionLocal userSession;
+    private UserSessionLocal userSession;
 
     @EJB
-    SendMailSessionLocal sendMail;
+    private SendMailSessionLocal sendMail;
 
     @EJB
-    SystemParametersSessionLocal sysParam;
+    private SystemParametersSessionLocal sysParam;
 
     @EJB
-    EmailSessionLocal emailTemplate;
+    private EmailSessionLocal emailTemplate;
+
+    @EJB
+    private UserDocumentSessionLocal documentSession;
 
     private static final Integer systemMessageTypeId = 1;
     private static final Integer templateEmailValidation = 1;
@@ -85,9 +90,9 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
     }
 
     /**
-     * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
+     * Adiciona um novo loginSession ao sistema. Para adicionar este loginSession, deve ser
      * observado que o mesmo depende do relacionamento com a entidade pessoa.
-     * Após incluido o login com os dados mais básicos necessários, o novo usuário do
+     * Após incluido o loginSession com os dados mais básicos necessários, o novo usuário do
      * sistema DEVE completar o registro.
      *
      * @param dto DTO com os dados básicos para inclusão.
@@ -117,16 +122,17 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         person = ( Person )getUserSession().findByDocumentList( dto.getDocuments() );
         if ( person == null ) {
             person = getPersonSession().add( PersonUtil.copy( dto ) );
+            documentSession.refresh( person, UserDocumentUtil.toEntityList( person, dto.getDocuments() ) );
         }
-        if ( person.getLogin() != null )
+        if ( get( person ) != null )
             throwRuntimeException( 5 );
         add( dto, person );
     }
 
     /**
-     * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
+     * Adiciona um novo loginSession ao sistema. Para adicionar este loginSession, deve ser
      * observado que o mesmo depende do relacionamento com a entidade pessoa.
-     * Após incluido o login com os dados mais básicos necessários, o novo usuário do
+     * Após incluido o loginSession com os dados mais básicos necessários, o novo usuário do
      * sistema DEVE completar o registro.
      *
      * @param dto
@@ -138,7 +144,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         String encryptedPassword;
         BasicPasswordEncryptor passwordEncryptor;
 
-        Login login = new Login( null, dto.getPassword(), new UserStatus( UserStatus.statusEmailNotValidated ) );
+        Login login = new Login( null, dto.getPassword(), em.find( UserStatus.class, UserStatus.statusEmailNotValidated ) );
         /*
          * Nunca esquecer de vincular os objetos. Quando um objeto é instanciado
          * ele mantem suas características. Neste exemplo: foi instanciado uma
@@ -146,6 +152,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
          * inserido no banco de dados, fica a situação inicial - sem login.
          */
         login.setPerson( person );
+        login.setUserId( person.getId() );
         passwordEncryptor = new BasicPasswordEncryptor();
         encryptedPassword = passwordEncryptor.encryptPassword( login.getPassword() );
         setPasswordExpirationDate( login );
@@ -158,6 +165,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
          * como usuario (empregado). Atribuir uma role de usuario do sistema.
          */
         getEntityManager().persist( login );
+        getEntityManager().flush();
         storeOldPassword( login );
         storeAccessLog( login, dto, 2 );
         sendMail( login, templateEmailValidation, null );
@@ -166,7 +174,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
     /**
      * Verifica se a lista de documentos inforamada é suficiente para o cadastramento
-     * do novo login. Neste momento, devem existir ao menos um email e um cpf
+     * do novo loginSession. Neste momento, devem existir ao menos um email e um cpf
      *
      * @param list Lista de documentos
      * @return boolean
@@ -192,7 +200,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
     /**
      * Rotina responsável por obter o template de email, configurar os metacampos
      * e enviar o email. Fica claro que este rotina serve somente para os emails
-     * vinculados as rotinas de cadastramento, validação e confirmação de login.
+     * vinculados as rotinas de cadastramento, validação e confirmação de loginSession.
      *
      * @param login Entity Login
      * @param templateId formId do template no banco de dados
@@ -274,7 +282,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
 
     /**
-     * Exclui um login ativo no banco de dados. Um login não deve ser excluído
+     * Exclui um loginSession ativo no banco de dados. Um loginSession não deve ser excluído
      * fisicamente do banco de dados. Estou pensando somente em fechar (Data fim).
      *
      * @param id Person Id a ser excluído.
@@ -301,7 +309,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
 
     /**
-     * Atualiza o status do login.
+     * Atualiza o status do loginSession.
      *
      * @param id
      * @param newStatus
@@ -317,7 +325,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
     /**
      * Finaliza a sessão do usuário (no banco de dados). Este função tem como
-     * finalidade incluir um registro no banco de dados finalizando o login.
+     * finalidade incluir um registro no banco de dados finalizando o loginSession.
      *
      * @param dto AuthenticationDTO
      */
@@ -333,8 +341,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
     }
 
     /**
-     * Dado uma lista de documentos, obter o login associado aos documentos.
-     * Uma regra: todos os documentos DEVEM pertencer a um e somente um login.
+     * Dado uma lista de documentos, obter o loginSession associado aos documentos.
+     * Uma regra: todos os documentos DEVEM pertencer a um e somente um loginSession.
      *
      * @param list
      * @return
@@ -345,14 +353,14 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         Person person = ( Person )getUserSession().findByDocumentList( list );
         if ( person == null )
             throwException( 14 );
-        Login login = person.getLogin();
+        Login login = get( person );
         if ( login == null )
             throwException( 14 );
         return login;
     }
 
     /**
-     * Obtem um login através de um documento.
+     * Obtem um loginSession através de um documento.
      *
      * @param dto
      * @return
@@ -363,9 +371,10 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         Person person = ( Person )getUserSession().getUserByDocument( dto );
         if ( person == null )
             throwException( 14 );
-        if ( person.getLogin() == null )
+        Login login = get( person );
+        if ( login == null )
             throwException( 14 );
-        return person.getLogin();
+        return login;
     }
 
 
@@ -437,7 +446,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * um registro de log será gravado.
      *
      * @param login Entity Login.
-     * @param dto Credenciais de login.
+     * @param dto Credenciais de loginSession.
      * @param accessLogType Tipo de log a ser armazenado.
      */
     protected String storeAccessLog( Login login, BasicSecurityDTO dto, Integer accessLogType ) throws ApplicationException
@@ -498,7 +507,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
     /**
      * Quando uma senha é alterada, a senha antiga é armazenada no banco de dados
-     * e o sistema não permite que esta senha seja usada novamente pelo mesmo login.
+     * e o sistema não permite que esta senha seja usada novamente pelo mesmo loginSession.
      *
      *
      * @param login
@@ -510,8 +519,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
         try {
             now = new Timestamp( Calendar.getInstance().getTime().getTime() );
-            lastUsedPassword = getEntityManager()
-                    .find( LastUsedPassword.class, new LastUsedPasswordPK( login.getPassword(), login.getUserId() ) );
+            lastUsedPassword =
+                    getEntityManager().find( LastUsedPassword.class, new LastUsedPasswordPK( login.getPassword(), login.getUserId() ) );
             if ( lastUsedPassword == null ) {
                 lastUsedPassword = new LastUsedPassword( now, login.getPassword(), null, login.getUserId() );
                 lastUsedPassword.setLogin( login );
@@ -602,8 +611,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         try {
             List retList;
 
-            retList = getEntityManager().createNamedQuery( "LastUsedPassword.findAll" ).setParameter( "id", login.getUserId() )
-                    .getResultList();
+            retList =
+                    getEntityManager().createNamedQuery( "LastUsedPassword.findAll" ).setParameter( "id", login.getUserId() ).getResultList();
             list = ( List<LastUsedPassword> )retList;
             passwordEncryptor = new BasicPasswordEncryptor();
             for ( LastUsedPassword password : list ) {
@@ -671,7 +680,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
     /**
      * Quando um novo usuário se cadastra no sistema, é enviado um email de confirmação
      * com um código de acesso (token). Este código é usado para validar o email dentro
-     * do sistema. Esta função localiza o novo login através deste token - que por sua
+     * do sistema. Esta função localiza o novo loginSession através deste token - que por sua
      * vez deve ser único no sistema.
      *
      * @param token - Um string gerado aleatoreamente pelo sistema.
@@ -683,8 +692,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         Login login = null;
 
         try {
-            login = ( Login )getEntityManager().createNamedQuery( "Login.findToken" ).setParameter( "token", token )
-                    .getSingleResult();
+            login =
+                    ( Login )getEntityManager().createNamedQuery( "Login.findToken" ).setParameter( "token", token ).getSingleResult();
         }
         catch ( NoResultException e ) {
             e = null;
@@ -736,7 +745,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
 
     /**
-     * Reenvia um email de confirmação de cadastro de login.
+     * Reenvia um email de confirmação de cadastro de loginSession.
      *
      *
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
@@ -775,7 +784,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
 
     /**
-     * Obtem o status do login do usuário corrente (autenticado).
+     * Obtem o status do loginSession do usuário corrente (autenticado).
      *
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
@@ -813,5 +822,15 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
     public EntityManager getEntityManager()
     {
         return em;
+    }
+
+    public Login get( Integer id ) throws ApplicationException
+    {
+        return getEntityManager().find( Login.class, id );
+    }
+
+    public Login get( Person person ) throws ApplicationException
+    {
+        return getEntityManager().find( Login.class, person.getId() );
     }
 }

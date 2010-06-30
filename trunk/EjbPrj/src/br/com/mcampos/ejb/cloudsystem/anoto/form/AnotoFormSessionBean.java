@@ -4,6 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.anoto.form;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMediaPK;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.user.AnotoFormUserUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.user.entity.AnotoFormUser;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.user.session.AnotoFormUserSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
@@ -70,9 +71,10 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
     }
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public List<AnotoForm> getAll() throws ApplicationException
+    public List<AnotoForm> getAll( Company company ) throws ApplicationException
     {
-        return getAll( "Form.findAll" );
+        List<AnotoFormUser> list = formUserSession.get( company );
+        return AnotoFormUserUtil.toListAnotoForm( list );
     }
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )

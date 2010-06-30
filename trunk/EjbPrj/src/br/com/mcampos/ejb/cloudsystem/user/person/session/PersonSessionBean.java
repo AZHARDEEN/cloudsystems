@@ -9,17 +9,23 @@ import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
 import br.com.mcampos.ejb.cloudsystem.user.address.AddressUtil;
 import br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressType;
 import br.com.mcampos.ejb.cloudsystem.user.address.entity.Address;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.entity.CivilState;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.entity.ContactType;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.entity.DocumentType;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
 import br.com.mcampos.ejb.cloudsystem.user.contact.UserContactUtil;
 import br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact;
 import br.com.mcampos.ejb.cloudsystem.user.document.UserDocumentUtil;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 import br.com.mcampos.ejb.cloudsystem.user.login.Login;
+import br.com.mcampos.ejb.cloudsystem.user.login.LoginSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.session.user.UserSessionLocal;
+import br.com.mcampos.exception.ApplicationException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,11 +48,15 @@ import javax.persistence.Query;
 public class PersonSessionBean implements PersonSessionLocal
 {
     @PersistenceContext( unitName = "EjbPrj" )
-    private EntityManager em;
+    private transient EntityManager em;
 
 
     @EJB
-    UserSessionLocal userSession;
+    private UserSessionLocal userSession;
+
+    @EJB
+    private LoginSessionLocal loginSession;
+
 
     public PersonSessionBean()
     {
@@ -84,6 +94,10 @@ public class PersonSessionBean implements PersonSessionLocal
         entity.setLastName( splitted[ 2 ] );
         applyRules( entity );
         verifyDocuments( entity );
+        entity.setUserType( em.find( UserType.class, "1" ) );
+        entity.setCivilState( em.find( CivilState.class, 1 ) );
+        entity.setGender( em.find( Gender.class, 1 ) );
+        entity.setTitle( em.find( Title.class, 1 ) );
         em.persist( entity );
         return entity;
     }
@@ -292,7 +306,7 @@ public class PersonSessionBean implements PersonSessionLocal
         }
     }
 
-    public Person update( PersonDTO dto )
+    public Person update( PersonDTO dto ) throws ApplicationException
     {
         Person person;
         Login login;
@@ -306,17 +320,11 @@ public class PersonSessionBean implements PersonSessionLocal
         mergeAddress( person, dto.getAddressList() );
         mergeDocuments( person, dto.getDocumentList() );
         mergeContacts( person, dto.getContactList() );
-        login = person.getLogin();
-        if ( login == null ) {
-            login = em.find( Login.class, person.getId() );
-        }
+        login = loginSession.get( person );
         if ( login != null ) {
-            if ( login.getUserStatus().getId() == UserStatus.statusFullfillRecord )
+            if ( login.getUserStatus().getId().equals( UserStatus.statusFullfillRecord ) )
                 login.setUserStatus( em.find( UserStatus.class, UserStatus.statusOk ) );
-            if ( person.getLogin() == null )
-                person.setLogin( login );
         }
-        em.merge( person );
         return person;
     }
 

@@ -1,17 +1,16 @@
 package br.com.mcampos.ejb.session.system.SystemMessage;
 
-import br.com.mcampos.ejb.entity.system.SystemMessage;
 
 import br.com.mcampos.exception.ApplicationException;
-
 import br.com.mcampos.exception.ApplicationRuntimeException;
 
-import java.util.List;
+import java.io.Serializable;
 
 import javax.ejb.Local;
 
+
 @Local
-public interface SystemMessagesSessionLocal
+public interface SystemMessagesSessionLocal extends Serializable
 {
     void throwException( Integer typeId, Integer messageId ) throws ApplicationException;
 

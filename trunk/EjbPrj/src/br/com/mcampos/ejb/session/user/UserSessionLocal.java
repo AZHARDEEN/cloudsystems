@@ -1,20 +1,23 @@
 package br.com.mcampos.ejb.session.user;
 
+
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.UserDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
-
+import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 import br.com.mcampos.exception.ApplicationException;
+
+import java.io.Serializable;
 
 import java.util.List;
 
 import javax.ejb.Local;
 
+
 @Local
-public interface UserSessionLocal
+public interface UserSessionLocal extends Serializable
 {
     Integer getRecordCount( AuthenticationDTO auth ) throws ApplicationException;
 

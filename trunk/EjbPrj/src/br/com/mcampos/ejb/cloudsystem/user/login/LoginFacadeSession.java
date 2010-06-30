@@ -1,13 +1,11 @@
 package br.com.mcampos.ejb.cloudsystem.user.login;
 
+
 import br.com.mcampos.dto.RegisterDTO;
-
 import br.com.mcampos.dto.security.AuthenticationDTO;
-import br.com.mcampos.dto.user.UserDocumentDTO;
-
 import br.com.mcampos.dto.security.LoginCredentialDTO;
-import br.com.mcampos.dto.user.login.LoginDTO;
-
+import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.exception.ApplicationException;
 
 import javax.ejb.EJBException;
@@ -17,7 +15,7 @@ import javax.ejb.Remote;
 public interface LoginFacadeSession
 {
     /**
-     * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
+     * Adiciona um novo loginSession ao sistema. Para adicionar este loginSession, deve ser
      * observado que o mesmo depende do relacionamento com a entidade pessoa.
      *
      * @param dto
@@ -60,7 +58,7 @@ public interface LoginFacadeSession
 
 
     /**
-     * Reenvia um email de confirmação de cadastro de login.
+     * Reenvia um email de confirmação de cadastro de loginSession.
      *
      *
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
@@ -70,9 +68,9 @@ public interface LoginFacadeSession
 
 
     /**
-     * Executa o login no aplicativo se possível.
+     * Executa o loginSession no aplicativo se possível.
      *
-     * @param dto Credenciais para realização do login
+     * @param dto Credenciais para realização do loginSession
      * @return AuthenticationDTO dados do usuário autenticado
      * @throws ApplicationException
      */
@@ -87,7 +85,7 @@ public interface LoginFacadeSession
     void logoutUser( AuthenticationDTO dto ) throws ApplicationException;
 
     /**
-     * Obtem o status do login do usuário corrente (autenticado).
+     * Obtem o status do loginSession do usuário corrente (autenticado).
      *
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
@@ -101,6 +99,9 @@ public interface LoginFacadeSession
      * @param newStatus Novo status a ser alterado no banco de dados.
      */
     void setStatus( AuthenticationDTO currentUser, Integer newStatus ) throws ApplicationException;
+
+
+    public MediaDTO[] getLogo( AuthenticationDTO currentUser ) throws ApplicationException;
 
 }
 

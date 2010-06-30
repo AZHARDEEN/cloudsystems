@@ -18,6 +18,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.cloudsystem.system.revisedstatus.session.RevisionStatusSessionLocal;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -42,6 +43,9 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
 {
     @EJB
     private PgcPageSessionLocal pgcPageSession;
+
+    @EJB
+    private RevisionStatusSessionLocal revisionSession;
 
     public PGCSessionBean()
     {
@@ -89,6 +93,7 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         else
             status = getEntityManager().find( PgcStatus.class, 1 );
         entity.setPgcStatus( status );
+        entity.setRevisionStaus( revisionSession.get( 1 ) );
         return super.add( entity );
     }
 
@@ -169,11 +174,6 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
         query.setParameter( 3, entity.getPageId() );
         Integer id = ( Integer )query.getSingleResult();
         return id;
-    }
-
-    public void add( PgcPage entity ) throws ApplicationException
-    {
-        getEntityManager().persist( entity );
     }
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )

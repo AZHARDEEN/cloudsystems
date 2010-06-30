@@ -63,6 +63,7 @@ public class SouthLoggedController extends LoggedBaseController
             CompanyDTO dto = ( CompanyDTO )comboItem.getValue();
             if ( dto != null ) {
                 getLoggedInUser().setCurrentCompany( dto.getId() );
+                setLoggedInUser( getLoggedInUser() );
                 Events.postEvent( new Event( Events.ON_NOTIFY, null, dto ) );
             }
         }

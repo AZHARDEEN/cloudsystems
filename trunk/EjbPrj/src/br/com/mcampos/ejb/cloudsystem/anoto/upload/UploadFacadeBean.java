@@ -25,6 +25,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PgcUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachmentSessionLocal;
@@ -83,6 +84,10 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
 
     @EJB
     private PageFieldSessionLocal pageFieldSession;
+
+    @EJB
+    private PgcPageSessionLocal pgcPageSession;
+
 
     protected EntityManager getEntityManager()
     {
@@ -209,7 +214,7 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
     public void add( PgcPageDTO dto ) throws ApplicationException
     {
         PgcPage entity = PgcPageUtil.createEntity( dto );
-        pgcSession.add( entity );
+        pgcPageSession.add( entity );
     }
 
 

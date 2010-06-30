@@ -43,7 +43,10 @@ public class MyRecord extends PersonController
         if ( super.persist() == false )
             return false;
         PersonDTO dto = getCurrentDTO();
+        Integer oldStatus = getSession().getLoginStatus( getLoggedInUser() );
         getSession().updateMyRecord( getLoggedInUser(), dto );
+        if ( oldStatus.equals( 5 ) )
+            redirect( "/private/index.zul" );
         return true;
     }
 

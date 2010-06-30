@@ -19,7 +19,7 @@ import javax.persistence.PersistenceContext;
 public class SystemMessagesSessionBean implements SystemMessagesSessionLocal
 {
     @PersistenceContext( unitName = "EjbPrj" )
-    private EntityManager em;
+    private transient EntityManager em;
 
     public static final Integer systemCommomMessageTypeId = 2;
 

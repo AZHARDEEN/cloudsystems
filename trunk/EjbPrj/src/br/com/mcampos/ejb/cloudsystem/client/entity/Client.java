@@ -29,6 +29,8 @@ import javax.persistence.TemporalType;
                  @NamedQuery( name = Client.nextId, query = "select max (o.clientId) from Client o where o.company = ?1 " ),
                  @NamedQuery( name = Client.getClient,
                               query = "select o from Client o where o.company = ?1 and o.client = ?2 and o.endDate is null " ),
+                 @NamedQuery( name = Client.getSponsor,
+                              query = "select o from Client o where o.client = ?1 and o.endDate is null " ),
                  @NamedQuery( name = Client.getAllPerson,
                               query = "select o from Client o where o.company = ?1 and o.client.userType.id = '1' and o.endDate is null" ) } )
 @Table( name = "client" )
@@ -40,6 +42,7 @@ public class Client implements Serializable
     public static final String getClient = "Clients.getClient";
     public static final String getAllCompany = "Clients.findAllCompany";
     public static final String getAllPerson = "Clients.findAllPerson";
+    public static final String getSponsor = "Clients.getSponsor";
 
     @Id
     @Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )

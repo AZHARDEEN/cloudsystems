@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoFormDownloadController">
+        <borderlayout id="borderLayout">
+            <north autoscroll="false" height="65px">
+                <grid>
+                    <columns>
+                        <column width="20%" align="center"/>
+                        <column width="60%" align="center"/>
+                        <column width="20%" align="center"/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <image id="imageClienteLogo"/>
+                            <label id="labelAnotoFormDownloadTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
+                            <image id="imageCompanyLogo"/>
+                        </row>
+                    </rows>
+                </grid>
+            </north>
+            <west size="40%" splittable="true" flex="true">
+                <!-- Por favor, nao mude o id desta div -->
+                <div width="100%" height="100%" id="divListBoxRecord">
+                    <!-- Por favor, nao mude o id desta listbox -->
+                    <listbox id="listboxRecord" vflex="true">
+                        <listhead sizable="true">
+                            <listheader id="headerApplication" align="left" label="##" sort="auto" width="140px"/>
+                            <listheader id="headerDescription" align="left" label="##" sort="auto"/>
+                        </listhead>
+                    </listbox>
+                </div>
+            </west>
+            <center flex="true">
+                <div>
+                    <toolbar>
+                        <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="##" id="btnExportOther"/>
+                    </toolbar>
+                    <listbox id="listAttachsOther" fixedLayout="true" height="200px">
+                        <listhead sizable="true">
+                            <listheader align="left" label="##" id="listHeaderNameOther"/>
+                        </listhead>
+                    </listbox>
+                </div>
+            </center>
+        </borderlayout>
+    </div>
+</zk>

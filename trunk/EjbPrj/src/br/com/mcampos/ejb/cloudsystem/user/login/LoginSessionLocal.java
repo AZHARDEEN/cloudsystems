@@ -1,31 +1,36 @@
 package br.com.mcampos.ejb.cloudsystem.user.login;
 
+
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
-import br.com.mcampos.dto.user.UserDocumentDTO;
-import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.security.LoginCredentialDTO;
-import br.com.mcampos.dto.user.login.LoginDTO;
-
+import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.exception.ApplicationException;
 
-import java.util.List;
+import java.io.Serializable;
 
 import javax.ejb.Local;
 
+
 @Local
-public interface LoginSessionLocal
+public interface LoginSessionLocal extends Serializable
 {
 
     /**
-     * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
+     * Adiciona um novo loginSession ao sistema. Para adicionar este loginSession, deve ser
      * observado que o mesmo depende do relacionamento com a entidade pessoa.
-     * Após incluido o login com os dados mais básicos necessários, o novo usuário do
+     * Após incluido o loginSession com os dados mais básicos necessários, o novo usuário do
      * sistema DEVE completar o registro.
      *
      * @param dto DTO com os dados básicos para inclusão.
      * @exception ApplicationException
      */
+
+    Login get( Integer id ) throws ApplicationException;
+
+    Login get( Person person ) throws ApplicationException;
+
     void add( RegisterDTO dto ) throws ApplicationException;
 
     void delete( Integer id ) throws ApplicationException;
@@ -75,7 +80,7 @@ public interface LoginSessionLocal
 
 
     /**
-     * Reenvia um email de confirmação de cadastro de login.
+     * Reenvia um email de confirmação de cadastro de loginSession.
      *
      *
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
@@ -85,7 +90,7 @@ public interface LoginSessionLocal
 
 
     /**
-     * Obtem o status do login do usuário corrente (autenticado).
+     * Obtem o status do loginSession do usuário corrente (autenticado).
      *
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
