@@ -49,6 +49,8 @@ import br.com.mcampos.ejb.cloudsystem.media.MediaUtil;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.system.fieldtype.session.FieldTypeSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
+import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
@@ -101,6 +103,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     @EJB
     private PgcFieldSessionLocal pgcFieldSession;
 
+    @EJB
+    private CompanySessionLocal companySession;
+
     public void addPens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException
     {
         authenticate( auth );
@@ -129,7 +134,8 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
-        return AnotoUtils.toFormList( formSession.getAll() );
+        Company company = companySession.get( auth.getCurrentCompany() );
+        return AnotoUtils.toFormList( formSession.getAll( company ) );
     }
 
     public PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad, List<String> pages ) throws ApplicationException

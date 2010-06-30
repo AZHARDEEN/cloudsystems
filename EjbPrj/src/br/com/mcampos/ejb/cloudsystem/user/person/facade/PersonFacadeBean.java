@@ -17,6 +17,8 @@ import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.session.GenderSessio
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 import br.com.mcampos.ejb.cloudsystem.user.document.session.UserDocumentSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.login.Login;
+import br.com.mcampos.ejb.cloudsystem.user.login.LoginSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
@@ -57,6 +59,9 @@ public class PersonFacadeBean extends UserFacadeUtil implements PersonFacade
 
     @EJB
     private UserDocumentSessionLocal userDocumentSession;
+
+    @EJB
+    private LoginSessionLocal loginSession;
 
     public PersonFacadeBean()
     {
@@ -107,6 +112,12 @@ public class PersonFacadeBean extends UserFacadeUtil implements PersonFacade
         if ( person.getId().equals( dto.getId() ) == false )
             throwException( 4 );
         update( person, dto );
+        Login login = loginSession.get( person );
+        if ( login != null ) {
+            if ( login.getUserStatus().getId().equals( 5 ) ) {
+                loginSession.setStatus( auth, 1 );
+            }
+        }
         return PersonUtil.copy( person );
     }
 
@@ -129,5 +140,16 @@ public class PersonFacadeBean extends UserFacadeUtil implements PersonFacade
         if ( userDocument == null || userDocument.getUser() instanceof Company )
             return null;
         return PersonUtil.copy( ( Person )userDocument.getUser() );
+    }
+
+    public Integer getLoginStatus( AuthenticationDTO auth ) throws ApplicationException
+    {
+        Person person = personSession.get( auth.getUserId() );
+        if ( person == null )
+            return 3;
+        Login login = loginSession.get( person );
+        if ( login == null )
+            return 3;
+        return login.getUserStatus().getId();
     }
 }

@@ -2,8 +2,6 @@ package br.com.mcampos.controller.anoto.base;
 
 
 import br.com.mcampos.controller.anoto.AnotoViewController;
-import br.com.mcampos.controller.anoto.renderer.ComboFormRenderer;
-import br.com.mcampos.controller.anoto.renderer.ComboPenRenderer;
 import br.com.mcampos.controller.anoto.renderer.PgcPenPageListRenderer;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
@@ -26,6 +24,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
@@ -95,22 +94,21 @@ public abstract class BaseSearchController extends AnotoLoggedController
     protected void refresh()
     {
         loadApplication();
-        loadPages( null );
-        loadPens( null );
+        //loadPages( null );
+        //loadPens( null );
         //loadPGC( null );
     }
 
     protected void loadApplication()
     {
-        ListModelList model;
         List list;
         try {
             list = getSession().getForms( getLoggedInUser() );
-            model = new ListModelList( list );
-            cmbApplication.setItemRenderer( new ComboFormRenderer() );
-            cmbApplication.setModel( model );
-            if ( list.size() > 0 && cmbApplication.getItemCount() > 0 )
+            loadCombobox( cmbApplication, list );
+            if ( cmbApplication.getItemCount() > 0 ) {
                 cmbApplication.setSelectedIndex( 0 );
+                loadPens( ( FormDTO )cmbApplication.getSelectedItem().getValue() );
+            }
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Carregar Aplicações" );
@@ -137,16 +135,16 @@ public abstract class BaseSearchController extends AnotoLoggedController
 
     protected void loadPens( FormDTO dto )
     {
-        ListModelList model;
         List list;
         try {
             if ( dto == null )
                 list = getSession().getPens( getLoggedInUser() );
             else
-                list = getSession().getPens( getLoggedInUser() );
-            model = new ListModelList( list );
-            cmbPen.setItemRenderer( new ComboPenRenderer() );
-            cmbPen.setModel( model );
+                list = getSession().getPens( getLoggedInUser(), dto );
+            loadCombobox( cmbPen, list );
+            Comboitem item = cmbPen.appendItem( getLabel( "all_female" ) );
+            if ( item != null )
+                cmbPen.setSelectedItem( item );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Carregar Canetas" );
@@ -213,10 +211,8 @@ public abstract class BaseSearchController extends AnotoLoggedController
             PenDTO pen;
 
             pen = ( PenDTO )cmbPen.getSelectedItem().getValue();
-            penInfo = pen.getId();
-        }
-        else if ( SysUtils.isEmpty( cmbPen.getText() ) == false ) {
-            penInfo = cmbPen.getText();
+            if ( pen != null )
+                penInfo = pen.getId();
         }
         if ( penInfo.length() > 0 )
             prop.put( "pen", penInfo );

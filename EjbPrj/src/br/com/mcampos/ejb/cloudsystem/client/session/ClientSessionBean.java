@@ -7,6 +7,7 @@ import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -88,5 +89,19 @@ public class ClientSessionBean extends Crud<ClientPK, Client> implements ClientS
     public Client get( Company myCompany, Users client ) throws ApplicationException
     {
         return getClient( myCompany, client );
+    }
+
+    public Client getSponsor( Company client ) throws ApplicationException
+    {
+        List<Client> clients = ( List<Client> )getResultList( Client.getSponsor, client );
+        if ( SysUtils.isEmpty( clients ) )
+            return null;
+        /*
+         * ATENÇÃO: ainda não está definido como tratar uma empresa (cliente) que possui mais de um
+         * patrocinador. Atualmente esta função está sendo usada somente para obter o logo.
+         */
+        if ( clients.size() > 1 )
+            return null;
+        return clients.get( 0 );
     }
 }

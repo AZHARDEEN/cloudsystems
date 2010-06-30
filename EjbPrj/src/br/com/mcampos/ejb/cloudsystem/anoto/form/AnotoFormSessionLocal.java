@@ -24,7 +24,7 @@ public interface AnotoFormSessionLocal extends Serializable
 
     AnotoForm get( Integer key ) throws ApplicationException;
 
-    List<AnotoForm> getAll() throws ApplicationException;
+    List<AnotoForm> getAll( Company company ) throws ApplicationException;
 
     AnotoForm update( AnotoForm entity ) throws ApplicationException;
 

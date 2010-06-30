@@ -2,7 +2,11 @@ package br.com.mcampos.ejb.cloudsystem.user.company.facade;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
+import br.com.mcampos.ejb.cloudsystem.media.MediaUtil;
+import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.user.UserFacadeUtil;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
@@ -10,6 +14,10 @@ import br.com.mcampos.ejb.cloudsystem.user.collaborator.type.entity.Collaborator
 import br.com.mcampos.ejb.cloudsystem.user.company.CompanyUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.media.entity.UserMedia;
+import br.com.mcampos.ejb.cloudsystem.user.media.session.UserMediaSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.media.type.entity.UserMediaType;
+import br.com.mcampos.ejb.cloudsystem.user.media.type.session.UserMediaTypeSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
@@ -41,6 +49,14 @@ public class MyCompanyFacadeBean extends UserFacadeUtil implements MyCompanyFaca
     @EJB
     private NewPersonSessionLocal personSession;
 
+    @EJB
+    private MediaSessionLocal mediaSession;
+
+    @EJB
+    private UserMediaSessionLocal userMediaSession;
+
+    @EJB
+    private UserMediaTypeSessionLocal userMediaTypeSession;
 
     protected EntityManager getEntityManager()
     {
@@ -77,5 +93,23 @@ public class MyCompanyFacadeBean extends UserFacadeUtil implements MyCompanyFaca
         if ( c.getCollaboratorType().getId() != CollaboratorType.typeManager )
             throwException( 2 );
         return c.getCompany();
+    }
+
+    public void setLogo( AuthenticationDTO auth, MediaDTO mediaDto ) throws ApplicationException
+    {
+        authenticate( auth );
+        Company company = companySession.get( auth.getCurrentCompany() );
+        Media media = MediaUtil.createEntity( mediaDto );
+        mediaSession.add( media );
+        UserMedia userMedia = new UserMedia();
+        userMedia.setMedia( media );
+        userMedia.setUser( company );
+        userMedia.setType( getLogoMediaType() );
+        userMediaSession.add( userMedia );
+    }
+
+    private UserMediaType getLogoMediaType() throws ApplicationException
+    {
+        return userMediaTypeSession.get( UserMediaType.typeLogo );
     }
 }

@@ -50,7 +50,7 @@ public class PersonUtil extends UserUtil
 
         person = new Person();
         person.setName( dto.getName() );
-        addDocuments( person, dto );
+        //addDocuments( person, dto );
         return person;
     }
 

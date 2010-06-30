@@ -18,10 +18,21 @@
             ]]>
         </script>
         <borderlayout id="borderLayout">
-            <north style="background: #D0DEF0">
-                <vbox align="center">
-                    <label id="labelPenTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
-                </vbox>
+            <north autoscroll="false" height="65px">
+                <grid>
+                    <columns>
+                        <column width="20%" align="center"/>
+                        <column width="60%" align="center"/>
+                        <column width="20%" align="center"/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <image id="imageClienteLogo"/>
+                            <label id="labelPenTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
+                            <image id="imageCompanyLogo"/>
+                        </row>
+                    </rows>
+                </grid>
             </north>
             <west size="30%" splittable="true" flex="true">
                 <!-- Por favor, nao mude o id desta div -->

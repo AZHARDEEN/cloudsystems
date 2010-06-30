@@ -1,12 +1,11 @@
 package br.com.mcampos.ejb.cloudsystem.user.person.entity;
 
 
+import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.entity.CivilState;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title;
-import br.com.mcampos.ejb.cloudsystem.user.login.Login;
-import br.com.mcampos.ejb.cloudsystem.locality.city.entity.City;
-import br.com.mcampos.ejb.cloudsystem.user.Users;
 
 import java.io.Serializable;
 
@@ -20,7 +19,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -65,9 +63,6 @@ public class Person extends Users implements Serializable
     @ManyToOne( fetch = FetchType.EAGER, optional = true )
     @JoinColumn( name = "usr_born_city_in", nullable = true, referencedColumnName = "cit_id_in" )
     private City bornCity;
-
-    @OneToOne( mappedBy = "person", fetch = FetchType.EAGER )
-    private Login login;
 
     public Person()
     {
@@ -173,21 +168,6 @@ public class Person extends Users implements Serializable
         this.motherName = toUpperCase( usr_mother_name_ch );
     }
 
-    public void setLogin( Login l )
-    {
-        this.login = l;
-        if ( l != null )
-            l.setUserId( getId() );
-    }
-
-    /*
-     * DO NOT change fetch type.
-     */
-
-    public Login getLogin()
-    {
-        return login;
-    }
 
     public void setBornCity( City bornCity )
     {

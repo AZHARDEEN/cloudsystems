@@ -272,7 +272,8 @@ public abstract class BaseController extends GenericForwardComposer
         bookmarkHelper = getHistory();
         bookmarkHelper.add( uri, parent, parameters );
         strBookmark = String.format( "%s%d", bookmarkId, bookmarkHelper.get().size() - 1 );
-        desktop.setBookmark( strBookmark );
+        if ( desktop != null )
+            desktop.setBookmark( strBookmark );
     }
 
 

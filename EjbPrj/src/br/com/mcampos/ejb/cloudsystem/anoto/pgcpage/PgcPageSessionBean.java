@@ -47,6 +47,7 @@ public class PgcPageSessionBean extends Crud<PgcPagePK, PgcPage> implements PgcP
     {
         entity.setPgc( pgcSession.get( entity.getPgc().getId() ) );
         entity.setAnotoPage( anotoPageSession.get( new AnotoPagePK( entity.getAnotoPage() ) ) );
+        entity.setRevisionStatus( revisionSession.get( 1 ) );
         return super.add( entity );
     }
 

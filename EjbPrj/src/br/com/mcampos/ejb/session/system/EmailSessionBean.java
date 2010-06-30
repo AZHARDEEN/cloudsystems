@@ -11,19 +11,22 @@ import br.com.mcampos.sysutils.SysUtils;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 
 @Stateless( name = "EmailSession", mappedName = "CloudSystems-EjbPrj-EmailSession" )
+@TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class EmailSessionBean implements EmailSessionLocal
 {
     @PersistenceContext( unitName = "EjbPrj" )
-    private EntityManager em;
+    private transient EntityManager em;
 
     @EJB
-    SystemMessagesSessionLocal systemMessage;
+    private SystemMessagesSessionLocal systemMessage;
 
     protected static final Integer systemMessageTypeId = 4;
 
@@ -46,9 +49,11 @@ public class EmailSessionBean implements EmailSessionLocal
         SendMailDTO dto = new SendMailDTO();
         for ( EMailPart part : template.getEMailPartList() ) {
             switch ( part.getPartType().getId() ) {
-            case EMailPartType.partSubject: dto.setSubject( part.getContent() );
+            case EMailPartType.partSubject:
+                dto.setSubject( part.getContent() );
                 break;
-            case EMailPartType.partBody: dto.setBody( part.getContent() );
+            case EMailPartType.partBody:
+                dto.setBody( part.getContent() );
                 break;
             }
         }

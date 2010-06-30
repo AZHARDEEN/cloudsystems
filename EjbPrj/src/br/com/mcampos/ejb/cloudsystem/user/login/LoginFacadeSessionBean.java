@@ -4,7 +4,18 @@ package br.com.mcampos.ejb.cloudsystem.user.login;
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.LoginCredentialDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
+import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
+import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
+import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.media.entity.UserMedia;
+import br.com.mcampos.ejb.cloudsystem.user.media.session.UserMediaSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.media.type.entity.UserMediaType;
+import br.com.mcampos.ejb.cloudsystem.user.media.type.session.UserMediaTypeSessionLocal;
 import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -23,7 +34,22 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
     SystemMessagesSessionLocal systemMessage;
 
     @EJB
-    LoginSessionLocal login;
+    LoginSessionLocal loginSession;
+
+    @EJB
+    private CompanySessionLocal companySession;
+
+    @EJB
+    private NewCollaboratorSessionLocal collaboratorSession;
+
+    @EJB
+    private ClientSessionLocal clientSession;
+
+    @EJB
+    private UserMediaSessionLocal userMediaSession;
+
+    @EJB
+    private UserMediaTypeSessionLocal userMediaTypeSession;
 
     private static final Integer systemMessageTypeId = 1;
 
@@ -32,14 +58,14 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
     }
 
 
-    protected LoginSessionLocal getLogin()
+    protected LoginSessionLocal getLoginSession()
     {
-        return login;
+        return loginSession;
     }
 
 
     /**
-     * Adiciona um novo login ao sistema. Para adicionar este login, deve ser
+     * Adiciona um novo loginSession ao sistema. Para adicionar este loginSession, deve ser
      * observado que o mesmo depende do relacionamento com a entidade pessoa.
      *
      * @param dto
@@ -49,7 +75,7 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
     {
         if ( dto == null )
             systemMessage.throwException( systemMessageTypeId, 1 );
-        login.add( dto );
+        loginSession.add( dto );
     }
 
 
@@ -64,7 +90,7 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
     {
         if ( dto == null )
             systemMessage.throwException( systemMessageTypeId, 1 );
-        getLogin().makeNewPassword( dto );
+        getLoginSession().makeNewPassword( dto );
     }
 
     /**
@@ -84,7 +110,7 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
             systemMessage.throwException( systemMessageTypeId, 6 );
         if ( SysUtils.isEmpty( newPassword ) )
             systemMessage.throwException( systemMessageTypeId, 7 );
-        getLogin().changePassword( dto, oldPassword, newPassword );
+        getLoginSession().changePassword( dto, oldPassword, newPassword );
     }
 
     /**
@@ -104,11 +130,11 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
             systemMessage.throwException( systemMessageTypeId, 6 );
         if ( SysUtils.isEmpty( token ) )
             systemMessage.throwException( systemMessageTypeId, 7 );
-        getLogin().validateEmail( token, password );
+        getLoginSession().validateEmail( token, password );
     }
 
     /**
-     * Reenvia um email de confirmação de cadastro de login.
+     * Reenvia um email de confirmação de cadastro de loginSession.
      *
      *
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
@@ -118,14 +144,14 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
     {
         if ( dto == null )
             systemMessage.throwException( systemMessageTypeId, 1 );
-        getLogin().sendValidationEmail( dto );
+        getLoginSession().sendValidationEmail( dto );
     }
 
 
     /**
-     * Executa o login no aplicativo se possível.
+     * Executa o loginSession no aplicativo se possível.
      *
-     * @param dto Credenciais para realização do login
+     * @param dto Credenciais para realização do loginSession
      * @return LoginDTO dados do usuário autenticado
      * @throws ApplicationException
      */
@@ -137,7 +163,7 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
             systemMessage.throwException( systemMessageTypeId, 6 );
         if ( SysUtils.isEmpty( dto.getDocuments() ) )
             systemMessage.throwException( systemMessageTypeId, 3 );
-        return getLogin().loginUser( dto );
+        return getLoginSession().loginUser( dto );
     }
 
 
@@ -149,19 +175,19 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
      */
     public void logoutUser( AuthenticationDTO dto ) throws ApplicationException
     {
-        getLogin().logoutUser( dto );
+        getLoginSession().logoutUser( dto );
     }
 
 
     /**
-     * Obtem o status do login do usuário corrente (autenticado).
+     * Obtem o status do loginSession do usuário corrente (autenticado).
      *
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
      */
     public Integer getStatus( AuthenticationDTO currentUser ) throws ApplicationException
     {
-        return getLogin().getStatus( currentUser );
+        return getLoginSession().getStatus( currentUser );
     }
 
 
@@ -173,6 +199,42 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
      */
     public void setStatus( AuthenticationDTO currentUser, Integer newStatus ) throws ApplicationException
     {
-        getLogin().setStatus( currentUser, newStatus );
+        getLoginSession().setStatus( currentUser, newStatus );
+    }
+
+    public MediaDTO[] getLogo( AuthenticationDTO currentUser ) throws ApplicationException
+    {
+        if ( currentUser == null || currentUser.getCurrentCompany() == null || currentUser.getUserId() == null )
+            return null;
+        MediaDTO[] medias = new MediaDTO[ 2 ];
+        Company myCompany = companySession.get( currentUser.getCurrentCompany() );
+        if ( myCompany != null ) {
+            medias[ 0 ] = getLogo( myCompany );
+        }
+        Client sponsor = clientSession.getSponsor( myCompany );
+        if ( sponsor != null ) {
+            medias[ 1 ] = getLogo( sponsor.getCompany() );
+        }
+        return medias;
+    }
+
+    protected Company getCompany( AuthenticationDTO auth ) throws ApplicationException
+    {
+        Collaborator coll = collaboratorSession.get( auth.getCurrentCompany(), auth.getUserId() );
+        return coll.getCompany();
+    }
+
+    private MediaDTO getLogo( Company company ) throws ApplicationException
+    {
+        UserMedia u = userMediaSession.get( company, getLogoMediaType() );
+        MediaDTO m = ( u != null && u.getMedia() != null ) ? u.getMedia().toDTO() : null;
+        if ( m != null ) /*Lazy Load Object*/
+            m.setObject( u.getMedia().getObject() );
+        return m;
+    }
+
+    private UserMediaType getLogoMediaType() throws ApplicationException
+    {
+        return userMediaTypeSession.get( UserMediaType.typeLogo );
     }
 }

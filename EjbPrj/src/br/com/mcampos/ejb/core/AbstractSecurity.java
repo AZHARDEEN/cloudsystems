@@ -25,9 +25,9 @@ public abstract class AbstractSecurity extends AbstractSystemMessage implements 
      * Autentica o usuário. Esta será a função mais usada de todas.
      * Para QUALQUER operacao, esta função deverá ser chamada antes. Entre os
      * testes a serem executados podemos listar:
-     * 1) Existe um login no banco de dados com o UserId passado?
+     * 1) Existe um loginSession no banco de dados com o UserId passado?
      * 2) Existe algum token no banco de dados igual ao token passado?
-     *    O log existe? O log localizado é igual ao usuário corrente?
+     * O log existe? O log localizado é igual ao usuário corrente?
      * 3) O Token passado é valido?
      *
      * @param currentUser

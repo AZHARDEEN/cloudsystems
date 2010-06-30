@@ -30,4 +30,6 @@ public interface ClientSessionLocal extends Serializable
     List<Client> getAllCompanyClients( Company company ) throws ApplicationException;
 
     List<Client> getAllPersonClients( Company company ) throws ApplicationException;
+
+    Client getSponsor( Company client ) throws ApplicationException;
 }

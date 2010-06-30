@@ -9,6 +9,7 @@ import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.exception.ApplicationRuntimeException;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -71,25 +72,36 @@ public class AnotoFormUserSessionBean extends Crud<AnotoFormUserPK, AnotoFormUse
 
     public List<AnotoFormUser> get( Integer formId ) throws ApplicationException
     {
-        return ( List<AnotoFormUser> )getResultList( AnotoFormUser.getFormUser, formId );
+        return ( List<AnotoFormUser> )getResultList( AnotoFormUser.getAll, formId );
     }
 
-    public List<AnotoFormUser> get( Integer formId, Integer companyId ) throws ApplicationException
+    public AnotoFormUser get( Integer formId, Integer companyId ) throws ApplicationException
     {
         ArrayList<Object> param = new ArrayList<Object>( 2 );
         param.add( formId );
         param.add( companyId );
-        return ( List<AnotoFormUser> )getResultList( AnotoFormUser.getUser, param );
+        List<AnotoFormUser> list = ( List<AnotoFormUser> )getResultList( AnotoFormUser.getUser, param );
+        if ( SysUtils.isEmpty( list ) )
+            return null;
+        /*
+         * Just in case!!!1
+         */
+        if ( list.size() > 1 )
+            throw new ApplicationRuntimeException( "Erro interno! Existe mais de um registro associado ao formulário" );
+        return list.get( 0 );
     }
 
 
     public void delete( Integer formId, Integer companyId ) throws ApplicationException
     {
-        List<AnotoFormUser> users = get( formId, companyId );
-        if ( SysUtils.isEmpty( users ) == false ) {
-            for ( AnotoFormUser user : users ) {
-                user.setToDate( new Date() );
-            }
+        AnotoFormUser user = get( formId, companyId );
+        if ( user != null ) {
+            user.setToDate( new Date() );
         }
+    }
+
+    public List<AnotoFormUser> get( Company company ) throws ApplicationException
+    {
+        return ( List<AnotoFormUser> )getResultList( AnotoFormUser.getFormUser, company );
     }
 }

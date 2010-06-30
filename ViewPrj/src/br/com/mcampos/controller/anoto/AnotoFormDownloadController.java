@@ -1,0 +1,121 @@
+package br.com.mcampos.controller.anoto;
+
+
+import br.com.mcampos.controller.anoto.renderer.AnotoFormListRenderer;
+import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
+import br.com.mcampos.controller.core.LoggedBaseController;
+import br.com.mcampos.dto.anoto.FormDTO;
+import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormFacade;
+import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.Filedownload;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listheader;
+import org.zkoss.zul.Listitem;
+
+
+public class AnotoFormDownloadController extends LoggedBaseController
+{
+    private AnotoFormFacade session;
+
+    private Label labelAnotoFormDownloadTitle;
+    private Listheader headerApplication;
+    private Listheader headerDescription;
+    private Listheader listHeaderNameOther;
+
+    private Listbox listAttachsOther;
+    private Listbox listboxRecord;
+
+    private Button btnExportOther;
+
+    public AnotoFormDownloadController( char c )
+    {
+        super( c );
+    }
+
+    public AnotoFormDownloadController()
+    {
+        super();
+    }
+
+    @Override
+    public void doAfterCompose( Component comp ) throws Exception
+    {
+        super.doAfterCompose( comp );
+        setLabel( labelAnotoFormDownloadTitle );
+        setLabel( headerApplication );
+        setLabel( headerDescription );
+        setLabel( listHeaderNameOther );
+        setLabel( btnExportOther );
+
+        if ( listAttachsOther != null ) {
+            listAttachsOther.setItemRenderer( new MediaListRenderer() );
+        }
+        btnExportOther.setDisabled( true );
+        List<FormDTO> list = getSession().getForms( getLoggedInUser() );
+        ListModelList model = new ListModelList( list );
+        listboxRecord.setItemRenderer( new AnotoFormListRenderer() );
+        listboxRecord.setModel( model );
+    }
+
+
+    public void onSelect$listAttachsOther()
+    {
+        btnExportOther.setDisabled( false );
+    }
+
+    public void onSelect$listboxRecord()
+    {
+        FormDTO formDTO = ( ( FormDTO )listboxRecord.getSelectedItem().getValue() );
+        refreshOtherAttachs( formDTO );
+    }
+
+    public void onClick$btnExportOther()
+    {
+        try {
+            Listitem item = listAttachsOther.getSelectedItem();
+            if ( item == null ) {
+                showErrorMessage( "noCurrentRecordMessage" );
+                return;
+            }
+
+            MediaDTO media = ( MediaDTO )item.getValue();
+            byte[] obj;
+            obj = getSession().getObject( media );
+            if ( obj != null ) {
+                Filedownload.save( obj, media.getMimeType(), media.getName() );
+            }
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Download" );
+        }
+    }
+
+    private AnotoFormFacade getSession()
+    {
+        if ( session == null )
+            session = ( AnotoFormFacade )getRemoteSession( AnotoFormFacade.class );
+        return session;
+    }
+
+    private void refreshOtherAttachs( FormDTO current )
+    {
+        try {
+            List<MediaDTO> medias = getSession().getMedias( getLoggedInUser(), current );
+            listAttachsOther.setModel( new ListModelList( !SysUtils.isEmpty( medias ) ? medias : new ArrayList<MediaDTO>() ) );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
+        }
+    }
+
+}

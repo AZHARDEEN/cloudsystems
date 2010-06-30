@@ -1,11 +1,12 @@
 package br.com.mcampos.util.business;
 
+
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.LoginCredentialDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.ejb.cloudsystem.user.login.LoginFacadeSession;
-
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -31,10 +32,10 @@ public class LoginLocator extends BusinessDelegate
 
 
     /**
-     * Cria - ou adiciona - um novo login no sistema.
+     * Cria - ou adiciona - um novo loginSession no sistema.
      *
      *
-     * @param dto RegisterDTO dto com os dados necessários para criação do login.
+     * @param dto RegisterDTO dto com os dados necessários para criação do loginSession.
      * Os dados são os mínimos necessários, depois o novo usuário deverá completar o seu registro.
      * @exception InvalidParameterException
      */
@@ -101,7 +102,7 @@ public class LoginLocator extends BusinessDelegate
     }
 
     /**
-     * Reenvia um email de confirmação de cadastro de login.
+     * Reenvia um email de confirmação de cadastro de loginSession.
      *
      *
      * @param dto UserDocumentDTO - identificao do usuario via documento (Email)
@@ -127,7 +128,7 @@ public class LoginLocator extends BusinessDelegate
     }
 
     /**
-     * Obtem o status do login do usuário corrente (autenticado).
+     * Obtem o status do loginSession do usuário corrente (autenticado).
      *
      * @param currentUser AuthenticationDTO do usuário autenticado
      * @return Id do status do usuário
@@ -147,5 +148,17 @@ public class LoginLocator extends BusinessDelegate
     public void setStatus( AuthenticationDTO currentUser, Integer newStatus ) throws ApplicationException
     {
         getFacade().setStatus( currentUser, newStatus );
+    }
+
+    public MediaDTO[] getLogo( AuthenticationDTO dto )
+    {
+        if ( dto == null )
+            throw new InvalidParameterException( "Nenhum parametro pode ser nulo ou vazio" );
+        try {
+            return getFacade().getLogo( dto );
+        }
+        catch ( Exception e ) {
+            return null;
+        }
     }
 }

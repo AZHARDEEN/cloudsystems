@@ -6,6 +6,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
+import br.com.mcampos.ejb.cloudsystem.system.revisedstatus.entity.RevisionStatus;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
@@ -30,10 +31,9 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@NamedQueries( {
-    @NamedQuery( name = Pgc.findAllQueryName, query = "select o from Pgc o order by o.insertDate desc" ),
-    @NamedQuery( name = Pgc.findSuspended, query = "select o from Pgc o where o.pgcStatus.id <> 1 order by o.insertDate desc" )
-    } )
+@NamedQueries( { @NamedQuery( name = Pgc.findAllQueryName, query = "select o from Pgc o order by o.insertDate desc" ),
+                 @NamedQuery( name = Pgc.findSuspended,
+                              query = "select o from Pgc o where o.pgcStatus.id <> 1 order by o.insertDate desc" ) } )
 @Table( name = "pgc" )
 public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 {
@@ -54,7 +54,12 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 
     @ManyToOne
     @JoinColumn( name = "pgs_id_in" )
-	private PgcStatus pgcStatus;
+    private PgcStatus pgcStatus;
+
+    @ManyToOne
+    @JoinColumn( name = "rst_id_in" )
+    private RevisionStatus revisionStaus;
+
 
     @Column( name = "pgc_description_ch", nullable = false )
     private String description;
@@ -69,7 +74,7 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
     @OneToMany( mappedBy = "pgc", cascade = CascadeType.REFRESH )
     private List<PgcPage> pages;
 
-    @OneToMany ( mappedBy = "pgc" )
+    @OneToMany( mappedBy = "pgc" )
     private List<PgcPenPage> pgcPenPages;
 
     public Pgc()
@@ -180,5 +185,15 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
     public List<PgcPenPage> getPgcPenPages()
     {
         return pgcPenPages;
+    }
+
+    protected void setRevisionStaus( RevisionStatus revisionStaus )
+    {
+        this.revisionStaus = revisionStaus;
+    }
+
+    protected RevisionStatus getRevisionStaus()
+    {
+        return revisionStaus;
     }
 }

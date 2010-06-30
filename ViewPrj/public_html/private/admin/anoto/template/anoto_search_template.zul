@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <borderlayout id="borderLayout">
-        <north style="background: #D0DEF0" size="55px">
+        <north autoscroll="false" height="65px">
             <grid>
                 <columns>
                     <column width="20%" align="center"/>
@@ -10,9 +10,9 @@
                 </columns>
                 <rows>
                     <row>
-                        <image src="/img/logo_sabanco.jpg"/>
+                        <image id="imageClienteLogo"/>
                         <label id="labelFormView2Title" style="font-size:20px;color:#0C7A9A" value="##" width="80%"/>
-                        <image src="/img/fdigital.jpg"/>
+                        <image id="imageCompanyLogo"/>
                     </row>
                 </rows>
             </grid>
@@ -72,6 +72,7 @@
                                     </row>
                                 </rows>
                             </grid>
+                            <separator height="15px"/>
                             <div align="center" width="100%">
                                 <button id="btnFilter" label="##" image="/img/icontexto-webdev-search-016x016.png"/>
                             </div>

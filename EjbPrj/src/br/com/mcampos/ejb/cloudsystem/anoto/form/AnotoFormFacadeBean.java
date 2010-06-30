@@ -109,13 +109,21 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         return form;
     }
 
-    public void addPens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException
+    public void addPens( AuthenticationDTO auth, FormDTO formDto, List<PenDTO> pens ) throws ApplicationException
     {
         authenticate( auth );
         List<AnotoPen> entities = loadPenEntityList( pens );
-        formSession.add( getExistent( form ), entities );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
+        formSession.add( form, entities );
     }
 
+    private void belongsToCompany( Integer formId, Integer companyId ) throws ApplicationException
+    {
+        AnotoFormUser formUser = formUserSession.get( formId, companyId );
+        if ( formUser == null )
+            throwRuntimeException( 7 );
+    }
 
     protected List<AnotoPen> loadPenEntityList( List<PenDTO> pens ) throws ApplicationException
     {
@@ -130,6 +138,7 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
     public void removePens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException
     {
         authenticate( auth );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         List<AnotoPen> entities = loadPenEntityList( pens );
         for ( AnotoPen pen : entities ) {
             List list = pgcSession.getAll( pen );
@@ -142,33 +151,31 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
     public void delete( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
         authenticate( auth );
-        if ( entity == null )
-            throwCommomException( 3 );
-        AnotoForm form = formSession.get( entity.getId() );
-        if ( form == null )
-            throwException( 4 );
+        AnotoForm form = getExistent( entity );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         formSession.delete( entity.getId() );
     }
 
     public FormDTO get( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
         authenticate( auth );
-        if ( entity == null || SysUtils.isZero( entity.getId() ) )
-            throwCommomException( 3 );
-        AnotoForm form = formSession.get( entity.getId() );
+        AnotoForm form = getExistent( entity );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         return ( form != null ? form.toDTO() : null );
     }
 
     public List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
-        return AnotoUtils.toFormList( formSession.getAll() );
+        Company company = companySession.get( auth.getCurrentCompany() );
+        return AnotoUtils.toFormList( formSession.getAll( company ) );
     }
 
     public FormDTO update( AuthenticationDTO auth, FormDTO entity ) throws ApplicationException
     {
         authenticate( auth );
         AnotoForm form = getExistent( entity );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         AnotoFormUtil.update( form, entity );
         return formSession.update( form ).toDTO();
     }
@@ -182,7 +189,8 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
        * 2) Inserir a mídia.
        * 3) Vincular o formulário à midia
        */
-        AnotoForm form = formSession.get( entity.getId() );
+        AnotoForm form = getExistent( entity );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         pad.setFormat( "pad" );
         Media media = mediaSession.add( MediaUtil.createEntity( pad ) );
         Pad padentity = formSession.addPadFile( form, media, pages );
@@ -198,7 +206,8 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
        * 2) Inserir a mídia.
        * 3) Vincular o formulário à midia
        */
-        AnotoForm form = formSession.get( entity.getId() );
+        AnotoForm form = getExistent( entity );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         Media media = mediaSession.get( pad.getId() );
         return formSession.removePadFile( form, media ).toDTO();
     }
@@ -209,42 +218,47 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         return AnotoUtils.toPadList( formSession.getPads( entity ) );
     }
 
-    public List<PenDTO> getAvailablePens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
+    public List<PenDTO> getAvailablePens( AuthenticationDTO auth, FormDTO formDto ) throws ApplicationException
     {
         authenticate( auth );
-        return AnotoUtils.toPenList( formSession.getAvailablePens( getExistent( form ) ) );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
+        return AnotoUtils.toPenList( formSession.getAvailablePens( form ) );
     }
 
-    public List<PenDTO> getPens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
+    public List<PenDTO> getPens( AuthenticationDTO auth, FormDTO formDto ) throws ApplicationException
     {
         authenticate( auth );
-        return AnotoUtils.toPenList( formSession.getPens( getExistent( form ) ) );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
+        return AnotoUtils.toPenList( formSession.getPens( form ) );
     }
 
-    public MediaDTO addFile( AuthenticationDTO auth, FormDTO form, MediaDTO media ) throws ApplicationException
+    public MediaDTO addFile( AuthenticationDTO auth, FormDTO formDto, MediaDTO media ) throws ApplicationException
     {
         authenticate( auth );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         Media entity = mediaSession.add( MediaUtil.createEntity( media ) );
-        AnotoForm anotoForm = formSession.get( form.getId() );
-        return formSession.addFile( anotoForm, entity ).getMedia().toDTO();
+        return formSession.addFile( form, entity ).getMedia().toDTO();
     }
 
 
-    public void removeFile( AuthenticationDTO auth, FormDTO form, MediaDTO media ) throws ApplicationException
+    public void removeFile( AuthenticationDTO auth, FormDTO formDto, MediaDTO media ) throws ApplicationException
     {
         authenticate( auth );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         Media entity = mediaSession.add( MediaUtil.createEntity( media ) );
-        AnotoForm anotoForm = formSession.get( form.getId() );
-        formSession.removeFile( anotoForm, entity );
+        formSession.removeFile( form, entity );
     }
 
-    public List<MediaDTO> getFiles( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
+    public List<MediaDTO> getFiles( AuthenticationDTO auth, FormDTO formDto ) throws ApplicationException
     {
         authenticate( auth );
-        AnotoForm anotoForm = formSession.get( form.getId() );
-        if ( anotoForm == null )
-            return Collections.emptyList();
-        List<FormMedia> list = formSession.getFiles( anotoForm );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
+        List<FormMedia> list = formSession.getFiles( form );
         if ( SysUtils.isEmpty( list ) )
             return Collections.emptyList();
         List<Media> medias = new ArrayList<Media>( list.size() );
@@ -254,12 +268,12 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         return AnotoUtils.toMediaList( medias );
     }
 
-    public List<AnotoPageDTO> getPages( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
+    public List<AnotoPageDTO> getPages( AuthenticationDTO auth, FormDTO formDto ) throws ApplicationException
     {
         authenticate( auth );
-        AnotoForm entity = formSession.get( form.getId() );
-
-        return AnotoUtils.toPageList( padSession.getPages( entity ) );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
+        return AnotoUtils.toPageList( padSession.getPages( form ) );
     }
 
     public Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException
@@ -283,7 +297,7 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         padSession.add( page, fields );
     }
 
-    public MediaDTO removeFromForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException
+    public MediaDTO removeFromForm( AuthenticationDTO auth, FormDTO formDto, MediaDTO pad ) throws ApplicationException
     {
         authenticate( auth );
         /*
@@ -292,55 +306,53 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
        * 2) Inserir a mídia.
        * 3) Vincular o formulário à midia
        */
-        AnotoForm form = formSession.get( entity.getId() );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         Media media = mediaSession.get( pad.getId() );
         return formSession.removePadFile( form, media ).toDTO();
     }
 
 
-    public void addMedias( AuthenticationDTO auth, FormDTO form, MediaDTO[] medias ) throws ApplicationException
+    public void addMedias( AuthenticationDTO auth, FormDTO formDto, MediaDTO[] medias ) throws ApplicationException
     {
         authenticate( auth );
-        AnotoForm formEntity = formSession.get( form.getId() );
-        if ( formEntity == null )
-            throwException( 1 );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         for ( int nIndex = 0; nIndex < medias.length; nIndex++ ) {
             Media newMedia = mediaSession.add( MediaUtil.createEntity( medias[ nIndex ] ) );
-            if ( formMediaSession.get( formEntity, newMedia ) == null )
-                formMediaSession.add( formEntity, newMedia );
+            if ( formMediaSession.get( form, newMedia ) == null )
+                formMediaSession.add( form, newMedia );
         }
-        getEntityManager().refresh( formEntity );
     }
 
-    public void removeMedias( AuthenticationDTO auth, FormDTO form, MediaDTO[] medias ) throws ApplicationException
+    public void removeMedias( AuthenticationDTO auth, FormDTO formDto, MediaDTO[] medias ) throws ApplicationException
     {
         authenticate( auth );
-        AnotoForm formEntity = formSession.get( form.getId() );
-        if ( formEntity == null )
-            throwException( 1 );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         for ( int nIndex = 0; nIndex < medias.length; nIndex++ ) {
             Media media = mediaSession.get( medias[ nIndex ].getId() );
             if ( media != null ) {
-                formMediaSession.delete( formEntity, media );
+                formMediaSession.delete( form, media );
             }
         }
-        getEntityManager().refresh( formEntity );
     }
 
 
-    public List<MediaDTO> getMedias( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
+    public List<MediaDTO> getMedias( AuthenticationDTO auth, FormDTO formDto ) throws ApplicationException
     {
         authenticate( auth );
-        AnotoForm formEntity = formSession.get( form.getId() );
-        if ( formEntity == null )
-            throwException( 1 );
-        List<FormMedia> formMedias = formMediaSession.get( formEntity );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
+        List<FormMedia> formMedias = formMediaSession.get( form );
         return AnotoUtils.toMediaListFromFormMedia( formMedias );
     }
 
-    public ListUserDTO getCompany( AuthenticationDTO auth, FormDTO form, Integer clientId ) throws ApplicationException
+    public ListUserDTO getCompany( AuthenticationDTO auth, FormDTO formDto, Integer clientId ) throws ApplicationException
     {
         Company clientCompany = getClient( auth, clientId );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         if ( clientCompany == null )
             return null;
         return UserUtil.copy( clientCompany );
@@ -353,11 +365,13 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         return AnotoFormUtil.toListUserDTO( formUsers );
     }
 
-    public void addCompany( AuthenticationDTO auth, FormDTO form, ListUserDTO dto ) throws ApplicationException
+    public void addCompany( AuthenticationDTO auth, FormDTO formDto, ListUserDTO dto ) throws ApplicationException
     {
         Company clientCompany = getClient( auth, dto.getId() );
+        AnotoForm form = getExistent( formDto );
+        belongsToCompany( form.getId(), auth.getCurrentCompany() );
         AnotoFormUser formUser = new AnotoFormUser();
-        formUser.setForm( formSession.get( form.getId() ) );
+        formUser.setForm( form );
         formUser.setCompany( clientCompany );
         formUserSession.add( formUser );
     }
@@ -379,7 +393,10 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         if ( clientCompany == null )
             return null;
         Client client = clientSession.get( myCompany, clientCompany );
-        return ( Company )client.getClient();
+        if ( client != null )
+            return ( Company )client.getClient();
+        else
+            return null;
     }
 }
 

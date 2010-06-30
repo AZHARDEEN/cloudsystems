@@ -54,8 +54,6 @@ public interface PGCSessionLocal extends Serializable
 
     void add( PgcPageAttachment pgcField ) throws ApplicationException;
 
-    void add( PgcPage entity ) throws ApplicationException;
-
     List<Media> getImages( PgcPage page ) throws ApplicationException;
 
     List<PgcField> getFields( PgcPage page ) throws ApplicationException;
