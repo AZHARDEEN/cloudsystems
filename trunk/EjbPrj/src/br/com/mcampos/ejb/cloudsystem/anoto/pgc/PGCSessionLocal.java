@@ -6,7 +6,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.entity.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;

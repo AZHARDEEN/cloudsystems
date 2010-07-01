@@ -50,10 +50,18 @@ public class AnotoPenUserSessionBean extends Crud<AnotoPenUserPK, AnotoPenUser> 
         return entity;
     }
 
-    public AnotoPenUser getUser( String penId ) throws ApplicationException
+    public AnotoPenUser getCurrentUser( String penId ) throws ApplicationException
     {
-        return ( AnotoPenUser )getSingleResult( AnotoPenUser.getPenUser, penId );
+        return ( AnotoPenUser )getSingleResult( AnotoPenUser.getCurrentUser, penId );
     }
+
+    public AnotoPenUser getUser( String penId, Date date ) throws ApplicationException
+    {
+        String sDate = SysUtils.formatDateForSQLSearch( date );
+        AnotoPenUser p = ( AnotoPenUser )getSingleResult( AnotoPenUser.getUser, penId, sDate );
+        return p;
+    }
+
 
     private Integer getSequence( AnotoPen pen ) throws ApplicationException
     {

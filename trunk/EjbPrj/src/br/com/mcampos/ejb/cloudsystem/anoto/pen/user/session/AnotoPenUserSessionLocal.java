@@ -7,6 +7,8 @@ import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
 
+import java.util.Date;
+
 import javax.ejb.Local;
 
 
@@ -19,5 +21,7 @@ public interface AnotoPenUserSessionLocal extends Serializable
 
     void delete( AnotoPenUser entity ) throws ApplicationException;
 
-    AnotoPenUser getUser( String penId ) throws ApplicationException;
+    AnotoPenUser getUser( String penId, Date date ) throws ApplicationException;
+
+    AnotoPenUser getCurrentUser( String penId ) throws ApplicationException;
 }

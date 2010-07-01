@@ -80,14 +80,20 @@
                     </north>
                     <center autoscroll="false">
                         <div id="divResult" width="100%" height="100%">
-                            <listbox id="resultList" fixedLayout="true" vflex="true">
+                            <listbox id="resultList" vflex="true">
                                 <listhead>
                                     <listheader id="headSeq" label="##" width="50px"/>
-                                    <listheader id="headApplication" label="##"/>
+                                    <listheader id="headApplication" label="##" width="150px"/>
                                     <listheader id="headFormulario" label="##" width="40px" align="center"/>
                                     <listheader id="headPagina" label="##" width="40px" align="center"/>
                                     <listheader id="headPen" label="##" width="150px"/>
-                                    <listheader id="headDate" label="##"/>
+                                    <listheader id="headDate" label="##" width="150px"/>
+                                    <listheader id="headUserName" label="##" width="150px"/>
+                                    <listheader id="headEmail" label="##" width="150px"/>
+                                    <listheader id="headCellNumber" label="##" width="150px"/>
+                                    <listheader id="headLatitude" label="##" width="150px"/>
+                                    <listheader id="headLongitude" label="##" width="150px"/>
+                                    <listheader id="headBarcode" label="##" width="150px"/>
                                 </listhead>
                             </listbox>
                         </div>

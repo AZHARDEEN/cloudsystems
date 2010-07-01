@@ -121,11 +121,27 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         return getResultList( namedQuery, parameter );
     }
 
+    public List<?> getResultList( String namedQuery, Object param1, Object param2 ) throws ApplicationException
+    {
+        List<Object> parameter = new ArrayList<Object>( 1 );
+        parameter.add( param1 );
+        parameter.add( param2 );
+        return getResultList( namedQuery, parameter );
+    }
+
 
     public Object getSingleResult( String namedQuery, Object param ) throws ApplicationException
     {
         List<Object> parameter = new ArrayList<Object>( 1 );
         parameter.add( param );
+        return getSingleResult( namedQuery, parameter );
+    }
+
+    public Object getSingleResult( String namedQuery, Object param1, Object param2 ) throws ApplicationException
+    {
+        List<Object> parameter = new ArrayList<Object>( 1 );
+        parameter.add( param1 );
+        parameter.add( param2 );
         return getSingleResult( namedQuery, parameter );
     }
 

@@ -3,6 +3,10 @@ package br.com.mcampos.sysutils;
 
 import java.sql.Timestamp;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
 import java.util.List;
 
 
@@ -55,5 +59,11 @@ public final class SysUtils
         if ( list.size() == 0 )
             return true;
         return false;
+    }
+
+    public static String formatDateForSQLSearch( Date date )
+    {
+        DateFormat df = new SimpleDateFormat( "yyyyMMdd HHmmss" );
+        return df.format( date );
     }
 }

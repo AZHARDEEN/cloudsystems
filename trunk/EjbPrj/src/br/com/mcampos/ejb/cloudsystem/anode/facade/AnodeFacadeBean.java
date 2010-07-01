@@ -17,6 +17,7 @@ import br.com.mcampos.dto.anoto.PgcPropertyDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormSessionLocal;
@@ -31,12 +32,15 @@ import br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.field.PageFieldSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnodePenSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
+import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser;
+import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.session.AnotoPenUserSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.entity.PgcProperty;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.session.PgcPropertySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
@@ -51,6 +55,7 @@ import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.system.fieldtype.session.FieldTypeSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
@@ -105,6 +110,13 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
     @EJB
     private CompanySessionLocal companySession;
+
+    @EJB
+    private AnotoPenUserSessionLocal penUserSession;
+
+    @EJB
+    private PgcPropertySessionLocal pgcPropertySession;
+
 
     public void addPens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException
     {
@@ -420,13 +432,53 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             item.setForm( page.getPgc().getPgcPenPages().get( 0 ).getPenPage().getPage().getPad().getForm().toDTO() );
             item.setPen( page.getPgc().getPgcPenPages().get( 0 ).getPenPage().getPen().toDTO() );
             item.setPgcPage( page.toDTO() );
-            if ( resultList.contains( item ) == false )
+            if ( resultList.contains( item ) == false ) {
+                loadProperties( item );
                 resultList.add( item );
+            }
         }
         return resultList;
     }
 
-    protected boolean hasAnotoPages( Pgc pgc, List<String> addresses, AnotoPen anotoPen ) throws ApplicationException
+    private void loadProperties( AnotoResultList item ) throws ApplicationException
+    {
+        if ( item == null )
+            return;
+        loadUserData( item );
+        try {
+            List<PgcProperty> prop = pgcPropertySession.get( item.getPgcPage().getPgc().getId(), PgcProperty.cellNumber );
+            if ( SysUtils.isEmpty( prop ) == false ) {
+                item.setCellNumber( prop.get( 0 ).getValue() );
+            }
+            prop = pgcPropertySession.getGPS( item.getPgcPage().getPgc().getId() );
+            if ( SysUtils.isEmpty( prop ) == false ) {
+                item.setLatitude( prop.get( 3 ).getValue() );
+                item.setLongitude( prop.get( 4 ).getValue() );
+            }
+        }
+        catch ( Exception e ) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadUserData( AnotoResultList item ) throws ApplicationException
+    {
+        AnotoPenUser penUser = penUserSession.getUser( item.getPen().getId(), item.getPgcPage().getPgc().getInsertDate() );
+        if ( penUser != null ) {
+            item.setUserName( penUser.getPerson().getName() );
+            if ( SysUtils.isEmpty( penUser.getPerson().getDocuments() ) == false ) {
+                for ( UserDocument doc : penUser.getPerson().getDocuments() ) {
+                    if ( doc.getDocumentType().getId().equals( DocumentTypeDTO.typeEmail ) ) {
+                        item.setEmail( doc.getCode() );
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
+
+    private boolean hasAnotoPages( Pgc pgc, List<String> addresses, AnotoPen anotoPen ) throws ApplicationException
     {
         for ( String address : addresses ) {
             List<AnotoPage> list = padSession.getPages( address );
@@ -539,8 +591,8 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             List<PgcPropertyDTO> list = new ArrayList<PgcPropertyDTO>( attachments.size() );
             for ( PgcProperty a : attachments ) {
                 PgcPropertyDTO dto = new PgcPropertyDTO();
-                dto.setId( a.getPgp_id_in() );
-                dto.setValue( a.getPpg_value_ch() );
+                dto.setId( a.getId() );
+                dto.setValue( a.getValue() );
                 list.add( dto );
             }
             return list;
@@ -560,8 +612,8 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             List<PgcPropertyDTO> list = new ArrayList<PgcPropertyDTO>( attachments.size() );
             for ( PgcProperty a : attachments ) {
                 PgcPropertyDTO dto = new PgcPropertyDTO();
-                dto.setId( a.getPgp_id_in() );
-                dto.setValue( a.getPpg_value_ch() );
+                dto.setId( a.getId() );
+                dto.setValue( a.getValue() );
                 list.add( dto );
             }
             return list;

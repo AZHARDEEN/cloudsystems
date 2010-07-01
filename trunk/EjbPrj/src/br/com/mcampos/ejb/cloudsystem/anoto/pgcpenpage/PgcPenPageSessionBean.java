@@ -103,7 +103,8 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         barCode = ( String )( props != null ? props.get( barCodeParameterName ) : "" );
         if ( SysUtils.isEmpty( barCode ) == false ) {
             String sqlBarCode = " exists ( select a.pgc_id_in from pgc_attachment a \n" +
-                " where a.pgc_id_in = pgc_page.pgc_id_in and " + " a.ppg_book_id = pgc_page.ppg_book_id and " + " a.ppg_page_id = pgc_page.ppg_page_id \n";
+                " where a.pgc_id_in = pgc_page.pgc_id_in and " + " a.ppg_book_id = pgc_page.ppg_book_id and " +
+                " a.ppg_page_id = pgc_page.ppg_page_id \n";
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
             if ( barCode.indexOf( "*" ) >= 0 ) {
@@ -118,7 +119,8 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         fieldValue = ( String )( props != null ? props.get( fieldValueParameterName ) : "" );
         if ( SysUtils.isEmpty( fieldValue ) == false ) {
             String sqlFieldValue = " exists ( select a.pgc_id_in from pgc_field a \n" +
-                "	where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " + "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
+                "	where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " +
+                "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
             if ( fieldValue.indexOf( "*" ) >= 0 ) {
@@ -134,19 +136,18 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         if ( initDate != null ) {
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
-            jpaWhere += "pgc.pgc_insert_dt >= TO_DATE ( '" + df.format( initDate ) + "', 'YYYYMMDD HH24MISS' ) ";
+            jpaWhere += "pgc.pgc_insert_dt >= TO_TIMESTAMP ( '" + df.format( initDate ) + "', 'YYYYMMDD HH24MISS' ) ";
         }
 
         Date endDate = ( Date )( props != null ? props.get( endDateParameterName ) : "" );
         if ( endDate != null ) {
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
-            jpaWhere += "pgc.pgc_insert_dt <= TO_DATE ( '" + df.format( endDate ) + "', 'YYYYMMDD HH24MISS' ) ";
+            jpaWhere += "pgc.pgc_insert_dt <= TO_TIMESTAMP ( '" + df.format( endDate ) + "', 'YYYYMMDD HH24MISS' ) ";
         }
 
         if ( jpaWhere.length() > 0 )
             jpaQuery += " WHERE " + jpaWhere + " ORDER BY PGC_ID_IN DESC, PPG_BOOK_ID ASC, PPG_PAGE_ID ASC ";
-        System.out.println( jpaQuery );
         Query query = getEntityManager().createNativeQuery( jpaQuery, PgcPage.class );
         query.setMaxResults( maxRecords );
         List<PgcPage> list = ( List<PgcPage> )query.getResultList();

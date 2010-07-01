@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=abcdefg" type="text/javascript"></script>
     <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoViewController">
         <borderlayout id="borderLayout">
             <north autoscroll="false" height="65px">
@@ -24,88 +25,85 @@
                     <west splittable="true" width="40%" autoscroll="true" id="westView">
                         <div align="center" width="100%" height="100%">
                             <!-- Por favor, nao mude o id desta div -->
-                            <borderlayout>
-                                <north splittable="false" autoscroll="true" size="40%">
-                                    <tabbox>
-                                        <tabs>
-                                            <tab id="tabIcr" label="##"/>
-                                            <tab id="tabPgc" label="##"/>
-                                            <tab id="tabbarCode" label="##"/>
-                                            <tab id="tabPhotos" label="##"/>
-                                            <tab id="tabGPS" label="##"/>
-                                        </tabs>
-                                        <tabpanels>
-                                            <tabpanel>
-                                                <div id="divIcr">
-                                                    <grid width="100%" fixedLayout="true">
-                                                        <columns>
-                                                            <column align="left" width="30%"/>
-                                                            <column align="left"/>
-                                                        </columns>
-                                                        <rows>
-                                                            <row>
-                                                                <label value="##" id="labelFormFields"/>
-                                                                <combobox id="fields" width="94%"></combobox>
-                                                            </row>
-                                                            <row id="icrInfo">
-                                                                <label value="##" id="labelRecognition"/>
-                                                                <label id="icrValue" width="80%"/>
-                                                            </row>
-                                                            <row id="timeInfo">
-                                                                <label value="##" id="labelTimeDiff"/>
-                                                                <vbox>
-                                                                    <label id="startTime" width="80%"/>
-                                                                    <label id="endTime" width="80%"/>
-                                                                </vbox>
-                                                            </row>
-                                                            <row id="correctedInfo">
-                                                                <label value="##" id="labelAdjustment"/>
-                                                                <textbox id="correctedValue" width="94%"/>
-                                                            </row>
-                                                        </rows>
-                                                    </grid>
+                            <tabbox>
+                                <tabs>
+                                    <tab id="tabIcr" label="##"/>
+                                    <tab id="tabPgc" label="##"/>
+                                    <tab id="tabbarCode" label="##"/>
+                                    <tab id="tabPhotos" label="##"/>
+                                    <tab id="tabGPS" label="##"/>
+                                </tabs>
+                                <tabpanels>
+                                    <tabpanel height="412px">
+                                        <borderlayout width="100%" height="100%">
+                                            <north splittable="false" autoscroll="true" size="27%">
+                                                <grid width="100%" fixedLayout="true">
+                                                    <columns>
+                                                        <column align="left" width="30%"/>
+                                                        <column align="left"/>
+                                                    </columns>
+                                                    <rows>
+                                                        <row>
+                                                            <label value="##" id="labelFormFields"/>
+                                                            <combobox id="fields" width="94%"></combobox>
+                                                        </row>
+                                                        <row id="icrInfo">
+                                                            <label value="##" id="labelRecognition"/>
+                                                            <label id="icrValue" width="80%"/>
+                                                        </row>
+                                                        <row id="timeInfo">
+                                                            <label value="##" id="labelTimeDiff"/>
+                                                            <vbox>
+                                                                <label id="startTime" width="80%"/>
+                                                                <label id="endTime" width="80%"/>
+                                                            </vbox>
+                                                        </row>
+                                                        <row id="correctedInfo">
+                                                            <label value="##" id="labelAdjustment"/>
+                                                            <textbox id="correctedValue" width="94%"/>
+                                                        </row>
+                                                    </rows>
+                                                </grid>
+                                            </north>
+                                            <center autoscroll="true" flex="true">
+                                                <div width="100%" height="100%" align="left">
+                                                    <image id="fieldImage" border="normal" align="left"/>
                                                 </div>
-                                            </tabpanel>
-                                            <tabpanel>
-                                                <div id="divProperties">
-                                                    <listbox height="600px" vflex="true" width="99%" fixedLayout="true"
-                                                             id="listProperties"></listbox>
-                                                </div>
-                                            </tabpanel>
-                                            <tabpanel>
-                                                <div id="divbarCcode">
-                                                    <grid width="100%" fixedLayout="true" id="gridAttach">
-                                                        <columns>
-                                                            <column align="left" width="30%"/>
-                                                            <column align="left"/>
-                                                        </columns>
-                                                    </grid>
-                                                </div>
-                                            </tabpanel>
-                                            <tabpanel>
-                                                <div id="divPgcAttach">
-                                                    <toolbar>
-                                                        <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="##"
-                                                                       id="btnExportAttach"/>
-                                                    </toolbar>
-                                                    <listbox height="600px" width="99%" fixedLayout="true" id="listPgcAttach"></listbox>
-                                                </div>
-                                            </tabpanel>
-                                            <tabpanel>
-                                                <div id="divGPS">
-                                                    <listbox height="600px" vflex="true" width="99%" fixedLayout="true"
-                                                             id="listGPS"></listbox>
-                                                </div>
-                                            </tabpanel>
-                                        </tabpanels>
-                                    </tabbox>
-                                </north>
-                                <center autoscroll="true" flex="true">
-                                    <div width="100%" height="100%" align="left">
-                                        <image id="fieldImage" border="normal" align="left"/>
-                                    </div>
-                                </center>
-                            </borderlayout>
+                                            </center>
+                                        </borderlayout>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <div id="divProperties">
+                                            <listbox height="600px" vflex="true" width="99%" fixedLayout="true" id="listProperties"></listbox>
+                                        </div>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <div id="divbarCcode">
+                                            <grid width="100%" fixedLayout="true" id="gridAttach">
+                                                <columns>
+                                                    <column align="left" width="30%"/>
+                                                    <column align="left"/>
+                                                </columns>
+                                            </grid>
+                                        </div>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <div id="divPgcAttach">
+                                            <toolbar>
+                                                <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="##"
+                                                               id="btnExportAttach"/>
+                                            </toolbar>
+                                            <listbox height="600px" width="99%" fixedLayout="true" id="listPgcAttach"></listbox>
+                                        </div>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <div id="divGPS">
+                                            <listbox height="600px" vflex="true" width="99%" fixedLayout="true" id="listGPS"></listbox>
+                                            <gmaps width="500px" height="300px" id="gmapGPS"/>
+                                        </div>
+                                    </tabpanel>
+                                </tabpanels>
+                            </tabbox>
                         </div>
                     </west>
                     <center autoscroll="false" border="normal" id="centerImageArea">
