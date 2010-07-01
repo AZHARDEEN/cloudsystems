@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=abcdefg" type="text/javascript"></script>
     <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoViewController">
         <borderlayout id="borderLayout">
             <north autoscroll="false" height="65px">
