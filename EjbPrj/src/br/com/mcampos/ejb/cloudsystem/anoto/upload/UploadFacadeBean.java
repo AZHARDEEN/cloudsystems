@@ -23,8 +23,9 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PgcUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.entity.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
@@ -144,10 +145,10 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
                 if ( SysUtils.isEmpty( s ) )
                     continue;
                 PgcProperty property = new PgcProperty();
-                property.setPgc_id_in( pgc.getId() );
-                property.setPgp_id_in( p.getId() );
-                property.setPpg_value_ch( s );
-                property.setPgp_seq_in( nSequence );
+                property.setPgcId( pgc.getId() );
+                property.setId( p.getId() );
+                property.setValue( s );
+                property.setSequence( nSequence );
                 nSequence++;
                 getEntityManager().persist( property );
             }
@@ -272,6 +273,11 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
         if ( dto.getMedia() != null )
             media = mediaSession.add( MediaUtil.createEntity( dto.getMedia() ) );
         field.setMedia( media );
+        field.setType( getEntityManager().find( FieldType.class, field.getType().getId() ) );
+        PgcPageDTO p = dto.getPgcPage();
+        PgcPagePK page = new PgcPagePK( p.getPgc().getId(), p.getBookId(), p.getPageId() );
+        PgcPage pe = getEntityManager().find( PgcPage.class, page );
+        field.setPgcPage( pe );
         pgcSession.add( field );
     }
 

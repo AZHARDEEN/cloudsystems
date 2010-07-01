@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -24,16 +26,20 @@ import javax.persistence.TemporalType;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = AnotoPenUser.getAll, query = "select o from AnotoPenUser o" ),
-                 @NamedQuery( name = AnotoPenUser.getPenUser,
+                 @NamedQuery( name = AnotoPenUser.getCurrentUser,
                               query = "select o from AnotoPenUser o where o.pen.id = ?1 and o.toDate is null" ),
                  @NamedQuery( name = AnotoPenUser.nextSequence,
                               query = "select max (o.sequence) from AnotoPenUser o where o.pen = ?1" ) } )
+@NamedNativeQueries( { @NamedNativeQuery( name = AnotoPenUser.getUser,
+                                          query = "SELECT * FROM ANOTO_PEN_USER WHERE PEN_ID_CH = ?1 AND TO_TIMESTAMP ( ?2, 'YYYYMMDD HH24MISS' ) BETWEEN apu_from_dt and coalesce ( apu_to_dt, now() )",
+                                          resultClass = AnotoPenUser.class ) } )
 @Table( name = "anoto_pen_user" )
 @IdClass( AnotoPenUserPK.class )
 public class AnotoPenUser implements Serializable
 {
     public static final String getAll = "AnotoPenUser.findAll";
-    public static final String getPenUser = "AnotoPenUser.penUser";
+    public static final String getCurrentUser = "AnotoPenUser.currentPenUser";
+    public static final String getUser = "AnotoPenUser.penenUser";
     public static final String nextSequence = "AnotoPenUser.nextSequence";
 
     @Column( name = "apu_from_dt", nullable = false )

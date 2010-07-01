@@ -11,6 +11,7 @@ import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
+import br.com.mcampos.dto.anoto.PgcPropertyDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -39,6 +40,7 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import org.zkoss.gmaps.Gmaps;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -119,8 +121,10 @@ public class AnotoViewController extends AnotoLoggedController
     private Tab tabPhotos;
     private Tab tabGPS;
 
+    private Gmaps gmapGPS;
 
-    public AnotoViewController( char c )
+
+    AnotoViewController( char c )
     {
         super( c );
     }
@@ -219,8 +223,20 @@ public class AnotoViewController extends AnotoLoggedController
             currentPgc = target.getPgcPage().getPgc();
             listPgcAttach.setModel( new ListModelList( getSession().getAttachments( getLoggedInUser(), currentPgc ) ) );
 
-            listGPS.setModel( new ListModelList( getSession().getGPS( getLoggedInUser(), currentPgc ) ) );
+            List<PgcPropertyDTO> list = getSession().getGPS( getLoggedInUser(), currentPgc );
+            listGPS.setModel( new ListModelList( list ) );
+            if ( gmapGPS != null ) {
+                gmapGPS.setVisible( SysUtils.isEmpty( list ) == false );
+                if ( SysUtils.isEmpty( list ) == false ) {
+                    String latitude;
+                    String longitude;
 
+                    latitude = list.get( 3 ).getValue();
+                    longitude = list.get( 4 ).getValue();
+                    gmapGPS.setLat( Double.parseDouble( latitude ) );
+                    gmapGPS.setLng( Double.parseDouble( longitude ) );
+                }
+            }
             listProperties.setModel( new ListModelList( getSession().getProperties( getLoggedInUser(), currentPgc ) ) );
         }
     }

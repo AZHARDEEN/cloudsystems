@@ -15,7 +15,6 @@ import br.com.mcampos.dto.anoto.PgcPropertyDTO;
 import br.com.mcampos.dto.anoto.PgcStatusDTO;
 import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
-import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.ejb.cloudsystem.anoto.upload.UploadFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -195,8 +194,6 @@ public class PgcFile
                             v = v.replaceAll( "'", "" );
                             if ( SysUtils.isEmpty( v ) )
                                 continue;
-                            System.out.println( "    " + v );
-
                             p.add( v );
                         }
                     }

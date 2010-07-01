@@ -27,26 +27,37 @@ public class PgcPenPageListRenderer implements ListitemRenderer
         int nIndex = 0;
 
         if ( item.getChildren().size() == 0 ) {
-            item.appendChild( new Listcell( ) );
-            item.appendChild( new Listcell( ) );
-            item.appendChild( new Listcell( ) );
-            item.appendChild( new Listcell( ) );
-            item.appendChild( new Listcell( ) );
-            item.appendChild( new Listcell( ) );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
         }
 
-        ((Listcell)item.getChildren().get( nIndex ++ )).setLabel( "" + ( item.getListbox().getIndexOfItem( item ) + 1 ) );
-        ((Listcell)item.getChildren().get( nIndex ++ )).setLabel( dto.getForm().toString() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( "" + ( item.getListbox().getIndexOfItem( item ) + 1 ) );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getForm().toString() );
         Integer aux = dto.getPgcPage().getBookId() + 1;
-        ((Listcell)item.getChildren().get( nIndex ++ )).setLabel( aux.toString() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( aux.toString() );
         aux = dto.getPgcPage().getPageId() + 1;
-        ((Listcell)item.getChildren().get( nIndex ++ )).setLabel( aux.toString() );
-        ((Listcell)item.getChildren().get( nIndex ++ )).setLabel( dto.getPen().toString() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( aux.toString() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getPen().toString() );
         try {
-            ((Listcell)item.getChildren().get( nIndex ++ )).setLabel( renderedDateFormat.format( dto.getPgcPage().getPgc().getInsertDate() ) );
+            ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( renderedDateFormat.format( dto.getPgcPage().getPgc().getInsertDate() ) );
         }
         catch ( Exception e ) {
             e = null;
         }
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getUserName() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getEmail() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getCellNumber() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getLatitude() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getLongitude() );
     }
 }

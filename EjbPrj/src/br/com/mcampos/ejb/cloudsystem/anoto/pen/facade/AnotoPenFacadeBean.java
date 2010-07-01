@@ -81,7 +81,7 @@ public class AnotoPenFacadeBean extends AbstractSecurity implements AnotoPenFaca
     {
         if ( pen == null )
             return null;
-        AnotoPenUser penUser = penUserSession.getUser( pen.getId() );
+        AnotoPenUser penUser = penUserSession.getCurrentUser( pen.getId() );
         if ( penUser != null ) {
             LinkedUserDTO user = new LinkedUserDTO();
             user.setUser( UserUtil.copy( penUser.getPerson() ) );
@@ -121,7 +121,7 @@ public class AnotoPenFacadeBean extends AbstractSecurity implements AnotoPenFaca
         if ( pen == null )
             throwException( 2 );
         pen = penSession.update( AnotoPenUtil.update( pen, entity ) );
-        AnotoPenUser penUser = penUserSession.getUser( pen.getId() );
+        AnotoPenUser penUser = penUserSession.getCurrentUser( pen.getId() );
         if ( entity.getUser() != null && entity.getUser().getUser() != null ) {
             ListUserDTO userDto = entity.getUser().getUser();
             Person person = personSession.get( userDto.getId() );

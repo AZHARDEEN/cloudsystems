@@ -70,6 +70,13 @@ public abstract class BaseSearchController extends AnotoLoggedController
     private Listheader headPen;
     private Listheader headDate;
 
+    private Listheader headUserName;
+    private Listheader headEmail;
+    private Listheader headCellNumber;
+    private Listheader headLatitude;
+    private Listheader headLongitude;
+    private Listheader headBarcode;
+
     public BaseSearchController()
     {
         super();
@@ -425,6 +432,12 @@ public abstract class BaseSearchController extends AnotoLoggedController
         setLabel( headPagina );
         setLabel( headPen );
         setLabel( headDate );
+        setLabel( headUserName );
+        setLabel( headEmail );
+        setLabel( headCellNumber );
+        setLabel( headLatitude );
+        setLabel( headLongitude );
+        setLabel( headBarcode );
 
     }
 }

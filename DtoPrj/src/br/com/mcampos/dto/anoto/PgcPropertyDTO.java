@@ -13,6 +13,7 @@ public class PgcPropertyDTO implements Serializable
     private int sequence;
     private List<String> values = new ArrayList<String>();
     private String value;
+    private String internalCode;
 
     public PgcPropertyDTO()
     {
@@ -62,5 +63,15 @@ public class PgcPropertyDTO implements Serializable
     public int getSequence()
     {
         return sequence;
+    }
+
+    public void setInternalCode( String internalCode )
+    {
+        this.internalCode = internalCode;
+    }
+
+    public String getInternalCode()
+    {
+        return internalCode;
     }
 }

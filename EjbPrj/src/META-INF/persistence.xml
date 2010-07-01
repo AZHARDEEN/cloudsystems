@@ -20,7 +20,7 @@
     <class>br.com.mcampos.ejb.entity.system.SystemMessageType</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.entity.DocumentType</class>
     <class>br.com.mcampos.ejb.entity.system.SystemMessage</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.PgcProperty</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.entity.PgcProperty</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressType</class>
