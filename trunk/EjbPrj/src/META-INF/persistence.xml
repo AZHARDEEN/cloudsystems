@@ -56,7 +56,7 @@
     <class>br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.entity.ContactType</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.entity.PgcAttachment</class>
     <class>br.com.mcampos.ejb.cloudsystem.security.menu.Menu</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.entity.CivilState</class>
