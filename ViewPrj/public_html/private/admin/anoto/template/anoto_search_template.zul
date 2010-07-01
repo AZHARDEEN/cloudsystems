@@ -83,16 +83,16 @@
                             <listbox id="resultList" vflex="true">
                                 <listhead>
                                     <listheader id="headSeq" label="##" width="50px"/>
-                                    <listheader id="headApplication" label="##" width="150px"/>
+                                    <listheader id="headApplication" label="##" width="250px"/>
                                     <listheader id="headFormulario" label="##" width="40px" align="center"/>
                                     <listheader id="headPagina" label="##" width="40px" align="center"/>
-                                    <listheader id="headPen" label="##" width="150px"/>
-                                    <listheader id="headDate" label="##" width="150px"/>
-                                    <listheader id="headUserName" label="##" width="150px"/>
-                                    <listheader id="headEmail" label="##" width="150px"/>
-                                    <listheader id="headCellNumber" label="##" width="150px"/>
-                                    <listheader id="headLatitude" label="##" width="150px"/>
-                                    <listheader id="headLongitude" label="##" width="150px"/>
+                                    <listheader id="headPen" label="##" width="110px"/>
+                                    <listheader id="headDate" label="##" width="120px"/>
+                                    <listheader id="headUserName" label="##" width="250px"/>
+                                    <listheader id="headEmail" label="##" width="250px"/>
+                                    <listheader id="headCellNumber" label="##" width="100px"/>
+                                    <listheader id="headLatitude" label="##" width="130px"/>
+                                    <listheader id="headLongitude" label="##" width="130px"/>
                                     <listheader id="headBarcode" label="##" width="150px"/>
                                 </listhead>
                             </listbox>

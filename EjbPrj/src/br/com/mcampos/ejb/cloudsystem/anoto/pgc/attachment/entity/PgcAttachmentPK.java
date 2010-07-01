@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment;
+package br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.entity;
 
 import java.io.Serializable;
 

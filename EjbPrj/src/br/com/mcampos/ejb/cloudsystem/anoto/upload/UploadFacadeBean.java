@@ -22,7 +22,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PgcUtil;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.entity.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPagePK;

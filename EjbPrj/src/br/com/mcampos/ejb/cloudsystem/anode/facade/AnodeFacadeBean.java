@@ -38,11 +38,13 @@ import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.PgcAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.entity.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.session.PgcPropertySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageUtil;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachmentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldPK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldSessionLocal;
@@ -116,6 +118,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
     @EJB
     private PgcPropertySessionLocal pgcPropertySession;
+
+    @EJB
+    private PgcPageAttachmentSessionLocal pgcPageAttachmentSession;
 
 
     public void addPens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException
@@ -433,20 +438,20 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             item.setPen( page.getPgc().getPgcPenPages().get( 0 ).getPenPage().getPen().toDTO() );
             item.setPgcPage( page.toDTO() );
             if ( resultList.contains( item ) == false ) {
-                loadProperties( item );
+                loadProperties( item, page );
                 resultList.add( item );
             }
         }
         return resultList;
     }
 
-    private void loadProperties( AnotoResultList item ) throws ApplicationException
+    private void loadProperties( AnotoResultList item, PgcPage pgcPage ) throws ApplicationException
     {
         if ( item == null )
             return;
-        loadUserData( item );
         try {
-            List<PgcProperty> prop = pgcPropertySession.get( item.getPgcPage().getPgc().getId(), PgcProperty.cellNumber );
+            loadUserData( item );
+            List<PgcProperty> prop = pgcPropertySession.get( pgcPage.getPgc().getId(), PgcProperty.cellNumber );
             if ( SysUtils.isEmpty( prop ) == false ) {
                 item.setCellNumber( prop.get( 0 ).getValue() );
             }
@@ -455,6 +460,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
                 item.setLatitude( prop.get( 3 ).getValue() );
                 item.setLongitude( prop.get( 4 ).getValue() );
             }
+            loadBarCode( item, pgcPage );
         }
         catch ( Exception e ) {
             e.printStackTrace();
@@ -476,6 +482,19 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             }
         }
 
+    }
+
+    private void loadBarCode( AnotoResultList item, PgcPage pgcPage ) throws ApplicationException
+    {
+        List<PgcPageAttachment> list = pgcPageAttachmentSession.getAll( pgcPage );
+        if ( SysUtils.isEmpty( list ) == false ) {
+            for ( PgcPageAttachment attach : list ) {
+                if ( attach.getType().equals( PgcAttachmentDTO.typeBarCode ) ) {
+                    item.setBarcodeValue( attach.getValue() );
+                    break;
+                }
+            }
+        }
     }
 
     private boolean hasAnotoPages( Pgc pgc, List<String> addresses, AnotoPen anotoPen ) throws ApplicationException

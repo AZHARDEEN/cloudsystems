@@ -59,5 +59,6 @@ public class PgcPenPageListRenderer implements ListitemRenderer
         ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getCellNumber() );
         ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getLatitude() );
         ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getLongitude() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getBarcodeValue() );
     }
 }
