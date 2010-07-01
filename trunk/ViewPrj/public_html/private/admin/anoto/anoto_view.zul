@@ -98,7 +98,7 @@
                                     <tabpanel>
                                         <div id="divGPS">
                                             <listbox height="600px" vflex="true" width="99%" fixedLayout="true" id="listGPS"></listbox>
-                                            <gmaps width="500px" height="300px" id="gmapGPS"/>
+                                            <gmaps width="500px" height="300px" id="gmapGPS" showSmallCtrl="true"/>
                                         </div>
                                     </tabpanel>
                                 </tabpanels>
