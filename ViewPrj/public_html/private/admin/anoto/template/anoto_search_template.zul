@@ -73,9 +73,18 @@
                                 </rows>
                             </grid>
                             <separator height="15px"/>
-                            <div align="center" width="100%">
-                                <button id="btnFilter" label="##" image="/img/icontexto-webdev-search-016x016.png"/>
-                            </div>
+                            <grid align="center" width="100%">
+                                <columns>
+                                    <column align="center" width="150px"/>
+                                    <column align="center" width="150px"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <button id="btnFilter" label="##" image="/img/icontexto-webdev-search-016x016.png"/>
+                                        <button id="btnExport" label="##" image="/img/icontexto-webdev-file-016x016.png"/>
+                                    </row>
+                                </rows>
+                            </grid>
                         </div>
                     </north>
                     <center autoscroll="false">

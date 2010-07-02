@@ -10,6 +10,9 @@ import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.io.File;
+import java.io.IOException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -17,6 +20,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+
+import jxl.Workbook;
+
+import jxl.write.DateTime;
+import jxl.write.Number;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
@@ -26,6 +38,7 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
@@ -62,6 +75,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
     private Label labelFormNumber;
 
     private Button btnFilter;
+    private Button btnExport;
 
     private Listheader headSeq;
     private Listheader headApplication;
@@ -191,6 +205,65 @@ public abstract class BaseSearchController extends AnotoLoggedController
         }
         return model;
     }
+
+    public void onClick$btnExport()
+    {
+        File file;
+        try {
+            file = File.createTempFile( "export", ".xls" );
+            file.deleteOnExit();
+            WritableWorkbook workbook = Workbook.createWorkbook( file );
+            writeToExcell( workbook );
+            Filedownload.save( file, "application/vnd.ms-excel" );
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage() );
+        }
+    }
+
+    private void writeToExcell( WritableWorkbook workbook ) throws WriteException, RowsExceededException, IOException
+    {
+        WritableSheet sheet = workbook.createSheet( "Exported Data", 0 );
+        ListModelList model = getModel();
+        for ( int nIndex = 0; nIndex < model.getSize(); nIndex++ ) {
+            AnotoResultList dto = ( AnotoResultList )model.get( nIndex );
+            if ( dto != null ) {
+                sheet.addCell( new Number( 0, nIndex + 1, nIndex ) );
+                sheet.addCell( new jxl.write.Label( 1, nIndex + 1, dto.getForm().toString() ) );
+                sheet.addCell( new Number( 2, nIndex + 1, dto.getPgcPage().getBookId() + 1 ) );
+                sheet.addCell( new Number( 3, nIndex + 1, dto.getPgcPage().getPageId() + 1 ) );
+                sheet.addCell( new jxl.write.Label( 4, nIndex + 1, dto.getPen().toString() ) );
+                sheet.addCell( new DateTime( 5, nIndex + 1, dto.getPgcPage().getPgc().getInsertDate() ) );
+                sheet.addCell( new jxl.write.Label( 6, nIndex + 1, dto.getUserName() ) );
+                sheet.addCell( new jxl.write.Label( 7, nIndex + 1, dto.getEmail() ) );
+                sheet.addCell( new jxl.write.Label( 8, nIndex + 1, dto.getCellNumber() ) );
+                sheet.addCell( new jxl.write.Label( 9, nIndex + 1, dto.getLatitude() ) );
+                sheet.addCell( new jxl.write.Label( 10, nIndex + 1, dto.getLongitude() ) );
+                sheet.addCell( new jxl.write.Label( 11, nIndex + 1, dto.getBarcodeValue() ) );
+            }
+        }
+        workbook.write();
+        workbook.close();
+    }
+
+    private void setHeader( WritableSheet sheet ) throws WriteException, RowsExceededException
+    {
+        jxl.write.Label l = new jxl.write.Label( 0, 0, headSeq.getLabel() );
+        sheet.addCell( l );
+        sheet.addCell( new jxl.write.Label( 1, 0, headApplication.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( 2, 0, headFormulario.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( 3, 0, headPagina.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( 4, 0, headPen.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( 5, 0, headDate.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( 6, 0, headUserName.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( 7, 0, headEmail.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( 8, 0, headCellNumber.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( 9, 0, headLatitude.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( 10, 0, headLongitude.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( 11, 0, headBarcode.getLabel() ) );
+
+    }
+
 
     public void onClick$btnFilter()
     {
@@ -425,6 +498,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
         setLabel( labelFormNumber );
 
         setLabel( btnFilter );
+        setLabel( btnExport );
 
         setLabel( headSeq );
         setLabel( headApplication );
@@ -439,5 +513,10 @@ public abstract class BaseSearchController extends AnotoLoggedController
         setLabel( headLongitude );
         setLabel( headBarcode );
 
+    }
+
+    protected Button getExportButton()
+    {
+        return btnExport;
     }
 }
