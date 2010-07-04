@@ -4,7 +4,7 @@ package br.com.mcampos.controller.user.client;
 import br.com.mcampos.controller.admin.security.roles.RoleListRenderer;
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.security.RoleDTO;
-import br.com.mcampos.dto.user.CompanyDTO;
+import br.com.mcampos.dto.user.ClientDTO;
 import br.com.mcampos.ejb.cloudsystem.client.facade.ClientRoleFacade;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -16,6 +16,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zul.Column;
+import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -38,9 +39,13 @@ public class ClientRoleController extends LoggedBaseController
     private Listheader headerDescription1;
     private Listheader listHeaderCode1;
 
-    private CompanyDTO client;
+    private Integer clientId;
 
     private ClientRoleFacade session;
+
+    private Label labelClient;
+
+    private Intbox editUserid;
 
     public ClientRoleController( char c )
     {
@@ -59,6 +64,7 @@ public class ClientRoleController extends LoggedBaseController
         super.doAfterCompose( comp );
         listRole.setItemRenderer( new RoleListRenderer() );
         listAvailableRole.setItemRenderer( new RoleListRenderer() );
+        loadAvaiableRoles();
         loadRoles();
         setLabels();
     }
@@ -75,6 +81,8 @@ public class ClientRoleController extends LoggedBaseController
         setLabel( headerDescription1 );
         setLabel( listHeaderCode1 );
 
+        setLabel( labelClient );
+
     }
 
     private ListModelList getModel( Listbox l )
@@ -90,14 +98,10 @@ public class ClientRoleController extends LoggedBaseController
     @Override
     public ComponentInfo doBeforeCompose( Page page, Component parent, ComponentInfo compInfo )
     {
-        client = ( CompanyDTO )getParameter( "client" );
-        if ( client != null )
-            return super.doBeforeCompose( page, parent, compInfo );
-        else
-            return null;
+        return super.doBeforeCompose( page, parent, compInfo );
     }
 
-    private void loadRoles() throws ApplicationException
+    private void loadAvaiableRoles() throws ApplicationException
     {
         ListModelList model;
         List<RoleDTO> roles = getSession().getAvailableRoles( getLoggedInUser() );
@@ -105,10 +109,17 @@ public class ClientRoleController extends LoggedBaseController
         model.clear();
         model.addAll( roles );
 
-        roles = getSession().getRoles( getLoggedInUser(), client );
-        model = getModel( listRole );
-        model.clear();
-        model.addAll( roles );
+    }
+
+    private void loadRoles() throws ApplicationException
+    {
+        if ( clientId != null ) {
+            ListModelList model;
+            List<RoleDTO> roles = getSession().getRoles( getLoggedInUser(), clientId );
+            model = getModel( listRole );
+            model.clear();
+            model.addAll( roles );
+        }
     }
 
     public ClientRoleFacade getSession()
@@ -127,7 +138,7 @@ public class ClientRoleController extends LoggedBaseController
             return;
         }
         List<RoleDTO> r = new ArrayList<RoleDTO>( roles );
-        getSession().add( getLoggedInUser(), client, r );
+        getSession().add( getLoggedInUser(), clientId, r );
         model = getModel( listRole );
         model.addAll( roles );
     }
@@ -141,7 +152,22 @@ public class ClientRoleController extends LoggedBaseController
             return;
         }
         List<RoleDTO> r = new ArrayList<RoleDTO>( roles );
-        getSession().delete( getLoggedInUser(), client, r );
+        getSession().delete( getLoggedInUser(), clientId, r );
         model.removeAll( roles );
+    }
+
+
+    public void onClick$btnSearch()
+    {
+        ClientDTO c = ( ClientDTO )ClientSearchBox.show( getLoggedInUser(), getRootParent() );
+        if ( c != null ) {
+            clientId = c.getClient().getId();
+            try {
+                loadRoles();
+            }
+            catch ( ApplicationException e ) {
+                showErrorMessage( e.getMessage() );
+            }
+        }
     }
 }

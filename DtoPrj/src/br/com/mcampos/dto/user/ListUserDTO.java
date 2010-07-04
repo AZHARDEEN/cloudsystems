@@ -84,4 +84,10 @@ public class ListUserDTO extends DisplayNameDTO
     {
         return nickName;
     }
+
+    @Override
+    public String toString()
+    {
+        return getDisplayName();
+    }
 }

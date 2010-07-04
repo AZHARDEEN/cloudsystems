@@ -47,7 +47,7 @@ public final class ClientUtil
     {
         ClientDTO dto = new ClientDTO();
         dto.setClient( UserUtil.copy( client.getClient() ) );
-        dto.setClientId( client.getClientId() );
+        dto.setSequence( client.getClientId() );
         dto.setCompanyId( client.getCompanyId() );
         dto.setInsertDate( client.getInsertDate() );
         return dto;

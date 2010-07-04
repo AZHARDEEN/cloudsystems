@@ -5,6 +5,7 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.ClientDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
+import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
@@ -25,7 +26,11 @@ public interface ClientFacade extends Serializable
 
     ClientDTO add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException;
 
+    ClientDTO add( AuthenticationDTO auth, PersonDTO dto ) throws ApplicationException;
+
     ClientDTO update( AuthenticationDTO auth, Integer clientSequence, CompanyDTO dto ) throws ApplicationException;
+
+    ClientDTO update( AuthenticationDTO auth, Integer clientSequence, PersonDTO dto ) throws ApplicationException;
 
     void delete( AuthenticationDTO auth, ClientDTO dto ) throws ApplicationException;
 
@@ -33,7 +38,11 @@ public interface ClientFacade extends Serializable
 
     void setLogo( AuthenticationDTO auth, ClientDTO dto, MediaDTO media ) throws ApplicationException;
 
-    CompanyDTO get( AuthenticationDTO auth, Integer companyID ) throws ApplicationException;
+    CompanyDTO getCompany( AuthenticationDTO auth, Integer clientSequence ) throws ApplicationException;
 
-    CompanyDTO get( AuthenticationDTO auth, String document, Integer docTpe ) throws ApplicationException;
+    CompanyDTO getCompany( AuthenticationDTO auth, String document, Integer docTpe ) throws ApplicationException;
+
+    PersonDTO getPerson( AuthenticationDTO auth, Integer clientSequence ) throws ApplicationException;
+
+    PersonDTO getPerson( AuthenticationDTO auth, String document, Integer docTpe ) throws ApplicationException;
 }

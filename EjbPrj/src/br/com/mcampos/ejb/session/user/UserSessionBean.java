@@ -16,7 +16,6 @@ import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.core.util.DTOFactory;
 import br.com.mcampos.exception.ApplicationException;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -192,5 +191,10 @@ public class UserSessionBean extends AbstractSecurity implements UserSessionLoca
     public EntityManager getEntityManager()
     {
         return em;
+    }
+
+    public Users get( Integer id )
+    {
+        return getEntityManager().find( Users.class, id );
     }
 }

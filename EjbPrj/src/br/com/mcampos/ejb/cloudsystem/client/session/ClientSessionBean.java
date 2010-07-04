@@ -52,7 +52,7 @@ public class ClientSessionBean extends Crud<ClientPK, Client> implements ClientS
 
     public List<Client> getAllPersonClients( Company company ) throws ApplicationException
     {
-        return ( List<Client> )getResultList( Client.getAllPerson );
+        return ( List<Client> )getResultList( Client.getAllPerson, company );
     }
 
     @Override

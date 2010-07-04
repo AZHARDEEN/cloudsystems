@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.user.client.PersonClientController">
+        <borderlayout id="borderLayout">
+            <north autoscroll="false" height="65px">
+                <grid>
+                    <columns>
+                        <column width="20%" align="center"/>
+                        <column width="60%" align="center"/>
+                        <column width="20%" align="center"/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <image id="imageClienteLogo"/>
+                            <label id="labelPersonClientTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
+                            <image id="imageCompanyLogo"/>
+                        </row>
+                    </rows>
+                </grid>
+            </north>
+            <center flex="true">
+                <!-- Por favor, nao mude o id desta div -->
+                <div width="100%" height="100%" id="divListBoxRecord">
+                    <!-- Por favor, nao mude o id desta listbox -->
+                    <div>
+                        <toolbar>
+                            <toolbarbutton id="cmdCreate" image="/img/icontexto-webdev-add-016x016.png" label="##"/>
+                            <toolbarbutton id="cmdUpdate" image="/img/icontexto-webdev-alert-016x016.png" label="##"/>
+                            <separator bar="true" orient="vertical"/>
+                            <toolbarbutton id="cmdDelete" image="/img/icontexto-webdev-remove-016x016.png" label="##"/>
+                            <separator bar="true" orient="vertical"/>
+                            <toolbarbutton id="cmdRefresh" label="##" image="/img/icontexto-webdev-reload-016x016.png"/>
+                        </toolbar>
+                    </div>
+                    <listbox id="listboxRecord" vflex="true">
+                        <listhead sizable="true">
+                            <listheader id="listHeaderCode" align="left" label="##" sort="auto" width="10%"/>
+                            <listheader id="listHeaderName" align="left" label="##" sort="auto" width="50%"/>
+                        </listhead>
+                    </listbox>
+                </div>
+            </center>
+        </borderlayout>
+    </div>
+</zk>
+

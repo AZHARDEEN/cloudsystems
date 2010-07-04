@@ -8,7 +8,7 @@ import java.util.Date;
 public class ClientDTO implements Serializable
 {
     private Integer companyId;
-    private Integer clientId;
+    private Integer sequence;
     private Date insertDate;
     ListUserDTO client;
 
@@ -27,14 +27,14 @@ public class ClientDTO implements Serializable
         return companyId;
     }
 
-    public void setClientId( Integer clientId )
+    public void setSequence( Integer clientId )
     {
-        this.clientId = clientId;
+        this.sequence = clientId;
     }
 
-    public Integer getClientId()
+    public Integer getSequence()
     {
-        return clientId;
+        return sequence;
     }
 
     public void setClient( ListUserDTO client )
@@ -55,5 +55,12 @@ public class ClientDTO implements Serializable
     public Date getInsertDate()
     {
         return insertDate;
+    }
+
+
+    @Override
+    public String toString()
+    {
+        return getClient().toString();
     }
 }
