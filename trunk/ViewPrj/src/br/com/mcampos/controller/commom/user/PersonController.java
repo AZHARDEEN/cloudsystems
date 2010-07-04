@@ -149,10 +149,13 @@ public abstract class PersonController extends UserController
 
 
         dto.setName( name.getValue() );
-        dto.setBirthDate( new Timestamp( birthdate.getValue().getTime() ) );
+        if ( birthdate.getValue() != null )
+            dto.setBirthDate( new Timestamp( birthdate.getValue().getTime() ) );
+        else
+            dto.setBirthDate( null );
         dto.setBornCity( bornCity.getSelectedItem() != null ? ( CityDTO )bornCity.getSelectedItem().getValue() : null );
-        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() :
-                           null );
+        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem()
+                           .getValue() : null );
         dto.setFatherName( fatherName.getValue() );
         dto.setGender( gender.getSelectedItem() != null ? ( GenderDTO )gender.getSelectedItem().getValue() : null );
         dto.setMotherName( motherName.getValue() );

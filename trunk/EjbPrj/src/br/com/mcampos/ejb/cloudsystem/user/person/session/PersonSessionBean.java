@@ -27,6 +27,8 @@ import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.session.user.UserSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 
+import br.com.mcampos.sysutils.SysUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -173,34 +175,20 @@ public class PersonSessionBean implements PersonSessionLocal
         if ( person.getDocuments() != null ) {
             for ( UserDocument item : person.getDocuments() ) {
                 if ( getUserSession().getUserByDocument( item ) != null )
-                    throw new EJBException( "Ja existe um usuário cadastrado com o mesmo documento [" + item.getCode() + "]" +
-                                            ". O sistema não permite dois cadastros com os mesmos documentos" );
+                    throw new EJBException( "Ja existe um usuário cadastrado com o mesmo documento [" + item.getCode() + "]" + ". O sistema não permite dois cadastros com os mesmos documentos" );
             }
         }
     }
 
-    protected String toUpperCase( String fieldValue )
-    {
-        if ( fieldValue == null || fieldValue.isEmpty() )
-            return fieldValue;
-        return fieldValue.toUpperCase();
-    }
-
-    protected String toLowerCase( String fieldValue )
-    {
-        if ( fieldValue == null || fieldValue.isEmpty() )
-            return fieldValue;
-        return fieldValue.toLowerCase();
-    }
 
     protected void applyRules( Person person )
     {
-        person.setFatherName( toUpperCase( person.getFatherName() ) );
-        person.setFirstName( toUpperCase( person.getFirstName() ) );
-        person.setLastName( toUpperCase( person.getLastName() ) );
-        person.setMotherName( toUpperCase( person.getMotherName() ) );
-        person.setName( toUpperCase( person.getName() ) );
-        person.setNickName( toUpperCase( person.getNickName() ) );
+        person.setFatherName( SysUtils.toUpperCase( person.getFatherName() ) );
+        person.setFirstName( SysUtils.toUpperCase( person.getFirstName() ) );
+        person.setLastName( SysUtils.toUpperCase( person.getLastName() ) );
+        person.setMotherName( SysUtils.toUpperCase( person.getMotherName() ) );
+        person.setName( SysUtils.toUpperCase( person.getName() ) );
+        person.setNickName( SysUtils.toUpperCase( person.getNickName() ) );
     }
 
 

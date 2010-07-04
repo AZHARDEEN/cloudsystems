@@ -16,23 +16,23 @@ import javax.ejb.TransactionAttributeType;
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class UserTypeSessionBean extends Crud<Integer, UserType> implements UserTypeSessionLocal
 {
-	public void delete( Integer key ) throws ApplicationException
-	{
-		delete( UserType.class, key );
-	}
+    public void delete( Integer key ) throws ApplicationException
+    {
+        delete( UserType.class, key );
+    }
 
-	public UserType get( Integer key ) throws ApplicationException
-	{
-		return get( UserType.class, key );
-	}
+    public UserType get( Integer key ) throws ApplicationException
+    {
+        return get( UserType.class, key );
+    }
 
-	public List<UserType> getAll() throws ApplicationException
-	{
-		return getAll( UserType.getAll );
-	}
+    public List<UserType> getAll() throws ApplicationException
+    {
+        return getAll( UserType.getAll );
+    }
 
-	public Integer nextIntegerId() throws ApplicationException
-	{
-		return nextIntegerId( UserType.nextId );
-	}
+    public Integer nextIntegerId() throws ApplicationException
+    {
+        return nextIntegerId( UserType.nextId );
+    }
 }

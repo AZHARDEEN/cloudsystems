@@ -98,9 +98,9 @@ public class CollaboratorRole implements Serializable
         return role;
     }
 
-    public void setCollaborator( Collaborator collaborator )
+    public void setCollaborator( Collaborator col )
     {
-        this.collaborator = collaborator;
+        this.collaborator = col;
         setCompanyId( this.collaborator != null ? this.collaborator.getCompanyId() : null );
         setCollaboratorSequence( this.collaborator != null ? this.collaborator.getSequence() : null );
     }

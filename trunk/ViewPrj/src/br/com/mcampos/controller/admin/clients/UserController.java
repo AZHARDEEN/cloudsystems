@@ -171,17 +171,19 @@ public abstract class UserController extends LoggedBaseController
     protected void addAddresses( UserDTO user )
     {
         user.getAddressList().clear();
-        AddressDTO dto = new AddressDTO();
-        dto.setAddressType( ( AddressTypeDTO )getAddressType().getSelectedItem().getValue() );
-        if ( getCity().getSelectedItem() != null )
-            dto.setCity( ( CityDTO )getCity().getSelectedItem().getValue() );
-        else
-            dto.setCity( null );
-        dto.setAddress( getAddress().getValue() );
-        dto.setDistrict( getHood().getValue() );
-        dto.setComment( getAddressComment().getValue() );
-        dto.setZip( getZip().getValue() );
-        user.add( dto );
+        if ( getCity().getSelectedItem() != null ) {
+            AddressDTO dto = new AddressDTO();
+            dto.setAddressType( ( AddressTypeDTO )getAddressType().getSelectedItem().getValue() );
+            if ( getCity().getSelectedItem() != null )
+                dto.setCity( ( CityDTO )getCity().getSelectedItem().getValue() );
+            else
+                dto.setCity( null );
+            dto.setAddress( getAddress().getValue() );
+            dto.setDistrict( getHood().getValue() );
+            dto.setComment( getAddressComment().getValue() );
+            dto.setZip( getZip().getValue() );
+            user.add( dto );
+        }
     }
 
 
@@ -402,8 +404,6 @@ public abstract class UserController extends LoggedBaseController
 
     public void onClick$cmdSubmit()
     {
-        if ( validate() == false )
-            return;
         try {
             if ( persist() == true )
                 removeMe();

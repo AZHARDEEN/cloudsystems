@@ -225,6 +225,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
     private void writeToExcell( WritableWorkbook workbook ) throws WriteException, RowsExceededException, IOException
     {
         WritableSheet sheet = workbook.createSheet( "Exported Data", 0 );
+        setHeader( sheet );
         ListModelList model = getModel();
         for ( int nIndex = 0; nIndex < model.getSize(); nIndex++ ) {
             AnotoResultList dto = ( AnotoResultList )model.get( nIndex );
@@ -241,6 +242,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
                 sheet.addCell( new jxl.write.Label( 9, nIndex + 1, dto.getLatitude() ) );
                 sheet.addCell( new jxl.write.Label( 10, nIndex + 1, dto.getLongitude() ) );
                 sheet.addCell( new jxl.write.Label( 11, nIndex + 1, dto.getBarcodeValue() ) );
+                sheet.addCell( new jxl.write.Label( 12, nIndex + 1, dto.getAttach() ? "SIM" : "" ) );
             }
         }
         workbook.write();
@@ -262,7 +264,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
         sheet.addCell( new jxl.write.Label( 9, 0, headLatitude.getLabel() ) );
         sheet.addCell( new jxl.write.Label( 10, 0, headLongitude.getLabel() ) );
         sheet.addCell( new jxl.write.Label( 11, 0, headBarcode.getLabel() ) );
-
+        sheet.addCell( new jxl.write.Label( 12, 0, headPhoto.getLabel() ) );
     }
 
 

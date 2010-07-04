@@ -32,7 +32,7 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
     public ENTITY add( ENTITY entity ) throws ApplicationException
     {
         getEntityManager().persist( entity );
-        return entity;
+        return refresh( entity );
     }
 
     public ENTITY refresh( ENTITY entity ) throws ApplicationException
