@@ -60,7 +60,10 @@ public class PenDTO implements Comparable<PenDTO>, Serializable
     @Override
     public String toString()
     {
-        return getId();
+        if ( getUser() == null )
+            return getId();
+        else
+            return getUser().toString() + " - " + getId();
     }
 
     @Override

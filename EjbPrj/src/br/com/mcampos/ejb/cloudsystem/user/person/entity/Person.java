@@ -30,16 +30,16 @@ public class Person extends Users implements Serializable
 {
     public static final Integer userTypeIdentification = 1;
 
-    @ManyToOne( fetch = FetchType.EAGER, optional = false )
-    @JoinColumn( name = "cst_id_in", nullable = false, referencedColumnName = "cst_id_in" )
+    @ManyToOne( fetch = FetchType.EAGER, optional = true )
+    @JoinColumn( name = "cst_id_in", nullable = true, referencedColumnName = "cst_id_in" )
     private CivilState civilState;
 
-    @ManyToOne( fetch = FetchType.EAGER, optional = false )
-    @JoinColumn( name = "gnd_id_in", referencedColumnName = "gnd_id_in" )
+    @ManyToOne( fetch = FetchType.EAGER, optional = true )
+    @JoinColumn( name = "gnd_id_in", referencedColumnName = "gnd_id_in", nullable = true )
     private Gender gender;
 
-    @ManyToOne( fetch = FetchType.EAGER, optional = false )
-    @JoinColumn( name = "ttl_id_in", referencedColumnName = "ttl_id_in" )
+    @ManyToOne( fetch = FetchType.EAGER, optional = true )
+    @JoinColumn( name = "ttl_id_in", referencedColumnName = "ttl_id_in", nullable = true )
     private Title title;
 
     @Column( name = "usr_birth_dt" )

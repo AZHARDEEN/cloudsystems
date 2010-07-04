@@ -41,7 +41,7 @@
                                     </row>
                                     <row>
                                         <label value="##" id="labelPen"/>
-                                        <combobox id="cmbPen" width="200px"/>
+                                        <combobox id="cmbPen" width="99%"/>
                                         <label value="##" id="labelEndDate"/>
                                         <hbox>
                                             <datebox id="endDate" format="dd/MM/yyyy"/>
@@ -103,6 +103,7 @@
                                     <listheader id="headLatitude" label="##" width="130px"/>
                                     <listheader id="headLongitude" label="##" width="130px"/>
                                     <listheader id="headBarcode" label="##" width="150px"/>
+                                    <listheader id="headPhoto" label="##" width="70px"/>
                                 </listhead>
                             </listbox>
                         </div>

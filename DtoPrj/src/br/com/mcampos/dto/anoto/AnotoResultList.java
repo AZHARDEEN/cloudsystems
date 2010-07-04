@@ -17,6 +17,7 @@ public class AnotoResultList implements Comparable<AnotoResultList>, Serializabl
     private String cellNumber;
     private String latitude;
     private String longitude;
+    private Boolean attach;
 
     public AnotoResultList()
     {
@@ -141,5 +142,15 @@ public class AnotoResultList implements Comparable<AnotoResultList>, Serializabl
     public String getLongitude()
     {
         return longitude;
+    }
+
+    public void setAttach( Boolean attach )
+    {
+        this.attach = attach;
+    }
+
+    public Boolean getAttach()
+    {
+        return attach;
     }
 }

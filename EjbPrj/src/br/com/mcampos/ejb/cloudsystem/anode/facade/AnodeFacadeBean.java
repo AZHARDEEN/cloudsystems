@@ -6,6 +6,7 @@ import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.FormDTO;
+import br.com.mcampos.dto.anoto.LinkedUserDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
@@ -39,6 +40,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.entity.PgcAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.session.PgcAttachmentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.entity.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.session.PgcPropertySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
@@ -55,6 +57,7 @@ import br.com.mcampos.ejb.cloudsystem.media.MediaUtil;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.system.fieldtype.session.FieldTypeSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
@@ -121,6 +124,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
     @EJB
     private PgcPageAttachmentSessionLocal pgcPageAttachmentSession;
+
+    @EJB
+    private PgcAttachmentSessionLocal pgcAttachmentSession;
 
 
     public void addPens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException
@@ -209,10 +215,36 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     {
         authenticate( auth );
         AnotoForm aForm = formSession.get( form.getId() );
-        if ( aForm != null )
-            return AnotoUtils.toPenList( formSession.getPens( aForm ) );
-        else
+        if ( aForm == null )
             return Collections.emptyList();
+        List<PenDTO> pens = AnotoUtils.toPenList( formSession.getPens( aForm ) );
+        return linkToUser( pens );
+    }
+
+    private List<PenDTO> linkToUser( List<PenDTO> pens ) throws ApplicationException
+    {
+        if ( SysUtils.isEmpty( pens ) )
+            return Collections.emptyList();
+        for ( PenDTO pen : pens ) {
+            linkToUser( pen );
+        }
+        return pens;
+    }
+
+    private PenDTO linkToUser( PenDTO pen ) throws ApplicationException
+    {
+        if ( pen == null )
+            return null;
+        AnotoPenUser penUser = penUserSession.getCurrentUser( pen.getId() );
+        if ( penUser != null ) {
+            LinkedUserDTO user = new LinkedUserDTO();
+            user.setUser( UserUtil.copy( penUser.getPerson() ) );
+            pen.setUser( user );
+        }
+        else {
+            pen.setUser( null );
+        }
+        return pen;
     }
 
 
@@ -461,10 +493,18 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
                 item.setLongitude( prop.get( 4 ).getValue() );
             }
             loadBarCode( item, pgcPage );
+            loadAttach( item, pgcPage );
         }
         catch ( Exception e ) {
             e.printStackTrace();
         }
+    }
+
+
+    private void loadAttach( AnotoResultList item, PgcPage pgcPage ) throws ApplicationException
+    {
+        List<PgcAttachment> attachs = pgcAttachmentSession.get( pgcPage.getPgc().getId() );
+        item.setAttach( SysUtils.isEmpty( attachs ) == false );
     }
 
     private void loadUserData( AnotoResultList item ) throws ApplicationException
