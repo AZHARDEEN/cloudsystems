@@ -4,9 +4,11 @@ package br.com.mcampos.ejb.cloudsystem.user.person.session;
 import br.com.mcampos.ejb.cloudsystem.locality.city.session.CitySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.address.entity.Address;
 import br.com.mcampos.ejb.cloudsystem.user.address.session.AddressSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.entity.CivilState;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.session.CivilStateSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.session.GenderSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.title.session.TitleSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.session.UserTypeSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact;
 import br.com.mcampos.ejb.cloudsystem.user.contact.session.UserContactSessionLocal;
@@ -73,6 +75,11 @@ public class NewPersonSessionBean extends Crud<Integer, Person> implements NewPe
     @Override
     public Person add( Person entity ) throws ApplicationException
     {
+        String splitted[] = splitName( entity.getName() );
+        entity.setFirstName( splitted[ 0 ] );
+        entity.setMiddleName( splitted[ 1 ] );
+        entity.setLastName( splitted[ 2 ] );
+        applyRules( entity );
         linkToEntities( entity );
         return super.add( entity );
     }
@@ -87,10 +94,14 @@ public class NewPersonSessionBean extends Crud<Integer, Person> implements NewPe
 
     protected void linkToEntities( Person person ) throws ApplicationException
     {
-        if ( person.getUserType() != null )
-            person.setUserType( userTypeSession.get( Integer.parseInt( person.getUserType().getId() ) ) );
-        if ( person.getCivilState() != null )
-            person.setCivilState( civilStateSession.get( person.getCivilState().getId() ) );
+        if ( person.getUserType() != null ) {
+            UserType type = getEntityManager().find( UserType.class, "1" );
+            person.setUserType( type );
+        }
+        if ( person.getCivilState() != null ) {
+            CivilState cs = civilStateSession.get( person.getCivilState().getId() );
+            person.setCivilState( cs );
+        }
         if ( person.getGender() != null )
             person.setGender( genderSession.get( person.getGender().getId() ) );
         if ( person.getTitle() != null )
@@ -160,4 +171,44 @@ public class NewPersonSessionBean extends Crud<Integer, Person> implements NewPe
         }
         return null;
     }
+
+
+    protected void applyRules( Person person )
+    {
+        person.setFatherName( SysUtils.toUpperCase( person.getFatherName() ) );
+        person.setFirstName( SysUtils.toUpperCase( person.getFirstName() ) );
+        person.setLastName( SysUtils.toUpperCase( person.getLastName() ) );
+        person.setMotherName( SysUtils.toUpperCase( person.getMotherName() ) );
+        person.setName( SysUtils.toUpperCase( person.getName() ) );
+        person.setNickName( SysUtils.toUpperCase( person.getNickName() ) );
+    }
+
+    protected String[] splitName( String name )
+    {
+        String splitted[] = name.split( " " );
+        String firstName = null, lastName = null, middleName = null;
+        int nIndex;
+
+
+        for ( nIndex = 0; nIndex < splitted.length; nIndex++ ) {
+            if ( nIndex == 0 )
+                firstName = splitted[ nIndex ];
+            else if ( nIndex == splitted.length - 1 )
+                lastName = splitted[ nIndex ];
+            else {
+                if ( middleName == null || middleName.isEmpty() )
+                    middleName = splitted[ nIndex ];
+                else
+                    middleName += " " + splitted[ nIndex ];
+            }
+        }
+
+        splitted = new String[ 3 ];
+        splitted[ 0 ] = firstName;
+        splitted[ 1 ] = middleName;
+        splitted[ 2 ] = lastName;
+
+        return splitted;
+    }
+
 }

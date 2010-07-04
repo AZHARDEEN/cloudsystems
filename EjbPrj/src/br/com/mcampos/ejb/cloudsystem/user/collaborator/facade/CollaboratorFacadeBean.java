@@ -148,7 +148,8 @@ public class CollaboratorFacadeBean extends UserFacadeUtil implements Collaborat
         UserUtil.addDocuments( newPerson, newDto );
         Person entity = personSession.find( newPerson );
         if ( entity == null ) {
-            entity = personSession.add( entity );
+            newPerson.getDocuments().clear();
+            entity = personSession.add( newPerson );
         }
         else {
             PersonUtil.update( entity, newDto );

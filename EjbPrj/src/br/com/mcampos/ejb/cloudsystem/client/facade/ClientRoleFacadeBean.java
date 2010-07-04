@@ -129,12 +129,14 @@ public class ClientRoleFacadeBean extends AbstractSecurity implements ClientRole
         List<Collaborator> list = collaboratorSession.get( c, CollaboratorType.typeManager );
         if ( SysUtils.isEmpty( list ) )
             return;
-        CollaboratorRole cr = new CollaboratorRole();
-        cr.setRole( e );
         for ( Collaborator item : list ) {
+            CollaboratorRole cr = new CollaboratorRole();
+            cr.setRole( e );
             cr.setCollaborator( item );
-            if ( collaboratorRoleSession.get( new CollaboratorRolePK( cr ) ) == null )
+            if ( collaboratorRoleSession.get( new CollaboratorRolePK( cr ) ) == null ) {
                 collaboratorRoleSession.add( cr );
+
+            }
         }
     }
 

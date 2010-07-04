@@ -125,11 +125,13 @@ public class LoggedBaseController extends BaseController
             return;
 
         MediaDTO[] medias = getLoginLocator().getLogo( getLoggedInUser() );
-        if ( imageClienteLogo != null && medias[ 0 ] != null && medias[ 0 ].getObject() != null ) {
-            ImageUtil.loadImage( imageClienteLogo, medias[ 0 ] );
-        }
-        if ( imageCompanyLogo != null && medias[ 1 ] != null && medias[ 1 ].getObject() != null ) {
-            ImageUtil.loadImage( imageCompanyLogo, medias[ 1 ] );
+        if ( medias != null ) {
+            if ( imageClienteLogo != null && medias[ 0 ] != null && medias[ 0 ].getObject() != null ) {
+                ImageUtil.loadImage( imageClienteLogo, medias[ 0 ] );
+            }
+            if ( imageCompanyLogo != null && medias[ 1 ] != null && medias[ 1 ].getObject() != null ) {
+                ImageUtil.loadImage( imageCompanyLogo, medias[ 1 ] );
+            }
         }
     }
 }

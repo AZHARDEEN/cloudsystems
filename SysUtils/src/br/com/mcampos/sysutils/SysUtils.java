@@ -66,4 +66,19 @@ public final class SysUtils
         DateFormat df = new SimpleDateFormat( "yyyyMMdd HHmmss" );
         return df.format( date );
     }
+
+
+    public static String toUpperCase( String fieldValue )
+    {
+        if ( fieldValue == null || fieldValue.isEmpty() )
+            return fieldValue;
+        return fieldValue.toUpperCase();
+    }
+
+    public static String toLowerCase( String fieldValue )
+    {
+        if ( fieldValue == null || fieldValue.isEmpty() )
+            return fieldValue;
+        return fieldValue.toLowerCase();
+    }
 }

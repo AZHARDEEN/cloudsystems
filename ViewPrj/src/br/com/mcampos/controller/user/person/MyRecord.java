@@ -7,10 +7,12 @@ import br.com.mcampos.ejb.cloudsystem.user.person.facade.PersonFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Label;
 
 public class MyRecord extends PersonController
 {
     private PersonFacade session;
+    private Label labelMyRecordTitle;
 
     public MyRecord()
     {
@@ -28,6 +30,7 @@ public class MyRecord extends PersonController
         super.doAfterCompose( comp );
         PersonDTO dto = getSession().get( getLoggedInUser() );
         showInfo( dto );
+        setLabel( labelMyRecordTitle );
     }
 
     private PersonFacade getSession()
