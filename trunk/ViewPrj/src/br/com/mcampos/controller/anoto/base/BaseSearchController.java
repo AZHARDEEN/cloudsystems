@@ -90,6 +90,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
     private Listheader headLatitude;
     private Listheader headLongitude;
     private Listheader headBarcode;
+    private Listheader headPhoto;
 
     public BaseSearchController()
     {
@@ -512,6 +513,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
         setLabel( headLatitude );
         setLabel( headLongitude );
         setLabel( headBarcode );
+        setLabel( headPhoto );
 
     }
 

@@ -39,6 +39,7 @@ public class PgcPenPageListRenderer implements ListitemRenderer
             item.appendChild( new Listcell() );
             item.appendChild( new Listcell() );
             item.appendChild( new Listcell() );
+            item.appendChild( new Listcell() );
         }
 
         ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( "" + ( item.getListbox().getIndexOfItem( item ) + 1 ) );
@@ -60,5 +61,6 @@ public class PgcPenPageListRenderer implements ListitemRenderer
         ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getLatitude() );
         ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getLongitude() );
         ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getBarcodeValue() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getAttach() ? "SIM" : "" );
     }
 }

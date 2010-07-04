@@ -35,4 +35,10 @@ public class LinkedUserDTO implements Serializable
     {
         return user;
     }
+
+    @Override
+    public String toString()
+    {
+        return getUser().toString();
+    }
 }
