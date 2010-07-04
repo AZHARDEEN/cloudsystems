@@ -5,6 +5,7 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.ClientDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
+import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.client.ClientUtil;
@@ -26,7 +27,9 @@ import br.com.mcampos.ejb.cloudsystem.user.media.entity.UserMedia;
 import br.com.mcampos.ejb.cloudsystem.user.media.session.UserMediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.media.type.entity.UserMediaType;
 import br.com.mcampos.ejb.cloudsystem.user.media.type.session.UserMediaTypeSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
+import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -58,6 +61,9 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
 
     @EJB
     private CompanySessionLocal companySession;
+
+    @EJB
+    private NewPersonSessionLocal personSession;
 
     @EJB
     private MediaSessionLocal mediaSession;
@@ -125,14 +131,14 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
 
     public void delete( AuthenticationDTO auth, ClientDTO dto ) throws ApplicationException
     {
-        Client client = getClient( auth, dto.getClientId() );
+        Client client = getClient( auth, dto.getSequence() );
         clientSession.delete( new ClientPK( client.getCompanyId(), client.getClientId() ) );
     }
 
     public MediaDTO getLogo( AuthenticationDTO auth, ClientDTO dto ) throws ApplicationException
     {
         Company myCompany = getCompany( auth );
-        Client client = clientSession.get( new ClientPK( myCompany.getId(), dto.getClientId() ) );
+        Client client = clientSession.get( new ClientPK( myCompany.getId(), dto.getSequence() ) );
         if ( client == null )
             throwException( 6 );
         UserMedia u = userMediaSession.get( client.getClient(), getLogoMediaType() );
@@ -144,7 +150,7 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
 
     public void setLogo( AuthenticationDTO auth, ClientDTO dto, MediaDTO mediaDto ) throws ApplicationException
     {
-        Client client = getClient( auth, dto.getClientId() );
+        Client client = getClient( auth, dto.getSequence() );
         Media media = MediaUtil.createEntity( mediaDto );
         mediaSession.add( media );
 
@@ -158,12 +164,6 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
     private UserMediaType getLogoMediaType() throws ApplicationException
     {
         return userMediaTypeSession.get( UserMediaType.typeLogo );
-    }
-
-    public CompanyDTO get( AuthenticationDTO auth, Integer companyID ) throws ApplicationException
-    {
-        Client client = getClient( auth, companyID );
-        return CompanyUtil.copy( ( Company )client.getClient() );
     }
 
     private Client getClient( AuthenticationDTO auth, Integer clientSequence ) throws ApplicationException
@@ -183,7 +183,7 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
         return ClientUtil.copy( client );
     }
 
-    public CompanyDTO get( AuthenticationDTO auth, String document, Integer docTpe ) throws ApplicationException
+    public CompanyDTO getCompany( AuthenticationDTO auth, String document, Integer docTpe ) throws ApplicationException
     {
         authenticate( auth );
         UserDocumentDTO doc = new UserDocumentDTO();
@@ -193,5 +193,53 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
         if ( userDocument == null || userDocument.getUser() instanceof Person )
             return null;
         return CompanyUtil.copy( ( Company )userDocument.getUser() );
+    }
+
+    public CompanyDTO getCompany( AuthenticationDTO auth, Integer clientSequence ) throws ApplicationException
+    {
+        Client client = getClient( auth, clientSequence );
+        return CompanyUtil.copy( ( Company )client.getClient() );
+    }
+
+    public ClientDTO add( AuthenticationDTO auth, PersonDTO dto ) throws ApplicationException
+    {
+        Company myCompany = getCompany( auth );
+        Person clientNotManaged = PersonUtil.createEntity( dto );
+        clientNotManaged.setDocuments( UserDocumentUtil.toEntityList( clientNotManaged, dto.getDocumentList() ) );
+        Person managedPerson = personSession.find( clientNotManaged );
+        if ( managedPerson == null ) {
+            managedPerson.getDocuments().clear();
+            managedPerson = personSession.add( clientNotManaged );
+            refreshUserAttributes( managedPerson, dto );
+        }
+        Client client = new Client( myCompany, managedPerson );
+        client = clientSession.add( client );
+        return ClientUtil.copy( client );
+    }
+
+    public ClientDTO update( AuthenticationDTO auth, Integer clientSequence, PersonDTO dto ) throws ApplicationException
+    {
+        Client client = getClient( auth, clientSequence );
+        Person p = PersonUtil.update( ( Person )client.getClient(), dto );
+        personSession.update( p );
+        return ClientUtil.copy( client );
+    }
+
+    public PersonDTO getPerson( AuthenticationDTO auth, Integer clientSequence ) throws ApplicationException
+    {
+        Client client = getClient( auth, clientSequence );
+        return PersonUtil.copy( ( Person )client.getClient() );
+    }
+
+    public PersonDTO getPerson( AuthenticationDTO auth, String document, Integer docTpe ) throws ApplicationException
+    {
+        authenticate( auth );
+        UserDocumentDTO doc = new UserDocumentDTO();
+        doc.setCode( document );
+        doc.setDocumentType( new DocumentTypeDTO( docTpe ) );
+        UserDocument userDocument = documentSession.find( doc );
+        if ( userDocument == null || userDocument.getUser() instanceof Person )
+            return null;
+        return PersonUtil.copy( ( Person )userDocument.getUser() );
     }
 }

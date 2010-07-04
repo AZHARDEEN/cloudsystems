@@ -93,7 +93,10 @@
                                     <vbox width="100%">
                                         <hbox width="100%">
                                             <label id="labelUserCode" value="##" width="100px"/>
-                                            <intbox id="editUserId" width="100px"/>
+                                            <hbox>
+                                                <intbox id="editUserId" width="100px"/>
+                                                <button image="/img/icontexto-webdev-search-016x016.png" id="btnSearch"/>
+                                            </hbox>
                                         </hbox>
                                         <hbox width="100%">
                                             <label id="labelUserDocument" value="##" width="100px"/>

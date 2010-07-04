@@ -1,0 +1,55 @@
+package br.com.mcampos.controller.user.client;
+
+
+import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
+import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.util.system.SimpleSearchListBox;
+
+import java.util.Collections;
+import java.util.List;
+
+import org.zkoss.zk.ui.Component;
+
+
+public class ClientSearchBox extends SimpleSearchListBox
+{
+    private AuthenticationDTO auth;
+    private ClientFacade session;
+
+    public ClientSearchBox( AuthenticationDTO auth, Component parent )
+    {
+        super( "Clientes", "normal", true );
+        this.auth = auth;
+        setParent( parent );
+        _title = "Clientes";
+        _listHeader1 = "Nome";
+        createBox();
+    }
+
+
+    protected ClientFacade getSession()
+    {
+        if ( session == null )
+            session = ( ClientFacade )getRemoteSession( ClientFacade.class );
+        return session;
+    }
+
+
+    @Override
+    protected List getList()
+    {
+        try {
+            return getSession().getClients( auth );
+        }
+        catch ( ApplicationException e ) {
+            return Collections.emptyList();
+        }
+    }
+
+
+    public static Object show( AuthenticationDTO auth, Component parent )
+    {
+        return new ClientSearchBox( auth, parent ).getSelected();
+    }
+}

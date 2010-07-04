@@ -1,9 +1,9 @@
 package br.com.mcampos.controller.user.client;
 
 
-import br.com.mcampos.controller.commom.user.CompanyController;
+import br.com.mcampos.controller.commom.user.PersonController;
 import br.com.mcampos.dto.user.ClientDTO;
-import br.com.mcampos.dto.user.CompanyDTO;
+import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -12,19 +12,18 @@ import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zul.Label;
 
-public class UpdateClientController extends CompanyController
+public class UpdatePersonClientController extends PersonController
 {
     private ClientFacade session;
     private Label labelCompanyRecordTitle;
     private ClientDTO currentClient;
 
-
-    UpdateClientController( char c )
+    public UpdatePersonClientController( char c )
     {
         super( c );
     }
 
-    public UpdateClientController()
+    public UpdatePersonClientController()
     {
         super();
     }
@@ -49,10 +48,10 @@ public class UpdateClientController extends CompanyController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
-        CompanyDTO companyDTO = getSession().getCompany( getLoggedInUser(), currentClient.getSequence() );
-        showInfo( companyDTO );
+        PersonDTO person = getSession().getPerson( getLoggedInUser(), currentClient.getSequence() );
+        showInfo( person );
         setLabel( labelCompanyRecordTitle );
-        cnpj.setDisabled( true );
+        cpf.setDisabled( true );
     }
 
 
@@ -66,7 +65,7 @@ public class UpdateClientController extends CompanyController
             return null;
     }
 
-    protected CompanyDTO searchByDocument( String document, Integer type )
+    protected PersonDTO searchByDocument( String document, Integer type )
     {
         return null;
     }

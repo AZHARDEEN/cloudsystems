@@ -4,6 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pen.facade;
 import br.com.mcampos.dto.anoto.LinkedUserDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.user.ClientDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnodePenSessionLocal;
@@ -11,7 +12,13 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPenUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.session.AnotoPenUserSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.client.ClientUtil;
+import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
+import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
+import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
 import br.com.mcampos.ejb.cloudsystem.user.document.session.UserDocumentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
@@ -54,6 +61,11 @@ public class AnotoPenFacadeBean extends AbstractSecurity implements AnotoPenFaca
     @EJB
     private UserDocumentSessionLocal userDocument;
 
+    @EJB
+    private NewCollaboratorSessionLocal collaboratorSession;
+
+    @EJB
+    private ClientSessionLocal clientSession;
 
     public AnotoPenFacadeBean()
     {
@@ -183,4 +195,17 @@ public class AnotoPenFacadeBean extends AbstractSecurity implements AnotoPenFaca
         return doc != null ? UserUtil.copy( doc.getUser() ) : null;
     }
 
+    public List<ClientDTO> getClients( AuthenticationDTO auth ) throws ApplicationException
+    {
+        Company myCompany = getCompany( auth );
+        List<Client> list = clientSession.getAllPersonClients( myCompany );
+        return ClientUtil.toDTOList( list );
+    }
+
+    protected Company getCompany( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth );
+        Collaborator coll = collaboratorSession.get( auth.getCurrentCompany(), auth.getUserId() );
+        return coll.getCompany();
+    }
 }

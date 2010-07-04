@@ -1,29 +1,29 @@
 package br.com.mcampos.controller.user.client;
 
 
-import br.com.mcampos.controller.commom.user.CompanyController;
-import br.com.mcampos.dto.user.CompanyDTO;
+import br.com.mcampos.controller.commom.user.PersonController;
 import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
+
 import br.com.mcampos.exception.ApplicationException;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Label;
 
-public class AddClientController extends CompanyController
+public class AddPersonClientController extends PersonController
 {
     private ClientFacade session;
     private Label labelCompanyRecordTitle;
 
-
-    AddClientController( char c )
+    public AddPersonClientController( char c )
     {
         super( c );
     }
 
-    public AddClientController()
+    public AddPersonClientController()
     {
         super();
     }
+
 
     private ClientFacade getSession()
     {
@@ -46,14 +46,5 @@ public class AddClientController extends CompanyController
     {
         super.doAfterCompose( comp );
         setLabel( labelCompanyRecordTitle );
-    }
-
-
-    protected CompanyDTO searchByDocument( String document, Integer type ) throws ApplicationException
-    {
-        CompanyDTO dto = getSession().getCompany( getLoggedInUser(), document, type );
-        if ( dto != null )
-            showInfo( dto );
-        return dto;
     }
 }

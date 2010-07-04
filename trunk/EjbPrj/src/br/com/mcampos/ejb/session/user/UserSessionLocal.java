@@ -25,6 +25,8 @@ public interface UserSessionLocal extends Serializable
 
     UserDTO get( AuthenticationDTO auth, Integer id ) throws ApplicationException;
 
+    Users get( Integer id ) throws ApplicationException;
+
     /*
      * Procura por um registro na tabela de documentos de usuarios (userdocuments).
      * O único truque desta funcao é testar se o mesmo usuario é o dono de todos os

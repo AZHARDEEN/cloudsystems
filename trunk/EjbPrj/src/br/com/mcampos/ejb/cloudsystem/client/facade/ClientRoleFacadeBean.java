@@ -3,10 +3,14 @@ package br.com.mcampos.ejb.cloudsystem.client.facade;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.RoleDTO;
-import br.com.mcampos.dto.user.CompanyDTO;
+import br.com.mcampos.dto.user.ClientDTO;
+import br.com.mcampos.ejb.cloudsystem.client.ClientUtil;
+import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
+import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.security.role.Role;
 import br.com.mcampos.ejb.cloudsystem.security.role.RoleSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.security.role.RoleUtils;
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.role.CollaboratorRoleUtil;
@@ -19,10 +23,12 @@ import br.com.mcampos.ejb.cloudsystem.user.company.role.CompanyRoleUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.role.entity.CompanyRole;
 import br.com.mcampos.ejb.cloudsystem.user.company.role.entity.CompanyRolePK;
 import br.com.mcampos.ejb.cloudsystem.user.company.role.session.CompanyRoleSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
+import br.com.mcampos.ejb.session.user.UserSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
+
+import java.security.InvalidParameterException;
 
 import java.util.List;
 
@@ -54,10 +60,13 @@ public class ClientRoleFacadeBean extends AbstractSecurity implements ClientRole
     private CompanyRoleSessionLocal companyRoleSession;
 
     @EJB
-    private CompanySessionLocal companySession;
+    private UserSessionLocal userSession;
 
     @EJB
     private RoleSessionLocal roleSession;
+
+    @EJB
+    private ClientSessionLocal clientSession;
 
 
     protected EntityManager getEntityManager()
@@ -80,24 +89,28 @@ public class ClientRoleFacadeBean extends AbstractSecurity implements ClientRole
         return RoleUtils.toRoleDTOList( roles );
     }
 
-    public List<RoleDTO> getRoles( AuthenticationDTO auth, CompanyDTO companyDto ) throws ApplicationException
+    public List<RoleDTO> getRoles( AuthenticationDTO auth, Integer userId ) throws ApplicationException
     {
         authenticate( auth );
-
-        Company company = getCompany( companyDto.getId() );
-        List<CompanyRole> r = companyRoleSession.getAll( company );
-        List<Role> roles = RoleUtils.getRoles( CompanyRoleUtil.toRoleList( r ) );
+        if ( userId == null )
+            throw new InvalidParameterException( "Company Object is null" );
+        List<Role> roles = null;
+        Users usr = getUser( userId );
+        if ( usr != null && usr instanceof Company ) {
+            List<CompanyRole> r = companyRoleSession.getAll( ( Company )usr );
+            roles = RoleUtils.getRoles( CompanyRoleUtil.toRoleList( r ) );
+        }
         return RoleUtils.toRoleDTOList( roles );
     }
 
-    public void add( AuthenticationDTO auth, CompanyDTO companyDto, List<RoleDTO> roles ) throws ApplicationException
+    public void add( AuthenticationDTO auth, Integer userId, List<RoleDTO> roles ) throws ApplicationException
     {
         authenticate( auth );
         CompanyRolePK key = new CompanyRolePK();
-        Company company = getCompany( companyDto.getId() );
-        key.setCompanyId( company.getId() );
+        Users usr = getUser( userId );
+        key.setCompanyId( usr.getId() );
         CompanyRole cr = new CompanyRole();
-        cr.setCompany( company );
+        cr.setCompany( ( Company )usr );
         for ( RoleDTO r : roles ) {
             Role e = roleSession.get( r.getId() );
             if ( e != null ) {
@@ -105,13 +118,13 @@ public class ClientRoleFacadeBean extends AbstractSecurity implements ClientRole
                 if ( companyRoleSession.get( key ) == null ) {
                     cr.setRole( e );
                     companyRoleSession.add( cr );
-                    grantRoleToAdministrators( e, company );
+                    grantRoleToAdministrators( e, ( Company )usr );
                 }
             }
         }
     }
 
-    protected void grantRoleToAdministrators( Role e, Company c ) throws ApplicationException
+    private void grantRoleToAdministrators( Role e, Company c ) throws ApplicationException
     {
         List<Collaborator> list = collaboratorSession.get( c, CollaboratorType.typeManager );
         if ( SysUtils.isEmpty( list ) )
@@ -125,7 +138,7 @@ public class ClientRoleFacadeBean extends AbstractSecurity implements ClientRole
         }
     }
 
-    protected void revokeRoleToAll( Role e, Company c ) throws ApplicationException
+    private void revokeRoleToAll( Role e, Company c ) throws ApplicationException
     {
         List<Collaborator> list = collaboratorSession.get( c, CollaboratorType.typeManager );
         if ( SysUtils.isEmpty( list ) )
@@ -140,29 +153,38 @@ public class ClientRoleFacadeBean extends AbstractSecurity implements ClientRole
     }
 
 
-    public void delete( AuthenticationDTO auth, CompanyDTO companyDto, List<RoleDTO> roles ) throws ApplicationException
+    public void delete( AuthenticationDTO auth, Integer userId, List<RoleDTO> roles ) throws ApplicationException
     {
         authenticate( auth );
         CompanyRolePK key = new CompanyRolePK();
-        Company company = getCompany( companyDto.getId() );
-        key.setCompanyId( company.getId() );
+        Users usr = getUser( userId );
+        key.setCompanyId( usr.getId() );
         CompanyRole cr = new CompanyRole();
-        cr.setCompany( company );
+        cr.setCompany( ( Company )usr );
         for ( RoleDTO r : roles ) {
             Role e = roleSession.get( r.getId() );
             if ( e != null ) {
                 key.setRoleId( r.getId() );
                 companyRoleSession.delete( key );
-                revokeRoleToAll( e, company );
+                revokeRoleToAll( e, ( Company )usr );
             }
         }
     }
 
-    protected Company getCompany( Integer id ) throws ApplicationException
+    private Users getUser( Integer id ) throws ApplicationException
     {
-        Company company = companySession.get( id );
+        if ( SysUtils.isZero( id ) )
+            return null;
+        Users company = userSession.get( id );
         if ( company == null )
             throwException( 1 );
         return company;
+    }
+
+    public List<ClientDTO> getClients( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth );
+        List<Client> clients = clientSession.getAll( ( Company )getUser( auth.getCurrentCompany() ) );
+        return ClientUtil.toDTOList( clients );
     }
 }

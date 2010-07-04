@@ -4,8 +4,10 @@ package br.com.mcampos.controller.anoto;
 import br.com.mcampos.controller.admin.tables.BasicListController;
 import br.com.mcampos.controller.anoto.model.PenIdComparator;
 import br.com.mcampos.controller.anoto.renderer.AnotoPenListRenderer;
+import br.com.mcampos.controller.anoto.util.PersonClientSearchBox;
 import br.com.mcampos.dto.anoto.LinkedUserDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
+import br.com.mcampos.dto.user.ClientDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.facade.AnotoPenFacade;
 import br.com.mcampos.exception.ApplicationException;
@@ -204,6 +206,15 @@ public class AnotoPenController extends BasicListController<PenDTO>
         String email = editUserDocumentCode.getValue();
         penUser = getSession().findUserByEmail( getLoggedInUser(), email );
         showUser( penUser );
+    }
+
+    public void onClick$btnSearch()
+    {
+        Object obj = PersonClientSearchBox.show( getLoggedInUser(), getRootParent() );
+        if ( obj != null && obj instanceof ClientDTO ) {
+            penUser = ( ( ClientDTO )obj ).getClient();
+            showUser( penUser );
+        }
     }
 
     private ListUserDTO showUser( ListUserDTO dto )

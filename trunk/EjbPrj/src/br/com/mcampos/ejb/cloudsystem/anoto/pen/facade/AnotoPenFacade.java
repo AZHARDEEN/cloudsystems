@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pen.facade;
 
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.user.ClientDTO;
 import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -30,4 +31,6 @@ public interface AnotoPenFacade extends Serializable
     ListUserDTO findUser( AuthenticationDTO auth, Integer userId ) throws ApplicationException;
 
     ListUserDTO findUserByEmail( AuthenticationDTO auth, String document ) throws ApplicationException;
+
+    List<ClientDTO> getClients( AuthenticationDTO auth ) throws ApplicationException;
 }

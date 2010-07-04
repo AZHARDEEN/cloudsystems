@@ -36,7 +36,7 @@ public abstract class PersonController extends UserController
     private PersonFacade session;
 
     private Textbox name;
-    private Textbox cpf;
+    protected Textbox cpf;
     private Combobox gender;
     private Combobox title;
     private Combobox maritalStatus;
@@ -291,12 +291,12 @@ public abstract class PersonController extends UserController
         }
     }
 
-    public void setCurrentDTO( PersonDTO currentDTO )
+    private void setCurrentDTO( PersonDTO currentDTO )
     {
         this.currentDTO = currentDTO;
     }
 
-    public PersonDTO getCurrentDTO()
+    protected PersonDTO getCurrentDTO()
     {
         if ( currentDTO == null )
             currentDTO = new PersonDTO();
