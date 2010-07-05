@@ -89,7 +89,7 @@ public class CompanyClientController extends ClientBaseController
             return;
         }
         ClientDTO client = ( ClientDTO )getListboxRecord().getSelectedItem().getValue();
-        CompanyDTO company = getSession().getCompany( getLoggedInUser(), client.getCompanyId() );
+        CompanyDTO company = getSession().getCompany( getLoggedInUser(), client.getSequence() );
         setParameter( clientParamName, company );
         gotoPage( collaboratorPage, getRootParent().getParent() );
     }
@@ -102,7 +102,7 @@ public class CompanyClientController extends ClientBaseController
         }
         ClientDTO client = ( ClientDTO )getListboxRecord().getSelectedItem().getValue();
         if ( client != null ) {
-            CompanyDTO company = getSession().getCompany( getLoggedInUser(), client.getCompanyId() );
+            CompanyDTO company = getSession().getCompany( getLoggedInUser(), client.getSequence() );
             if ( company != null ) {
                 setParameter( clientParamName, company );
                 gotoPage( rolePage, getRootParent().getParent() );
