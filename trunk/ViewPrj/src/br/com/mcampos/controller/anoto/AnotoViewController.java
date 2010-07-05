@@ -5,6 +5,7 @@ import br.com.mcampos.controller.anoto.base.AnotoLoggedController;
 import br.com.mcampos.controller.anoto.renderer.AttatchmentGridRenderer;
 import br.com.mcampos.controller.anoto.renderer.ComboMediaRenderer;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
+import br.com.mcampos.controller.anoto.renderer.PgcFieldListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PgcPropertyListRenderer;
 import br.com.mcampos.controller.anoto.util.AnotoExport;
 import br.com.mcampos.dto.anoto.AnotoResultList;
@@ -29,6 +30,7 @@ import java.awt.image.Kernel;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +63,6 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Tab;
-import org.zkoss.zul.Textbox;
 
 import sun.awt.image.BufferedImageGraphicsConfig;
 
@@ -72,12 +73,7 @@ public class AnotoViewController extends AnotoLoggedController
     public static final String listName = "viewListName";
 
     protected Image pgcImage;
-    protected Combobox fields;
-    protected Row icrInfo;
-    protected Row correctedInfo;
-    protected Label icrValue;
-    protected Textbox correctedValue;
-    protected Image fieldImage;
+    private Listbox listFields;
 
     protected float imageRateSize = 0.0F;
     protected static final int targetWidth = 570;
@@ -96,7 +92,6 @@ public class AnotoViewController extends AnotoLoggedController
     private Combobox cmbBackgroundImages;
     private Grid gridAttach;
     private Combobox cmbZoonRate;
-    private Label startTime;
     private Listbox listPgcAttach;
     private Listbox listGPS;
 
@@ -155,6 +150,7 @@ public class AnotoViewController extends AnotoLoggedController
         listPgcAttach.setItemRenderer( new MediaListRenderer() );
         listGPS.setItemRenderer( new PgcPropertyListRenderer() );
         listProperties.setItemRenderer( new PgcPropertyListRenderer() );
+        listFields.setItemRenderer( new PgcFieldListRenderer() );
         preparePaging();
     }
 
@@ -244,107 +240,15 @@ public class AnotoViewController extends AnotoLoggedController
     protected void showFields( AnotoResultList target ) throws ApplicationException
     {
         currentFields = getSession().getFields( getLoggedInUser(), target.getPgcPage() );
-        if ( SysUtils.isEmpty( fields.getChildren() ) == false )
-            fields.getChildren().clear();
-        for ( PgcFieldDTO field : currentFields ) {
-            Comboitem item = fields.appendItem( field.toString() );
-            item.setValue( field );
+        ListModelList model = ( ListModelList )listFields.getModel();
+        if ( model == null ) {
+            model = new ListModelList( new ArrayList<PgcFieldDTO>(), true );
+            listFields.setModel( model );
         }
-        if ( fields.getItemCount() > 0 )
-            fields.setSelectedIndex( 0 );
-        onSelect$fields();
+        model.clear();
+        model.addAll( currentFields );
     }
 
-    public void onSelect$fields()
-    {
-        Comboitem item = fields.getSelectedItem();
-        if ( item == null )
-            return;
-        PgcFieldDTO field = ( PgcFieldDTO )item.getValue();
-        if ( field == null )
-            return;
-        correctedValue.setText( ( SysUtils.isEmpty( field.getRevisedText() ) ) ? field.getIrcText() : field.getRevisedText() );
-        icrValue.setValue( field.getIrcText() );
-        if ( field.getEndTime() != null && field.getStartTime() != null ) {
-            Long diff = field.getEndTime() - field.getStartTime();
-            Float diffSec = diff.floatValue() / 1000;
-            startTime.setValue( diffSec.toString() );
-        }
-        else {
-            startTime.setValue( "" );
-        }
-        MediaDTO media = field.getMedia();
-        if ( media != null ) {
-            ByteArrayInputStream is;
-            try {
-                is = new ByteArrayInputStream( getSession().getObject( media ) );
-                BufferedImage img = ImageIO.read( is );
-                fieldImage.setContent( img );
-                fieldImage.setVisible( true );
-            }
-            catch ( Exception e ) {
-                showErrorMessage( e.getMessage(), "Carragar Imagem" );
-            }
-        }
-        else {
-            fieldImage.setVisible( false );
-        }
-    }
-
-    public void onBlur$correctedValue()
-    {
-        PgcFieldDTO field = getCurrentField();
-        if ( field == null )
-            return;
-        String value = correctedValue.getText();
-        updateField( field, value );
-    }
-
-    public void onOK$correctedValue()
-    {
-        PgcFieldDTO field = getCurrentField();
-        if ( field == null )
-            return;
-        String value = correctedValue.getText();
-        updateField( field, value );
-        int nIndex = fields.getSelectedIndex();
-        nIndex++;
-        if ( nIndex >= fields.getItemCount() )
-            nIndex = 0;
-        fields.setSelectedIndex( nIndex );
-        onSelect$fields();
-    }
-
-    protected PgcFieldDTO getCurrentField()
-    {
-        Comboitem item = fields.getSelectedItem();
-        if ( item == null )
-            return null;
-        PgcFieldDTO field = ( PgcFieldDTO )item.getValue();
-        if ( field == null )
-            return null;
-        return field;
-    }
-
-    protected void updateField( PgcFieldDTO field, String value )
-    {
-        String fieldValue = field.getRevisedText();
-        if ( fieldValue == null )
-            fieldValue = "";
-        if ( value.equals( fieldValue ) == false ) {
-            String icrText = field.getIrcText();
-            if ( value.equals( icrText ) )
-                field.setRevisedText( value );
-            else
-                field.setRevisedText( "" );
-            try {
-                getSession().update( getLoggedInUser(), field );
-            }
-            catch ( ApplicationException e ) {
-                showErrorMessage( e.getMessage(), "Atualizar Campo" );
-            }
-        }
-    }
 
     protected void loadImages( AnotoResultList target ) throws ApplicationException
     {

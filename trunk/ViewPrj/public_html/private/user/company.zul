@@ -37,7 +37,7 @@
                         </grid>
                     </div>
                 </tabpanel>
-                <tabpanel fulfill="=/private/templates/Address.zul"></tabpanel>
+                <tabpanel fulfill="=/private/templates/address.zul"></tabpanel>
                 <tabpanel fulfill="=/private/templates/document.zul"></tabpanel>
                 <tabpanel fulfill="=/private/templates/contact.zul"></tabpanel>
             </tabpanels>

@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.user.company.session;
 
 
 import br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyTypeSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.session.UserTypeSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
@@ -38,7 +39,7 @@ public class CompanySessionBean extends Crud<Integer, Company> implements Compan
     @Override
     public Company add( Company entity ) throws ApplicationException
     {
-        entity.setUserType( userTypeSession.get( 2 ) );
+        entity.setUserType( getEntityManager().find( UserType.class, "2" ) );
         if ( entity.getCompanyType() != null )
             entity.setCompanyType( companyType.get( entity.getCompanyType().getId() ) );
         return super.add( entity );

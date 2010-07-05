@@ -504,6 +504,7 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
         if ( SysUtils.isEmpty( fields ) )
             fields = new ArrayList<AnotoPageFieldDTO>();
         gridFields.setModel( new ListModelList( fields, true ) );
+        gridFields.invalidate();
     }
 
     protected void refreshFields( AnotoPageDTO record ) throws ApplicationException

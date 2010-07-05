@@ -63,7 +63,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
     private Combobox cmbMaxRecords;
     private Textbox txtFieldValue;
 
-    private Label labelFormView2Title;
+    protected Label labelFormView2Title;
     private Label labelApplication;
     private Label labelInitDate;
     private Label labelEndDate;
