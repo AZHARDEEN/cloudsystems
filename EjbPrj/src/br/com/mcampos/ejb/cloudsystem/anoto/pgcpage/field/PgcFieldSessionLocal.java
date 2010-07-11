@@ -24,4 +24,5 @@ public interface PgcFieldSessionLocal extends Serializable
 
     List<PgcField> getAll( PgcPage pgcPage ) throws ApplicationException;
 
+
 }

@@ -2,6 +2,10 @@ package br.com.mcampos.dto.anoto;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class AnotoResultList implements Comparable<AnotoResultList>, Serializable
 {
     /**
@@ -18,6 +22,8 @@ public class AnotoResultList implements Comparable<AnotoResultList>, Serializabl
     private String latitude;
     private String longitude;
     private Boolean attach;
+
+    private List<PgcFieldDTO> fields = new ArrayList<PgcFieldDTO>();
 
     public AnotoResultList()
     {
@@ -70,8 +76,8 @@ public class AnotoResultList implements Comparable<AnotoResultList>, Serializabl
     public boolean equals( Object obj )
     {
         AnotoResultList other = ( AnotoResultList )obj;
-        return ( getForm().equals( other.getForm() ) && getPgcPage().equals( other.getPgcPage() ) &&
-                 getPen().equals( other.getPen() ) );
+        return ( getForm().equals( other.getForm() ) && getPgcPage().equals( other.getPgcPage() ) && getPen()
+                 .equals( other.getPen() ) );
     }
 
     public void setPgcPage( PgcPageDTO pgcPage )
@@ -152,5 +158,10 @@ public class AnotoResultList implements Comparable<AnotoResultList>, Serializabl
     public Boolean getAttach()
     {
         return attach;
+    }
+
+    public List<PgcFieldDTO> getFields()
+    {
+        return fields;
     }
 }

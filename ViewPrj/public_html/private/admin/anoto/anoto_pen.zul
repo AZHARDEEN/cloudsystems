@@ -38,7 +38,7 @@
                 <!-- Por favor, nao mude o id desta div -->
                 <div width="100%" height="100%" id="divListBoxRecord">
                     <!-- Por favor, nao mude o id desta listbox -->
-                    <listbox fixedLayout="true" id="listboxRecord" vflex="true">
+                    <listbox fixedLayout="true" id="listboxRecord" vflex="true" mold="paging" pagingPosition="both">
                         <listhead sizable="true">
                             <listheader id="headerPenId" align="left" label="##" sort="auto"/>
                         </listhead>
@@ -64,10 +64,6 @@
                                     <label id="labelDescription" value="##"/>
                                     <label id="recordDescription"/>
                                 </row>
-                                <row>
-                                    <label id="labelPenUser" value="##"/>
-                                    <label id="recordPenUser"/>
-                                </row>
                             </rows>
                         </grid>
                         <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
@@ -87,25 +83,6 @@
                                 <row>
                                     <label id="labelEditDescription" value="##"/>
                                     <textbox id="editDescription" width="99%" maxlength="64"/>
-                                </row>
-                                <row>
-                                    <label id="labelEditPenUser" value="##"/>
-                                    <vbox width="100%">
-                                        <hbox width="100%">
-                                            <label id="labelUserCode" value="##" width="100px"/>
-                                            <hbox>
-                                                <intbox id="editUserId" width="100px"/>
-                                                <button image="/img/icontexto-webdev-search-016x016.png" id="btnSearch"/>
-                                            </hbox>
-                                        </hbox>
-                                        <hbox width="100%">
-                                            <label id="labelUserDocument" value="##" width="100px"/>
-                                            <textbox id="editUserDocumentCode" width="400px" maxlength="128"/>
-                                        </hbox>
-                                        <hbox width="100%">
-                                            <textbox id="editUserName" width="400px"/>
-                                        </hbox>
-                                    </vbox>
                                 </row>
                             </rows>
                         </grid>

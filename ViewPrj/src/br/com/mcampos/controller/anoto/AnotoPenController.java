@@ -4,18 +4,13 @@ package br.com.mcampos.controller.anoto;
 import br.com.mcampos.controller.admin.tables.BasicListController;
 import br.com.mcampos.controller.anoto.model.PenIdComparator;
 import br.com.mcampos.controller.anoto.renderer.AnotoPenListRenderer;
-import br.com.mcampos.controller.anoto.util.PersonClientSearchBox;
-import br.com.mcampos.dto.anoto.LinkedUserDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
-import br.com.mcampos.dto.user.ClientDTO;
-import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.facade.AnotoPenFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.ListitemRenderer;
@@ -30,10 +25,6 @@ public class AnotoPenController extends BasicListController<PenDTO>
 
     private Textbox editDescription;
     private Label recordDescription;
-    private Label recordPenUser;
-    private Intbox editUserId;
-    private Textbox editUserDocumentCode;
-    private Textbox editUserName;
 
     private AnotoPenFacade session;
 
@@ -43,12 +34,6 @@ public class AnotoPenController extends BasicListController<PenDTO>
     private Label labelDescription;
     private Label labelEditCode;
     private Label labelEditDescription;
-    private Label labelPenUser;
-    private Label labelEditPenUser;
-    private Label labelUserDocument;
-    private Label labelUserCode;
-
-    private ListUserDTO penUser;
 
 
     public AnotoPenController()
@@ -69,15 +54,10 @@ public class AnotoPenController extends BasicListController<PenDTO>
         if ( record != null ) {
             recordId.setValue( record.getId() );
             recordDescription.setValue( record.getDescription() );
-            if ( record.getUser() != null && record.getUser().getUser() != null )
-                recordPenUser.setValue( record.getUser().getUser().getName() );
-            else
-                recordPenUser.setValue( "" );
         }
         else {
             recordId.setValue( "" );
             recordDescription.setValue( "" );
-            recordPenUser.setValue( "" );
         }
     }
 
@@ -89,14 +69,8 @@ public class AnotoPenController extends BasicListController<PenDTO>
 
     protected PenDTO copyTo( PenDTO dto )
     {
-        LinkedUserDTO user = null;
         dto.setId( editId.getValue() );
         dto.setDescription( editDescription.getValue().trim() );
-        if ( penUser != null ) {
-            user = new LinkedUserDTO();
-            user.setUser( penUser );
-        }
-        dto.setUser( user );
         return dto;
     }
 
@@ -110,7 +84,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
     protected List getRecordList() throws ApplicationException
     {
         showRecord( null );
-        return getSession().getPens( getLoggedInUser() );
+        return getSession().getPens( 1, 20 );
     }
 
     @Override
@@ -132,11 +106,6 @@ public class AnotoPenController extends BasicListController<PenDTO>
     {
         editId.setValue( "" );
         editDescription.setValue( "" );
-        editUserId.setValue( 0 );
-        editUserDocumentCode.setValue( "" );
-        editUserId.setValue( 0 );
-        editUserName.setValue( "" );
-        editUserDocumentCode.setValue( "" );
 
     }
 
@@ -155,10 +124,6 @@ public class AnotoPenController extends BasicListController<PenDTO>
 
         editId.setValue( dto.getId() );
         editDescription.setValue( dto.getDescription() );
-        ListUserDTO user = ( dto.getUser() != null ) ? dto.getUser().getUser() : null;
-        editUserId.setValue( user != null ? user.getId() : 0 );
-        editUserDocumentCode.setValue( "" );
-        editUserName.setValue( user != null ? user.getName() : "" );
         editDescription.setFocus( true );
         editId.setDisabled( true );
         return dto;
@@ -186,43 +151,19 @@ public class AnotoPenController extends BasicListController<PenDTO>
         setLabel( labelDescription );
         setLabel( labelEditCode );
         setLabel( labelEditDescription );
-        setLabel( labelPenUser );
-        setLabel( labelEditPenUser );
-        setLabel( labelUserCode );
-        setLabel( labelUserDocument );
 
     }
 
-    public void onOK$editUserId() throws ApplicationException
+    @Override
+    protected void refresh()
     {
-        Integer id = editUserId.getValue();
-
-        penUser = getSession().findUser( getLoggedInUser(), id );
-        showUser( penUser );
-    }
-
-    public void onOK$editUserDocumentCode() throws ApplicationException
-    {
-        String email = editUserDocumentCode.getValue();
-        penUser = getSession().findUserByEmail( getLoggedInUser(), email );
-        showUser( penUser );
-    }
-
-    public void onClick$btnSearch()
-    {
-        Object obj = PersonClientSearchBox.show( getLoggedInUser(), getRootParent() );
-        if ( obj != null && obj instanceof ClientDTO ) {
-            penUser = ( ( ClientDTO )obj ).getClient();
-            showUser( penUser );
+        try {
+            showRecord( null );
+            getModel().clear();
+            getModel().addAll( getRecordList() );
+        }
+        catch ( ApplicationException e ) {
+            e = null;
         }
     }
-
-    private ListUserDTO showUser( ListUserDTO dto )
-    {
-        editUserName.setValue( dto != null ? dto.getName() : "" );
-        editUserId.setValue( dto != null ? dto.getId() : 0 );
-        return dto;
-    }
-
-
 }

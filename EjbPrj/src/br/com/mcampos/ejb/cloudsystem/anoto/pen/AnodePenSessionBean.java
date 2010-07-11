@@ -1,10 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.anoto.pen;
 
 
-import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.session.AnotoPenUserSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
-import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -24,8 +21,6 @@ public class AnodePenSessionBean extends Crud<String, AnotoPen> implements Anode
     @EJB
     private AnotoPenUserSessionLocal penUserSession;
 
-    @EJB
-    private NewPersonSessionLocal personSession;
 
     public AnodePenSessionBean()
     {
@@ -43,23 +38,21 @@ public class AnodePenSessionBean extends Crud<String, AnotoPen> implements Anode
     }
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public List<AnotoPen> getAll() throws ApplicationException
+    public List<AnotoPen> getAll( Integer nStart, Integer nSize ) throws ApplicationException
     {
-        return super.getAll( "Pen.findAll" );
+        return super.getAll( "Pen.findAll", nStart, nSize );
     }
 
     @Override
-    public AnotoPen add( AnotoPen entity, Person person ) throws ApplicationException
+    public AnotoPen add( AnotoPen entity ) throws ApplicationException
     {
         entity.setInsertDate( new Date() );
         entity = super.add( entity );
-        if ( person != null ) {
-            person = personSession.get( person.getId() );
-            if ( entity != null && person != null ) {
-                AnotoPenUser user = new AnotoPenUser( entity, person );
-                user = penUserSession.add( user );
-            }
-        }
         return entity;
+    }
+
+    public Integer count() throws ApplicationException
+    {
+        return ( Integer )getSingleResult( AnotoPen.penCount );
     }
 }

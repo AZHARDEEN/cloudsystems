@@ -6,7 +6,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
-import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.penpage.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.exception.ApplicationException;
 

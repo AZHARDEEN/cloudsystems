@@ -2,7 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage;
 
 
 import br.com.mcampos.dto.anoto.PgcPenPageDTO;
-import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.penpage.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
@@ -40,15 +40,19 @@ public class PgcPenPage implements Serializable, EntityCopyInterface<PgcPenPageD
     @Id
     @Column( name = "apg_id_ch", nullable = false, insertable = false, updatable = false )
     private String pageAddress;
+
     @Id
     @Column( name = "frm_id_in", nullable = false, insertable = false, updatable = false )
     private Integer formId;
+
     @Id
     @Column( name = "pad_id_in", nullable = false, insertable = false, updatable = false )
     private Integer padId;
+
     @Id
-    @Column( name = "pen_id_ch", nullable = false, insertable = false, updatable = false )
-    private String penId;
+    @Column( name = "pdp_seq_in", nullable = false, insertable = false, updatable = false )
+    private Integer sequence;
+
     @Id
     @Column( name = "pgc_id_in", nullable = false, insertable = false, updatable = false )
     private Integer pgcId;
@@ -57,8 +61,8 @@ public class PgcPenPage implements Serializable, EntityCopyInterface<PgcPenPageD
     @JoinColumns( { @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in" ),
                     @JoinColumn( name = "pad_id_in", referencedColumnName = "pad_id_in" ),
                     @JoinColumn( name = "apg_id_ch", referencedColumnName = "apg_id_ch" ),
-                    @JoinColumn( name = "pen_id_ch", referencedColumnName = "pen_id_ch" ) } )
-	private AnotoPenPage penPage;
+                    @JoinColumn( name = "pdp_seq_in", referencedColumnName = "pdp_seq_in" ) } )
+    private AnotoPenPage penPage;
 
     @ManyToOne
     @JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" )
@@ -74,12 +78,12 @@ public class PgcPenPage implements Serializable, EntityCopyInterface<PgcPenPageD
         setPgc( pgc );
     }
 
-    public PgcPenPage( String apg_id_ch, Integer frm_id_in, Integer pad_id_in, String pen_id_ch, Integer pgc_id_in )
+    public PgcPenPage( String apg_id_ch, Integer frm_id_in, Integer pad_id_in, Integer sequence, Integer pgc_id_in )
     {
         this.pageAddress = apg_id_ch;
         this.formId = frm_id_in;
         this.padId = pad_id_in;
-        this.penId = pen_id_ch;
+        this.sequence = sequence;
         this.pgcId = pgc_id_in;
     }
 
@@ -113,14 +117,14 @@ public class PgcPenPage implements Serializable, EntityCopyInterface<PgcPenPageD
         this.padId = pad_id_in;
     }
 
-    public String getPenId()
+    public Integer getSequence()
     {
-        return penId;
+        return sequence;
     }
 
-    public void setPenId( String pen_id_ch )
+    public void setSequence( Integer seq )
     {
-        this.penId = pen_id_ch;
+        this.sequence = seq;
     }
 
     public Integer getPgcId()
@@ -139,7 +143,7 @@ public class PgcPenPage implements Serializable, EntityCopyInterface<PgcPenPageD
         if ( penPage != null ) {
             setPadId( penPage.getPadId() );
             setFormId( penPage.getFormId() );
-            setPenId( penPage.getPenId() );
+            setSequence( penPage.getSequence() );
             setPageAddress( penPage.getPageAddress() );
         }
     }

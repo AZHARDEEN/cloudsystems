@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.admin.tables.ProductTypeController">
+        <borderlayout id="borderLayout">
+            <north autoscroll="false" height="65px">
+                <grid>
+                    <columns>
+                        <column width="20%" align="center"/>
+                        <column width="60%" align="center"/>
+                        <column width="20%" align="center"/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <image id="imageClienteLogo"/>
+                            <label id="labelProductTypeTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
+                            <image id="imageCompanyLogo"/>
+                        </row>
+                    </rows>
+                </grid>
+            </north>
+            <west size="50%" splittable="true" flex="true" fulfill="=/private/admin/tables/west_id_desc.zul"></west>
+            <center fulfill="=/resources/admin/table/simple_table_center.zul"></center>
+        </borderlayout>
+    </div>
+</zk>

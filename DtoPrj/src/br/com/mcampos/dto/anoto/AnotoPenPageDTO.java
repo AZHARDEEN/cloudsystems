@@ -8,13 +8,13 @@ import java.util.List;
 public class AnotoPenPageDTO implements Comparable<AnotoPenPageDTO>, Serializable
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8977270375739381790L;
-	private String pageAddress;
+     *
+     */
+    private static final long serialVersionUID = -8977270375739381790L;
+    private String pageAddress;
     private Integer formId;
     private Integer padId;
-    private String penId;
+    private Integer sequence;
 
     private PenDTO pen;
     private AnotoPageDTO page;
@@ -71,21 +71,9 @@ public class AnotoPenPageDTO implements Comparable<AnotoPenPageDTO>, Serializabl
         return padId;
     }
 
-    public void setPenId( String penId )
-    {
-        this.penId = penId;
-    }
-
-    public String getPenId()
-    {
-        return penId;
-    }
-
     public void setPen( PenDTO pen )
     {
         this.pen = pen;
-        if ( pen != null )
-            setPenId( pen.getId() );
     }
 
     public PenDTO getPen()
@@ -124,5 +112,15 @@ public class AnotoPenPageDTO implements Comparable<AnotoPenPageDTO>, Serializabl
     public List<PgcPenPageDTO> getPgcPenPages()
     {
         return pgcPenPages;
+    }
+
+    public void setSequence( Integer sequence )
+    {
+        this.sequence = sequence;
+    }
+
+    public Integer getSequence()
+    {
+        return sequence;
     }
 }

@@ -15,6 +15,7 @@ public class AnotoPageFieldDTO implements Serializable
     private Integer top;
     private Integer left;
     private FieldTypeDTO type;
+    private Boolean export;
 
 
     public AnotoPageFieldDTO()
@@ -114,5 +115,15 @@ public class AnotoPageFieldDTO implements Serializable
         if ( type == null )
             type = new FieldTypeDTO( FieldTypeDTO.typeString );
         return type;
+    }
+
+    public void setExport( Boolean export )
+    {
+        this.export = export;
+    }
+
+    public Boolean getExport()
+    {
+        return export;
     }
 }

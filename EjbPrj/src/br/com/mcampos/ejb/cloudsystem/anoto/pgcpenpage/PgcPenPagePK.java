@@ -7,19 +7,19 @@ public class PgcPenPagePK implements Serializable
     private String pageAddress;
     private Integer formId;
     private Integer padId;
-    private String penId;
+    private Integer sequence;
     private Integer pgcId;
 
     public PgcPenPagePK()
     {
     }
 
-    public PgcPenPagePK( String apg_id_ch, Integer frm_id_in, Integer pad_id_in, String pen_id_ch, Integer pgc_id_in )
+    public PgcPenPagePK( String apg_id_ch, Integer frm_id_in, Integer pad_id_in, Integer sequence, Integer pgc_id_in )
     {
         this.pageAddress = apg_id_ch;
         this.formId = frm_id_in;
         this.padId = pad_id_in;
-        this.penId = pen_id_ch;
+        this.sequence = sequence;
         this.pgcId = pgc_id_in;
     }
 
@@ -27,10 +27,7 @@ public class PgcPenPagePK implements Serializable
     {
         if ( other instanceof PgcPenPagePK ) {
             final PgcPenPagePK otherPgcPenPagePK = ( PgcPenPagePK )other;
-            final boolean areEqual =
-                ( otherPgcPenPagePK.pageAddress.equals( pageAddress ) && otherPgcPenPagePK.formId.equals( formId ) &&
-                  otherPgcPenPagePK.padId.equals( padId ) && otherPgcPenPagePK.penId.equals( penId ) &&
-                  otherPgcPenPagePK.pgcId.equals( pgcId ) );
+            final boolean areEqual = ( otherPgcPenPagePK.pageAddress.equals( pageAddress ) && otherPgcPenPagePK.formId.equals( formId ) && otherPgcPenPagePK.padId.equals( padId ) && otherPgcPenPagePK.sequence.equals( sequence ) && otherPgcPenPagePK.pgcId.equals( pgcId ) );
             return areEqual;
         }
         return false;
@@ -71,14 +68,14 @@ public class PgcPenPagePK implements Serializable
         this.padId = pad_id_in;
     }
 
-    String getPenId()
+    Integer getSequence()
     {
-        return penId;
+        return sequence;
     }
 
-    void setPenId( String pen_id_ch )
+    void setSequence( Integer sequence )
     {
-        this.penId = pen_id_ch;
+        this.sequence = sequence;
     }
 
     Integer getPgcId()

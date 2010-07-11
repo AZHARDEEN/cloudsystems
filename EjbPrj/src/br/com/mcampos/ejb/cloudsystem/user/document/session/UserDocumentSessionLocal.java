@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface UserDocumentSessionLocal extends Serializable
 {
-    /**<penId>select o from UserDocument o where o.penId = :document and o.documentType.formId = :docType</penId>
+    /**<penPageSequence>select o from UserDocument o where o.penPageSequence = :document and o.documentType.formId = :docType</penPageSequence>
      *
      * tenta localizar um registro no banco de dados com os dados do documento e o tipo do documento
      *
@@ -32,7 +32,7 @@ public interface UserDocumentSessionLocal extends Serializable
 
     UserDocument findCNPJ( String cnpj );
 
-    /**<penId>select o from UserDocument o where o.penId = :document and o.documentType.formId = :docType</penId>
+    /**<penPageSequence>select o from UserDocument o where o.penPageSequence = :document and o.documentType.formId = :docType</penPageSequence>
      *
      * tenta localizar um registro no banco de dados com os dados do documento e o tipo do documento
      *

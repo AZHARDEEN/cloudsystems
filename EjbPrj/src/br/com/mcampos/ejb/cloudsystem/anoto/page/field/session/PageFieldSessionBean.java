@@ -1,12 +1,16 @@
-package br.com.mcampos.ejb.cloudsystem.anoto.page.field;
+package br.com.mcampos.ejb.cloudsystem.anoto.page.field.session;
 
 
+import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.field.entity.AnotoPageField;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.field.entity.AnotoPageFieldPK;
 import br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -75,5 +79,15 @@ public class PageFieldSessionBean extends Crud<AnotoPageFieldPK, AnotoPageField>
         }
         if ( anotoPage != null )
             getEntityManager().refresh( anotoPage );
+    }
+
+    public List<AnotoPageField> getAll( AnotoForm form ) throws ApplicationException
+    {
+        return ( List<AnotoPageField> )getResultList( AnotoPageField.getAllFromForm, form.getId() );
+    }
+
+    public List<AnotoPageField> getFieldsToExport() throws ApplicationException
+    {
+        return ( List<AnotoPageField> )getResultList( AnotoPageField.getExport );
     }
 }

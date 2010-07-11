@@ -3,8 +3,6 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pen.facade;
 
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
-import br.com.mcampos.dto.user.ClientDTO;
-import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
@@ -18,7 +16,9 @@ import javax.ejb.Remote;
 public interface AnotoPenFacade extends Serializable
 {
 
-    List<PenDTO> getPens( AuthenticationDTO auth ) throws ApplicationException;
+    List<PenDTO> getPens( Integer nStart, Integer nSize ) throws ApplicationException;
+
+    Integer count() throws ApplicationException;
 
     void delete( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
 
@@ -28,9 +28,4 @@ public interface AnotoPenFacade extends Serializable
 
     PenDTO get( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException;
 
-    ListUserDTO findUser( AuthenticationDTO auth, Integer userId ) throws ApplicationException;
-
-    ListUserDTO findUserByEmail( AuthenticationDTO auth, String document ) throws ApplicationException;
-
-    List<ClientDTO> getClients( AuthenticationDTO auth ) throws ApplicationException;
 }

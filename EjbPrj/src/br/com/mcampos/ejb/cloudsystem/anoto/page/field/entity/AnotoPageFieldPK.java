@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.cloudsystem.anoto.page.field;
+package br.com.mcampos.ejb.cloudsystem.anoto.page.field.entity;
 
 
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
