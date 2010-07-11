@@ -21,7 +21,7 @@
     <class>br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.entity.DocumentType</class>
     <class>br.com.mcampos.ejb.entity.system.SystemMessage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.entity.PgcProperty</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.penpage.entity.AnotoPenPage</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressType</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage</class>
@@ -45,7 +45,6 @@
     <class>br.com.mcampos.ejb.entity.system.SystemParameters</class>
     <class>br.com.mcampos.ejb.entity.system.EMailPartType</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField</class>
     <class>br.com.mcampos.ejb.cloudsystem.media.entity.Media</class>
     <class>br.com.mcampos.ejb.cloudsystem.security.role.Role</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField</class>
@@ -70,11 +69,15 @@
     <class>br.com.mcampos.ejb.cloudsystem.user.media.entity.UserMedia</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.media.type.entity.UserMediaType</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.company.role.entity.CompanyRole</class>
+    <class>br.com.mcampos.ejb.cloudsystem.product.type.entity.ProductType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.product.entity.Product</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.penpage.user.entity.PenUser</class>
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>
       <property name="eclipselink.target-server" value="WebLogic 10"/>
       <property name="eclipselink.target-database" value="PostgreSQL"/>
+      <property name="javax.persistence.jtaDataSource" value="jdbc/CloudDS"/>
     </properties>
   </persistence-unit>
 </persistence>

@@ -165,6 +165,8 @@ public class PrivateIndexController extends LoggedBaseController
     public void onNotify( Event evt ) throws ApplicationException
     {
         if ( evt.getData() instanceof CompanyDTO ) {
+            if ( mdiApplication != null && mdiApplication.getChildren() != null )
+                mdiApplication.getChildren().clear();
             if ( mainMenu == null )
                 return;
             if ( mainMenu.getChildren() != null )

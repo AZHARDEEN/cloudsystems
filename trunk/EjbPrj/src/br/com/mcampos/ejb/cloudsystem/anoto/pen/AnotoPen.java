@@ -14,6 +14,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -22,10 +24,19 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Pen.findAll", query = "select o from AnotoPen o" ) } )
+@NamedQueries( { @NamedQuery( name = "Pen.findAll", query = "select o from AnotoPen o" ),
+                 @NamedQuery( name = AnotoPen.penCount, query = "select count(o) from AnotoPen o" ) } )
+@NamedNativeQueries( { @NamedNativeQuery( name = AnotoPen.formAvailablePens,
+                                          query = "SELECT * FROM anoto_pen WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 and PDP_TO_DT IS NULL )",
+                                          resultClass = AnotoPen.class ) } )
+
 @Table( name = "anoto_pen" )
 public class AnotoPen implements Serializable, EntityCopyInterface<PenDTO>
 {
+    public static final String formAvailablePens = "formAvailablePens";
+
+    public static final String penCount = "count";
+
     @Id
     @Column( name = "pen_id_ch", nullable = false )
     private String id;

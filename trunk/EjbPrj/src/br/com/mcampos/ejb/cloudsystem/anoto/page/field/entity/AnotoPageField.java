@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.cloudsystem.anoto.page.field;
+package br.com.mcampos.ejb.cloudsystem.anoto.page.field.entity;
 
 
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
@@ -23,13 +23,18 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries( { @NamedQuery( name = AnotoPageField.getAll, query = "select o from AnotoPageField o" ),
                  @NamedQuery( name = AnotoPageField.getAllFromPage,
-                              query = "select o from AnotoPageField o where o.anotoPage = ?1" ) } )
+                              query = "select o from AnotoPageField o where o.anotoPage = ?1" ),
+                 @NamedQuery( name = AnotoPageField.getExport, query = "select o from AnotoPageField o where o.export = true" ),
+                 @NamedQuery( name = AnotoPageField.getAllFromForm,
+                              query = "select o from AnotoPageField o where o.formId = ?1" ) } )
 @Table( name = "anoto_page_field" )
 @IdClass( AnotoPageFieldPK.class )
 public class AnotoPageField implements Serializable, Comparable<AnotoPageField>, EntityCopyInterface<AnotoPageFieldDTO>
 {
     public static final String getAll = "AnotoPageField.findAll";
     public static final String getAllFromPage = "AnotoPageField.findAllFromPage";
+    public static final String getAllFromForm = "AnotoPageField.findAllFromForm";
+    public static final String getExport = "AnotoPageField.findExport";
 
     @Column( name = "aft_icr_bt", nullable = false )
     private Boolean icr;
@@ -61,6 +66,9 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
 
     @Column( name = "alf_height_in" )
     private Integer height;
+
+    @Column( name = "apf_export_bt", nullable = false )
+    private Boolean export;
 
 
     @ManyToOne( optional = false )
@@ -220,6 +228,17 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
         dto.setLeft( getLeft() );
         dto.setTop( getTop() );
         dto.setWidth( getWidth() );
+        dto.setExport( getExport() );
         return dto;
+    }
+
+    public void setExport( Boolean export )
+    {
+        this.export = export;
+    }
+
+    public Boolean getExport()
+    {
+        return export;
     }
 }

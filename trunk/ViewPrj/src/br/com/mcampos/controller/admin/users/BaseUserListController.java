@@ -1,11 +1,10 @@
 package br.com.mcampos.controller.admin.users;
 
+
 import br.com.mcampos.controller.admin.users.model.BaseListModel;
 import br.com.mcampos.controller.core.LoggedBaseController;
-
 import br.com.mcampos.dto.address.AddressDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
-
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.dto.user.UserContactDTO;
 import br.com.mcampos.dto.user.UserDTO;
@@ -29,6 +28,7 @@ import org.zkoss.zul.Paging;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.event.PagingEvent;
+
 
 public abstract class BaseUserListController extends LoggedBaseController
 {

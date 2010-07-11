@@ -13,7 +13,7 @@ import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.dto.user.login.LoginDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPageUtil;
-import br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.field.entity.AnotoPageField;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageUtil;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
 import br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType;
@@ -188,6 +188,7 @@ public final class DTOFactory implements Serializable
         if ( dto.getType() != null )
             target.setType( FieldTypeUtil.createEntity( dto.getType() ) );
         target.setWidth( dto.getWidth() );
+        target.setExport( dto.getExport() );
         return target;
     }
 }

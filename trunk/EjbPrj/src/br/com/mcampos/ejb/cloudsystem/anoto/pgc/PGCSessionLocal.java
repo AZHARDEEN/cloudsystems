@@ -4,7 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pgc;
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
-import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.penpage.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.entity.PgcProperty;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;

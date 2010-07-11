@@ -11,13 +11,13 @@ import java.util.List;
 public class PgcPenPageDTO implements Comparable<PgcPenPageDTO>, Serializable
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -2299155508697834167L;
-	private String pageAddress;
+     *
+     */
+    private static final long serialVersionUID = -2299155508697834167L;
+    private String pageAddress;
     private Integer formId;
     private Integer padId;
-    private String penId;
+    private Integer sequence;
     private Integer pgcId;
 
 
@@ -75,14 +75,14 @@ public class PgcPenPageDTO implements Comparable<PgcPenPageDTO>, Serializable
         return padId;
     }
 
-    public void setPenId( String penId )
+    public void setSequence( Integer seq )
     {
-        this.penId = penId;
+        this.sequence = seq;
     }
 
-    public String getPenId()
+    public Integer getSequence()
     {
-        return penId;
+        return sequence;
     }
 
     public void setPgcId( Integer pgcId )
@@ -102,7 +102,7 @@ public class PgcPenPageDTO implements Comparable<PgcPenPageDTO>, Serializable
             setFormId( penPage.getFormId() );
             setPadId( penPage.getPadId() );
             setPageAddress( penPage.getPageAddress() );
-            setPenId( penPage.getPenId() );
+            setSequence( penPage.getSequence() );
         }
     }
 
@@ -126,8 +126,8 @@ public class PgcPenPageDTO implements Comparable<PgcPenPageDTO>, Serializable
     @Override
     public boolean equals( Object obj )
     {
-        return getPgc().equals( ( ( PgcPenPageDTO )obj ).getPgc() ) &&
-            getPenPage().equals( ( ( PgcPenPageDTO )obj ).getPenPage() );
+        return getPgc().equals( ( ( PgcPenPageDTO )obj ).getPgc() ) && getPenPage()
+            .equals( ( ( PgcPenPageDTO )obj ).getPenPage() );
     }
 
     public void setBackgroundImages( List<MediaDTO> backgroundImages )
@@ -140,7 +140,7 @@ public class PgcPenPageDTO implements Comparable<PgcPenPageDTO>, Serializable
         return backgroundImages;
     }
 
-    public FormDTO getForm ()
+    public FormDTO getForm()
     {
         return getPenPage().getPage().getPad().getForm();
     }

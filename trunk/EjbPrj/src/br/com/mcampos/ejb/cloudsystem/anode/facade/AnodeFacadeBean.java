@@ -29,14 +29,14 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pad.PadSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPageUtil;
-import br.com.mcampos.ejb.cloudsystem.anoto.page.field.AnotoPageField;
-import br.com.mcampos.ejb.cloudsystem.anoto.page.field.PageFieldSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.field.entity.AnotoPageField;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.field.session.PageFieldSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnodePenSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.session.AnotoPenUserSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPagePK;
+import br.com.mcampos.ejb.cloudsystem.anoto.penpage.entity.AnotoPenPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.penpage.session.PenPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.entity.PgcAttachment;
@@ -127,6 +127,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
     @EJB
     private PgcAttachmentSessionLocal pgcAttachmentSession;
+
+    @EJB
+    private PenPageSessionLocal penPageSession;
 
 
     public void addPens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException
@@ -308,12 +311,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
      */
 
 
-    public List<PenDTO> getPens( AuthenticationDTO auth ) throws ApplicationException
-    {
-        authenticate( auth );
-        return AnotoUtils.toPenList( penSession.getAll() );
-    }
-
     /* *************************************************************************
      * *************************************************************************
      *
@@ -438,7 +435,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     public List<PgcPenPageDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException
     {
         authenticate( auth );
-        AnotoPen pen = penSession.get( penPage.getPenId() );
+        AnotoPen pen = penSession.get( penPage.getPen().getId() );
         AnotoPage page = getPageEntity( penPage.getPage() );
         AnotoPenPage entity = padSession.getPenPage( pen, page );
         return AnotoUtils.toPgcPenPageList( pgcSession.getAll( entity ) );
@@ -477,6 +474,24 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return resultList;
     }
 
+    private void getExportFields( AnotoResultList item, PgcPage page ) throws ApplicationException
+    {
+        List<AnotoPageField> fields = pageFieldSession.getFieldsToExport();
+        if ( SysUtils.isEmpty( fields ) == false ) {
+            for ( AnotoPageField field : fields ) {
+                PgcFieldPK key = new PgcFieldPK();
+                key.setBookId( page.getBookId() );
+                key.setPageId( page.getPageId() );
+                key.setPgcId( page.getPgcId() );
+                key.setName( field.getName() );
+                PgcField pgcField = pgcFieldSession.get( key );
+                if ( pgcField != null ) {
+                    item.getFields().add( pgcField.toDTO() );
+                }
+            }
+        }
+    }
+
     private void loadProperties( AnotoResultList item, PgcPage pgcPage ) throws ApplicationException
     {
         if ( item == null )
@@ -494,6 +509,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             }
             loadBarCode( item, pgcPage );
             loadAttach( item, pgcPage );
+            getExportFields( item, pgcPage );
         }
         catch ( Exception e ) {
             e.printStackTrace();
@@ -554,13 +570,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
     protected boolean attachPenPage( List<AnotoPage> pages, AnotoPen pen, Pgc pgc ) throws ApplicationException
     {
         AnotoPenPage item;
-        AnotoPenPagePK key;
 
-        key = new AnotoPenPagePK();
-        key.setPen( pen );
         for ( AnotoPage page : pages ) {
-            key.setPage( page );
-            item = padSession.getPenPage( pen, page );
+            item = penPageSession.get( page, pen );
             if ( item != null ) {
                 pgcSession.attach( pgc, item );
             }

@@ -13,14 +13,15 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pad.PadSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.session.AnotoPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
-import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPage;
-import br.com.mcampos.ejb.cloudsystem.anoto.penpage.AnotoPenPagePK;
+import br.com.mcampos.ejb.cloudsystem.anoto.penpage.entity.AnotoPenPage;
+import br.com.mcampos.ejb.cloudsystem.anoto.penpage.session.PenPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.exception.ApplicationRuntimeException;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.Collections;
@@ -52,6 +53,9 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
 
     @EJB
     private AnotoPageSessionLocal anotoPageSession;
+
+    @EJB
+    private PenPageSessionLocal penPageSession;
 
 
     public AnotoFormSessionBean()
@@ -179,15 +183,12 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPen> getAvailablePens( AnotoForm form ) throws ApplicationException
     {
-        String sqlQuery;
         Query query;
         List<AnotoPen> list;
 
-        sqlQuery =
-                "SELECT " + "pen_id_ch , pen_description_ch, pen_insert_dt " + "FROM anoto_pen " + "WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 )";
-        query = getEntityManager().createNativeQuery( sqlQuery, AnotoPen.class );
-        query.setParameter( 1, form.getId() );
         try {
+            query = getEntityManager().createNamedQuery( AnotoPen.formAvailablePens );
+            query.setParameter( 1, form.getId() );
             list = ( List<AnotoPen> )query.getResultList();
         }
         catch ( NoResultException e ) {
@@ -212,8 +213,11 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
             return;
         for ( AnotoPen pen : pens ) {
             for ( AnotoPage page : list ) {
-                AnotoPenPage penPage = new AnotoPenPage( pen, page );
-                getEntityManager().persist( penPage );
+                AnotoPenPage penPage = penPageSession.get( pen, page.getPageAddress() );
+                if ( penPage != null ) {
+                    throw new ApplicationRuntimeException( "A caneta encontra associada a outra malha com mesmo IP" );
+                }
+                penPageSession.add( page, pen );
             }
         }
     }
@@ -232,11 +236,7 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
             return;
         for ( AnotoPen pen : pens ) {
             for ( AnotoPage page : list ) {
-                AnotoPenPagePK penPagePK = new AnotoPenPagePK( pen, page );
-                AnotoPenPage penPage = getEntityManager().find( AnotoPenPage.class, penPagePK );
-                if ( penPage != null && existsPgcPenPage( penPage ) == false ) {
-                    getEntityManager().remove( penPage );
-                }
+                penPageSession.delete( page, pen );
             }
         }
     }

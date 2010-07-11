@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoFieldController">
+        <borderlayout id="borderLayout">
+            <north autoscroll="false" height="65px" fulfill="=/resources/title.zul"></north>
+            <center>
+                <!-- Por favor, nao mude o id desta div -->
+                <borderlayout>
+                    <north>
+                        <div id="recordDetail">
+                            <div>
+                                <label id="labelAnotoFormTitle" value="##"/>
+                                <combobox id="cmbForms"/>
+                            </div>
+                        </div>
+                    </north>
+                    <center fulfill="=/private/admin/anoto/template/anoto_page_field_grid.zul"/>
+                </borderlayout>
+            </center>
+        </borderlayout>
+    </div>
+</zk>

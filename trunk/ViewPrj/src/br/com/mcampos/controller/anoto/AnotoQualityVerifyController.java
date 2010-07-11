@@ -169,8 +169,10 @@ public class AnotoQualityVerifyController extends LoggedBaseController
             MediaDTO media = field.getMedia();
             row = new Row();
             Vbox box = new Vbox();
-            box.appendChild( new Label( field.getIrcText() ) );
+            Label label = new Label( field.getIrcText() );
+            label.setStyle( "font-size:30px" );
             box.appendChild( loadImage( media ) );
+            box.appendChild( label );
             box.appendChild( createTextbox( field ) );
             row.appendChild( box );
         }

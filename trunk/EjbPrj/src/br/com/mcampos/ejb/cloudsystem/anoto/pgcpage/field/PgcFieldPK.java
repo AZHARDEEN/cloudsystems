@@ -38,9 +38,7 @@ public class PgcFieldPK implements Serializable
     {
         if ( other instanceof PgcFieldPK ) {
             final PgcFieldPK otherPgcFieldPK = ( PgcFieldPK )other;
-            final boolean areEqual =
-                ( otherPgcFieldPK.bookId.equals( bookId ) && otherPgcFieldPK.name.equals( name ) && otherPgcFieldPK.pageId.equals( pageId ) &&
-                  otherPgcFieldPK.pgcId.equals( pgcId ) );
+            final boolean areEqual = ( otherPgcFieldPK.bookId.equals( bookId ) && otherPgcFieldPK.name.equals( name ) && otherPgcFieldPK.pageId.equals( pageId ) && otherPgcFieldPK.pgcId.equals( pgcId ) );
             return areEqual;
         }
         return false;
@@ -56,7 +54,7 @@ public class PgcFieldPK implements Serializable
         return bookId;
     }
 
-    void setBookId( Integer pfl_book_id )
+    public void setBookId( Integer pfl_book_id )
     {
         this.bookId = pfl_book_id;
     }
@@ -66,7 +64,7 @@ public class PgcFieldPK implements Serializable
         return name;
     }
 
-    void setName( String pfl_name_ch )
+    public void setName( String pfl_name_ch )
     {
         this.name = pfl_name_ch;
     }
@@ -76,7 +74,7 @@ public class PgcFieldPK implements Serializable
         return pageId;
     }
 
-    void setPageId( Integer pfl_page_id )
+    public void setPageId( Integer pfl_page_id )
     {
         this.pageId = pfl_page_id;
     }
@@ -86,7 +84,7 @@ public class PgcFieldPK implements Serializable
         return pgcId;
     }
 
-    void setPgcId( Integer pgc_id_in )
+    public void setPgcId( Integer pgc_id_in )
     {
         this.pgcId = pgc_id_in;
     }

@@ -134,13 +134,7 @@
                                 <toolbar>
                                     <toolbarbutton id="btnRefreshFields" label="##" image="/img/icontexto-webdev-add-016x016.png"/>
                                 </toolbar>
-                                <grid id="gridFields" fixedLayout="true" height="300px">
-                                    <columns sizable="false">
-                                        <column align="left" label="##" id="headerName"/>
-                                        <column align="left" label="##" id="headerType"/>
-                                        <column align="left" label="##" width="30px" id="headerIcr"/>
-                                    </columns>
-                                </grid>
+                                <div fulfill="=/private/admin/anoto/template/anoto_page_field_grid.zul"></div>
                             </tabpanel>
                         </tabpanels>
                     </tabbox>

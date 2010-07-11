@@ -7,6 +7,8 @@ import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
+import br.com.mcampos.dto.anoto.PgcFieldDTO;
+import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -159,10 +161,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
     {
         List list;
         try {
-            if ( dto == null )
-                list = getSession().getPens( getLoggedInUser() );
-            else
-                list = getSession().getPens( getLoggedInUser(), dto );
+            list = getSession().getPens( getLoggedInUser(), dto );
             loadCombobox( cmbPen, list );
             Comboitem item = cmbPen.appendItem( getLabel( "all_female" ) );
             if ( item != null )
@@ -225,46 +224,80 @@ public abstract class BaseSearchController extends AnotoLoggedController
     private void writeToExcell( WritableWorkbook workbook ) throws WriteException, RowsExceededException, IOException
     {
         WritableSheet sheet = workbook.createSheet( "Exported Data", 0 );
-        setHeader( sheet );
+        int nColumns = setHeader( sheet );
         ListModelList model = getModel();
+        boolean bFirst = true;
         for ( int nIndex = 0; nIndex < model.getSize(); nIndex++ ) {
             AnotoResultList dto = ( AnotoResultList )model.get( nIndex );
             if ( dto != null ) {
-                sheet.addCell( new Number( 0, nIndex + 1, nIndex ) );
-                sheet.addCell( new jxl.write.Label( 1, nIndex + 1, dto.getForm().toString() ) );
-                sheet.addCell( new Number( 2, nIndex + 1, dto.getPgcPage().getBookId() + 1 ) );
-                sheet.addCell( new Number( 3, nIndex + 1, dto.getPgcPage().getPageId() + 1 ) );
-                sheet.addCell( new jxl.write.Label( 4, nIndex + 1, dto.getPen().toString() ) );
-                sheet.addCell( new DateTime( 5, nIndex + 1, dto.getPgcPage().getPgc().getInsertDate() ) );
-                sheet.addCell( new jxl.write.Label( 6, nIndex + 1, dto.getUserName() ) );
-                sheet.addCell( new jxl.write.Label( 7, nIndex + 1, dto.getEmail() ) );
-                sheet.addCell( new jxl.write.Label( 8, nIndex + 1, dto.getCellNumber() ) );
-                sheet.addCell( new jxl.write.Label( 9, nIndex + 1, dto.getLatitude() ) );
-                sheet.addCell( new jxl.write.Label( 10, nIndex + 1, dto.getLongitude() ) );
-                sheet.addCell( new jxl.write.Label( 11, nIndex + 1, dto.getBarcodeValue() ) );
-                sheet.addCell( new jxl.write.Label( 12, nIndex + 1, dto.getAttach() ? "SIM" : "" ) );
+                if ( bFirst ) {
+                    bFirst = false;
+                    addHead( sheet, nColumns, dto.getFields() );
+                }
+                nColumns = 0;
+                sheet.addCell( new Number( nColumns++, nIndex + 1, nIndex ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getForm().toString() ) );
+                sheet.addCell( new Number( nColumns++, nIndex + 1, dto.getPgcPage().getBookId() + 1 ) );
+                sheet.addCell( new Number( nColumns++, nIndex + 1, dto.getPgcPage().getPageId() + 1 ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getPen().toString() ) );
+                sheet.addCell( new DateTime( nColumns++, nIndex + 1, dto.getPgcPage().getPgc().getInsertDate() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getUserName() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getEmail() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getCellNumber() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLatitude() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLongitude() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getBarcodeValue() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getAttach() ? "SIM" : "" ) );
+                addData( sheet, nColumns, nIndex + 1, dto.getFields() );
             }
         }
         workbook.write();
         workbook.close();
     }
 
-    private void setHeader( WritableSheet sheet ) throws WriteException, RowsExceededException
+    private void addHead( WritableSheet sheet, int nColumns, List<PgcFieldDTO> fields ) throws WriteException,
+                                                                                               RowsExceededException
     {
+        if ( SysUtils.isEmpty( fields ) )
+            return;
+        for ( PgcFieldDTO field : fields ) {
+            sheet.addCell( new jxl.write.Label( nColumns++, 0, field.getName() ) );
+        }
+    }
+
+    private void addData( WritableSheet sheet, int nColumn, int nRow, List<PgcFieldDTO> fields ) throws WriteException,
+                                                                                                        RowsExceededException
+    {
+        if ( SysUtils.isEmpty( fields ) )
+            return;
+        for ( PgcFieldDTO field : fields ) {
+            String value;
+            if ( field.getType().getId().equals( FieldTypeDTO.typeBoolean ) )
+                value = field.getHasPenstrokes() ? "SIM" : "";
+            else
+                value = SysUtils.isEmpty( field.getRevisedText() ) ? field.getIrcText() : field.getRevisedText();
+            sheet.addCell( new jxl.write.Label( nColumn++, nRow, value ) );
+        }
+    }
+
+    private int setHeader( WritableSheet sheet ) throws WriteException, RowsExceededException
+    {
+        int nIndex = 1;
         jxl.write.Label l = new jxl.write.Label( 0, 0, headSeq.getLabel() );
         sheet.addCell( l );
-        sheet.addCell( new jxl.write.Label( 1, 0, headApplication.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( 2, 0, headFormulario.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( 3, 0, headPagina.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( 4, 0, headPen.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( 5, 0, headDate.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( 6, 0, headUserName.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( 7, 0, headEmail.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( 8, 0, headCellNumber.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( 9, 0, headLatitude.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( 10, 0, headLongitude.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( 11, 0, headBarcode.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( 12, 0, headPhoto.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headApplication.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headFormulario.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headPagina.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headPen.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headDate.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headUserName.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headEmail.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headCellNumber.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headLatitude.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headLongitude.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headBarcode.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headPhoto.getLabel() ) );
+        return nIndex;
     }
 
 

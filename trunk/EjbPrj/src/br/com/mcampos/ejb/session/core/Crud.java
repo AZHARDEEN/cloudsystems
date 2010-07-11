@@ -73,6 +73,14 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         return ( List<ENTITY> )getResultList( namedQuery );
     }
 
+    public List<ENTITY> getAll( String namedQuery, Integer nStart, Integer nSize ) throws ApplicationException
+    {
+        if ( namedQuery == null )
+            return Collections.emptyList();
+        return ( List<ENTITY> )getResultListRange( namedQuery, nStart, nSize );
+    }
+
+
     @TransactionAttribute( TransactionAttributeType.MANDATORY )
     public ENTITY update( ENTITY entity ) throws ApplicationException
     {
@@ -114,6 +122,11 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
         return getResultList( namedQuery, Collections.emptyList() );
     }
 
+    public List<?> getResultListRange( String namedQuery, Integer nStart, Integer nSize ) throws ApplicationException
+    {
+        return getResultListRange( namedQuery, Collections.emptyList(), nStart, nSize );
+    }
+
     public List<?> getResultList( String namedQuery, Object param ) throws ApplicationException
     {
         List<Object> parameter = new ArrayList<Object>( 1 );
@@ -150,13 +163,34 @@ public abstract class Crud<KEY, ENTITY> implements CrudInterface<KEY, ENTITY>
     {
         try {
             Query query = getEntityManager().createNamedQuery( namedQuery );
-            if ( SysUtils.isEmpty( list ) == false ) {
-                int nIndex = 1;
-                for ( Object obj : list ) {
-                    query.setParameter( nIndex, obj );
-                    nIndex++;
-                }
+            setParameters( query, list );
+            return query.getResultList();
+        }
+        catch ( Exception e ) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
+    private void setParameters( Query query, List<Object> list )
+    {
+        if ( SysUtils.isEmpty( list ) == false ) {
+            int nIndex = 1;
+            for ( Object obj : list ) {
+                query.setParameter( nIndex, obj );
+                nIndex++;
             }
+        }
+    }
+
+    public List<?> getResultListRange( String namedQuery, List<Object> list, Integer nStart,
+                                       Integer nSize ) throws ApplicationException
+    {
+        try {
+            Query query = getEntityManager().createNamedQuery( namedQuery );
+            query.setFirstResult( nStart );
+            query.setMaxResults( nSize );
+            setParameters( query, list );
             return query.getResultList();
         }
         catch ( Exception e ) {

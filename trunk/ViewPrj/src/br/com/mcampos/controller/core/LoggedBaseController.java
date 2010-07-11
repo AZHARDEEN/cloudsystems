@@ -15,6 +15,7 @@ import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zul.Image;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 
 
@@ -26,6 +27,8 @@ public class LoggedBaseController extends BaseController
 
     private Image imageClienteLogo;
     private Image imageCompanyLogo;
+
+    private Label labelTitle;
 
     public LoggedBaseController()
     {
@@ -117,6 +120,14 @@ public class LoggedBaseController extends BaseController
     {
         super.doAfterCompose( comp );
         showLogo();
+        if ( labelTitle != null ) {
+            labelTitle.setValue( getPageTitle() );
+        }
+    }
+
+    protected String getPageTitle()
+    {
+        return "";
     }
 
     private void showLogo()

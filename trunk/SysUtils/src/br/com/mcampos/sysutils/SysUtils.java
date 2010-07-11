@@ -67,6 +67,12 @@ public final class SysUtils
         return df.format( date );
     }
 
+    public static String formatDate( Date date )
+    {
+        DateFormat df = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
+        return df.format( date );
+    }
+
 
     public static String toUpperCase( String fieldValue )
     {

@@ -2,8 +2,6 @@ package br.com.mcampos.controller.anoto;
 
 
 import br.com.mcampos.controller.anoto.base.AnotoBaseController;
-import br.com.mcampos.controller.anoto.model.AnotoPageFieldComparator;
-import br.com.mcampos.controller.anoto.model.PenListModel;
 import br.com.mcampos.controller.anoto.renderer.AnotoPadListRenderer;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PageFieldRowRenderer;
@@ -41,7 +39,6 @@ import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zul.AbstractListModel;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
-import org.zkoss.zul.Column;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Filedownload;
@@ -86,9 +83,6 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
 
     private Grid gridFields;
 
-    private Column headerName;
-    private Column headerType;
-    private Column headerIcr;
 
     private Listheader recordListIdSort;
     private Listheader listHeaderName;
@@ -144,18 +138,6 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
         }
         if ( gridFields != null ) {
             gridFields.setRowRenderer( new PageFieldRowRenderer( this, getSession().getFieldTypes( getLoggedInUser() ) ) );
-            if ( headerIcr != null ) {
-                headerIcr.setSortAscending( new AnotoPageFieldComparator( true, AnotoPageFieldComparator.headerIcr ) );
-                headerIcr.setSortDescending( new AnotoPageFieldComparator( false, AnotoPageFieldComparator.headerIcr ) );
-            }
-            if ( headerType != null ) {
-                headerType.setSortAscending( new AnotoPageFieldComparator( true, AnotoPageFieldComparator.headerType ) );
-                headerType.setSortDescending( new AnotoPageFieldComparator( false, AnotoPageFieldComparator.headerType ) );
-            }
-            if ( headerName != null ) {
-                headerName.setSortAscending( new AnotoPageFieldComparator( true, AnotoPageFieldComparator.headerName ) );
-                headerName.setSortDescending( new AnotoPageFieldComparator( false, AnotoPageFieldComparator.headerName ) );
-            }
         }
         configureLabels();
     }
@@ -425,11 +407,11 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
     protected AbstractListModel getPenModel( AnotoPageDTO current )
     {
         List<PenDTO> list;
-        PenListModel model = null;
+        ListModelList model = null;
         try {
             list = getSession().getPens( getLoggedInUser(), current );
-            model = new PenListModel( list );
-            model.loadPage( 1, list.size() );
+            model = new ListModelList( list );
+            //model.loadPage( 1, list.size() );
             return model;
         }
         catch ( ApplicationException e ) {
@@ -542,7 +524,11 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
                 Object value = row.getValue();
                 if ( value instanceof AnotoPageFieldDTO ) {
                     AnotoPageFieldDTO dto = ( AnotoPageFieldDTO )value;
-                    dto.setIcr( evt.isChecked() );
+                    String attr = ( String )target.getAttribute( "field" );
+                    if ( attr != null && attr.equalsIgnoreCase( "icr" ) )
+                        dto.setIcr( evt.isChecked() );
+                    if ( attr != null && attr.equalsIgnoreCase( "export" ) )
+                        dto.setExport( evt.isChecked() );
                     tryUpdate( dto );
                 }
             }
@@ -606,10 +592,6 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
         setLabel( labelLinked );
 
         setLabel( tabPen );
-
-        setLabel( headerName );
-        setLabel( headerType );
-        setLabel( headerIcr );
 
 
         setLabel( tabPen );

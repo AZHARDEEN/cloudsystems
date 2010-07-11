@@ -49,8 +49,6 @@ public interface AnodeFacade extends Serializable
      * *************************************************************************
      */
 
-    List<PenDTO> getPens( AuthenticationDTO auth ) throws ApplicationException;
-
     /* *************************************************************************
      * *************************************************************************
      *

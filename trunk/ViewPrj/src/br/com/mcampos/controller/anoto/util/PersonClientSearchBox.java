@@ -3,7 +3,6 @@ package br.com.mcampos.controller.anoto.util;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.facade.AnotoPenFacade;
-import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.system.SimpleSearchListBox;
 
 import java.util.Collections;
@@ -40,12 +39,7 @@ public class PersonClientSearchBox extends SimpleSearchListBox
     @Override
     protected List getList()
     {
-        try {
-            return getSession().getClients( auth );
-        }
-        catch ( ApplicationException e ) {
-            return Collections.emptyList();
-        }
+        return Collections.emptyList();
     }
 
 
