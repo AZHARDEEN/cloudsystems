@@ -121,6 +121,8 @@ public class AnotoFieldController extends LoggedBaseController implements IAnoto
                         dto.setIcr( evt.isChecked() );
                     if ( attr != null && attr.equalsIgnoreCase( "export" ) )
                         dto.setExport( evt.isChecked() );
+                    if ( attr != null && attr.equalsIgnoreCase( "searchable" ) )
+                        dto.setSearchable( evt.isChecked() );
                     tryUpdate( dto );
                 }
             }

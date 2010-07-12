@@ -4,6 +4,7 @@ package br.com.mcampos.controller.anoto.base;
 import br.com.mcampos.controller.anoto.AnotoViewController;
 import br.com.mcampos.controller.anoto.renderer.PgcPenPageListRenderer;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
+import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
@@ -19,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -37,17 +39,26 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Column;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Filedownload;
+import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listheader;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Rows;
+import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
+import org.zkoss.zul.impl.api.InputElement;
+import org.zkoss.zul.impl.api.XulElement;
 
 
 public abstract class BaseSearchController extends AnotoLoggedController
@@ -94,6 +105,15 @@ public abstract class BaseSearchController extends AnotoLoggedController
     private Listheader headBarcode;
     private Listheader headPhoto;
 
+    private Column columnFieldName;
+    private Column columnFieldValue;
+
+    private Tab tabFilter;
+
+    private Tab tabCustomFilter;
+
+    private Grid gridCustomFields;
+
     public BaseSearchController()
     {
         super();
@@ -115,7 +135,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
         configureonOkEvents();
     }
 
-    protected void refresh()
+    private void refresh()
     {
         loadApplication();
         //loadPages( null );
@@ -123,7 +143,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
         //loadPGC( null );
     }
 
-    protected void loadApplication()
+    private void loadApplication()
     {
         List list;
         try {
@@ -131,7 +151,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
             loadCombobox( cmbApplication, list );
             if ( cmbApplication.getItemCount() > 0 ) {
                 cmbApplication.setSelectedIndex( 0 );
-                loadPens( ( FormDTO )cmbApplication.getSelectedItem().getValue() );
+                getApplicationProperties();
             }
         }
         catch ( ApplicationException e ) {
@@ -140,7 +160,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
     }
 
 
-    protected void loadPages( FormDTO dto )
+    private void loadPages( FormDTO dto )
     {
         ListModelList model;
         List<AnotoPageDTO> list;
@@ -157,7 +177,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
     }
 
 
-    protected void loadPens( FormDTO dto )
+    private void loadPens( FormDTO dto )
     {
         List list;
         try {
@@ -172,13 +192,81 @@ public abstract class BaseSearchController extends AnotoLoggedController
         }
     }
 
+    private void getApplicationProperties()
+    {
+        if ( cmbApplication.getSelectedItem() == null )
+            return;
+        FormDTO form = ( FormDTO )cmbApplication.getSelectedItem().getValue();
+
+        loadPages( form );
+        loadPens( form );
+        loadCustom( form );
+    }
+
+    private void loadCustom( FormDTO form )
+    {
+        List<AnotoPageFieldDTO> fields = Collections.emptyList();
+        try {
+            fields = getSession().getSearchableFields( getLoggedInUser(), form );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Lista de PGC" );
+        }
+        Rows rows = gridCustomFields.getRows();
+        if ( rows == null ) {
+            rows = new Rows();
+            rows.setParent( gridCustomFields );
+        }
+        if ( rows.getChildren() != null )
+            rows.getChildren().clear();
+        if ( SysUtils.isEmpty( fields ) == false ) {
+            tabCustomFilter.setVisible( true );
+            XulElement c;
+            for ( AnotoPageFieldDTO f : fields ) {
+                Row row = new Row();
+                row.setParent( rows );
+                row.setValue( f );
+                new Label( f.getName() ).setParent( row );
+                c = null;
+                switch ( f.getType().getId() ) {
+                case 1:
+                    c = new Textbox();
+                    break;
+                case 2:
+                    c = new Intbox();
+                    break;
+                case 3:
+                    c = new Datebox();
+                    break;
+                case 4:
+                    c = new Timebox();
+                    break;
+                case 5:
+                    c = new Decimalbox();
+                    break;
+                case 6:
+                    c = new Checkbox();
+                    break;
+                }
+                if ( c != null ) {
+                    c.setWidth( "95%" );
+                    c.setParent( row );
+                }
+            }
+        }
+        else
+            tabCustomFilter.setVisible( false );
+
+    }
+
     public void onSelect$cmbApplication()
     {
-        if ( cmbApplication.getSelectedItem() != null )
-            loadPages( ( FormDTO )cmbApplication.getSelectedItem().getValue() );
-        else
-            loadPages( null );
+        getApplicationProperties();
     }
+
+    /*
+     * This method can be overridable.
+     */
 
     protected void loadPGC( Properties prop )
     {
@@ -196,7 +284,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
         }
     }
 
-    protected ListModelList getModel()
+    private ListModelList getModel()
     {
         ListModelList model = ( ListModelList )resultList.getModel();
         if ( model == null ) {
@@ -300,6 +388,37 @@ public abstract class BaseSearchController extends AnotoLoggedController
         return nIndex;
     }
 
+    private void verifyCustomFields( Properties prop )
+    {
+        Properties custom = new Properties();
+
+        Rows rows = gridCustomFields.getRows();
+        if ( rows == null || rows.getChildren() == null || rows.getChildren().size() < 1 )
+            return;
+        for ( int nIndex = 0; nIndex < rows.getChildren().size(); nIndex++ ) {
+            Row row = ( Row )rows.getChildren().get( nIndex );
+            if ( row == null )
+                continue;
+            String fieldName = ( ( Label )row.getChildren().get( 0 ) ).getValue();
+            Object value = null;
+            XulElement c = ( ( XulElement )row.getChildren().get( 1 ) );
+            if ( c instanceof InputElement ) {
+                String sValue = ( ( InputElement )c ).getRawText();
+                if ( SysUtils.isEmpty( sValue ) )
+                    continue;
+                value = sValue.trim();
+            }
+            else if ( c instanceof Checkbox ) {
+                Boolean b = ( ( Checkbox )c ).isChecked();
+                value = b;
+            }
+            custom.put( fieldName, value );
+        }
+        if ( custom.size() > 0 ) {
+            prop.put( "custom_fields", custom );
+        }
+    }
+
 
     public void onClick$btnFilter()
     {
@@ -380,11 +499,11 @@ public abstract class BaseSearchController extends AnotoLoggedController
             prop.put( "pgcFieldValue", fieldValue );
         }
 
-
+        verifyCustomFields( prop );
         loadPGC( prop );
     }
 
-    protected Date getDate( Datebox d, Timebox t )
+    private Date getDate( Datebox d, Timebox t )
     {
         Date eDate = null;
         if ( d.getValue() != null )
@@ -414,7 +533,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
         onClick$btnProperty();
     }
 
-    protected void gotoPage( Properties params )
+    private void gotoPage( Properties params )
     {
         gotoPage( "/private/admin/anoto/anoto_view.zul", getRootParent().getParent(), params );
     }
@@ -436,7 +555,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
     }
 
 
-    protected void configureonOkEvents()
+    private void configureonOkEvents()
     {
         cmbApplication.addEventListener( Events.ON_OK, new EventListener()
             {
@@ -549,6 +668,13 @@ public abstract class BaseSearchController extends AnotoLoggedController
         setLabel( headLongitude );
         setLabel( headBarcode );
         setLabel( headPhoto );
+
+        setLabel( tabFilter );
+
+        setLabel( tabCustomFilter );
+
+        setLabel( columnFieldValue );
+        setLabel( columnFieldName );
 
     }
 

@@ -24,6 +24,8 @@ public class AnotoPenListRenderer implements ListitemRenderer, Serializable
         if ( dto != null ) {
             listitem.setValue( object );
             listitem.getChildren().add( new Listcell( dto.getId() ) );
+            listitem.getChildren().add( new Listcell( dto.getUser() != null ? dto.getUser().getName() : "-" ) );
+
         }
     }
 }

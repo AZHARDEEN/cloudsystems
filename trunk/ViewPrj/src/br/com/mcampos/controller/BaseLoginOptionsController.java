@@ -9,6 +9,7 @@ import br.com.mcampos.util.business.LoginLocator;
 import org.zkforge.bwcaptcha.Captcha;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
@@ -37,7 +38,7 @@ public abstract class BaseLoginOptionsController extends BaseController
     public abstract void onClick$cmdSubmit();
 
 
-    public void onClick$cmdForgotPassword()
+    public void onClick$cmdForgotPassword( Event evt )
     {
         if ( getRootParent() != null )
             gotoPage( "/forgot_password.zul", getRootParent().getParent() );

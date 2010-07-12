@@ -1,7 +1,7 @@
 package br.com.mcampos.controller.commom.user;
 
 
-import br.com.mcampos.controller.admin.clients.UserController;
+import br.com.mcampos.controller.user.UserController;
 import br.com.mcampos.dto.address.CityDTO;
 import br.com.mcampos.dto.address.CountryDTO;
 import br.com.mcampos.dto.address.StateDTO;

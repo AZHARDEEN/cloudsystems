@@ -3,7 +3,7 @@
 	language="xul/html" contentType="text/html;charset=UTF-8"?>
 <window id="recordWindow"  border="normal" width="100%" height="100%" 
     ctrlKeys="#up#down" xmlns="http://www.zkoss.org/2005/zul" 
-    apply="br.com.mcampos.controller.admin.users.ListLoginController" > 
+    apply="" > 
 <borderlayout id="borderLayout" >
     <north size="84px">
             <div >

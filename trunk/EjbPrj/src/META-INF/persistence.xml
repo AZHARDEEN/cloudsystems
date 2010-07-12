@@ -71,7 +71,6 @@
     <class>br.com.mcampos.ejb.cloudsystem.user.company.role.entity.CompanyRole</class>
     <class>br.com.mcampos.ejb.cloudsystem.product.type.entity.ProductType</class>
     <class>br.com.mcampos.ejb.cloudsystem.product.entity.Product</class>
-    <class>br.com.mcampos.ejb.cloudsystem.anoto.penpage.user.entity.PenUser</class>
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>

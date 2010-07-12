@@ -19,6 +19,8 @@ public interface CollaboratorFacade extends Serializable
 {
     List<CompanyDTO> getCompanies( AuthenticationDTO auth ) throws ApplicationException;
 
+    CompanyDTO getCompany( AuthenticationDTO auth ) throws ApplicationException;
+
     List<CollaboratorDTO> getCollaborators( AuthenticationDTO auth, Integer clientCompany ) throws ApplicationException;
 
     void delete( AuthenticationDTO auth, CollaboratorDTO dto ) throws ApplicationException;

@@ -98,6 +98,8 @@ public class CollaboratorController extends LoggedBaseController
     {
         super.doAfterCompose( comp );
         company = ( CompanyDTO )getParameter( clientParamName );
+        if ( company == null )
+            company = getSession().getCompany( getLoggedInUser() );
         getListbox().setItemRenderer( new CollaboratorListRenderer() );
         refresh();
         configureLabels();

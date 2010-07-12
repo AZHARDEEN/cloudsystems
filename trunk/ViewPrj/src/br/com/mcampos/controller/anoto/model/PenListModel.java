@@ -31,7 +31,7 @@ public class PenListModel extends AbstractPagingListModel<PenDTO>
         }
     }
 
-    protected List<PenDTO> getPageData( int itemStartNumber, int pageSize )
+    public List<PenDTO> getPageData( int itemStartNumber, int pageSize )
     {
         try {
             return getSession().getPens( itemStartNumber, pageSize );
@@ -58,4 +58,9 @@ public class PenListModel extends AbstractPagingListModel<PenDTO>
         }
     }
 
+    @Override
+    public int getSize()
+    {
+        return getTotalSize();
+    }
 }

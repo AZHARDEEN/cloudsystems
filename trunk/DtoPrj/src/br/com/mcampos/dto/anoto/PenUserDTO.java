@@ -94,4 +94,10 @@ public class PenUserDTO implements Serializable, Comparable<PenUserDTO>
     {
         return getPenId().compareTo( o.getPenId() );
     }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        return getPenId().equals( ( ( PenUserDTO )obj ).getPenId() );
+    }
 }

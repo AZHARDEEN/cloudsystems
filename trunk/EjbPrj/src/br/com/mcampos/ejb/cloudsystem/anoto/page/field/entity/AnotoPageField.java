@@ -25,6 +25,8 @@ import javax.persistence.Table;
                  @NamedQuery( name = AnotoPageField.getAllFromPage,
                               query = "select o from AnotoPageField o where o.anotoPage = ?1" ),
                  @NamedQuery( name = AnotoPageField.getExport, query = "select o from AnotoPageField o where o.export = true" ),
+                 @NamedQuery( name = AnotoPageField.getAllFromFormSearchable,
+                              query = "select o from AnotoPageField o where o.formId = ?1 and o.searchable = true " ),
                  @NamedQuery( name = AnotoPageField.getAllFromForm,
                               query = "select o from AnotoPageField o where o.formId = ?1" ) } )
 @Table( name = "anoto_page_field" )
@@ -34,6 +36,7 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
     public static final String getAll = "AnotoPageField.findAll";
     public static final String getAllFromPage = "AnotoPageField.findAllFromPage";
     public static final String getAllFromForm = "AnotoPageField.findAllFromForm";
+    public static final String getAllFromFormSearchable = "AnotoPageField.getSearchable";
     public static final String getExport = "AnotoPageField.findExport";
 
     @Column( name = "aft_icr_bt", nullable = false )
@@ -67,8 +70,11 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
     @Column( name = "alf_height_in" )
     private Integer height;
 
-    @Column( name = "apf_export_bt", nullable = false )
+    @Column( name = "apf_export_bt", nullable = true )
     private Boolean export;
+
+    @Column( name = "alf_search_bt", nullable = true )
+    private Boolean searchable;
 
 
     @ManyToOne( optional = false )
@@ -229,6 +235,7 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
         dto.setTop( getTop() );
         dto.setWidth( getWidth() );
         dto.setExport( getExport() );
+        dto.setSearchable( getSearchable() );
         return dto;
     }
 
@@ -240,5 +247,15 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
     public Boolean getExport()
     {
         return export;
+    }
+
+    public void setSearchable( Boolean searchable )
+    {
+        this.searchable = searchable;
+    }
+
+    public Boolean getSearchable()
+    {
+        return searchable;
     }
 }

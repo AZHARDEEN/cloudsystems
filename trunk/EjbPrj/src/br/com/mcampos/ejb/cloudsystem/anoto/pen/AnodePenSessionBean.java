@@ -53,6 +53,8 @@ public class AnodePenSessionBean extends Crud<String, AnotoPen> implements Anode
 
     public Integer count() throws ApplicationException
     {
-        return ( Integer )getSingleResult( AnotoPen.penCount );
+        Long size;
+        size = ( Long )getSingleResult( AnotoPen.penCount );
+        return size.intValue();
     }
 }
