@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -103,8 +104,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         barCode = ( String )( props != null ? props.get( barCodeParameterName ) : "" );
         if ( SysUtils.isEmpty( barCode ) == false ) {
             String sqlBarCode = " exists ( select a.pgc_id_in from pgc_attachment a \n" +
-                " where a.pgc_id_in = pgc_page.pgc_id_in and " + " a.ppg_book_id = pgc_page.ppg_book_id and " +
-                " a.ppg_page_id = pgc_page.ppg_page_id \n";
+                " where a.pgc_id_in = pgc_page.pgc_id_in and " + " a.ppg_book_id = pgc_page.ppg_book_id and " + " a.ppg_page_id = pgc_page.ppg_page_id \n";
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
             if ( barCode.indexOf( "*" ) >= 0 ) {
@@ -119,8 +119,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         fieldValue = ( String )( props != null ? props.get( fieldValueParameterName ) : "" );
         if ( SysUtils.isEmpty( fieldValue ) == false ) {
             String sqlFieldValue = " exists ( select a.pgc_id_in from pgc_field a \n" +
-                "	where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " +
-                "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
+                "	where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " + "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
             if ( fieldValue.indexOf( "*" ) >= 0 ) {
@@ -144,6 +143,25 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
             jpaWhere += "pgc.pgc_insert_dt <= TO_TIMESTAMP ( '" + df.format( endDate ) + "', 'YYYYMMDD HH24MISS' ) ";
+        }
+        Properties custom = ( Properties )props.get( "custom_fields" );
+        if ( custom != null ) {
+            Set<String> fields = custom.stringPropertyNames();
+            String sqlFieldValue = " exists ( select a.pgc_id_in from pgc_field a \n" +
+                " where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " + "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
+            for ( String field : fields ) {
+                sqlFieldValue += " and pfl_name_ch = '" + field + "'";
+                String value = custom.getProperty( field );
+                if ( value.indexOf( "*" ) >= 0 ) {
+                    value = fieldValue.replace( '*', '%' );
+                    sqlFieldValue += " and coalesce ( pfl_revised_tx, pfl_icr_tx ) LIKE '" + value + "' ";
+                }
+                else
+                    sqlFieldValue += " and coalesce ( pfl_revised_tx, pfl_icr_tx ) = '" + value + "' ";
+            }
+            if ( jpaWhere.length() > 0 )
+                jpaWhere += " AND ";
+            jpaWhere += sqlFieldValue + ")";
         }
 
         if ( jpaWhere.length() > 0 )

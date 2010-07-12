@@ -13,6 +13,7 @@ public class GridFieldController extends BaseController
     private Column headerType;
     private Column headerIcr;
     private Column headerExport;
+    private Column headerSearch;
 
     public GridFieldController()
     {
@@ -44,5 +45,6 @@ public class GridFieldController extends BaseController
         setLabel( headerType );
         setLabel( headerIcr );
         setLabel( headerExport );
+        setLabel( headerSearch );
     }
 }

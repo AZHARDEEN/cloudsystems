@@ -40,6 +40,8 @@ public interface AnodeFacade extends Serializable
 
     List<PenDTO> getPens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
 
+    List<AnotoPageFieldDTO> getSearchableFields( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
+
     /* *************************************************************************
      * *************************************************************************
      *

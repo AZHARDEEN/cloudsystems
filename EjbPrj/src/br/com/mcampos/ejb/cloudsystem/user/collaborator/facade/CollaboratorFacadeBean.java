@@ -14,6 +14,7 @@ import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLo
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.CollaboratorPK;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.type.session.CollaboratorTypeSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.company.CompanyUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
@@ -92,10 +93,10 @@ public class CollaboratorFacadeBean extends UserFacadeUtil implements Collaborat
         return CollaboratorUtil.toDTOList( list );
     }
 
-    protected Company getCompany( AuthenticationDTO auth ) throws ApplicationException
+    public CompanyDTO getCompany( AuthenticationDTO auth ) throws ApplicationException
     {
         Collaborator coll = collaboratorSession.get( auth.getCurrentCompany(), auth.getUserId() );
-        return coll.getCompany();
+        return CompanyUtil.copy( coll.getCompany() );
     }
 
     public void delete( AuthenticationDTO auth, CollaboratorDTO dto ) throws ApplicationException
@@ -110,8 +111,9 @@ public class CollaboratorFacadeBean extends UserFacadeUtil implements Collaborat
     {
         Person person = getPerson( auth );
         Company company = companySession.get( clientId );
-        Company myCompany = getCompany( auth );
-        Collaborator coll = collaboratorSession.get( myCompany, person );
+        Collaborator coll = collaboratorSession.get( auth.getCurrentCompany(), auth.getUserId() );
+        Company myCompany = coll.getCompany();
+        coll = collaboratorSession.get( myCompany, person );
         if ( coll == null )
             throwException( 2 ); //I'm not a collaborator of current company..... ????
         if ( myCompany.equals( company ) == false ) {

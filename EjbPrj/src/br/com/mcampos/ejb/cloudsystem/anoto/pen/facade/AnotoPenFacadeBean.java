@@ -3,13 +3,19 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pen.facade;
 
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnodePenSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPenUtil;
+import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser;
+import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.session.AnotoPenUserSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -34,6 +40,9 @@ public class AnotoPenFacadeBean extends AbstractSecurity implements AnotoPenFaca
     @EJB
     private AnodePenSessionLocal penSession;
 
+    @EJB
+    private AnotoPenUserSessionLocal penUserSession;
+
 
     public AnotoPenFacadeBean()
     {
@@ -43,7 +52,7 @@ public class AnotoPenFacadeBean extends AbstractSecurity implements AnotoPenFaca
     public List<PenDTO> getPens( Integer nStart, Integer nSize ) throws ApplicationException
     {
         List<PenDTO> pens = AnotoUtils.toPenList( penSession.getAll( nStart, nSize ) );
-        return pens;
+        return linkToUser( pens );
     }
 
 
@@ -75,7 +84,7 @@ public class AnotoPenFacadeBean extends AbstractSecurity implements AnotoPenFaca
         if ( pen == null )
             throwException( 2 );
         pen = penSession.update( AnotoPenUtil.update( pen, entity ) );
-        return pen.toDTO();
+        return linkToUser( pen.toDTO() );
     }
 
 
@@ -87,7 +96,7 @@ public class AnotoPenFacadeBean extends AbstractSecurity implements AnotoPenFaca
         AnotoPen pen = penSession.get( entity.getId() );
         if ( pen != null )
             throwException( 5 );
-        return penSession.add( AnotoPenUtil.createEntity( entity ) ).toDTO();
+        return linkToUser( penSession.add( AnotoPenUtil.createEntity( entity ) ).toDTO() );
     }
 
     public PenDTO get( AuthenticationDTO auth, PenDTO entity ) throws ApplicationException
@@ -100,5 +109,30 @@ public class AnotoPenFacadeBean extends AbstractSecurity implements AnotoPenFaca
     public Integer count() throws ApplicationException
     {
         return penSession.count();
+    }
+
+    private List<PenDTO> linkToUser( List<PenDTO> pens ) throws ApplicationException
+    {
+        if ( SysUtils.isEmpty( pens ) )
+            return Collections.emptyList();
+        for ( PenDTO pen : pens ) {
+            linkToUser( pen );
+        }
+        return pens;
+    }
+
+    private PenDTO linkToUser( PenDTO pen ) throws ApplicationException
+    {
+        if ( pen == null )
+            return null;
+        AnotoPenUser penUser = penUserSession.getCurrentUser( pen.getId() );
+        if ( penUser != null ) {
+            ListUserDTO user = UserUtil.copy( penUser.getPerson() );
+            pen.setUser( user );
+        }
+        else {
+            pen.setUser( null );
+        }
+        return pen;
     }
 }

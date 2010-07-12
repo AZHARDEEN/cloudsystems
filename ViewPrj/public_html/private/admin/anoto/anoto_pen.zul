@@ -34,13 +34,14 @@
                     </rows>
                 </grid>
             </north>
-            <west size="30%" splittable="true" flex="true">
+            <west size="50%" splittable="true" flex="true">
                 <!-- Por favor, nao mude o id desta div -->
                 <div width="100%" height="100%" id="divListBoxRecord">
                     <!-- Por favor, nao mude o id desta listbox -->
                     <listbox fixedLayout="true" id="listboxRecord" vflex="true" mold="paging" pagingPosition="both">
                         <listhead sizable="true">
-                            <listheader id="headerPenId" align="left" label="##" sort="auto"/>
+                            <listheader id="headerPenId" align="left" label="##" sort="auto" width="150px"/>
+                            <listheader id="headerPenUser" align="left" label="Vinculada" sort="auto"/>
                         </listhead>
                     </listbox>
                 </div>

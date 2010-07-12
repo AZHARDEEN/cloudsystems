@@ -11,7 +11,7 @@
                         <div id="recordDetail">
                             <div>
                                 <label id="labelAnotoFormTitle" value="##"/>
-                                <combobox id="cmbForms"/>
+                                <combobox id="cmbForms" width="300px" readonly="true"/>
                             </div>
                         </div>
                     </north>

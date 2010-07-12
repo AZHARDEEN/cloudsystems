@@ -28,7 +28,7 @@ public class LoggedBaseController extends BaseController
     private Image imageClienteLogo;
     private Image imageCompanyLogo;
 
-    private Label labelTitle;
+    protected Label labelTitle;
 
     public LoggedBaseController()
     {

@@ -44,7 +44,11 @@ public class AnotoPenUserSessionBean extends Crud<AnotoPenUserPK, AnotoPenUser> 
     @Override
     public AnotoPenUser add( AnotoPenUser entity ) throws ApplicationException
     {
-        entity.setFromDate( new Date() );
+        AnotoPenUser currentUser = getCurrentUser( entity.getPen().getId() );
+        Date now = new Date();
+        if ( currentUser != null )
+            currentUser.setToDate( now );
+        entity.setFromDate( now );
         entity.setSequence( getSequence( entity.getPen() ) );
         entity = super.add( entity );
         return entity;

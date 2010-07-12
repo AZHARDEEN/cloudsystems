@@ -6,7 +6,6 @@ import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.FormDTO;
-import br.com.mcampos.dto.anoto.LinkedUserDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
@@ -18,6 +17,7 @@ import br.com.mcampos.dto.anoto.PgcPropertyDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
@@ -224,6 +224,18 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         return linkToUser( pens );
     }
 
+    public List<AnotoPageFieldDTO> getSearchableFields( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoForm aForm = formSession.get( form.getId() );
+        if ( aForm == null )
+            return Collections.emptyList();
+        List<AnotoPageField> searchables = pageFieldSession.getSearchable( aForm );
+        if ( SysUtils.isEmpty( searchables ) )
+            return Collections.emptyList();
+        return AnotoUtils.toAnotoPageFieldDTO( searchables );
+    }
+
     private List<PenDTO> linkToUser( List<PenDTO> pens ) throws ApplicationException
     {
         if ( SysUtils.isEmpty( pens ) )
@@ -240,8 +252,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             return null;
         AnotoPenUser penUser = penUserSession.getCurrentUser( pen.getId() );
         if ( penUser != null ) {
-            LinkedUserDTO user = new LinkedUserDTO();
-            user.setUser( UserUtil.copy( penUser.getPerson() ) );
+            ListUserDTO user = UserUtil.copy( penUser.getPerson() );
             pen.setUser( user );
         }
         else {

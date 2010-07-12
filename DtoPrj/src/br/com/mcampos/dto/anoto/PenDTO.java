@@ -1,6 +1,7 @@
 package br.com.mcampos.dto.anoto;
 
 
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.io.Serializable;
@@ -16,7 +17,7 @@ public class PenDTO implements Comparable<PenDTO>, Serializable
     private static final long serialVersionUID = -5445481184895354233L;
     private String id;
     private String description;
-    private LinkedUserDTO user;
+    private ListUserDTO user;
 
 
     public PenDTO( String id, String description )
@@ -63,7 +64,7 @@ public class PenDTO implements Comparable<PenDTO>, Serializable
         if ( getUser() == null )
             return getId();
         else
-            return getUser().toString() + " - " + getId();
+            return getUser().getName() + " - " + getId();
     }
 
     @Override
@@ -84,14 +85,12 @@ public class PenDTO implements Comparable<PenDTO>, Serializable
         return description;
     }
 
-    public void setUser( LinkedUserDTO user )
+    public void setUser( ListUserDTO user )
     {
         this.user = user;
-        if ( this.user != null )
-            this.user.setLinkCode( this );
     }
 
-    public LinkedUserDTO getUser()
+    public ListUserDTO getUser()
     {
         return user;
     }

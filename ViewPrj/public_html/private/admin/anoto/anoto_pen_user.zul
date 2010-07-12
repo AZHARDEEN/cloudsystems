@@ -22,8 +22,8 @@
                             <columns>
                                 <column label="##" id="columnPen" width="120px"/>
                                 <column label="##" id="columnUser" width="300px"/>
-                                <column label="##" id="columnEmail" width="300px"/>
                                 <column label="##" id="columnFromDate" width="150px"/>
+                                <column width="80px"/>
                             </columns>
                         </grid>
                     </center>

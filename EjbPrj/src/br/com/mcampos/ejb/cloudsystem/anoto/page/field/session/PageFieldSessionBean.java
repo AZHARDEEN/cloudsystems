@@ -10,7 +10,6 @@ import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -84,6 +83,11 @@ public class PageFieldSessionBean extends Crud<AnotoPageFieldPK, AnotoPageField>
     public List<AnotoPageField> getAll( AnotoForm form ) throws ApplicationException
     {
         return ( List<AnotoPageField> )getResultList( AnotoPageField.getAllFromForm, form.getId() );
+    }
+
+    public List<AnotoPageField> getSearchable( AnotoForm form ) throws ApplicationException
+    {
+        return ( List<AnotoPageField> )getResultList( AnotoPageField.getAllFromFormSearchable, form.getId() );
     }
 
     public List<AnotoPageField> getFieldsToExport() throws ApplicationException

@@ -90,4 +90,10 @@ public class ListUserDTO extends DisplayNameDTO
     {
         return getDisplayName();
     }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        return getId().equals( ( ( ListUserDTO )obj ).getId() );
+    }
 }

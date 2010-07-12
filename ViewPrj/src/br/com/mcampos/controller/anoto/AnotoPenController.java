@@ -84,7 +84,7 @@ public class AnotoPenController extends BasicListController<PenDTO>
     protected List getRecordList() throws ApplicationException
     {
         showRecord( null );
-        return getSession().getPens( 1, 20 );
+        return getSession().getPens( 0, 300 );
     }
 
     @Override
@@ -152,18 +152,5 @@ public class AnotoPenController extends BasicListController<PenDTO>
         setLabel( labelEditCode );
         setLabel( labelEditDescription );
 
-    }
-
-    @Override
-    protected void refresh()
-    {
-        try {
-            showRecord( null );
-            getModel().clear();
-            getModel().addAll( getRecordList() );
-        }
-        catch ( ApplicationException e ) {
-            e = null;
-        }
     }
 }

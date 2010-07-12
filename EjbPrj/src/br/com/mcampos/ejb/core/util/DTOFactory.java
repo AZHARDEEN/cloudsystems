@@ -189,6 +189,7 @@ public final class DTOFactory implements Serializable
             target.setType( FieldTypeUtil.createEntity( dto.getType() ) );
         target.setWidth( dto.getWidth() );
         target.setExport( dto.getExport() );
+        target.setSearchable( dto.getSearchable() );
         return target;
     }
 }

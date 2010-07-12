@@ -67,7 +67,7 @@ public class FormDTO extends SimpleTableDTO
     @Override
     public String toString()
     {
-        return getApplication() + "-" + getDescription();
+        return getDescription();
     }
 
     public void setIcrImage( Boolean icrImage )

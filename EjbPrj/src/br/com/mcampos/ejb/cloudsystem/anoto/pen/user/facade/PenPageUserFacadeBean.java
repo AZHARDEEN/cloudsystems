@@ -1,19 +1,28 @@
-package br.com.mcampos.ejb.cloudsystem.anoto.penpage.user.facade;
+package br.com.mcampos.ejb.cloudsystem.anoto.pen.user.facade;
 
 
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PenUserDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.user.entity.AnotoFormUser;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.user.session.AnotoFormUserSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnodePenSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
+import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser;
+import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.session.AnotoPenUserSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.session.PenPageSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.anoto.penpage.user.PenPageUserUtil;
-import br.com.mcampos.ejb.cloudsystem.anoto.penpage.user.entity.PenUser;
-import br.com.mcampos.ejb.cloudsystem.anoto.penpage.user.session.PenPageUserSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
+import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -40,7 +49,7 @@ public class PenPageUserFacadeBean extends AbstractSecurity implements PenPageUs
     private transient EntityManager em;
 
     @EJB
-    private PenPageUserSessionLocal penPageUserSession;
+    private AnotoPenUserSessionLocal penUserSession;
 
     @EJB
     private PenPageSessionLocal penPageSession;
@@ -49,7 +58,19 @@ public class PenPageUserFacadeBean extends AbstractSecurity implements PenPageUs
     private AnotoFormSessionLocal formSession;
 
     @EJB
+    private AnotoFormUserSessionLocal formUserSession;
+
+    @EJB
     private CompanySessionLocal companySession;
+
+    @EJB
+    private NewCollaboratorSessionLocal collaboratorSession;
+
+    @EJB
+    private NewPersonSessionLocal personSession;
+
+    @EJB
+    private AnodePenSessionLocal penSession;
 
 
     protected EntityManager getEntityManager()
@@ -76,7 +97,7 @@ public class PenPageUserFacadeBean extends AbstractSecurity implements PenPageUs
         AnotoForm form = formSession.get( formId );
         if ( form == null )
             throwException( 1 );
-        List<AnotoPenPage> penPages = ( List<AnotoPenPage> )penPageSession.get( form );
+        List<AnotoPenPage> penPages = penPageSession.get( form );
         if ( SysUtils.isEmpty( penPages ) )
             return Collections.emptyList();
         List<PenUserDTO> list = new ArrayList<PenUserDTO>( penPages.size() );
@@ -86,12 +107,46 @@ public class PenPageUserFacadeBean extends AbstractSecurity implements PenPageUs
             dto.setPenPage( p.toDTO() );
             if ( list.contains( dto ) )
                 continue;
-            PenUser user = null; //penPageUserSession.getCurrent( p );
+            AnotoPenUser user = penUserSession.getCurrentUser( p.getPen().getId() );
             if ( user != null ) {
-                dto = PenPageUserUtil.copy( user );
+                dto.setUser( UserUtil.copy( user.getPerson() ) );
+                dto.setFromDate( user.getFromDate() );
             }
             list.add( dto );
         }
         return list;
+    }
+
+    public List<ListUserDTO> getCollaborators( AuthenticationDTO auth, FormDTO dto ) throws ApplicationException
+    {
+        authenticate( auth );
+        List<AnotoFormUser> formUsers = formUserSession.get( dto.getId() );
+        if ( SysUtils.isEmpty( formUsers ) )
+            return Collections.emptyList();
+        List<ListUserDTO> list = new ArrayList<ListUserDTO>();
+        for ( AnotoFormUser user : formUsers ) {
+            List<Collaborator> collaborators = collaboratorSession.get( user.getCompany() );
+            for ( Collaborator c : collaborators ) {
+                ListUserDTO userDto = UserUtil.copy( c.getPerson() );
+                if ( list.contains( userDto ) == false )
+                    list.add( userDto );
+            }
+        }
+        return list;
+    }
+
+
+    public void changeUser( AuthenticationDTO auth, String penId, Integer userId ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoPen pen = penSession.get( penId );
+        if ( pen == null )
+            throwException( 2 );
+        Person person = personSession.get( userId );
+        if ( person == null )
+            throwException( 3 );
+        AnotoPenUser penUser = new AnotoPenUser( pen, person );
+        penUserSession.add( penUser );
+
     }
 }

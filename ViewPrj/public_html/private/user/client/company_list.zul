@@ -32,10 +32,7 @@
                             <separator bar="true" orient="vertical"/>
                             <toolbarbutton id="cmdRefresh" label="##" image="/img/icontexto-webdev-reload-016x016.png"/>
                             <separator bar="true" orient="vertical"/>
-                            <toolbarbutton id="cmdCollaborator" label="##"
-                                           image="/img/icontexto-webdev-emoticon-smile-016x016.png"/>
                             <toolbarbutton id="cmdUploadLogo" label="##"/>
-                            <toolbarbutton id="cmdManageRoles" label="##"/>
                         </toolbar>
                     </div>
                     <listbox id="listboxRecord" vflex="true">

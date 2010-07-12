@@ -3,9 +3,10 @@
     <grid id="gridFields" vflex="true" mold="paging" pageSize="20" apply="br.com.mcampos.controller.anoto.util.GridFieldController">
         <columns sizable="false">
             <column align="left" label="##" id="headerName"/>
-            <column align="left" label="##" id="headerType"/>
-            <column align="left" label="##" width="30px" id="headerIcr"/>
-            <column align="left" label="##" width="80px" id="headerExport"/>
+            <column align="left" label="##" id="headerType" width="200px"/>
+            <column align="Center" label="##" width="80px" id="headerIcr"/>
+            <column align="Center" label="##" width="80px" id="headerExport"/>
+            <column align="Center" label="##" width="80px" id="headerSearch"/>
         </columns>
     </grid>
 </zk>

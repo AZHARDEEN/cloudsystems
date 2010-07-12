@@ -2,24 +2,30 @@ package br.com.mcampos.controller.anoto;
 
 
 import br.com.mcampos.controller.anoto.renderer.PenUserRowRenderer;
+import br.com.mcampos.controller.anoto.util.PenUserSearchBox;
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PenUserDTO;
-import br.com.mcampos.ejb.cloudsystem.anoto.penpage.user.facade.PenPageUserFacade;
+import br.com.mcampos.dto.user.ListUserDTO;
+import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.facade.PenPageUserFacade;
+import br.com.mcampos.util.system.IClickEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.Toolbarbutton;
 
 
-public class AnotoPenUserController extends LoggedBaseController
+public class AnotoPenUserController extends LoggedBaseController implements IClickEvent
 {
     private PenPageUserFacade session;
     private Column columnPen;
@@ -58,7 +64,8 @@ public class AnotoPenUserController extends LoggedBaseController
             cmbForms.setSelectedIndex( 0 );
             getPens();
         }
-        gridFields.setRowRenderer( new PenUserRowRenderer() );
+        gridFields.setRowRenderer( new PenUserRowRenderer( this ) );
+        chkActivePens.setVisible( false );
     }
 
     public void onSelect$cmbForms()
@@ -114,5 +121,30 @@ public class AnotoPenUserController extends LoggedBaseController
             gridFields.setModel( model );
         }
         return model;
+    }
+
+    public void onClick( MouseEvent evt )
+    {
+        PenUserDTO dto = null;
+        try {
+            Toolbarbutton button = ( Toolbarbutton )evt.getTarget();
+            if ( button != null ) {
+                Row row = ( Row )button.getParent();
+                if ( row != null )
+                    dto = ( PenUserDTO )row.getValue();
+            }
+            if ( dto == null )
+                return;
+            FormDTO form = ( FormDTO )cmbForms.getSelectedItem().getValue();
+            if ( form != null && dto != null ) {
+                ListUserDTO newUser = ( ListUserDTO )PenUserSearchBox.show( getLoggedInUser(), getRootParent(), form );
+                getSession().changeUser( getLoggedInUser(), dto.getPenId(), newUser.getId() );
+                getPens();
+            }
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage() );
+            return;
+        }
     }
 }
