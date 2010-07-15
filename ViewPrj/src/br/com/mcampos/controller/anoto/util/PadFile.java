@@ -41,17 +41,16 @@ import org.jdom.input.SAXBuilder;
 
 public class PadFile
 {
-    protected static final String licenceChildName = "license";
-    protected static final String spaceDefinitionChildName = "spacedefinition";
-    protected static final String pagesChildName = "pages";
-    protected static final String addressAttributeName = "address";
-    protected static final String drawingAreaName = "drawing_area";
-    protected static final String userAreaName = "user_area";
+    private static final String pagesChildName = "pages";
+    private static final String addressAttributeName = "address";
+    private static final String drawingAreaName = "drawing_area";
+    private static final String userAreaName = "user_area";
 
-    protected Document document;
-    protected AnodeFacade session;
-    protected FormDTO currentApplication;
-    protected static String httpPath;
+    private Document document;
+    private AnodeFacade session;
+    private FormDTO currentApplication;
+    private static String httpPath;
+    private Boolean unique = false;
 
     public PadFile( FormDTO application )
     {
@@ -261,7 +260,8 @@ public class PadFile
     }
 
 
-    protected boolean register( FormDTO form, String padFileName ) throws IllegalValueException, FormatException, NotAllowedException
+    protected boolean register( FormDTO form, String padFileName ) throws IllegalValueException, FormatException,
+                                                                          NotAllowedException
     {
         String appName = form.getApplication();
 
@@ -364,4 +364,8 @@ public class PadFile
     }
 
 
+    public Boolean getUnique()
+    {
+        return unique;
+    }
 }

@@ -150,6 +150,10 @@ public class AnotoViewController extends AnotoLoggedController
         listPgcAttach.setItemRenderer( new MediaListRenderer() );
         listGPS.setItemRenderer( new PgcPropertyListRenderer() );
         listProperties.setItemRenderer( new PgcPropertyListRenderer() );
+        if ( listFields.getPaginal() != null ) {
+            listFields.setPageSize( 19 );
+            //listFields.setPagingPosition( "both" );
+        }
         listFields.setItemRenderer( new PgcFieldListRenderer() );
         preparePaging();
     }
@@ -229,11 +233,24 @@ public class AnotoViewController extends AnotoLoggedController
 
                     latitude = list.get( 3 ).getValue();
                     longitude = list.get( 4 ).getValue();
-                    gmapGPS.setLat( Double.parseDouble( latitude ) );
-                    gmapGPS.setLng( Double.parseDouble( longitude ) );
+                    try {
+                        gmapGPS.setLat( Double.parseDouble( latitude ) );
+                    }
+                    catch ( NumberFormatException e ) {
+                        e = null;
+                        gmapGPS.setLat( 0.0 );
+                    }
+                    try {
+                        gmapGPS.setLng( Double.parseDouble( longitude ) );
+                    }
+                    catch ( NumberFormatException e ) {
+                        e = null;
+                        gmapGPS.setLng( 0.0 );
+                    }
+
                 }
+                listProperties.setModel( new ListModelList( getSession().getProperties( getLoggedInUser(), currentPgc ) ) );
             }
-            listProperties.setModel( new ListModelList( getSession().getProperties( getLoggedInUser(), currentPgc ) ) );
         }
     }
 

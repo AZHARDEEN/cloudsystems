@@ -5,6 +5,7 @@ import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
+import br.com.mcampos.dto.anoto.AnotoSummary;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
@@ -162,36 +163,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         authenticate( auth );
         Company company = companySession.get( auth.getCurrentCompany() );
         return AnotoUtils.toFormList( formSession.getAll( company ) );
-    }
-
-    public PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad, List<String> pages ) throws ApplicationException
-    {
-        authenticate( auth );
-        /*
-         * As etapas para adicionar um pad:
-         * 1) Verificar a existência do formulário.
-         * 2) Inserir a mídia.
-         * 3) Vincular o formulário à midia
-         */
-        AnotoForm form = formSession.get( entity.getId() );
-        pad.setFormat( "pad" );
-        Media media = mediaSession.add( MediaUtil.createEntity( pad ) );
-        Pad padentity = formSession.addPadFile( form, media, pages );
-        return padentity.toDTO();
-    }
-
-    public MediaDTO removeFromForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException
-    {
-        authenticate( auth );
-        /*
-         * As etapas para adicionar um pad:
-         * 1) Verificar a existência do formulário.
-         * 2) Inserir a mídia.
-         * 3) Vincular o formulário à midia
-         */
-        AnotoForm form = formSession.get( entity.getId() );
-        Media media = mediaSession.get( pad.getId() );
-        return formSession.removePadFile( form, media ).toDTO();
     }
 
     /*
@@ -484,6 +455,50 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
         }
         return resultList;
     }
+
+    public AnotoSummary getSummary( AuthenticationDTO auth, Properties props ) throws ApplicationException
+    {
+        authenticate( auth );
+        if ( props != null && props.size() > 0 ) {
+            /*Trocar o DTO pela entidade*/
+            Object value;
+
+            value = props.get( "form" );
+            if ( value != null ) {
+                AnotoForm entity = formSession.get( ( ( FormDTO )value ).getId() );
+                if ( entity != null )
+                    props.put( "form", entity );
+            }
+        }
+        List<PgcField> fields = pgcFieldSession.getAll( props );
+        AnotoSummary sum = new AnotoSummary();
+        List<Integer> pgcs = new ArrayList<Integer>();
+        if ( SysUtils.isEmpty( fields ) == false ) {
+            for ( PgcField field : fields ) {
+                if ( pgcs.contains( field.getPgcId() ) == false ) {
+                    pgcs.add( field.getPgcId() );
+                    List attachs = pgcAttachmentSession.get( field.getPgcId() );
+                    if ( SysUtils.isEmpty( attachs ) == false )
+                        sum.addFoto();
+                }
+                if ( field.getName().equals( "PAP" ) )
+                    sum.addPAP();
+                if ( field.getName().equals( "CVM" ) )
+                    sum.addCVM();
+                if ( field.getName().equals( "Dinheiro" ) )
+                    sum.addDinheiro();
+                if ( field.getName().equals( "Deposito_Identificado" ) )
+                    sum.addDI();
+                if ( field.getName().equals( "Boleto_Bancario" ) )
+                    sum.addBoleto();
+                if ( field.getName().equals( "Reposicao_Pre" ) )
+                    sum.addPrepago();
+            }
+        }
+        sum.setPgc( pgcs.size() );
+        return sum;
+    }
+
 
     private void getExportFields( AnotoResultList item, PgcPage page ) throws ApplicationException
     {

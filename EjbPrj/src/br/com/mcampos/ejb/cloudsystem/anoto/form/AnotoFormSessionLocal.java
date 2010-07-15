@@ -30,7 +30,7 @@ public interface AnotoFormSessionLocal extends Serializable
 
     Integer nextId() throws ApplicationException;
 
-    Pad addPadFile( AnotoForm form, Media pad, List<String> pages ) throws ApplicationException;
+    Pad addPadFile( AnotoForm form, Media pad, List<String> pages, Boolean bUnique ) throws ApplicationException;
 
     Media removePadFile( AnotoForm form, Media pad ) throws ApplicationException;
 

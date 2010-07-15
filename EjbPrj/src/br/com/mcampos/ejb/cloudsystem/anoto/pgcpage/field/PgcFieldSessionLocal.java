@@ -7,6 +7,7 @@ import br.com.mcampos.exception.ApplicationException;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Properties;
 
 import javax.ejb.Local;
 
@@ -24,5 +25,6 @@ public interface PgcFieldSessionLocal extends Serializable
 
     List<PgcField> getAll( PgcPage pgcPage ) throws ApplicationException;
 
+    List<PgcField> getAll( Properties props ) throws ApplicationException;
 
 }

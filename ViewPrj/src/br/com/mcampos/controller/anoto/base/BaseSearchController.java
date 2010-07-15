@@ -6,6 +6,7 @@ import br.com.mcampos.controller.anoto.renderer.PgcPenPageListRenderer;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
+import br.com.mcampos.dto.anoto.AnotoSummary;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
@@ -51,7 +52,9 @@ import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listheader;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Tab;
@@ -70,6 +73,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
     private Datebox endDate;
     private Timebox endTime;
     private Listbox resultList;
+    private Listbox summaryList;
     private Textbox txtBarcode;
     private Intbox txtFormIdFrom;
     private Intbox txtFormIdTo;
@@ -89,6 +93,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
 
     private Button btnFilter;
     private Button btnExport;
+    protected Button btnSummary;
 
     private Listheader headSeq;
     private Listheader headApplication;
@@ -284,6 +289,63 @@ public abstract class BaseSearchController extends AnotoLoggedController
         }
     }
 
+
+    protected void loadSummary( Properties prop )
+    {
+        AnotoSummary sum;
+        try {
+            //Integer id = Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() );
+            sum = getSession().getSummary( getLoggedInUser(), prop );
+            if ( summaryList.getItems() != null )
+                summaryList.getItems().clear();
+            Listitem item = new Listitem( "Total de Formulários Processados" );
+            item.setParent( summaryList );
+            item.appendChild( new Listcell( sum.getPgc().toString() ) );
+
+            item = new Listitem( "Com Foto" );
+            item.setParent( summaryList );
+            item.appendChild( new Listcell( sum.getFoto().toString() ) );
+
+            item = new Listitem( "Sem Foto" );
+            item.setParent( summaryList );
+            Integer semFoto = sum.getPgc() - sum.getFoto();
+            item.appendChild( new Listcell( semFoto.toString() ) );
+
+            item = new Listitem( "Pré-pago" );
+            item.setParent( summaryList );
+            item.appendChild( new Listcell( sum.getPrepago().toString() ) );
+
+            item = new Listitem( "Pós-pago" );
+            item.setParent( summaryList );
+            Integer pos = sum.getPgc() - sum.getPrepago();
+            item.appendChild( new Listcell( pos.toString() ) );
+
+            item = new Listitem( "Pagamento em Dinheiro" );
+            item.setParent( summaryList );
+            item.appendChild( new Listcell( sum.getDinheiro().toString() ) );
+
+            item = new Listitem( "Pagamento em Boleto" );
+            item.setParent( summaryList );
+            item.appendChild( new Listcell( sum.getBoleto().toString() ) );
+
+            item = new Listitem( "Pagamento em DI" );
+            item.setParent( summaryList );
+            item.appendChild( new Listcell( sum.getDi().toString() ) );
+
+            item = new Listitem( "PAP" );
+            item.setParent( summaryList );
+            item.appendChild( new Listcell( sum.getPap().toString() ) );
+
+            item = new Listitem( "CVM" );
+            item.setParent( summaryList );
+            item.appendChild( new Listcell( sum.getCvm().toString() ) );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Lista de PGC" );
+        }
+    }
+
+
     private ListModelList getModel()
     {
         ListModelList model = ( ListModelList )resultList.getModel();
@@ -419,28 +481,25 @@ public abstract class BaseSearchController extends AnotoLoggedController
         }
     }
 
-
-    public void onClick$btnFilter()
+    private Properties getFilters()
     {
         Properties prop = new Properties();
 
         /*
-       * Does form combo selected??
-       */
+      * Does form combo selected??
+      */
         if ( cmbApplication.getSelectedItem() != null ) {
             prop.put( "form", cmbApplication.getSelectedItem().getValue() );
         }
-
         /*
-       * Does page combo selected or have this combo a text?
-       */
+      * Does page combo selected or have this combo a text?
+      */
         String strInfo = "";
         if ( strInfo.length() > 0 )
             prop.put( "page", strInfo );
-
         /*
-       * Does pen combo is selected? Have any text?
-       */
+      * Does pen combo is selected? Have any text?
+      */
         String penInfo = "";
         if ( cmbPen.getSelectedItem() != null ) {
             PenDTO pen;
@@ -451,56 +510,61 @@ public abstract class BaseSearchController extends AnotoLoggedController
         }
         if ( penInfo.length() > 0 )
             prop.put( "pen", penInfo );
-
-
         /*
-       * Does we have a init Date?
-       */
+      * Does we have a init Date?
+      */
         Date iDate = getDate( initDate, initTime );
         if ( iDate != null )
             prop.put( "initDate", iDate );
-
         /*
-       * Does we have a end Date?
-       */
+      * Does we have a end Date?
+      */
         Date eDate = getDate( endDate, endTime );
         if ( eDate != null )
             prop.put( "endDate", eDate );
-
         /*
-       * Does we have a barcode?
-       */
+      * Does we have a barcode?
+      */
         String barCode = txtBarcode.getValue();
         if ( SysUtils.isEmpty( barCode ) == false )
             prop.put( "barCode", barCode );
-
-
         /*
-       * Does we have a barcode?
-       */
+      * Does we have a barcode?
+      */
         Integer bookIdFrom = txtFormIdFrom.getValue();
         if ( SysUtils.isZero( bookIdFrom ) == false ) {
             /*
-           * Truque. No renderer somamos + 1 ao book id (zero based), porém zero não faz sentido ao usuario
-           */
+         * Truque. No renderer somamos + 1 ao book id (zero based), porém zero não faz sentido ao usuario
+         */
             bookIdFrom--;
             prop.put( "bookIdFrom", bookIdFrom );
         }
-
-
         Integer bookIdTo = txtFormIdTo.getValue();
         if ( SysUtils.isZero( bookIdTo ) == false ) {
             bookIdTo--;
             prop.put( "bookIdTo", bookIdTo );
         }
-
         String fieldValue = txtFieldValue.getValue();
         if ( SysUtils.isEmpty( fieldValue ) == false ) {
             prop.put( "pgcFieldValue", fieldValue );
         }
-
         verifyCustomFields( prop );
-        loadPGC( prop );
+        return prop;
+    }
+
+
+    public void onClick$btnFilter()
+    {
+        resultList.setVisible( true );
+        summaryList.setVisible( false );
+        loadPGC( getFilters() );
+    }
+
+    public void onClick$btnSummary()
+    {
+        resultList.setVisible( false );
+        summaryList.setVisible( true );
+        loadSummary( getFilters() );
     }
 
     private Date getDate( Datebox d, Timebox t )
@@ -533,7 +597,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
         onClick$btnProperty();
     }
 
-    private void gotoPage( Properties params )
+    protected void gotoPage( Properties params )
     {
         gotoPage( "/private/admin/anoto/anoto_view.zul", getRootParent().getParent(), params );
     }
@@ -654,6 +718,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
 
         setLabel( btnFilter );
         setLabel( btnExport );
+        setLabel( btnSummary );
 
         setLabel( headSeq );
         setLabel( headApplication );

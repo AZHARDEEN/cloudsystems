@@ -321,10 +321,12 @@ public class AnotoFormController extends SimpleTableController<FormDTO>
                 PadDTO addedDTO;
 
                 List<String> pages = new ArrayList<String>( file.getPages().size() );
-                for ( int nIndex = 0; nIndex < file.getPages().size(); nIndex++ )
-                    pages.add( file.getPageAddress( file.getPages().get( nIndex ) ) );
+                for ( int nIndex = 0; nIndex < file.getPages().size(); nIndex++ ) {
+                    String strPage = file.getPageAddress( file.getPages().get( nIndex ) );
+                    pages.add( strPage );
+                }
                 dto.setMimeType( "application/xml" );
-                addedDTO = getSession().addToForm( getLoggedInUser(), form, dto, pages );
+                addedDTO = getSession().addToForm( getLoggedInUser(), form, dto, pages, file.getUnique() );
                 try {
                     AnotoPageDTO anotoPage = new AnotoPageDTO();
                     anotoPage.setPad( addedDTO );

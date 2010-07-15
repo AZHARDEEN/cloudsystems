@@ -34,7 +34,7 @@
                                 </tabs>
                                 <tabpanels>
                                     <tabpanel>
-                                        <listbox id="listFields" width="100%" height="400px" fixedLayout="true">
+                                        <listbox id="listFields" width="100%" height="400px" mold="paging">
                                             <listhead sizable="true">
                                                 <listheader align="left" width="250px" label="Campo"/>
                                                 <listheader align="left" width="250px" label="Valor"/>

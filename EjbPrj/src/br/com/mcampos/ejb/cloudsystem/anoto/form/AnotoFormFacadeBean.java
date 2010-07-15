@@ -180,7 +180,8 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         return formSession.update( form ).toDTO();
     }
 
-    public PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad, List<String> pages ) throws ApplicationException
+    public PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad, List<String> pages,
+                             Boolean bUnique ) throws ApplicationException
     {
         authenticate( auth );
         /*
@@ -193,7 +194,7 @@ public class AnotoFormFacadeBean extends AbstractSecurity implements AnotoFormFa
         belongsToCompany( form.getId(), auth.getCurrentCompany() );
         pad.setFormat( "pad" );
         Media media = mediaSession.add( MediaUtil.createEntity( pad ) );
-        Pad padentity = formSession.addPadFile( form, media, pages );
+        Pad padentity = formSession.addPadFile( form, media, pages, bUnique );
         return padentity.toDTO();
     }
 

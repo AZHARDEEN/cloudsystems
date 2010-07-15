@@ -28,6 +28,7 @@ public class AnotoQualityController extends BaseSearchController
     }
 
 
+    @Override
     protected void gotoPage( Properties params )
     {
         gotoPage( "/private/admin/anoto/anoto_quality_verify.zul", getRootParent().getParent(), params );
@@ -38,5 +39,7 @@ public class AnotoQualityController extends BaseSearchController
     {
         super.doAfterCompose( comp );
         labelFormView2Title.setValue( getLabel( "qualityControl" ) );
+        getExportButton().setVisible( false );
+        btnSummary.setVisible( false );
     }
 }

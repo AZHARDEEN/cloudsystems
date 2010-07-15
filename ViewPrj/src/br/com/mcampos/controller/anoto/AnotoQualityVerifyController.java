@@ -143,6 +143,7 @@ public class AnotoQualityVerifyController extends LoggedBaseController
             rev = field.getIrcText();
         Textbox textBox = new Textbox( rev );
         textBox.setWidth( "100%" );
+        textBox.setStyle( "font-size:15px" );
         textBox.setAttribute( "field", field );
         textBox.addEventListener( Events.ON_OK, new EventListener()
             {
