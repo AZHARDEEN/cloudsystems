@@ -41,6 +41,17 @@ import javax.persistence.Query;
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLocal
 {
+
+    public static final String formParameterName = "form";
+    public static final String penParameterName = "pen";
+    public static final String initDateParameterName = "initDate";
+    public static final String endDateParameterName = "endDate";
+    public static final String barCodeParameterName = "barCode";
+    public static final String bookIdFromParameterName = "bookIdFrom";
+    public static final String bookIdToParameterName = "bookIdTo";
+    public static final String fieldValueParameterName = "pgcFieldValue";
+    public static final String revisedStatusParameterName = "revisedStatus";
+
     @EJB
     private PgcPageSessionLocal pgcPageSession;
 
@@ -166,8 +177,7 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     {
         String sql;
 
-        sql =
-"SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID " + "FROM  PGC_PAGE_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
+        sql = "SELECT COALESCE ( MAX ( pat_seq_in ), 0 ) + 1 AS ID " + "FROM  PGC_PAGE_ATTACHMENT " + "WHERE PGC_ID_IN = ?1 AND PPG_BOOK_ID = ?2 AND PPG_PAGE_ID = ?3 ";
         Query query = getEntityManager().createNativeQuery( sql );
         query.setParameter( 1, entity.getPgcId() );
         query.setParameter( 2, entity.getBookId() );
@@ -284,5 +294,6 @@ public class PGCSessionBean extends Crud<Integer, Pgc> implements PGCSessionLoca
     {
         getEntityManager().persist( attach );
     }
+
 }
 

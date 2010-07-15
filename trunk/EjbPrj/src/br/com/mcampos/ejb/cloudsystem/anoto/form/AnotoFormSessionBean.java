@@ -101,11 +101,12 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
         return entity;
     }
 
-    public Pad addPadFile( AnotoForm form, Media media, List<String> pages ) throws ApplicationException
+    public Pad addPadFile( AnotoForm form, Media media, List<String> pages, Boolean bUnique ) throws ApplicationException
     {
         form = get( form.getId() );
         media = mediaSession.get( media.getId() );
         Pad newEntity = new Pad( form, media );
+        newEntity.setUnique( bUnique );
         newEntity.setInsertDate( new Date() );
         newEntity = padSession.add( newEntity );
         loadPadFile( newEntity, pages );

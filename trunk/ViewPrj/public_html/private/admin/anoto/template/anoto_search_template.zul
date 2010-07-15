@@ -94,12 +94,14 @@
                             <separator height="15px"/>
                             <grid align="center" width="100%">
                                 <columns>
-                                    <column align="center" width="150px"/>
-                                    <column align="center" width="150px"/>
+                                    <column align="center"/>
+                                    <column align="center"/>
+                                    <column align="center"/>
                                 </columns>
                                 <rows>
                                     <row>
                                         <button id="btnFilter" label="##" image="/img/icontexto-webdev-search-016x016.png"/>
+                                        <button id="btnSummary" label="##" image="/img/icontexto-webdev-file-016x016.png"/>
                                         <button id="btnExport" label="##" image="/img/icontexto-webdev-file-016x016.png"/>
                                     </row>
                                 </rows>
@@ -123,6 +125,12 @@
                                     <listheader id="headLongitude" label="##" width="130px"/>
                                     <listheader id="headBarcode" label="##" width="150px"/>
                                     <listheader id="headPhoto" label="##" width="70px"/>
+                                </listhead>
+                            </listbox>
+                            <listbox id="summaryList" vflex="true" visible="false">
+                                <listhead sizable="true">
+                                    <listheader id="headSummaryField" label="Campo" width="30%"/>
+                                    <listheader id="headSummaryValue" label="Valor"/>
                                 </listhead>
                             </listbox>
                         </div>

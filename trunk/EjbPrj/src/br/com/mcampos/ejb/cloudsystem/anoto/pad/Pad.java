@@ -45,6 +45,9 @@ public class Pad implements Serializable, EntityCopyInterface<PadDTO>, Comparabl
     @Temporal( TemporalType.DATE )
     private Date insertDate;
 
+    @Column( name = "pad_unique_bt", nullable = true )
+    private Boolean unique;
+
     @ManyToOne( optional = false )
     @JoinColumn( name = "frm_id_in", columnDefinition = "Integer" )
     private AnotoForm form;
@@ -138,5 +141,17 @@ public class Pad implements Serializable, EntityCopyInterface<PadDTO>, Comparabl
         if ( nRet != 0 )
             return nRet;
         return getForm().compareTo( o.getForm() );
+    }
+
+    public void setUnique( Boolean unique )
+    {
+        this.unique = unique;
+    }
+
+    public Boolean getUnique()
+    {
+        if ( unique == null )
+            unique = false;
+        return unique;
     }
 }

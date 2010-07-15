@@ -5,6 +5,7 @@ import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
+import br.com.mcampos.dto.anoto.AnotoSummary;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
@@ -112,6 +113,8 @@ public interface AnodeFacade extends Serializable
 
     List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props,
                                             Integer maxRecord ) throws ApplicationException;
+
+    AnotoSummary getSummary( AuthenticationDTO auth, Properties props ) throws ApplicationException;
 
     void delete( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException;
 

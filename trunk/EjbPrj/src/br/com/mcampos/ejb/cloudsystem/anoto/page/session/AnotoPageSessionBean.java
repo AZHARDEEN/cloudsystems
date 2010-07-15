@@ -17,8 +17,10 @@ public class AnotoPageSessionBean extends Crud<AnotoPagePK, AnotoPage> implement
     @Override
     public AnotoPage add( AnotoPage entity ) throws ApplicationException
     {
-        entity = super.add( entity );
-        return entity;
+        AnotoPage newPage = get( entity );
+        if ( newPage == null )
+            newPage = super.add( entity );
+        return newPage;
     }
 
 
@@ -28,4 +30,9 @@ public class AnotoPageSessionBean extends Crud<AnotoPagePK, AnotoPage> implement
         return super.get( AnotoPage.class, key );
     }
 
+
+    public AnotoPage get( AnotoPage page ) throws ApplicationException
+    {
+        return super.get( AnotoPage.class, new AnotoPagePK( page ) );
+    }
 }
