@@ -2,6 +2,7 @@ package br.com.mcampos.controller.logged;
 
 
 import br.com.mcampos.controller.core.LoggedBaseController;
+import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.facade.CollaboratorFacade;
 
@@ -61,9 +62,10 @@ public class SouthLoggedController extends LoggedBaseController
         Comboitem comboItem = companies.getSelectedItem();
         if ( comboItem != null ) {
             CompanyDTO dto = ( CompanyDTO )comboItem.getValue();
-            if ( dto != null ) {
-                getLoggedInUser().setCurrentCompany( dto.getId() );
-                setLoggedInUser( getLoggedInUser() );
+            AuthenticationDTO auth = getLoggedInUser();
+            if ( ( dto != null ) && ( auth.getCurrentCompany().equals( dto.getId() ) == false ) ) {
+                auth.setCurrentCompany( dto.getId() );
+                setLoggedInUser( auth );
                 Events.postEvent( new Event( Events.ON_NOTIFY, null, dto ) );
             }
         }
