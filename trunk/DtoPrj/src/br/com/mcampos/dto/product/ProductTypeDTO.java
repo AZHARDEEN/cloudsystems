@@ -1,4 +1,4 @@
-package br.com.mcampos.dto;
+package br.com.mcampos.dto.product;
 
 import br.com.mcampos.dto.core.SimpleTableDTO;
 

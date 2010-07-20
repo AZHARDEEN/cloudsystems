@@ -2,7 +2,7 @@ package br.com.mcampos.controller.admin.tables;
 
 
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
-import br.com.mcampos.dto.ProductTypeDTO;
+import br.com.mcampos.dto.product.ProductTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.product.type.facade.ProductTypeFacade;
 import br.com.mcampos.exception.ApplicationException;
 

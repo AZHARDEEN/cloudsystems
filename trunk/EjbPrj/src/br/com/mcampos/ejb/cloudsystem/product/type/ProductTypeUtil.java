@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.product.type;
 
 
-import br.com.mcampos.dto.ProductTypeDTO;
+import br.com.mcampos.dto.product.ProductTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.product.type.entity.ProductType;
 import br.com.mcampos.sysutils.SysUtils;
 
