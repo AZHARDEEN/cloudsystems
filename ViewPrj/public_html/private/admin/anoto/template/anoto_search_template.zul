@@ -114,8 +114,8 @@
                                 <tabs>
                                     <tab id="tabAnotoSearch" label="Pesquisa"/>
                                     <tab id="tabSummary" label="Resumo"/>
-                                    <tab id="tabCustomFilter" label="Gráfico Por Canetas"/>
-                                    <tab id="tabCustomFilter" label="Distribuição Por Data"/>
+                                    <tab id="tabChartPen" label="Gráfico Por Canetas"/>
+                                    <tab id="tabChartDate" label="Distribuição Por Data"/>
                                 </tabs>
                                 <tabpanels>
                                     <tabpanel>
