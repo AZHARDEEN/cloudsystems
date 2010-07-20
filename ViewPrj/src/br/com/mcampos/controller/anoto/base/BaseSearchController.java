@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -47,6 +48,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Filedownload;
+import org.zkoss.zul.Flashchart;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
@@ -57,6 +59,7 @@ import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import org.zkoss.zul.SimplePieModel;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
@@ -116,6 +119,13 @@ public abstract class BaseSearchController extends AnotoLoggedController
     private Tab tabFilter;
 
     private Tab tabCustomFilter;
+
+    private Tab tabAnotoSearch;
+    private Tab tabSummary;
+
+    private Flashchart chartPen;
+
+    private Flashchart chartData;
 
     private Grid gridCustomFields;
 
@@ -282,6 +292,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
             ListModelList model = getModel();
             model.clear();
             model.addAll( dtos );
+            updateCharts( dtos );
             resultList.invalidate();
         }
         catch ( ApplicationException e ) {
@@ -555,16 +566,14 @@ public abstract class BaseSearchController extends AnotoLoggedController
 
     public void onClick$btnFilter()
     {
-        resultList.setVisible( true );
-        summaryList.setVisible( false );
         loadPGC( getFilters() );
+        tabAnotoSearch.setSelected( true );
     }
 
     public void onClick$btnSummary()
     {
-        resultList.setVisible( false );
-        summaryList.setVisible( true );
         loadSummary( getFilters() );
+        tabSummary.setSelected( true );
     }
 
     private Date getDate( Datebox d, Timebox t )
@@ -741,10 +750,40 @@ public abstract class BaseSearchController extends AnotoLoggedController
         setLabel( columnFieldValue );
         setLabel( columnFieldName );
 
+        setLabel( tabSummary );
+        setLabel( tabAnotoSearch );
+
     }
 
     protected Button getExportButton()
     {
         return btnExport;
+    }
+
+    private void updateCharts( List<AnotoResultList> result )
+    {
+        chartData.setVisible( SysUtils.isEmpty( result ) == false );
+        chartPen.setVisible( SysUtils.isEmpty( result ) == false );
+
+        updateChartPen( result );
+    }
+
+    private void updateChartPen( List<AnotoResultList> result )
+    {
+        if ( SysUtils.isEmpty( result ) )
+            return;
+        HashMap<String, Double> penMap = new HashMap<String, Double>();
+        for ( AnotoResultList item : result ) {
+            Double sum = penMap.get( item.getPen().getId() );
+            if ( sum == null )
+                sum = 0.0;
+            sum++;
+            penMap.put( item.getPen().getId(), sum );
+        }
+        SimplePieModel penModel = new SimplePieModel();
+        for ( String key : penMap.keySet() ) {
+            penModel.setValue( key, penMap.get( key ) );
+        }
+        chartPen.setModel( penModel );
     }
 }

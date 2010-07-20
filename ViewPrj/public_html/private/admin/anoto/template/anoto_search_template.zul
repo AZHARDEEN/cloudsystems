@@ -39,7 +39,7 @@
                                             <rows>
                                                 <row>
                                                     <label value="##" id="labelApplication"/>
-                                                    <combobox id="cmbApplication" width="99%" readonly="true"/>
+                                                    <combobox id="cmbApplication" width="95%" readonly="true"/>
                                                     <label value="##" id="labelInitDate"/>
                                                     <hbox>
                                                         <datebox id="initDate" format="dd/MM/yyyy"/>
@@ -48,7 +48,7 @@
                                                 </row>
                                                 <row>
                                                     <label value="##" id="labelPen"/>
-                                                    <combobox id="cmbPen" width="99%" readonly="true"/>
+                                                    <combobox id="cmbPen" width="95%" readonly="true"/>
                                                     <label value="##" id="labelEndDate"/>
                                                     <hbox>
                                                         <datebox id="endDate" format="dd/MM/yyyy"/>
@@ -110,29 +110,49 @@
                     </north>
                     <center autoscroll="false">
                         <div id="divResult" width="100%" height="100%">
-                            <listbox id="resultList" vflex="true">
-                                <listhead sizable="true">
-                                    <listheader id="headSeq" label="##" width="50px"/>
-                                    <listheader id="headApplication" label="##" width="250px"/>
-                                    <listheader id="headFormulario" label="##" width="40px" align="center"/>
-                                    <listheader id="headPagina" label="##" width="40px" align="center"/>
-                                    <listheader id="headPen" label="##" width="110px"/>
-                                    <listheader id="headDate" label="##" width="120px"/>
-                                    <listheader id="headUserName" label="##" width="250px"/>
-                                    <listheader id="headEmail" label="##" width="250px"/>
-                                    <listheader id="headCellNumber" label="##" width="100px"/>
-                                    <listheader id="headLatitude" label="##" width="130px"/>
-                                    <listheader id="headLongitude" label="##" width="130px"/>
-                                    <listheader id="headBarcode" label="##" width="150px"/>
-                                    <listheader id="headPhoto" label="##" width="70px"/>
-                                </listhead>
-                            </listbox>
-                            <listbox id="summaryList" vflex="true" visible="false">
-                                <listhead sizable="true">
-                                    <listheader id="headSummaryField" label="Campo" width="30%"/>
-                                    <listheader id="headSummaryValue" label="Valor"/>
-                                </listhead>
-                            </listbox>
+                            <tabbox height="100%">
+                                <tabs>
+                                    <tab id="tabAnotoSearch" label="Pesquisa"/>
+                                    <tab id="tabSummary" label="Resumo"/>
+                                    <tab id="tabCustomFilter" label="Gráfico Por Canetas"/>
+                                    <tab id="tabCustomFilter" label="Distribuição Por Data"/>
+                                </tabs>
+                                <tabpanels>
+                                    <tabpanel>
+                                        <listbox id="resultList" vflex="true">
+                                            <listhead sizable="true">
+                                                <listheader id="headSeq" label="##" width="50px"/>
+                                                <listheader id="headApplication" label="##" width="250px"/>
+                                                <listheader id="headFormulario" label="##" width="40px" align="center"/>
+                                                <listheader id="headPagina" label="##" width="40px" align="center"/>
+                                                <listheader id="headPen" label="##" width="110px"/>
+                                                <listheader id="headDate" label="##" width="120px"/>
+                                                <listheader id="headUserName" label="##" width="250px"/>
+                                                <listheader id="headEmail" label="##" width="250px"/>
+                                                <listheader id="headCellNumber" label="##" width="100px"/>
+                                                <listheader id="headLatitude" label="##" width="130px"/>
+                                                <listheader id="headLongitude" label="##" width="130px"/>
+                                                <listheader id="headBarcode" label="##" width="150px"/>
+                                                <listheader id="headPhoto" label="##" width="70px"/>
+                                            </listhead>
+                                        </listbox>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <listbox id="summaryList" vflex="true">
+                                            <listhead sizable="true">
+                                                <listheader id="headSummaryField" label="Campo" width="30%"/>
+                                                <listheader id="headSummaryValue" label="Valor"/>
+                                            </listhead>
+                                        </listbox>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <flashchart id="chartPen" type="pie" height="100%"/>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <flashchart id="chartData" type="pie" height="100%"/>
+                                    </tabpanel>
+                                </tabpanels>
+                            </tabbox>
                         </div>
                     </center>
                 </borderlayout>

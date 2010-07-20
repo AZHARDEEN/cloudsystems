@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.product.type.facade;
 
 
-import br.com.mcampos.dto.ProductTypeDTO;
+import br.com.mcampos.dto.product.ProductTypeDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.ejb.cloudsystem.product.type.ProductTypeUtil;
 import br.com.mcampos.ejb.cloudsystem.product.type.entity.ProductType;
