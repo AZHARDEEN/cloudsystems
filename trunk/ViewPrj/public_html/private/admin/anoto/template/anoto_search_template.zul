@@ -102,7 +102,16 @@
                                     <row>
                                         <button id="btnFilter" label="##" image="/img/icontexto-webdev-search-016x016.png"/>
                                         <button id="btnSummary" label="##" image="/img/icontexto-webdev-file-016x016.png"/>
-                                        <button id="btnExport" label="##" image="/img/icontexto-webdev-file-016x016.png"/>
+                                        <menubar>
+                                            <menu label="Exportar">
+                                                <menupopup>
+                                                    <menuitem id="mnuExport" label="##"
+                                                              image="/img/icontexto-webdev-file-016x016.png"/>
+                                                    <menuitem id="mnuExport2" label="##"
+                                                              image="/img/icontexto-webdev-file-016x016.png"/>
+                                                </menupopup>
+                                            </menu>
+                                        </menubar>
                                     </row>
                                 </rows>
                             </grid>

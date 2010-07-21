@@ -118,7 +118,7 @@ public abstract class BasicListController<DTO> extends BasicCRUDController
     protected void refresh()
     {
         try {
-            showRecord( null );
+            clearRecordInfo();
             getModel().clear();
             getModel().addAll( getRecordList() );
         }

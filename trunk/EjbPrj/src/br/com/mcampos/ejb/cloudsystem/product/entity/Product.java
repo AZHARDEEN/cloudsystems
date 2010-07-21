@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.product.entity;
 
 
 import br.com.mcampos.ejb.cloudsystem.product.type.entity.ProductType;
+import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 
 import java.io.Serializable;
 
@@ -21,11 +22,17 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Product.findAll", query = "select o from Product o" ) } )
-@Table( name = "\"product\"" )
+@NamedQueries( { @NamedQuery( name = Product.getAll, query = "select o from Product o where o.company = ?1 and o.toDate is null" ),
+                 @NamedQuery( name = Product.nextId, query = "select max(o.id) from Product o where o.company = ?1" ) } )
+@Table( name = "product" )
 @IdClass( ProductPK.class )
 public class Product implements Serializable
 {
+
+    public static final String getAll = "Product.findAll";
+    public static final String nextId = "Product.nextId";
+
+
     @Column( name = "prd_code_ch" )
     private String code;
 
@@ -54,15 +61,26 @@ public class Product implements Serializable
     private Boolean visible;
 
     @Id
-    @Column( name = "usr_id_in", nullable = false )
+    @Column( name = "usr_id_in", nullable = false, updatable = false, insertable = false )
     private Integer companyId;
 
     @ManyToOne( optional = false )
     @JoinColumn( name = "pdt_id_in", nullable = false, updatable = true, insertable = true )
     private ProductType type;
 
+
+    @ManyToOne( optional = false )
+    @JoinColumn( name = "usr_id_in", nullable = false, updatable = true, insertable = true )
+    private Company company;
+
+
     public Product()
     {
+    }
+
+    public Product( Company company )
+    {
+        setCompany( company );
     }
 
     public String getCode()
@@ -163,5 +181,16 @@ public class Product implements Serializable
     public ProductType getType()
     {
         return type;
+    }
+
+    public void setCompany( Company company )
+    {
+        this.company = company;
+        setCompanyId( company != null ? company.getId() : null );
+    }
+
+    public Company getCompany()
+    {
+        return company;
     }
 }
