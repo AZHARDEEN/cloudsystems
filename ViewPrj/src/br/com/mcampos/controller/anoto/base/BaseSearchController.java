@@ -57,6 +57,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.SimplePieModel;
@@ -95,8 +96,10 @@ public abstract class BaseSearchController extends AnotoLoggedController
     private Label labelFormNumber;
 
     private Button btnFilter;
-    private Button btnExport;
     protected Button btnSummary;
+
+    private Menuitem mnuExport;
+    private Menuitem mnuExport2;
 
     private Listheader headSeq;
     private Listheader headApplication;
@@ -367,7 +370,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
         return model;
     }
 
-    public void onClick$btnExport()
+    public void onClick$mnuExport()
     {
         File file;
         try {
@@ -375,6 +378,21 @@ public abstract class BaseSearchController extends AnotoLoggedController
             file.deleteOnExit();
             WritableWorkbook workbook = Workbook.createWorkbook( file );
             writeToExcell( workbook );
+            Filedownload.save( file, "application/vnd.ms-excel" );
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage() );
+        }
+    }
+
+    public void onClick$mnuExport2()
+    {
+        File file;
+        try {
+            file = File.createTempFile( "export", ".xls" );
+            file.deleteOnExit();
+            WritableWorkbook workbook = Workbook.createWorkbook( file );
+            writeToExcell2( workbook );
             Filedownload.save( file, "application/vnd.ms-excel" );
         }
         catch ( Exception e ) {
@@ -415,6 +433,47 @@ public abstract class BaseSearchController extends AnotoLoggedController
         workbook.write();
         workbook.close();
     }
+
+
+    private void writeToExcell2( WritableWorkbook workbook ) throws WriteException, RowsExceededException, IOException
+    {
+        WritableSheet sheet = workbook.createSheet( "Exported Data", 0 );
+        int nColumns = setHeader( sheet );
+        ListModelList model = getModel();
+        boolean bFirst = true;
+        for ( int nIndex = 0; nIndex < model.getSize(); nIndex++ ) {
+            AnotoResultList dto = ( AnotoResultList )model.get( nIndex );
+            if ( dto != null ) {
+                if ( bFirst ) {
+                    bFirst = false;
+                    addHead( sheet, nColumns, dto.getFields() );
+                }
+                nColumns = 0;
+                sheet.addCell( new Number( nColumns++, nIndex + 1, nIndex ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getForm().toString() ) );
+                sheet.addCell( new Number( nColumns++, nIndex + 1, dto.getPgcPage().getBookId() + 1 ) );
+                sheet.addCell( new Number( nColumns++, nIndex + 1, dto.getPgcPage().getPageId() + 1 ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getPen().toString() ) );
+                sheet.addCell( new DateTime( nColumns++, nIndex + 1, dto.getPgcPage().getPgc().getInsertDate() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getUserName() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getEmail() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getCellNumber() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLatitude() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLongitude() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getBarcodeValue() ) );
+                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getAttach() ? "SIM" : "" ) );
+                try {
+                    addData( sheet, nColumns, nIndex + 1, getSession().getFields( getLoggedInUser(), dto.getPgcPage() ) );
+                }
+                catch ( ApplicationException e ) {
+                    showErrorMessage( e.getMessage() );
+                }
+            }
+        }
+        workbook.write();
+        workbook.close();
+    }
+
 
     private void addHead( WritableSheet sheet, int nColumns, List<PgcFieldDTO> fields ) throws WriteException,
                                                                                                RowsExceededException
@@ -726,7 +785,8 @@ public abstract class BaseSearchController extends AnotoLoggedController
         setLabel( labelFormNumber );
 
         setLabel( btnFilter );
-        setLabel( btnExport );
+        setLabel( mnuExport );
+        setLabel( mnuExport2 );
         setLabel( btnSummary );
 
         setLabel( headSeq );
@@ -755,9 +815,9 @@ public abstract class BaseSearchController extends AnotoLoggedController
 
     }
 
-    protected Button getExportButton()
+    protected Menuitem getExportButton()
     {
-        return btnExport;
+        return mnuExport;
     }
 
     private void updateCharts( List<AnotoResultList> result )

@@ -1,5 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.product.entity;
 
+
+import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
+
 import java.io.Serializable;
 
 public class ProductPK implements Serializable
@@ -15,6 +18,12 @@ public class ProductPK implements Serializable
     {
         this.id = productId;
         this.companyId = ownerId;
+    }
+
+    public ProductPK( Company company, Integer productId )
+    {
+        setId( productId );
+        setCompanyId( company.getId() );
     }
 
     public boolean equals( Object other )
