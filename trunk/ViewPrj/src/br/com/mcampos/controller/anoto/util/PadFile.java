@@ -137,6 +137,7 @@ public class PadFile
         if ( SysUtils.isEmpty( elements ) )
             return Collections.emptyList();
         List<AnotoPageFieldDTO> fields = new ArrayList<AnotoPageFieldDTO>( elements.size() );
+        Integer nSequence = 1;
         for ( Element field : elements ) {
             AnotoPageFieldDTO dto = new AnotoPageFieldDTO();
             dto.setPage( anotoPage );
@@ -146,6 +147,8 @@ public class PadFile
             dto.setWidth( Integer.parseInt( field.getAttributeValue( "width" ) ) );
             dto.setHeight( Integer.parseInt( field.getAttributeValue( "height" ) ) );
             dto.setType( new FieldTypeDTO( FieldTypeDTO.typeString ) );
+            dto.setSequence( nSequence );
+            nSequence++;
             dto.setIcr( true );
             fields.add( dto );
         }

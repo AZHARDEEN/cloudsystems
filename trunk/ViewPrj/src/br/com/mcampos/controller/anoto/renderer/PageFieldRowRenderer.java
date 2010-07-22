@@ -41,6 +41,7 @@ public class PageFieldRowRenderer implements RowRenderer
         if ( row.getChildren() != null && row.getChildren().size() > 0 )
             row.getChildren().clear();
         new Label( dto.getName() ).setParent( row );
+        new Label( dto.getSequence().toString() ).setParent( row );
         Combobox cmbTypes = new Combobox();
         cmbTypes.setReadonly( true );
         for ( FieldTypeDTO item : fieldTypes ) {

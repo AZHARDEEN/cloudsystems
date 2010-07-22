@@ -23,7 +23,8 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = PgcField.findAll, query = "select o from PgcField o" ),
-                 @NamedQuery( name = PgcField.findPageFields, query = "select o from PgcField o where o.pgcPage = ?1" ) } )
+                 @NamedQuery( name = PgcField.findPageFields,
+                              query = "select o from PgcField o where o.pgcPage = ?1 order by o.sequence" ) } )
 @Table( name = "pgc_field" )
 @IdClass( PgcFieldPK.class )
 public class PgcField implements Serializable, EntityCopyInterface<PgcFieldDTO>
@@ -68,6 +69,9 @@ public class PgcField implements Serializable, EntityCopyInterface<PgcFieldDTO>
 
     @Column( name = "pfl_has_penstrokes_bt" )
     private Boolean hasPenstrokes;
+
+    @Column( name = "pfl_sequence_in" )
+    private Integer sequence;
 
 
     @ManyToOne
@@ -236,6 +240,17 @@ public class PgcField implements Serializable, EntityCopyInterface<PgcFieldDTO>
         dto.setStartTime( getStartTime() );
         if ( getType() != null )
             dto.setType( getType().toDTO() );
+        dto.setSequence( getSequence() );
         return dto;
+    }
+
+    public void setSequence( Integer sequence )
+    {
+        this.sequence = sequence;
+    }
+
+    public Integer getSequence()
+    {
+        return sequence;
     }
 }

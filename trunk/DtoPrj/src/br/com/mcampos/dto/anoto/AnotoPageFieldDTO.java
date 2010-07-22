@@ -17,6 +17,7 @@ public class AnotoPageFieldDTO implements Serializable
     private FieldTypeDTO type;
     private Boolean export;
     private Boolean searchable;
+    private Integer sequence;
 
 
     public AnotoPageFieldDTO()
@@ -136,5 +137,15 @@ public class AnotoPageFieldDTO implements Serializable
     public Boolean getSearchable()
     {
         return searchable;
+    }
+
+    public void setSequence( Integer sequence )
+    {
+        this.sequence = sequence;
+    }
+
+    public Integer getSequence()
+    {
+        return sequence;
     }
 }

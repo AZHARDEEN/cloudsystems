@@ -266,6 +266,7 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
             field.setType( pageField.getType() );
             if ( pageField.getType().getId() == FieldType.typeBoolean || pageField.hasIcr() == false )
                 field.setMedia( null );
+            field.setSequence( pageField.getSequence() );
         }
         else
             field.setType( getEntityManager().find( FieldType.class, field.getType().getId() ) );
