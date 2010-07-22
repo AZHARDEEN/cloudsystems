@@ -18,6 +18,8 @@ public class PenDTO implements Comparable<PenDTO>, Serializable
     private String id;
     private String description;
     private ListUserDTO user;
+    private String serial;
+    private Integer pin;
 
 
     public PenDTO( String id, String description )
@@ -93,5 +95,25 @@ public class PenDTO implements Comparable<PenDTO>, Serializable
     public ListUserDTO getUser()
     {
         return user;
+    }
+
+    public void setSerial( String serial )
+    {
+        this.serial = serial;
+    }
+
+    public String getSerial()
+    {
+        return serial;
+    }
+
+    public void setPin( Integer pin )
+    {
+        this.pin = pin;
+    }
+
+    public Integer getPin()
+    {
+        return pin;
     }
 }

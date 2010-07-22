@@ -189,3 +189,16 @@ CREATE  INDEX AK_PenPageForm ON pgc_pen_page
 
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON pgc_pen_page TO cloud;
+
+
+
+
+--##########################################################################################################################
+--21/07/2010
+alter table anoto_page_field add column apf_sequence_in      INTEGER DEFAULT  0  NULL;
+
+ALTER TABLE ANOTO_PEN ADD COLUMN pen_serial_ch        VARCHAR(32) NULL ,
+	ADD COLUMN pen_pin_ch           INTEGER NULL;
+
+ALTER TABLE PGC_FIELD ADD COLUMN 	pfl_sequence_in      INTEGER DEFAULT  0  NULL;
+

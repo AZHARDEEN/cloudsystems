@@ -16,12 +16,17 @@ public final class AnotoPenUtil
     public static AnotoPen update( AnotoPen pen, PenDTO dto )
     {
         pen.setDescription( dto.getDescription() );
+        pen.setSerial( dto.getSerial() );
+        pen.setPin( dto.getPin() );
         return pen;
     }
 
     public static PenDTO copy( AnotoPen pen )
     {
-        return new PenDTO( pen.getId(), pen.getDescription() );
+        PenDTO dto = new PenDTO( pen.getId(), pen.getDescription() );
+        dto.setSerial( pen.getSerial() );
+        dto.setPin( pen.getPin() );
+        return dto;
 
     }
 }

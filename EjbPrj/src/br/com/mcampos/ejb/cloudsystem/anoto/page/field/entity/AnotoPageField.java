@@ -23,12 +23,13 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries( { @NamedQuery( name = AnotoPageField.getAll, query = "select o from AnotoPageField o" ),
                  @NamedQuery( name = AnotoPageField.getAllFromPage,
-                              query = "select o from AnotoPageField o where o.anotoPage = ?1" ),
-                 @NamedQuery( name = AnotoPageField.getExport, query = "select o from AnotoPageField o where o.export = true" ),
+                              query = "select o from AnotoPageField o where o.anotoPage = ?1 order by o.sequence" ),
+                 @NamedQuery( name = AnotoPageField.getExport,
+                              query = "select o from AnotoPageField o where o.export = true order by o.sequence" ),
                  @NamedQuery( name = AnotoPageField.getAllFromFormSearchable,
-                              query = "select o from AnotoPageField o where o.formId = ?1 and o.searchable = true " ),
+                              query = "select o from AnotoPageField o where o.formId = ?1 and o.searchable = true order by o.pageAddress, o.sequence" ),
                  @NamedQuery( name = AnotoPageField.getAllFromForm,
-                              query = "select o from AnotoPageField o where o.formId = ?1" ) } )
+                              query = "select o from AnotoPageField o where o.formId = ?1 order by o.pageAddress, o.sequence" ) } )
 @Table( name = "anoto_page_field" )
 @IdClass( AnotoPageFieldPK.class )
 public class AnotoPageField implements Serializable, Comparable<AnotoPageField>, EntityCopyInterface<AnotoPageFieldDTO>
@@ -76,6 +77,8 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
     @Column( name = "alf_search_bt", nullable = true )
     private Boolean searchable;
 
+    @Column( name = "apf_sequence_in", nullable = true )
+    private Integer sequence;
 
     @ManyToOne( optional = false )
     @JoinColumn( name = "flt_id_in", referencedColumnName = "flt_id_in", columnDefinition = "Integer" )
@@ -236,6 +239,7 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
         dto.setWidth( getWidth() );
         dto.setExport( getExport() );
         dto.setSearchable( getSearchable() );
+        dto.setSequence( getSequence() );
         return dto;
     }
 
@@ -257,5 +261,15 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
     public Boolean getSearchable()
     {
         return searchable;
+    }
+
+    public void setSequence( Integer sequence )
+    {
+        this.sequence = sequence;
+    }
+
+    public Integer getSequence()
+    {
+        return sequence;
     }
 }

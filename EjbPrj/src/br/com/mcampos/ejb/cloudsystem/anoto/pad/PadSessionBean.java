@@ -121,7 +121,8 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
         Query query;
         List<AnotoPen> list;
 
-        sqlQuery = "SELECT pen_id_ch , pen_insert_dt  FROM anoto_pen WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 AND 	PAD_ID_IN = ?2 AND 	APG_ID_CH = ?3 )";
+        sqlQuery =
+                "SELECT pen_id_ch , pen_insert_dt  FROM anoto_pen WHERE PEN_ID_CH NOT IN ( SELECT PEN_ID_CH FROM ANOTO_PEN_PAGE WHERE FRM_ID_IN = ?1 AND 	PAD_ID_IN = ?2 AND 	APG_ID_CH = ?3 )";
         query = getEntityManager().createNativeQuery( sqlQuery, AnotoPen.class );
         query.setParameter( 1, page.getFormId() );
         query.setParameter( 2, page.getPadId() );
@@ -185,6 +186,7 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
             entity.setTop( field.getTop() );
             entity.setWidth( field.getWidth() );
             entity.setHeight( field.getHeight() );
+            entity.setSequence( field.getSequence() );
             getEntityManager().persist( entity );
         }
     }

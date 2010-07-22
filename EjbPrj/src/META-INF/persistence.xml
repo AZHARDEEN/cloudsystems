@@ -71,12 +71,14 @@
     <class>br.com.mcampos.ejb.cloudsystem.user.company.role.entity.CompanyRole</class>
     <class>br.com.mcampos.ejb.cloudsystem.product.type.entity.ProductType</class>
     <class>br.com.mcampos.ejb.cloudsystem.product.entity.Product</class>
+    <class>br.com.mcampos.ejb.cloudsystem.resale.dealer.entity.Dealer</class>
+    <class>br.com.mcampos.ejb.cloudsystem.resale.dealer.type.entity.DealerType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.resale.entity.Resale</class>
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>
       <property name="eclipselink.target-server" value="WebLogic 10"/>
       <property name="eclipselink.target-database" value="PostgreSQL"/>
-      <property name="javax.persistence.jtaDataSource" value="jdbc/CloudDS"/>
     </properties>
   </persistence-unit>
 </persistence>

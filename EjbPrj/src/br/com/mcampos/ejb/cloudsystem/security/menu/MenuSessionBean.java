@@ -67,6 +67,11 @@ public class MenuSessionBean extends Crud<Integer, Menu> implements MenuSessionL
     public Menu add( Menu entity ) throws ApplicationException
     {
         setParent( entity );
+        Menu parent = entity.getParentMenu();
+        Menu menu = getBySequence( parent, entity.getSequence() );
+        if ( menu != null ) {
+            menu.setSequence( getNextSequence( parent != null ? parent.getId() : 0 ) );
+        }
         return super.add( entity );
     }
 
@@ -79,5 +84,10 @@ public class MenuSessionBean extends Crud<Integer, Menu> implements MenuSessionL
         if ( parent != null ) {
             parent.addMenu( menu );
         }
+    }
+
+    private Menu getBySequence( Menu parent, Integer sequence ) throws ApplicationException
+    {
+        return ( Menu )getSingleResult( Menu.findSequence, parent != null ? parent.getId() : 0, sequence );
     }
 }

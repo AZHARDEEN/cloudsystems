@@ -48,6 +48,12 @@ public class AnotoPen implements Serializable, EntityCopyInterface<PenDTO>
     @Column( name = "pen_description_ch", nullable = false )
     private String description;
 
+    @Column( name = "pen_serial_ch", nullable = false )
+    private String serial;
+
+    @Column( name = "pen_pin_ch", nullable = false )
+    private Integer pin;
+
 
     public AnotoPen()
     {
@@ -93,5 +99,25 @@ public class AnotoPen implements Serializable, EntityCopyInterface<PenDTO>
     public String getDescription()
     {
         return description;
+    }
+
+    public void setSerial( String serial )
+    {
+        this.serial = serial;
+    }
+
+    public String getSerial()
+    {
+        return serial;
+    }
+
+    public void setPin( Integer pin )
+    {
+        this.pin = pin;
+    }
+
+    public Integer getPin()
+    {
+        return pin;
     }
 }
