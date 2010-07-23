@@ -208,7 +208,7 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
         clientNotManaged.setDocuments( UserDocumentUtil.toEntityList( clientNotManaged, dto.getDocumentList() ) );
         Person managedPerson = personSession.find( clientNotManaged );
         if ( managedPerson == null ) {
-            managedPerson.getDocuments().clear();
+            clientNotManaged.getDocuments().clear();
             managedPerson = personSession.add( clientNotManaged );
             refreshUserAttributes( managedPerson, dto );
         }

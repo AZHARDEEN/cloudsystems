@@ -4,6 +4,7 @@ package br.com.mcampos.controller.admin.tables;
 import br.com.mcampos.controller.core.BasicCRUDController;
 import br.com.mcampos.exception.ApplicationException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -87,7 +88,7 @@ public abstract class BasicListController<DTO> extends BasicCRUDController
 
         listModel = ( ListModelList )getListboxRecord().getModel();
         if ( listModel == null ) {
-            listModel = new ListModelList();
+            listModel = new ListModelList( new ArrayList<DTO>() );
             getListboxRecord().setModel( listModel );
         }
         return listModel;

@@ -35,7 +35,6 @@ public abstract class PersonController extends UserController
 {
     private PersonFacade session;
 
-    private Textbox name;
     protected Textbox cpf;
     private Combobox gender;
     private Combobox title;
@@ -154,8 +153,8 @@ public abstract class PersonController extends UserController
         else
             dto.setBirthDate( null );
         dto.setBornCity( bornCity.getSelectedItem() != null ? ( CityDTO )bornCity.getSelectedItem().getValue() : null );
-        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem()
-                           .getValue() : null );
+        dto.setCivilState( maritalStatus.getSelectedItem() != null ? ( CivilStateDTO )maritalStatus.getSelectedItem().getValue() :
+                           null );
         dto.setFatherName( fatherName.getValue() );
         dto.setGender( gender.getSelectedItem() != null ? ( GenderDTO )gender.getSelectedItem().getValue() : null );
         dto.setMotherName( motherName.getValue() );
@@ -329,6 +328,7 @@ public abstract class PersonController extends UserController
         return session;
     }
 
+    @Override
     protected List<StateDTO> getStates( CountryDTO country )
     {
         try {
@@ -341,6 +341,7 @@ public abstract class PersonController extends UserController
     }
 
 
+    @Override
     protected List<CityDTO> getCities( StateDTO state )
     {
         try {
@@ -368,5 +369,16 @@ public abstract class PersonController extends UserController
                 showErrorMessage( e.getMessage() );
             }
         }
+    }
+
+    @Override
+    protected void clearAll()
+    {
+        super.clearAll();
+        name.setValue( "" );
+        cpf.setValue( "" );
+        fatherName.setValue( "" );
+        motherName.setValue( "" );
+        currentDTO = null;
     }
 }

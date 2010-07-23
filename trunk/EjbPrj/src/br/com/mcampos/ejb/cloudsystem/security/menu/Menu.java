@@ -33,7 +33,8 @@ import javax.persistence.Transient;
 @NamedNativeQueries( { @NamedNativeQuery( name = Menu.nextSequence,
                                           query = "select coalesce ( max (  mnu_sequence_in ), 0 ) + 1 from menu where coalesce ( mnu_parent_id, 0 ) = ?" ),
                        @NamedNativeQuery( name = Menu.findSequence,
-                                          query = "select * from Menu where coalesce ( mnu_parent_id, 0 ) = ? and mnu_sequence_in = ?" ) } )
+                                          query = "select * from Menu where coalesce ( mnu_parent_id, 0 ) = ? and mnu_sequence_in = ?",
+                                          resultClass = Menu.class ) } )
 @Table( name = "menu" )
 public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface<MenuDTO>
 {
