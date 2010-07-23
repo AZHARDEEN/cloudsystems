@@ -32,7 +32,6 @@ public abstract class CompanyController extends UserController
     protected Textbox cnpj;
     protected Combobox companyType;
     protected CompanyDTO currentDTO;
-    protected Textbox name;
     protected Textbox nickName;
 
     protected abstract CompanyDTO searchByDocument( String document, Integer type ) throws Exception;
@@ -257,6 +256,16 @@ public abstract class CompanyController extends UserController
         if ( session == null )
             session = ( CompanyFacade )getRemoteSession( CompanyFacade.class );
         return session;
+    }
+
+    @Override
+    protected void clearAll()
+    {
+        super.clearAll();
+        cnpj.setValue( "" );
+        companyType.setValue( "" );
+        currentDTO = null;
+        nickName.setValue( "" );
     }
 }
 

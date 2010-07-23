@@ -43,6 +43,7 @@ public abstract class UserController extends LoggedBaseController
     protected Textbox hood;
     protected Textbox addressComment;
     private Button cmdSubmit;
+    protected Textbox name;
 
 
     protected abstract List<StateDTO> getStates( CountryDTO dto );
@@ -406,11 +407,21 @@ public abstract class UserController extends LoggedBaseController
     {
         try {
             if ( persist() == true )
-                removeMe();
+                clearAll();
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage() );
         }
+    }
 
+    protected void clearAll()
+    {
+        contactList.getItems().clear();
+        documentList.getItems().clear();
+
+        zip.setValue( "" );
+        address.setValue( "" );
+        hood.setValue( "" );
+        addressComment.setValue( "" );
     }
 }
