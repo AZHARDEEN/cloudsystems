@@ -57,4 +57,10 @@ public class DealerDTO implements Serializable
     {
         return type;
     }
+
+    @Override
+    public String toString()
+    {
+        return getDealer().toString();
+    }
 }

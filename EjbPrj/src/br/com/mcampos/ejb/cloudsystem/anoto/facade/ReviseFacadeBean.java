@@ -21,15 +21,16 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 
 @Stateless( name = "ReviseFacade", mappedName = "CloudSystems-EjbPrj-ReviseFacade" )
-@Remote
+@TransactionAttribute (TransactionAttributeType.REQUIRES_NEW)
 public class ReviseFacadeBean extends AbstractSecurity implements ReviseFacade
 {
     protected static final int SystemMessageTypeId = 27;

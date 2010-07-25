@@ -202,3 +202,14 @@ ALTER TABLE ANOTO_PEN ADD COLUMN pen_serial_ch        VARCHAR(32) NULL ,
 
 ALTER TABLE PGC_FIELD ADD COLUMN 	pfl_sequence_in      INTEGER DEFAULT  0  NULL;
 
+
+
+
+--##########################################################################################################################
+--25/07/2010 - Apenas para o projeto da Embratel.
+insert into anoto_page_field values ( 1, '21.117.12.11', '521', 'Venda cadastrada FEND', 6, false, 0,0,0,0, true, null, true, 82 );
+insert into anoto_page_field values ( 1, '21.117.12.11', '521', 'Venda rejeitada por CEP inválido', 6, false, 0,0,0,0, true, null, true, 83 );
+insert into anoto_page_field values ( 1, '21.117.12.11', '521', 'Venda rejeitada por Análise Credito', 6, false, 0,0,0,0, true, null, true, 84 );
+
+
+

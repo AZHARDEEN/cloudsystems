@@ -25,24 +25,25 @@
                                                 <row>
                                                     <label value="##" id="labelApplication"/>
                                                     <combobox id="cmbApplication" width="95%" readonly="true"/>
-                                                    <label value="Revenda" id="labelResale"/>
-                                                    <combobox id="cmbResale" width="95%" readonly="true"/>
-                                                </row>
-                                                <row>
-                                                    <label value="Vendedor/Caneta" id="labelDealer"/>
-                                                    <combobox id="cmbDealer" width="95%" readonly="true"/>
-                                                    <label value="Cód Vendedor" id="labelDealerCode"/>
-                                                    <intbox id="dealerCode" width="150px"/>
-                                                </row>
-                                                <row>
                                                     <label value="##" id="labelInitDate"/>
                                                     <hbox>
-                                                        <datebox id="initDate" format="dd/MM/yyyy HH:mm:ss" width="180px"
-                                                                 onCreate="self.value = new Date()"/>
+                                                        <datebox id="initDate" format="dd/MM/yyyy HH:mm:ss" width="180px"/>
                                                         <label value=" Até "/>
                                                         <datebox id="endDate" format="dd/MM/yyyy HH:mm:ss" width="180px"
                                                                  onCreate="self.value = new Date()"/>
                                                     </hbox>
+                                                </row>
+                                                <row>
+                                                    <label value="Revenda" id="labelResale"/>
+                                                    <combobox id="cmbResale" width="95%" readonly="true"/>
+                                                    <label value="Cód Revenda" id="labelResaleCode"/>
+                                                    <intbox id="resaleCode" width="150px"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Vendedor" id="labelDealer"/>
+                                                    <combobox id="cmbDealer" width="95%" readonly="true"/>
+                                                    <label value="Cód Vendedor" id="labelDealerCode"/>
+                                                    <intbox id="dealerCode" width="150px"/>
                                                 </row>
                                                 <row>
                                                     <label value="##" id="labelFieldValue"/>
@@ -102,8 +103,6 @@
                                 <tabs>
                                     <tab id="tabAnotoSearch" label="Pesquisa"/>
                                     <tab id="tabSummary" label="Resumo"/>
-                                    <tab id="tabChartPen" label="Gráfico Por Canetas"/>
-                                    <tab id="tabChartDate" label="Distribuição Por Data"/>
                                 </tabs>
                                 <tabpanels>
                                     <tabpanel>
@@ -120,24 +119,147 @@
                                                 <listheader id="headCellNumber" label="##" width="100px"/>
                                                 <listheader id="headLatitude" label="##" width="130px"/>
                                                 <listheader id="headLongitude" label="##" width="130px"/>
-                                                <listheader id="headBarcode" label="##" width="150px"/>
                                                 <listheader id="headPhoto" label="##" width="70px"/>
                                             </listhead>
                                         </listbox>
                                     </tabpanel>
                                     <tabpanel>
-                                        <listbox id="summaryList" vflex="true">
-                                            <listhead sizable="true">
-                                                <listheader id="headSummaryField" label="Campo" width="30%"/>
-                                                <listheader id="headSummaryValue" label="Valor"/>
-                                            </listhead>
-                                        </listbox>
-                                    </tabpanel>
-                                    <tabpanel>
-                                        <flashchart id="chartPen" type="pie" height="100%"/>
-                                    </tabpanel>
-                                    <tabpanel>
-                                        <flashchart id="chartData" type="pie" height="100%"/>
+                                        <borderlayout>
+                                            <east width="50%" title="Gráficos">
+                                                <div>
+                                                    <tabbox>
+                                                        <tabs>
+                                                            <tab id="tabGraphAttach" label="Anexos"/>
+                                                            <tab id="tabGraphType" label="Tipo"/>
+                                                            <tab id="tabChartPay" label="Pagamento"/>
+                                                            <tab id="tabChartCategory" label="Categoria"/>
+                                                            <tab id="tabChartStatus" label="Situação"/>
+                                                        </tabs>
+                                                        <tabpanels>
+                                                            <tabpanel>
+                                                                <flashchart id="chartAttach" type="pie" height="200px"/>
+                                                            </tabpanel>
+                                                            <tabpanel>
+                                                                <flashchart id="chartType" type="pie" height="200px"/>
+                                                            </tabpanel>
+                                                            <tabpanel>
+                                                                <flashchart id="chartPay" type="pie" height="200px"/>
+                                                            </tabpanel>
+                                                            <tabpanel>
+                                                                <flashchart id="chartCategory" type="pie" height="200px"/>
+                                                            </tabpanel>
+                                                            <tabpanel>
+                                                                <flashchart id="chartStatus" type="pie" height="200px"/>
+                                                            </tabpanel>
+                                                        </tabpanels>
+                                                    </tabbox>
+                                                </div>
+                                            </east>
+                                            <center autoscroll="true">
+                                                <div>
+                                                    <grid>
+                                                        <columns>
+                                                            <column label="Formulários" align="left" width="200px"/>
+                                                            <column align="center" label="Total" width="100px"/>
+                                                        </columns>
+                                                        <rows>
+                                                            <row>
+                                                                <label value="Total Processado"/>
+                                                                <label value="" id="labelSummaryForms"/>
+                                                            </row>
+                                                        </rows>
+                                                    </grid>
+                                                    <grid>
+                                                        <columns>
+                                                            <column label="Anexos" align="left" width="200px"/>
+                                                            <column align="center" label="Total" width="100px"/>
+                                                        </columns>
+                                                        <rows>
+                                                            <row>
+                                                                <label value="Com Foto"/>
+                                                                <label value=" " id="labelSummaryPhoto"/>
+                                                            </row>
+                                                            <row>
+                                                                <label value="Sem-Foto"/>
+                                                                <label value=" " id="labelSummaryNoPhoto"/>
+                                                            </row>
+                                                        </rows>
+                                                    </grid>
+                                                    <grid>
+                                                        <columns>
+                                                            <column label="Tipo" align="left" width="200px"/>
+                                                            <column align="center" label="Total" width="100px"/>
+                                                        </columns>
+                                                        <rows>
+                                                            <row>
+                                                                <label value="Pré-pago"/>
+                                                                <label value=" " id="labelSummaryPre"/>
+                                                            </row>
+                                                            <row>
+                                                                <label value="Pós-Pago"/>
+                                                                <label value=" " id="labelSummaryPos"/>
+                                                            </row>
+                                                        </rows>
+                                                    </grid>
+                                                    <grid>
+                                                        <columns>
+                                                            <column label="Pagamento" align="left" width="200px"/>
+                                                            <column align="center" label="Total" width="100px"/>
+                                                        </columns>
+                                                        <rows>
+                                                            <row>
+                                                                <label value="Dinheiro"/>
+                                                                <label value=" " id="labelSummaryMoney"/>
+                                                            </row>
+                                                            <row>
+                                                                <label value="Boleto"/>
+                                                                <label value=" " id="labelSummaryBoleto"/>
+                                                            </row>
+                                                            <row>
+                                                                <label value="DI"/>
+                                                                <label value=" " id="labelSummaryDI"/>
+                                                            </row>
+                                                        </rows>
+                                                    </grid>
+                                                    <grid>
+                                                        <columns>
+                                                            <column label="Categoria" align="left" width="200px"/>
+                                                            <column align="center" label="Total" width="100px"/>
+                                                        </columns>
+                                                        <rows>
+                                                            <row>
+                                                                <label value="PAP"/>
+                                                                <label value=" " id="labelSummaryPap"/>
+                                                            </row>
+                                                            <row>
+                                                                <label value="CVM"/>
+                                                                <label value=" " id="labelSummaryCvm"/>
+                                                            </row>
+                                                        </rows>
+                                                    </grid>
+                                                    <grid>
+                                                        <columns>
+                                                            <column label="Situação" align="left" width="200px"/>
+                                                            <column align="center" label="Total" width="100px"/>
+                                                        </columns>
+                                                        <rows>
+                                                            <row>
+                                                                <label value="Cadastrada FEND"/>
+                                                                <label value=" " id="labelSummaryFend"/>
+                                                            </row>
+                                                            <row>
+                                                                <label value="Rejeitada CEP Inválido"/>
+                                                                <label value=" " id="labelSummaryRejectZip"/>
+                                                            </row>
+                                                            <row>
+                                                                <label value="Rejeitada Análise Crédito"/>
+                                                                <label value=" " id="labelSummaryRejectCredit"/>
+                                                            </row>
+                                                        </rows>
+                                                    </grid>
+                                                </div>
+                                            </center>
+                                        </borderlayout>
                                     </tabpanel>
                                 </tabpanels>
                             </tabbox>

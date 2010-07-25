@@ -16,6 +16,7 @@ import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -178,6 +179,7 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
 
     public void add( AnotoPage page, List<AnotoPageFieldDTO> fields ) throws ApplicationException
     {
+        Integer sequence = 1;
         for ( AnotoPageFieldDTO field : fields ) {
             FieldType type = getEntityManager().find( FieldType.class, field.getType().getId() );
             AnotoPageField entity = new AnotoPageField( page, field.getName(), type );
@@ -186,8 +188,12 @@ public class PadSessionBean extends Crud<PadPK, Pad> implements PadSessionLocal
             entity.setTop( field.getTop() );
             entity.setWidth( field.getWidth() );
             entity.setHeight( field.getHeight() );
-            entity.setSequence( field.getSequence() );
+            if ( SysUtils.isZero( field.getSequence() ) )
+                entity.setSequence( sequence );
+            else
+                entity.setSequence( field.getSequence() );
             getEntityManager().persist( entity );
+            sequence++;
         }
     }
 

@@ -3,14 +3,15 @@ package br.com.mcampos.controller.anoto.base;
 
 import br.com.mcampos.controller.anoto.AnotoViewController;
 import br.com.mcampos.controller.anoto.renderer.PgcPenPageListRenderer;
-import br.com.mcampos.dto.anoto.AnotoPageDTO;
+import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.AnotoSummary;
 import br.com.mcampos.dto.anoto.FormDTO;
-import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
+import br.com.mcampos.dto.resale.ResaleDTO;
 import br.com.mcampos.dto.system.FieldTypeDTO;
+import br.com.mcampos.ejb.cloudsystem.anoto.facade.EmbratelFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -23,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -54,9 +54,7 @@ import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listheader;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
@@ -68,32 +66,48 @@ import org.zkoss.zul.impl.api.InputElement;
 import org.zkoss.zul.impl.api.XulElement;
 
 
-public abstract class BaseSearchEmbratelController extends AnotoLoggedController
+public abstract class BaseSearchEmbratelController extends LoggedBaseController
 {
+    private EmbratelFacade session;
+
     private Combobox cmbApplication;
-    private Combobox cmbPen;
+    private Combobox cmbDealer;
+    private Combobox cmbResale;
+
     private Datebox initDate;
-    private Timebox initTime;
     private Datebox endDate;
-    private Timebox endTime;
     private Listbox resultList;
-    private Listbox summaryList;
-    private Textbox txtBarcode;
-    private Intbox txtFormIdFrom;
-    private Intbox txtFormIdTo;
+    private Grid summaryList;
     private Combobox cmbMaxRecords;
     private Textbox txtFieldValue;
+
+    private Intbox resaleCode;
+    private Intbox dealerCode;
 
     protected Label labelFormView2Title;
     private Label labelApplication;
     private Label labelInitDate;
     private Label labelEndDate;
     private Label labelPen;
-    private Label labelBarCode;
     private Label labelTo;
     private Label labelFieldValue;
     private Label labelMaxRecords;
     private Label labelFormNumber;
+
+    private Label labelSummaryForms;
+    private Label labelSummaryPre;
+    private Label labelSummaryPos;
+    private Label labelSummaryMoney;
+    private Label labelSummaryBoleto;
+    private Label labelSummaryDI;
+    private Label labelSummaryPap;
+    private Label labelSummaryCvm;
+    private Label labelSummaryFend;
+    private Label labelSummaryRejectZip;
+    private Label labelSummaryRejectCredit;
+    private Label labelSummaryNoPhoto;
+    private Label labelSummaryPhoto;
+
 
     private Button btnFilter;
     protected Button btnSummary;
@@ -113,7 +127,6 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
     private Listheader headCellNumber;
     private Listheader headLatitude;
     private Listheader headLongitude;
-    private Listheader headBarcode;
     private Listheader headPhoto;
 
     private Column columnFieldName;
@@ -126,9 +139,11 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
     private Tab tabAnotoSearch;
     private Tab tabSummary;
 
-    private Flashchart chartPen;
-
-    private Flashchart chartData;
+    private Flashchart chartAttach;
+    private Flashchart chartType;
+    private Flashchart chartPay;
+    private Flashchart chartCategory;
+    private Flashchart chartStatus;
 
     private Grid gridCustomFields;
 
@@ -151,11 +166,15 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
         resultList.setItemRenderer( new PgcPenPageListRenderer() );
         cmbMaxRecords.setSelectedIndex( 0 );
         configureonOkEvents();
+        SimpleDateFormat df = new SimpleDateFormat( "ddMMyyyy HHmmss" );
+        df.parse( "24072010 000000" );
+        initDate.setValue( df.parse( "24072010 000000" ) );
     }
 
     private void refresh()
     {
         loadApplication();
+        loadResales();
         //loadPages( null );
         //loadPens( null );
         //loadPGC( null );
@@ -177,35 +196,48 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
         }
     }
 
-
-    private void loadPages( FormDTO dto )
+    private void loadResales()
     {
-        ListModelList model;
-        List<AnotoPageDTO> list;
+        List list;
         try {
-            if ( dto == null )
-                list = getSession().getPages( getLoggedInUser() );
-            else
-                list = getSession().getPages( getLoggedInUser(), dto );
-            model = new ListModelList( list );
+            list = getSession().getResales( getLoggedInUser() );
+            loadCombobox( cmbResale, list );
+            Comboitem item = cmbResale.appendItem( getLabel( "all_female" ) );
+            if ( item != null ) {
+                cmbResale.setSelectedItem( item );
+                getResaleProperties();
+            }
         }
         catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Carregar Páginas" );
+            showErrorMessage( e.getMessage() );
         }
     }
 
-
-    private void loadPens( FormDTO dto )
+    public void onSelect$cmbResale()
     {
-        if ( cmbPen == null )
+        loadDealers();
+    }
+
+    private void getResaleProperties()
+    {
+        loadDealers();
+    }
+
+
+    private void loadDealers()
+    {
+        if ( cmbDealer == null )
             return;
         List list;
         try {
-            list = getSession().getPens( getLoggedInUser(), dto );
-            loadCombobox( cmbPen, list );
-            Comboitem item = cmbPen.appendItem( getLabel( "all_female" ) );
+            ResaleDTO resaleDTO = ( ResaleDTO )cmbResale.getSelectedItem().getValue();
+            list = getSession().getDealers( getLoggedInUser(), resaleDTO );
+            if ( cmbDealer.getItems() != null )
+                cmbDealer.getItems().clear();
+            loadCombobox( cmbDealer, list );
+            Comboitem item = cmbDealer.appendItem( getLabel( "all_female" ) );
             if ( item != null )
-                cmbPen.setSelectedItem( item );
+                cmbDealer.setSelectedItem( item );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Carregar Canetas" );
@@ -216,11 +248,7 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
     {
         if ( cmbApplication.getSelectedItem() == null )
             return;
-        FormDTO form = ( FormDTO )cmbApplication.getSelectedItem().getValue();
-
-        loadPages( form );
-        loadPens( form );
-        loadCustom( form );
+        loadCustom( ( FormDTO )cmbApplication.getSelectedItem().getValue() );
     }
 
     private void loadCustom( FormDTO form )
@@ -297,7 +325,6 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
             ListModelList model = getModel();
             model.clear();
             model.addAll( dtos );
-            updateCharts( dtos );
             resultList.invalidate();
         }
         catch ( ApplicationException e ) {
@@ -306,55 +333,100 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
     }
 
 
+    private void updateChart( AnotoSummary sum )
+    {
+        Integer aux = 0;
+
+        if ( sum.getPgc().equals( 0 ) ) {
+            sum.setPgc( 200 );
+            sum.setPrepago( 130 );
+            sum.setBoleto( 90 );
+            sum.setDinheiro( 60 );
+            sum.setDi( 50 );
+            sum.setFoto( 30 );
+            sum.setCvm( 80 );
+            sum.setPap( 120 );
+            sum.setFend( 160 );
+            sum.setRejeitadoCep( 10 );
+            sum.setRejeitadoCredito( 30 );
+        }
+
+        SimplePieModel model = new SimplePieModel();
+        try {
+            aux = ( sum.getPgc() - sum.getFoto() );
+        }
+        catch ( Exception e ) {
+            aux = 0;
+        }
+        chartAttach.setVisible( aux.equals( 0 ) == false || sum.getFoto().equals( 0 ) == false );
+        model.setValue( "Com Foto", sum.getFoto() );
+        model.setValue( "Sem Foto", aux );
+        chartAttach.setModel( model );
+
+        model = new SimplePieModel();
+        try {
+            aux = sum.getPgc() - sum.getPrepago();
+        }
+        catch ( Exception e ) {
+            aux = 0;
+        }
+        model.setValue( "Com Foto", sum.getPrepago() );
+        model.setValue( "Sem Foto", aux );
+        chartType.setVisible( aux.equals( 0 ) == false || sum.getPrepago().equals( 0 ) == false );
+        chartType.setModel( model );
+
+        model = new SimplePieModel();
+        model.setValue( "Dinheiro", sum.getDinheiro() );
+        model.setValue( "Boleto", sum.getBoleto() );
+        model.setValue( "DI", sum.getDi() );
+        chartPay.setModel( model );
+
+        model = new SimplePieModel();
+        model.setValue( "PAP", sum.getPap() );
+        model.setValue( "CVM", sum.getCvm() );
+        chartCategory.setModel( model );
+
+        model = new SimplePieModel();
+        model.setValue( "FEND", sum.getFend() );
+        model.setValue( "Rej. CEP", sum.getRejeitadoCep() );
+        model.setValue( "Rej. Credito", sum.getRejeitadoCredito() );
+        chartStatus.setModel( model );
+
+    }
+
     protected void loadSummary( Properties prop )
     {
         AnotoSummary sum;
+        Integer aux = 0;
         try {
             //Integer id = Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() );
             sum = getSession().getSummary( getLoggedInUser(), prop );
-            if ( summaryList.getItems() != null )
-                summaryList.getItems().clear();
-            Listitem item = new Listitem( "Total de Formulários Processados" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getPgc().toString() ) );
-
-            item = new Listitem( "Com Foto" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getFoto().toString() ) );
-
-            item = new Listitem( "Sem Foto" );
-            item.setParent( summaryList );
-            Integer semFoto = sum.getPgc() - sum.getFoto();
-            item.appendChild( new Listcell( semFoto.toString() ) );
-
-            item = new Listitem( "Pré-pago" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getPrepago().toString() ) );
-
-            item = new Listitem( "Pós-pago" );
-            item.setParent( summaryList );
-            Integer pos = sum.getPgc() - sum.getPrepago();
-            item.appendChild( new Listcell( pos.toString() ) );
-
-            item = new Listitem( "Pagamento em Dinheiro" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getDinheiro().toString() ) );
-
-            item = new Listitem( "Pagamento em Boleto" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getBoleto().toString() ) );
-
-            item = new Listitem( "Pagamento em DI" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getDi().toString() ) );
-
-            item = new Listitem( "PAP" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getPap().toString() ) );
-
-            item = new Listitem( "CVM" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getCvm().toString() ) );
+            labelSummaryForms.setValue( sum.getPgc().toString() );
+            labelSummaryPhoto.setValue( sum.getFoto().toString() );
+            try {
+                aux = ( sum.getPgc() - sum.getFoto() );
+            }
+            catch ( Exception e ) {
+                aux = 0;
+            }
+            labelSummaryNoPhoto.setValue( aux.toString() );
+            labelSummaryPre.setValue( sum.getPrepago().toString() );
+            try {
+                aux = sum.getPgc() - sum.getPrepago();
+            }
+            catch ( Exception e ) {
+                aux = 0;
+            }
+            labelSummaryPos.setValue( aux.toString() );
+            labelSummaryMoney.setValue( sum.getDinheiro().toString() );
+            labelSummaryBoleto.setValue( sum.getBoleto().toString() );
+            labelSummaryDI.setValue( sum.getDi().toString() );
+            labelSummaryPap.setValue( sum.getPap().toString() );
+            labelSummaryCvm.setValue( sum.getCvm().toString() );
+            labelSummaryFend.setValue( "0" );
+            labelSummaryRejectZip.setValue( "0" );
+            labelSummaryRejectCredit.setValue( "0" );
+            updateChart( sum );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Lista de PGC" );
@@ -427,7 +499,6 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getCellNumber() ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLatitude() ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLongitude() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getBarcodeValue() ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getAttach() ? "SIM" : "" ) );
                 addData( sheet, nColumns, nIndex + 1, dto.getFields() );
             }
@@ -462,7 +533,6 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getCellNumber() ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLatitude() ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLongitude() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getBarcodeValue() ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getAttach() ? "SIM" : "" ) );
                 try {
                     addData( sheet, nColumns, nIndex + 1, getSession().getFields( getLoggedInUser(), dto.getPgcPage() ) );
@@ -517,7 +587,6 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
         sheet.addCell( new jxl.write.Label( nIndex++, 0, headCellNumber.getLabel() ) );
         sheet.addCell( new jxl.write.Label( nIndex++, 0, headLatitude.getLabel() ) );
         sheet.addCell( new jxl.write.Label( nIndex++, 0, headLongitude.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headBarcode.getLabel() ) );
         sheet.addCell( new jxl.write.Label( nIndex++, 0, headPhoto.getLabel() ) );
         return nIndex;
     }
@@ -527,26 +596,38 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
         Properties custom = new Properties();
 
         Rows rows = gridCustomFields.getRows();
-        if ( rows == null || rows.getChildren() == null || rows.getChildren().size() < 1 )
-            return;
-        for ( int nIndex = 0; nIndex < rows.getChildren().size(); nIndex++ ) {
-            Row row = ( Row )rows.getChildren().get( nIndex );
-            if ( row == null )
-                continue;
-            String fieldName = ( ( Label )row.getChildren().get( 0 ) ).getValue();
-            Object value = null;
-            XulElement c = ( ( XulElement )row.getChildren().get( 1 ) );
-            if ( c instanceof InputElement ) {
-                String sValue = ( ( InputElement )c ).getRawText();
-                if ( SysUtils.isEmpty( sValue ) )
+        if ( rows != null && rows.getChildren() != null && rows.getChildren().size() >= 1 ) {
+            for ( int nIndex = 0; nIndex < rows.getChildren().size(); nIndex++ ) {
+                Row row = ( Row )rows.getChildren().get( nIndex );
+                if ( row == null )
                     continue;
-                value = sValue.trim();
+                String fieldName = ( ( Label )row.getChildren().get( 0 ) ).getValue();
+                Object value = null;
+                XulElement c = ( ( XulElement )row.getChildren().get( 1 ) );
+                if ( c instanceof InputElement ) {
+                    String sValue = ( ( InputElement )c ).getRawText();
+                    if ( SysUtils.isEmpty( sValue ) )
+                        continue;
+                    value = sValue.trim();
+                }
+                else if ( c instanceof Checkbox ) {
+                    Boolean b = ( ( Checkbox )c ).isChecked();
+                    value = b;
+                }
+                custom.put( fieldName, value );
             }
-            else if ( c instanceof Checkbox ) {
-                Boolean b = ( ( Checkbox )c ).isChecked();
-                value = b;
-            }
-            custom.put( fieldName, value );
+        }
+        /*filtrar por revenda*/
+        if ( ( cmbResale.getSelectedItem() != null && cmbResale.getSelectedItem().getValue() != null ) ) {
+            ResaleDTO dto = ( ResaleDTO )cmbResale.getSelectedItem().getValue();
+            custom.put( "Codigo Revenda", dto.getCode() );
+        }
+        if ( SysUtils.isZero( resaleCode.getValue() ) == false ) {
+            custom.put( "Codigo Revenda", resaleCode.getValue().toString() );
+        }
+        /*filtrar por vendedor*/
+        if ( SysUtils.isZero( dealerCode.getValue() ) == false ) {
+            custom.put( "Codigo Vendedor", dealerCode.getValue().toString() );
         }
         if ( custom.size() > 0 ) {
             prop.put( "custom_fields", custom );
@@ -572,50 +653,16 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
         /*
       * Does pen combo is selected? Have any text?
       */
-        String penInfo = "";
-        if ( cmbPen.getSelectedItem() != null ) {
-            PenDTO pen;
-
-            pen = ( PenDTO )cmbPen.getSelectedItem().getValue();
-            if ( pen != null )
-                penInfo = pen.getId();
+        if ( cmbDealer.getSelectedItem() != null && cmbDealer.getSelectedItem().getValue() != null ) {
+            prop.put( "dealer", cmbDealer.getSelectedItem().getValue() );
         }
-        if ( penInfo.length() > 0 )
-            prop.put( "pen", penInfo );
-        /*
-      * Does we have a init Date?
-      */
-        Date iDate = getDate( initDate, initTime );
+        Date iDate = initDate.getValue();
         if ( iDate != null )
             prop.put( "initDate", iDate );
-        /*
-      * Does we have a end Date?
-      */
-        Date eDate = getDate( endDate, endTime );
+        Date eDate = endDate.getValue();
         if ( eDate != null )
             prop.put( "endDate", eDate );
-        /*
-      * Does we have a barcode?
-      */
-        String barCode = txtBarcode.getValue();
-        if ( SysUtils.isEmpty( barCode ) == false )
-            prop.put( "barCode", barCode );
-        /*
-      * Does we have a barcode?
-      */
-        Integer bookIdFrom = txtFormIdFrom.getValue();
-        if ( SysUtils.isZero( bookIdFrom ) == false ) {
-            /*
-         * Truque. No renderer somamos + 1 ao book id (zero based), porém zero não faz sentido ao usuario
-         */
-            bookIdFrom--;
-            prop.put( "bookIdFrom", bookIdFrom );
-        }
-        Integer bookIdTo = txtFormIdTo.getValue();
-        if ( SysUtils.isZero( bookIdTo ) == false ) {
-            bookIdTo--;
-            prop.put( "bookIdTo", bookIdTo );
-        }
+
         String fieldValue = txtFieldValue.getValue();
         if ( SysUtils.isEmpty( fieldValue ) == false ) {
             prop.put( "pgcFieldValue", fieldValue );
@@ -699,8 +746,8 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
                 }
             } );
 
-        if ( cmbPen != null )
-            cmbPen.addEventListener( Events.ON_OK, new EventListener()
+        if ( cmbDealer != null )
+            cmbDealer.addEventListener( Events.ON_OK, new EventListener()
                 {
                     public void onEvent( Event event )
                     {
@@ -718,46 +765,6 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
                 } );
         if ( endDate != null )
             endDate.addEventListener( Events.ON_OK, new EventListener()
-                {
-                    public void onEvent( Event event )
-                    {
-                        onClick$btnFilter();
-                    }
-                } );
-        if ( initTime != null )
-            initTime.addEventListener( Events.ON_OK, new EventListener()
-                {
-                    public void onEvent( Event event )
-                    {
-                        onClick$btnFilter();
-                    }
-                } );
-        if ( endTime != null )
-            endTime.addEventListener( Events.ON_OK, new EventListener()
-                {
-                    public void onEvent( Event event )
-                    {
-                        onClick$btnFilter();
-                    }
-                } );
-        if ( txtBarcode != null )
-            txtBarcode.addEventListener( Events.ON_OK, new EventListener()
-                {
-                    public void onEvent( Event event )
-                    {
-                        onClick$btnFilter();
-                    }
-                } );
-        if ( txtFormIdFrom != null )
-            txtFormIdFrom.addEventListener( Events.ON_OK, new EventListener()
-                {
-                    public void onEvent( Event event )
-                    {
-                        onClick$btnFilter();
-                    }
-                } );
-        if ( txtFormIdTo != null )
-            txtFormIdTo.addEventListener( Events.ON_OK, new EventListener()
                 {
                     public void onEvent( Event event )
                     {
@@ -790,7 +797,6 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
         setLabel( labelInitDate );
         setLabel( labelPen );
         setLabel( labelEndDate );
-        setLabel( labelBarCode );
         setLabel( labelTo );
         setLabel( labelFieldValue );
         setLabel( labelMaxRecords );
@@ -812,7 +818,6 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
         setLabel( headCellNumber );
         setLabel( headLatitude );
         setLabel( headLongitude );
-        setLabel( headBarcode );
         setLabel( headPhoto );
 
         setLabel( tabFilter );
@@ -832,30 +837,16 @@ public abstract class BaseSearchEmbratelController extends AnotoLoggedController
         return mnuExport;
     }
 
-    private void updateCharts( List<AnotoResultList> result )
+    private EmbratelFacade getSession()
     {
-        chartData.setVisible( SysUtils.isEmpty( result ) == false );
-        chartPen.setVisible( SysUtils.isEmpty( result ) == false );
-
-        updateChartPen( result );
+        if ( session == null )
+            session = ( EmbratelFacade )getRemoteSession( EmbratelFacade.class );
+        return session;
     }
 
-    private void updateChartPen( List<AnotoResultList> result )
+    @Override
+    protected String getPageTitle()
     {
-        if ( SysUtils.isEmpty( result ) )
-            return;
-        HashMap<String, Double> penMap = new HashMap<String, Double>();
-        for ( AnotoResultList item : result ) {
-            Double sum = penMap.get( item.getPen().getId() );
-            if ( sum == null )
-                sum = 0.0;
-            sum++;
-            penMap.put( item.getPen().getId(), sum );
-        }
-        SimplePieModel penModel = new SimplePieModel();
-        for ( String key : penMap.keySet() ) {
-            penModel.setValue( key, penMap.get( key ) );
-        }
-        chartPen.setModel( penModel );
+        return "Painel de Controle - Embratel";
     }
 }

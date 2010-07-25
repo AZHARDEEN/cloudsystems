@@ -25,6 +25,8 @@ import javax.persistence.TemporalType;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = Dealer.getAll, query = "select o from Dealer o where o.resale = ?1 and o.toDate is null " ),
+                 @NamedQuery( name = Dealer.getAllResaleDealers,
+                              query = "select o from Dealer o where o.resale.company = ?1 and o.toDate is null " ),
                  @NamedQuery( name = Dealer.findDealer,
                               query = "select o from Dealer o where o.resale = ?1 and o.dealer = ?2 and o.toDate is null " ),
                  @NamedQuery( name = Dealer.hasResale,
@@ -36,6 +38,7 @@ public class Dealer implements Serializable
 {
 
     public static final String getAll = "Dealer.findAll";
+    public static final String getAllResaleDealers = "Dealer.getAllResaleDealers";
     public static final String findDealer = "Dealer.findDealer";
     public static final String hasResale = "Dealer.hasResale";
     public static final String nextSequence = "Dealer.nextSequence";

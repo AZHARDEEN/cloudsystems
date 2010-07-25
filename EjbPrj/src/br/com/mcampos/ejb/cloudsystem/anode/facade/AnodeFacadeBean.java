@@ -481,6 +481,8 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
                     if ( SysUtils.isEmpty( attachs ) == false )
                         sum.addFoto();
                 }
+                if ( field.getHasPenstrokes() == false )
+                    continue;
                 if ( field.getName().equals( "PAP" ) )
                     sum.addPAP();
                 if ( field.getName().equals( "CVM" ) )

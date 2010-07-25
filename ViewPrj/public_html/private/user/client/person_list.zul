@@ -19,7 +19,7 @@
                     </rows>
                 </grid>
             </north>
-            <center flex="true">
+            <center autoscroll="false">
                 <!-- Por favor, nao mude o id desta div -->
                 <div width="100%" height="100%" id="divListBoxRecord">
                     <!-- Por favor, nao mude o id desta listbox -->
@@ -33,10 +33,10 @@
                             <toolbarbutton id="cmdRefresh" label="##" image="/img/icontexto-webdev-reload-016x016.png"/>
                         </toolbar>
                     </div>
-                    <listbox id="listboxRecord" vflex="true">
+                    <listbox id="listboxRecord" mold="paging" vflex="true">
                         <listhead sizable="true">
-                            <listheader id="listHeaderCode" align="left" label="##" sort="auto" width="10%"/>
-                            <listheader id="listHeaderName" align="left" label="##" sort="auto" width="50%"/>
+                            <listheader id="listHeaderCode" align="left" label="##" sort="auto" width="100px"/>
+                            <listheader id="listHeaderName" align="left" label="##" sort="auto"/>
                         </listhead>
                     </listbox>
                 </div>

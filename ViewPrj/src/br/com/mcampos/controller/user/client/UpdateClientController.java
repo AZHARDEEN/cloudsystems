@@ -70,4 +70,10 @@ public class UpdateClientController extends CompanyController
     {
         return null;
     }
+
+    @Override
+    protected String getPageTitle()
+    {
+        return getLabel( "updateCompanyClient" );
+    }
 }
