@@ -88,7 +88,7 @@ public abstract class BasicListController<DTO> extends BasicCRUDController
 
         listModel = ( ListModelList )getListboxRecord().getModel();
         if ( listModel == null ) {
-            listModel = new ListModelList( new ArrayList<DTO>() );
+            listModel = new ListModelList( new ArrayList<DTO>(), true );
             getListboxRecord().setModel( listModel );
         }
         return listModel;
@@ -136,11 +136,11 @@ public abstract class BasicListController<DTO> extends BasicCRUDController
     protected void afterPersist( Object currentRecord )
     {
         if ( isAddNewOperation() ) {
-            getModel().add( currentRecord );
+            getModel().add( ( DTO )currentRecord );
         }
         else {
             int nIndex = getModel().indexOf( currentRecord );
-            getModel().set( nIndex, currentRecord );
+            getModel().set( nIndex, ( DTO )currentRecord );
         }
         try {
             showRecord( ( DTO )currentRecord );

@@ -15,6 +15,10 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
     private Integer pap;
     private Integer cvm;
 
+    private Integer fend;
+    private Integer rejeitadoCep;
+    private Integer rejeitadoCredito;
+
 
     public AnotoSummary()
     {
@@ -176,5 +180,62 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
         if ( foto == null )
             foto = 0;
         foto++;
+    }
+
+    public void addFend()
+    {
+        if ( fend == null )
+            fend = 0;
+        fend++;
+    }
+
+    public void addRejeitadoCredito()
+    {
+        if ( rejeitadoCredito == null )
+            rejeitadoCredito = 0;
+        rejeitadoCredito++;
+    }
+
+    public void addRejeitadoZip()
+    {
+        if ( rejeitadoCep == null )
+            rejeitadoCep = 0;
+        rejeitadoCep++;
+    }
+
+    public void setFend( Integer fend )
+    {
+        this.fend = fend;
+    }
+
+    public Integer getFend()
+    {
+        if ( fend == null )
+            fend = 0;
+        return fend;
+    }
+
+    public void setRejeitadoCep( Integer rejeitadoCep )
+    {
+        this.rejeitadoCep = rejeitadoCep;
+    }
+
+    public Integer getRejeitadoCep()
+    {
+        if ( rejeitadoCep == null )
+            rejeitadoCep = 0;
+        return rejeitadoCep;
+    }
+
+    public void setRejeitadoCredito( Integer rejeitadoCredito )
+    {
+        this.rejeitadoCredito = rejeitadoCredito;
+    }
+
+    public Integer getRejeitadoCredito()
+    {
+        if ( rejeitadoCredito == null )
+            rejeitadoCredito = 0;
+        return rejeitadoCredito;
     }
 }

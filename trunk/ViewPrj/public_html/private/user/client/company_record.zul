@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <borderlayout id="borderLayout">
-        <north style="background: #D0DEF0" height="65px">
-            <grid>
-                <columns>
-                    <column width="20%" align="center"/>
-                    <column width="60%" align="center"/>
-                    <column width="20%" align="center"/>
-                </columns>
-                <rows>
-                    <row>
-                        <image id="imageClienteLogo"/>
-                        <label id="labelCompanyRecordTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
-                        <image id="imageCompanyLogo"/>
-                    </row>
-                </rows>
-            </grid>
-        </north>
+        <north style="background: #D0DEF0" height="65px" fulfill="=/resources/title.zul"/>
         <center flex="true" fulfill="=/private/user/company.zul"></center>
     </borderlayout>
 </zk>

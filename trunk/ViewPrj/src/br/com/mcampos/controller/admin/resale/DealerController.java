@@ -84,10 +84,12 @@ public class DealerController extends BasicListController<DealerDTO>
     protected Object saveRecord( Object currentRecord )
     {
         DealerDTO dto = ( DealerDTO )currentRecord;
-        ClientDTO client = getSelectedClient();
-        if ( client == null )
-            throw new InvalidParameterException( "Client inválido. Selecione uma pessoa" );
-        dto.setDealer( client.getClient() );
+        if ( dto.getDealer() == null ) {
+            ClientDTO client = getSelectedClient();
+            if ( client == null )
+                throw new InvalidParameterException( "Client inválido. Selecione uma pessoa" );
+            dto.setDealer( client.getClient() );
+        }
         dto.setType( ( DealerTypeDTO )cmbType.getSelectedItem().getValue() );
         return dto;
     }

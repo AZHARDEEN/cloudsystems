@@ -3,7 +3,6 @@ package br.com.mcampos.controller.user.client;
 
 import br.com.mcampos.controller.commom.user.PersonController;
 import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
-
 import br.com.mcampos.exception.ApplicationException;
 
 import org.zkoss.zk.ui.Component;
@@ -47,4 +46,12 @@ public class AddPersonClientController extends PersonController
         super.doAfterCompose( comp );
         setLabel( labelCompanyRecordTitle );
     }
+
+    @Override
+    protected String getPageTitle()
+    {
+        return getLabel( "newPersonClient" );
+    }
+
 }
+

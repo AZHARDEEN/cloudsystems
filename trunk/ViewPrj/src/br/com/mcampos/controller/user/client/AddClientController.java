@@ -56,4 +56,10 @@ public class AddClientController extends CompanyController
             showInfo( dto );
         return dto;
     }
+
+    @Override
+    protected String getPageTitle()
+    {
+        return getLabel( "newCompanyClient" );
+    }
 }

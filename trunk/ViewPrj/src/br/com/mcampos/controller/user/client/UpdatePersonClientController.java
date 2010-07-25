@@ -69,4 +69,10 @@ public class UpdatePersonClientController extends PersonController
     {
         return null;
     }
+
+    @Override
+    protected String getPageTitle()
+    {
+        return getLabel ("updatePersonClient");
+    }
 }
