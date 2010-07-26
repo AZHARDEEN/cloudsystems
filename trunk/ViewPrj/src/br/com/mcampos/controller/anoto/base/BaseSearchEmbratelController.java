@@ -12,7 +12,6 @@ import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.resale.DealerDTO;
 import br.com.mcampos.dto.resale.DealerTypeDTO;
 import br.com.mcampos.dto.resale.ResaleDTO;
-import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.facade.EmbratelFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -566,12 +565,20 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         int nColumns = setHeader( sheet );
         ListModelList model = getModel();
         boolean bFirst = true;
+        List<PgcFieldDTO> fields;
         for ( int nIndex = 0; nIndex < model.getSize(); nIndex++ ) {
             AnotoResultList dto = ( AnotoResultList )model.get( nIndex );
             if ( dto != null ) {
+                try {
+                    fields = getSession().getFields( getLoggedInUser(), dto.getPgcPage() );
+                }
+                catch ( ApplicationException e ) {
+                    showErrorMessage( e.getMessage() );
+                    return;
+                }
                 if ( bFirst ) {
                     bFirst = false;
-                    addHead( sheet, nColumns, dto.getFields() );
+                    addHead( sheet, nColumns, fields );
                 }
                 nColumns = 0;
                 sheet.addCell( new Number( nColumns++, nIndex + 1, nIndex ) );
@@ -587,7 +594,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLongitude() ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getAttach() ? "SIM" : "" ) );
                 try {
-                    addData( sheet, nColumns, nIndex + 1, getSession().getFields( getLoggedInUser(), dto.getPgcPage() ) );
+                    addData( sheet, nColumns, nIndex + 1, fields );
                 }
                 catch ( ApplicationException e ) {
                     showErrorMessage( e.getMessage() );
@@ -615,12 +622,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         if ( SysUtils.isEmpty( fields ) )
             return;
         for ( PgcFieldDTO field : fields ) {
-            String value;
-            if ( field.getType().getId().equals( FieldTypeDTO.typeBoolean ) )
-                value = field.getHasPenstrokes() ? "SIM" : "";
-            else
-                value = SysUtils.isEmpty( field.getRevisedText() ) ? field.getIrcText() : field.getRevisedText();
-            sheet.addCell( new jxl.write.Label( nColumn++, nRow, value ) );
+            sheet.addCell( new jxl.write.Label( nColumn++, nRow, field.getValue() ) );
         }
     }
 
