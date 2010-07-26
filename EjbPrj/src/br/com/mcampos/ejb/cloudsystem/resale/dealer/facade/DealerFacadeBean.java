@@ -115,7 +115,7 @@ public class DealerFacadeBean extends AbstractSecurity implements DealerFacade
     public DealerDTO add( AuthenticationDTO auth, DealerDTO dto ) throws ApplicationException
     {
         Resale resale = getResale( auth, dto.getResale() );
-        Person person = getPerson( dto.getDealer().getId() );
+        Person person = getPerson( dto.getPerson().getId() );
         Dealer dealer = session.get( person );
         if ( dealer != null )
             throwException( 4 );
@@ -130,7 +130,7 @@ public class DealerFacadeBean extends AbstractSecurity implements DealerFacade
         if ( dealer == null ) {
             throwException( 5 );
         }
-        Person person = getPerson( dto.getDealer().getId() );
+        Person person = getPerson( dto.getPerson().getId() );
         if ( person.equals( dealer.getDealer() ) == false ) {
             /*Are you changing dealer????*/
             session.delete( dealer );

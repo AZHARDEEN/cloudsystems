@@ -23,14 +23,14 @@ public class DealerListRenderer implements ListitemRenderer, Serializable
         item.setValue( item );
         if ( item.getChildren().size() == 0 ) {
             new Listcell( dto.getSequence().toString() ).setParent( item );
-            new Listcell( dto.getDealer().toString() ).setParent( item );
+            new Listcell( dto.getPerson().toString() ).setParent( item );
             new Listcell( dto.getType().toString() ).setParent( item );
         }
         else {
             Listcell cell = ( Listcell )item.getChildren().get( 0 );
             cell.setLabel( dto.getSequence().toString() );
             cell = ( Listcell )item.getChildren().get( 1 );
-            cell.setLabel( dto.getDealer().toString() );
+            cell.setLabel( dto.getPerson().toString() );
             cell = ( Listcell )item.getChildren().get( 2 );
             cell.setLabel( dto.getType().toString() );
         }

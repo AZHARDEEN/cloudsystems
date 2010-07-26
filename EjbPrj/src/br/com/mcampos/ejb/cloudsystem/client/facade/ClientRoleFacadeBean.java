@@ -3,13 +3,11 @@ package br.com.mcampos.ejb.cloudsystem.client.facade;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.RoleDTO;
-import br.com.mcampos.dto.user.ClientDTO;
-import br.com.mcampos.ejb.cloudsystem.client.ClientUtil;
-import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
-import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.security.role.Role;
 import br.com.mcampos.ejb.cloudsystem.security.role.RoleSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.security.role.RoleUtils;
+import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
 import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
@@ -23,6 +21,7 @@ import br.com.mcampos.ejb.cloudsystem.user.company.role.CompanyRoleUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.role.entity.CompanyRole;
 import br.com.mcampos.ejb.cloudsystem.user.company.role.entity.CompanyRolePK;
 import br.com.mcampos.ejb.cloudsystem.user.company.role.session.CompanyRoleSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.ejb.session.user.UserSessionLocal;
 import br.com.mcampos.exception.ApplicationException;
@@ -66,7 +65,7 @@ public class ClientRoleFacadeBean extends AbstractSecurity implements ClientRole
     private RoleSessionLocal roleSession;
 
     @EJB
-    private ClientSessionLocal clientSession;
+    private CompanySessionLocal clientSession;
 
 
     protected EntityManager getEntityManager()
@@ -183,10 +182,10 @@ public class ClientRoleFacadeBean extends AbstractSecurity implements ClientRole
         return company;
     }
 
-    public List<ClientDTO> getClients( AuthenticationDTO auth ) throws ApplicationException
+    public List<ListUserDTO> getClients( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
-        List<Client> clients = clientSession.getAll( ( Company )getUser( auth.getCurrentCompany() ) );
-        return ClientUtil.toDTOList( clients );
+        List clients = clientSession.getAll();
+        return UserUtil.copy( clients );
     }
 }

@@ -56,7 +56,7 @@ public class DealerController extends BasicListController<DealerDTO>
     protected void showRecord( DealerDTO record )
     {
         recordType.setValue( record.getType().toString() );
-        recordName.setValue( record.getDealer().toString() );
+        recordName.setValue( record.getPerson().toString() );
     }
 
     protected void clearRecordInfo()
@@ -84,11 +84,11 @@ public class DealerController extends BasicListController<DealerDTO>
     protected Object saveRecord( Object currentRecord )
     {
         DealerDTO dto = ( DealerDTO )currentRecord;
-        if ( dto.getDealer() == null ) {
+        if ( dto.getPerson() == null ) {
             ClientDTO client = getSelectedClient();
             if ( client == null )
                 throw new InvalidParameterException( "Client inválido. Selecione uma pessoa" );
-            dto.setDealer( client.getClient() );
+            dto.setPerson( client.getClient() );
         }
         dto.setType( ( DealerTypeDTO )cmbType.getSelectedItem().getValue() );
         return dto;
@@ -104,7 +104,7 @@ public class DealerController extends BasicListController<DealerDTO>
     protected Object prepareToUpdate( Object currentRecord )
     {
         DealerDTO dto = ( DealerDTO )currentRecord;
-        editName.setValue( dto.getDealer().toString() );
+        editName.setValue( dto.getPerson().toString() );
         findType( dto.getType() );
         listClientPerson.clearSelection();
         return currentRecord;

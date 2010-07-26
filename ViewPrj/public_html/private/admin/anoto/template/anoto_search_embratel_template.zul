@@ -33,13 +33,13 @@
                                                                  onCreate="self.value = new Date()"/>
                                                     </hbox>
                                                 </row>
-                                                <row>
+                                                <row id="rowResale">
                                                     <label value="Revenda" id="labelResale"/>
                                                     <combobox id="cmbResale" width="95%" readonly="true"/>
                                                     <label value="Cód Revenda" id="labelResaleCode"/>
                                                     <intbox id="resaleCode" width="150px"/>
                                                 </row>
-                                                <row>
+                                                <row id="rowDealer">
                                                     <label value="Vendedor" id="labelDealer"/>
                                                     <combobox id="cmbDealer" width="95%" readonly="true"/>
                                                     <label value="Cód Vendedor" id="labelDealerCode"/>

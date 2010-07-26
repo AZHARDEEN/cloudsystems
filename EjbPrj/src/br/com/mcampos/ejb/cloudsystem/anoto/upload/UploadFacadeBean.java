@@ -264,7 +264,7 @@ public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
         AnotoPageField pageField = pageFieldSession.get( new AnotoPageFieldPK( dto.getPgcPage().getAnotoPage(), dto.getName() ) );
         if ( pageField != null ) {
             field.setType( pageField.getType() );
-            if ( pageField.getType().getId() == FieldType.typeBoolean || pageField.hasIcr() == false )
+            if ( pageField.getType().getId().equals( FieldType.typeBoolean ) || pageField.hasIcr() == false )
                 field.setMedia( null );
             field.setSequence( pageField.getSequence() );
         }

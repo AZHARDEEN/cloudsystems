@@ -3,7 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.client.facade;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.RoleDTO;
-import br.com.mcampos.dto.user.ClientDTO;
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
@@ -24,5 +24,5 @@ public interface ClientRoleFacade extends Serializable
 
     void delete( AuthenticationDTO auth, Integer userId, List<RoleDTO> roles ) throws ApplicationException;
 
-    List<ClientDTO> getClients( AuthenticationDTO auth ) throws ApplicationException;
+    List<ListUserDTO> getClients( AuthenticationDTO auth ) throws ApplicationException;
 }

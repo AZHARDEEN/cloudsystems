@@ -4,6 +4,7 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pen.user.session;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUserPK;
+import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -73,5 +74,12 @@ public class AnotoPenUserSessionBean extends Crud<AnotoPenUserPK, AnotoPenUser> 
         if ( SysUtils.isZero( id ) )
             id = 1;
         return id;
+    }
+
+    public AnotoPenUser getUser( Person person, Date date ) throws ApplicationException
+    {
+        String sDate = SysUtils.formatDateForSQLSearch( date );
+        AnotoPenUser p = ( AnotoPenUser )getSingleResult( AnotoPenUser.getPenByUser, person, sDate );
+        return p;
     }
 }

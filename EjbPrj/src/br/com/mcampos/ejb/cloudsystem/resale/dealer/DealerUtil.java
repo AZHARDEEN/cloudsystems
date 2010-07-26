@@ -40,7 +40,7 @@ public final class DealerUtil
             return null;
         DealerDTO dto = new DealerDTO();
         dto.setSequence( entity.getSequence() );
-        dto.setDealer( UserUtil.copy( entity.getDealer() ) );
+        dto.setPerson( UserUtil.copy( entity.getDealer() ) );
         dto.setResale( ResaleUtil.copy( entity.getResale() ) );
         dto.setType( DealerTypeUtil.copy( entity.getDealerType() ) );
         return dto;

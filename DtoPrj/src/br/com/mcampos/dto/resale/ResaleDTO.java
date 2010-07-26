@@ -51,4 +51,17 @@ public class ResaleDTO implements Serializable
     {
         return getResale().getClient().toString();
     }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof Integer ) {
+            return getSequence().equals( ( ( Integer )obj ) );
+        }
+        else if ( obj instanceof ResaleDTO ) {
+            return getSequence().equals( ( ( ResaleDTO )obj ).getSequence() );
+        }
+        else
+            return false;
+    }
 }

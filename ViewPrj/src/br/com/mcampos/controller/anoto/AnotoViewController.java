@@ -13,6 +13,7 @@ import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPropertyDTO;
+import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -55,14 +56,17 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Image;
+import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Paging;
+import org.zkoss.zul.Radio;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Tab;
+import org.zkoss.zul.Textbox;
 
 import sun.awt.image.BufferedImageGraphicsConfig;
 
@@ -78,6 +82,14 @@ public class AnotoViewController extends AnotoLoggedController
     protected float imageRateSize = 0.0F;
     protected static final int targetWidth = 570;
     protected transient BufferedImage currentImage;
+
+
+    protected static final String fieldOs = "Ordem de Servico OS";
+    protected static final String fieldTelefoneLivre = "Numero do Telefone Livre";
+    protected static final String fieldTelefonePortado = "Numero Portado";
+    protected static final String fieldFend = "Venda cadastrada FEND";
+    protected static final String fieldRejeitadoCEP = "Venda rejeitada por CEP inválido";
+    protected static final String fieldRejeitadoCredito = "Venda rejeitada por Análise Credito";
 
 
     private AnotoResultList dtoParam;
@@ -118,8 +130,17 @@ public class AnotoViewController extends AnotoLoggedController
 
     private Gmaps gmapGPS;
 
+    private Intbox ordemServico;
+    private Textbox telefoneLivre;
+    private Textbox numeroPortado;
+    private Radio rejeitadoCEP;
+    private Radio rejeitadoCredito;
 
-    AnotoViewController( char c )
+    private Radio vendaCadastrada;
+    private Radio vendaInvalida;
+
+
+    private AnotoViewController( char c )
     {
         super( c );
     }
@@ -156,6 +177,84 @@ public class AnotoViewController extends AnotoLoggedController
         }
         listFields.setItemRenderer( new PgcFieldListRenderer() );
         preparePaging();
+    }
+
+
+    public void onClick$btnBackofficeSave()
+    {
+        if ( dtoParam == null )
+            return;
+        PgcFieldDTO field;
+        try {
+            field = findField( fieldFend );
+            field.setType( new FieldTypeDTO( FieldTypeDTO.typeBoolean ) );
+            field.setHasPenstrokes( vendaCadastrada.isChecked() );
+            getSession().update( getLoggedInUser(), field );
+
+            if ( vendaCadastrada.isChecked() ) {
+
+                field = findField( fieldOs );
+                field.setRevisedText( ordemServico.getValue().toString() );
+                getSession().update( getLoggedInUser(), field );
+
+                field = findField( fieldTelefoneLivre );
+                field.setRevisedText( telefoneLivre.getValue() );
+                getSession().update( getLoggedInUser(), field );
+
+                field = findField( fieldTelefonePortado );
+                field.setRevisedText( numeroPortado.getValue() );
+                getSession().update( getLoggedInUser(), field );
+
+                field = findField( fieldRejeitadoCredito );
+                field.setHasPenstrokes( false );
+                field.setType( new FieldTypeDTO( FieldTypeDTO.typeBoolean ) );
+                getSession().update( getLoggedInUser(), field );
+
+                field = findField( fieldRejeitadoCEP );
+                field.setType( new FieldTypeDTO( FieldTypeDTO.typeBoolean ) );
+                field.setHasPenstrokes( false );
+                getSession().update( getLoggedInUser(), field );
+            }
+            else {
+                field = findField( fieldOs );
+                field.setType( new FieldTypeDTO( FieldTypeDTO.typeBoolean ) );
+                field.setRevisedText( " " );
+                getSession().update( getLoggedInUser(), field );
+
+                field = findField( fieldRejeitadoCredito );
+                field.setType( new FieldTypeDTO( FieldTypeDTO.typeBoolean ) );
+                field.setHasPenstrokes( rejeitadoCredito.isChecked() );
+                getSession().update( getLoggedInUser(), field );
+
+                field = findField( fieldRejeitadoCEP );
+                field.setType( new FieldTypeDTO( FieldTypeDTO.typeBoolean ) );
+                field.setHasPenstrokes( rejeitadoCEP.isChecked() );
+                getSession().update( getLoggedInUser(), field );
+            }
+            showFields( dtoParam );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
+        }
+    }
+
+    public PgcFieldDTO findField( String name )
+    {
+        for ( PgcFieldDTO field : currentFields ) {
+            if ( field.getName().equalsIgnoreCase( name ) )
+                return field;
+        }
+        PgcFieldDTO field = new PgcFieldDTO( dtoParam.getPgcPage() );
+        field.setEndTime( 0L );
+        field.setHasPenstrokes( false );
+        field.setIrcText( "" );
+        field.setMedia( null );
+        field.setName( name );
+        field.setRevisedText( "" );
+        field.setSequence( 90 );
+        field.setStartTime( 0L );
+        field.setType( new FieldTypeDTO( 1 ) );
+        return field;
     }
 
     protected void preparePaging()
@@ -264,6 +363,38 @@ public class AnotoViewController extends AnotoLoggedController
         }
         model.clear();
         model.addAll( currentFields );
+
+        ordemServico.setValue( 0 );
+        for ( PgcFieldDTO field : currentFields ) {
+            if ( field.getName().equalsIgnoreCase( fieldOs ) ) {
+                try {
+                    ordemServico.setValue( Integer.parseInt( field.getValue() ) );
+                }
+                catch ( Exception e ) {
+                    ordemServico.setValue( 0 );
+                }
+            }
+            else if ( field.getName().equalsIgnoreCase( fieldTelefoneLivre ) ) {
+                telefoneLivre.setValue( field.getValue() );
+            }
+            else if ( field.getName().equalsIgnoreCase( fieldTelefonePortado ) ) {
+                numeroPortado.setValue( field.getValue() );
+            }
+        }
+        if ( SysUtils.isZero( ordemServico.getValue() ) ) {
+            vendaInvalida.setChecked( true );
+            vendaInvalida.setDisabled( false );
+        }
+        else {
+            vendaCadastrada.setChecked( true );
+            vendaInvalida.setDisabled( true );
+            telefoneLivre.setDisabled( SysUtils.isEmpty( numeroPortado.getValue() ) == false );
+        }
+    }
+
+    public void onChange$numeroPortado()
+    {
+        telefoneLivre.setDisabled( SysUtils.isEmpty( numeroPortado.getValue() ) == false );
     }
 
 

@@ -2,7 +2,6 @@ package br.com.mcampos.controller.anoto.renderer;
 
 
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
-import br.com.mcampos.sysutils.SysUtils;
 
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
@@ -28,8 +27,7 @@ public class PgcFieldListRenderer implements ListitemRenderer
             item.appendChild( new Listcell() );
         }
         ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getName() );
-        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( SysUtils.isEmpty( dto.getRevisedText() ) ? dto.getIrcText() :
-                                                                     dto.getRevisedText() );
+        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getValue() );
         if ( dto.getEndTime() != null && dto.getStartTime() != null ) {
             Long diff = dto.getEndTime() - dto.getStartTime();
             Float diffSec = diff.floatValue() / 1000;

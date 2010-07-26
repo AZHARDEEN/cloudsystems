@@ -6,6 +6,8 @@ import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 
@@ -19,4 +21,6 @@ public interface CompanySessionLocal extends Serializable
     Company add( Company entity ) throws ApplicationException;
 
     Company update( Company entity ) throws ApplicationException;
+
+    List<Company> getAll() throws ApplicationException;
 }

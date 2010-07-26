@@ -9,6 +9,8 @@ import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.AnotoSummary;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
+import br.com.mcampos.dto.resale.DealerDTO;
+import br.com.mcampos.dto.resale.DealerTypeDTO;
 import br.com.mcampos.dto.resale.ResaleDTO;
 import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.anoto.facade.EmbratelFacade;
@@ -18,7 +20,6 @@ import br.com.mcampos.sysutils.SysUtils;
 import java.io.File;
 import java.io.IOException;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
@@ -77,7 +78,6 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     private Datebox initDate;
     private Datebox endDate;
     private Listbox resultList;
-    private Grid summaryList;
     private Combobox cmbMaxRecords;
     private Textbox txtFieldValue;
 
@@ -145,6 +145,9 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     private Flashchart chartCategory;
     private Flashchart chartStatus;
 
+    private Row rowResale;
+    private Row rowDealer;
+
     private Grid gridCustomFields;
 
     public BaseSearchEmbratelController()
@@ -169,6 +172,54 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         SimpleDateFormat df = new SimpleDateFormat( "ddMMyyyy HHmmss" );
         df.parse( "24072010 000000" );
         initDate.setValue( df.parse( "24072010 000000" ) );
+
+        DealerDTO myAccount = getSession().myDealerAccount( getLoggedInUser() );
+        if ( myAccount != null ) {
+            rowDealer.setVisible( myAccount.getType().getId().equals( DealerTypeDTO.typeDealer ) == false );
+            rowResale.setVisible( false );
+            findResale( myAccount.getResale() );
+            findDealer( myAccount );
+        }
+        else {
+            rowDealer.setVisible( true );
+            rowResale.setVisible( true );
+        }
+    }
+
+
+    private void findResale( ResaleDTO resale )
+    {
+        if ( resale == null )
+            return;
+        for ( int nIndex = 0; nIndex < cmbResale.getItemCount(); nIndex++ ) {
+            Comboitem item = cmbResale.getItemAtIndex( nIndex );
+            if ( item != null ) {
+                ResaleDTO dto = ( ResaleDTO )item.getValue();
+                if ( resale.equals( dto ) ) {
+                    cmbResale.setSelectedItem( item );
+                    loadDealers( dto );
+                    return;
+                }
+            }
+        }
+        showErrorMessage( "A revenda não foi localizada no cadastro de revendas" );
+    }
+
+    private void findDealer( DealerDTO dealer )
+    {
+        if ( dealer == null )
+            return;
+        for ( int nIndex = 0; nIndex < cmbDealer.getItemCount(); nIndex++ ) {
+            Comboitem item = cmbDealer.getItemAtIndex( nIndex );
+            if ( item != null ) {
+                DealerDTO dto = ( DealerDTO )item.getValue();
+                if ( dealer.equals( dto ) ) {
+                    cmbDealer.setSelectedItem( item );
+                    return;
+                }
+            }
+        }
+        showErrorMessage( "O usuário corrente não foi localizado na revenda" );
     }
 
     private void refresh()
@@ -215,27 +266,28 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
 
     public void onSelect$cmbResale()
     {
-        loadDealers();
+        ResaleDTO resaleDTO = ( ResaleDTO )cmbResale.getSelectedItem().getValue();
+        loadDealers( resaleDTO );
     }
 
     private void getResaleProperties()
     {
-        loadDealers();
+        ResaleDTO resaleDTO = ( ResaleDTO )cmbResale.getSelectedItem().getValue();
+        loadDealers( resaleDTO );
     }
 
 
-    private void loadDealers()
+    private void loadDealers( ResaleDTO resaleDTO )
     {
         if ( cmbDealer == null )
             return;
         List list;
         try {
-            ResaleDTO resaleDTO = ( ResaleDTO )cmbResale.getSelectedItem().getValue();
             list = getSession().getDealers( getLoggedInUser(), resaleDTO );
             if ( cmbDealer.getItems() != null )
                 cmbDealer.getItems().clear();
             loadCombobox( cmbDealer, list );
-            Comboitem item = cmbDealer.appendItem( getLabel( "all_female" ) );
+            Comboitem item = cmbDealer.appendItem( getLabel( "all_male" ) );
             if ( item != null )
                 cmbDealer.setSelectedItem( item );
         }
@@ -370,8 +422,8 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         catch ( Exception e ) {
             aux = 0;
         }
-        model.setValue( "Com Foto", sum.getPrepago() );
-        model.setValue( "Sem Foto", aux );
+        model.setValue( "Pré-pagp", sum.getPrepago() );
+        model.setValue( "Pós-pago", aux );
         chartType.setVisible( aux.equals( 0 ) == false || sum.getPrepago().equals( 0 ) == false );
         chartType.setModel( model );
 
@@ -423,9 +475,9 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
             labelSummaryDI.setValue( sum.getDi().toString() );
             labelSummaryPap.setValue( sum.getPap().toString() );
             labelSummaryCvm.setValue( sum.getCvm().toString() );
-            labelSummaryFend.setValue( "0" );
-            labelSummaryRejectZip.setValue( "0" );
-            labelSummaryRejectCredit.setValue( "0" );
+            labelSummaryFend.setValue( sum.getFend().toString() );
+            labelSummaryRejectZip.setValue( sum.getRejeitadoCep().toString() );
+            labelSummaryRejectCredit.setValue( sum.getRejeitadoCredito().toString() );
             updateChart( sum );
         }
         catch ( ApplicationException e ) {
@@ -625,10 +677,6 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         if ( SysUtils.isZero( resaleCode.getValue() ) == false ) {
             custom.put( "Codigo Revenda", resaleCode.getValue().toString() );
         }
-        /*filtrar por vendedor*/
-        if ( SysUtils.isZero( dealerCode.getValue() ) == false ) {
-            custom.put( "Codigo Vendedor", dealerCode.getValue().toString() );
-        }
         if ( custom.size() > 0 ) {
             prop.put( "custom_fields", custom );
         }
@@ -654,7 +702,19 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
       * Does pen combo is selected? Have any text?
       */
         if ( cmbDealer.getSelectedItem() != null && cmbDealer.getSelectedItem().getValue() != null ) {
-            prop.put( "dealer", cmbDealer.getSelectedItem().getValue() );
+            String pen = null;
+            try {
+                pen = getSession().getDealerPen( getLoggedInUser(), ( DealerDTO )cmbDealer.getSelectedItem().getValue() );
+                if ( SysUtils.isEmpty( pen ) ) {
+                    showErrorMessage( "Vendedor está sem caneta associada atualmente" );
+                    pen = "InvalidPen";
+                }
+            }
+            catch ( Exception e ) {
+                showErrorMessage( e.getMessage() );
+                pen = "InvalidPen";
+            }
+            prop.put( "pen", pen );
         }
         Date iDate = initDate.getValue();
         if ( iDate != null )
@@ -662,7 +722,6 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         Date eDate = endDate.getValue();
         if ( eDate != null )
             prop.put( "endDate", eDate );
-
         String fieldValue = txtFieldValue.getValue();
         if ( SysUtils.isEmpty( fieldValue ) == false ) {
             prop.put( "pgcFieldValue", fieldValue );
@@ -682,31 +741,6 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     {
         loadSummary( getFilters() );
         tabSummary.setSelected( true );
-    }
-
-    private Date getDate( Datebox d, Timebox t )
-    {
-        Date eDate = null;
-        if ( d.getValue() != null )
-            eDate = new Date( d.getValue().getTime() );
-        if ( t.getValue() != null ) {
-            String strDate, strTime;
-            SimpleDateFormat dfh = new SimpleDateFormat( "yyyyMMdd" );
-            SimpleDateFormat dft = new SimpleDateFormat( "HHmm" );
-            if ( eDate == null )
-                eDate = new Date();
-            strDate = dfh.format( eDate );
-            strTime = dft.format( t.getValue() );
-            strDate += strTime;
-            dfh = new SimpleDateFormat( "yyyyMMddHHmm" );
-            try {
-                eDate = dfh.parse( strDate );
-            }
-            catch ( ParseException e ) {
-                e = null;
-            }
-        }
-        return eDate;
     }
 
     public void onSelect$resultList()
@@ -847,6 +881,6 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     @Override
     protected String getPageTitle()
     {
-        return "Painel de Controle - Embratel";
+        return "Painel Gerencial - Embratel";
     }
 }
