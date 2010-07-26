@@ -88,8 +88,7 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
         if ( custom != null ) {
             Set<String> fields = custom.stringPropertyNames();
             String sqlFieldValue = " exists ( select a.pgc_id_in from pgc_field a \n" +
-                " where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " +
-                "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
+                " where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " + "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
             for ( String field : fields ) {
                 sqlFieldValue += " and pfl_name_ch = '" + field + "'";
                 String value = custom.getProperty( field );
@@ -111,8 +110,7 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
         String fieldValue = ( String )( props != null ? props.get( fieldValueParameterName ) : "" );
         if ( SysUtils.isEmpty( fieldValue ) == false ) {
             String sqlFieldValue = " exists ( select a.pgc_id_in from pgc_field a \n" +
-                " where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " +
-                "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
+                " where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " + "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
             jpaWhere.append( " AND " );
             if ( fieldValue.indexOf( "*" ) >= 0 ) {
                 fieldValue = fieldValue.replace( '*', '%' );
@@ -176,8 +174,7 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
         String barCode = ( String )( props != null ? props.get( barCodeParameterName ) : "" );
         if ( SysUtils.isEmpty( barCode ) == false ) {
             String sqlBarCode = " exists ( select a.pgc_id_in from pgc_attachment a \n" +
-                " where a.pgc_id_in = pgc_page.pgc_id_in and " + " a.ppg_book_id = pgc_page.ppg_book_id and " +
-                " a.ppg_page_id = pgc_page.ppg_page_id \n";
+                " where a.pgc_id_in = pgc_page.pgc_id_in and " + " a.ppg_book_id = pgc_page.ppg_book_id and " + " a.ppg_page_id = pgc_page.ppg_page_id \n";
             jpaWhere.append( " AND " );
             if ( barCode.indexOf( "*" ) >= 0 ) {
                 barCode = barCode.replace( '*', '%' );
@@ -205,7 +202,7 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
         sql.append( "    pgc_field.ppg_page_id = pgc_page.ppg_page_id AND " );
         sql.append( "    pgc_page.pgc_id_in = pgc.pgc_id_in AND " );
         sql.append( "    pgc_page.frm_id_in = anoto_form.frm_id_in AND " );
-        sql.append( "    pgc_field.pfl_name_ch in ( 'PAP', 'CVM', 'Dinheiro', 'Deposito_Identificado', 'Boleto_Bancario', 'Reposicao_Pre', 'Reposicao_Pos' ) " );
+        sql.append( "    pgc_field.pfl_name_ch in ( 'PAP', 'CVM', 'Dinheiro', 'Deposito_Identificado', 'Boleto_Bancario', 'Reposicao_Pre', 'Reposicao_Pos', 'Venda cadastrada FEND', 'Venda rejeitada por CEP inválido', 'Venda rejeitada por Análise Credito' ) " );
         return sql;
     }
 }

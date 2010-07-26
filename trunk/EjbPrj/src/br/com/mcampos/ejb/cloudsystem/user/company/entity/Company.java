@@ -1,9 +1,9 @@
 package br.com.mcampos.ejb.cloudsystem.user.company.entity;
 
 
+import br.com.mcampos.ejb.cloudsystem.user.Users;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyType;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
-import br.com.mcampos.ejb.cloudsystem.user.Users;
 
 import java.io.Serializable;
 
@@ -21,13 +21,14 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "Company.findAll", query = "select o from Company o" ) } )
+@NamedQueries( { @NamedQuery( name = Company.getAll, query = "select o from Company o" ) } )
 @Table( name = "company" )
 @DiscriminatorValue( "2" )
 public class Company extends Users implements Serializable
 {
 
     public static final Integer userTypeIdentification = 2;
+    public static final String getAll = "Company.findAll";
 
     @ManyToOne( optional = false )
     @JoinColumn( name = "ctp_id_in", nullable = false, referencedColumnName = "ctp_id_in", columnDefinition = "Integer" )

@@ -36,6 +36,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.resale.ResaleUtil;
 import br.com.mcampos.ejb.cloudsystem.resale.dealer.DealerUtil;
+import br.com.mcampos.ejb.cloudsystem.resale.dealer.entity.Dealer;
 import br.com.mcampos.ejb.cloudsystem.resale.dealer.session.DealerSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.resale.entity.Resale;
 import br.com.mcampos.ejb.cloudsystem.resale.session.ResaleSessionLocal;
@@ -43,12 +44,14 @@ import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
+import br.com.mcampos.ejb.cloudsystem.user.person.session.NewPersonSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -66,6 +69,11 @@ import javax.persistence.PersistenceContext;
 public class EmbratelFacadeBean extends AbstractSecurity implements EmbratelFacade
 {
     protected static final int SystemMessageTypeId = 38;
+
+    protected static final String fieldFend = "Venda cadastrada FEND";
+    protected static final String fieldRejeitadoCEP = "Venda rejeitada por CEP inválido";
+    protected static final String fieldRejeitadoCredito = "Venda rejeitada por Análise Credito";
+
 
     @PersistenceContext( unitName = "EjbPrj" )
     private transient EntityManager em;
@@ -106,6 +114,10 @@ public class EmbratelFacadeBean extends AbstractSecurity implements EmbratelFaca
 
     @EJB
     private DealerSessionLocal dealerSession;
+
+    @EJB
+    private NewPersonSessionLocal personSession;
+
 
     protected EntityManager getEntityManager()
     {
@@ -326,6 +338,12 @@ public class EmbratelFacadeBean extends AbstractSecurity implements EmbratelFaca
                     sum.addBoleto();
                 if ( field.getName().equals( "Reposicao_Pre" ) )
                     sum.addPrepago();
+                if ( field.getName().equals( fieldFend ) )
+                    sum.addFend();
+                if ( field.getName().equals( fieldRejeitadoCEP ) )
+                    sum.addRejeitadoZip();
+                if ( field.getName().equals( fieldRejeitadoCredito ) )
+                    sum.addRejeitadoCredito();
             }
         }
         sum.setPgc( pgcs.size() );
@@ -362,4 +380,17 @@ public class EmbratelFacadeBean extends AbstractSecurity implements EmbratelFaca
         }
     }
 
+    public DealerDTO myDealerAccount( AuthenticationDTO auth ) throws ApplicationException
+    {
+        authenticate( auth );
+        Dealer dealer = dealerSession.get( personSession.get( auth.getUserId() ) );
+        return DealerUtil.copy( dealer );
+    }
+
+    public String getDealerPen( AuthenticationDTO auth, DealerDTO dealer ) throws ApplicationException
+    {
+        authenticate( auth );
+        AnotoPenUser p = penUserSession.getUser( personSession.get( auth.getUserId() ), new Date() );
+        return p != null ? p.getPen().getId() : null;
+    }
 }

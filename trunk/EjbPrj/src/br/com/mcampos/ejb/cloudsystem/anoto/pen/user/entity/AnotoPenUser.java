@@ -32,6 +32,8 @@ import javax.persistence.TemporalType;
                               query = "select max (o.sequence) from AnotoPenUser o where o.pen = ?1" ) } )
 @NamedNativeQueries( { @NamedNativeQuery( name = AnotoPenUser.getUser,
                                           query = "SELECT * FROM ANOTO_PEN_USER WHERE PEN_ID_CH = ?1 AND TO_TIMESTAMP ( ?2, 'YYYYMMDD HH24MISS' ) BETWEEN apu_from_dt and coalesce ( apu_to_dt, now() )",
+                                          resultClass = AnotoPenUser.class ),
+                       @NamedNativeQuery( name = AnotoPenUser.getPenByUser, query = "SELECT * FROM ANOTO_PEN_USER WHERE USR_ID_IN = ?1 AND TO_TIMESTAMP ( ?2, 'YYYYMMDD HH24MISS' ) BETWEEN apu_from_dt and coalesce ( apu_to_dt, now() )",
                                           resultClass = AnotoPenUser.class ) } )
 @Table( name = "anoto_pen_user" )
 @IdClass( AnotoPenUserPK.class )
@@ -40,6 +42,7 @@ public class AnotoPenUser implements Serializable
     public static final String getAll = "AnotoPenUser.findAll";
     public static final String getCurrentUser = "AnotoPenUser.currentPenUser";
     public static final String getUser = "AnotoPenUser.penenUser";
+    public static final String getPenByUser = "AnotoPenUser.getPenByUser";
     public static final String nextSequence = "AnotoPenUser.nextSequence";
 
     @Column( name = "apu_from_dt", nullable = false )

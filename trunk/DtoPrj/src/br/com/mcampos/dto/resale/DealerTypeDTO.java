@@ -4,6 +4,8 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class DealerTypeDTO extends SimpleTableDTO
 {
+    public final static Integer typeDealer = 1;
+
     public DealerTypeDTO( SimpleTableDTO simpleTableDTO )
     {
         super( simpleTableDTO );

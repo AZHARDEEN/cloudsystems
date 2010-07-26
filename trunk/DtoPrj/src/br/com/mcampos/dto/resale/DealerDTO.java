@@ -9,8 +9,9 @@ public class DealerDTO implements Serializable
 {
     private Integer sequence;
     private ResaleDTO resale;
-    private ListUserDTO dealer;
+    private ListUserDTO person;
     private DealerTypeDTO type;
+    private String penId;
 
 
     public DealerDTO()
@@ -38,14 +39,14 @@ public class DealerDTO implements Serializable
         return resale;
     }
 
-    public void setDealer( ListUserDTO dealer )
+    public void setPerson( ListUserDTO dealer )
     {
-        this.dealer = dealer;
+        this.person = dealer;
     }
 
-    public ListUserDTO getDealer()
+    public ListUserDTO getPerson()
     {
-        return dealer;
+        return person;
     }
 
     public void setType( DealerTypeDTO type )
@@ -61,6 +62,35 @@ public class DealerDTO implements Serializable
     @Override
     public String toString()
     {
-        return getDealer().toString();
+        if ( getType().getId().equals( DealerTypeDTO.typeDealer ) )
+            return getPerson().toString();
+        else
+            return getPerson().toString() + " - " + getType().toString();
+    }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( obj == null )
+            return false;
+
+        if ( obj instanceof Integer ) {
+            return getPerson().getId().equals( ( ( Integer )obj ) );
+        }
+        else if ( obj instanceof DealerDTO ) {
+            return getPerson().equals( ( ( DealerDTO )obj ).getPerson() );
+        }
+        else
+            return false;
+    }
+
+    public void setPenId( String penId )
+    {
+        this.penId = penId;
+    }
+
+    public String getPenId()
+    {
+        return penId;
     }
 }

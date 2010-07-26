@@ -2,7 +2,7 @@ package br.com.mcampos.controller.user.client;
 
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
-import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
+import br.com.mcampos.ejb.cloudsystem.client.facade.ClientRoleFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.util.system.SimpleSearchListBox;
 
@@ -15,7 +15,7 @@ import org.zkoss.zk.ui.Component;
 public class ClientSearchBox extends SimpleSearchListBox
 {
     private AuthenticationDTO auth;
-    private ClientFacade session;
+    private ClientRoleFacade session;
 
     public ClientSearchBox( AuthenticationDTO auth, Component parent )
     {
@@ -28,10 +28,10 @@ public class ClientSearchBox extends SimpleSearchListBox
     }
 
 
-    protected ClientFacade getSession()
+    protected ClientRoleFacade getSession()
     {
         if ( session == null )
-            session = ( ClientFacade )getRemoteSession( ClientFacade.class );
+            session = ( ClientRoleFacade )getRemoteSession( ClientRoleFacade.class );
         return session;
     }
 

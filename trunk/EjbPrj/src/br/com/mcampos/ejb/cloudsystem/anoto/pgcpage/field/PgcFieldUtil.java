@@ -15,6 +15,7 @@ public class PgcFieldUtil
     public static PgcField update( PgcField entity, PgcFieldDTO dto )
     {
         entity.setRevisedText( dto.getRevisedText() );
+        entity.setHasPenstrokes( dto.getHasPenstrokes() );
         return entity;
     }
 
@@ -24,13 +25,12 @@ public class PgcFieldUtil
 
         entity.setIcrText( dto.getIrcText() );
         entity.setName( dto.getName() );
-        entity.setRevisedText( dto.getRevisedText() );
         entity.setPgcPage( PgcPageUtil.createEntity( dto.getPgcPage() ) );
-        entity.setHasPenstrokes( dto.getHasPenstrokes() );
         entity.setStartTime( dto.getStartTime() );
         entity.setEndTime( dto.getEndTime() );
         entity.setType( FieldTypeUtil.createEntity( dto.getType() ) );
-        return entity;
+        entity.setSequence( dto.getSequence() );
+        return update( entity, dto );
     }
 
 }

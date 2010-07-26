@@ -8,17 +8,16 @@ import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.anoto.form.user.entity.AnotoFormUser;
-import br.com.mcampos.ejb.cloudsystem.anoto.form.user.session.AnotoFormUserSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnodePenSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.session.AnotoPenUserSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.entity.AnotoPenPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.penpage.session.PenPageSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.client.ClientUtil;
+import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
+import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
-import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
@@ -58,13 +57,10 @@ public class PenPageUserFacadeBean extends AbstractSecurity implements PenPageUs
     private AnotoFormSessionLocal formSession;
 
     @EJB
-    private AnotoFormUserSessionLocal formUserSession;
+    private ClientSessionLocal clienSession;
 
     @EJB
     private CompanySessionLocal companySession;
-
-    @EJB
-    private NewCollaboratorSessionLocal collaboratorSession;
 
     @EJB
     private NewPersonSessionLocal personSession;
@@ -120,19 +116,9 @@ public class PenPageUserFacadeBean extends AbstractSecurity implements PenPageUs
     public List<ListUserDTO> getCollaborators( AuthenticationDTO auth, FormDTO dto ) throws ApplicationException
     {
         authenticate( auth );
-        List<AnotoFormUser> formUsers = formUserSession.get( dto.getId() );
-        if ( SysUtils.isEmpty( formUsers ) )
-            return Collections.emptyList();
-        List<ListUserDTO> list = new ArrayList<ListUserDTO>();
-        for ( AnotoFormUser user : formUsers ) {
-            List<Collaborator> collaborators = collaboratorSession.get( user.getCompany() );
-            for ( Collaborator c : collaborators ) {
-                ListUserDTO userDto = UserUtil.copy( c.getPerson() );
-                if ( list.contains( userDto ) == false )
-                    list.add( userDto );
-            }
-        }
-        return list;
+        Company company = companySession.get( auth.getCurrentCompany() );
+        List<Client> list = clienSession.getAllPersonClients( company );
+        return ClientUtil.toUserDTOList( list );
     }
 
 

@@ -4,7 +4,7 @@ package br.com.mcampos.controller.user.client;
 import br.com.mcampos.controller.admin.security.roles.RoleListRenderer;
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.security.RoleDTO;
-import br.com.mcampos.dto.user.ClientDTO;
+import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.ejb.cloudsystem.client.facade.ClientRoleFacade;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -159,9 +159,9 @@ public class ClientRoleController extends LoggedBaseController
 
     public void onClick$btnSearch()
     {
-        ClientDTO c = ( ClientDTO )ClientSearchBox.show( getLoggedInUser(), getRootParent() );
+        ListUserDTO c = ( ListUserDTO )ClientSearchBox.show( getLoggedInUser(), getRootParent() );
         if ( c != null ) {
-            clientId = c.getClient().getId();
+            clientId = c.getId();
             try {
                 loadRoles();
             }

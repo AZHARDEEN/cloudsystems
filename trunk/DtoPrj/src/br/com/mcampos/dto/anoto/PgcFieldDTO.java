@@ -3,6 +3,7 @@ package br.com.mcampos.dto.anoto;
 
 import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.io.Serializable;
 
@@ -146,5 +147,13 @@ public class PgcFieldDTO implements Serializable, Comparable<PgcFieldDTO>
     public Integer getSequence()
     {
         return sequence;
+    }
+
+    public String getValue()
+    {
+        if ( getType().getId().equals( FieldTypeDTO.typeBoolean ) == false )
+            return ( SysUtils.isEmpty( getRevisedText() ) ? getIrcText() : getRevisedText() );
+        else
+            return getHasPenstrokes() ? "SIM" : "";
     }
 }

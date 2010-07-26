@@ -26,6 +26,7 @@
                             <!-- Por favor, nao mude o id desta div -->
                             <tabbox>
                                 <tabs>
+                                    <tab id="tabBackoffice" label="Backoffice"/>
                                     <tab id="tabIcr" label="##"/>
                                     <tab id="tabPgc" label="##"/>
                                     <tab id="tabbarCode" label="##"/>
@@ -33,6 +34,59 @@
                                     <tab id="tabGPS" label="##"/>
                                 </tabs>
                                 <tabpanels>
+                                    <tabpanel>
+                                        <radiogroup id="optionStatus">
+                                            <grid width="100%">
+                                                <columns>
+                                                    <column width="50%" align="center"/>
+                                                    <column width="50%" align="center"/>
+                                                </columns>
+                                                <rows>
+                                                    <row>
+                                                        <radio label="Venda Cadastrada" id="vendaCadastrada"
+                                                               onCheck="gridVendaOK.visible=true;optionRejeicao.visible=false;ordemServico.value=null;"/>
+                                                        <radio label="Venda Inválida" id="vendaInvalida"
+                                                               onCheck="gridVendaOK.visible=false;optionRejeicao.visible=true;"/>
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </radiogroup>
+                                        <grid id="gridVendaOK" width="100%" visible="false">
+                                            <columns>
+                                                <column width="50%" align="left" label="Campo"/>
+                                                <column width="50%" align="left" label="Valor"/>
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <label value="Ordem de Serviço"/>
+                                                    <intbox id="ordemServico"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Telefone Livre"/>
+                                                    <textbox id="telefoneLivre"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Número Portado"/>
+                                                    <textbox id="numeroPortado"/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                        <radiogroup id="optionRejeicao" visible="false">
+                                            <grid width="100%">
+                                                <columns>
+                                                    <column width="50%" align="center" label="Motivo da Rejeição"/>
+                                                    <column width="50%" align="center"/>
+                                                </columns>
+                                                <rows>
+                                                    <row>
+                                                        <radio label="CEP Inválido" id="rejeitadoCEP"/>
+                                                        <radio label="Análise Crédito" id="rejeitadoCredito"/>
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </radiogroup>
+                                        <button id="btnBackofficeSave" label="Salvar"/>
+                                    </tabpanel>
                                     <tabpanel>
                                         <listbox id="listFields" width="100%" height="400px" mold="paging">
                                             <listhead sizable="true">

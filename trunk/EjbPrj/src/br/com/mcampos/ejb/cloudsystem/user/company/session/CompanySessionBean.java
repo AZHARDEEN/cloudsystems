@@ -10,6 +10,8 @@ import br.com.mcampos.ejb.cloudsystem.user.document.session.UserDocumentSessionL
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -71,5 +73,10 @@ public class CompanySessionBean extends Crud<Integer, Company> implements Compan
                 return ( Company )d.getUser();
         }
         return null;
+    }
+
+    public List<Company> getAll() throws ApplicationException
+    {
+        return ( List<Company> )getResultList( Company.getAll );
     }
 }

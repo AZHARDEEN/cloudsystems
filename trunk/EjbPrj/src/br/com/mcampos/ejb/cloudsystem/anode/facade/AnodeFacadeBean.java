@@ -647,6 +647,10 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             PgcFieldUtil.update( pgcField, field );
             pgcFieldSession.update( pgcField );
         }
+        else {
+            pgcField = PgcFieldUtil.createEntity( field );
+            pgcFieldSession.add( pgcField );
+        }
     }
 
     public Integer remove( AuthenticationDTO auth, AnotoResultList item ) throws ApplicationException

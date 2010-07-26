@@ -112,6 +112,8 @@ public class AnotoQualityVerifyController extends LoggedBaseController
         if ( gridQuality.getRows() != null && gridQuality.getRows().getChildren() != null )
             gridQuality.getRows().getChildren().clear();
         for ( PgcFieldDTO field : currentFields ) {
+            if ( field.getType().equals( FieldTypeDTO.typeBoolean ) )
+                continue;
             Row row = createRow( field );
             if ( row == null )
                 continue;
@@ -166,7 +168,7 @@ public class AnotoQualityVerifyController extends LoggedBaseController
     {
         Row row = null;
 
-        if ( field != null && field.getType().getId() != FieldTypeDTO.typeBoolean && field.getMedia() != null ) {
+        if ( field != null && field.getType().getId().equals( FieldTypeDTO.typeBoolean ) == false && field.getMedia() != null ) {
             MediaDTO media = field.getMedia();
             row = new Row();
             Vbox box = new Vbox();

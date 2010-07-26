@@ -37,4 +37,8 @@ public interface EmbratelFacade extends Serializable
     List<PgcFieldDTO> getFields( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException;
 
     List<DealerDTO> getDealers( AuthenticationDTO auth, ResaleDTO resale ) throws ApplicationException;
+
+    DealerDTO myDealerAccount( AuthenticationDTO auth ) throws ApplicationException;
+
+    String getDealerPen( AuthenticationDTO auth, DealerDTO dealer ) throws ApplicationException;
 }
