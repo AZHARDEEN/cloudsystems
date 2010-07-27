@@ -228,11 +228,11 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
         return fend;
     }
 
-    public Integer addPospago()
+    public void addPospago()
     {
         if ( pospago == null )
             pospago = 0;
-        return pospago;
+        pospago++;
     }
 
     public void setRejeitadoCep( Integer rejeitadoCep )

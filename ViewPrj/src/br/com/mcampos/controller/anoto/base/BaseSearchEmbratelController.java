@@ -2,7 +2,7 @@ package br.com.mcampos.controller.anoto.base;
 
 
 import br.com.mcampos.controller.anoto.AnotoViewController;
-import br.com.mcampos.controller.anoto.renderer.PgcPenPageListRenderer;
+import br.com.mcampos.controller.anoto.renderer.EmbratelResultListRenderer;
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
@@ -115,17 +115,10 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     private Menuitem mnuExport2;
 
     private Listheader headSeq;
-    private Listheader headApplication;
-    private Listheader headFormulario;
-    private Listheader headPagina;
-    private Listheader headPen;
     private Listheader headDate;
 
-    private Listheader headUserName;
-    private Listheader headEmail;
+    private Listheader headDealerName;
     private Listheader headCellNumber;
-    private Listheader headLatitude;
-    private Listheader headLongitude;
     private Listheader headPhoto;
 
     private Column columnFieldName;
@@ -165,7 +158,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         super.doAfterCompose( comp );
         configureLabels();
         refresh();
-        resultList.setItemRenderer( new PgcPenPageListRenderer() );
+        resultList.setItemRenderer( new EmbratelResultListRenderer() );
         cmbMaxRecords.setSelectedIndex( 0 );
         configureonOkEvents();
         SimpleDateFormat df = new SimpleDateFormat( "ddMMyyyy HHmmss" );
@@ -405,7 +398,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         chartAttach.setModel( model );
 
         model = new SimplePieModel();
-        model.setValue( "Pré-pagp", sum.getPrepago() );
+        model.setValue( "Pré-pago", sum.getPrepago() );
         model.setValue( "Pós-pago", sum.getPospago() );
         chartType.setModel( model );
 
@@ -431,27 +424,14 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     protected void loadSummary( Properties prop )
     {
         AnotoSummary sum;
-        Integer aux = 0;
         try {
             //Integer id = Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() );
             sum = getSession().getSummary( getLoggedInUser(), prop );
             labelSummaryForms.setValue( sum.getPgc().toString() );
             labelSummaryPhoto.setValue( sum.getFoto().toString() );
-            try {
-                aux = ( sum.getPgc() - sum.getFoto() );
-            }
-            catch ( Exception e ) {
-                aux = 0;
-            }
-            labelSummaryNoPhoto.setValue( aux.toString() );
+            labelSummaryNoPhoto.setValue( sum.getSemFoto().toString() );
             labelSummaryPre.setValue( sum.getPrepago().toString() );
-            try {
-                aux = sum.getPgc() - sum.getPrepago();
-            }
-            catch ( Exception e ) {
-                aux = 0;
-            }
-            labelSummaryPos.setValue( aux.toString() );
+            labelSummaryPos.setValue( sum.getPospago().toString() );
             labelSummaryMoney.setValue( sum.getDinheiro().toString() );
             labelSummaryBoleto.setValue( sum.getBoleto().toString() );
             labelSummaryDI.setValue( sum.getDi().toString() );
@@ -523,16 +503,9 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
                 }
                 nColumns = 0;
                 sheet.addCell( new Number( nColumns++, nIndex + 1, nIndex + 1 ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getForm().toString() ) );
-                sheet.addCell( new Number( nColumns++, nIndex + 1, dto.getPgcPage().getBookId() + 1 ) );
-                sheet.addCell( new Number( nColumns++, nIndex + 1, dto.getPgcPage().getPageId() + 1 ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getPen().toString() ) );
                 sheet.addCell( new DateTime( nColumns++, nIndex + 1, dto.getPgcPage().getPgc().getInsertDate() ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getUserName() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getEmail() ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getCellNumber() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLatitude() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLongitude() ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getAttach() ? "SIM" : "" ) );
                 addData( sheet, nColumns, nIndex + 1, dto.getFields() );
             }
@@ -545,7 +518,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     private void writeToExcell2( WritableWorkbook workbook ) throws WriteException, RowsExceededException, IOException
     {
         WritableSheet sheet = workbook.createSheet( "Exported Data", 0 );
-        int nColumns = setHeader( sheet );
+        int nColumns = setHeader2( sheet );
         ListModelList model = getModel();
         boolean bFirst = true;
         List<PgcFieldDTO> fields;
@@ -609,16 +582,28 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         int nIndex = 1;
         jxl.write.Label l = new jxl.write.Label( 0, 0, headSeq.getLabel() );
         sheet.addCell( l );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headApplication.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headFormulario.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headPagina.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headPen.getLabel() ) );
         sheet.addCell( new jxl.write.Label( nIndex++, 0, headDate.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headUserName.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headEmail.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headDealerName.getLabel() ) );
         sheet.addCell( new jxl.write.Label( nIndex++, 0, headCellNumber.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headLatitude.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headLongitude.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headPhoto.getLabel() ) );
+        return nIndex;
+    }
+
+    private int setHeader2( WritableSheet sheet ) throws WriteException, RowsExceededException
+    {
+        int nIndex = 1;
+        jxl.write.Label l = new jxl.write.Label( 0, 0, headSeq.getLabel() );
+        sheet.addCell( l );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Aplicação" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Formulário" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Página" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Caneta" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headDate.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headDealerName.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Email" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, headCellNumber.getLabel() ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Latitude" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Longitude" ) );
         sheet.addCell( new jxl.write.Label( nIndex++, 0, headPhoto.getLabel() ) );
         return nIndex;
     }
@@ -822,16 +807,9 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         setLabel( btnSummary );
 
         setLabel( headSeq );
-        setLabel( headApplication );
-        setLabel( headFormulario );
-        setLabel( headPagina );
-        setLabel( headPen );
         setLabel( headDate );
-        setLabel( headUserName );
-        setLabel( headEmail );
+        setLabel( headDealerName );
         setLabel( headCellNumber );
-        setLabel( headLatitude );
-        setLabel( headLongitude );
         setLabel( headPhoto );
 
         setLabel( tabFilter );
