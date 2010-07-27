@@ -20,6 +20,8 @@ public class DealerType implements Serializable
     public static final String getAll = "DealerType.findAll";
     public static final String nextId = "DealerType.nextId";
 
+    public static final Integer typeDealer = 1;
+
     @Column( name = "dtp_description_ch", nullable = false )
     private String description;
 

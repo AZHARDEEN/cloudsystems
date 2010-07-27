@@ -38,6 +38,7 @@ import br.com.mcampos.ejb.cloudsystem.resale.ResaleUtil;
 import br.com.mcampos.ejb.cloudsystem.resale.dealer.DealerUtil;
 import br.com.mcampos.ejb.cloudsystem.resale.dealer.entity.Dealer;
 import br.com.mcampos.ejb.cloudsystem.resale.dealer.session.DealerSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.resale.dealer.type.entity.DealerType;
 import br.com.mcampos.ejb.cloudsystem.resale.entity.Resale;
 import br.com.mcampos.ejb.cloudsystem.resale.session.ResaleSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
@@ -336,8 +337,12 @@ public class EmbratelFacadeBean extends AbstractSecurity implements EmbratelFaca
                     sum.addDI();
                 if ( field.getName().equals( "Boleto_Bancario" ) )
                     sum.addBoleto();
-                if ( field.getName().equals( "Reposicao_Pre" ) )
+                if ( field.getName().equals( "Plano Pre 15" ) || field.getName().equals( "Plano Pre 35" ) )
                     sum.addPrepago();
+                if ( field.getName().equals( "Plano Pos LPF" ) || field.getName().equals( "Plano Pos Shine LPF" ) ||
+                     field.getName().equals( "Plano Pos 30" ) || field.getName().equals( "Plano Pos Combo via 30" ) ||
+                     field.getName().equals( "Plano Pos Combo via LPF" ) )
+                    sum.addPospago();
                 if ( field.getName().equals( fieldFend ) )
                     sum.addFend();
                 if ( field.getName().equals( fieldRejeitadoCEP ) )
@@ -372,11 +377,11 @@ public class EmbratelFacadeBean extends AbstractSecurity implements EmbratelFaca
     {
         if ( resale != null ) {
             Resale r = getResale( auth, resale );
-            return DealerUtil.toDTOList( dealerSession.getAll( r ) );
+            return DealerUtil.toDTOList( dealerSession.getAll( r ), DealerType.typeDealer );
         }
         else {
             Company owner = getCompany( auth );
-            return DealerUtil.toDTOList( dealerSession.getAll( owner ) );
+            return DealerUtil.toDTOList( dealerSession.getAll( owner ), DealerType.typeDealer );
         }
     }
 
