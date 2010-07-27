@@ -7,6 +7,7 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
     private Integer pgc;
     private Integer foto;
     private Integer prepago;
+    private Integer pospago;
 
     private Integer dinheiro;
     private Integer boleto;
@@ -48,6 +49,18 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
         if ( foto == null )
             foto = 0;
         return foto;
+    }
+
+    public Integer getSemFoto()
+    {
+        Integer total = 0;
+        try {
+            total = getPgc() - getFoto();
+        }
+        catch ( Exception e ) {
+            total = 0;
+        }
+        return total;
     }
 
     public void setPrepago( Integer prepago )
@@ -215,6 +228,13 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
         return fend;
     }
 
+    public Integer addPospago()
+    {
+        if ( pospago == null )
+            pospago = 0;
+        return pospago;
+    }
+
     public void setRejeitadoCep( Integer rejeitadoCep )
     {
         this.rejeitadoCep = rejeitadoCep;
@@ -237,5 +257,17 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
         if ( rejeitadoCredito == null )
             rejeitadoCredito = 0;
         return rejeitadoCredito;
+    }
+
+    public void setPospago( Integer pospago )
+    {
+        this.pospago = pospago;
+    }
+
+    public Integer getPospago()
+    {
+        if ( pospago == null )
+            pospago = 0;
+        return pospago;
     }
 }

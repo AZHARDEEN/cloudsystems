@@ -57,4 +57,16 @@ public final class DealerUtil
         return listDTO;
     }
 
+    public static List<DealerDTO> toDTOList( List<Dealer> list, Integer dealerType )
+    {
+        if ( SysUtils.isEmpty( list ) )
+            return Collections.emptyList();
+        ArrayList<DealerDTO> listDTO = new ArrayList<DealerDTO>( list.size() );
+        for ( Dealer m : list ) {
+            if ( m.getDealerType().getId().equals( dealerType ) )
+                listDTO.add( copy( m ) );
+        }
+        return listDTO;
+    }
+
 }

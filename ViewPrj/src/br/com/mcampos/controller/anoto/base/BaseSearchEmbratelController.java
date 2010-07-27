@@ -218,7 +218,6 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
                 }
             }
         }
-        showErrorMessage( "O usuário corrente não foi localizado na revenda" );
     }
 
     private void refresh()
@@ -386,8 +385,6 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
 
     private void updateChart( AnotoSummary sum )
     {
-        Integer aux = 0;
-
         if ( sum.getPgc().equals( 0 ) ) {
             sum.setPgc( 200 );
             sum.setPrepago( 130 );
@@ -403,27 +400,13 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         }
 
         SimplePieModel model = new SimplePieModel();
-        try {
-            aux = ( sum.getPgc() - sum.getFoto() );
-        }
-        catch ( Exception e ) {
-            aux = 0;
-        }
-        chartAttach.setVisible( aux.equals( 0 ) == false || sum.getFoto().equals( 0 ) == false );
         model.setValue( "Com Foto", sum.getFoto() );
-        model.setValue( "Sem Foto", aux );
+        model.setValue( "Sem Foto", sum.getSemFoto() );
         chartAttach.setModel( model );
 
         model = new SimplePieModel();
-        try {
-            aux = sum.getPgc() - sum.getPrepago();
-        }
-        catch ( Exception e ) {
-            aux = 0;
-        }
         model.setValue( "Pré-pagp", sum.getPrepago() );
-        model.setValue( "Pós-pago", aux );
-        chartType.setVisible( aux.equals( 0 ) == false || sum.getPrepago().equals( 0 ) == false );
+        model.setValue( "Pós-pago", sum.getPospago() );
         chartType.setModel( model );
 
         model = new SimplePieModel();
@@ -539,7 +522,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
                     addHead( sheet, nColumns, dto.getFields() );
                 }
                 nColumns = 0;
-                sheet.addCell( new Number( nColumns++, nIndex + 1, nIndex ) );
+                sheet.addCell( new Number( nColumns++, nIndex + 1, nIndex + 1 ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getForm().toString() ) );
                 sheet.addCell( new Number( nColumns++, nIndex + 1, dto.getPgcPage().getBookId() + 1 ) );
                 sheet.addCell( new Number( nColumns++, nIndex + 1, dto.getPgcPage().getPageId() + 1 ) );
@@ -581,7 +564,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
                     addHead( sheet, nColumns, fields );
                 }
                 nColumns = 0;
-                sheet.addCell( new Number( nColumns++, nIndex + 1, nIndex ) );
+                sheet.addCell( new Number( nColumns++, nIndex + 1, nIndex + 1 ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getForm().toString() ) );
                 sheet.addCell( new Number( nColumns++, nIndex + 1, dto.getPgcPage().getBookId() + 1 ) );
                 sheet.addCell( new Number( nColumns++, nIndex + 1, dto.getPgcPage().getPageId() + 1 ) );
@@ -593,12 +576,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLatitude() ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLongitude() ) );
                 sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getAttach() ? "SIM" : "" ) );
-                try {
-                    addData( sheet, nColumns, nIndex + 1, fields );
-                }
-                catch ( ApplicationException e ) {
-                    showErrorMessage( e.getMessage() );
-                }
+                addData( sheet, nColumns, nIndex + 1, fields );
             }
         }
         workbook.write();
