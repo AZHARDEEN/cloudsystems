@@ -46,7 +46,7 @@
                                                         <timebox id="initTime" format="HH:mm"/>
                                                     </hbox>
                                                 </row>
-                                                <row>
+                                                <row id="rowPen">
                                                     <label value="##" id="labelPen"/>
                                                     <combobox id="cmbPen" width="95%" readonly="true"/>
                                                     <label value="##" id="labelEndDate"/>
@@ -55,7 +55,7 @@
                                                         <timebox id="endTime" format="HH:mm"/>
                                                     </hbox>
                                                 </row>
-                                                <row>
+                                                <row id="rowBarcode">
                                                     <label value="##" id="labelBarCode"/>
                                                     <textbox id="txtBarcode" width="200px"/>
                                                     <label value="##" id="labelFormNumber"/>

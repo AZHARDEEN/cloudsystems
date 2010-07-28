@@ -28,8 +28,8 @@
                                 <tabs>
                                     <tab id="tabBackoffice" label="Backoffice"/>
                                     <tab id="tabIcr" label="##"/>
-                                    <tab id="tabPgc" label="##"/>
-                                    <tab id="tabbarCode" label="##"/>
+                                    <tab id="tabPgc" label="##" visible="false"/>
+                                    <tab id="tabbarCode" label="##" visible="false"/>
                                     <tab id="tabPhotos" label="##"/>
                                     <tab id="tabGPS" label="##"/>
                                 </tabs>

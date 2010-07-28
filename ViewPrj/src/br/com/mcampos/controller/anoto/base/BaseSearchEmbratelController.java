@@ -715,7 +715,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
 
     protected void gotoPage( Properties params )
     {
-        gotoPage( "/private/admin/anoto/anoto_view.zul", getRootParent().getParent(), params );
+        gotoPage( "/private/admin/anoto/embratel_view.zul", getRootParent().getParent(), params );
     }
 
 

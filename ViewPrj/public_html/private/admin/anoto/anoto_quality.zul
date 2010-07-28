@@ -1,6 +1,174 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoQualityController"
-         fulfill="=/private/admin/anoto/template/anoto_search_template.zul"/>
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoQualityController">
+        <borderlayout id="borderLayout">
+            <north autoscroll="false" height="65px">
+                <grid>
+                    <columns>
+                        <column width="20%" align="center"/>
+                        <column width="60%" align="center"/>
+                        <column width="20%" align="center"/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <image id="imageClienteLogo"/>
+                            <label id="labelFormView2Title" style="font-size:20px;color:#0C7A9A" value="##" width="80%"/>
+                            <image id="imageCompanyLogo"/>
+                        </row>
+                    </rows>
+                </grid>
+            </north>
+            <center flex="true" autoscroll="false">
+                <div>
+                    <borderlayout>
+                        <north>
+                            <div>
+                                <tabbox>
+                                    <tabs>
+                                        <tab id="tabFilter" label="##"/>
+                                        <tab id="tabCustomFilter" label="##"/>
+                                    </tabs>
+                                    <tabpanels>
+                                        <tabpanel>
+                                            <grid>
+                                                <columns>
+                                                    <column width="10%"/>
+                                                    <column width="40%"/>
+                                                    <column width="10%"/>
+                                                    <column width="40%"/>
+                                                </columns>
+                                                <rows>
+                                                    <row>
+                                                        <label value="##" id="labelApplication"/>
+                                                        <combobox id="cmbApplication" width="95%" readonly="true"/>
+                                                        <label value="##" id="labelMaxRecords"/>
+                                                        <combobox id="cmbMaxRecords" width="50px" readonly="true">
+                                                            <comboitem value="20" label="20"/>
+                                                            <comboitem value="30" label="30"/>
+                                                            <comboitem value="40" label="40"/>
+                                                            <comboitem value="50" label="50"/>
+                                                            <comboitem value="100" label="100"/>
+                                                            <comboitem value="200" label="200"/>
+                                                        </combobox>
+                                                    </row>
+                                                    <row id="rowPen" visible="false">
+                                                        <label value="##" id="labelPen"/>
+                                                        <combobox id="cmbPen" width="95%" readonly="true"/>
+                                                        <label value="##" id="labelEndDate"/>
+                                                        <hbox>
+                                                            <datebox id="endDate" format="dd/MM/yyyy"/>
+                                                            <timebox id="endTime" format="HH:mm"/>
+                                                        </hbox>
+                                                    </row>
+                                                    <row id="rowBarcode" visible="false">
+                                                        <label value="##" id="labelBarCode"/>
+                                                        <textbox id="txtBarcode" width="200px"/>
+                                                        <label value="##" id="labelFormNumber"/>
+                                                        <hbox>
+                                                            <intbox id="txtFormIdFrom" width="50px"/>
+                                                            <label value="##" id="labelTo"/>
+                                                            <intbox id="txtFormIdTo" width="50px"/>
+                                                        </hbox>
+                                                    </row>
+                                                    <row visible="false">
+                                                        <label value="##" id="labelFieldValue"/>
+                                                        <textbox id="txtFieldValue" width="99%"/>
+                                                        <label value="##" id="labelInitDate"/>
+                                                        <hbox>
+                                                            <datebox id="initDate" format="dd/MM/yyyy"/>
+                                                            <timebox id="initTime" format="HH:mm"/>
+                                                        </hbox>
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </tabpanel>
+                                        <tabpanel>
+                                            <grid id="gridCustomFields" height="110px">
+                                                <columns>
+                                                    <column width="40%" id="columnFieldName" label="##"/>
+                                                    <column id="columnFieldValue" label="##"/>
+                                                </columns>
+                                            </grid>
+                                        </tabpanel>
+                                    </tabpanels>
+                                </tabbox>
+                                <separator height="15px"/>
+                                <grid align="center" width="100%">
+                                    <columns>
+                                        <column align="center"/>
+                                        <column align="center"/>
+                                        <column align="center"/>
+                                    </columns>
+                                    <rows>
+                                        <row>
+                                            <button id="btnFilter" label="##" image="/img/icontexto-webdev-search-016x016.png"/>
+                                            <button id="btnSummary" label="##" image="/img/icontexto-webdev-file-016x016.png"/>
+                                            <menubar>
+                                                <menu label="Exportar">
+                                                    <menupopup>
+                                                        <menuitem id="mnuExport" label="##"
+                                                                  image="/img/icontexto-webdev-file-016x016.png"/>
+                                                        <menuitem id="mnuExport2" label="##"
+                                                                  image="/img/icontexto-webdev-file-016x016.png"/>
+                                                    </menupopup>
+                                                </menu>
+                                            </menubar>
+                                        </row>
+                                    </rows>
+                                </grid>
+                            </div>
+                        </north>
+                        <center autoscroll="false">
+                            <div id="divResult" width="100%" height="100%">
+                                <tabbox height="100%">
+                                    <tabs>
+                                        <tab id="tabAnotoSearch" label="Pesquisa"/>
+                                        <tab id="tabSummary" label="Resumo"/>
+                                        <tab id="tabChartPen" label="Gráfico Por Canetas"/>
+                                        <tab id="tabChartDate" label="Distribuição Por Data"/>
+                                    </tabs>
+                                    <tabpanels>
+                                        <tabpanel>
+                                            <listbox id="resultList" vflex="true">
+                                                <listhead sizable="true">
+                                                    <listheader id="headSeq" label="##" width="50px"/>
+                                                    <listheader id="headApplication" label="##" width="250px"/>
+                                                    <listheader id="headFormulario" label="##" width="40px" align="center"/>
+                                                    <listheader id="headPagina" label="##" width="40px" align="center"/>
+                                                    <listheader id="headPen" label="##" width="110px"/>
+                                                    <listheader id="headDate" label="##" width="120px"/>
+                                                    <listheader id="headUserName" label="##" width="250px"/>
+                                                    <listheader id="headEmail" label="##" width="250px"/>
+                                                    <listheader id="headCellNumber" label="##" width="100px"/>
+                                                    <listheader id="headLatitude" label="##" width="130px"/>
+                                                    <listheader id="headLongitude" label="##" width="130px"/>
+                                                    <listheader id="headBarcode" label="##" width="150px"/>
+                                                    <listheader id="headPhoto" label="##" width="70px"/>
+                                                </listhead>
+                                            </listbox>
+                                        </tabpanel>
+                                        <tabpanel>
+                                            <listbox id="summaryList" vflex="true">
+                                                <listhead sizable="true">
+                                                    <listheader id="headSummaryField" label="Campo" width="30%"/>
+                                                    <listheader id="headSummaryValue" label="Valor"/>
+                                                </listhead>
+                                            </listbox>
+                                        </tabpanel>
+                                        <tabpanel>
+                                            <flashchart id="chartPen" type="pie" height="100%"/>
+                                        </tabpanel>
+                                        <tabpanel>
+                                            <flashchart id="chartData" type="pie" height="100%"/>
+                                        </tabpanel>
+                                    </tabpanels>
+                                </tabbox>
+                            </div>
+                        </center>
+                    </borderlayout>
+                </div>
+            </center>
+        </borderlayout>
+    </div>
 </zk>
