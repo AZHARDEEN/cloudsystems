@@ -4,7 +4,6 @@ package br.com.mcampos.controller;
 import br.com.mcampos.controller.anoto.util.AnotoDir;
 import br.com.mcampos.controller.anoto.util.PadFile;
 import br.com.mcampos.controller.anoto.util.PgcFile;
-import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -66,6 +65,7 @@ public class UploadPGC extends HttpServlet
         System.out.println( "New pgc received." );
         response.setContentType( CONTENT_TYPE );
         if ( getPGC( request ) == true ) {
+            System.out.println( "PGC was successfully received!! " );
             response.addHeader( "Router-Commit-ASH", "true" );
             response.addHeader( "Router-Commit-Application-Name", "PGC Recebido com sucesso" );
         }
@@ -81,7 +81,7 @@ public class UploadPGC extends HttpServlet
     }
 
 
-    private PgcFile createDTO( byte[] pgc ) throws IOException, NoSuchPermissionException
+    private MediaDTO createDTO( byte[] pgc ) throws IOException, NoSuchPermissionException
     {
         Date now = new Date();
         SimpleDateFormat df = new SimpleDateFormat( "yyyy_MM_dd_HH_mm_ss_SSSS" );
@@ -91,9 +91,7 @@ public class UploadPGC extends HttpServlet
         dto.setMimeType( "application/octet-stream" );
         dto.setName( "uploaded" + df.format( now ) + ".pgc" );
         dto.setObject( pgc );
-        PgcFile file = new PgcFile();
-        file.uploadPgc( dto );
-        return file;
+        return dto;
     }
 
     private MediaDTO createMedia( FileItem item ) throws IOException
@@ -133,7 +131,7 @@ public class UploadPGC extends HttpServlet
                         int totalSize = Integer.parseInt( header );
                         byte[] pgc = readByte( request.getInputStream(), totalSize );
                         savePgcFile( pgc );
-                        return persist( request, pgc, null );
+                        return persist( pgc, null );
                     }
                 }
             }
@@ -171,16 +169,13 @@ public class UploadPGC extends HttpServlet
         return buffer;
     }
 
-    private boolean persist( HttpServletRequest request, byte[] pgc, ArrayList<MediaDTO> medias ) throws IOException,
-                                                                                                         NoSuchPermissionException,
-                                                                                                         ApplicationException
+    private boolean persist( byte[] pgc, ArrayList<MediaDTO> medias ) throws IOException, NoSuchPermissionException,
+                                                                             ApplicationException
     {
-        PgcFile pgcFile = createDTO( pgc );
         PadFile.setHttpRealPath( getAnotoPath() );
-        PGCDTO insertedPgc = pgcFile.persist( medias );
-        if ( insertedPgc == null )
-            return false;
-        System.out.println( "PGC was successfully received: " + insertedPgc.getId() );
+        MediaDTO pgcFile = createDTO( pgc );
+        Thread uploadPGC = new Thread( new PgcFile( pgcFile, medias ) );
+        uploadPGC.run();
         return true;
     }
 
@@ -225,7 +220,7 @@ public class UploadPGC extends HttpServlet
                     medias.add( createMedia( item ) );
                 }
             }
-            return persist( request, pgc, medias );
+            return persist( pgc, medias );
         }
         catch ( FileUploadException e ) {
             System.out.println( e.getMessage() );

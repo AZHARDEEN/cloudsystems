@@ -46,6 +46,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,7 +56,7 @@ import java.util.Map;
 import org.zkoss.zk.ui.event.UploadEvent;
 
 
-public class PgcFile
+public class PgcFile implements Serializable, Runnable
 {
     private static final short KEY_LOCATION_COORDINATES = 16386;
 
@@ -73,6 +74,12 @@ public class PgcFile
     public PgcFile()
     {
         super();
+    }
+
+    public PgcFile( MediaDTO pgc, ArrayList<MediaDTO> medias ) throws IOException, NoSuchPermissionException, ApplicationException
+    {
+        uploadPgc( pgc );
+        persist( medias );
     }
 
     private void setPenId( String id )
@@ -845,5 +852,9 @@ public class PgcFile
     public String getImageFileTypeExtension()
     {
         return imageFileTypeExtension;
+    }
+
+    public void run()
+    {
     }
 }
