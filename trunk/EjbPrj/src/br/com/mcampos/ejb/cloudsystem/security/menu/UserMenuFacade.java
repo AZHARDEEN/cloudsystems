@@ -16,4 +16,6 @@ import javax.ejb.Remote;
 public interface UserMenuFacade extends Serializable
 {
     List<MenuDTO> getMenus( AuthenticationDTO auth ) throws ApplicationException;
+
+    String getInitialPage( AuthenticationDTO auth ) throws ApplicationException;
 }

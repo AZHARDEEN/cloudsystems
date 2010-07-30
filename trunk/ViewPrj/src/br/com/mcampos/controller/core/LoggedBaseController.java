@@ -14,6 +14,8 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
@@ -142,6 +144,17 @@ public class LoggedBaseController extends BaseController
             }
             if ( imageCompanyLogo != null && medias[ 1 ] != null && medias[ 1 ].getObject() != null ) {
                 ImageUtil.loadImage( imageCompanyLogo, medias[ 1 ] );
+            }
+        }
+    }
+
+    protected void setLabel( Columns cols )
+    {
+        if ( cols != null && cols.getChildren().size() > 0 ) {
+            for ( int index = 0; index < cols.getChildren().size(); index++ ) {
+                Column col = ( Column )cols.getChildren().get( index );
+                if ( col != null )
+                    setLabel( col );
             }
         }
     }

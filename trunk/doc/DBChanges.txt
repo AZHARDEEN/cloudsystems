@@ -213,3 +213,68 @@ insert into anoto_page_field values ( 1, '21.117.12.11', '521', 'Venda rejeitada
 
 
 
+
+--##########################################################################################################################
+--29/07/2010 - Possibilitar escolher a página inicial.
+
+DROP TABLE IF EXISTS login_property CASCADE ;
+
+
+
+DROP TABLE IF EXISTS system_user_property CASCADE ;
+
+
+
+CREATE TABLE system_user_property
+(
+	sup_id_in            INTEGER NOT NULL ,
+	sup_description_ch   VARCHAR(64) NOT NULL ,
+	flt_id_in            INTEGER NOT NULL ,
+CONSTRAINT  XPKsystem_user_property PRIMARY KEY (sup_id_in) USING INDEX TABLESPACE TB_CLOUD_INDEX ,
+CONSTRAINT R_206 FOREIGN KEY (flt_id_in) REFERENCES field_type (flt_id_in)
+);
+
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON system_user_property TO cloud;
+
+
+
+GRANT SELECT ON system_user_property TO jreport;
+
+
+
+INSERT INTO system_user_property(sup_id_in, sup_description_ch, flt_id_in) VALUES (1, 'Página Inicial', 1);
+
+
+
+
+CREATE TABLE login_property
+(
+	sup_id_in            INTEGER NOT NULL ,
+	Value                VARCHAR(512) NOT NULL ,
+	usr_id_in            INTEGER NOT NULL ,
+	col_seq_in           INTEGER NOT NULL ,
+CONSTRAINT  XPKlogin_properties PRIMARY KEY (sup_id_in,usr_id_in,col_seq_in) USING INDEX TABLESPACE TB_CLOUD_INDEX ,
+CONSTRAINT R_205 FOREIGN KEY (sup_id_in) REFERENCES system_user_property (sup_id_in),
+CONSTRAINT R_207 FOREIGN KEY (usr_id_in, col_seq_in) REFERENCES collaborator (usr_id_in, col_seq_in)
+);
+
+
+
+COMMENT ON TABLE login_property IS 'Cadastro de propriedades do login que pode afetar o funcionamento do sistema com opcoes do usuário';
+
+
+
+
+COMMENT ON COLUMN login_property.usr_id_in IS 'Usar sequence: seq_usuario';
+
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON login_property TO cloud;
+
+
+
+GRANT SELECT ON login_property TO jreport;
+
+
