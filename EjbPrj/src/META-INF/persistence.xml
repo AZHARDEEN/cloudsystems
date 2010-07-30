@@ -74,6 +74,8 @@
     <class>br.com.mcampos.ejb.cloudsystem.resale.dealer.entity.Dealer</class>
     <class>br.com.mcampos.ejb.cloudsystem.resale.dealer.type.entity.DealerType</class>
     <class>br.com.mcampos.ejb.cloudsystem.resale.entity.Resale</class>
+    <class>br.com.mcampos.ejb.cloudsystem.system.loginproperty.entity.LoginProperty</class>
+    <class>br.com.mcampos.ejb.cloudsystem.system.systemuserproperty.entity.SystemUserProperty</class>
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>

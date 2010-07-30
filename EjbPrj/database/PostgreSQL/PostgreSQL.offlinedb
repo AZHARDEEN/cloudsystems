@@ -3,6 +3,6 @@
    <hash n="dataTypeSettings">
       <value n="sourceKey" v="oracle.javatools.db.JdbcDatabase"/>
    </hash>
-   <value n="id" v="f7962154-0129-1000-8002-c0a801648353"/>
+   <value n="id" v="1f6739c2-012a-1000-8001-c0a80164d90a"/>
    <value n="name" v="PostgreSQL"/>
 </ProviderSettings>

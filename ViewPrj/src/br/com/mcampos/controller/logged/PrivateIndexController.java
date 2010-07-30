@@ -50,6 +50,21 @@ public class PrivateIndexController extends LoggedBaseController
         AddBookmarkEventListener();
     }
 
+
+    private void clear()
+    {
+        String initPage;
+        try {
+            initPage = getUserLocator().getInitialPage( getLoggedInUser() );
+            if ( !SysUtils.isEmpty( initPage ) ) {
+                gotoPage( initPage, mdiApplication );
+            }
+        }
+        catch ( ApplicationException e ) {
+        }
+    }
+
+
     protected void AddBookmarkEventListener()
     {
         page.addEventListener( Events.ON_BOOKMARK_CHANGE, new EventListener()
@@ -135,7 +150,7 @@ public class PrivateIndexController extends LoggedBaseController
     {
         String iID = event.getBookmark();
         if ( SysUtils.isEmpty( iID ) || iID.equals( "index" ) )
-            mdiApplication.getChildren().clear();
+            clear();
     }
 
     public UserMenuFacade getUserLocator()
@@ -166,7 +181,7 @@ public class PrivateIndexController extends LoggedBaseController
     {
         if ( evt.getData() instanceof CompanyDTO ) {
             if ( mdiApplication != null && mdiApplication.getChildren() != null )
-                mdiApplication.getChildren().clear();
+                clear();
             if ( mainMenu == null )
                 return;
             if ( mainMenu.getChildren() != null )

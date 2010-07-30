@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" apply="br.com.mcampos.controller.user.person.MySystemProperties" id="rootParent">
+        <borderlayout id="borderLayout">
+            <north autoscroll="false" height="65px" fulfill="=/resources/title.zul"/>
+            <center>
+                <div>
+                    <grid id="gridProperties">
+                        <columns>
+                            <column id="columnPropertyName" label="Propriedade"/>
+                            <column id="columnPropertyValue" label="Valor"/>
+                        </columns>
+                    </grid>
+                </div>
+            </center>
+        </borderlayout>
+    </div>
+</zk>

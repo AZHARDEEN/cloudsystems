@@ -29,8 +29,7 @@
                                                     <hbox>
                                                         <datebox id="initDate" format="dd/MM/yyyy HH:mm:ss" width="180px"/>
                                                         <label value=" Até "/>
-                                                        <datebox id="endDate" format="dd/MM/yyyy HH:mm:ss" width="180px"
-                                                                 onCreate="self.value = new Date()"/>
+                                                        <datebox id="endDate" format="dd/MM/yyyy HH:mm:ss" width="180px"/>
                                                     </hbox>
                                                 </row>
                                                 <row id="rowResale">
