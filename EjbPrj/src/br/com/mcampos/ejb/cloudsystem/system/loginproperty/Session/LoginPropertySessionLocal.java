@@ -24,4 +24,6 @@ public interface LoginPropertySessionLocal extends Serializable
     LoginProperty get( Collaborator login, SystemUserProperty property ) throws ApplicationException;
 
     LoginProperty add( LoginProperty entity ) throws ApplicationException;
+
+    void delete( LoginProperty entity ) throws ApplicationException;
 }

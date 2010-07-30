@@ -226,6 +226,9 @@ public class SystemUserPropertyGridRenderer implements RowRenderer
                         combo.setSelectedItem( item );
                 }
             }
+            Comboitem item = combo.appendItem( "<Nenhum>" );
+            if ( combo.getSelectedItem() == null )
+                combo.setSelectedItem( item );
         }
     }
 
@@ -234,12 +237,10 @@ public class SystemUserPropertyGridRenderer implements RowRenderer
         LinkedHashSet<Comboitem> set = ( LinkedHashSet<Comboitem> )evt.getSelectedItems();
         for ( Comboitem item : set ) {
             MenuDTO dto = ( MenuDTO )item.getValue();
-            if ( dto != null ) {
-                try {
-                    getSession().update( currentUser, 1, dto.getTargetURL() );
-                }
-                catch ( ApplicationException e ) {
-                }
+            try {
+                getSession().update( currentUser, 1, dto != null ? dto.getTargetURL() : null );
+            }
+            catch ( ApplicationException e ) {
             }
         }
     }
