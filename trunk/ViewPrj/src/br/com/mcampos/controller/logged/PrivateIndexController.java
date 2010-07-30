@@ -59,8 +59,11 @@ public class PrivateIndexController extends LoggedBaseController
             if ( !SysUtils.isEmpty( initPage ) ) {
                 gotoPage( initPage, mdiApplication );
             }
+            else
+                mdiApplication.getChildren().clear();
         }
-        catch ( ApplicationException e ) {
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage() );
         }
     }
 

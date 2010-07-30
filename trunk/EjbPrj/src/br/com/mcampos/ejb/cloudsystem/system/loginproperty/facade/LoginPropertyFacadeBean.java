@@ -23,7 +23,6 @@ import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.role.CollaboratorRoleUtil;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.role.entity.CollaboratorRole;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.role.session.CollaboratorRoleSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.login.LoginSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -47,9 +46,6 @@ public class LoginPropertyFacadeBean extends AbstractSecurity implements LoginPr
 
     @PersistenceContext( unitName = "EjbPrj" )
     private transient EntityManager em;
-
-    @EJB
-    private LoginSessionLocal loginSession;
 
     @EJB
     private LoginPropertySessionLocal loginPropertySession;
@@ -115,6 +111,8 @@ public class LoginPropertyFacadeBean extends AbstractSecurity implements LoginPr
         SystemUserProperty type = propertySession.get( propertyId );
         LoginProperty property = loginPropertySession.get( collaborator, type );
         if ( property == null ) {
+            if ( SysUtils.isEmpty( value ) )
+                return;
             property = new LoginProperty();
             property.setCollaborator( collaborator );
             property.setSystemUserProperty( type );
@@ -122,7 +120,10 @@ public class LoginPropertyFacadeBean extends AbstractSecurity implements LoginPr
             loginPropertySession.add( property );
         }
         else {
-            property.setValue( value );
+            if ( SysUtils.isEmpty( value ) == false )
+                property.setValue( value );
+            else
+                loginPropertySession.delete( property );
         }
 
     }
