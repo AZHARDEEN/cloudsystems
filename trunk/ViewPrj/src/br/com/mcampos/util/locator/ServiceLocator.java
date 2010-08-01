@@ -25,7 +25,7 @@ public class ServiceLocator
             Hashtable env = new Hashtable();
             // WebLogic Server 10.x connection details
             env.put( Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory" );
-            env.put( Context.PROVIDER_URL, "t3://127.0.0.1:80" );
+            env.put( Context.PROVIDER_URL, "t3://127.0.0.1:7101" );
             context = new InitialContext( env );
             this.cache = Collections.synchronizedMap( new HashMap<String, Object>() );
         }
