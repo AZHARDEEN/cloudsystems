@@ -6,7 +6,6 @@ import br.com.mcampos.controller.anoto.renderer.PgcPenPageListRenderer;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
-import br.com.mcampos.dto.anoto.AnotoSummary;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
@@ -54,9 +53,7 @@ import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listheader;
-import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
@@ -297,62 +294,6 @@ public abstract class BaseSearchController extends AnotoLoggedController
             model.addAll( dtos );
             updateCharts( dtos );
             resultList.invalidate();
-        }
-        catch ( ApplicationException e ) {
-            showErrorMessage( e.getMessage(), "Lista de PGC" );
-        }
-    }
-
-
-    protected void loadSummary( Properties prop )
-    {
-        AnotoSummary sum;
-        try {
-            //Integer id = Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() );
-            sum = getSession().getSummary( getLoggedInUser(), prop );
-            if ( summaryList.getItems() != null )
-                summaryList.getItems().clear();
-            Listitem item = new Listitem( "Total de Formulários Processados" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getPgc().toString() ) );
-
-            item = new Listitem( "Com Foto" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getFoto().toString() ) );
-
-            item = new Listitem( "Sem Foto" );
-            item.setParent( summaryList );
-            Integer semFoto = sum.getPgc() - sum.getFoto();
-            item.appendChild( new Listcell( semFoto.toString() ) );
-
-            item = new Listitem( "Pré-pago" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getPrepago().toString() ) );
-
-            item = new Listitem( "Pós-pago" );
-            item.setParent( summaryList );
-            Integer pos = sum.getPgc() - sum.getPrepago();
-            item.appendChild( new Listcell( pos.toString() ) );
-
-            item = new Listitem( "Pagamento em Dinheiro" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getDinheiro().toString() ) );
-
-            item = new Listitem( "Pagamento em Boleto" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getBoleto().toString() ) );
-
-            item = new Listitem( "Pagamento em DI" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getDi().toString() ) );
-
-            item = new Listitem( "PAP" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getPap().toString() ) );
-
-            item = new Listitem( "CVM" );
-            item.setParent( summaryList );
-            item.appendChild( new Listcell( sum.getCvm().toString() ) );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Lista de PGC" );
@@ -627,12 +568,6 @@ public abstract class BaseSearchController extends AnotoLoggedController
     {
         loadPGC( getFilters() );
         tabAnotoSearch.setSelected( true );
-    }
-
-    public void onClick$btnSummary()
-    {
-        loadSummary( getFilters() );
-        tabSummary.setSelected( true );
     }
 
     private Date getDate( Datebox d, Timebox t )

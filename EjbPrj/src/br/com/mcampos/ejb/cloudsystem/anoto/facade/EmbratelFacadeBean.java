@@ -22,6 +22,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.page.field.session.PageFieldSessionL
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser;
 import br.com.mcampos.ejb.cloudsystem.anoto.pen.user.session.AnotoPenUserSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.entity.PgcAttachment;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.session.PgcAttachmentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.entity.PgcProperty;
@@ -314,41 +315,19 @@ public class EmbratelFacadeBean extends AbstractSecurity implements EmbratelFaca
                     props.put( "form", entity );
             }
         }
-        List<PgcField> fields = pgcFieldSession.getAll( props );
+        List<Pgc> fields = pgcFieldSession.getAll( props );
         AnotoSummary sum = new AnotoSummary();
         List<Integer> pgcs = new ArrayList<Integer>();
         if ( SysUtils.isEmpty( fields ) == false ) {
-            for ( PgcField field : fields ) {
-                if ( pgcs.contains( field.getPgcId() ) == false ) {
-                    pgcs.add( field.getPgcId() );
-                    List attachs = pgcAttachmentSession.get( field.getPgcId() );
-                    if ( SysUtils.isEmpty( attachs ) == false )
-                        sum.addFoto();
-                }
-                if ( field.getHasPenstrokes() == false )
-                    continue;
-                if ( field.getName().equals( "PAP" ) )
-                    sum.addPAP();
-                if ( field.getName().equals( "CVM" ) )
-                    sum.addCVM();
-                if ( field.getName().equals( "Dinheiro" ) )
-                    sum.addDinheiro();
-                if ( field.getName().equals( "Deposito_Identificado" ) )
-                    sum.addDI();
-                if ( field.getName().equals( "Boleto_Bancario" ) )
-                    sum.addBoleto();
-                if ( field.getName().equals( "Plano Pre 15" ) || field.getName().equals( "Plano Pre 35" ) )
-                    sum.addPrepago();
-                if ( field.getName().equals( "Plano Pos LPF" ) || field.getName().equals( "Plano Pos Shine LPF" ) ||
-                     field.getName().equals( "Plano Pos 30" ) || field.getName().equals( "Plano Pos Combo via 30" ) ||
-                     field.getName().equals( "Plano Pos Combo via LPF" ) )
-                    sum.addPospago();
-                if ( field.getName().equals( fieldFend ) )
-                    sum.addFend();
-                if ( field.getName().equals( fieldRejeitadoCEP ) )
-                    sum.addRejeitadoZip();
-                if ( field.getName().equals( fieldRejeitadoCredito ) )
-                    sum.addRejeitadoCredito();
+            for ( Pgc field : fields ) {
+                pgcs.add( field.getId() );
+                List attachs = pgcAttachmentSession.get( field.getId() );
+                if ( SysUtils.isEmpty( attachs ) == false )
+                    sum.addFoto();
+                sum.add( pgcFieldSession.summaryType( field ) );
+                sum.add( pgcFieldSession.summaryCategory( field ) );
+                sum.add( pgcFieldSession.summaryPayment( field ) );
+                sum.add( pgcFieldSession.summarySituation( field ) );
             }
         }
         sum.setPgc( pgcs.size() );

@@ -107,6 +107,10 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     private Label labelSummaryNoPhoto;
     private Label labelSummaryPhoto;
 
+    private Label labelEmptySituation;
+    private Label labelEmptyType;
+    private Label labelEmptyPayment;
+    private Label labelEmptyCategory;
 
     private Button btnFilter;
     protected Button btnSummary;
@@ -400,23 +404,27 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         model = new SimplePieModel();
         model.setValue( "Pré-pago", sum.getPrepago() );
         model.setValue( "Pós-pago", sum.getPospago() );
+        model.setValue( "Branco", sum.getEmptyType() );
         chartType.setModel( model );
 
         model = new SimplePieModel();
         model.setValue( "Dinheiro", sum.getDinheiro() );
         model.setValue( "Boleto", sum.getBoleto() );
         model.setValue( "DI", sum.getDi() );
+        model.setValue( "Branco", sum.getEmptyPayment() );
         chartPay.setModel( model );
 
         model = new SimplePieModel();
         model.setValue( "PAP", sum.getPap() );
         model.setValue( "CVM", sum.getCvm() );
+        model.setValue( "Branco", sum.getEmptyCategory() );
         chartCategory.setModel( model );
 
         model = new SimplePieModel();
         model.setValue( "FEND", sum.getFend() );
         model.setValue( "Rej. CEP", sum.getRejeitadoCep() );
         model.setValue( "Rej. Credito", sum.getRejeitadoCredito() );
+        model.setValue( "Branco", sum.getEmptySituation() );
         chartStatus.setModel( model );
 
     }
@@ -440,6 +448,10 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
             labelSummaryFend.setValue( sum.getFend().toString() );
             labelSummaryRejectZip.setValue( sum.getRejeitadoCep().toString() );
             labelSummaryRejectCredit.setValue( sum.getRejeitadoCredito().toString() );
+            labelEmptyCategory.setValue( sum.getEmptyCategory().toString() );
+            labelEmptyType.setValue( sum.getEmptyType().toString() );
+            labelEmptyPayment.setValue( sum.getEmptyPayment().toString() );
+            labelEmptySituation.setValue( sum.getEmptySituation().toString() );
             updateChart( sum );
         }
         catch ( ApplicationException e ) {
