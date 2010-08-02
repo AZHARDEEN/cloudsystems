@@ -105,7 +105,7 @@
                                 </tabs>
                                 <tabpanels>
                                     <tabpanel>
-                                        <listbox id="resultList" vflex="true">
+                                        <listbox id="resultList" mold="paging" pageSize="20">
                                             <listhead sizable="true">
                                                 <listheader id="headSeq" label="##" width="50px"/>
                                                 <listheader id="headDate" label="##" width="120px"/>
@@ -191,6 +191,10 @@
                                                                 <label value="Pós-Pago"/>
                                                                 <label value=" " id="labelSummaryPos"/>
                                                             </row>
+                                                            <row>
+                                                                <label value="Branco"/>
+                                                                <label value=" " id="labelEmptyType"/>
+                                                            </row>
                                                         </rows>
                                                     </grid>
                                                     <grid>
@@ -211,6 +215,10 @@
                                                                 <label value="DI"/>
                                                                 <label value=" " id="labelSummaryDI"/>
                                                             </row>
+                                                            <row>
+                                                                <label value="Branco"/>
+                                                                <label value=" " id="labelEmptyPayment"/>
+                                                            </row>
                                                         </rows>
                                                     </grid>
                                                     <grid>
@@ -226,6 +234,10 @@
                                                             <row>
                                                                 <label value="CVM"/>
                                                                 <label value=" " id="labelSummaryCvm"/>
+                                                            </row>
+                                                            <row>
+                                                                <label value="Branco"/>
+                                                                <label value=" " id="labelEmptyCategory"/>
                                                             </row>
                                                         </rows>
                                                     </grid>
@@ -246,6 +258,10 @@
                                                             <row>
                                                                 <label value="Rejeitada Análise Crédito"/>
                                                                 <label value=" " id="labelSummaryRejectCredit"/>
+                                                            </row>
+                                                            <row>
+                                                                <label value="Branco"/>
+                                                                <label value=" " id="labelEmptySituation"/>
                                                             </row>
                                                         </rows>
                                                     </grid>

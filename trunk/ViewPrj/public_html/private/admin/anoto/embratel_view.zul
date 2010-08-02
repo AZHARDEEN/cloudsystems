@@ -154,6 +154,7 @@
                                                     visible="false"/>
                                             <button id="btnZoomIn" label="##" image="/img/icontexto-webdev-search-016x016.png"
                                                     visible="false"/>
+                                            <label value="Zoom"/>
                                             <combobox id="cmbZoonRate" width="80px"/>
                                             <button id="btnZoomOut" label="##" image="/img/icontexto-webdev-alert-016x016.png"
                                                     visible="false"/>

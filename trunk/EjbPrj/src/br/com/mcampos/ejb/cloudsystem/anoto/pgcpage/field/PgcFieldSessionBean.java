@@ -1,7 +1,9 @@
 package br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field;
 
 
+import br.com.mcampos.dto.anoto.AnotoSummary;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
@@ -63,7 +65,7 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
     public static final String fieldValueParameterName = "pgcFieldValue";
     public static final String revisedStatusParameterName = "revisedStatus";
 
-    public List<PgcField> getAll( Properties props ) throws ApplicationException
+    public List<Pgc> getAll( Properties props ) throws ApplicationException
     {
         StringBuffer jpaQuery = getSummarySQL();
         StringBuffer jpaWhere = new StringBuffer();
@@ -76,8 +78,8 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
         addCustomFieldFilter( props, jpaWhere );
 
         jpaQuery.append( jpaWhere );
-        Query query = getEntityManager().createNativeQuery( jpaQuery.toString(), PgcField.class );
-        List<PgcField> list = ( List<PgcField> )query.getResultList();
+        Query query = getEntityManager().createNativeQuery( jpaQuery.toString(), Pgc.class );
+        List<Pgc> list = ( List<Pgc> )query.getResultList();
         return list;
     }
 
@@ -194,7 +196,7 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
     {
         StringBuffer sql = new StringBuffer();
 
-        sql.append( "SELECT pgc_field.* FROM " );
+        sql.append( "SELECT distinct pgc.* FROM " );
         sql.append( "    pgc_field, " );
         sql.append( "    pgc_page, " );
         sql.append( "    pgc, " );
@@ -224,6 +226,102 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
         sql.append( "    )" );
 
         return sql;
+    }
+
+    public AnotoSummary summaryType( Pgc pgc ) throws ApplicationException
+    {
+        String aux = "Plano Pos Combo via LPF, Plano Pos Combo via 30, Plano Pos 30, Plano Pos Shine LPF, Plano Pos LPF";
+        aux = aux + "Plano Pre 35, Plano Pre 15";
+        List<PgcField> fields = ( List<PgcField> )getResultList( PgcField.getFields, pgc, aux );
+        AnotoSummary sum = new AnotoSummary();
+        sum.setPgc( pgc.getId() );
+        for ( PgcField field : fields ) {
+            if ( field.getName().startsWith( "Plano Pre" ) ) {
+                sum.addPrepago();
+                break;
+            }
+            else if ( field.getName().startsWith( "Plano Pos" ) ) {
+                sum.addPospago();
+                break;
+            }
+        }
+        if ( sum.getPospago().equals( 0 ) && sum.getPrepago().equals( 0 ) )
+            sum.addEmptyType();
+        return sum;
+    }
+
+
+    public AnotoSummary summaryPayment( Pgc pgc ) throws ApplicationException
+    {
+        String aux = "\"Dinheiro\", \"Deposito_Identificado\", \"Boleto_Bancario\"";
+        List<PgcField> fields = ( List<PgcField> )getResultList( PgcField.getFields, pgc, aux );
+        AnotoSummary sum = new AnotoSummary();
+        sum.setPgc( pgc.getId() );
+        for ( PgcField field : fields ) {
+            if ( field.getName().equals( "Dinheiro" ) ) {
+                sum.addDinheiro();
+                break;
+            }
+            else if ( field.getName().equals( "Deposito_Identificado" ) ) {
+                sum.addDI();
+                break;
+            }
+            else if ( field.getName().equals( "Boleto_Bancario" ) ) {
+                sum.addBoleto();
+                break;
+            }
+        }
+        if ( sum.getDinheiro().equals( 0 ) && sum.getDi().equals( 0 ) && sum.getBoleto().equals( 0 ) )
+            sum.addEmptyPayment();
+        return sum;
+    }
+
+    public AnotoSummary summaryCategory( Pgc pgc ) throws ApplicationException
+    {
+        String fieldNames = "\"PAP\", \"CVM\" ";
+        List<PgcField> fields = ( List<PgcField> )getResultList( PgcField.getFields, pgc, fieldNames );
+        AnotoSummary sum = new AnotoSummary();
+        sum.setPgc( pgc.getId() );
+        for ( PgcField field : fields ) {
+            if ( field.getName().equals( "PAP" ) ) {
+                sum.addPAP();
+                break;
+            }
+            else if ( field.getName().equals( "CVM" ) ) {
+                sum.addCVM();
+                break;
+            }
+        }
+        if ( sum.getPap().equals( 0 ) && sum.getCvm().equals( 0 ) )
+            sum.addEmptyCategory();
+        return sum;
+    }
+
+
+    public AnotoSummary summarySituation( Pgc pgc ) throws ApplicationException
+    {
+        String fieldNames =
+            "\"Venda cadastrada FEND\", \"Venda rejeitada por CEP inválido\", \"Venda rejeitada por Análise Credito\" ";
+        List<PgcField> fields = ( List<PgcField> )getResultList( PgcField.getFields, pgc, fieldNames );
+        AnotoSummary sum = new AnotoSummary();
+        sum.setPgc( pgc.getId() );
+        for ( PgcField field : fields ) {
+            if ( field.getName().equals( "Venda cadastrada FEND" ) ) {
+                sum.addFend();
+                break;
+            }
+            else if ( field.getName().equals( "Venda rejeitada por CEP inválido" ) ) {
+                sum.addRejeitadoZip();
+                break;
+            }
+            else if ( field.getName().equals( "Venda rejeitada por Análise Credito" ) ) {
+                sum.addRejeitadoCredito();
+                break;
+            }
+        }
+        if ( sum.getFend().equals( 0 ) && sum.getRejeitadoCep().equals( 0 ) && sum.getRejeitadoCredito().equals( 0 ) )
+            sum.addEmptySituation();
+        return sum;
     }
 }
 

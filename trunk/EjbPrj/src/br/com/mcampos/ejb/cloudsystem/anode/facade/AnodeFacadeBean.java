@@ -5,7 +5,6 @@ import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoPenPageDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
-import br.com.mcampos.dto.anoto.AnotoSummary;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PadDTO;
@@ -454,51 +453,6 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
             }
         }
         return resultList;
-    }
-
-    public AnotoSummary getSummary( AuthenticationDTO auth, Properties props ) throws ApplicationException
-    {
-        authenticate( auth );
-        if ( props != null && props.size() > 0 ) {
-            /*Trocar o DTO pela entidade*/
-            Object value;
-
-            value = props.get( "form" );
-            if ( value != null ) {
-                AnotoForm entity = formSession.get( ( ( FormDTO )value ).getId() );
-                if ( entity != null )
-                    props.put( "form", entity );
-            }
-        }
-        List<PgcField> fields = pgcFieldSession.getAll( props );
-        AnotoSummary sum = new AnotoSummary();
-        List<Integer> pgcs = new ArrayList<Integer>();
-        if ( SysUtils.isEmpty( fields ) == false ) {
-            for ( PgcField field : fields ) {
-                if ( pgcs.contains( field.getPgcId() ) == false ) {
-                    pgcs.add( field.getPgcId() );
-                    List attachs = pgcAttachmentSession.get( field.getPgcId() );
-                    if ( SysUtils.isEmpty( attachs ) == false )
-                        sum.addFoto();
-                }
-                if ( field.getHasPenstrokes() == false )
-                    continue;
-                if ( field.getName().equals( "PAP" ) )
-                    sum.addPAP();
-                if ( field.getName().equals( "CVM" ) )
-                    sum.addCVM();
-                if ( field.getName().equals( "Dinheiro" ) )
-                    sum.addDinheiro();
-                if ( field.getName().equals( "Deposito_Identificado" ) )
-                    sum.addDI();
-                if ( field.getName().equals( "Boleto_Bancario" ) )
-                    sum.addBoleto();
-                if ( field.getName().equals( "Reposicao_Pre" ) )
-                    sum.addPrepago();
-            }
-        }
-        sum.setPgc( pgcs.size() );
-        return sum;
     }
 
 

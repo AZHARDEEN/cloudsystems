@@ -90,6 +90,7 @@ public class AnotoViewController extends AnotoLoggedController
     protected static final String fieldFend = "Venda cadastrada FEND";
     protected static final String fieldRejeitadoCEP = "Venda rejeitada por CEP inválido";
     protected static final String fieldRejeitadoCredito = "Venda rejeitada por Análise Credito";
+    protected static final String fieldBackOffice = "Backoffice Responsavel";
 
 
     private AnotoResultList dtoParam;
@@ -191,6 +192,11 @@ public class AnotoViewController extends AnotoLoggedController
             field.setHasPenstrokes( vendaCadastrada.isChecked() );
             getSession().update( getLoggedInUser(), field );
 
+            field = findField( fieldBackOffice );
+            field.setType( new FieldTypeDTO( FieldTypeDTO.typeString ) );
+            field.setIrcText( getLoggedInUser().getUserId().toString() );
+            getSession().update( getLoggedInUser(), field );
+
             if ( vendaCadastrada.isChecked() ) {
 
                 field = findField( fieldOs );
@@ -214,6 +220,7 @@ public class AnotoViewController extends AnotoLoggedController
                 field.setType( new FieldTypeDTO( FieldTypeDTO.typeBoolean ) );
                 field.setHasPenstrokes( false );
                 getSession().update( getLoggedInUser(), field );
+                Messagebox.show( "O formulário foi cadastrado no FEND" );
             }
             else {
                 field = findField( fieldOs );
@@ -230,11 +237,14 @@ public class AnotoViewController extends AnotoLoggedController
                 field.setType( new FieldTypeDTO( FieldTypeDTO.typeBoolean ) );
                 field.setHasPenstrokes( rejeitadoCEP.isChecked() );
                 getSession().update( getLoggedInUser(), field );
+                Messagebox.show( "O formulário foi rejeitado." );
             }
             showFields( dtoParam );
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage() );
+        }
+        catch ( InterruptedException e ) {
         }
     }
 

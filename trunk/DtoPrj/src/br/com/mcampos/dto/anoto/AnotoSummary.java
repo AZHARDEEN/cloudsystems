@@ -4,26 +4,55 @@ import java.io.Serializable;
 
 public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 {
-    private Integer pgc;
-    private Integer foto;
-    private Integer prepago;
-    private Integer pospago;
+    private Integer pgc = 0;
+    private Integer foto = 0;
 
-    private Integer dinheiro;
-    private Integer boleto;
-    private Integer di;
+    private Integer prepago = 0;
+    private Integer pospago = 0;
+    private Integer emptyType = 0;
 
-    private Integer pap;
-    private Integer cvm;
+    private Integer dinheiro = 0;
+    private Integer boleto = 0;
+    private Integer di = 0;
+    private Integer emptyPayment = 0;
 
-    private Integer fend;
-    private Integer rejeitadoCep;
-    private Integer rejeitadoCredito;
+    private Integer pap = 0;
+    private Integer cvm = 0;
+    private Integer emptyCategory = 0;
+
+    private Integer fend = 0;
+    private Integer rejeitadoCep = 0;
+    private Integer rejeitadoCredito = 0;
+    private Integer emptySituation = 0;
 
 
     public AnotoSummary()
     {
         super();
+    }
+
+    public void add( AnotoSummary sum )
+    {
+        if ( sum == null )
+            return;
+
+        this.prepago += sum.getPrepago();
+        this.pospago += sum.getPospago();
+        this.emptyType += sum.getEmptyType();
+
+        this.dinheiro += sum.getDinheiro();
+        this.boleto += sum.getBoleto();
+        this.di += sum.getDi();
+        this.emptyPayment += sum.getEmptyPayment();
+
+        this.pap += sum.getPap();
+        this.cvm += sum.getCvm();
+        this.emptyCategory += sum.getEmptyCategory();
+
+        this.fend += sum.getFend();
+        this.rejeitadoCep += sum.getRejeitadoCep();
+        this.rejeitadoCredito += sum.getRejeitadoCredito();
+        this.emptySituation += sum.getEmptySituation();
     }
 
 
@@ -34,8 +63,6 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public Integer getPgc()
     {
-        if ( pgc == null )
-            pgc = 0;
         return pgc;
     }
 
@@ -46,8 +73,6 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public Integer getFoto()
     {
-        if ( foto == null )
-            foto = 0;
         return foto;
     }
 
@@ -70,8 +95,6 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public Integer getPrepago()
     {
-        if ( prepago == null )
-            prepago = 0;
         return prepago;
     }
 
@@ -82,8 +105,6 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public Integer getDinheiro()
     {
-        if ( dinheiro == null )
-            dinheiro = 0;
         return dinheiro;
     }
 
@@ -94,8 +115,6 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public Integer getBoleto()
     {
-        if ( boleto == null )
-            boleto = 0;
         return boleto;
     }
 
@@ -106,8 +125,6 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public Integer getDi()
     {
-        if ( di == null )
-            di = 0;
         return di;
     }
 
@@ -118,8 +135,6 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public Integer getPap()
     {
-        if ( pap == null )
-            pap = 0;
         return pap;
     }
 
@@ -130,8 +145,6 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public Integer getCvm()
     {
-        if ( cvm == null )
-            cvm = 0;
         return cvm;
     }
 
@@ -148,71 +161,51 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public void addPAP()
     {
-        if ( pap == null )
-            pap = 0;
         pap++;
     }
 
     public void addCVM()
     {
-        if ( cvm == null )
-            cvm = 0;
         cvm++;
     }
 
     public void addDI()
     {
-        if ( di == null )
-            di = 0;
         di++;
     }
 
     public void addDinheiro()
     {
-        if ( dinheiro == null )
-            dinheiro = 0;
         dinheiro++;
     }
 
     public void addBoleto()
     {
-        if ( boleto == null )
-            boleto = 0;
         boleto++;
     }
 
     public void addPrepago()
     {
-        if ( prepago == null )
-            prepago = 0;
         prepago++;
     }
 
     public void addFoto()
     {
-        if ( foto == null )
-            foto = 0;
         foto++;
     }
 
     public void addFend()
     {
-        if ( fend == null )
-            fend = 0;
         fend++;
     }
 
     public void addRejeitadoCredito()
     {
-        if ( rejeitadoCredito == null )
-            rejeitadoCredito = 0;
         rejeitadoCredito++;
     }
 
     public void addRejeitadoZip()
     {
-        if ( rejeitadoCep == null )
-            rejeitadoCep = 0;
         rejeitadoCep++;
     }
 
@@ -223,15 +216,11 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public Integer getFend()
     {
-        if ( fend == null )
-            fend = 0;
         return fend;
     }
 
     public void addPospago()
     {
-        if ( pospago == null )
-            pospago = 0;
         pospago++;
     }
 
@@ -242,8 +231,6 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public Integer getRejeitadoCep()
     {
-        if ( rejeitadoCep == null )
-            rejeitadoCep = 0;
         return rejeitadoCep;
     }
 
@@ -254,8 +241,6 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public Integer getRejeitadoCredito()
     {
-        if ( rejeitadoCredito == null )
-            rejeitadoCredito = 0;
         return rejeitadoCredito;
     }
 
@@ -266,8 +251,66 @@ public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 
     public Integer getPospago()
     {
-        if ( pospago == null )
-            pospago = 0;
         return pospago;
+    }
+
+    public void setEmptyType( Integer emptyType )
+    {
+        this.emptyType = emptyType;
+    }
+
+    public Integer getEmptyType()
+    {
+        return emptyType;
+    }
+
+    public void addEmptyType()
+    {
+        emptyType++;
+    }
+
+    public void setEmptyPayment( Integer emptyPayment )
+    {
+        this.emptyPayment = emptyPayment;
+    }
+
+    public Integer getEmptyPayment()
+    {
+        return emptyPayment;
+    }
+
+    public void addEmptyPayment()
+    {
+        emptyPayment++;
+    }
+
+    public void setEmptyCategory( Integer emptyCategory )
+    {
+        this.emptyCategory = emptyCategory;
+    }
+
+    public Integer getEmptyCategory()
+    {
+        return emptyCategory;
+    }
+
+    public void addEmptyCategory()
+    {
+        emptyCategory++;
+    }
+
+    public void setEmptySituation( Integer emptySituation )
+    {
+        this.emptySituation = emptySituation;
+    }
+
+    public Integer getEmptySituation()
+    {
+        return emptySituation;
+    }
+
+    public void addEmptySituation()
+    {
+        emptySituation++;
     }
 }
