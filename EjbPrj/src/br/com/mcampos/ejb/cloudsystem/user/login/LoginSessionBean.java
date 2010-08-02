@@ -124,7 +124,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
             person = getPersonSession().add( PersonUtil.copy( dto ) );
             documentSession.refresh( person, UserDocumentUtil.toEntityList( person, dto.getDocuments() ) );
         }
-        if ( get( person ) != null )
+        if ( getEntityManager().find( Login.class, person.getId() ) != null )
             throwRuntimeException( 5 );
         add( dto, person );
     }
@@ -139,7 +139,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @param person
      * @throws ApplicationException
      */
-    protected void add( RegisterDTO dto, Person person ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private void add( RegisterDTO dto, Person person ) throws ApplicationException
     {
         String encryptedPassword;
         BasicPasswordEncryptor passwordEncryptor;
@@ -179,7 +180,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @param list Lista de documentos
      * @return boolean
      */
-    protected boolean verifyDocuments( List<UserDocumentDTO> list )
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private boolean verifyDocuments( List<UserDocumentDTO> list )
     {
         boolean bCPF = false, bEmail = false;
 
@@ -207,7 +209,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @param flatPassword senha (Este senha é a senha gerada pelo sistema)
      * @throws ApplicationException
      */
-    protected void sendMail( Login login, Integer templateId, String flatPassword ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private void sendMail( Login login, Integer templateId, String flatPassword ) throws ApplicationException
     {
         SendMailDTO emailDTO = createTemplate( templateId );
         emailDTO.setBody( translateMessageTokens( emailDTO.getBody(), login, flatPassword ) );
@@ -215,7 +218,12 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
             if ( item.getDocumentType().getId().equals( UserDocument.typeEmail ) )
                 emailDTO.addRecipient( item.getCode() );
         }
-        sendMail.sendMail( emailDTO );
+        try {
+            sendMail.sendMail( emailDTO );
+        }
+        catch ( Exception e ) {
+            System.out.println( e.getMessage() );
+        }
     }
 
 
@@ -226,7 +234,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @return
      * @throws ApplicationException
      */
-    protected SendMailDTO createTemplate( Integer templateID ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private SendMailDTO createTemplate( Integer templateID ) throws ApplicationException
     {
         SendMailDTO dto = getEmailTemplate().get( templateID );
         if ( dto == null )
@@ -241,7 +250,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @param login Entity Login
      * @return A string traduzida
      */
-    protected String translateMessageTokens( String msg, Login login, String flatPassword )
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private String translateMessageTokens( String msg, Login login, String flatPassword )
     {
         msg = msg.replaceAll( "<<@@LOGIN_NAME@@>>", login.getPerson().getName() );
         for ( UserDocument item : login.getPerson().getDocuments() ) {
@@ -262,7 +272,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @param login Entity Login
      * @see #Login
      */
-    protected void setPasswordExpirationDate( Login login )
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private void setPasswordExpirationDate( Login login )
     {
         Integer days;
         SystemParameters sysParam = null;
@@ -348,12 +359,13 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @return
      * @throws ApplicationException
      */
-    protected Login getLogin( List<UserDocumentDTO> list ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private Login getLogin( List<UserDocumentDTO> list ) throws ApplicationException
     {
         Person person = ( Person )getUserSession().findByDocumentList( list );
         if ( person == null )
             throwException( 14 );
-        Login login = get( person );
+        Login login = getEntityManager().find( Login.class, person.getId() );
         if ( login == null )
             throwException( 14 );
         return login;
@@ -366,12 +378,13 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @return
      * @throws ApplicationException
      */
-    protected Login getLogin( UserDocumentDTO dto ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private Login getLogin( UserDocumentDTO dto ) throws ApplicationException
     {
         Person person = ( Person )getUserSession().getUserByDocument( dto );
         if ( person == null )
             throwException( 14 );
-        Login login = get( person );
+        Login login = getEntityManager().find( Login.class, person.getId() );
         if ( login == null )
             throwException( 14 );
         return login;
@@ -449,7 +462,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @param dto Credenciais de loginSession.
      * @param accessLogType Tipo de log a ser armazenado.
      */
-    protected String storeAccessLog( Login login, BasicSecurityDTO dto, Integer accessLogType ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private String storeAccessLog( Login login, BasicSecurityDTO dto, Integer accessLogType ) throws ApplicationException
     {
         AccessLog log;
 
@@ -512,7 +526,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      *
      * @param login
      */
-    protected void storeOldPassword( Login login ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private void storeOldPassword( Login login ) throws ApplicationException
     {
         LastUsedPassword lastUsedPassword;
         Timestamp now;
@@ -542,7 +557,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @param login
      * @throws ApplicationException
      */
-    protected void verifyUserStatus( Login login ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private void verifyUserStatus( Login login ) throws ApplicationException
     {
         if ( login.getUserStatus().getAllowLogin() == true )
             return;
@@ -603,7 +619,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @param newPassword Nova senha a ser verificada
      * @return Boolean
      */
-    protected Boolean isPasswordUsed( Login login, String newPassword )
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private Boolean isPasswordUsed( Login login, String newPassword )
     {
         List<LastUsedPassword> list;
         BasicPasswordEncryptor passwordEncryptor;
@@ -633,7 +650,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      *
      * @param login Entity Login
      */
-    protected void incrementTryCount( Login login )
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private void incrementTryCount( Login login )
     {
         getEntityManager().merge( login );
         login.incrementTryCount();
@@ -687,7 +705,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @return Entity Login
      * @throws ApplicationException
      */
-    protected Login findLoginByToken( String token ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private Login findLoginByToken( String token ) throws ApplicationException
     {
         Login login = null;
 
@@ -728,7 +747,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
     }
 
 
-    protected List<ListLoginDTO> copy( List<Login> list )
+    private List<ListLoginDTO> copy( List<Login> list )
     {
         List<ListLoginDTO> dtos = null;
 
