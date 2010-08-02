@@ -29,12 +29,12 @@ import javax.mail.internet.MimeMessage;
                                                                 propertyValue = "jms/CloudSystemQueue" ) } )
 public class EmailMessageSessionBean implements MessageListener
 {
-    private static final String SMTP_SERVER_ADDRESS = "187.108.192.20";
-    private static final Integer SMTP_SERVER_PORT = 465;
+    private static final String SMTP_SERVER_ADDRESS = "mail.imstecnologia.com";
+    private static final Integer SMTP_SERVER_PORT = 2626;
     private static final String SMTP_USENAME = "no-reply@imstecnologia.com";
     private static final String SMTP_FROM = "no-reply@imstecnologia.com";
     private static final String SMTP_PASSWORD = "Kde30Xnl+";
-    private static final String SMTP_PROTOCOL = "smtps";
+    private static final String SMTP_PROTOCOL = "smtp";
 
 
     protected Properties configureProperties( Properties props )
@@ -42,16 +42,17 @@ public class EmailMessageSessionBean implements MessageListener
         java.security.Security.addProvider( new com.sun.net.ssl.internal.ssl.Provider() );
         System.setProperty( "javax.net.debug", "ssl,handshake" );
         props.put( "mail.transport.protocol", SMTP_PROTOCOL );
-        props.put( "mail.smtps.auth", "true" );
-        props.put( "mail.smtps.host", SMTP_SERVER_ADDRESS );
-        props.put( "mail.smtps.port", SMTP_SERVER_PORT.toString() );
-        props.put( "mail.smtps.socketFactory.port", SMTP_SERVER_PORT.toString() );
-        //props.put( "mail.smtps.starttls.enable", "true" );
-        //props.put( "mail.smtps.ssl.enable", "true" );
+        props.put( "mail.smtp.auth", "true" );
+        props.put( "mail.smtp.host", SMTP_SERVER_ADDRESS );
+        props.put( "mail.smtp.port", SMTP_SERVER_PORT.toString() );
+        props.put( "mail.smtp.socketFactory.port", SMTP_SERVER_PORT.toString() );
+        props.put( "mail.smtp.starttls.enable", "false" );
+        props.put( "mail.smtp.ssl.enable", "false" );
         props.put( "mail.user", SMTP_USENAME );
         props.put( "mail.pwd", SMTP_PASSWORD );
         props.put( "mail.host", SMTP_SERVER_ADDRESS );
         props.put( "mail.from", SMTP_FROM );
+
         return props;
     }
 
