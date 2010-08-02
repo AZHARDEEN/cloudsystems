@@ -54,6 +54,7 @@ import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Row;
@@ -363,16 +364,56 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
      * This method can be overridable.
      */
 
+    private void configureHeader( List<AnotoResultList> dtos )
+    {
+        Listheader h;
+        Listhead head = resultList.getListhead();
+        if ( head == null || SysUtils.isEmpty( dtos ) )
+            return;
+        if ( head.getChildren() != null ) {
+            head.getChildren().clear();
+        }
+
+        h = new Listheader( getLabel( "headSeq" ) );
+        h.setWidth( "50px" );
+        head.appendChild( h );
+
+        h = new Listheader( getLabel( "headDate" ) );
+        h.setWidth( "120px" );
+        head.appendChild( h );
+
+        h = new Listheader( getLabel( "headDealerName" ) );
+        h.setWidth( "250px" );
+        head.appendChild( h );
+
+        h = new Listheader( getLabel( "headCellNumber" ) );
+        h.setWidth( "100px" );
+        head.appendChild( h );
+
+        h = new Listheader( getLabel( "headPhoto" ) );
+        h.setWidth( "70px" );
+        head.appendChild( h );
+
+        for ( PgcFieldDTO field : dtos.get( 0 ).getFields() ) {
+            if ( field.getName().equals( "CEP" ) )
+                continue;
+            h = new Listheader( field.getName() );
+            h.setWidth( ( field.getName().length() * 10 ) + "px" );
+            head.appendChild( h );
+        }
+    }
+
     protected void loadPGC( Properties prop )
     {
         List<AnotoResultList> dtos;
         try {
             Integer id = Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() );
             dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop, id );
+            configureHeader( dtos );
             ListModelList model = getModel();
             model.clear();
             model.addAll( dtos );
-            resultList.invalidate();
+            //resultList.invalidate();
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Lista de PGC" );

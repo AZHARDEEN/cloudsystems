@@ -25,6 +25,14 @@ import javax.persistence.Table;
 @NamedQueries( { @NamedQuery( name = PgcField.findAll, query = "select o from PgcField o" ),
                  @NamedQuery( name = PgcField.findPageFields,
                               query = "select o from PgcField o where o.pgcPage = ?1 order by o.sequence" ),
+                 @NamedQuery( name = PgcField.getFieldsType,
+                              query = "select o from PgcField o where o.pgcPage.pgc = ?1 and o.name in ('Plano Pos Combo via LPF', 'Plano Pos Combo via 30', 'Plano Pos 30', 'Plano Pos Shine LPF', 'Plano Pos LPF', 'Plano Pre 35', 'Plano Pre 15') and o.hasPenstrokes = true " ),
+                 @NamedQuery( name = PgcField.getFieldsCategory,
+                              query = "select o from PgcField o where o.pgcPage.pgc = ?1 and o.name in ('PAP', 'CVM') and o.hasPenstrokes = true " ),
+                 @NamedQuery( name = PgcField.getFieldsPayment,
+                              query = "select o from PgcField o where o.pgcPage.pgc = ?1 and o.name in ('Boleto_Bancario', 'Deposito_Identificado', 'Dinheiro') and o.hasPenstrokes = true " ),
+                 @NamedQuery( name = PgcField.getFieldsStatus,
+                              query = "select o from PgcField o where o.pgcPage.pgc = ?1 and o.name in ('Venda rejeitada por Análise Credito', 'Venda rejeitada por CEP inválido', 'Venda cadastrada FEND') and o.hasPenstrokes = true " ),
                  @NamedQuery( name = PgcField.getFields,
                               query = "select o from PgcField o where o.pgcPage.pgc = ?1 and o.name in (?2) and o.hasPenstrokes = true " ) } )
 @Table( name = "pgc_field" )
@@ -34,6 +42,10 @@ public class PgcField implements Serializable, EntityCopyInterface<PgcFieldDTO>
     public static final String findAll = "PgcField.findAll";
     public static final String findPageFields = "PgcField.findPageFields";
     public static final String getFields = "PgcField.getFields";
+    public static final String getFieldsType = "PgcField.getFieldsType";
+    public static final String getFieldsCategory = "PgcField.getFieldsCategory";
+    public static final String getFieldsPayment = "PgcField.getFieldsPayment";
+    public static final String getFieldsStatus = "PgcField.getFieldsStatus";
 
     @Column( name = "med_id_in", insertable = false, updatable = false )
     private Integer mediaId;
