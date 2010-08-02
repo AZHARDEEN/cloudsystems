@@ -230,9 +230,7 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
 
     public AnotoSummary summaryType( Pgc pgc ) throws ApplicationException
     {
-        String aux = "Plano Pos Combo via LPF, Plano Pos Combo via 30, Plano Pos 30, Plano Pos Shine LPF, Plano Pos LPF";
-        aux = aux + "Plano Pre 35, Plano Pre 15";
-        List<PgcField> fields = ( List<PgcField> )getResultList( PgcField.getFields, pgc, aux );
+        List<PgcField> fields = ( List<PgcField> )getResultList( PgcField.getFieldsType, pgc );
         AnotoSummary sum = new AnotoSummary();
         sum.setPgc( pgc.getId() );
         for ( PgcField field : fields ) {
@@ -253,8 +251,7 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
 
     public AnotoSummary summaryPayment( Pgc pgc ) throws ApplicationException
     {
-        String aux = "\"Dinheiro\", \"Deposito_Identificado\", \"Boleto_Bancario\"";
-        List<PgcField> fields = ( List<PgcField> )getResultList( PgcField.getFields, pgc, aux );
+        List<PgcField> fields = ( List<PgcField> )getResultList( PgcField.getFieldsPayment, pgc );
         AnotoSummary sum = new AnotoSummary();
         sum.setPgc( pgc.getId() );
         for ( PgcField field : fields ) {
@@ -278,8 +275,7 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
 
     public AnotoSummary summaryCategory( Pgc pgc ) throws ApplicationException
     {
-        String fieldNames = "\"PAP\", \"CVM\" ";
-        List<PgcField> fields = ( List<PgcField> )getResultList( PgcField.getFields, pgc, fieldNames );
+        List<PgcField> fields = ( List<PgcField> )getResultList( PgcField.getFieldsCategory, pgc );
         AnotoSummary sum = new AnotoSummary();
         sum.setPgc( pgc.getId() );
         for ( PgcField field : fields ) {
@@ -300,9 +296,7 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
 
     public AnotoSummary summarySituation( Pgc pgc ) throws ApplicationException
     {
-        String fieldNames =
-            "\"Venda cadastrada FEND\", \"Venda rejeitada por CEP inválido\", \"Venda rejeitada por Análise Credito\" ";
-        List<PgcField> fields = ( List<PgcField> )getResultList( PgcField.getFields, pgc, fieldNames );
+        List<PgcField> fields = ( List<PgcField> )getResultList( PgcField.getFieldsStatus, pgc );
         AnotoSummary sum = new AnotoSummary();
         sum.setPgc( pgc.getId() );
         for ( PgcField field : fields ) {

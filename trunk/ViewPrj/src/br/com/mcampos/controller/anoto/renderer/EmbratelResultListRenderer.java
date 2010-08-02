@@ -10,8 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.zkoss.zul.Listcell;
-import org.zkoss.zul.Listhead;
-import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
@@ -30,27 +28,20 @@ public class EmbratelResultListRenderer implements ListitemRenderer
     {
         item.setValue( data );
         AnotoResultList dto = ( AnotoResultList )data;
-        int nIndex = 0;
 
         if ( item.getChildren().size() == 0 ) {
-            item.appendChild( new Listcell() );
-            item.appendChild( new Listcell() );
-            item.appendChild( new Listcell() );
-            item.appendChild( new Listcell() );
-            item.appendChild( new Listcell() );
+            item.getChildren().clear();
         }
-
-        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( "" + ( item.getListbox().getIndexOfItem( item ) + 1 ) );
+        new Listcell( "" + ( item.getListbox().getIndexOfItem( item ) + 1 ) ).setParent( item );
         try {
-            ( ( Listcell )item.getChildren().get( nIndex++ ) )
-                .setLabel( renderedDateFormat.format( dto.getPgcPage().getPgc().getInsertDate() ) );
+            new Listcell( renderedDateFormat.format( dto.getPgcPage().getPgc().getInsertDate() ) ).setParent( item );
         }
         catch ( Exception e ) {
             e = null;
         }
-        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getUserName() );
-        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getCellNumber() );
-        ( ( Listcell )item.getChildren().get( nIndex++ ) ).setLabel( dto.getAttach() ? "SIM" : "" );
+        new Listcell( dto.getUserName() ).setParent( item );
+        new Listcell( dto.getCellNumber() ).setParent( item );
+        new Listcell( dto.getAttach() ? "SIM" : "" ).setParent( item );
 
         showFormFields( item, dto.getFields() );
     }
@@ -59,21 +50,10 @@ public class EmbratelResultListRenderer implements ListitemRenderer
     {
         if ( SysUtils.isEmpty( fields ) )
             return;
-        Listhead head = item.getListbox().getListhead();
-        if ( head.getChildren().size() < 6 ) {
-            for ( PgcFieldDTO field : fields ) {
-                if ( field.getName().equals( "CEP" ) )
-                    continue;
-                Listheader h = new Listheader( field.getName() );
-                h.setWidth( ( field.getName().length() * 10 ) + "px" );
-                head.appendChild( h );
-            }
-        }
         for ( PgcFieldDTO field : fields ) {
             if ( field.getName().equals( "CEP" ) )
                 continue;
-            Listcell cell = new Listcell( field.getValue() );
-            item.appendChild( cell );
+            new Listcell( field.getValue() ).setParent( item );
         }
     }
 }
