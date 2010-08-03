@@ -6,7 +6,6 @@
             <tabbox tabscroll="true" height="600px">
                 <tabs>
                     <tab id="tabFilter" label="##"/>
-                    <tab id="tabCustomFilter" label="##"/>
                     <tab id="tabAnotoSearch" label="Resultado da Pesquisa"/>
                     <tab id="tabSummary" label="Quadro Resumo"/>
                 </tabs>
@@ -46,21 +45,29 @@
                                     <label value="##" id="labelFieldValue"/>
                                     <textbox id="txtFieldValue" width="99%"/>
                                     <label value="##" id="labelMaxRecords"/>
-                                    <combobox id="cmbMaxRecords" width="50px" readonly="true">
-                                        <comboitem value="20" label="20"/>
-                                        <comboitem value="30" label="30"/>
-                                        <comboitem value="40" label="40"/>
-                                        <comboitem value="50" label="50"/>
-                                        <comboitem value="100" label="100"/>
-                                        <comboitem value="200" label="200"/>
-                                    </combobox>
+                                    <hbox>
+                                        <combobox id="cmbMaxRecords" width="50px" readonly="true">
+                                            <comboitem value="20" label="20"/>
+                                            <comboitem value="30" label="30"/>
+                                            <comboitem value="40" label="40"/>
+                                            <comboitem value="50" label="50"/>
+                                            <comboitem value="100" label="100"/>
+                                            <comboitem value="200" label="200"/>
+                                        </combobox>
+                                        <checkbox id="chkNoBackoffice" label="Sem Ação do Backoffice"/>
+                                    </hbox>
                                 </row>
                             </rows>
+                        </grid>
+                        <grid id="gridCustomFields" height="110px">
+                            <columns>
+                                <column width="50%" id="columnFieldName" label="##"/>
+                                <column id="columnFieldValue" label="##"/>
+                            </columns>
                         </grid>
                         <separator height="15px"/>
                         <grid align="center" width="100%">
                             <columns>
-                                <column align="center"/>
                                 <column align="center"/>
                                 <column align="center"/>
                             </columns>
@@ -68,28 +75,19 @@
                                 <row>
                                     <button id="btnFilter" label="##" image="/img/icontexto-webdev-search-016x016.png"/>
                                     <button id="btnSummary" label="##" image="/img/icontexto-webdev-file-016x016.png"/>
-                                    <menubar>
-                                        <menu label="Exportar">
-                                            <menupopup>
-                                                <menuitem id="mnuExport" label="##" image="/img/icontexto-webdev-file-016x016.png"/>
-                                                <menuitem id="mnuExport2" label="##"
-                                                          image="/img/icontexto-webdev-file-016x016.png"/>
-                                            </menupopup>
-                                        </menu>
-                                    </menubar>
                                 </row>
                             </rows>
                         </grid>
                     </tabpanel>
-                    <tabpanel>
-                        <grid id="gridCustomFields" height="110px">
-                            <columns>
-                                <column width="40%" id="columnFieldName" label="##"/>
-                                <column id="columnFieldValue" label="##"/>
-                            </columns>
-                        </grid>
-                    </tabpanel>
                     <tabpanel height="600px">
+                        <menubar>
+                            <menu label="Exportar">
+                                <menupopup>
+                                    <menuitem id="mnuExport" label="##" image="/img/icontexto-webdev-file-016x016.png"/>
+                                    <menuitem id="mnuExport2" label="##" image="/img/icontexto-webdev-file-016x016.png"/>
+                                </menupopup>
+                            </menu>
+                        </menubar>
                         <listbox id="resultList" vflex="false" height="450px" mold="paging" pageSize="20">
                             <listhead sizable="true"></listhead>
                         </listbox>
@@ -107,19 +105,19 @@
                                             <tab id="tabChartStatus" label="Situação"/>
                                         </tabs>
                                         <tabpanels>
-                                            <tabpanel>
+                                            <tabpanel height="400px">
                                                 <flashchart id="chartAttach" type="pie" height="200px"/>
                                             </tabpanel>
-                                            <tabpanel>
+                                            <tabpanel height="400px">
                                                 <flashchart id="chartType" type="pie" height="200px"/>
                                             </tabpanel>
-                                            <tabpanel>
+                                            <tabpanel height="400px">
                                                 <flashchart id="chartPay" type="pie" height="200px"/>
                                             </tabpanel>
-                                            <tabpanel>
+                                            <tabpanel height="400px">
                                                 <flashchart id="chartCategory" type="pie" height="200px"/>
                                             </tabpanel>
-                                            <tabpanel>
+                                            <tabpanel height="400px">
                                                 <flashchart id="chartStatus" type="pie" height="200px"/>
                                             </tabpanel>
                                         </tabpanels>

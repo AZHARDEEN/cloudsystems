@@ -131,8 +131,6 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
 
     private Tab tabFilter;
 
-    private Tab tabCustomFilter;
-
     private Tab tabAnotoSearch;
     private Tab tabSummary;
 
@@ -146,6 +144,8 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     private Row rowDealer;
 
     private Grid gridCustomFields;
+
+    private Checkbox chkNoBackoffice;
 
     public BaseSearchEmbratelController()
     {
@@ -316,7 +316,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         if ( rows.getChildren() != null )
             rows.getChildren().clear();
         if ( SysUtils.isEmpty( fields ) == false ) {
-            tabCustomFilter.setVisible( true );
+            gridCustomFields.setVisible( true );
             XulElement c;
             for ( AnotoPageFieldDTO f : fields ) {
                 Row row = new Row();
@@ -351,7 +351,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
             }
         }
         else
-            tabCustomFilter.setVisible( false );
+            gridCustomFields.setVisible( false );
 
     }
 
@@ -745,6 +745,10 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
             prop.put( "pgcFieldValue", fieldValue );
         }
         verifyCustomFields( prop );
+
+        if ( chkNoBackoffice.isChecked() ) {
+            prop.put( "noBackOffice", "yes" );
+        }
         return prop;
     }
 
@@ -866,8 +870,6 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         setLabel( headPhoto );
 
         setLabel( tabFilter );
-
-        setLabel( tabCustomFilter );
 
         setLabel( columnFieldValue );
         setLabel( columnFieldName );
