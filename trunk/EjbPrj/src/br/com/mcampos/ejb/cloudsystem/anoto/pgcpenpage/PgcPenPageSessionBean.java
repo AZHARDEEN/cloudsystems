@@ -104,7 +104,8 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         barCode = ( String )( props != null ? props.get( barCodeParameterName ) : "" );
         if ( SysUtils.isEmpty( barCode ) == false ) {
             String sqlBarCode = " exists ( select a.pgc_id_in from pgc_attachment a \n" +
-                " where a.pgc_id_in = pgc_page.pgc_id_in and " + " a.ppg_book_id = pgc_page.ppg_book_id and " + " a.ppg_page_id = pgc_page.ppg_page_id \n";
+                " where a.pgc_id_in = pgc_page.pgc_id_in and " + " a.ppg_book_id = pgc_page.ppg_book_id and " +
+                " a.ppg_page_id = pgc_page.ppg_page_id \n";
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
             if ( barCode.indexOf( "*" ) >= 0 ) {
@@ -119,7 +120,8 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         fieldValue = ( String )( props != null ? props.get( fieldValueParameterName ) : "" );
         if ( SysUtils.isEmpty( fieldValue ) == false ) {
             String sqlFieldValue = " exists ( select a.pgc_id_in from pgc_field a \n" +
-                "	where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " + "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
+                "	where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " +
+                "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
             if ( fieldValue.indexOf( "*" ) >= 0 ) {
@@ -128,6 +130,16 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
             }
             else
                 jpaWhere += sqlFieldValue + " and coalesce ( pfl_revised_tx, pfl_icr_tx ) = '" + fieldValue + "' )";
+        }
+
+        fieldValue = ( String )( props != null ? props.get( "noBackOffice" ) : "" );
+        if ( SysUtils.isEmpty( fieldValue ) == false ) {
+            String sqlFieldValue = " not exists ( select a.pgc_id_in from pgc_field a \n" +
+                " where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " +
+                "   and a.ppg_page_id = pgc_page.ppg_page_id WHERE a.pfl_name_ch = 'Backoffice Responsavel' )\n";
+            if ( jpaWhere.length() > 0 )
+                jpaWhere += " AND ";
+            jpaWhere += sqlFieldValue;
         }
 
 
@@ -148,7 +160,8 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         if ( custom != null ) {
             Set<String> fields = custom.stringPropertyNames();
             String sqlFieldValue = " exists ( select a.pgc_id_in from pgc_field a \n" +
-                " where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " + "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
+                " where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " +
+                "   and a.ppg_page_id = pgc_page.ppg_page_id \n";
             for ( String field : fields ) {
                 sqlFieldValue += " and pfl_name_ch = '" + field + "'";
                 String value = custom.getProperty( field );
