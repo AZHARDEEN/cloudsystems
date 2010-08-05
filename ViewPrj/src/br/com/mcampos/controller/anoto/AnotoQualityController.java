@@ -24,6 +24,7 @@ public class AnotoQualityController extends BaseSearchController
     protected void loadPGC( Properties prop )
     {
         prop.put( "revisedStatus", "1" );
+        prop.remove( "custom_fields" );
         super.loadPGC( prop );
     }
 

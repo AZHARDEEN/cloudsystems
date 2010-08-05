@@ -64,6 +64,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Radio;
+import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
@@ -128,6 +129,7 @@ public class AnotoViewController extends AnotoLoggedController
     private Tab tabbarCode;
     private Tab tabPhotos;
     private Tab tabGPS;
+    private Tab tabBackoffice;
 
     private Gmaps gmapGPS;
 
@@ -139,6 +141,9 @@ public class AnotoViewController extends AnotoLoggedController
 
     private Radio vendaCadastrada;
     private Radio vendaInvalida;
+
+    private Grid gridVendaOK;
+    private Radiogroup optionRejeicao;
 
 
     private AnotoViewController( char c )
@@ -186,6 +191,30 @@ public class AnotoViewController extends AnotoLoggedController
         if ( dtoParam == null )
             return;
         PgcFieldDTO field;
+        if ( vendaCadastrada.isChecked() == false && vendaInvalida.isChecked() == false ) {
+            showErrorMessage( "Por favor, escolha uma opção para a situação do formulário." );
+            return;
+        }
+        if ( vendaCadastrada.isChecked() ) {
+            if ( SysUtils.isZero( ordemServico.getValue() ) ) {
+                showErrorMessage( "A ordem de serviço não pode estar em branco." );
+                return;
+            }
+            if ( SysUtils.isEmpty( telefoneLivre.getValue() ) && SysUtils.isEmpty( numeroPortado.getValue() ) ) {
+                showErrorMessage( "O número do Telefone Livre ou Número Portado deve estar preenchido" );
+                return;
+            }
+            if ( SysUtils.isEmpty( telefoneLivre.getValue() ) == false && SysUtils.isEmpty( numeroPortado.getValue() ) == false ) {
+                showErrorMessage( "Apenas uma das informações (Telefone Livre ou Número Portado) pode estar preenchida." );
+                return;
+            }
+        }
+        else {
+            if ( rejeitadoCredito.isChecked() == false && rejeitadoCEP.isChecked() == false ) {
+                showErrorMessage( "Favor informar o motivo da rejeição" );
+                return;
+            }
+        }
         try {
             field = findField( fieldFend );
             field.setType( new FieldTypeDTO( FieldTypeDTO.typeBoolean ) );
@@ -225,7 +254,7 @@ public class AnotoViewController extends AnotoLoggedController
             else {
                 field = findField( fieldOs );
                 field.setType( new FieldTypeDTO( FieldTypeDTO.typeBoolean ) );
-                field.setRevisedText( " " );
+                field.setRevisedText( "" );
                 getSession().update( getLoggedInUser(), field );
 
                 field = findField( fieldRejeitadoCredito );
@@ -241,11 +270,17 @@ public class AnotoViewController extends AnotoLoggedController
             }
             showFields( dtoParam );
         }
-        catch ( ApplicationException e ) {
+        catch ( Exception e ) {
             showErrorMessage( e.getMessage() );
         }
-        catch ( InterruptedException e ) {
-        }
+    }
+
+    private void clearBackofficeStatus()
+    {
+        vendaCadastrada.setChecked( false );
+        vendaInvalida.setChecked( false );
+        gridVendaOK.setVisible( false );
+        optionRejeicao.setVisible( false );
     }
 
     public PgcFieldDTO findField( String name )
@@ -375,7 +410,10 @@ public class AnotoViewController extends AnotoLoggedController
         model.addAll( currentFields );
 
         ordemServico.setValue( 0 );
+        boolean bBackoffice = false;
         for ( PgcFieldDTO field : currentFields ) {
+            if ( field.getName().equalsIgnoreCase( fieldBackOffice ) )
+                bBackoffice = true;
             if ( field.getName().equalsIgnoreCase( fieldOs ) ) {
                 try {
                     ordemServico.setValue( Integer.parseInt( field.getValue() ) );
@@ -391,14 +429,14 @@ public class AnotoViewController extends AnotoLoggedController
                 numeroPortado.setValue( field.getValue() );
             }
         }
-        if ( SysUtils.isZero( ordemServico.getValue() ) ) {
-            vendaInvalida.setChecked( true );
-            vendaInvalida.setDisabled( false );
+        if ( bBackoffice == false ) {
+            tabBackoffice.setVisible( true );
+            tabBackoffice.setSelected( true );
+            clearBackofficeStatus();
         }
         else {
-            vendaCadastrada.setChecked( true );
-            vendaInvalida.setDisabled( true );
-            telefoneLivre.setDisabled( SysUtils.isEmpty( numeroPortado.getValue() ) == false );
+            tabBackoffice.setVisible( false );
+            tabIcr.setSelected( true );
         }
     }
 

@@ -43,9 +43,9 @@
                                                 </columns>
                                                 <rows>
                                                     <row>
-                                                        <radio label="Venda Cadastrada" id="vendaCadastrada"
+                                                        <radio label="Venda Cadastrada" id="vendaCadastrada" checked="false"
                                                                onCheck="gridVendaOK.visible=true;optionRejeicao.visible=false;ordemServico.value=null;"/>
-                                                        <radio label="Venda Inválida" id="vendaInvalida"
+                                                        <radio label="Venda Inválida" id="vendaInvalida" checked="false"
                                                                onCheck="gridVendaOK.visible=false;optionRejeicao.visible=true;"/>
                                                     </row>
                                                 </rows>

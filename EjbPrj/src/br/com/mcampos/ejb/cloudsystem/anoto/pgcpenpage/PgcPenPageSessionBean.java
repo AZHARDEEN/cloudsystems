@@ -134,9 +134,9 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
 
         fieldValue = ( String )( props != null ? props.get( "noBackOffice" ) : "" );
         if ( SysUtils.isEmpty( fieldValue ) == false ) {
-            String sqlFieldValue = " not exists ( select a.pgc_id_in from pgc_field a \n" +
+            String sqlFieldValue = " pgc_page.pgc_id_in not in ( select a.pgc_id_in from pgc_field a \n" +
                 " where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " +
-                "   and a.ppg_page_id = pgc_page.ppg_page_id WHERE a.pfl_name_ch = 'Backoffice Responsavel' )\n";
+                "   and a.ppg_page_id = pgc_page.ppg_page_id and a.pfl_name_ch = 'Backoffice Responsavel' )\n";
             if ( jpaWhere.length() > 0 )
                 jpaWhere += " AND ";
             jpaWhere += sqlFieldValue;
@@ -180,7 +180,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         if ( jpaWhere.length() > 0 )
             jpaQuery += " WHERE " + jpaWhere + " ORDER BY PGC_ID_IN DESC, PPG_BOOK_ID ASC, PPG_PAGE_ID ASC ";
         Query query = getEntityManager().createNativeQuery( jpaQuery, PgcPage.class );
-        if ( maxRecords.equals( 0 ) == false )
+        if ( SysUtils.isZero( maxRecords ) == false )
             query.setMaxResults( maxRecords );
         List<PgcPage> list = ( List<PgcPage> )query.getResultList();
         if ( SysUtils.isEmpty( list ) )

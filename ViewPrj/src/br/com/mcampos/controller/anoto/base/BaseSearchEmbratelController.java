@@ -164,7 +164,8 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         configureLabels();
         refresh();
         resultList.setItemRenderer( new EmbratelResultListRenderer() );
-        cmbMaxRecords.setSelectedIndex( 0 );
+        if ( cmbMaxRecords != null )
+            cmbMaxRecords.setSelectedIndex( 0 );
         configureonOkEvents();
         SimpleDateFormat df = new SimpleDateFormat( "ddMMyyyy HHmmss" );
         df.parse( "24072010 000000" );
@@ -393,6 +394,9 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         h = new Listheader( getLabel( "headPhoto" ) );
         h.setWidth( "70px" );
         head.appendChild( h );
+        h = new Listheader( "Qualidade" );
+        h.setWidth( "80px" );
+        head.appendChild( h );
 
         for ( PgcFieldDTO field : dtos.get( 0 ).getFields() ) {
             if ( field.getName().equals( "CEP" ) )
@@ -407,8 +411,8 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     {
         List<AnotoResultList> dtos;
         try {
-            Integer id = Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() );
-            dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop, id );
+            //Integer id = Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() );
+            dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop, null );
             configureHeader( dtos );
             ListModelList model = getModel();
             model.clear();
@@ -756,14 +760,10 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     public void onClick$btnFilter()
     {
         loadPGC( getFilters() );
+        loadSummary( getFilters() );
         tabAnotoSearch.setSelected( true );
     }
 
-    public void onClick$btnSummary()
-    {
-        loadSummary( getFilters() );
-        tabSummary.setSelected( true );
-    }
 
     public void onSelect$resultList()
     {
