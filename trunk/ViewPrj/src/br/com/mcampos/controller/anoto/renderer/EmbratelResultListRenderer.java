@@ -42,6 +42,7 @@ public class EmbratelResultListRenderer implements ListitemRenderer
         new Listcell( dto.getUserName() ).setParent( item );
         new Listcell( dto.getCellNumber() ).setParent( item );
         new Listcell( dto.getAttach() ? "SIM" : "" ).setParent( item );
+        new Listcell( dto.getPgcPage().getRevisionStatus().getId().equals( 1 ) ? "" : "SIM" ).setParent( item );
 
         showFormFields( item, dto.getFields() );
     }

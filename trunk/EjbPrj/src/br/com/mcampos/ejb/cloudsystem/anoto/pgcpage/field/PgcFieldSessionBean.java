@@ -76,12 +76,28 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
         addDateRangeFilter( props, jpaWhere );
         addFieldValueFilter( props, jpaWhere );
         addCustomFieldFilter( props, jpaWhere );
+        addBackOfficeFilter( props, jpaWhere );
 
         jpaQuery.append( jpaWhere );
         Query query = getEntityManager().createNativeQuery( jpaQuery.toString(), Pgc.class );
         List<Pgc> list = ( List<Pgc> )query.getResultList();
         return list;
     }
+
+    private StringBuffer addBackOfficeFilter( Properties props, StringBuffer jpaWhere )
+    {
+        String fieldValue = ( String )( props != null ? props.get( "noBackOffice" ) : "" );
+        if ( SysUtils.isEmpty( fieldValue ) == false ) {
+            String sqlFieldValue = " pgc_page.pgc_id_in not in ( select a.pgc_id_in from pgc_field a \n" +
+                " where a.pgc_id_in = pgc_page.pgc_id_in and a.ppg_book_id = pgc_page.ppg_book_id " +
+                "   and a.ppg_page_id = pgc_page.ppg_page_id and a.pfl_name_ch = 'Backoffice Responsavel' )\n";
+            if ( jpaWhere.length() > 0 )
+                jpaWhere.append( " AND " );
+            jpaWhere.append( sqlFieldValue );
+        }
+        return jpaWhere;
+    }
+
 
     private StringBuffer addCustomFieldFilter( Properties props, StringBuffer jpaWhere )
     {
