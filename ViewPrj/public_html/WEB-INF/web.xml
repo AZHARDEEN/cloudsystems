@@ -7,6 +7,7 @@
         <servlet>
                 <servlet-name>UploadPGC</servlet-name>
                 <servlet-class>br.com.mcampos.controller.UploadPGC</servlet-class>
+                <load-on-startup>1</load-on-startup>
         </servlet>
         <servlet-mapping>
                 <servlet-name>UploadPGC</servlet-name>

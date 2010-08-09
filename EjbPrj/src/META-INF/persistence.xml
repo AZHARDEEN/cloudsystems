@@ -82,6 +82,9 @@
       <property name="eclipselink.cache.shared.default" value="false"/>
       <property name="eclipselink.target-server" value="WebLogic 10"/>
       <property name="eclipselink.target-database" value="PostgreSQL"/>
+      <property name="eclipselink.logging.file" value="cloudsystems.log"/>
+      <property name="eclipselink.logging.level" value="FINEST"/>
+      <property name="eclipselink.logging.timestamp" value="true"/>
     </properties>
   </persistence-unit>
 </persistence>

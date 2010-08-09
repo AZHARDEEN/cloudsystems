@@ -3,7 +3,6 @@ package br.com.mcampos.ejb.cloudsystem.user.person.session;
 
 import br.com.mcampos.dto.user.PersonDTO;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
-import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
 
@@ -33,7 +32,7 @@ public interface PersonSessionLocal extends Serializable
     Person add( Person entity );
 
 
-    Person update( PersonDTO person ) throws ApplicationException;
+    //Person update( PersonDTO person ) throws ApplicationException;
 
     void delete( Integer id );
 

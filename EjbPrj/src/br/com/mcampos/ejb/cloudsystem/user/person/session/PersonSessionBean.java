@@ -14,19 +14,14 @@ import br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.entity.ContactT
 import br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.entity.DocumentType;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title;
-import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType;
 import br.com.mcampos.ejb.cloudsystem.user.contact.UserContactUtil;
 import br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact;
 import br.com.mcampos.ejb.cloudsystem.user.document.UserDocumentUtil;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
-import br.com.mcampos.ejb.cloudsystem.user.login.Login;
-import br.com.mcampos.ejb.cloudsystem.user.login.LoginSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.person.PersonUtil;
 import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 import br.com.mcampos.ejb.session.user.UserSessionLocal;
-import br.com.mcampos.exception.ApplicationException;
-
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -55,10 +50,6 @@ public class PersonSessionBean implements PersonSessionLocal
 
     @EJB
     private UserSessionLocal userSession;
-
-    @EJB
-    private LoginSessionLocal loginSession;
-
 
     public PersonSessionBean()
     {
@@ -175,7 +166,8 @@ public class PersonSessionBean implements PersonSessionLocal
         if ( person.getDocuments() != null ) {
             for ( UserDocument item : person.getDocuments() ) {
                 if ( getUserSession().getUserByDocument( item ) != null )
-                    throw new EJBException( "Ja existe um usuário cadastrado com o mesmo documento [" + item.getCode() + "]" + ". O sistema não permite dois cadastros com os mesmos documentos" );
+                    throw new EJBException( "Ja existe um usuário cadastrado com o mesmo documento [" + item.getCode() + "]" +
+                                            ". O sistema não permite dois cadastros com os mesmos documentos" );
             }
         }
     }
@@ -294,27 +286,6 @@ public class PersonSessionBean implements PersonSessionLocal
         }
     }
 
-    public Person update( PersonDTO dto ) throws ApplicationException
-    {
-        Person person;
-        Login login;
-
-
-        person = em.find( Person.class, dto.getId() );
-        if ( person == null )
-            throw new EJBException( "Não existe usuario para atualizar" );
-        person = PersonUtil.update( person, dto );
-        applyRules( person );
-        mergeAddress( person, dto.getAddressList() );
-        mergeDocuments( person, dto.getDocumentList() );
-        mergeContacts( person, dto.getContactList() );
-        login = loginSession.get( person );
-        if ( login != null ) {
-            if ( login.getUserStatus().getId().equals( UserStatus.statusFullfillRecord ) )
-                login.setUserStatus( em.find( UserStatus.class, UserStatus.statusOk ) );
-        }
-        return person;
-    }
 
     public void delete( Integer id )
     {
