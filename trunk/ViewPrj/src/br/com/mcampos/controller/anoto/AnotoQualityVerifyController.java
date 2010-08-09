@@ -53,6 +53,8 @@ public class AnotoQualityVerifyController extends LoggedBaseController
 
     private ReviseFacade session;
 
+    private Component myRootParent;
+
     public AnotoQualityVerifyController( char c )
     {
         super( c );
@@ -67,6 +69,7 @@ public class AnotoQualityVerifyController extends LoggedBaseController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
+        myRootParent = getRootParent().getParent();
         setLabel( labelQualityVerifyTitle );
         setLabel( gridQualityColumn );
         if ( dtoParam != null ) {
@@ -207,6 +210,8 @@ public class AnotoQualityVerifyController extends LoggedBaseController
 
     private void preparePaging()
     {
+        if ( pagingPages == null )
+            return;
         if ( currentList == null || currentList.size() == 1 ) {
             return;
         }
@@ -217,12 +222,12 @@ public class AnotoQualityVerifyController extends LoggedBaseController
         pagingPages.setActivePage( nIndex );
     }
 
-    private void setRevising( AnotoResultList target ) throws ApplicationException
+    private void setRevising( AnotoResultList target, Integer newStatus ) throws ApplicationException
     {
-        if ( target == null || target.getPgcPage().getRevisionStatus().getId() == 2 )
+        if ( target == null || target.getPgcPage().getRevisionStatus().getId().equals( newStatus ) )
             return;
-        getSession().setStatus( getLoggedInUser(), target.getPgcPage(), 2 );
-        target.getPgcPage().getRevisionStatus().setId( 2 );
+        getSession().setStatus( getLoggedInUser(), target.getPgcPage(), newStatus );
+        target.getPgcPage().getRevisionStatus().setId( newStatus );
     }
 
 
@@ -231,7 +236,7 @@ public class AnotoQualityVerifyController extends LoggedBaseController
         try {
             dtoParam = currentList.get( pagingPages.getActivePage() );
             if ( dtoParam != null ) {
-                setRevising( dtoParam );
+                setRevising( dtoParam, 2 );
                 process( dtoParam );
             }
         }
@@ -251,5 +256,51 @@ public class AnotoQualityVerifyController extends LoggedBaseController
         if ( session == null )
             session = ( ReviseFacade )getRemoteSession( ReviseFacade.class );
         return session;
+    }
+
+    @Override
+    public void onClick$cmdCancel()
+    {
+        try {
+            setRevising( dtoParam, 1 );
+            gotoPage( "/private/admin/anoto/anoto_quality.zul", myRootParent );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
+        }
+    }
+
+    public void onClick$cmdSubmit()
+    {
+        try {
+            setRevising( dtoParam, 3 );
+            dtoParam = getNextItemToProcess();
+            if ( dtoParam == null ) {
+                gotoPage( "/private/admin/anoto/anoto_quality.zul", myRootParent );
+            }
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage() );
+        }
+    }
+
+
+    private AnotoResultList getNextItemToProcess() throws ApplicationException
+    {
+        int nIndex = currentList.indexOf( dtoParam ) + 1;
+        while ( nIndex < currentList.size() ) {
+            dtoParam = currentList.get( nIndex );
+            try {
+                setRevising( dtoParam, 2 );
+            }
+            catch ( ApplicationException e ) {
+                nIndex++;
+                continue;
+            }
+            process( dtoParam );
+            return dtoParam;
+        }
+        dtoParam = null;
+        return dtoParam;
     }
 }

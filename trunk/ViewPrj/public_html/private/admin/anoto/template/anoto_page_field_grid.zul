@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-    <grid id="gridFields" vflex="true" mold="paging" pageSize="20"
-          apply="br.com.mcampos.controller.anoto.util.GridFieldController">
+    <grid id="gridFields" vflex="true" mold="paging" pageSize="20" apply="br.com.mcampos.controller.anoto.util.GridFieldController">
         <columns sizable="false">
             <column align="left" label="##" id="headerName"/>
             <column align="left" label="##" id="headerSequence" width="100px"/>
             <column align="left" label="##" id="headerType" width="200px"/>
+            <column align="Center" label="PK" width="30px" id="headerPK"/>
             <column align="Center" label="##" width="80px" id="headerIcr"/>
             <column align="Center" label="##" width="80px" id="headerExport"/>
             <column align="Center" label="##" width="80px" id="headerSearch"/>

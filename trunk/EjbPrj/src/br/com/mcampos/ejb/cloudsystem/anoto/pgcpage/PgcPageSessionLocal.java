@@ -18,4 +18,6 @@ public interface PgcPageSessionLocal extends Serializable
     PgcPage add( PgcPage entity ) throws ApplicationException;
 
     void setRevisedStatus( PgcPage page, Integer status ) throws ApplicationException;
+
+    void getRevisedStatus( PgcPage page ) throws ApplicationException;
 }

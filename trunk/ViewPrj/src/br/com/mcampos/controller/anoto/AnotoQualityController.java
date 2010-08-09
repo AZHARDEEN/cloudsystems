@@ -39,8 +39,11 @@ public class AnotoQualityController extends BaseSearchController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
-        labelFormView2Title.setValue( getLabel( "qualityControl" ) );
-        getExportButton().setVisible( false );
-        btnSummary.setVisible( false );
+        if ( labelFormView2Title != null )
+            labelFormView2Title.setValue( getLabel( "qualityControl" ) );
+        if ( getExportButton() != null )
+            getExportButton().setVisible( false );
+        if ( btnSummary != null )
+            btnSummary.setVisible( false );
     }
 }

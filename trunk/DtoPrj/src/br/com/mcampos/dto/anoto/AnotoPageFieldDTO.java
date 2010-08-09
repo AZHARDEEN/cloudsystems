@@ -18,6 +18,7 @@ public class AnotoPageFieldDTO implements Serializable
     private Boolean export;
     private Boolean searchable;
     private Integer sequence;
+    private Boolean pk = false;
 
 
     public AnotoPageFieldDTO()
@@ -147,5 +148,15 @@ public class AnotoPageFieldDTO implements Serializable
     public Integer getSequence()
     {
         return sequence;
+    }
+
+    public void setPk( Boolean pk )
+    {
+        this.pk = pk;
+    }
+
+    public Boolean getPk()
+    {
+        return pk;
     }
 }

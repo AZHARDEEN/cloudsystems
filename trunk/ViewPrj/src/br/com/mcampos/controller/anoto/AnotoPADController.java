@@ -529,6 +529,10 @@ public class AnotoPADController extends AnotoBaseController<AnotoPageDTO> implem
                         dto.setIcr( evt.isChecked() );
                     if ( attr != null && attr.equalsIgnoreCase( "export" ) )
                         dto.setExport( evt.isChecked() );
+                    if ( attr != null && attr.equalsIgnoreCase( "searchable" ) )
+                        dto.setSearchable( evt.isChecked() );
+                    if ( attr != null && attr.equalsIgnoreCase( "pk" ) )
+                        dto.setPk( evt.isChecked() );
                     tryUpdate( dto );
                 }
             }
