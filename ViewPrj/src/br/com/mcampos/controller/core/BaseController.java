@@ -39,12 +39,12 @@ public abstract class BaseController extends GenericForwardComposer
     public static final String browseHistoryParameterName = "browseHistory";
     public static final String bookmarkId = "bookmark";
 
-    private Component rootParent;
-    private transient HashMap<String, Object> arguments = new HashMap<String, Object>();
-    private static final String basePage = "/private/index.zul";
+    protected Component rootParent;
+    protected transient HashMap<String, Object> arguments = new HashMap<String, Object>();
+    protected static final String basePage = "/private/index.zul";
 
-    private Image imageClienteLogo;
-    private Image imageCompanyLogo;
+    protected Image imageClienteLogo;
+    protected Image imageCompanyLogo;
 
     public BaseController( char c )
     {
@@ -114,6 +114,7 @@ public abstract class BaseController extends GenericForwardComposer
             Sessions.getCurrent().setAttribute( name, value );
     }
 
+    /*
     protected BookmarkHelper getHistory()
     {
         BookmarkHelper bookmarkHelper;
@@ -125,6 +126,7 @@ public abstract class BaseController extends GenericForwardComposer
         }
         return bookmarkHelper;
     }
+*/
 
     protected void setLoggedInUser( AuthenticationDTO user )
     {
@@ -192,7 +194,7 @@ public abstract class BaseController extends GenericForwardComposer
             catch ( NullPointerException e ) {
                 e = null;
             }
-            setBookmark( uri, parent, parameters );
+            //setBookmark( uri, parent, parameters );
             Executions.getCurrent().createComponents( uri, parent, parameters );
         }
         else {
@@ -264,6 +266,7 @@ public abstract class BaseController extends GenericForwardComposer
         removeMe();
     }
 
+    /*
     protected void setBookmark( String uri, Component parent, Map parameters )
     {
         String strBookmark;
@@ -275,6 +278,7 @@ public abstract class BaseController extends GenericForwardComposer
         if ( desktop != null )
             desktop.setBookmark( strBookmark );
     }
+    */
 
 
     protected Object getRemoteSession( Class remoteClass )

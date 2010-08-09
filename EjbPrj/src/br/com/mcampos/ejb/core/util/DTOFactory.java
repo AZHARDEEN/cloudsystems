@@ -191,6 +191,7 @@ public final class DTOFactory implements Serializable
         target.setExport( dto.getExport() );
         target.setSearchable( dto.getSearchable() );
         target.setSequence( dto.getSequence() );
+        target.setPk( dto.getPk() );
         return target;
     }
 }

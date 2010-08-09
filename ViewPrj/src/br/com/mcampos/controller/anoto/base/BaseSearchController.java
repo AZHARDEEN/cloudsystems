@@ -145,8 +145,10 @@ public abstract class BaseSearchController extends AnotoLoggedController
         super.doAfterCompose( comp );
         configureLabels();
         refresh();
-        resultList.setItemRenderer( new PgcPenPageListRenderer() );
-        cmbMaxRecords.setSelectedIndex( 0 );
+        if ( resultList != null )
+            resultList.setItemRenderer( new PgcPenPageListRenderer() );
+        if ( cmbMaxRecords != null )
+            cmbMaxRecords.setSelectedIndex( 0 );
         configureonOkEvents();
     }
 
@@ -160,6 +162,8 @@ public abstract class BaseSearchController extends AnotoLoggedController
 
     private void loadApplication()
     {
+        if ( cmbApplication == null )
+            return;
         List list;
         try {
             list = getSession().getForms( getLoggedInUser() );
@@ -220,6 +224,8 @@ public abstract class BaseSearchController extends AnotoLoggedController
 
     private void loadCustom( FormDTO form )
     {
+        if ( gridCustomFields == null || tabCustomFilter == null )
+            return;
         List<AnotoPageFieldDTO> fields = Collections.emptyList();
         try {
             fields = getSession().getSearchableFields( getLoggedInUser(), form );
@@ -463,6 +469,8 @@ public abstract class BaseSearchController extends AnotoLoggedController
 
     private void verifyCustomFields( Properties prop )
     {
+        if ( gridCustomFields == null )
+            return;
         Properties custom = new Properties();
 
         Rows rows = gridCustomFields.getRows();
@@ -567,7 +575,8 @@ public abstract class BaseSearchController extends AnotoLoggedController
     public void onClick$btnFilter()
     {
         loadPGC( getFilters() );
-        tabAnotoSearch.setSelected( true );
+        if ( tabAnotoSearch != null )
+            tabAnotoSearch.setSelected( true );
     }
 
     private Date getDate( Datebox d, Timebox t )
@@ -624,85 +633,94 @@ public abstract class BaseSearchController extends AnotoLoggedController
 
     private void configureonOkEvents()
     {
-        cmbApplication.addEventListener( Events.ON_OK, new EventListener()
-            {
-                public void onEvent( Event event )
+        if ( cmbApplication != null )
+            cmbApplication.addEventListener( Events.ON_OK, new EventListener()
                 {
-                    onClick$btnFilter();
-                }
-            } );
-
-        cmbPen.addEventListener( Events.ON_OK, new EventListener()
-            {
-                public void onEvent( Event event )
+                    public void onEvent( Event event )
+                    {
+                        onClick$btnFilter();
+                    }
+                } );
+        if ( cmbPen != null )
+            cmbPen.addEventListener( Events.ON_OK, new EventListener()
                 {
-                    onClick$btnFilter();
-                }
-            } );
-
-        initDate.addEventListener( Events.ON_OK, new EventListener()
-            {
-                public void onEvent( Event event )
+                    public void onEvent( Event event )
+                    {
+                        onClick$btnFilter();
+                    }
+                } );
+        if ( initDate != null )
+            initDate.addEventListener( Events.ON_OK, new EventListener()
                 {
-                    onClick$btnFilter();
-                }
-            } );
-        endDate.addEventListener( Events.ON_OK, new EventListener()
-            {
-                public void onEvent( Event event )
+                    public void onEvent( Event event )
+                    {
+                        onClick$btnFilter();
+                    }
+                } );
+        if ( endDate != null )
+            endDate.addEventListener( Events.ON_OK, new EventListener()
                 {
-                    onClick$btnFilter();
-                }
-            } );
-        initTime.addEventListener( Events.ON_OK, new EventListener()
-            {
-                public void onEvent( Event event )
+                    public void onEvent( Event event )
+                    {
+                        onClick$btnFilter();
+                    }
+                } );
+        if ( initTime != null )
+            initTime.addEventListener( Events.ON_OK, new EventListener()
                 {
-                    onClick$btnFilter();
-                }
-            } );
-        endTime.addEventListener( Events.ON_OK, new EventListener()
-            {
-                public void onEvent( Event event )
+                    public void onEvent( Event event )
+                    {
+                        onClick$btnFilter();
+                    }
+                } );
+        if ( endTime != null )
+            endTime.addEventListener( Events.ON_OK, new EventListener()
                 {
-                    onClick$btnFilter();
-                }
-            } );
-        txtBarcode.addEventListener( Events.ON_OK, new EventListener()
-            {
-                public void onEvent( Event event )
+                    public void onEvent( Event event )
+                    {
+                        onClick$btnFilter();
+                    }
+                } );
+        if ( txtBarcode != null )
+            txtBarcode.addEventListener( Events.ON_OK, new EventListener()
                 {
-                    onClick$btnFilter();
-                }
-            } );
-        txtFormIdFrom.addEventListener( Events.ON_OK, new EventListener()
-            {
-                public void onEvent( Event event )
+                    public void onEvent( Event event )
+                    {
+                        onClick$btnFilter();
+                    }
+                } );
+        if ( txtFormIdFrom != null )
+            txtFormIdFrom.addEventListener( Events.ON_OK, new EventListener()
                 {
-                    onClick$btnFilter();
-                }
-            } );
-        txtFormIdTo.addEventListener( Events.ON_OK, new EventListener()
-            {
-                public void onEvent( Event event )
+                    public void onEvent( Event event )
+                    {
+                        onClick$btnFilter();
+                    }
+                } );
+        if ( txtFormIdTo != null )
+            txtFormIdTo.addEventListener( Events.ON_OK, new EventListener()
                 {
-                    onClick$btnFilter();
-                }
-            } );
-        cmbMaxRecords.addEventListener( Events.ON_OK, new EventListener()
-            {
-                public void onEvent( Event event )
+                    public void onEvent( Event event )
+                    {
+                        onClick$btnFilter();
+                    }
+                } );
+        if ( cmbMaxRecords != null )
+            cmbMaxRecords.addEventListener( Events.ON_OK, new EventListener()
                 {
-                    onClick$btnFilter();
-                }
-            } );
-        txtFieldValue.addEventListener( Events.ON_OK, new EventListener()
-            {
-                public void onEvent( Event event )
+                    public void onEvent( Event event )
+                    {
+                        onClick$btnFilter();
+                    }
+                } );
+        if ( txtFieldValue != null )
+            txtFieldValue.addEventListener( Events.ON_OK, new EventListener()
                 {
-                    onClick$btnFilter();
-                }
-            } );
+                    public void onEvent( Event event )
+                    {
+                        onClick$btnFilter();
+                    }
+                } );
     }
 
 
@@ -757,6 +775,10 @@ public abstract class BaseSearchController extends AnotoLoggedController
 
     private void updateCharts( List<AnotoResultList> result )
     {
+        if ( chartData == null )
+            return;
+        if ( chartPen == null )
+            return;
         chartData.setVisible( SysUtils.isEmpty( result ) == false );
         chartPen.setVisible( SysUtils.isEmpty( result ) == false );
 

@@ -1,9 +1,7 @@
 package br.com.mcampos.controller.logged;
 
 
-import br.com.mcampos.controller.core.BookmarkHelper;
 import br.com.mcampos.controller.core.LoggedBaseController;
-import br.com.mcampos.controller.core.PageBrowseHistory;
 import br.com.mcampos.dto.system.MenuDTO;
 import br.com.mcampos.dto.user.CompanyDTO;
 import br.com.mcampos.ejb.cloudsystem.security.menu.UserMenuFacade;
@@ -47,7 +45,7 @@ public class PrivateIndexController extends LoggedBaseController
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
-        AddBookmarkEventListener();
+        //AddBookmarkEventListener();
     }
 
 
@@ -68,6 +66,7 @@ public class PrivateIndexController extends LoggedBaseController
     }
 
 
+    /*
     protected void AddBookmarkEventListener()
     {
         page.addEventListener( Events.ON_BOOKMARK_CHANGE, new EventListener()
@@ -104,6 +103,7 @@ public class PrivateIndexController extends LoggedBaseController
         gotoPage( target );
         evt.stopPropagation();
     }
+    */
 
     protected Component addMenu( MenuDTO item, Component parent )
     {

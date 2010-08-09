@@ -51,7 +51,14 @@ public class PageFieldRowRenderer implements RowRenderer
                 cmbTypes.setSelectedItem( i );
         }
         cmbTypes.setParent( row );
+
         Checkbox icr = new Checkbox();
+        icr.setChecked( dto.getPk() != null ? dto.getPk() : false );
+        icr.setParent( row );
+        icr.setAttribute( "field", "pk" );
+        setListener( icr );
+
+        icr = new Checkbox();
         icr.setChecked( dto.getIcr() );
         icr.setAttribute( "field", "icr" );
         icr.setParent( row );

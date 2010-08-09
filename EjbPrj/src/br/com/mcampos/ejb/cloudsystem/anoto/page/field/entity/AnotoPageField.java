@@ -77,6 +77,9 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
     @Column( name = "alf_search_bt", nullable = true )
     private Boolean searchable;
 
+    @Column( name = "apf_pk_bt", nullable = true )
+    private Boolean pk;
+
     @Column( name = "apf_sequence_in", nullable = true )
     private Integer sequence;
 
@@ -240,6 +243,7 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
         dto.setExport( getExport() );
         dto.setSearchable( getSearchable() );
         dto.setSequence( getSequence() );
+        dto.setPk( getPk() );
         return dto;
     }
 
@@ -271,5 +275,15 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
     public Integer getSequence()
     {
         return sequence;
+    }
+
+    public void setPk( Boolean pk )
+    {
+        this.pk = pk;
+    }
+
+    public Boolean getPk()
+    {
+        return pk;
     }
 }

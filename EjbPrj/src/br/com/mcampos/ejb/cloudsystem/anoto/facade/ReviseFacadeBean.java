@@ -30,7 +30,7 @@ import javax.persistence.PersistenceContext;
 
 
 @Stateless( name = "ReviseFacade", mappedName = "CloudSystems-EjbPrj-ReviseFacade" )
-@TransactionAttribute (TransactionAttributeType.REQUIRES_NEW)
+@TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class ReviseFacadeBean extends AbstractSecurity implements ReviseFacade
 {
     protected static final int SystemMessageTypeId = 27;
@@ -77,6 +77,8 @@ public class ReviseFacadeBean extends AbstractSecurity implements ReviseFacade
         authenticate( auth );
         PgcPage pgcPage = pgcPageSession.get( new PgcPagePK( page ) );
         if ( pgcPage != null ) {
+            if ( pgcPage.getRevisionStatus().getId().equals( status ) )
+                throwRuntimeException( 1 );
             pgcPageSession.setRevisedStatus( pgcPage, status );
         }
     }

@@ -15,6 +15,7 @@ public class GridFieldController extends BaseController
     private Column headerExport;
     private Column headerSearch;
     private Column headerSequence;
+    private Column headerPK;
 
     public GridFieldController()
     {
@@ -48,5 +49,6 @@ public class GridFieldController extends BaseController
         setLabel( headerExport );
         setLabel( headerSearch );
         setLabel( headerSequence );
+        setLabel( headerPK );
     }
 }

@@ -29,16 +29,8 @@
                     </grid>
                 </div>
             </center>
-            <south>
-                <div>
-                    <grid width="100%" fixedLayout="true">
-                        <rows>
-                            <row align="center">
-                                <paging id="pagingPages"/>
-                            </row>
-                        </rows>
-                    </grid>
-                </div>
+            <south height="45px">
+                <div fulfill="=/resources/submit_cancel.zul"/>
             </south>
         </borderlayout>
     </div>
