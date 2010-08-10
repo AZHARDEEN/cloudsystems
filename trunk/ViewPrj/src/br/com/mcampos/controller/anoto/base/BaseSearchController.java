@@ -78,7 +78,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
     private Textbox txtBarcode;
     private Intbox txtFormIdFrom;
     private Intbox txtFormIdTo;
-    private Combobox cmbMaxRecords;
+    protected Combobox cmbMaxRecords; /*Used in derived classes*/
     private Textbox txtFieldValue;
 
     protected Label labelFormView2Title;
@@ -299,7 +299,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
             model.clear();
             model.addAll( dtos );
             updateCharts( dtos );
-            resultList.invalidate();
+            //resultList.invalidate();
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Lista de PGC" );
@@ -307,7 +307,9 @@ public abstract class BaseSearchController extends AnotoLoggedController
     }
 
 
-    private ListModelList getModel()
+    /*Used in derived classes*/
+
+    protected ListModelList getModel()
     {
         ListModelList model = ( ListModelList )resultList.getModel();
         if ( model == null ) {

@@ -24,4 +24,6 @@ public interface ReviseFacade extends Serializable
     void update( AuthenticationDTO auth, PgcFieldDTO dto ) throws ApplicationException;
 
     void setStatus( AuthenticationDTO auth, PgcPageDTO page, Integer status ) throws ApplicationException;
+
+    PgcPageDTO findPageByFieldKeys( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException;
 }

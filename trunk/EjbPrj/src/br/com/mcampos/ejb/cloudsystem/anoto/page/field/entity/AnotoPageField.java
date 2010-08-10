@@ -28,6 +28,8 @@ import javax.persistence.Table;
                               query = "select o from AnotoPageField o where o.export = true order by o.sequence" ),
                  @NamedQuery( name = AnotoPageField.getAllFromFormSearchable,
                               query = "select o from AnotoPageField o where o.formId = ?1 and o.searchable = true order by o.pageAddress, o.sequence" ),
+                 @NamedQuery( name = AnotoPageField.getAllFromFormPK,
+                              query = "select o from AnotoPageField o where o.formId = ?1 and o.pk = true order by o.pageAddress, o.sequence" ),
                  @NamedQuery( name = AnotoPageField.getAllFromForm,
                               query = "select o from AnotoPageField o where o.formId = ?1 order by o.pageAddress, o.sequence" ) } )
 @Table( name = "anoto_page_field" )
@@ -38,6 +40,7 @@ public class AnotoPageField implements Serializable, Comparable<AnotoPageField>,
     public static final String getAllFromPage = "AnotoPageField.findAllFromPage";
     public static final String getAllFromForm = "AnotoPageField.findAllFromForm";
     public static final String getAllFromFormSearchable = "AnotoPageField.getSearchable";
+    public static final String getAllFromFormPK = "AnotoPageField.getPKFields";
     public static final String getExport = "AnotoPageField.findExport";
 
     @Column( name = "aft_icr_bt", nullable = false )

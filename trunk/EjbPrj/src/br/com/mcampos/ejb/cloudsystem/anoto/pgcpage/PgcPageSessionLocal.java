@@ -19,5 +19,4 @@ public interface PgcPageSessionLocal extends Serializable
 
     void setRevisedStatus( PgcPage page, Integer status ) throws ApplicationException;
 
-    void getRevisedStatus( PgcPage page ) throws ApplicationException;
 }

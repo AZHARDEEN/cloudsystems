@@ -8,11 +8,15 @@ import br.com.mcampos.ejb.cloudsystem.system.revisedstatus.entity.RevisionStatus
 import br.com.mcampos.ejb.cloudsystem.system.revisedstatus.session.RevisionStatusSessionLocal;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
+
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+
 
 @Stateless( name = "PgcPageSession", mappedName = "CloudSystems-EjbPrj-PgcPageSession" )
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
@@ -56,8 +60,21 @@ public class PgcPageSessionBean extends Crud<PgcPagePK, PgcPage> implements PgcP
         getEntityManager().merge( page );
         if ( page.getRevisionStatus().getId().equals( status ) == false ) {
             RevisionStatus st = revisionSession.get( status );
-            if ( st != null )
+            if ( st != null ) {
                 page.setRevisionStatus( st );
+                if ( st.getId().equals( RevisionStatus.statusVerified ) ) {
+                    if ( existsAnotherStatus( page, st ) == false )
+                        page.getPgc().setRevisionStatus( st );
+                }
+                else
+                    page.getPgc().setRevisionStatus( st );
+            }
         }
+    }
+
+    private Boolean existsAnotherStatus( PgcPage page, RevisionStatus status ) throws ApplicationException
+    {
+        List<PgcPage> pages = ( List<PgcPage> )getResultList( PgcPage.getAnotherPageStatus, page.getPgc(), status );
+        return SysUtils.isEmpty( pages ) == false;
     }
 }
