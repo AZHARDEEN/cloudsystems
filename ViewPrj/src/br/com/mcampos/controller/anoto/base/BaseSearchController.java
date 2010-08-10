@@ -294,7 +294,7 @@ public abstract class BaseSearchController extends AnotoLoggedController
         List<AnotoResultList> dtos;
         try {
             Integer id = Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() );
-            dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop, id );
+            dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop, id, true );
             ListModelList model = getModel();
             model.clear();
             model.addAll( dtos );

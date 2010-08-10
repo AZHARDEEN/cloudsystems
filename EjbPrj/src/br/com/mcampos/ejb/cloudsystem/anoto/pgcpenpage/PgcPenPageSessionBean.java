@@ -39,7 +39,7 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
 
 
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
-    public List<PgcPage> getAll( Properties props, Integer maxRecords ) throws ApplicationException
+    public List<PgcPage> getAll( Properties props, Integer maxRecords, Boolean bNewFirst ) throws ApplicationException
     {
         String jpaQuery = "select distinct \n" +
             "	pgc_page.* \n" +
@@ -178,7 +178,12 @@ public class PgcPenPageSessionBean extends Crud<PgcPenPagePK, PgcPenPage> implem
         }
 
         if ( jpaWhere.length() > 0 )
-            jpaQuery += " WHERE " + jpaWhere + " ORDER BY PGC_ID_IN DESC, PPG_BOOK_ID ASC, PPG_PAGE_ID ASC ";
+            jpaQuery += " WHERE " + jpaWhere;
+        if ( bNewFirst )
+            jpaQuery += " ORDER BY PGC_ID_IN DESC, PPG_BOOK_ID ASC, PPG_PAGE_ID ASC ";
+        else
+            jpaQuery += " ORDER BY PGC_ID_IN ASC, PPG_BOOK_ID ASC, PPG_PAGE_ID ASC ";
+
         Query query = getEntityManager().createNativeQuery( jpaQuery, PgcPage.class );
         if ( SysUtils.isZero( maxRecords ) == false )
             query.setMaxResults( maxRecords );

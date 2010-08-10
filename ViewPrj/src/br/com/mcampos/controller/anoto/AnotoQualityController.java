@@ -33,7 +33,7 @@ public class AnotoQualityController extends BaseSearchController
         List<AnotoResultList> dtos;
         try {
             Integer id = Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() );
-            dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop, id );
+            dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop, id, false );
             if ( SysUtils.isEmpty( dtos ) == false ) {
                 for ( AnotoResultList item : dtos ) {
                     item.clearFields();

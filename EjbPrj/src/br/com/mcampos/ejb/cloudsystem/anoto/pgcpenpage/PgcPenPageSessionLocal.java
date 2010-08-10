@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface PgcPenPageSessionLocal extends Serializable
 {
-    List<PgcPage> getAll( Properties props, Integer maxRecords ) throws ApplicationException;
+    List<PgcPage> getAll( Properties props, Integer maxRecords, Boolean bNewFirst ) throws ApplicationException;
 
     PgcPenPage add( PgcPenPage entity ) throws ApplicationException;
 

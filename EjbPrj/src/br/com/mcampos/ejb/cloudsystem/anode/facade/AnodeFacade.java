@@ -110,8 +110,8 @@ public interface AnodeFacade extends Serializable
 
     List<PgcPenPageDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException;
 
-    List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props,
-                                            Integer maxRecord ) throws ApplicationException;
+    List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props, Integer maxRecord,
+                                            Boolean bNewFirst ) throws ApplicationException;
 
     void delete( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException;
 

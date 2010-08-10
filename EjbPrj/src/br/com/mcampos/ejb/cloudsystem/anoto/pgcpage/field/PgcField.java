@@ -6,6 +6,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType;
 import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.io.Serializable;
 
@@ -98,7 +99,6 @@ public class PgcField implements Serializable, EntityCopyInterface<PgcFieldDTO>
                     @JoinColumn( name = "ppg_book_id", referencedColumnName = "ppg_book_id" ),
                     @JoinColumn( name = "ppg_page_id", referencedColumnName = "ppg_page_id" ) } )
     private PgcPage pgcPage;
-
 
     public PgcField()
     {
@@ -267,5 +267,10 @@ public class PgcField implements Serializable, EntityCopyInterface<PgcFieldDTO>
     public Integer getSequence()
     {
         return sequence;
+    }
+
+    public String getValue()
+    {
+        return SysUtils.isEmpty( getRevisedText() ) ? getIcrText() : getRevisedText();
     }
 }
