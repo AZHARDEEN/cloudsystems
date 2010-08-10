@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field;
 
 import br.com.mcampos.dto.anoto.AnotoSummary;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.field.entity.AnotoPageField;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.session.core.Crud;
@@ -11,6 +12,7 @@ import br.com.mcampos.sysutils.SysUtils;
 
 import java.text.SimpleDateFormat;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -332,6 +334,12 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
         if ( sum.getFend().equals( 0 ) && sum.getRejeitadoCep().equals( 0 ) && sum.getRejeitadoCredito().equals( 0 ) )
             sum.addEmptySituation();
         return sum;
+    }
+
+    public List<PgcField> getAll( PgcPage pgcPage, List<AnotoPageField> fields )
+    {
+        pgcPage = getEntityManager().merge( pgcPage );
+        return ( List<PgcField> )getResultList( PgcField.findPageFields, pgcPage, fields );
     }
 }
 

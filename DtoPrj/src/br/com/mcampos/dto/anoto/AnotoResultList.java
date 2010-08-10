@@ -30,6 +30,12 @@ public class AnotoResultList implements Comparable<AnotoResultList>, Serializabl
         super();
     }
 
+    public void clearFields()
+    {
+        if ( fields.size() > 0 )
+            fields.clear();
+    }
+
     public AnotoResultList( FormDTO form, PenDTO pen, PgcPageDTO pgcPage )
     {
         super();
@@ -76,8 +82,8 @@ public class AnotoResultList implements Comparable<AnotoResultList>, Serializabl
     public boolean equals( Object obj )
     {
         AnotoResultList other = ( AnotoResultList )obj;
-        return ( getForm().equals( other.getForm() ) && getPgcPage().equals( other.getPgcPage() ) && getPen()
-                 .equals( other.getPen() ) );
+        return ( getForm().equals( other.getForm() ) && getPgcPage().equals( other.getPgcPage() ) &&
+                 getPen().equals( other.getPen() ) );
     }
 
     public void setPgcPage( PgcPageDTO pgcPage )

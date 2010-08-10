@@ -94,4 +94,9 @@ public class PageFieldSessionBean extends Crud<AnotoPageFieldPK, AnotoPageField>
     {
         return ( List<AnotoPageField> )getResultList( AnotoPageField.getExport );
     }
+
+    public List<AnotoPageField> getPKFields( AnotoForm form ) throws ApplicationException
+    {
+        return ( List<AnotoPageField> )getResultList( AnotoPageField.getAllFromFormPK, form.getId() );
+    }
 }

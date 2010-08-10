@@ -128,8 +128,13 @@ public class AnotoQualityVerifyController extends LoggedBaseController
     {
         ByteArrayInputStream is;
         try {
-            is = new ByteArrayInputStream( getSession().getObject( media ) );
+            byte[] obj = getSession().getObject( media );
+            if ( obj == null )
+                return null;
+            is = new ByteArrayInputStream( obj );
             BufferedImage img = ImageIO.read( is );
+            if ( img == null )
+                return null;
             Image imgField = new Image();
             imgField.setContent( img );
             return imgField;
@@ -173,11 +178,15 @@ public class AnotoQualityVerifyController extends LoggedBaseController
 
         if ( field != null && field.getType().getId().equals( FieldTypeDTO.typeBoolean ) == false && field.getMedia() != null ) {
             MediaDTO media = field.getMedia();
+            if ( media == null )
+                return row;
             row = new Row();
             Vbox box = new Vbox();
             Label label = new Label( field.getIrcText() );
             label.setStyle( "font-size:30px" );
-            box.appendChild( loadImage( media ) );
+            Image img = loadImage( media );
+            if ( img != null )
+                box.appendChild( img );
             box.appendChild( label );
             box.appendChild( createTextbox( field ) );
             row.appendChild( box );
@@ -273,7 +282,7 @@ public class AnotoQualityVerifyController extends LoggedBaseController
     public void onClick$cmdSubmit()
     {
         try {
-            setRevising( dtoParam, 3 );
+            closeRevisionProcess( dtoParam );
             dtoParam = getNextItemToProcess();
             if ( dtoParam == null ) {
                 gotoPage( "/private/admin/anoto/anoto_quality.zul", myRootParent );
@@ -282,6 +291,15 @@ public class AnotoQualityVerifyController extends LoggedBaseController
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage() );
         }
+    }
+
+
+    private void closeRevisionProcess( AnotoResultList item ) throws ApplicationException
+    {
+        setRevising( item, 3 );
+        if ( item.getForm().getConcatenatePgc().booleanValue() == false )
+            return;
+        getSession().find;
     }
 
 

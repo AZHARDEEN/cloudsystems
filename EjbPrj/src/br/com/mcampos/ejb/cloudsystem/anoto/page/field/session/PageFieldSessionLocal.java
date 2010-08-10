@@ -33,6 +33,8 @@ public interface PageFieldSessionLocal extends Serializable
 
     List<AnotoPageField> getSearchable( AnotoForm form ) throws ApplicationException;
 
+    List<AnotoPageField> getPKFields( AnotoForm form ) throws ApplicationException;
+
     void add( AnotoPage anotoPage, List<AnotoPageField> list ) throws ApplicationException;
 
     void refresh( AnotoPage anotoPage, List<AnotoPageField> list ) throws ApplicationException;

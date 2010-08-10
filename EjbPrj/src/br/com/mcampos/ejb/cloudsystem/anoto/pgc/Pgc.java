@@ -56,9 +56,9 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
     @JoinColumn( name = "pgs_id_in" )
     private PgcStatus pgcStatus;
 
-    @ManyToOne
+    @ManyToOne( optional = false )
     @JoinColumn( name = "rst_id_in" )
-    private RevisionStatus revisionStaus;
+    private RevisionStatus revisionStatus;
 
 
     @Column( name = "pgc_description_ch", nullable = false )
@@ -187,13 +187,13 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
         return pgcPenPages;
     }
 
-    protected void setRevisionStaus( RevisionStatus revisionStaus )
+    public void setRevisionStatus( RevisionStatus revisionStatus )
     {
-        this.revisionStaus = revisionStaus;
+        this.revisionStatus = revisionStatus;
     }
 
-    protected RevisionStatus getRevisionStaus()
+    public RevisionStatus getRevisionStatus()
     {
-        return revisionStaus;
+        return revisionStatus;
     }
 }

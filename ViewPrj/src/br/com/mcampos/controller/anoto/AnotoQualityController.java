@@ -2,10 +2,15 @@ package br.com.mcampos.controller.anoto;
 
 
 import br.com.mcampos.controller.anoto.base.BaseSearchController;
+import br.com.mcampos.dto.anoto.AnotoResultList;
+import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.List;
 import java.util.Properties;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.ListModelList;
 
 
 public class AnotoQualityController extends BaseSearchController
@@ -25,7 +30,22 @@ public class AnotoQualityController extends BaseSearchController
     {
         prop.put( "revisedStatus", "1" );
         prop.remove( "custom_fields" );
-        super.loadPGC( prop );
+        List<AnotoResultList> dtos;
+        try {
+            Integer id = Integer.parseInt( cmbMaxRecords.getSelectedItem().getLabel() );
+            dtos = getSession().getAllPgcPenPage( getLoggedInUser(), prop, id );
+            if ( SysUtils.isEmpty( dtos ) == false ) {
+                for ( AnotoResultList item : dtos ) {
+                    item.clearFields();
+                }
+            }
+            ListModelList model = getModel();
+            model.clear();
+            model.addAll( dtos );
+        }
+        catch ( ApplicationException e ) {
+            showErrorMessage( e.getMessage(), "Lista de PGC" );
+        }
     }
 
 

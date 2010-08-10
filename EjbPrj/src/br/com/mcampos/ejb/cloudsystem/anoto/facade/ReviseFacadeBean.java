@@ -6,6 +6,8 @@ import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.field.entity.AnotoPageField;
+import br.com.mcampos.ejb.cloudsystem.anoto.page.field.session.PageFieldSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageSessionLocal;
@@ -14,8 +16,10 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldPK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldUtil;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.system.revisedstatus.entity.RevisionStatus;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +47,9 @@ public class ReviseFacadeBean extends AbstractSecurity implements ReviseFacade
 
     @EJB
     private PgcPageSessionLocal pgcPageSession;
+
+    @EJB
+    private PageFieldSessionLocal anotoPageFieldSession;
 
     @EJB
     private MediaSessionLocal mediaSession;
@@ -99,4 +106,16 @@ public class ReviseFacadeBean extends AbstractSecurity implements ReviseFacade
         }
     }
 
+    public PgcPageDTO findPageByFieldKeys( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
+    {
+        authenticate( auth );
+        PgcPage pgcPage = pgcPageSession.get( new PgcPagePK( page ) );
+        if ( !pgcPage.getRevisionStatus().getId().equals( RevisionStatus.statusVerified ) )
+            return null;
+        List<AnotoPageField> pkFields = anotoPageFieldSession.getPKFields( pgcPage.getAnotoPage().getPad().getForm() );
+        if ( SysUtils.isEmpty( pkFields ) )
+            return null;
+        pgcFieldSession.
+        return null;
+    }
 }

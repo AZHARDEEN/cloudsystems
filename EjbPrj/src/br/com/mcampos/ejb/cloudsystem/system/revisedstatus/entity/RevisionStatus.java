@@ -15,6 +15,10 @@ import javax.persistence.Table;
 @Table( name = "revision_status" )
 public class RevisionStatus implements Serializable
 {
+    public static final Integer statusNotVerified = 1;
+    public static final Integer statusVerifying = 2;
+    public static final Integer statusVerified = 3;
+
     @Column( name = "rst_description_ch", nullable = false )
     private String description;
     @Id
