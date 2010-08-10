@@ -115,7 +115,28 @@ public class ReviseFacadeBean extends AbstractSecurity implements ReviseFacade
         List<AnotoPageField> pkFields = anotoPageFieldSession.getPKFields( pgcPage.getAnotoPage().getPad().getForm() );
         if ( SysUtils.isEmpty( pkFields ) )
             return null;
-        pgcFieldSession.
+        StringBuffer filter = new StringBuffer();
+        for ( AnotoPageField field : pkFields ) {
+            PgcField pgcField = pgcFieldSession.get( new PgcFieldPK( pgcPage, field.getName() ) );
+            if ( pgcField == null )
+                return null;
+            if ( filter.length() > 0 )
+                filter.append( " AND " );
+            filter.append( String.format( " ( pgc_field.pfl_name_ch = '%' \n" +
+                        "and pgc_field.pfl_has_penstrokes_bt = true \n" +
+                        "and coalesce ( pgc_field.pfl_icr_tx, pgc_field.pfl_revised_tx ) = '%s' ) \n", pgcField.getName(),
+                        pgcField.getValue() ) );
+        }
         return null;
+    }
+
+
+    private String getAnotherPageByPkFieldSQL( PgcPage pgcPage, StringBuffer filter )
+    {
+        String sql;
+
+        sql = String.format( "select * from pgc_field \n" +
+                    "where %s " + "and pgc_page.pgc_id_in <> %d", filter.toString(), pgcPage.getPgc().getId() );
+        return sql;
     }
 }

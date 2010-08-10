@@ -205,7 +205,7 @@ public class EmbratelFacadeBean extends AbstractSecurity implements EmbratelFaca
                     props.put( "form", entity );
             }
         }
-        List<PgcPage> list = pgcPenPageSession.getAll( props, maxRecords );
+        List<PgcPage> list = pgcPenPageSession.getAll( props, maxRecords, true );
         if ( SysUtils.isEmpty( list ) )
             return Collections.emptyList();
         List<AnotoResultList> resultList = new ArrayList<AnotoResultList>();

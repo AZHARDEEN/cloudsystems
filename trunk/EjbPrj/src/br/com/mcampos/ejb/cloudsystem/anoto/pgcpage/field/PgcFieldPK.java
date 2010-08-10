@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field;
 
 
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 
 import java.io.Serializable;
 
@@ -33,12 +34,22 @@ public class PgcFieldPK implements Serializable
         setName( entity.getName() );
     }
 
+    public PgcFieldPK( PgcPage page, String name )
+    {
+        setBookId( page.getBookId() );
+        setPageId( page.getPageId() );
+        setPgcId( page.getPgc().getId() );
+        setName( name );
+    }
+
 
     public boolean equals( Object other )
     {
         if ( other instanceof PgcFieldPK ) {
             final PgcFieldPK otherPgcFieldPK = ( PgcFieldPK )other;
-            final boolean areEqual = ( otherPgcFieldPK.bookId.equals( bookId ) && otherPgcFieldPK.name.equals( name ) && otherPgcFieldPK.pageId.equals( pageId ) && otherPgcFieldPK.pgcId.equals( pgcId ) );
+            final boolean areEqual =
+                ( otherPgcFieldPK.bookId.equals( bookId ) && otherPgcFieldPK.name.equals( name ) && otherPgcFieldPK.pageId.equals( pageId ) &&
+                  otherPgcFieldPK.pgcId.equals( pgcId ) );
             return areEqual;
         }
         return false;
