@@ -77,4 +77,15 @@ public class FieldType implements Serializable, Comparable<FieldType>, EntityCop
 
         return dto;
     }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( obj == null )
+            return false;
+        if ( obj instanceof FieldType )
+            return getId().equals( ( ( FieldType )obj ).getId() );
+        else
+            return false;
+    }
 }

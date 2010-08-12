@@ -11,6 +11,7 @@ import br.com.mcampos.sysutils.SysUtils;
 
 import java.text.SimpleDateFormat;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -52,6 +53,14 @@ public class PgcFieldSessionBean extends Crud<PgcFieldPK, PgcField> implements P
     {
         pgcPage = getEntityManager().merge( pgcPage );
         return ( List<PgcField> )getResultList( PgcField.findPageFields, pgcPage );
+    }
+
+    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    public List<PgcField> getAllBook( PgcPage pgcPage ) throws ApplicationException
+    {
+        if ( pgcPage == null )
+            return Collections.emptyList();
+        return ( List<PgcField> )getResultList( PgcField.findBookFields, pgcPage.getPgcId(), pgcPage.getBookId() );
     }
 
 

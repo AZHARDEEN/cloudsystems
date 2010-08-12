@@ -27,6 +27,8 @@ public interface PgcFieldSessionLocal extends Serializable
 
     List<PgcField> getAll( PgcPage pgcPage ) throws ApplicationException;
 
+    List<PgcField> getAllBook( PgcPage pgcPage ) throws ApplicationException;
+
     List<Pgc> getAll( Properties props ) throws ApplicationException;
 
     AnotoSummary summaryType( Pgc pgc ) throws ApplicationException;

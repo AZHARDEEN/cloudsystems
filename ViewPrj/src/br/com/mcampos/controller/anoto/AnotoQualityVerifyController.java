@@ -233,7 +233,7 @@ public class AnotoQualityVerifyController extends LoggedBaseController
 
     private void setRevising( AnotoResultList target, Integer newStatus ) throws ApplicationException
     {
-        if ( target == null || target.getPgcPage().getRevisionStatus().getId().equals( newStatus ) )
+        if ( target == null )
             return;
         getSession().setStatus( getLoggedInUser(), target.getPgcPage(), newStatus );
         target.getPgcPage().getRevisionStatus().setId( newStatus );
@@ -297,9 +297,6 @@ public class AnotoQualityVerifyController extends LoggedBaseController
     private void closeRevisionProcess( AnotoResultList item ) throws ApplicationException
     {
         setRevising( item, 3 );
-        if ( item.getForm().getConcatenatePgc().booleanValue() == false )
-            return;
-        getSession().find;
     }
 
 

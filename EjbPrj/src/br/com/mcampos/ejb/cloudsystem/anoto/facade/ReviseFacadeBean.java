@@ -16,6 +16,7 @@ import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldPK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldUtil;
 import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType;
 import br.com.mcampos.ejb.cloudsystem.system.revisedstatus.entity.RevisionStatus;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
@@ -31,6 +32,7 @@ import javax.ejb.TransactionAttributeType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 
 @Stateless( name = "ReviseFacade", mappedName = "CloudSystems-EjbPrj-ReviseFacade" )
@@ -69,11 +71,28 @@ public class ReviseFacadeBean extends AbstractSecurity implements ReviseFacade
     {
         authenticate( auth );
         PgcPage pgcPage = pgcPageSession.get( new PgcPagePK( page ) );
+        return AnotoUtils.toPgcFieldList( getPageFields( pgcPage ) );
+    }
+
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private List<PgcField> getPageFields( PgcPage pgcPage ) throws ApplicationException
+    {
         if ( pgcPage != null ) {
             if ( pgcPage.getRevisionStatus().getId().equals( 1 ) )
                 pgcPageSession.setRevisedStatus( pgcPage, 2 );
-            List<PgcField> fields = pgcFieldSession.getAll( pgcPage );
-            return AnotoUtils.toPgcFieldList( fields );
+            return pgcFieldSession.getAll( pgcPage );
+        }
+        else
+            return Collections.emptyList();
+    }
+
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private List<PgcField> getBookFields( PgcPage pgcPage ) throws ApplicationException
+    {
+        if ( pgcPage != null ) {
+            if ( pgcPage.getRevisionStatus().getId().equals( 1 ) )
+                pgcPageSession.setRevisedStatus( pgcPage, 2 );
+            return pgcFieldSession.getAllBook( pgcPage );
         }
         else
             return Collections.emptyList();
@@ -87,6 +106,52 @@ public class ReviseFacadeBean extends AbstractSecurity implements ReviseFacade
             if ( pgcPage.getRevisionStatus().getId().equals( status ) )
                 throwRuntimeException( 1 );
             pgcPageSession.setRevisedStatus( pgcPage, status );
+            if ( status.equals( RevisionStatus.statusVerified ) )
+                updateForm( pgcPage );
+        }
+    }
+
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private void updateForm( PgcPage pgcPage ) throws ApplicationException
+    {
+        List<PgcPage> olderPages = null;
+        int book = -1;
+        if ( pgcPage.getAnotoPage().getPad().getForm().getConcatenatePgc().equals( true ) ) {
+            olderPages = findPageByFieldKeys( pgcPage );
+            if ( SysUtils.isEmpty( olderPages ) == false ) {
+                List<PgcField> newFields = pgcFieldSession.getAllBook( pgcPage );
+                List<PgcField> oldFields;
+                for ( PgcPage oldPage : olderPages ) {
+                    if ( oldPage.getBookId().equals( book ) )
+                        continue;
+                    book = oldPage.getBookId();
+                    oldFields = pgcFieldSession.getAllBook( oldPage );
+                    try {
+                        for ( int index = 0; index < oldFields.size(); index++ ) {
+                            PgcField newField = newFields.get( index );
+                            if ( newField.getType().equals( FieldType.typeBoolean ) && newField.getHasPenstrokes() ) {
+                                continue;
+                            }
+                            else if ( SysUtils.isEmpty( newField.getValue() ) == false ) {
+                                continue;
+                            }
+                            PgcField oldField = oldFields.get( index );
+                            if ( ( oldField.getHasPenstrokes() || SysUtils.isEmpty( oldField.getValue() ) == false ) &&
+                                 oldField.getType().equals( newField.getType() ) ) {
+                                newField.setIcrText( oldField.getIcrText() );
+                                if ( newField.getHasPenstrokes() == false )
+                                    newField.setHasPenstrokes( oldField.getHasPenstrokes() );
+                                newField.setMedia( oldField.getMedia() );
+                                newField.setRevisedText( oldField.getRevisedText() );
+                                pgcFieldSession.update( newField );
+                            }
+                        }
+                    }
+                    catch ( ArrayIndexOutOfBoundsException e ) {
+                        return;
+                    }
+                }
+            }
         }
     }
 
@@ -106,13 +171,31 @@ public class ReviseFacadeBean extends AbstractSecurity implements ReviseFacade
         }
     }
 
-    public PgcPageDTO findPageByFieldKeys( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private List<PgcPage> findPageByFieldKeys( PgcPage pgcPage ) throws ApplicationException
     {
-        authenticate( auth );
-        PgcPage pgcPage = pgcPageSession.get( new PgcPagePK( page ) );
         if ( !pgcPage.getRevisionStatus().getId().equals( RevisionStatus.statusVerified ) )
-            return null;
+            return Collections.emptyList();
         List<AnotoPageField> pkFields = anotoPageFieldSession.getPKFields( pgcPage.getAnotoPage().getPad().getForm() );
+        StringBuffer filter = preparePKFields( pgcPage, pkFields );
+        if ( filter == null )
+            return Collections.emptyList();
+        String sql = getAnotherPageByPkFieldSQL( pgcPage, filter );
+        try {
+            Query query = getEntityManager().createNativeQuery( sql, PgcPage.class );
+            List<PgcPage> pages = query.getResultList();
+            return pages;
+        }
+        catch ( Exception e ) {
+            return Collections.emptyList();
+        }
+    }
+
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    private StringBuffer preparePKFields( PgcPage pgcPage, List<AnotoPageField> pkFields ) throws ApplicationException
+    {
+        if ( pgcPage == null )
+            return null;
         if ( SysUtils.isEmpty( pkFields ) )
             return null;
         StringBuffer filter = new StringBuffer();
@@ -122,21 +205,30 @@ public class ReviseFacadeBean extends AbstractSecurity implements ReviseFacade
                 return null;
             if ( filter.length() > 0 )
                 filter.append( " AND " );
-            filter.append( String.format( " ( pgc_field.pfl_name_ch = '%' \n" +
+            filter.append( String.format( " ( pgc_field.pfl_name_ch = '%s' \n" +
                         "and pgc_field.pfl_has_penstrokes_bt = true \n" +
                         "and coalesce ( pgc_field.pfl_icr_tx, pgc_field.pfl_revised_tx ) = '%s' ) \n", pgcField.getName(),
                         pgcField.getValue() ) );
         }
-        return null;
+        return filter;
     }
 
 
+    @TransactionAttribute( TransactionAttributeType.MANDATORY )
     private String getAnotherPageByPkFieldSQL( PgcPage pgcPage, StringBuffer filter )
     {
         String sql;
 
-        sql = String.format( "select * from pgc_field \n" +
-                    "where %s " + "and pgc_page.pgc_id_in <> %d", filter.toString(), pgcPage.getPgc().getId() );
+        sql = String.format( "select pgc_page.* from pgc_page where \n" +
+                    "exists ( select * from pgc_field where pgc_field.pfl_has_penstrokes_bt = true  \n" +
+                    "and ( %s ) \n" +
+                    "and pgc_field.pgc_id_in = pgc_page.pgc_id_in \n" +
+                    "and pgc_field.ppg_book_id = pgc_page.ppg_book_id \n" +
+                    "and pgc_field.ppg_page_id = pgc_page.ppg_page_id \n" +
+                    ") \n" +
+                    "and pgc_page.pgc_id_in <> %d \n" +
+                    "and pgc_page.rst_id_in = 3 \n" +
+                    "order by pgc_id_in desc, ppg_book_id, ppg_page_id", filter.toString(), pgcPage.getPgc().getId() );
         return sql;
     }
 }

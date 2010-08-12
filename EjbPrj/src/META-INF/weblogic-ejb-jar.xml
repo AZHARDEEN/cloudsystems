@@ -17,6 +17,12 @@
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
     <weblogic-enterprise-bean>
+        <ejb-name>ReviseFacade</ejb-name>
+        <stateless-session-descriptor/>
+        <enable-call-by-reference>true</enable-call-by-reference>
+        <remote-client-timeout>60</remote-client-timeout>
+    </weblogic-enterprise-bean>
+    <weblogic-enterprise-bean>
         <ejb-name>CountrySession</ejb-name>
         <stateless-session-descriptor/>
         <enable-call-by-reference>true</enable-call-by-reference>

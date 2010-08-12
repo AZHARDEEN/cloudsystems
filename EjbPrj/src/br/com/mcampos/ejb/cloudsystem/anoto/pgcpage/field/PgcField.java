@@ -26,6 +26,8 @@ import javax.persistence.Table;
 @NamedQueries( { @NamedQuery( name = PgcField.findAll, query = "select o from PgcField o" ),
                  @NamedQuery( name = PgcField.findPageFields,
                               query = "select o from PgcField o where o.pgcPage = ?1 order by o.sequence" ),
+                 @NamedQuery( name = PgcField.findBookFields,
+                              query = "select o from PgcField o where o.pgcId = ?1 and o.bookId = ?2 order by o.sequence" ),
                  @NamedQuery( name = PgcField.getFieldsType,
                               query = "select o from PgcField o where o.pgcPage.pgc = ?1 and o.name in ('Plano Pos Combo via LPF', 'Plano Pos Combo via 30', 'Plano Pos 30', 'Plano Pos Shine LPF', 'Plano Pos LPF', 'Plano Pre 35', 'Plano Pre 15') and o.hasPenstrokes = true " ),
                  @NamedQuery( name = PgcField.getFieldsCategory,
@@ -42,6 +44,7 @@ public class PgcField implements Serializable, EntityCopyInterface<PgcFieldDTO>
 {
     public static final String findAll = "PgcField.findAll";
     public static final String findPageFields = "PgcField.findPageFields";
+    public static final String findBookFields = "PgcField.findBookFields";
     public static final String getFields = "PgcField.getFields";
     public static final String getFieldsType = "PgcField.getFieldsType";
     public static final String getFieldsCategory = "PgcField.getFieldsCategory";
