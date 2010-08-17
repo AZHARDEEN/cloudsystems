@@ -36,6 +36,7 @@ import java.sql.Timestamp;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -747,7 +748,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
     }
 
 
-    private List<ListLoginDTO> copy( List<Login> list )
+    public static List<ListLoginDTO> copy( List<Login> list )
     {
         List<ListLoginDTO> dtos = null;
 
@@ -755,7 +756,6 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
             return dtos;
         dtos = new ArrayList<ListLoginDTO>( list.size() );
         for ( Login item : list ) {
-            getEntityManager().refresh( item.getUserStatus() );
             dtos.add( DTOFactory.copy( item ) );
         }
         return dtos;
@@ -851,5 +851,16 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
     public Login get( Person person ) throws ApplicationException
     {
         return getEntityManager().find( Login.class, person.getId() );
+    }
+
+    public List<Login> getAll() throws ApplicationException
+    {
+        try {
+            Query query = getEntityManager().createNamedQuery( Login.getAll );
+            return query.getResultList();
+        }
+        catch ( Exception e ) {
+            return Collections.emptyList();
+        }
     }
 }

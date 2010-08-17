@@ -6,6 +6,7 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.ejb.cloudsystem.client.entity.Client;
 import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
@@ -20,11 +21,14 @@ import br.com.mcampos.ejb.session.system.SystemMessage.SystemMessagesSessionLoca
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+
 
 @Stateless( name = "LoginFacadeSession", mappedName = "CloudSystems-EjbPrj-LoginFacadeSession" )
 @TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
@@ -236,5 +240,11 @@ public class LoginFacadeSessionBean implements LoginFacadeSession
     private UserMediaType getLogoMediaType() throws ApplicationException
     {
         return userMediaTypeSession.get( UserMediaType.typeLogo );
+    }
+
+    public List<ListLoginDTO> getAll( AuthenticationDTO currentUser ) throws ApplicationException
+    {
+        List<Login> logins = loginSession.getAll();
+        return LoginSessionBean.copy( logins );
     }
 }

@@ -6,10 +6,14 @@ import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.security.LoginCredentialDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.user.UserDocumentDTO;
+import br.com.mcampos.dto.user.login.ListLoginDTO;
 import br.com.mcampos.exception.ApplicationException;
+
+import java.util.List;
 
 import javax.ejb.EJBException;
 import javax.ejb.Remote;
+
 
 @Remote
 public interface LoginFacadeSession
@@ -102,6 +106,8 @@ public interface LoginFacadeSession
 
 
     public MediaDTO[] getLogo( AuthenticationDTO currentUser ) throws ApplicationException;
+
+    List<ListLoginDTO> getAll( AuthenticationDTO currentUser ) throws ApplicationException;
 
 }
 

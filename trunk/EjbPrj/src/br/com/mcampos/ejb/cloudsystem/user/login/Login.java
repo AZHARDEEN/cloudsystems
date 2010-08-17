@@ -1,9 +1,9 @@
 package br.com.mcampos.ejb.cloudsystem.user.login;
 
 
-import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
-import br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPassword;
 import br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus;
+import br.com.mcampos.ejb.cloudsystem.user.login.lastusedpassword.LastUsedPassword;
+import br.com.mcampos.ejb.cloudsystem.user.person.entity.Person;
 
 import java.io.Serializable;
 
@@ -32,11 +32,13 @@ import javax.persistence.Table;
  * @version 1.0
  */
 @Entity
-@NamedQueries( { @NamedQuery( name = "Login.findAll", query = "select o from Login o" ),
+@NamedQueries( { @NamedQuery( name = Login.getAll, query = "select o from Login o" ),
                  @NamedQuery( name = "Login.findToken", query = "select o from Login o where o.token = :token" ) } )
 @Table( name = "login" )
 public class Login implements Serializable
 {
+    public static final String getAll = "Login.findAll";
+
     @Id
     @Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
     private Integer userId;

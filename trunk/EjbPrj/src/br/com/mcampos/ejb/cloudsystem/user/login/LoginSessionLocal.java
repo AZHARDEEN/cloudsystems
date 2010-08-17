@@ -10,6 +10,8 @@ import br.com.mcampos.exception.ApplicationException;
 
 import java.io.Serializable;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 
@@ -105,5 +107,8 @@ public interface LoginSessionLocal extends Serializable
      * @param newStatus Novo status a ser alterado no banco de dados.
      */
     void setStatus( AuthenticationDTO currentUser, Integer newStatus ) throws ApplicationException;
+
+
+    List<Login> getAll() throws ApplicationException;
 
 }
