@@ -23,6 +23,8 @@ public interface FormMediaSessionLocal extends Serializable
 
     List<FormMedia> get( AnotoForm form ) throws ApplicationException;
 
+    FormMedia getPDFTemplate( AnotoForm form ) throws ApplicationException;
+
     FormMedia get( AnotoForm form, Media media ) throws ApplicationException;
 
 }

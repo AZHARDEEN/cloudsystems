@@ -21,12 +21,16 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "FormMedia.findAll", query = "select o from FormMedia o" ),
-                 @NamedQuery( name = FormMedia.formGetFiles, query = "select o from FormMedia o where o.form = ?1" ) } )
+                 @NamedQuery( name = FormMedia.formGetFiles, query = "select o from FormMedia o where o.form = ?1" ),
+                 @NamedQuery( name = FormMedia.formPDFTemplate,
+                              query = "select o from FormMedia o where o.form = ?1 and o.media.name like '%template.pdf' and o.media.format = 'pdf'" ) } )
 @Table( name = "form_media" )
 @IdClass( FormMediaPK.class )
 public class FormMedia implements Serializable, EntityCopyInterface<FormMediaDTO>
 {
     public static final String formGetFiles = "FormMedia.formGetFiles";
+    public static final String formPDFTemplate = "FormMedia.getPDFTemplate";
+
     @Id
     @Column( name = "frm_id_in", nullable = false, insertable = false, updatable = false )
     private Integer formId;

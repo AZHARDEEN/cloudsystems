@@ -9,6 +9,7 @@ import br.com.mcampos.controller.anoto.renderer.PgcFieldListRenderer;
 import br.com.mcampos.controller.anoto.renderer.PgcPropertyListRenderer;
 import br.com.mcampos.controller.anoto.util.AnotoExport;
 import br.com.mcampos.dto.anoto.AnotoResultList;
+import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
@@ -17,6 +18,11 @@ import br.com.mcampos.dto.system.FieldTypeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
+
+import com.justformspdf.pdf.Form;
+import com.justformspdf.pdf.FormElement;
+import com.justformspdf.pdf.PDF;
+import com.justformspdf.pdf.PDFReader;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
@@ -29,6 +35,8 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -115,6 +123,7 @@ public class AnotoViewController extends AnotoLoggedController
     private Button btnZoomOut;
     private Button btnDeleteBook;
     private Button btnExport;
+    private Button btnExportPDF;
 
     private Label labelFormViewTitle;
     private Label labelFormFields;
@@ -720,6 +729,45 @@ public class AnotoViewController extends AnotoLoggedController
         }
     }
 
+    public void onClick$btnExportPDF()
+    {
+        if ( dtoParam == null || dtoParam.getForm() == null || currentFields == null )
+            return;
+        FormDTO form = dtoParam.getForm();
+        byte[] pdfByte;
+        try {
+            pdfByte = getSession().getPDFTemplate( getLoggedInUser(), form );
+            if ( pdfByte != null ) {
+                ByteArrayInputStream bais = new ByteArrayInputStream( pdfByte );
+                PDFReader reader = new PDFReader( bais );
+                PDF pdf = new PDF( reader );
+                Form pdfForm = pdf.getForm();
+                for ( PgcFieldDTO field : currentFields ) {
+                    if ( SysUtils.isEmpty( field.getValue() ) && field.getHasPenstrokes().equals( false ) )
+                        continue;
+                    FormElement item = pdfForm.getElement( field.getName() );
+                    if ( field.isBoolean() )
+                        item.setValue( "X" );
+                    else
+                        item.setValue( field.getValue() );
+                }
+                pdf.render();
+                File outFile = File.createTempFile( "export", ".pdf" );
+                FileOutputStream out = new FileOutputStream( outFile );
+                pdf.writeTo( out );
+                if ( pdfByte != null )
+                    Filedownload.save( outFile, "application/pdf" );
+                out.close();
+            }
+            else {
+                showErrorMessage( "Esta aplicação não possui template em pdf" );
+            }
+        }
+        catch ( Exception e ) {
+            showErrorMessage( e.getMessage() );
+        }
+    }
+
 
     private void configureLabels()
     {
@@ -729,6 +777,7 @@ public class AnotoViewController extends AnotoLoggedController
         setLabel( btnZoomOut );
         setLabel( btnDeleteBook );
         setLabel( btnExport );
+        setLabel( btnExportPDF );
 
         setLabel( labelFormViewTitle );
         setLabel( labelFormFields );

@@ -42,6 +42,8 @@ public interface AnodeFacade extends Serializable
 
     List<AnotoPageFieldDTO> getSearchableFields( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
 
+    byte[] getPDFTemplate( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
+
     /* *************************************************************************
      * *************************************************************************
      *

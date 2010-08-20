@@ -23,6 +23,7 @@ import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia;
+import br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.PadPK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pad.PadSessionLocal;
@@ -92,6 +93,8 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
     @EJB
     private AnotoFormSessionLocal formSession;
+    @EJB
+    private FormMediaSessionLocal formMediaSession;
     @EJB
     private AnodePenSessionLocal penSession;
     @EJB
@@ -746,6 +749,19 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
         AnotoPage page = AnotoPageUtil.createEntity( anotoPage );
         padSession.update( page );
+    }
+
+    public byte[] getPDFTemplate( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
+    {
+        authenticate( auth );
+
+        AnotoForm eForm = formSession.get( form.getId() );
+        if ( eForm == null )
+            return null;
+        FormMedia formMedia = formMediaSession.getPDFTemplate( eForm );
+        if ( formMedia == null )
+            return null;
+        return mediaSession.getObject( formMedia.getMediaId() );
     }
 }
 
