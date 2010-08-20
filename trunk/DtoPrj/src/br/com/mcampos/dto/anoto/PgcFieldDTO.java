@@ -156,4 +156,9 @@ public class PgcFieldDTO implements Serializable, Comparable<PgcFieldDTO>
         else
             return getHasPenstrokes() ? "SIM" : "";
     }
+
+    public boolean isBoolean()
+    {
+        return getType().getId().equals( FieldTypeDTO.typeBoolean );
+    }
 }
