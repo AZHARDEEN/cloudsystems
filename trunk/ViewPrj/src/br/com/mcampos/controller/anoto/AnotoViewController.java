@@ -19,10 +19,9 @@ import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
-import com.justformspdf.pdf.Form;
-import com.justformspdf.pdf.FormElement;
-import com.justformspdf.pdf.PDF;
-import com.justformspdf.pdf.PDFReader;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
@@ -739,24 +738,22 @@ public class AnotoViewController extends AnotoLoggedController
             pdfByte = getSession().getPDFTemplate( getLoggedInUser(), form );
             if ( pdfByte != null ) {
                 ByteArrayInputStream bais = new ByteArrayInputStream( pdfByte );
-                PDFReader reader = new PDFReader( bais );
-                PDF pdf = new PDF( reader );
-                Form pdfForm = pdf.getForm();
+                PdfReader reader = new PdfReader( bais );
+                File outFile = File.createTempFile( "export", ".pdf" );
+                FileOutputStream out = new FileOutputStream( outFile );
+                PdfStamper pdfOut = new PdfStamper( reader, out );
+
+                AcroFields fields = pdfOut.getAcroFields();
                 for ( PgcFieldDTO field : currentFields ) {
                     if ( SysUtils.isEmpty( field.getValue() ) && field.getHasPenstrokes().equals( false ) )
                         continue;
-                    FormElement item = pdfForm.getElement( field.getName() );
                     if ( field.isBoolean() )
-                        item.setValue( "X" );
+                        fields.setField( field.getName(), "X" );
                     else
-                        item.setValue( field.getValue() );
+                        fields.setField( field.getName(), field.getValue() );
                 }
-                pdf.render();
-                File outFile = File.createTempFile( "export", ".pdf" );
-                FileOutputStream out = new FileOutputStream( outFile );
-                pdf.writeTo( out );
-                if ( pdfByte != null )
-                    Filedownload.save( outFile, "application/pdf" );
+                pdfOut.close();
+                Filedownload.save( outFile, "application/pdf" );
                 out.close();
             }
             else {

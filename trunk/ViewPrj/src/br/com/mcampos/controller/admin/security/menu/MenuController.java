@@ -206,10 +206,6 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
         return dto;
     }
 
-    /*
-     * TODO melhorar a função onDrop
-     */
-
     public void onDrop( Event evt )
     {
         DropEvent de;

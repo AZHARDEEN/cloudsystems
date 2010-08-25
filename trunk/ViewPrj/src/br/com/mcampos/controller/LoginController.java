@@ -51,9 +51,6 @@ public class LoginController extends BaseLoginOptionsController
                 Execution exec = Executions.getCurrent();
                 LoginCredentialDTO credential;
 
-                /*
-                 * TODO: regra: permitir o login por qualquer tipo de documento, nao apenas com o email.
-                 */
                 credential = new LoginCredentialDTO( csPassword, exec.getRemoteAddr(), exec.getRemoteHost() );
                 credential.setSessionId( getSessionID() );
                 credential.setLocale( Locales.getCurrent() );
