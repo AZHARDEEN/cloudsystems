@@ -1,9 +1,9 @@
 package br.com.mcampos.ejb.cloudsystem.account.plan.session;
 
 
+import br.com.mcampos.ejb.cloudsystem.account.mask.entity.AccountingMask;
 import br.com.mcampos.ejb.cloudsystem.account.plan.entity.AccountingPlan;
 import br.com.mcampos.ejb.cloudsystem.account.plan.entity.AccountingPlanPK;
-import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.login.Login;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
@@ -24,9 +24,9 @@ public class AccountingPlanSessionBean extends Crud<AccountingPlanPK, Accounting
         delete( AccountingPlan.class, key );
     }
 
-    public void delete( Login login, Company company, String accNumber ) throws ApplicationException
+    public void delete( Login login, AccountingMask mask, String accNumber ) throws ApplicationException
     {
-        AccountingPlan accPlan = get( company, accNumber );
+        AccountingPlan accPlan = get( mask, accNumber );
         if ( accPlan != null )
             delete( accPlan );
     }
@@ -36,15 +36,15 @@ public class AccountingPlanSessionBean extends Crud<AccountingPlanPK, Accounting
         return get( AccountingPlan.class, key );
     }
 
-    public AccountingPlan get( Company company, String accNumber ) throws ApplicationException
+    public AccountingPlan get( AccountingMask mask, String accNumber ) throws ApplicationException
     {
-        AccountingPlanPK key = new AccountingPlanPK( company, accNumber );
+        AccountingPlanPK key = new AccountingPlanPK( mask, accNumber );
         return get( key );
     }
 
-    public List<AccountingPlan> getAll( Company company ) throws ApplicationException
+    public List<AccountingPlan> getAll( AccountingMask mask ) throws ApplicationException
     {
-        return ( List<AccountingPlan> )getResultList( AccountingPlan.getAll, company );
+        return ( List<AccountingPlan> )getResultList( AccountingPlan.getAll, mask );
     }
 
     public AccountingPlan add( Login login, AccountingPlan entity ) throws ApplicationException

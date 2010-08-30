@@ -1,31 +1,31 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <table xmlns="http://xmlns.oracle.com/jdeveloper/1111/offlinedb">
   <ID class="oracle.javatools.db.IdentifierBasedID">
-    <identifier class="java.lang.String">60644390-9d92-46bf-ab07-104b8c960265</identifier>
+    <identifier class="java.lang.String">8539aa88-9b38-4dfa-9be1-e0a80f78925c</identifier>
   </ID>
-  <name>accounting_mask</name>
+  <name>accounting_nature</name>
   <columns>
     <column>
       <ID class="oracle.javatools.db.IdentifierBasedID">
-        <identifier class="java.lang.String">b28d75ce-05a5-4956-9206-5f4b5edd5f64</identifier>
+        <identifier class="java.lang.String">358baf1f-e943-49b6-952f-24ed417e446f</identifier>
       </ID>
-      <name>usr_id_in</name>
+      <name>acn_id_in</name>
       <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
         <ID class="oracle.javatools.db.IdentifierBasedID">
-          <identifier class="java.lang.String">ea398634-fbf8-44da-9d0d-3cacbc3a7b6a</identifier>
+          <identifier class="java.lang.String">34bb7238-beeb-423e-975f-5810b61d0515</identifier>
         </ID>
         <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
           <providerClass>oracle.javatools.db.JdbcDatabase</providerClass>
-          <typeName>INT</typeName>
+          <typeName>bpchar</typeName>
         </dataTypeID>
         <properties>
           <entry>
             <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
             <value class="oracle.javatools.db.ReferenceID">
               <parent class="oracle.javatools.db.ReferenceID">
-                <name>usr_id_in</name>
+                <name>acn_id_in</name>
                 <parent class="oracle.javatools.db.ReferenceID">
-                  <name>accounting_mask</name>
+                  <name>accounting_nature</name>
                   <schemaName>db_cloud</schemaName>
                   <type>TABLE</type>
                 </parent>
@@ -39,15 +39,11 @@
       <notNull>true</notNull>
       <properties>
         <entry>
-          <key>Comment</key>
-          <value class="java.lang.String">Usar sequence: seq_usuario</value>
-        </entry>
-        <entry>
           <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
           <value class="oracle.javatools.db.ReferenceID">
-            <name>usr_id_in</name>
+            <name>acn_id_in</name>
             <parent class="oracle.javatools.db.ReferenceID">
-              <name>accounting_mask</name>
+              <name>accounting_nature</name>
               <schemaName>db_cloud</schemaName>
               <type>TABLE</type>
             </parent>
@@ -58,12 +54,12 @@
     </column>
     <column>
       <ID class="oracle.javatools.db.IdentifierBasedID">
-        <identifier class="java.lang.String">c777afd3-281e-464a-af1c-9ddb8d60c2d6</identifier>
+        <identifier class="java.lang.String">96cbaa45-f6aa-405b-9894-925e9011b78b</identifier>
       </ID>
-      <name>acm_mask_ch</name>
+      <name>acn_description_ch</name>
       <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
         <ID class="oracle.javatools.db.IdentifierBasedID">
-          <identifier class="java.lang.String">be9ba63e-5926-409a-8643-191dec779e61</identifier>
+          <identifier class="java.lang.String">d5521b1f-50b1-4356-a3c0-44c293b907fb</identifier>
         </ID>
         <attributeValues>
           <entry>
@@ -80,9 +76,9 @@
             <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
             <value class="oracle.javatools.db.ReferenceID">
               <parent class="oracle.javatools.db.ReferenceID">
-                <name>acm_mask_ch</name>
+                <name>acn_description_ch</name>
                 <parent class="oracle.javatools.db.ReferenceID">
-                  <name>accounting_mask</name>
+                  <name>accounting_nature</name>
                   <schemaName>db_cloud</schemaName>
                   <type>TABLE</type>
                 </parent>
@@ -98,9 +94,9 @@
         <entry>
           <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
           <value class="oracle.javatools.db.ReferenceID">
-            <name>acm_mask_ch</name>
+            <name>acn_description_ch</name>
             <parent class="oracle.javatools.db.ReferenceID">
-              <name>accounting_mask</name>
+              <name>accounting_nature</name>
               <schemaName>db_cloud</schemaName>
               <type>TABLE</type>
             </parent>
@@ -111,71 +107,18 @@
     </column>
   </columns>
   <constraints>
-    <constraint class="oracle.javatools.db.FKConstraint">
-      <ID class="oracle.javatools.db.IdentifierBasedID">
-        <identifier class="java.lang.String">fb9a23be-8a7a-403f-b77d-b5a28706ab7e</identifier>
-      </ID>
-      <name>r_208</name>
-      <columnIDs>
-        <columnID class="oracle.javatools.db.IdentifierBasedID">
-          <name>usr_id_in</name>
-          <identifier class="java.lang.String">b28d75ce-05a5-4956-9206-5f4b5edd5f64</identifier>
-          <parent class="oracle.javatools.db.IdentifierBasedID">
-            <name>accounting_mask</name>
-            <identifier class="java.lang.String">60644390-9d92-46bf-ab07-104b8c960265</identifier>
-            <schemaName>db_cloud</schemaName>
-            <type>TABLE</type>
-          </parent>
-          <schemaName>db_cloud</schemaName>
-          <type>COLUMN</type>
-        </columnID>
-      </columnIDs>
-      <deleteMode>0</deleteMode>
-      <enabled>true</enabled>
-      <properties>
-        <entry>
-          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
-          <value class="oracle.javatools.db.ReferenceID">
-            <name>r_208</name>
-            <childObjectNames>
-              <childObjectName>usr_id_in</childObjectName>
-            </childObjectNames>
-            <parent class="oracle.javatools.db.ReferenceID">
-              <name>accounting_mask</name>
-              <schemaName>db_cloud</schemaName>
-              <type>TABLE</type>
-            </parent>
-            <subType>FKConstraint</subType>
-            <type>CONSTRAINT</type>
-          </value>
-        </entry>
-      </properties>
-      <referenceID class="oracle.javatools.db.ReferenceID">
-        <name>xpkcompany</name>
-        <childObjectNames>
-          <childObjectName>usr_id_in</childObjectName>
-        </childObjectNames>
-        <parent class="oracle.javatools.db.ReferenceID">
-          <name>company</name>
-          <schemaName>db_cloud</schemaName>
-          <type>TABLE</type>
-        </parent>
-        <subType>PKConstraint</subType>
-        <type>CONSTRAINT</type>
-      </referenceID>
-    </constraint>
     <constraint class="oracle.javatools.db.PKConstraint">
       <ID class="oracle.javatools.db.IdentifierBasedID">
-        <identifier class="java.lang.String">dc5f48a1-db32-411b-b4c8-3131efa136e6</identifier>
+        <identifier class="java.lang.String">332ad60e-de26-457e-bdbf-d041f00d63cf</identifier>
       </ID>
-      <name>xpkaccounting_mask</name>
+      <name>xpkaccounting_nature</name>
       <columnIDs>
         <columnID class="oracle.javatools.db.IdentifierBasedID">
-          <name>usr_id_in</name>
-          <identifier class="java.lang.String">b28d75ce-05a5-4956-9206-5f4b5edd5f64</identifier>
+          <name>acn_id_in</name>
+          <identifier class="java.lang.String">358baf1f-e943-49b6-952f-24ed417e446f</identifier>
           <parent class="oracle.javatools.db.IdentifierBasedID">
-            <name>accounting_mask</name>
-            <identifier class="java.lang.String">60644390-9d92-46bf-ab07-104b8c960265</identifier>
+            <name>accounting_nature</name>
+            <identifier class="java.lang.String">8539aa88-9b38-4dfa-9be1-e0a80f78925c</identifier>
             <schemaName>db_cloud</schemaName>
             <type>TABLE</type>
           </parent>
@@ -188,12 +131,12 @@
         <entry>
           <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
           <value class="oracle.javatools.db.ReferenceID">
-            <name>xpkaccounting_mask</name>
+            <name>xpkaccounting_nature</name>
             <childObjectNames>
-              <childObjectName>usr_id_in</childObjectName>
+              <childObjectName>acn_id_in</childObjectName>
             </childObjectNames>
             <parent class="oracle.javatools.db.ReferenceID">
-              <name>accounting_mask</name>
+              <name>accounting_nature</name>
               <schemaName>db_cloud</schemaName>
               <type>TABLE</type>
             </parent>
@@ -206,13 +149,9 @@
   </constraints>
   <properties>
     <entry>
-      <key>Comment</key>
-      <value class="java.lang.String">Máscara de formação do plano de contas contábil.</value>
-    </entry>
-    <entry>
       <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
       <value class="oracle.javatools.db.ReferenceID">
-        <name>accounting_mask</name>
+        <name>accounting_nature</name>
         <schemaName>db_cloud</schemaName>
         <type>TABLE</type>
       </value>

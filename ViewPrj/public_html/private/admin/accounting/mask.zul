@@ -3,20 +3,66 @@
     <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.accounting.MaskController">
         <borderlayout id="borderLayout">
             <north autoscroll="false" height="65px" fulfill="=/resources/title.zul"/>
+            <west size="50%" splittable="true" flex="true">
+                <!-- Por favor, nao mude o id desta div -->
+                <div width="100%" height="100%" id="divListBoxRecord">
+                    <!-- Por favor, nao mude o id desta listbox -->
+                    <listbox id="listboxRecord" vflex="true">
+                        <listhead sizable="true">
+                            <listheader id="headerCode" align="center" label="##" sort="auto" width="10%"/>
+                            <listheader id="headerDescription" align="left" label="##" sort="auto" width="60%"/>
+                            <listheader id="headerMask" align="left" label="##" sort="auto"/>
+                        </listhead>
+                    </listbox>
+                </div>
+            </west>
             <center>
+                <!-- Por favor, nao mude o id desta div -->
                 <div id="recordDetail">
                     <!-- view mode -->
-                    <!-- Por favor, nao mude o id desta div -->
-                    <div id="recordEdit">
-                        <grid width="100%" fixedLayout="true">
+                    <div id="recordView" width="100%">
+                        <grid width="100%">
                             <columns>
-                                <column align="right" width="50%"/>
-                                <column align="left"/>
+                                <column align="right" width="20%"/>
+                                <column align="left" width="80%"/>
                             </columns>
                             <rows>
                                 <row>
-                                    <label id="labelEditMask" value="##"/>
-                                    <textbox id="editMask" width="250px"/>
+                                    <label id="labelCode" value="Código"/>
+                                    <label id="recordCode" value=""/>
+                                </row>
+                                <row>
+                                    <label id="labelDescription" value="Descrição"/>
+                                    <label id="recordDescription"/>
+                                </row>
+                                <row>
+                                    <label id="labelMask" value="Máscara"/>
+                                    <label id="recordMask"/>
+                                </row>
+                            </rows>
+                        </grid>
+                        <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
+                    </div>
+                    <separator/>
+                    <!-- Por favor, nao mude o id desta div -->
+                    <div id="recordEdit" visible="false">
+                        <grid width="100%" fixedLayout="true">
+                            <columns>
+                                <column align="right" width="20%"/>
+                                <column align="left" width="80%"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <label id="labelEditCode" value="Nr. Conta"/>
+                                    <intbox id="editCode" maxlength="64" width="95%"/>
+                                </row>
+                                <row>
+                                    <label id="labelEditDescription" value="Descrição"/>
+                                    <textbox id="editDescription" width="95%"/>
+                                </row>
+                                <row>
+                                    <label id="labelEditMask" value="Máscara"/>
+                                    <textbox id="editMask" maxlength="64" width="95%"/>
                                 </row>
                             </rows>
                         </grid>

@@ -2,13 +2,17 @@ package br.com.mcampos.controller.accounting;
 
 
 import br.com.mcampos.controller.admin.tables.BasicListController;
+import br.com.mcampos.dto.accounting.AccountingMaskDTO;
+import br.com.mcampos.dto.accounting.AccountingNatureDTO;
 import br.com.mcampos.dto.accounting.AccountingPlanDTO;
 import br.com.mcampos.ejb.cloudsystem.account.plan.facade.AccountingPlanFacade;
 import br.com.mcampos.exception.ApplicationException;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.ListitemRenderer;
@@ -31,12 +35,16 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
     private Label recordCode;
     private Label recordDescription;
     private Label recordShortCode;
+    private Label recordNature;
 
     private Textbox editCode;
     private Textbox editDescription;
     private Textbox editShortCode;
 
     private AccountingPlanFacade session;
+
+    private Combobox cmbMask;
+    private Combobox cmbNature;
 
 
     @Override
@@ -49,7 +57,27 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
     public void doAfterCompose( Component comp ) throws Exception
     {
         super.doAfterCompose( comp );
+        loadCombobox( cmbMask, getSession().getMasks( getLoggedInUser() ) );
+        loadCombobox( cmbNature, getSession().getNatures( getLoggedInUser() ) );
+        if ( cmbMask.getItemCount() > 0 ) {
+            cmbMask.setSelectedIndex( 0 );
+            refresh();
+        }
+        if ( cmbNature.getItemCount() > 0 )
+            cmbNature.setSelectedIndex( 0 );
         setLabels();
+    }
+
+    private AccountingMaskDTO getMask()
+    {
+        if ( cmbMask.getSelectedItem() == null )
+            return null;
+        return ( AccountingMaskDTO )cmbMask.getSelectedItem().getValue();
+    }
+
+    public void onSelect$cmbMask()
+    {
+        refresh();
     }
 
     private void setLabels()
@@ -80,6 +108,7 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
         recordCode.setValue( record.getNumber() );
         recordDescription.setValue( record.getDescription() );
         recordShortCode.setValue( record.getShortNumber() );
+        recordNature.setValue( record.getNature().toString() );
     }
 
     protected void clearRecordInfo()
@@ -87,11 +116,15 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
         recordCode.setValue( "" );
         recordDescription.setValue( "" );
         recordShortCode.setValue( "" );
+        recordNature.setValue( "" );
     }
 
     protected List getRecordList() throws ApplicationException
     {
-        return getSession().getAll( getLoggedInUser() );
+        AccountingMaskDTO mask = getMask();
+        if ( mask == null )
+            return Collections.emptyList();
+        return getSession().getAll( getLoggedInUser(), mask.getId() );
     }
 
     protected ListitemRenderer getRenderer()
@@ -101,7 +134,10 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
 
     protected void delete( Object currentRecord ) throws ApplicationException
     {
-        getSession().delete( getLoggedInUser(), ( ( AccountingPlanDTO )currentRecord ).getNumber() );
+        AccountingMaskDTO mask = getMask();
+        if ( mask == null )
+            return;
+        getSession().delete( getLoggedInUser(), mask.getId(), ( ( AccountingPlanDTO )currentRecord ).getNumber() );
     }
 
     protected Object saveRecord( Object currentRecord )
@@ -110,6 +146,8 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
         dto.setNumber( editCode.getValue() );
         dto.setDescription( editDescription.getValue() );
         dto.setShortNumber( editShortCode.getValue() );
+        dto.setMask( getMask() );
+        dto.setNature( ( AccountingNatureDTO )cmbNature.getSelectedItem().getValue() );
         return currentRecord;
     }
 
@@ -118,15 +156,21 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
         editCode.setValue( "" );
         editDescription.setValue( "" );
         editShortCode.setValue( "" );
+        cmbNature.setSelectedIndex( 0 );
     }
 
     protected Object prepareToUpdate( Object currentRecord )
     {
         AccountingPlanDTO dto = ( AccountingPlanDTO )currentRecord;
-        editCode.setValue( "" );
-        editDescription.setValue( "" );
-        editShortCode.setValue( "" );
-
+        editCode.setValue( dto.getNumber() );
+        editDescription.setValue( dto.getDescription() );
+        editShortCode.setValue( dto.getShortNumber() );
+        for ( int index = 0; index < cmbNature.getItemCount(); index++ ) {
+            if ( dto.getNature().equals( cmbNature.getItemAtIndex( index ).getValue() ) ) {
+                cmbNature.setSelectedIndex( index );
+                break;
+            }
+        }
         return currentRecord;
     }
 

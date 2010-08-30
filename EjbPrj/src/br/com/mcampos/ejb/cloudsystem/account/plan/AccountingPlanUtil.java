@@ -2,8 +2,11 @@ package br.com.mcampos.ejb.cloudsystem.account.plan;
 
 
 import br.com.mcampos.dto.accounting.AccountingPlanDTO;
+import br.com.mcampos.ejb.cloudsystem.account.mask.AccountingMaskUtil;
+import br.com.mcampos.ejb.cloudsystem.account.mask.entity.AccountingMask;
+import br.com.mcampos.ejb.cloudsystem.account.nature.AccountingNatureUtil;
+import br.com.mcampos.ejb.cloudsystem.account.nature.entity.AccountingNature;
 import br.com.mcampos.ejb.cloudsystem.account.plan.entity.AccountingPlan;
-import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -12,22 +15,22 @@ import java.util.List;
 
 public final class AccountingPlanUtil
 {
-    public static AccountingPlan createEntity( Company owner, AccountingPlanDTO dto )
+    public static AccountingPlan createEntity( AccountingMask owner, AccountingPlanDTO dto, AccountingNature nature )
     {
         if ( dto == null )
             return null;
 
         AccountingPlan entity = new AccountingPlan( owner, dto.getNumber() );
-        return update( entity, dto );
+        return update( entity, dto, nature );
     }
 
-    public static AccountingPlan update( AccountingPlan entity, AccountingPlanDTO dto )
+    public static AccountingPlan update( AccountingPlan entity, AccountingPlanDTO dto, AccountingNature nature )
     {
         if ( dto == null )
             return null;
         entity.setShortNumber( dto.getShortNumber() );
-        entity.setBalance( dto.getBalance() );
         entity.setDescription( dto.getDescription() );
+        entity.setNature( nature );
         return entity;
     }
 
@@ -37,10 +40,11 @@ public final class AccountingPlanUtil
             return null;
 
         AccountingPlanDTO dto = new AccountingPlanDTO();
-        dto.setBalance( entity.getBalance() );
         dto.setNumber( entity.getNumber() );
         dto.setShortNumber( entity.getShortNumber() );
         dto.setDescription( entity.getDescription() );
+        dto.setMask( AccountingMaskUtil.copy( entity.getMask() ) );
+        dto.setNature( AccountingNatureUtil.copy( entity.getNature() ) );
         return dto;
     }
 

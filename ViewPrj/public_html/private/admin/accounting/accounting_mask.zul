@@ -8,7 +8,11 @@
                 <!-- Por favor, nao mude o id desta div -->
                 <div width="100%" height="100%" id="divListBoxRecord">
                     <!-- Por favor, nao mude o id desta listbox -->
-                    <listbox id="listboxRecord" vflex="true">
+                    <hbox width="100%">
+                        <label id="labelMask" value="Plano de Contas"/>
+                        <combobox id="cmbMask" width="300px" readonly="true"/>
+                    </hbox>
+                    <listbox id="listboxRecord" vflex="true" mold="paging" pageSize="50">
                         <listhead sizable="true">
                             <listheader id="headerAccountingNumber" align="left" label="##" sort="auto" width="40%"/>
                             <listheader id="headerDescription" align="left" label="##" sort="auto"/>
@@ -39,6 +43,10 @@
                                     <label id="labelShortCode" value="Nr. Reduzido"/>
                                     <label id="recordShortCode"/>
                                 </row>
+                                <row>
+                                    <label id="labelNature" value="Natureza"/>
+                                    <label id="recordNature"/>
+                                </row>
                             </rows>
                         </grid>
                         <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
@@ -63,6 +71,10 @@
                                 <row>
                                     <label id="labelEditShortCode" value="Nr. Reduzido"/>
                                     <textbox id="editShortCode" maxlength="64" width="95%"/>
+                                </row>
+                                <row>
+                                    <label id="labelEditNature" value="Natureza"/>
+                                    <combobox id="cmbNature" width="95%" readonly="true"/>
                                 </row>
                             </rows>
                         </grid>
