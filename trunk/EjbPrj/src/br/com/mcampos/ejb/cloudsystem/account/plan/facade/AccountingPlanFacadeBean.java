@@ -1,16 +1,18 @@
 package br.com.mcampos.ejb.cloudsystem.account.plan.facade;
 
 
+import br.com.mcampos.dto.accounting.AccountingMaskDTO;
+import br.com.mcampos.dto.accounting.AccountingNatureDTO;
 import br.com.mcampos.dto.accounting.AccountingPlanDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.ejb.cloudsystem.account.mask.AccountingMaskUtil;
+import br.com.mcampos.ejb.cloudsystem.account.nature.AccountingNatureUtil;
+import br.com.mcampos.ejb.cloudsystem.account.nature.entity.AccountingNature;
+import br.com.mcampos.ejb.cloudsystem.account.nature.session.AccountingNatureSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.account.plan.AccountingPlanUtil;
 import br.com.mcampos.ejb.cloudsystem.account.plan.entity.AccountingPlan;
 import br.com.mcampos.ejb.cloudsystem.account.plan.session.AccountingPlanSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
-import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.login.Login;
-import br.com.mcampos.ejb.cloudsystem.user.login.LoginSessionLocal;
-import br.com.mcampos.ejb.core.AbstractSecurity;
+import br.com.mcampos.ejb.cloudsystem.account.util.AccountingAuthUser;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.List;
@@ -26,7 +28,7 @@ import javax.persistence.PersistenceContext;
 
 @Stateless( name = "AccountingPlanFacade", mappedName = "CloudSystems-EjbPrj-AccountingPlanFacade" )
 @TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
-public class AccountingPlanFacadeBean extends AbstractSecurity implements AccountingPlanFacade
+public class AccountingPlanFacadeBean extends AccountingAuthUser implements AccountingPlanFacade
 {
     public static final Integer messageId = 42;
 
@@ -34,13 +36,10 @@ public class AccountingPlanFacadeBean extends AbstractSecurity implements Accoun
     private transient EntityManager em;
 
     @EJB
-    CompanySessionLocal companySession;
-
-    @EJB
-    LoginSessionLocal loginSession;
-
-    @EJB
     AccountingPlanSessionLocal session;
+
+    @EJB
+    AccountingNatureSessionLocal natureSession;
 
     protected EntityManager getEntityManager()
     {
@@ -52,86 +51,58 @@ public class AccountingPlanFacadeBean extends AbstractSecurity implements Accoun
         return messageId;
     }
 
-    private AuthUser getAuthUser( AuthenticationDTO auth ) throws ApplicationException
+    public void delete( AuthenticationDTO auth, Integer maskId, String accNumber ) throws ApplicationException
     {
-        authenticate( auth );
-        Company company = companySession.get( auth.getCurrentCompany() );
-        if ( company == null )
-            throwException( 1 );
-        Login login = loginSession.get( auth.getUserId() );
-        return new AuthUser( company, login );
-    }
-
-    public void delete( AuthenticationDTO auth, String accNumber ) throws ApplicationException
-    {
-        AuthUser au = getAuthUser( auth );
-        session.delete( au.getLogin(), au.getCompany(), accNumber );
+        load( auth, maskId );
+        session.delete( getLogin(), getMask(), accNumber );
 
     }
 
-    public AccountingPlanDTO get( AuthenticationDTO auth, String accNumber ) throws ApplicationException
+    public AccountingPlanDTO get( AuthenticationDTO auth, Integer maskId, String accNumber ) throws ApplicationException
     {
-        AuthUser au = getAuthUser( auth );
-        return AccountingPlanUtil.copy( session.get( au.getCompany(), accNumber ) );
+        load( auth, maskId );
+        return AccountingPlanUtil.copy( session.get( getMask(), accNumber ) );
     }
 
     public AccountingPlanDTO add( AuthenticationDTO auth, AccountingPlanDTO dto ) throws ApplicationException
     {
-        AuthUser au = getAuthUser( auth );
-        AccountingPlan accNumber = session.get( au.getCompany(), dto.getNumber() );
+        load( auth, dto.getMask().getId() );
+        AccountingPlan accNumber = session.get( getMask(), dto.getNumber() );
         if ( accNumber != null )
             throwException( 2 );
-        accNumber = AccountingPlanUtil.createEntity( au.getCompany(), dto );
-        accNumber = session.add( au.getLogin(), accNumber );
+        AccountingNature nature = natureSession.get( dto.getNature().getId() );
+        accNumber = AccountingPlanUtil.createEntity( getMask(), dto, nature );
+        accNumber = session.add( getLogin(), accNumber );
         return AccountingPlanUtil.copy( accNumber );
     }
 
     public AccountingPlanDTO update( AuthenticationDTO auth, AccountingPlanDTO dto ) throws ApplicationException
     {
-        AuthUser au = getAuthUser( auth );
-        AccountingPlan accNumber = session.get( au.getCompany(), dto.getNumber() );
+        load( auth, dto.getMask().getId() );
+        AccountingPlan accNumber = session.get( getMask(), dto.getNumber() );
         if ( accNumber == null )
             throwException( 3 );
-        accNumber = AccountingPlanUtil.update( accNumber, dto );
+        AccountingNature nature = natureSession.get( dto.getNature().getId() );
+        accNumber = AccountingPlanUtil.update( accNumber, dto, nature );
         accNumber = session.update( accNumber );
         return AccountingPlanUtil.copy( accNumber );
     }
 
-    public List<AccountingPlanDTO> getAll( AuthenticationDTO auth ) throws ApplicationException
+    public List<AccountingPlanDTO> getAll( AuthenticationDTO auth, Integer maskId ) throws ApplicationException
     {
-        AuthUser au = getAuthUser( auth );
-        return AccountingPlanUtil.toDTOList( session.getAll( au.getCompany() ) );
+        load( auth, maskId );
+        return AccountingPlanUtil.toDTOList( session.getAll( getMask() ) );
     }
 
-    private class AuthUser
+    public List<AccountingMaskDTO> getMasks( AuthenticationDTO auth ) throws ApplicationException
     {
-        private Company company;
-        private Login login;
+        load( auth );
+        return AccountingMaskUtil.toDTOList( maskSession.getAll( getCompany() ) );
+    }
 
-        public AuthUser( Company c, Login l )
-        {
-            company = c;
-            login = l;
-        }
-
-        public void setCompany( Company company )
-        {
-            this.company = company;
-        }
-
-        public Company getCompany()
-        {
-            return company;
-        }
-
-        public void setLogin( Login login )
-        {
-            this.login = login;
-        }
-
-        public Login getLogin()
-        {
-            return login;
-        }
+    public List<AccountingNatureDTO> getNatures( AuthenticationDTO auth ) throws ApplicationException
+    {
+        load( auth );
+        return AccountingNatureUtil.toDTOList( natureSession.getAll() );
     }
 }

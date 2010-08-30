@@ -10,10 +10,22 @@ public class AccountingPlanDTO implements Serializable
     private String shortNumber; /*Número Reduzido*/
     private String description;
 
+    private AccountingMaskDTO mask;
+
+    private AccountingNatureDTO nature;
+
     public AccountingPlanDTO()
     {
         super();
     }
+
+
+    public AccountingPlanDTO( AccountingMaskDTO mask, String number )
+    {
+        setMask( mask );
+        setNumber( number );
+    }
+
 
     public void setNumber( String number )
     {
@@ -53,5 +65,25 @@ public class AccountingPlanDTO implements Serializable
     public String getDescription()
     {
         return description;
+    }
+
+    public void setMask( AccountingMaskDTO mask )
+    {
+        this.mask = mask;
+    }
+
+    public AccountingMaskDTO getMask()
+    {
+        return mask;
+    }
+
+    public void setNature( AccountingNatureDTO nature )
+    {
+        this.nature = nature;
+    }
+
+    public AccountingNatureDTO getNature()
+    {
+        return nature;
     }
 }

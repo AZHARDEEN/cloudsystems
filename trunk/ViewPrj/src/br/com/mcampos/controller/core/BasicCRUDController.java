@@ -297,8 +297,10 @@ public abstract class BasicCRUDController extends LoggedBaseController
                 record = createNewRecord();
             else
                 record = getCurrentRecord();
-            persist( saveRecord( record ) );
-            afterPersist( record );
+            if ( record != null ) {
+                persist( saveRecord( record ) );
+                afterPersist( record );
+            }
         }
         catch ( ApplicationException e ) {
             showErrorMessage( e.getMessage(), "Salvar atualizações" );

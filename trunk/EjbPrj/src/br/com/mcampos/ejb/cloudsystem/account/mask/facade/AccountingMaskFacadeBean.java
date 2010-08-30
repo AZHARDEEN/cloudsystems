@@ -1,17 +1,15 @@
 package br.com.mcampos.ejb.cloudsystem.account.mask.facade;
 
 
+import br.com.mcampos.dto.accounting.AccountingMaskDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.ejb.cloudsystem.account.mask.AccountingMaskUtil;
 import br.com.mcampos.ejb.cloudsystem.account.mask.entity.AccountingMask;
-import br.com.mcampos.ejb.cloudsystem.account.mask.session.AccountingMaskSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.collaborator.NewCollaboratorSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
-import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
-import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
-import br.com.mcampos.ejb.core.AbstractSecurity;
+import br.com.mcampos.ejb.cloudsystem.account.util.AccountingAuthUser;
 import br.com.mcampos.exception.ApplicationException;
 
-import javax.ejb.EJB;
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -22,21 +20,12 @@ import javax.persistence.PersistenceContext;
 
 @Stateless( name = "AccountingMaskFacade", mappedName = "CloudSystems-EjbPrj-AccountingMaskFacade" )
 @TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
-public class AccountingMaskFacadeBean extends AbstractSecurity implements AccountingMaskFacade
+public class AccountingMaskFacadeBean extends AccountingAuthUser implements AccountingMaskFacade
 {
     public static final Integer messageId = 41;
 
     @PersistenceContext( unitName = "EjbPrj" )
     private transient EntityManager em;
-
-    @EJB
-    private CompanySessionLocal companySession;
-
-    @EJB
-    private NewCollaboratorSessionLocal collaboratorSession;
-
-    @EJB
-    private AccountingMaskSessionLocal maskSession;
 
     protected EntityManager getEntityManager()
     {
@@ -48,28 +37,49 @@ public class AccountingMaskFacadeBean extends AbstractSecurity implements Accoun
         return messageId;
     }
 
-    private Company getCompany( AuthenticationDTO auth ) throws ApplicationException
+    public void delete( AuthenticationDTO auth, Integer id ) throws ApplicationException
     {
-        authenticate( auth );
-        Company company = companySession.get( auth.getCurrentCompany() );
-        if ( company == null )
+        load( auth );
+        maskSession.delete( getLogin(), getCompany(), id );
+    }
+
+    public AccountingMaskDTO get( AuthenticationDTO auth, Integer id ) throws ApplicationException
+    {
+        AccountingMask mask = maskSession.get( companySession.get( auth.getCurrentCompany() ), id );
+        return AccountingMaskUtil.copy( mask );
+    }
+
+    public AccountingMaskDTO add( AuthenticationDTO auth, AccountingMaskDTO dto ) throws ApplicationException
+    {
+        load( auth );
+        AccountingMask mask = maskSession.get( getCompany(), dto.getId() );
+        if ( mask != null )
             throwException( 1 );
-        Collaborator collaborator = collaboratorSession.get( company.getId(), auth.getUserId() );
-        if ( collaborator == null )
+        mask = AccountingMaskUtil.createEntity( getCompany(), dto );
+        mask = maskSession.add( getLogin(), mask );
+        return AccountingMaskUtil.copy( mask );
+    }
+
+    public AccountingMaskDTO update( AuthenticationDTO auth, AccountingMaskDTO dto ) throws ApplicationException
+    {
+        load( auth );
+        AccountingMask mask = maskSession.get( getCompany(), dto.getId() );
+        if ( mask == null )
             throwException( 2 );
-        return company;
+        mask = AccountingMaskUtil.update( mask, dto );
+        mask = maskSession.update( mask );
+        return AccountingMaskUtil.copy( mask );
     }
 
-    public void set( AuthenticationDTO auth, String mask ) throws ApplicationException
+    public List<AccountingMaskDTO> getAll( AuthenticationDTO auth ) throws ApplicationException
     {
-        Company company = getCompany( auth );
-        maskSession.set( company, mask );
+        load( auth );
+        return AccountingMaskUtil.toDTOList( maskSession.getAll( getCompany() ) );
     }
 
-    public String get( AuthenticationDTO auth ) throws ApplicationException
+    public Integer nextId( AuthenticationDTO auth ) throws ApplicationException
     {
-        Company company = getCompany( auth );
-        AccountingMask entity = maskSession.get( company );
-        return entity != null ? entity.getMask() : null;
+        load( auth );
+        return maskSession.nextId( getCompany() );
     }
 }
