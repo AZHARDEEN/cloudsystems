@@ -41,8 +41,10 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
     @Override
     protected void clearRecordInfo()
     {
-        editId.setRawValue( 0 );
-        editDescription.setRawValue( "" );
+        if ( editId != null )
+            editId.setRawValue( 0 );
+        if ( editDescription != null )
+            editDescription.setRawValue( "" );
     }
 
     @Override

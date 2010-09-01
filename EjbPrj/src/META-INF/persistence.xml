@@ -79,6 +79,15 @@
     <class>br.com.mcampos.ejb.cloudsystem.account.AccountingMask</class>
     <class>br.com.mcampos.ejb.cloudsystem.account.AccountingNature</class>
     <class>br.com.mcampos.ejb.cloudsystem.account.AccountingPlan</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.AccountEvent</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.AccountEventPlan</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.AccountingBalance</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.AccountingEntry</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.AccountingEntryValue</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.history.entity.AccountingHistory</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.AccountingHistoryType</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.costcenter.entity.CostArea</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.costcenter.entity.CostCenter</class>
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>
