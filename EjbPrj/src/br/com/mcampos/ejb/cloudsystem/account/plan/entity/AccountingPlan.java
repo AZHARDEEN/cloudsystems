@@ -47,14 +47,23 @@ public class AccountingPlan implements Serializable
     private String shortNumber;
 
 
-    @ManyToOne
-    @JoinColumns( { @JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in" ),
-                    @JoinColumn( name = "acm_id_in", referencedColumnName = "acm_id_in" ) } )
+    @ManyToOne( optional = false )
+    @JoinColumns( { @JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", nullable = false ),
+                    @JoinColumn( name = "acm_id_in", referencedColumnName = "acm_id_in", nullable = false ) } )
     private AccountingMask mask;
 
-    @ManyToOne
+
+    @ManyToOne( optional = true )
+    @JoinColumns( { @JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", insertable = false, updatable = false ),
+                    @JoinColumn( name = "acm_id_in", referencedColumnName = "acm_id_in", insertable = false, updatable = false ),
+                    @JoinColumn( name = "acp_parent_ch", referencedColumnName = "acp_number_ch", nullable = true ) } )
+    private AccountingPlan parent;
+
+
+    @ManyToOne( optional = false )
     @JoinColumn( name = "acn_id_in" )
     private AccountingNature nature;
+
 
     public AccountingPlan()
     {
@@ -140,5 +149,15 @@ public class AccountingPlan implements Serializable
     public void setNature( AccountingNature accountingNature )
     {
         this.nature = accountingNature;
+    }
+
+    public void setParent( AccountingPlan parent )
+    {
+        this.parent = parent;
+    }
+
+    public AccountingPlan getParent()
+    {
+        return parent;
     }
 }

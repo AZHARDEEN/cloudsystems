@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.account;
 
 
 import br.com.mcampos.ejb.cloudsystem.account.costcenter.entity.CostCenter;
+import br.com.mcampos.ejb.cloudsystem.account.event.entity.AccountEvent;
 import br.com.mcampos.ejb.cloudsystem.account.history.entity.AccountingHistory;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 
@@ -46,6 +47,7 @@ public class AccountingEntry implements Serializable
 
     @ManyToOne( optional = true )
     @JoinColumns( { @JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", insertable = false, updatable = false ),
+                    @JoinColumn( name = "acm_id_in", referencedColumnName = "acm_id_in" ),
                     @JoinColumn( name = "aev_id_in", referencedColumnName = "aev_id_in" ) } )
     private AccountEvent event;
 
