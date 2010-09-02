@@ -1,4 +1,7 @@
-package br.com.mcampos.ejb.cloudsystem.account;
+package br.com.mcampos.ejb.cloudsystem.account.event.entity;
+
+
+import br.com.mcampos.ejb.cloudsystem.account.mask.entity.AccountingMask;
 
 import java.io.Serializable;
 
@@ -6,22 +9,26 @@ public class AccountEventPK implements Serializable
 {
     private Integer id;
     private Integer companyId;
+    private Integer maskId;
 
     public AccountEventPK()
     {
     }
 
-    public AccountEventPK( Integer aev_id_in, Integer usr_id_in )
+    public AccountEventPK( AccountingMask owner, Integer id )
     {
-        this.id = aev_id_in;
-        this.companyId = usr_id_in;
+        setCompanyId( owner.getCompany().getId() );
+        setMaskId( owner.getId() );
+        setId( id );
     }
+
 
     public boolean equals( Object other )
     {
         if ( other instanceof AccountEventPK ) {
             final AccountEventPK otherAccountEventPK = ( AccountEventPK )other;
-            final boolean areEqual = ( otherAccountEventPK.id.equals( id ) && otherAccountEventPK.companyId.equals( companyId ) );
+            final boolean areEqual =
+                ( otherAccountEventPK.id.equals( id ) && otherAccountEventPK.companyId.equals( companyId ) && otherAccountEventPK.maskId.equals( maskId ) );
             return areEqual;
         }
         return false;
@@ -50,5 +57,15 @@ public class AccountEventPK implements Serializable
     void setCompanyId( Integer usr_id_in )
     {
         this.companyId = usr_id_in;
+    }
+
+    public void setMaskId( Integer maskId )
+    {
+        this.maskId = maskId;
+    }
+
+    public Integer getMaskId()
+    {
+        return maskId;
     }
 }

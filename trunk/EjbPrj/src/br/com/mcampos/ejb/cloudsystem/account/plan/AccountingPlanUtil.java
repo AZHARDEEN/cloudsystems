@@ -7,6 +7,7 @@ import br.com.mcampos.ejb.cloudsystem.account.mask.entity.AccountingMask;
 import br.com.mcampos.ejb.cloudsystem.account.nature.AccountingNatureUtil;
 import br.com.mcampos.ejb.cloudsystem.account.nature.entity.AccountingNature;
 import br.com.mcampos.ejb.cloudsystem.account.plan.entity.AccountingPlan;
+import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.ArrayList;
@@ -58,4 +59,40 @@ public final class AccountingPlanUtil
         }
         return listDTO;
     }
+
+    public static String getParent( String accNumber ) throws ApplicationException
+    {
+        if ( SysUtils.isEmpty( accNumber ) )
+            return null;
+        int nIndex = accNumber.lastIndexOf( '.' );
+        if ( nIndex == -1 ) //there is no parent
+            return null;
+        return accNumber.substring( 0, nIndex );
+    }
+
+    public static boolean validateNumberMask( AccountingPlan accNumber )
+    {
+        String number;
+        String mask;
+
+        number = accNumber.getNumber();
+        mask = accNumber.getMask().getMask();
+
+        if ( number.length() > mask.length() )
+            return false;
+        for ( int index = 0; index < number.length(); index++ ) {
+            char chMask = mask.charAt( index );
+            char chNumber = number.charAt( index );
+            if ( chMask == '9' ) {
+                if ( Character.isDigit( chNumber ) == false )
+                    return false;
+            }
+            else if ( chMask == '.' ) {
+                if ( chNumber != '.' )
+                    return false;
+            }
+        }
+        return true;
+    }
+
 }

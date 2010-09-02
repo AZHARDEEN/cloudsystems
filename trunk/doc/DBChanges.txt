@@ -281,3 +281,35 @@ GRANT SELECT ON login_property TO jreport;
 --09/08/2010 - Possibilitar escolher a página inicial.
 
 alter table anoto_page_field add column apf_pk_bt            BOOLEAN DEFAULT  FALSE  NULL;
+
+
+
+--##########################################################################################################################
+--01/09/2010 - exemplo de uso do dblink
+select dblink_connect('dexion', ' hostaddr=127.0.0.1 port=5432 dbname=dexion_db user=postgres password=xxxx');
+
+
+insert into accounting_mask
+select
+	2 as usr_id_in,
+	estrutura as acm_mask_ch,
+	case when tipo_plano_contas = 'PLANO 022' then 1 when tipo_plano_contas='PLANO 112' then 2 when tipo_plano_contas = 'PLANO MODELO' then 3 when tipo_plano_contas = 'PLANO GERAL' then 4 end as amc_id_in,
+	tipo_plano_contas as acm_description_ch,
+	now()
+from
+	dexion.c_tipos_plano_contas
+
+
+
+INSERT INTO accounting_plan ( acp_number_ch,acp_description_ch,acp_simplified_number_ch,acn_id_in,usr_id_in,acm_id_in)
+select
+	CONTA AS acp_number_ch,
+	DESCRICAO as acp_description_ch,
+	SEQUENCIA as acp_simplified_number_ch,
+	CASE WHEN NATUREZA = 'D' THEN 'D' WHEN NATUREZA = 'C' THEN 'C' ELSE 'N' END as acn_id_in,
+	2 as usr_id_in,
+	case when tipo_plano_contas = 'PLANO 022' then 1 when tipo_plano_contas='PLANO 112' then 2 when tipo_plano_contas = 'PLANO MODELO' then 3 when tipo_plano_contas = 'PLANO GERAL' then 4 end as amc_id_in
+from
+	dexion.c_plano_contas
+
+

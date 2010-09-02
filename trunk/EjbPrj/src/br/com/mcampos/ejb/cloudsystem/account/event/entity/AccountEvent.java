@@ -1,8 +1,8 @@
-package br.com.mcampos.ejb.cloudsystem.account;
+package br.com.mcampos.ejb.cloudsystem.account.event.entity;
 
 
 import br.com.mcampos.ejb.cloudsystem.account.history.entity.AccountingHistory;
-import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
+import br.com.mcampos.ejb.cloudsystem.account.mask.entity.AccountingMask;
 
 import java.io.Serializable;
 
@@ -19,45 +19,53 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "AccountEvent.findAll", query = "select o from AccountEvent o" ) } )
+@NamedQueries( { @NamedQuery( name = AccountEvent.getAll, query = "select o from AccountEvent o where o.mask = ?1 order by o.id" ),
+                 @NamedQuery( name = AccountEvent.nextId, query = "select max (o.id) from AccountEvent o where o.mask = ?1" ) } )
 @Table( name = "account_event" )
 @IdClass( AccountEventPK.class )
 public class AccountEvent implements Serializable
 {
+    public static final String getAll = "AccountEvent.findAll";
+    public static final String nextId = "AccountEvent.nextId";
+
+
+    @Id
+    @Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
+    private Integer companyId;
+
+    @Id
+    @Column( name = "acm_id_in", nullable = false, insertable = false, updatable = false )
+    private Integer maskId;
+
+    @Id
+    @Column( name = "aev_id_in", nullable = false )
+    private Integer id;
+
     @Column( name = "aev_description_ch", nullable = false )
     private String description;
 
     @Column( name = "aev_history_tx" )
     private String history;
 
-    @Id
-    @Column( name = "aev_id_in", nullable = false )
-    private Integer id;
-
-    @Id
-    @Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
-    private Integer companyId;
-
-    @ManyToOne
+    @ManyToOne( optional = true )
     @JoinColumns( { @JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", insertable = false, updatable = false ),
                     @JoinColumn( name = "ach_id_in", referencedColumnName = "ach_id_in" ) } )
     private AccountingHistory accountingHistory;
 
     @ManyToOne( optional = false )
-    @JoinColumn( name = "usr_id_in", nullable = false, updatable = true, insertable = true )
-    private Company company;
+    @JoinColumns( { @JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in" ),
+                    @JoinColumn( name = "acm_id_in", referencedColumnName = "acm_id_in" ) } )
+    private AccountingMask mask;
 
 
     public AccountEvent()
     {
     }
 
-    public AccountEvent( String aev_description_ch, String aev_history_tx, Integer aev_id_in, AccountingHistory accountingHistory )
+    public AccountEvent( AccountingMask owner, Integer id )
     {
-        this.description = aev_description_ch;
-        this.history = aev_history_tx;
-        this.id = aev_id_in;
-        this.accountingHistory = accountingHistory;
+        setMask( owner );
+        setId( id );
     }
 
 
@@ -110,19 +118,27 @@ public class AccountEvent implements Serializable
     public void setAccountingHistory( AccountingHistory accountingHistory )
     {
         this.accountingHistory = accountingHistory;
-        if ( accountingHistory != null ) {
-            this.companyId = accountingHistory.getCompanyId();
-        }
     }
 
-    public void setCompany( Company company )
+    public void setMask( AccountingMask mask )
     {
-        this.company = company;
-        setCompanyId( company != null ? company.getId() : null );
+        this.mask = mask;
+        setMaskId( mask != null ? mask.getId() : null );
+        setCompanyId( mask != null ? mask.getCompany().getId() : null );
     }
 
-    public Company getCompany()
+    public AccountingMask getMask()
     {
-        return company;
+        return mask;
+    }
+
+    public void setMaskId( Integer maskId )
+    {
+        this.maskId = maskId;
+    }
+
+    public Integer getMaskId()
+    {
+        return maskId;
     }
 }

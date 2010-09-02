@@ -79,8 +79,8 @@
     <class>br.com.mcampos.ejb.cloudsystem.account.AccountingMask</class>
     <class>br.com.mcampos.ejb.cloudsystem.account.AccountingNature</class>
     <class>br.com.mcampos.ejb.cloudsystem.account.AccountingPlan</class>
-    <class>br.com.mcampos.ejb.cloudsystem.account.AccountEvent</class>
-    <class>br.com.mcampos.ejb.cloudsystem.account.AccountEventPlan</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.event.entity.AccountEvent</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.event.entity.AccountEventPlan</class>
     <class>br.com.mcampos.ejb.cloudsystem.account.AccountingBalance</class>
     <class>br.com.mcampos.ejb.cloudsystem.account.AccountingEntry</class>
     <class>br.com.mcampos.ejb.cloudsystem.account.AccountingEntryValue</class>

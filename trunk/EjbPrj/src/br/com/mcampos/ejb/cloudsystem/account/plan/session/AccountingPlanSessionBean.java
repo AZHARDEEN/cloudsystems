@@ -2,11 +2,13 @@ package br.com.mcampos.ejb.cloudsystem.account.plan.session;
 
 
 import br.com.mcampos.ejb.cloudsystem.account.mask.entity.AccountingMask;
+import br.com.mcampos.ejb.cloudsystem.account.plan.AccountingPlanUtil;
 import br.com.mcampos.ejb.cloudsystem.account.plan.entity.AccountingPlan;
 import br.com.mcampos.ejb.cloudsystem.account.plan.entity.AccountingPlanPK;
 import br.com.mcampos.ejb.cloudsystem.user.login.Login;
 import br.com.mcampos.ejb.session.core.Crud;
 import br.com.mcampos.exception.ApplicationException;
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.util.List;
 
@@ -49,6 +51,33 @@ public class AccountingPlanSessionBean extends Crud<AccountingPlanPK, Accounting
 
     public AccountingPlan add( Login login, AccountingPlan entity ) throws ApplicationException
     {
+        if ( getLevel( entity ) > 1 )
+            entity.setParent( getParent( entity ) );
+        if ( AccountingPlanUtil.validateNumberMask( entity ) == false )
+            throw new IllegalArgumentException( "Accounting number mask is invalid" );
         return add( entity );
     }
+
+    private int getLevel( AccountingPlan accNumber )
+    {
+        String number = accNumber.getNumber();
+
+        String[] parts = number.split( "\\." );
+        if ( parts == null || parts.length == 0 )
+            return 1;
+        else
+            return parts.length;
+    }
+
+    private AccountingPlan getParent( AccountingPlan accNumber ) throws ApplicationException
+    {
+        String number = AccountingPlanUtil.getParent( accNumber.getNumber() );
+        if ( SysUtils.isEmpty( number ) )
+            return null;
+        AccountingPlan parent = get( accNumber.getMask(), number );
+        if ( parent == null )
+            throw new IllegalArgumentException( "Accounting number has no parent." );
+        return parent;
+    }
+
 }
