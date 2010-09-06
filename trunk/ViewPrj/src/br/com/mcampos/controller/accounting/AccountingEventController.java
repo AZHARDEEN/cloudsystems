@@ -4,27 +4,58 @@ package br.com.mcampos.controller.accounting;
 import br.com.mcampos.controller.admin.tables.core.SimpleTableController;
 import br.com.mcampos.dto.accounting.AccountingEventDTO;
 import br.com.mcampos.dto.accounting.AccountingMaskDTO;
+import br.com.mcampos.dto.accounting.AccountingRateTypeDTO;
 import br.com.mcampos.dto.core.SimpleTableDTO;
 import br.com.mcampos.ejb.cloudsystem.account.event.facade.AccountingEventFacade;
 import br.com.mcampos.exception.ApplicationException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Bandbox;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Doublebox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Toolbar;
 
 
 public class AccountingEventController extends SimpleTableController<AccountingEventDTO>
 {
     private AccountingEventFacade session;
     private Combobox cmbMask;
+    private Combobox cmbNature;
+    private Combobox cmbType;
     private Label labelHistory;
     private Label labelEditHistory;
     private Textbox editHistory;
     private Label recordHistory;
+
+    private Toolbar barComposition;
+
+    private Listbox listComposition;
+
+    private Label labelAccountingNumber;
+    private Label labelNature;
+
+    private Button addAccNumber;
+    private Button updateAccNumber;
+    private Button removeAccNumber;
+
+    private Doublebox editRate;
+
+    private Bandbox editAccountingNumber;
+    private Listbox listAccountNumber;
+
+    private Listheader headerAccountingNumber;
+    private Listheader headerDescription;
+
 
     public AccountingEventController()
     {
@@ -94,7 +125,32 @@ public class AccountingEventController extends SimpleTableController<AccountingE
             cmbMask.setSelectedIndex( 0 );
             refresh();
         }
+        loadCombobox( cmbNature, getSession().getNatures( getLoggedInUser() ) );
+        if ( cmbNature.getItemCount() > 0 )
+            cmbNature.setSelectedIndex( 0 );
+        loadCombobox( cmbType, getSession().getRateTypes() );
+        if ( cmbType.getItemCount() > 0 ) {
+            cmbType.setSelectedIndex( 0 );
+            setRateFormat();
+        }
         setLabels();
+        listAccountNumber.setItemRenderer( new AccountingPlanListRenderer() );
+    }
+
+    private void setRateFormat()
+    {
+        AccountingRateTypeDTO type = ( AccountingRateTypeDTO )cmbType.getSelectedItem().getValue();
+        if ( type != null ) {
+            if ( type.getId().equals( 1 ) )
+                editRate.setFormat( "0.0000" );
+            else
+                editRate.setFormat( "##,##0.00" );
+        }
+    }
+
+    public void onSelect$cmbType()
+    {
+        setRateFormat();
     }
 
     private AccountingMaskDTO getMask()
@@ -108,6 +164,16 @@ public class AccountingEventController extends SimpleTableController<AccountingE
     {
         setLabel( labelHistory );
         labelEditHistory.setValue( labelHistory.getValue() );
+        labelAccountingNumber.setValue( "Teste" );
+        setLabel( labelAccountingNumber );
+        setLabel( labelNature );
+
+        setLabel( addAccNumber );
+        setLabel( updateAccNumber );
+        setLabel( removeAccNumber );
+        setLabel( headerAccountingNumber );
+        setLabel( headerDescription );
+
     }
 
     @Override
@@ -148,4 +214,57 @@ public class AccountingEventController extends SimpleTableController<AccountingE
             return null;
     }
 
+    private void setBarVisible( boolean bVisible )
+    {
+        if ( barComposition.isVisible() != bVisible )
+            barComposition.setVisible( bVisible );
+
+    }
+
+    @Override
+    protected void showEditPanel( Boolean bShow )
+    {
+        setBarVisible( bShow );
+        super.showEditPanel( bShow );
+    }
+
+    public void onClick$addAccNumber()
+    {
+    }
+
+    public void onClick$updateAccNumber()
+    {
+        Set selected = listComposition.getSelectedItems();
+        if ( selected.isEmpty() ) {
+            showErrorMessage( "noCurrentRecordMessage" );
+            return;
+        }
+
+    }
+
+    public void onClick$removeAccNumber()
+    {
+        Set selected = listComposition.getSelectedItems();
+        if ( selected.isEmpty() ) {
+            showErrorMessage( "noCurrentRecordMessage" );
+            return;
+        }
+
+    }
+
+    @Override
+    protected void refresh()
+    {
+        AccountingMaskDTO mask = getMask();
+        if ( mask != null ) {
+            super.refresh();
+            try {
+                listAccountNumber.setModel( new ListModelList( getSession().getAccountNumbers( getLoggedInUser(),
+                                                                                               mask.getId() ) ) );
+            }
+            catch ( Exception e ) {
+                showErrorMessage( e.getMessage() );
+            }
+        }
+    }
 }

@@ -36,7 +36,7 @@ public final class AccountingEventUtil
         if ( entity == null )
             return null;
 
-        AccountingEventDTO dto = new AccountingEventDTO();
+        AccountingEventDTO dto = new AccountingEventDTO( entity.getId() );
         dto.setDescription( entity.getDescription() );
         dto.setMask( AccountingMaskUtil.copy( entity.getMask() ) );
         dto.setHistory( entity.getHistory() );

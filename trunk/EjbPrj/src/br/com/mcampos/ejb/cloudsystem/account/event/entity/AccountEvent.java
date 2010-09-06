@@ -6,6 +6,8 @@ import br.com.mcampos.ejb.cloudsystem.account.mask.entity.AccountingMask;
 
 import java.io.Serializable;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,6 +17,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -56,6 +59,9 @@ public class AccountEvent implements Serializable
     @JoinColumns( { @JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in" ),
                     @JoinColumn( name = "acm_id_in", referencedColumnName = "acm_id_in" ) } )
     private AccountingMask mask;
+
+    @OneToMany( mappedBy = "event" )
+    private List<AccountEventPlan> items;
 
 
     public AccountEvent()
@@ -141,4 +147,29 @@ public class AccountEvent implements Serializable
     {
         return maskId;
     }
+
+    public void setItems( List<AccountEventPlan> items )
+    {
+        this.items = items;
+    }
+
+    public List<AccountEventPlan> getItems()
+    {
+        return items;
+    }
+
+    public AccountEventPlan add( AccountEventPlan item )
+    {
+        getItems().add( item );
+        item.setAccountEvent( this );
+        return item;
+    }
+
+    public AccountEventPlan remove( AccountEventPlan item )
+    {
+        getItems().remove( item );
+        item.setAccountEvent( null );
+        return item;
+    }
+
 }

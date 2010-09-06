@@ -1,14 +1,9 @@
 package br.com.mcampos.ejb.cloudsystem.account.plan.facade;
 
 
-import br.com.mcampos.dto.accounting.AccountingMaskDTO;
-import br.com.mcampos.dto.accounting.AccountingNatureDTO;
 import br.com.mcampos.dto.accounting.AccountingPlanDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
-import br.com.mcampos.ejb.cloudsystem.account.mask.AccountingMaskUtil;
-import br.com.mcampos.ejb.cloudsystem.account.nature.AccountingNatureUtil;
 import br.com.mcampos.ejb.cloudsystem.account.nature.entity.AccountingNature;
-import br.com.mcampos.ejb.cloudsystem.account.nature.session.AccountingNatureSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.account.plan.AccountingPlanUtil;
 import br.com.mcampos.ejb.cloudsystem.account.plan.entity.AccountingPlan;
 import br.com.mcampos.ejb.cloudsystem.account.plan.session.AccountingPlanSessionLocal;
@@ -37,9 +32,6 @@ public class AccountingPlanFacadeBean extends AccountingAuthUser implements Acco
 
     @EJB
     AccountingPlanSessionLocal session;
-
-    @EJB
-    AccountingNatureSessionLocal natureSession;
 
     protected EntityManager getEntityManager()
     {
@@ -92,17 +84,5 @@ public class AccountingPlanFacadeBean extends AccountingAuthUser implements Acco
     {
         load( auth, maskId );
         return AccountingPlanUtil.toDTOList( session.getAll( getMask() ) );
-    }
-
-    public List<AccountingMaskDTO> getMasks( AuthenticationDTO auth ) throws ApplicationException
-    {
-        load( auth );
-        return AccountingMaskUtil.toDTOList( maskSession.getAll( getCompany() ) );
-    }
-
-    public List<AccountingNatureDTO> getNatures( AuthenticationDTO auth ) throws ApplicationException
-    {
-        load( auth );
-        return AccountingNatureUtil.toDTOList( natureSession.getAll() );
     }
 }

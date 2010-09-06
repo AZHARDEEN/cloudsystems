@@ -23,7 +23,6 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
 {
     private Listheader headerAccountingNumber;
     private Listheader headerDescription;
-    private Listheader headerAccountingShortNumber;
 
     private Label labelEditAccountingNumber;
     private Label labelDescription;
@@ -84,7 +83,6 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
     {
         setLabel( headerAccountingNumber );
         setLabel( headerDescription );
-        setLabel( headerAccountingShortNumber );
 
         setLabel( labelAccountingNumber );
         setLabel( labelDescription );
@@ -185,5 +183,9 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
             getSession().add( getLoggedInUser(), ( ( AccountingPlanDTO )e ) );
         else
             getSession().update( getLoggedInUser(), ( ( AccountingPlanDTO )e ) );
+    }
+
+    public void onClick$btnReport()
+    {
     }
 }
