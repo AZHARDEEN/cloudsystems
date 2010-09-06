@@ -2,6 +2,7 @@ package br.com.mcampos.controller.admin.tables.core;
 
 
 import br.com.mcampos.dto.core.SimpleTableDTO;
+import br.com.mcampos.sysutils.SysUtils;
 
 import java.io.Serializable;
 
@@ -23,8 +24,9 @@ public class SimpleTableListRenderer implements ListitemRenderer, Serializable
 
         if ( dto != null ) {
             listitem.getChildren().clear();
-            listitem.getChildren().add( new Listcell( dto.getId().toString() ) );
-            listitem.getChildren().add( new Listcell( dto.getDescription() ) );
+            listitem.getChildren().add( new Listcell( dto.getId() != null ? dto.getId().toString() : "N/D" ) );
+            listitem.getChildren().add( new Listcell( SysUtils.isEmpty( dto.getDescription() ) == false ? dto.getDescription() :
+                                                      "" ) );
         }
     }
 }

@@ -86,4 +86,20 @@ public class AccountingPlanDTO implements Serializable
     {
         return nature;
     }
+
+    @Override
+    public String toString()
+    {
+        return getNumber();
+    }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( obj instanceof AccountingPlanDTO ) {
+            AccountingPlanDTO other = ( AccountingPlanDTO )obj;
+            return getMask().equals( other.getMask() ) && getNumber().equals( other.getNumber() );
+        }
+        return false;
+    }
 }

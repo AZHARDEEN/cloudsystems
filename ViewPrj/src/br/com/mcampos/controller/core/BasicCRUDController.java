@@ -61,6 +61,10 @@ public abstract class BasicCRUDController extends LoggedBaseController
      */
     private Boolean isAddNewOperation;
 
+    private Div div_crud_buttons;
+
+    private Div div_submit_cancel;
+
 
     /**
      * Esta função é chamada quando o botão de atualizar é pressionado.
@@ -176,18 +180,6 @@ public abstract class BasicCRUDController extends LoggedBaseController
      */
     private void enableOperationsButtons( Boolean bEnable )
     {
-        if ( bEnable ) {
-            cmdCreate.setDisabled( false );
-            cmdUpdate.setDisabled( false );
-            cmdDelete.setDisabled( false );
-            cmdRefresh.setDisabled( false );
-        }
-        else {
-            cmdCreate.setDisabled( true );
-            cmdUpdate.setDisabled( true );
-            cmdDelete.setDisabled( true );
-            cmdRefresh.setDisabled( true );
-        }
         showEditPanel( !bEnable );
     }
 
@@ -247,7 +239,7 @@ public abstract class BasicCRUDController extends LoggedBaseController
         refresh();
     }
 
-    private void showEditPanel( Boolean bShow )
+    protected void showEditPanel( Boolean bShow )
     {
         if ( bShow ) {
             if ( recordView != null ) {
@@ -258,6 +250,14 @@ public abstract class BasicCRUDController extends LoggedBaseController
                 if ( recordEdit.isVisible() == false )
                     recordEdit.setVisible( true );
             }
+            if ( div_submit_cancel != null ) {
+                if ( div_submit_cancel.isVisible() == false )
+                    div_submit_cancel.setVisible( true );
+            }
+            if ( div_crud_buttons != null ) {
+                if ( div_crud_buttons.isVisible() == true )
+                    div_crud_buttons.setVisible( false );
+            }
         }
         else {
             if ( recordView != null ) {
@@ -267,6 +267,14 @@ public abstract class BasicCRUDController extends LoggedBaseController
             if ( recordEdit != null ) {
                 if ( recordEdit.isVisible() == true )
                     recordEdit.setVisible( false );
+            }
+            if ( div_submit_cancel != null ) {
+                if ( div_submit_cancel.isVisible() == true )
+                    div_submit_cancel.setVisible( false );
+            }
+            if ( div_crud_buttons != null ) {
+                if ( div_crud_buttons.isVisible() == false )
+                    div_crud_buttons.setVisible( true );
             }
         }
     }
@@ -343,5 +351,6 @@ public abstract class BasicCRUDController extends LoggedBaseController
         setLabel( cmdRefresh );
         setLabel( cmdCancel );
         setLabel( cmdSave );
+        div_submit_cancel.setVisible( false );
     }
 }

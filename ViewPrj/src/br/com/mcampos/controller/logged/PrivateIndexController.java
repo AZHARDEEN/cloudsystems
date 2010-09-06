@@ -46,6 +46,7 @@ public class PrivateIndexController extends LoggedBaseController
     {
         super.doAfterCompose( comp );
         //AddBookmarkEventListener();
+        System.out.println( getClass().getClassLoader().getClass().getName() );
     }
 
 

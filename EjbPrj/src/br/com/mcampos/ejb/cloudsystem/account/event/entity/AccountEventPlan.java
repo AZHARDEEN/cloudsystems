@@ -1,6 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.account.event.entity;
 
 
+import br.com.mcampos.ejb.cloudsystem.account.nature.entity.AccountingNature;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -33,9 +35,6 @@ public class AccountEventPlan implements Serializable
     @Column( name = "aev_id_in", nullable = false, insertable = false, updatable = false )
     private Integer eventId;
 
-    @Column( name = "acn_id_in", nullable = false )
-    private String id;
-
     @Id
     @Column( name = "acp_number_ch", nullable = false )
     private String number;
@@ -48,6 +47,14 @@ public class AccountEventPlan implements Serializable
                     @JoinColumn( name = "acm_id_in", referencedColumnName = "acm_id_in" ),
                     @JoinColumn( name = "aev_id_in", referencedColumnName = "aev_id_in" ) } )
     private AccountEvent event;
+
+    @ManyToOne( optional = false )
+    @JoinColumn( name = "acn_id_in" )
+    private AccountingNature nature;
+
+    @ManyToOne( optional = false )
+    @JoinColumn( name = "act_id_in" )
+    private AccountingRateType type;
 
 
     public AccountEventPlan()
@@ -62,16 +69,6 @@ public class AccountEventPlan implements Serializable
     public void setMaskId( Integer acm_id_in )
     {
         this.maskId = acm_id_in;
-    }
-
-    public String getId()
-    {
-        return id;
-    }
-
-    public void setId( String acn_id_in )
-    {
-        this.id = acn_id_in;
     }
 
     public String getNumber()
@@ -126,5 +123,25 @@ public class AccountEventPlan implements Serializable
             this.eventId = accountEvent.getId();
             this.companyId = accountEvent.getCompanyId();
         }
+    }
+
+    public void setNature( AccountingNature nature )
+    {
+        this.nature = nature;
+    }
+
+    public AccountingNature getNature()
+    {
+        return nature;
+    }
+
+    public void setType( AccountingRateType type )
+    {
+        this.type = type;
+    }
+
+    public AccountingRateType getType()
+    {
+        return type;
     }
 }

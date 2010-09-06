@@ -2,12 +2,16 @@ package br.com.mcampos.ejb.cloudsystem.account.event.facade;
 
 
 import br.com.mcampos.dto.accounting.AccountingEventDTO;
-import br.com.mcampos.dto.accounting.AccountingMaskDTO;
+import br.com.mcampos.dto.accounting.AccountingPlanDTO;
+import br.com.mcampos.dto.accounting.AccountingRateTypeDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.ejb.cloudsystem.account.event.AccountingEventUtil;
 import br.com.mcampos.ejb.cloudsystem.account.event.entity.AccountEvent;
 import br.com.mcampos.ejb.cloudsystem.account.event.session.AccountingEventSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.account.mask.AccountingMaskUtil;
+import br.com.mcampos.ejb.cloudsystem.account.event.session.AccountingRateTypeSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.account.plan.AccountingPlanUtil;
+import br.com.mcampos.ejb.cloudsystem.account.plan.AccountingRateTypeUtil;
+import br.com.mcampos.ejb.cloudsystem.account.plan.session.AccountingPlanSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.account.util.AccountingAuthUser;
 import br.com.mcampos.exception.ApplicationException;
 
@@ -33,6 +37,12 @@ public class AccountingEventFacadeBean extends AccountingAuthUser implements Acc
 
     @EJB
     private AccountingEventSessionLocal session;
+
+    @EJB
+    private AccountingRateTypeSessionLocal rateTypeSession;
+
+    @EJB
+    AccountingPlanSessionLocal accNumberSession;
 
     protected EntityManager getEntityManager()
     {
@@ -85,15 +95,21 @@ public class AccountingEventFacadeBean extends AccountingAuthUser implements Acc
         return AccountingEventUtil.toDTOList( session.getAll( getMask() ) );
     }
 
-    public List<AccountingMaskDTO> getMasks( AuthenticationDTO auth ) throws ApplicationException
-    {
-        load( auth );
-        return AccountingMaskUtil.toDTOList( maskSession.getAll( getCompany() ) );
-    }
-
     public Integer nextId( AuthenticationDTO auth, Integer maskId ) throws ApplicationException
     {
         load( auth, maskId );
         return session.nextId( getMask() );
     }
+
+    public List<AccountingRateTypeDTO> getRateTypes() throws ApplicationException
+    {
+        return AccountingRateTypeUtil.toDTOList( rateTypeSession.getAll() );
+    }
+
+    public List<AccountingPlanDTO> getAccountNumbers( AuthenticationDTO auth, Integer maskId ) throws ApplicationException
+    {
+        load( auth, maskId );
+        return AccountingPlanUtil.toDTOList( accNumberSession.getAll( getMask() ) );
+    }
+
 }

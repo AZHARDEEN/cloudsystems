@@ -21,6 +21,7 @@ public class SouthLoggedController extends LoggedBaseController
     private Label labelCopyright;
     private Label labelVersion;
     private Combobox companies;
+    private Combobox cmbThemes;
 
     private CollaboratorFacade session;
 

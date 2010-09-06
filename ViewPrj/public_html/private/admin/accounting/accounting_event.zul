@@ -4,17 +4,17 @@
     <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.accounting.AccountingEventController">
         <borderlayout id="borderLayout">
             <north autoscroll="false" height="65px" fulfill="=/resources/title.zul"></north>
-            <west size="50%" splittable="true" flex="true">
+            <west size="40%" splittable="true" flex="true">
                 <!-- Por favor, nao mude o id desta div -->
                 <div width="100%" height="100%" id="divListBoxRecord">
                     <!-- Por favor, nao mude o id desta listbox -->
-                    <hbox width="100%">
+                    <hlayout width="100%">
                         <label id="labelMask" value="Plano de Contas"/>
                         <combobox id="cmbMask" width="300px" readonly="true"/>
-                    </hbox>
+                    </hlayout>
                     <listbox id="listboxRecord" vflex="true" mold="paging" pageSize="50">
                         <listhead sizable="true">
-                            <listheader id="recordListIdSort" align="left" label="##" sort="auto" width="40%"/>
+                            <listheader id="recordListIdSort" align="left" label="##" sort="auto" width="30%"/>
                             <listheader id="headerDescription" align="left" label="##" sort="auto"/>
                         </listhead>
                     </listbox>
@@ -22,55 +22,129 @@
             </west>
             <center>
                 <div id="recordDetail">
-                    <!-- view mode -->
-                    <div id="recordView" width="100%">
-                        <grid width="100%">
-                            <columns>
-                                <column align="left" width="15%"/>
-                                <column align="left"/>
-                            </columns>
-                            <rows>
-                                <row>
-                                    <label id="labelCode" value="##"/>
-                                    <label id="recordId"/>
-                                </row>
-                                <row>
-                                    <label id="labelDescription" value="##"/>
-                                    <label id="recordDescription"/>
-                                </row>
-                                <row>
-                                    <label id="labelHistory" value="##"/>
-                                    <label id="recordHistory"/>
-                                </row>
-                            </rows>
-                        </grid>
-                        <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
-                    </div>
-                    <!-- Por favor, nao mude o id desta div -->
-                    <div id="recordEdit" visible="false">
-                        <grid width="100%" fixedLayout="true">
-                            <columns>
-                                <column align="right" width="15%"/>
-                                <column align="left"/>
-                            </columns>
-                            <rows>
-                                <row>
-                                    <label id="labelEditCode" value="##"/>
-                                    <intbox id="editId" width="99%" value="1"/>
-                                </row>
-                                <row>
-                                    <label id="labelEditDescription" value="##"/>
-                                    <textbox id="editDescription" width="99%" value=""/>
-                                </row>
-                                <row>
-                                    <label id="labelEditHistory" value="##"/>
-                                    <textbox id="editHistory" width="99%" value="" multiline="true" height="90px"/>
-                                </row>
-                            </rows>
-                        </grid>
-                        <separator/>
-                        <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
-                    </div>
+                    <tabbox>
+                        <tabs>
+                            <tab label="Dados Básicos"></tab>
+                            <tab label="Composição Contábil"></tab>
+                        </tabs>
+                        <tabpanels>
+                            <tabpanel>
+                                <!-- view mode -->
+                                <div id="recordView" width="100%">
+                                    <grid width="100%">
+                                        <columns>
+                                            <column align="left" width="15%"/>
+                                            <column align="left"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label id="labelCode" value="##"/>
+                                                <label id="recordId"/>
+                                            </row>
+                                            <row>
+                                                <label id="labelDescription" value="##"/>
+                                                <label id="recordDescription"/>
+                                            </row>
+                                            <row>
+                                                <label id="labelHistory" value="##"/>
+                                                <label id="recordHistory"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                </div>
+                                <!-- Por favor, nao mude o id desta div -->
+                                <div id="recordEdit" visible="false">
+                                    <grid width="100%" fixedLayout="true">
+                                        <columns>
+                                            <column align="right" width="15%"/>
+                                            <column align="left"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label id="labelEditCode" value="##"/>
+                                                <intbox id="editId" width="99%" value="1"/>
+                                            </row>
+                                            <row>
+                                                <label id="labelEditDescription" value="##"/>
+                                                <textbox id="editDescription" width="99%" value=""/>
+                                            </row>
+                                            <row>
+                                                <label id="labelEditHistory" value="##"/>
+                                                <textbox id="editHistory" width="99%" value="" multiline="true" height="90px"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                    <separator/>
+                                </div>
+                            </tabpanel>
+                            <tabpanel>
+                                <div id="divComposition">
+                                    <listbox width="100%" id="listComposition" fixedLayout="true" rows="8">
+                                        <listhead>
+                                            <listheader align="left" width="250px" label="Conta Contábil"/>
+                                            <listheader align="left" width="70px" label="Natureza"/>
+                                            <listheader align="left" width="60px" label="Tipo"/>
+                                            <listheader align="left" label="Valor do Rateio"/>
+                                        </listhead>
+                                    </listbox>
+                                </div>
+                                <separator/>
+                                <div id="divAddAccountNumber">
+                                    <panel title="Item da Composição Contábil" border="normal">
+                                        <panelchildren>
+                                            <grid width="100%" fixedLayout="true">
+                                                <columns>
+                                                    <column align="right" width="20%"/>
+                                                    <column align="left"/>
+                                                </columns>
+                                                <rows>
+                                                    <row>
+                                                        <label id="labelAccountingNumber" value="Conta Contábil"/>
+                                                        <bandbox id="editAccountingNumber" width="250px" autodrop="true">
+                                                            <bandpopup>
+                                                                <listbox height="248px" width="300px" mold="paging" pageSize="10"
+                                                                         id="listAccountNumber">
+                                                                    <listhead>
+                                                                        <listheader id="headerAccountingNumber" align="left"
+                                                                                    label="##" sort="auto" width="40%"/>
+                                                                        <listheader id="headerAccNumberDescription" align="left"
+                                                                                    label="##" sort="auto"/>
+                                                                    </listhead>
+                                                                </listbox>
+                                                            </bandpopup>
+                                                        </bandbox>
+                                                    </row>
+                                                    <row>
+                                                        <label id="labelNature" value="Natureza"/>
+                                                        <combobox id="cmbNature" width="250px" value="" readonly="true"/>
+                                                    </row>
+                                                    <row>
+                                                        <label id="labelType" value="Tipo do Rateio"/>
+                                                        <combobox id="cmbType" width="250px" readonly="true"/>
+                                                    </row>
+                                                    <row>
+                                                        <label id="labelRate" value="Valor"/>
+                                                        <doublebox id="editRate" width="200px" format="##,##0.0000"/>
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </panelchildren>
+                                        <toolbar id="barComposition">
+                                            <toolbarbutton label="Adicionar Nova Conta" id="addAccNumber"
+                                                           image="/img/icontexto-webdev-add-016x016.png"/>
+                                            <toolbarbutton label="Atualizar Conta Selecionada" id="updateAccNumber"
+                                                           image="/img/icontexto-webdev-alert-016x016.png"/>
+                                            <toolbarbutton label="Remover Conta Selecionada" id="removeAccNumber"
+                                                           image="/img/icontexto-webdev-remove-016x016.png"/>
+                                        </toolbar>
+                                    </panel>
+                                </div>
+                            </tabpanel>
+                        </tabpanels>
+                    </tabbox>
+                    <separator/>
+                    <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
+                    <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
                 </div>
             </center>
         </borderlayout>

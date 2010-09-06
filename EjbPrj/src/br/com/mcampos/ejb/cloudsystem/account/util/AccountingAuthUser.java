@@ -1,9 +1,14 @@
 package br.com.mcampos.ejb.cloudsystem.account.util;
 
 
+import br.com.mcampos.dto.accounting.AccountingMaskDTO;
+import br.com.mcampos.dto.accounting.AccountingNatureDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
+import br.com.mcampos.ejb.cloudsystem.account.mask.AccountingMaskUtil;
 import br.com.mcampos.ejb.cloudsystem.account.mask.entity.AccountingMask;
 import br.com.mcampos.ejb.cloudsystem.account.mask.session.AccountingMaskSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.account.nature.AccountingNatureUtil;
+import br.com.mcampos.ejb.cloudsystem.account.nature.session.AccountingNatureSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.login.Login;
@@ -11,7 +16,10 @@ import br.com.mcampos.ejb.cloudsystem.user.login.LoginSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
 
+import java.util.List;
+
 import javax.ejb.EJB;
+
 
 public abstract class AccountingAuthUser extends AbstractSecurity
 {
@@ -27,6 +35,9 @@ public abstract class AccountingAuthUser extends AbstractSecurity
 
     @EJB
     protected AccountingMaskSessionLocal maskSession;
+
+    @EJB
+    protected AccountingNatureSessionLocal natureSession;
 
 
     public AccountingAuthUser load( AuthenticationDTO auth ) throws ApplicationException
@@ -89,5 +100,17 @@ public abstract class AccountingAuthUser extends AbstractSecurity
     public AccountingMask getMask()
     {
         return mask;
+    }
+
+    public List<AccountingNatureDTO> getNatures( AuthenticationDTO auth ) throws ApplicationException
+    {
+        load( auth );
+        return AccountingNatureUtil.toDTOList( natureSession.getAll() );
+    }
+
+    public List<AccountingMaskDTO> getMasks( AuthenticationDTO auth ) throws ApplicationException
+    {
+        load( auth );
+        return AccountingMaskUtil.toDTOList( maskSession.getAll( getCompany() ) );
     }
 }

@@ -80,6 +80,9 @@
                         </grid>
                         <separator/>
                         <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
+                        <div>
+                            <button id="btnReport" label="Relatório"/>
+                        </div>
                     </div>
                 </div>
             </center>

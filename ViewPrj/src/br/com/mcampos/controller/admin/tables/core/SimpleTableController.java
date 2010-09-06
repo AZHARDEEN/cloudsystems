@@ -77,8 +77,10 @@ public abstract class SimpleTableController<DTO> extends BasicListController<Sim
     @Override
     protected void showRecord( SimpleTableDTO record )
     {
-        recordId.setValue( record.getId().toString() );
-        recordDescription.setValue( record.getDescription() );
+        if ( record != null ) {
+            recordId.setValue( record.getId() != null ? record.getId().toString() : "N/D" );
+            recordDescription.setValue( record.getDescription() );
+        }
     }
 
     @Override
