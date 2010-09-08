@@ -183,6 +183,8 @@
                                                         <paging id="pagingPages"/>
                                                         <button image="/img/icontexto-webdev-file-016x016.png" label="##"
                                                                 id="btnExport"/>
+                                                        <button image="/img/icontexto-webdev-file-016x016.png" label="##"
+                                                                id="btnExportPDF"/>
                                                     </hbox>
                                                 </row>
                                                 <row id="rowBackGroundImages">
