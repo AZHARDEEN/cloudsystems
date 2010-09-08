@@ -16,9 +16,6 @@ import br.com.mcampos.ejb.cloudsystem.anoto.facade.EmbratelFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
-import java.io.File;
-import java.io.IOException;
-
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
@@ -27,12 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import jxl.Workbook;
-
-import jxl.write.DateTime;
-import jxl.write.Number;
 import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
@@ -47,7 +39,6 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Decimalbox;
-import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Flashchart;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Intbox;
@@ -56,13 +47,13 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
-import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.SimplePieModel;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Timebox;
+import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.impl.api.InputElement;
 import org.zkoss.zul.impl.api.XulElement;
 
@@ -116,15 +107,8 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     private Button btnFilter;
     protected Button btnSummary;
 
-    private Menuitem mnuExport;
-    private Menuitem mnuExport2;
-
-    private Listheader headSeq;
-    private Listheader headDate;
-
-    private Listheader headDealerName;
-    private Listheader headCellNumber;
-    private Listheader headPhoto;
+    private Toolbarbutton btnEmbratelExport;
+    private Toolbarbutton btnEmbratelExportAll;
 
     private Column columnFieldName;
     private Column columnFieldValue;
@@ -505,7 +489,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     }
 
 
-    private ListModelList getModel()
+    protected ListModelList getModel()
     {
         ListModelList model = ( ListModelList )resultList.getModel();
         if ( model == null ) {
@@ -515,155 +499,6 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         return model;
     }
 
-    public void onClick$mnuExport()
-    {
-        File file;
-        try {
-            file = File.createTempFile( "export", ".xls" );
-            file.deleteOnExit();
-            WritableWorkbook workbook = Workbook.createWorkbook( file );
-            writeToExcell( workbook );
-            Filedownload.save( file, "application/vnd.ms-excel" );
-        }
-        catch ( Exception e ) {
-            showErrorMessage( e.getMessage() );
-        }
-    }
-
-    public void onClick$mnuExport2()
-    {
-        File file;
-        try {
-            file = File.createTempFile( "export", ".xls" );
-            file.deleteOnExit();
-            WritableWorkbook workbook = Workbook.createWorkbook( file );
-            writeToExcell2( workbook );
-            Filedownload.save( file, "application/vnd.ms-excel" );
-        }
-        catch ( Exception e ) {
-            showErrorMessage( e.getMessage() );
-        }
-    }
-
-    private void writeToExcell( WritableWorkbook workbook ) throws WriteException, RowsExceededException, IOException
-    {
-        WritableSheet sheet = workbook.createSheet( "Exported Data", 0 );
-        int nColumns = setHeader( sheet );
-        ListModelList model = getModel();
-        boolean bFirst = true;
-        for ( int nIndex = 0; nIndex < model.getSize(); nIndex++ ) {
-            AnotoResultList dto = ( AnotoResultList )model.get( nIndex );
-            if ( dto != null ) {
-                if ( bFirst ) {
-                    bFirst = false;
-                    addHead( sheet, nColumns, dto.getFields() );
-                }
-                nColumns = 0;
-                sheet.addCell( new Number( nColumns++, nIndex + 1, nIndex + 1 ) );
-                sheet.addCell( new DateTime( nColumns++, nIndex + 1, dto.getPgcPage().getPgc().getInsertDate() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getUserName() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getCellNumber() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getAttach() ? "SIM" : "" ) );
-                addData( sheet, nColumns, nIndex + 1, dto.getFields() );
-            }
-        }
-        workbook.write();
-        workbook.close();
-    }
-
-
-    private void writeToExcell2( WritableWorkbook workbook ) throws WriteException, RowsExceededException, IOException
-    {
-        WritableSheet sheet = workbook.createSheet( "Exported Data", 0 );
-        int nColumns = setHeader2( sheet );
-        ListModelList model = getModel();
-        boolean bFirst = true;
-        List<PgcFieldDTO> fields;
-        for ( int nIndex = 0; nIndex < model.getSize(); nIndex++ ) {
-            AnotoResultList dto = ( AnotoResultList )model.get( nIndex );
-            if ( dto != null ) {
-                try {
-                    fields = getSession().getFields( getLoggedInUser(), dto.getPgcPage() );
-                }
-                catch ( ApplicationException e ) {
-                    showErrorMessage( e.getMessage() );
-                    return;
-                }
-                if ( bFirst ) {
-                    bFirst = false;
-                    addHead( sheet, nColumns, fields );
-                }
-                nColumns = 0;
-                sheet.addCell( new Number( nColumns++, nIndex + 1, nIndex + 1 ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getForm().toString() ) );
-                sheet.addCell( new Number( nColumns++, nIndex + 1, dto.getPgcPage().getBookId() + 1 ) );
-                sheet.addCell( new Number( nColumns++, nIndex + 1, dto.getPgcPage().getPageId() + 1 ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getPen().toString() ) );
-                sheet.addCell( new DateTime( nColumns++, nIndex + 1, dto.getPgcPage().getPgc().getInsertDate() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getUserName() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getEmail() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getCellNumber() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLatitude() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getLongitude() ) );
-                sheet.addCell( new jxl.write.Label( nColumns++, nIndex + 1, dto.getAttach() ? "SIM" : "" ) );
-                addData( sheet, nColumns, nIndex + 1, fields );
-            }
-        }
-        workbook.write();
-        workbook.close();
-    }
-
-
-    private void addHead( WritableSheet sheet, int nColumns, List<PgcFieldDTO> fields ) throws WriteException,
-                                                                                               RowsExceededException
-    {
-        if ( SysUtils.isEmpty( fields ) )
-            return;
-        for ( PgcFieldDTO field : fields ) {
-            sheet.addCell( new jxl.write.Label( nColumns++, 0, field.getName() ) );
-        }
-    }
-
-    private void addData( WritableSheet sheet, int nColumn, int nRow, List<PgcFieldDTO> fields ) throws WriteException,
-                                                                                                        RowsExceededException
-    {
-        if ( SysUtils.isEmpty( fields ) )
-            return;
-        for ( PgcFieldDTO field : fields ) {
-            sheet.addCell( new jxl.write.Label( nColumn++, nRow, field.getValue() ) );
-        }
-    }
-
-    private int setHeader( WritableSheet sheet ) throws WriteException, RowsExceededException
-    {
-        int nIndex = 1;
-        jxl.write.Label l = new jxl.write.Label( 0, 0, headSeq.getLabel() );
-        sheet.addCell( l );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headDate.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headDealerName.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headCellNumber.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headPhoto.getLabel() ) );
-        return nIndex;
-    }
-
-    private int setHeader2( WritableSheet sheet ) throws WriteException, RowsExceededException
-    {
-        int nIndex = 1;
-        jxl.write.Label l = new jxl.write.Label( 0, 0, headSeq.getLabel() );
-        sheet.addCell( l );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Aplicação" ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Formulário" ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Página" ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Caneta" ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headDate.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headDealerName.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Email" ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headCellNumber.getLabel() ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Latitude" ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Longitude" ) );
-        sheet.addCell( new jxl.write.Label( nIndex++, 0, headPhoto.getLabel() ) );
-        return nIndex;
-    }
 
     private void verifyCustomFields( Properties prop )
     {
@@ -859,15 +694,9 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
         setLabel( labelFormNumber );
 
         setLabel( btnFilter );
-        setLabel( mnuExport );
-        setLabel( mnuExport2 );
+        setLabel( btnEmbratelExport );
+        setLabel( btnEmbratelExportAll );
         setLabel( btnSummary );
-
-        setLabel( headSeq );
-        setLabel( headDate );
-        setLabel( headDealerName );
-        setLabel( headCellNumber );
-        setLabel( headPhoto );
 
         setLabel( tabFilter );
 
@@ -879,12 +708,7 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
 
     }
 
-    protected Menuitem getExportButton()
-    {
-        return mnuExport;
-    }
-
-    private EmbratelFacade getSession()
+    protected EmbratelFacade getSession()
     {
         if ( session == null )
             session = ( EmbratelFacade )getRemoteSession( EmbratelFacade.class );
@@ -895,5 +719,36 @@ public abstract class BaseSearchEmbratelController extends LoggedBaseController
     protected String getPageTitle()
     {
         return "Painel Gerencial - Embratel";
+    }
+
+    protected int setHeader( WritableSheet sheet ) throws WriteException, RowsExceededException
+    {
+        int nIndex = 1;
+        jxl.write.Label l = new jxl.write.Label( 0, 0, getLabel( "headSeq" ) );
+        sheet.addCell( l );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, getLabel( "headDate" ) ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, getLabel( "headDealerName" ) ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, getLabel( "headCellNumber" ) ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, getLabel( "headCellNumber" ) ) );
+        return nIndex;
+    }
+
+    protected int setHeader2( WritableSheet sheet ) throws WriteException, RowsExceededException
+    {
+        int nIndex = 1;
+        jxl.write.Label l = new jxl.write.Label( 0, 0, getLabel( "headSeq" ) );
+        sheet.addCell( l );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Aplicação" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Formulário" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Página" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Caneta" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, getLabel( "headDate" ) ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, getLabel( "headDealerName" ) ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Email" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, getLabel( "headCellNumber" ) ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Latitude" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, "Longitude" ) );
+        sheet.addCell( new jxl.write.Label( nIndex++, 0, getLabel( "headCellNumber" ) ) );
+        return nIndex;
     }
 }

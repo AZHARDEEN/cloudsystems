@@ -745,12 +745,20 @@ public class AnotoViewController extends AnotoLoggedController
 
                 AcroFields fields = pdfOut.getAcroFields();
                 for ( PgcFieldDTO field : currentFields ) {
+                    String fName;
                     if ( SysUtils.isEmpty( field.getValue() ) && field.getHasPenstrokes().equals( false ) )
                         continue;
-                    if ( field.isBoolean() )
-                        fields.setField( field.getName(), "X" );
-                    else
-                        fields.setField( field.getName(), field.getValue() );
+                    if ( field.isBoolean() ) {
+                        fName = String.format( "%s_%02d", field.getName(), 1 );
+                        fields.setField( field.getName() + "_01", "X" );
+                    }
+                    else {
+                        for ( int index = 0; index < field.getValue().length(); index++ ) {
+                            fName = String.format( "%s_%02d", field.getName(), index + 1 );
+                            String fValue = field.getValue().substring( index, index + 1 );
+                            fields.setField( fName, fValue );
+                        }
+                    }
                 }
                 pdfOut.close();
                 Filedownload.save( outFile, "application/pdf" );
