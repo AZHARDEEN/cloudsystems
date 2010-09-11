@@ -4,7 +4,11 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class SystemUserPropertyDTO extends SimpleTableDTO
 {
-    FieldTypeDTO type;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7561186676671820355L;
+	FieldTypeDTO type;
 
     public SystemUserPropertyDTO( SimpleTableDTO simpleTableDTO )
     {

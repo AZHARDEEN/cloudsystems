@@ -4,7 +4,11 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class ProductTypeDTO extends SimpleTableDTO
 {
-    private Boolean isDefault;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2262505761994179394L;
+	private Boolean isDefault;
 
     public ProductTypeDTO( SimpleTableDTO simpleTableDTO )
     {

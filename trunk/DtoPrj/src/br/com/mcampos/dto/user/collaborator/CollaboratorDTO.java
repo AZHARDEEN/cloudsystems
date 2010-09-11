@@ -6,7 +6,11 @@ import java.io.Serializable;
 
 public class CollaboratorDTO implements Serializable
 {
-    private ListUserDTO company;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5931118917404538138L;
+	private ListUserDTO company;
     private ListUserDTO collaborator;
     private Integer sequence;
 

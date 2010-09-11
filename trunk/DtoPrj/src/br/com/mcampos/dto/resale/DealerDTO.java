@@ -7,7 +7,11 @@ import java.io.Serializable;
 
 public class DealerDTO implements Serializable
 {
-    private Integer sequence;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4761925578324308602L;
+	private Integer sequence;
     private ResaleDTO resale;
     private ListUserDTO person;
     private DealerTypeDTO type;

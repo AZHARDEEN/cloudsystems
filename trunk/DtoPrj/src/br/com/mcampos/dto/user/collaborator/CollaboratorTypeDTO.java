@@ -4,7 +4,11 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class CollaboratorTypeDTO extends SimpleTableDTO
 {
-    private Boolean inheritRole;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3371308700039282499L;
+	private Boolean inheritRole;
 
     public CollaboratorTypeDTO( SimpleTableDTO simpleTableDTO )
     {

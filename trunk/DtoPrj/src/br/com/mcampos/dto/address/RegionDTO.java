@@ -7,7 +7,11 @@ import java.io.Serializable;
 
 public class RegionDTO implements Comparable<RegionDTO>, SimpleTable, Serializable
 {
-    private String abbreviation;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6056342778245451291L;
+	private String abbreviation;
     private CountryDTO country;
     private Integer id;
     private String description;

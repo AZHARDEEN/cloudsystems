@@ -7,7 +7,11 @@ import java.util.ArrayList;
 
 public class AccountingEventDTO extends SimpleTableDTO
 {
-    private AccountingMaskDTO mask;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private AccountingMaskDTO mask;
     private String history;
 
     private ArrayList<AccountingEventPlanDTO> items = new ArrayList<AccountingEventPlanDTO>();

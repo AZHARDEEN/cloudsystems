@@ -4,7 +4,12 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class AccountingRateTypeDTO extends SimpleTableDTO
 {
-    public AccountingRateTypeDTO( SimpleTableDTO simpleTableDTO )
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8416029037691274409L;
+
+	public AccountingRateTypeDTO( SimpleTableDTO simpleTableDTO )
     {
         super( simpleTableDTO );
     }

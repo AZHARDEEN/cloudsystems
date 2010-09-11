@@ -7,7 +7,11 @@ import java.io.Serializable;
 
 public class AnotoPageFieldDTO implements Serializable
 {
-    private Boolean icr;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2935004264865798925L;
+	private Boolean icr;
     private AnotoPageDTO page;
     private String name;
     private Integer width;

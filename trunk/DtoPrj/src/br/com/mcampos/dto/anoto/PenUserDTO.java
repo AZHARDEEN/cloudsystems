@@ -10,7 +10,11 @@ import java.util.Date;
 
 public class PenUserDTO implements Serializable, Comparable<PenUserDTO>
 {
-    private Integer formId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1822577178138103547L;
+	private Integer formId;
     private String penId;
 
     private ListUserDTO user;

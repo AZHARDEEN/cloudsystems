@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 public class AnotoSummary implements Serializable, Comparable<AnotoSummary>
 {
-    private Integer pgc = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5813174692670997478L;
+	private Integer pgc = 0;
     private Integer foto = 0;
 
     private Integer prepago = 0;

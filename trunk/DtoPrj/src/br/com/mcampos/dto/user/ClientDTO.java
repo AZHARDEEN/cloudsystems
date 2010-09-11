@@ -7,7 +7,11 @@ import java.util.Date;
 
 public class ClientDTO implements Serializable
 {
-    private Integer companyId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6708755216727326044L;
+	private Integer companyId;
     private Integer sequence;
     private Date insertDate;
     ListUserDTO client;
