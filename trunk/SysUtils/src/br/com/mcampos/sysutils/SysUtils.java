@@ -51,8 +51,7 @@ public final class SysUtils
         return ( new java.sql.Timestamp( today.getTime() ) );
     }
 
-    @SuppressWarnings( "unchecked" )
-    public static boolean isEmpty( List list )
+    public static boolean isEmpty( List<?> list )
     {
         if ( isNull( list ) )
             return true;
