@@ -4,7 +4,11 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class DealerTypeDTO extends SimpleTableDTO
 {
-    public final static Integer typeDealer = 1;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3492007721608854405L;
+	public final static Integer typeDealer = 1;
 
     public DealerTypeDTO( SimpleTableDTO simpleTableDTO )
     {

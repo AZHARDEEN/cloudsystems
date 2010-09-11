@@ -6,7 +6,11 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 public class ProductDTO extends SimpleTableDTO
 {
 
-    private String code;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3758683087816249886L;
+	private String code;
     private String name;
     private String obs;
     private Boolean visible;

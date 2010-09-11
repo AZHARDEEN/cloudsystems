@@ -4,7 +4,12 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class RevisionStatusDTO extends SimpleTableDTO
 {
-    public RevisionStatusDTO( SimpleTableDTO simpleTableDTO )
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2905986941543617230L;
+
+	public RevisionStatusDTO( SimpleTableDTO simpleTableDTO )
     {
         super( simpleTableDTO );
     }

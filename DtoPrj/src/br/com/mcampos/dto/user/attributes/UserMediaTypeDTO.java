@@ -4,7 +4,12 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class UserMediaTypeDTO extends SimpleTableDTO
 {
-    public UserMediaTypeDTO( SimpleTableDTO simpleTableDTO )
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 970484800780752938L;
+
+	public UserMediaTypeDTO( SimpleTableDTO simpleTableDTO )
     {
         super( simpleTableDTO );
     }

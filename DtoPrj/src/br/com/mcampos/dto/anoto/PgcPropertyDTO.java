@@ -8,7 +8,11 @@ import java.util.List;
 
 public class PgcPropertyDTO implements Serializable
 {
-    public final static Integer gpsPropertyId = 16386;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7127022671087938505L;
+	public final static Integer gpsPropertyId = 16386;
     private int id;
     private int sequence;
     private List<String> values = new ArrayList<String>();

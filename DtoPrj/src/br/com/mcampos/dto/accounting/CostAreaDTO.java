@@ -4,7 +4,12 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class CostAreaDTO extends SimpleTableDTO
 {
-    public CostAreaDTO( SimpleTableDTO simpleTableDTO )
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -183999888449192675L;
+
+	public CostAreaDTO( SimpleTableDTO simpleTableDTO )
     {
         super( simpleTableDTO );
     }

@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 public class LoginPropertyDTO implements Serializable
 {
-    SystemUserPropertyDTO property;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4325588413732371439L;
+	SystemUserPropertyDTO property;
     String value;
 
     public LoginPropertyDTO()

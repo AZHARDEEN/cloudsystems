@@ -5,7 +5,11 @@ import java.io.Serializable;
 
 public class AccountingMaskDTO implements Serializable
 {
-    private String description;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1773099122566949743L;
+	private String description;
     private Integer id;
     private String mask;
 

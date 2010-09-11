@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 public class AccountingNatureDTO implements Serializable
 {
-    private String id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7180712963408748604L;
+	private String id;
     private String description;
 
 

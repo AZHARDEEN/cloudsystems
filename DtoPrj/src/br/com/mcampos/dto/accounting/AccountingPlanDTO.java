@@ -5,7 +5,11 @@ import java.io.Serializable;
 
 public class AccountingPlanDTO implements Serializable
 {
-    private String number;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8216621170385856606L;
+	private String number;
     private Double balance;
     private String shortNumber; /*Número Reduzido*/
     private String description;

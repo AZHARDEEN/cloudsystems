@@ -5,7 +5,11 @@ import java.io.Serializable;
 
 public class AccountingEventPlanDTO implements Serializable
 {
-    private AccountingNatureDTO nature;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2148729417102308302L;
+	private AccountingNatureDTO nature;
     private AccountingRateTypeDTO rateType;
     private AccountingPlanDTO plan;
     private Double rate;

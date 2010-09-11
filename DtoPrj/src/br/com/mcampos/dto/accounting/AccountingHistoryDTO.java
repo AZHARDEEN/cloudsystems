@@ -4,7 +4,11 @@ import br.com.mcampos.dto.core.SimpleTableDTO;
 
 public class AccountingHistoryDTO extends SimpleTableDTO
 {
-    private String history;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -865934433777980024L;
+	private String history;
 
     public AccountingHistoryDTO( SimpleTableDTO simpleTableDTO )
     {
