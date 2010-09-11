@@ -746,7 +746,7 @@ public class AnotoViewController extends AnotoLoggedController
                 AcroFields fields = pdfOut.getAcroFields();
                 for ( PgcFieldDTO field : currentFields ) {
                     String fName;
-                    if ( SysUtils.isEmpty( field.getValue() ) && field.getHasPenstrokes().equals( false ) )
+                    if ( SysUtils.isEmpty( field.getValue() ) )
                         continue;
                     if ( field.isBoolean() ) {
                         fName = String.format( "%s_%02d", field.getName(), 1 );
