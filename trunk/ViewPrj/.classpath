@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/WeblogicServer JRE">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="oracle.eclipse.tools.weblogic.lib.system">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="oracle.eclipse.tools.weblogic.lib.application/CloudSystems"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DTOPrj"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/EjbPrjClient"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SysUtils"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/EjbPrj"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Anoto"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/iText"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jasypt"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jawin"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jdom"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JExcel"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ZKossExtension"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
