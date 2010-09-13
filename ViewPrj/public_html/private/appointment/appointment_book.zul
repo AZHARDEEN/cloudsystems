@@ -1,20 +1,13 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<?page id="main" title="Sistema - Página Principal"
-	language="xul/html" contentType="text/html;charset=UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-   <borderlayout height="100%" width="100%">
-      <center flex="false" autoscroll="true" border="normal">
-         <div width="100%" height="100%" id="rootParent">
-            <borderlayout id="borderLayout">
-               <north autoscroll="false" height="65px" fulfill="=/resources/title.zul"></north>
-               <center>
-                  <!-- Por favor, nao mude o id desta div -->
-                  <calendars/>
-               </center>
-            </borderlayout>
-         </div>
-      </center>
-   </borderlayout>
+   <!-- Por favor, nao mude o id desta div -->
+   <window width="100%" height="100%">
+      <borderlayout>
+         <center>
+            <calendars weekOfYear="false" days="7" firstDayOfWeek="MONDAY" id="cal"/>
+         </center>
+      </borderlayout>
+   </window>
 </zk>
 
 
