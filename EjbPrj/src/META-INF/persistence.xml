@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
              xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
@@ -60,9 +60,7 @@
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad</class>
     <class>br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.entity.CivilState</class>
     <class>br.com.mcampos.ejb.cloudsystem.locality.city.entity.City</class>
-    <class>br.com.mcampos.ejb.cloudsystem.locality.state.entity.State</class>
     <class>br.com.mcampos.ejb.cloudsystem.locality.region.entity.Region</class>
-    <class>br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country</class>
     <class>br.com.mcampos.ejb.cloudsystem.system.revisedstatus.entity.RevisionStatus</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.form.user.entity.AnotoFormUser</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser</class>
@@ -76,9 +74,9 @@
     <class>br.com.mcampos.ejb.cloudsystem.resale.entity.Resale</class>
     <class>br.com.mcampos.ejb.cloudsystem.system.loginproperty.entity.LoginProperty</class>
     <class>br.com.mcampos.ejb.cloudsystem.system.systemuserproperty.entity.SystemUserProperty</class>
-    <class>br.com.mcampos.ejb.cloudsystem.account.AccountingMask</class>
-    <class>br.com.mcampos.ejb.cloudsystem.account.AccountingNature</class>
-    <class>br.com.mcampos.ejb.cloudsystem.account.AccountingPlan</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.mask.entity.AccountingMask</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.nature.entity.AccountingNature</class>
+    <class>br.com.mcampos.ejb.cloudsystem.account.plan.entity.AccountingPlan</class>
     <class>br.com.mcampos.ejb.cloudsystem.account.event.entity.AccountEvent</class>
     <class>br.com.mcampos.ejb.cloudsystem.account.event.entity.AccountEventPlan</class>
     <class>br.com.mcampos.ejb.cloudsystem.account.event.entity.AccountingRateType</class>
