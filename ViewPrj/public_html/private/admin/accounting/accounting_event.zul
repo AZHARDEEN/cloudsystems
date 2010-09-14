@@ -100,19 +100,7 @@
                                                 <rows>
                                                     <row>
                                                         <label id="labelAccountingNumber" value="Conta Contábil"/>
-                                                        <bandbox id="editAccountingNumber" width="250px" autodrop="true">
-                                                            <bandpopup>
-                                                                <listbox height="248px" width="300px" mold="paging" pageSize="10"
-                                                                         id="listAccountNumber">
-                                                                    <listhead>
-                                                                        <listheader id="headerAccountingNumber" align="left"
-                                                                                    label="##" sort="auto" width="40%"/>
-                                                                        <listheader id="headerAccNumberDescription" align="left"
-                                                                                    label="##" sort="auto"/>
-                                                                    </listhead>
-                                                                </listbox>
-                                                            </bandpopup>
-                                                        </bandbox>
+                                                        <div fulfill="=/private/admin/accounting/account_number_bandbox.zul" />
                                                     </row>
                                                     <row>
                                                         <label id="labelNature" value="Natureza"/>
