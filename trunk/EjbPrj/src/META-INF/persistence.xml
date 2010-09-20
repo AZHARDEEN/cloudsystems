@@ -87,6 +87,14 @@
     <class>br.com.mcampos.ejb.cloudsystem.account.AccountingHistoryType</class>
     <class>br.com.mcampos.ejb.cloudsystem.account.costcenter.entity.CostArea</class>
     <class>br.com.mcampos.ejb.cloudsystem.account.costcenter.entity.CostCenter</class>
+    
+    <class>br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenu</class>
+    <class>br.com.mcampos.ejb.cloudsystem.user.company.entity.Company</class>
+    <class>br.com.mcampos.ejb.cloudsystem.system.audit.AuditedObject</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.page.field.entity.AnotoPageField</class>
+    <class>br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm</class>
+    
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>

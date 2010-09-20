@@ -1,4 +1,4 @@
-#Mon Sep 13 01:06:25 BRT 2010
+#Sun Sep 19 23:36:48 BRT 2010
 eclipse.preferences.version=1
-org.eclipse.jpt.core.discoverAnnotatedClasses=true
-org.eclipse.jpt.core.platform=generic
+org.eclipse.jpt.core.discoverAnnotatedClasses=false
+org.eclipse.jpt.core.platform=eclipselink1_1
