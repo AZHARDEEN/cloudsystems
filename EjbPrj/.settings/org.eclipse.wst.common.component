@@ -3,7 +3,5 @@
     <wb-module deploy-name="EjbPrj">
         <wb-resource deploy-path="/" source-path="/src"/>
         <property name="java-output-path" value="/EjbPrj/build/classes"/>
-        <property name="ClientProject" value="EjbPrjClient"/>
-        <property name="ClientJARURI" value="EjbPrjClient.jar"/>
     </wb-module>
 </project-modules>
