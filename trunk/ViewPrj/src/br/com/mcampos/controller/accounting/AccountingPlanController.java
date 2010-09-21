@@ -8,10 +8,15 @@ import br.com.mcampos.dto.accounting.AccountingPlanDTO;
 import br.com.mcampos.ejb.cloudsystem.account.plan.facade.AccountingPlanFacade;
 import br.com.mcampos.exception.ApplicationException;
 
+import com.crystaldecisions.ReportViewer.ReportViewerBean;
+import com.crystaldecisions.sdk.occa.report.application.OpenReportOptions;
+import com.crystaldecisions.sdk.occa.report.application.ReportClientDocument;
+
 import java.util.Collections;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listheader;
@@ -185,7 +190,16 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
             getSession().update( getLoggedInUser(), ( ( AccountingPlanDTO )e ) );
     }
 
-    public void onClick$btnReport()
+    public void onClick$btnReport() throws Exception
     {
+        ReportViewerBean viewer = new ReportViewerBean();
+        ReportClientDocument crystalDoc = new ReportClientDocument();
+
+        crystalDoc.setReportAppServer( ReportClientDocument.inprocConnectionString );
+        String reportName = "/report/accounting_plan.rpt";
+        reportName = Sessions.getCurrent().getWebApp().getRealPath( reportName );
+        crystalDoc.open( reportName, OpenReportOptions._discardSavedData );
+        crystalDoc.getDatabaseController().logon( "jreport", "jreport" );
+        viewer.setReportSource( crystalDoc.getReportSource() );
     }
 }
