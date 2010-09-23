@@ -241,6 +241,13 @@ public abstract class BaseController extends GenericForwardComposer
         Executions.getCurrent().sendRedirect( uri );
     }
 
+    protected void redirectNewWindow( String uri )
+    {
+        clearBookmark();
+        Executions.getCurrent().sendRedirect( uri, "_blank" );
+    }
+
+
     protected void clearBookmark()
     {
         clearSessionParameter( browseHistoryParameterName );
