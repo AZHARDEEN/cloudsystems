@@ -24,66 +24,79 @@
                 <!-- Por favor, nao mude o id desta div -->
                 <div id="recordDetail">
                     <!-- view mode -->
-                    <div id="recordView" width="100%">
-                        <grid width="100%">
-                            <columns>
-                                <column align="right" width="20%"/>
-                                <column align="left" width="80%"/>
-                            </columns>
-                            <rows>
-                                <row>
-                                    <label id="labelAccountingNumber" value="Nr. Conta"/>
-                                    <label id="recordCode" value=""/>
-                                </row>
-                                <row>
-                                    <label id="labelDescription" value="Descrição"/>
-                                    <label id="recordDescription"/>
-                                </row>
-                                <row>
-                                    <label id="labelShortCode" value="Nr. Reduzido"/>
-                                    <label id="recordShortCode"/>
-                                </row>
-                                <row>
-                                    <label id="labelNature" value="Natureza"/>
-                                    <label id="recordNature"/>
-                                </row>
-                            </rows>
-                        </grid>
-                        <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
-                    </div>
-                    <separator/>
-                    <!-- Por favor, nao mude o id desta div -->
-                    <div id="recordEdit" visible="false">
-                        <grid width="100%" fixedLayout="true">
-                            <columns>
-                                <column align="right" width="20%"/>
-                                <column align="left" width="80%"/>
-                            </columns>
-                            <rows>
-                                <row>
-                                    <label id="labelEditAccountingNumber" value="Nr. Conta"/>
-                                    <textbox id="editCode" value="" maxlength="64" width="95%"/>
-                                </row>
-                                <row>
-                                    <label id="labelEditDescription" value="Descrição"/>
-                                    <textbox id="editDescription" width="95%"/>
-                                </row>
-                                <row>
-                                    <label id="labelEditShortCode" value="Nr. Reduzido"/>
-                                    <textbox id="editShortCode" maxlength="64" width="95%"/>
-                                </row>
-                                <row>
-                                    <label id="labelEditNature" value="Natureza"/>
-                                    <combobox id="cmbNature" width="95%" readonly="true"/>
-                                </row>
-                            </rows>
-                        </grid>
-                        <separator/>
-                        <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
-                    </div>
-                        <div>
-                            <button id="btnReport" label="Relatório"/>
-                        </div>
+                    <tabbox>
+                        <tabs>
+                            <tab label="Dados"/>
+                            <tab label="Relatorios"/>
+                        </tabs>
+                        <tabpanels>
+                            <tabpanel>
+                                <div id="recordView" width="100%">
+                                    <grid width="100%">
+                                        <columns>
+                                            <column align="right" width="20%"/>
+                                            <column align="left" width="80%"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label id="labelAccountingNumber" value="Nr. Conta"/>
+                                                <label id="recordCode" value=""/>
+                                            </row>
+                                            <row>
+                                                <label id="labelDescription" value="Descrição"/>
+                                                <label id="recordDescription"/>
+                                            </row>
+                                            <row>
+                                                <label id="labelShortCode" value="Nr. Reduzido"/>
+                                                <label id="recordShortCode"/>
+                                            </row>
+                                            <row>
+                                                <label id="labelNature" value="Natureza"/>
+                                                <label id="recordNature"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                    <div id="div_crud_buttons" fulfill="=/resources/crud_buttons.zul"></div>
+                                </div>
+                                <separator/>
+                                <!-- Por favor, nao mude o id desta div -->
+                                <div id="recordEdit" visible="false">
+                                    <grid width="100%" fixedLayout="true">
+                                        <columns>
+                                            <column align="right" width="20%"/>
+                                            <column align="left" width="80%"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label id="labelEditAccountingNumber" value="Nr. Conta"/>
+                                                <textbox id="editCode" value="" maxlength="64" width="95%"/>
+                                            </row>
+                                            <row>
+                                                <label id="labelEditDescription" value="Descrição"/>
+                                                <textbox id="editDescription" width="95%"/>
+                                            </row>
+                                            <row>
+                                                <label id="labelEditShortCode" value="Nr. Reduzido"/>
+                                                <textbox id="editShortCode" maxlength="64" width="95%"/>
+                                            </row>
+                                            <row>
+                                                <label id="labelEditNature" value="Natureza"/>
+                                                <combobox id="cmbNature" width="95%" readonly="true"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                    <separator/>
+                                    <div id="div_submit_cancel" fulfill="=/resources/save_cancel.zul"></div>
+                                </div>
+                                <div>
+                                    <button id="btnReport" label="Relatório"/>
+                                </div>
+                            </tabpanel>
+                            <tabpanel>
+                                <iframe id="frmReport" width="100%" height="100%"/>
+                            </tabpanel>
+                        </tabpanels>
+                    </tabbox>
                 </div>
             </center>
         </borderlayout>
