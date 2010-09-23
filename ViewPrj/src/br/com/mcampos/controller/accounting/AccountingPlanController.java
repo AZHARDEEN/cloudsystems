@@ -8,16 +8,24 @@ import br.com.mcampos.dto.accounting.AccountingPlanDTO;
 import br.com.mcampos.ejb.cloudsystem.account.plan.facade.AccountingPlanFacade;
 import br.com.mcampos.exception.ApplicationException;
 
-import com.crystaldecisions.ReportViewer.ReportViewerBean;
+import com.crystaldecisions.report.web.viewer.CrystalReportViewer;
 import com.crystaldecisions.sdk.occa.report.application.OpenReportOptions;
 import com.crystaldecisions.sdk.occa.report.application.ReportClientDocument;
 
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Execution;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.ListitemRenderer;
@@ -49,6 +57,8 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
 
     private Combobox cmbMask;
     private Combobox cmbNature;
+
+    private Iframe frmReport;
 
 
     @Override
@@ -192,7 +202,7 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
 
     public void onClick$btnReport() throws Exception
     {
-        ReportViewerBean viewer = new ReportViewerBean();
+        CrystalReportViewer viewer = new CrystalReportViewer();
         ReportClientDocument crystalDoc = new ReportClientDocument();
 
         crystalDoc.setReportAppServer( ReportClientDocument.inprocConnectionString );
@@ -201,5 +211,14 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
         crystalDoc.open( reportName, OpenReportOptions._discardSavedData );
         crystalDoc.getDatabaseController().logon( "jreport", "jreport" );
         viewer.setReportSource( crystalDoc.getReportSource() );
+        viewer.setOwnPage( false );
+        Execution exec = Executions.getCurrent();
+        Object context = exec.getDesktop().getWebApp().getNativeContext();
+        String sHtml =
+            viewer.getHtmlContent( ( HttpServletRequest )exec.getNativeRequest(), ( HttpServletResponse )exec.getNativeResponse(),
+                                   ( ServletContext )context );
+        AMedia media = new AMedia( "report.html", "html", "text/html; charset=UTF-8", sHtml );
+        String sPath = exec.getDesktop().getCurrentDirectory();
+        frmReport.setContent( media );
     }
 }
