@@ -2,6 +2,7 @@ package br.com.mcampos.controller.accounting;
 
 
 import br.com.mcampos.controller.admin.tables.BasicListController;
+import br.com.mcampos.controller.reporting.ReportServlet;
 import br.com.mcampos.dto.accounting.AccountingMaskDTO;
 import br.com.mcampos.dto.accounting.AccountingNatureDTO;
 import br.com.mcampos.dto.accounting.AccountingPlanDTO;
@@ -15,14 +16,7 @@ import com.crystaldecisions.sdk.occa.report.application.ReportClientDocument;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Execution;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Iframe;
@@ -211,14 +205,7 @@ public class AccountingPlanController extends BasicListController<AccountingPlan
         crystalDoc.open( reportName, OpenReportOptions._discardSavedData );
         crystalDoc.getDatabaseController().logon( "jreport", "jreport" );
         viewer.setReportSource( crystalDoc.getReportSource() );
-        viewer.setOwnPage( false );
-        Execution exec = Executions.getCurrent();
-        Object context = exec.getDesktop().getWebApp().getNativeContext();
-        String sHtml =
-            viewer.getHtmlContent( ( HttpServletRequest )exec.getNativeRequest(), ( HttpServletResponse )exec.getNativeResponse(),
-                                   ( ServletContext )context );
-        AMedia media = new AMedia( "report.html", "html", "text/html; charset=UTF-8", sHtml );
-        String sPath = exec.getDesktop().getCurrentDirectory();
-        frmReport.setContent( media );
+        setSessionParameter( ReportServlet.PARAM_NAME, viewer );
+        redirectNewWindow( "/report" );
     }
 }
