@@ -144,4 +144,12 @@
                 <display-name>Our Session Listener</display-name>
                 <listener-class>br.com.mcampos.util.system.CloudSystemSessionListener</listener-class>
         </listener>
+        <context-param>
+                <param-name>crystal_image_uri</param-name>
+                <param-value>/crystalreportviewers120</param-value>
+        </context-param>
+        <context-param>
+                <param-name>crystal_image_use_relative</param-name>
+                <param-value>WEB</param-value>
+        </context-param>
 </web-app>
