@@ -4,10 +4,12 @@ package br.com.mcampos.sysutils;
 import java.sql.Timestamp;
 
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 public final class SysUtils
@@ -85,5 +87,17 @@ public final class SysUtils
         if ( fieldValue == null || fieldValue.isEmpty() )
             return fieldValue;
         return fieldValue.toLowerCase();
+    }
+
+
+    public static String removeAccents( String str )
+    {
+        if ( SysUtils.isEmpty( str ) == false ) {
+            String nfdNormalizedString = Normalizer.normalize( str, Normalizer.Form.NFD );
+            Pattern pattern = Pattern.compile( "\\p{InCombiningDiacriticalMarks}+" );
+            return pattern.matcher( nfdNormalizedString ).replaceAll( "" );
+        }
+        else
+            return str;
     }
 }
