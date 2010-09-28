@@ -5,6 +5,7 @@
    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAUGxR7-zVfRDHc-WdyUuXQhTqtDa2QyBVi7az6lxILJQsCPAPGxToUPp8BDclG87fPf6susdPA7KI0A"
            type="text/javascript"></script>
    <script type="text/javascript" src="/js/meiomask/jquery.meio.mask.js" charset="utf-8"/>
+   <script type="text/javascript" src="/js/autotab.js" charset="utf-8"/>
    <window width="100%" height="100%" apply="br.com.mcampos.controller.logged.PrivateIndexController">
       <borderlayout height="100%" width="100%">
          <north id="divMenu" fulfill="=/private/menu.zul"/>
