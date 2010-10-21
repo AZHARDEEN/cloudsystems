@@ -1,0 +1,4 @@
+Workflow
+
+Barramento - Repositório de informações - Bus de dados (In e Out) -
+Recebe de fora do sistema e internacionaliza assim como atualiza outros sistemas.
