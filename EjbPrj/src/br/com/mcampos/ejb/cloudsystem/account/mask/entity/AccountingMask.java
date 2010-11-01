@@ -46,7 +46,7 @@ public class AccountingMask implements Serializable
     @Column( name = "acm_mask_ch", nullable = false )
     private String mask;
 
-    @Column( name = "acm_to_date" )
+    @Column( name = "acm_to_dt" )
     @Temporal( TemporalType.TIMESTAMP )
     private Date to;
 
