@@ -84,7 +84,8 @@ public class AccountingEventController extends SimpleTableController<AccountingE
     {
         AccountingMaskDTO mask = getMask();
         if ( mask != null )
-            getSession().delete( getLoggedInUser(), mask.getId(), ( ( AccountingEventDTO )currentRecord ).getId() );
+            getSession().delete( getLoggedInUser(), mask.getId(),
+                                 ( ( AccountingEventDTO )currentRecord ).getId() );
     }
 
     protected Object createNewRecord()
@@ -97,16 +98,19 @@ public class AccountingEventController extends SimpleTableController<AccountingE
         AccountingMaskDTO mask = getMask();
         if ( mask != null ) {
             if ( isAddNewOperation() )
-                getSession().add( getLoggedInUser(), ( ( AccountingEventDTO )e ) );
+                getSession().add( getLoggedInUser(),
+                                  ( ( AccountingEventDTO )e ) );
             else
-                getSession().update( getLoggedInUser(), ( ( AccountingEventDTO )e ) );
+                getSession().update( getLoggedInUser(),
+                                     ( ( AccountingEventDTO )e ) );
         }
     }
 
     public AccountingEventFacade getSession()
     {
         if ( session == null )
-            session = ( AccountingEventFacade )getRemoteSession( AccountingEventFacade.class );
+            session =
+                    ( AccountingEventFacade )getRemoteSession( AccountingEventFacade.class );
         return session;
     }
 
@@ -125,7 +129,8 @@ public class AccountingEventController extends SimpleTableController<AccountingE
             cmbMask.setSelectedIndex( 0 );
             refresh();
         }
-        loadCombobox( cmbNature, getSession().getNatures( getLoggedInUser() ) );
+        loadCombobox( cmbNature,
+                      getSession().getNatures( getLoggedInUser() ) );
         if ( cmbNature.getItemCount() > 0 )
             cmbNature.setSelectedIndex( 0 );
         loadCombobox( cmbType, getSession().getRateTypes() );
@@ -139,7 +144,8 @@ public class AccountingEventController extends SimpleTableController<AccountingE
 
     private void setRateFormat()
     {
-        AccountingRateTypeDTO type = ( AccountingRateTypeDTO )cmbType.getSelectedItem().getValue();
+        AccountingRateTypeDTO type =
+            ( AccountingRateTypeDTO )cmbType.getSelectedItem().getValue();
         if ( type != null ) {
             if ( type.getId().equals( 1 ) )
                 editRate.setFormat( "0.0000" );
