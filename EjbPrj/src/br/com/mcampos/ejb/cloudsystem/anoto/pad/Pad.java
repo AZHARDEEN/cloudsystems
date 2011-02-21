@@ -32,6 +32,8 @@ public class Pad implements Serializable, EntityCopyInterface<PadDTO>, Comparabl
 {
     public static final String formPadsNamedQuery = "Pad.findFormPads";
     public static final String padFindAllNamedQuery = "Pad.findAll";
+    @SuppressWarnings( "compatibility:-5565685440162730199" )
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column( name = "frm_id_in", nullable = false, insertable = false, updatable = false )

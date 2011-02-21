@@ -5,7 +5,7 @@
   <persistence-unit name="EjbPrj">
     <description>Descrição do conector CloudSystems</description>
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>java:/app/jdbc/jdbc/PostgreSQLDS</jta-data-source>
+    <jta-data-source>jdbc/CloudDS</jta-data-source>
     <class>br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage</class>
     <class>br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country</class>
@@ -98,12 +98,11 @@
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.cache.shared.default" value="false"/>
-      <property name="eclipselink.target-server" value="WebLogic 10"/>
+      <property name="eclipselink.target-server" value="WebLogic_10"/>
       <property name="eclipselink.target-database" value="PostgreSQL"/>
       <property name="eclipselink.logging.file" value="cloudsystems.log"/>
       <property name="eclipselink.logging.level" value="FINEST"/>
       <property name="eclipselink.logging.timestamp" value="true"/>
-      <property name="javax.persistence.jtaDataSource" value="java:/app/jdbc/jdbc/PostgreSQLDS"/>
     </properties>
   </persistence-unit>
 </persistence>
