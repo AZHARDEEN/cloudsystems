@@ -8,7 +8,11 @@ import java.io.Serializable;
 
 public class IabProblemsDTO implements Serializable
 {
-    private String id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8025404776831411639L;
+	private String id;
     private ListUserDTO user_1;
     private ListUserDTO user_2;
     private CityDTO city;

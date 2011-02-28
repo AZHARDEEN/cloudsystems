@@ -7,7 +7,11 @@ import java.util.Date;
 
 public class BaseSpedDTO extends SimpleTableDTO
 {
-    private String code;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 515299646577690003L;
+	private String code;
     private Date from;
     private Date to;
 
