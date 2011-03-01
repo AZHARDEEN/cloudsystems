@@ -1,12 +1,6 @@
 package br.com.mcampos.util.system;
 
-
-import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.util.locator.ServiceLocator;
-import br.com.mcampos.util.locator.ServiceLocatorException;
-
 import java.io.Serializable;
-
 import java.util.List;
 
 import org.zkoss.zk.ui.SuspendNotAllowedException;
@@ -26,148 +20,146 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.South;
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.util.locator.ServiceLocator;
+import br.com.mcampos.util.locator.ServiceLocatorException;
 
 public abstract class SimpleSearchListBox extends Window
 {
-    private static final long serialVersionUID = 8109634704496621100L;
-    private Listbox listbox;
-    private int _height = 400;
-    private int _width = 300;
-    private Serializable selected;
+	private static final long serialVersionUID = 8109634704496621100L;
+	private Listbox listbox;
+	private final int _height = 400;
+	private final int _width = 300;
+	private Serializable selected;
 
+	protected String _title;
+	protected String _listHeader1;
 
-    protected String _title;
-    protected String _listHeader1;
+	protected abstract List getList( );
 
+	public SimpleSearchListBox( String title, String border, boolean closable )
+	{
+		super( title, border, closable );
+	}
 
-    protected abstract List getList();
+	protected void createBox( )
+	{
 
-    public SimpleSearchListBox( String title, String border, boolean closable )
-    {
-        super( title, border, closable );
-    }
+		// Window
+		this.setWidth( String.valueOf( _width ) + "px" );
+		this.setHeight( String.valueOf( _height ) + "px" );
+		this.setTitle( _title );
+		this.setVisible( true );
+		this.setClosable( true );
 
+		// Borderlayout
+		Borderlayout bl = new Borderlayout( );
+		bl.setHeight( "100%" );
+		bl.setWidth( "100%" );
+		bl.setParent( this );
 
-    protected void createBox()
-    {
+		Center center = new Center( );
+		center.setFlex( true );
+		center.setParent( bl );
 
-        // Window
-        this.setWidth( String.valueOf( _width ) + "px" );
-        this.setHeight( String.valueOf( _height ) + "px" );
-        this.setTitle( _title );
-        this.setVisible( true );
-        this.setClosable( true );
+		South south = new South( );
+		south.setHeight( "26px" );
+		south.setParent( bl );
 
-        // Borderlayout
-        Borderlayout bl = new Borderlayout();
-        bl.setHeight( "100%" );
-        bl.setWidth( "100%" );
-        bl.setParent( this );
+		// Button
+		Button btnOK = new Button( );
+		btnOK.setLabel( "OK" );
+		btnOK.addEventListener( "onClick", new OnCloseListener( ) );
+		btnOK.setParent( south );
 
-        Center center = new Center();
-        center.setFlex( true );
-        center.setParent( bl );
+		// Listbox
+		listbox = new Listbox( );
+		listbox.setStyle( "border: none;" );
+		listbox.setHeight( "100%" );
+		listbox.setVisible( true );
+		listbox.setParent( center );
+		listbox.setItemRenderer( new SearchBoxItemRenderer( ) );
 
-        South south = new South();
-        south.setHeight( "26px" );
-        south.setParent( bl );
+		Listhead listhead = new Listhead( );
+		listhead.setParent( listbox );
+		Listheader listheader = new Listheader( );
+		listheader.setParent( listhead );
+		listheader.setLabel( _listHeader1 );
 
-        // Button
-        Button btnOK = new Button();
-        btnOK.setLabel( "OK" );
-        btnOK.addEventListener( "onClick", new OnCloseListener() );
-        btnOK.setParent( south );
+		// Model
+		List<?> list = getList( );
+		listbox.setModel( new ListModelList( list, true ) );
+		try {
+			if ( SysUtils.isEmpty( list ) == false ) {
+				listbox.setFocus( true );
+			}
+			doModal( );
+		}
+		catch ( SuspendNotAllowedException e ) {
+			this.detach( );
+		}
+		catch ( InterruptedException e ) {
+			this.detach( );
+		}
+	}
 
-        // Listbox
-        listbox = new Listbox();
-        listbox.setStyle( "border: none;" );
-        listbox.setHeight( "100%" );
-        listbox.setVisible( true );
-        listbox.setParent( center );
-        listbox.setItemRenderer( new SearchBoxItemRenderer() );
+	private Serializable getValue( )
+	{
+		if ( listbox == null || listbox.getSelectedItem( ) == null )
+			return null;
+		return (Serializable) listbox.getSelectedItem( ).getValue( );
+	}
 
-        Listhead listhead = new Listhead();
-        listhead.setParent( listbox );
-        Listheader listheader = new Listheader();
-        listheader.setParent( listhead );
-        listheader.setLabel( _listHeader1 );
+	public void onDoubleClicked( Event event )
+	{
 
-        // Model
-        List list = getList();
-        listbox.setModel( new ListModelList( list, true ) );
-        try {
-            if ( SysUtils.isEmpty( list ) == false ) {
-                listbox.setFocus( true );
-            }
-            doModal();
-        }
-        catch ( SuspendNotAllowedException e ) {
-            this.detach();
-        }
-        catch ( InterruptedException e ) {
-            this.detach();
-        }
-    }
+		if ( listbox.getSelectedItem( ) != null ) {
+			setSelected( getValue( ) );
+			this.onClose( );
+		}
+	}
 
-    private Serializable getValue()
-    {
-        if ( listbox == null || listbox.getSelectedItem() == null )
-            return null;
-        return ( Serializable )listbox.getSelectedItem().getValue();
-    }
+	protected void setSelected( Serializable selected )
+	{
+		this.selected = selected;
+	}
 
-    public void onDoubleClicked( Event event )
-    {
+	public Object getSelected( )
+	{
+		return selected;
+	}
 
-        if ( listbox.getSelectedItem() != null ) {
-            setSelected( getValue() );
-            this.onClose();
-        }
-    }
+	final class OnCloseListener implements EventListener
+	{
+		public void onEvent( Event event ) throws Exception
+		{
+			if ( listbox.getSelectedItem( ) != null ) {
+				setSelected( getValue( ) );
+			}
+			onClose( );
+		}
+	}
 
-    protected void setSelected( Serializable selected )
-    {
-        this.selected = selected;
-    }
+	final class SearchBoxItemRenderer implements ListitemRenderer
+	{
 
-    public Object getSelected()
-    {
-        return selected;
-    }
+		public void render( Listitem item, Object data ) throws Exception
+		{
+			Listcell lc = new Listcell( data.toString( ) );
+			lc.setParent( item );
+			item.setValue( data );
+			ComponentsCtrl.applyForward( item, "onDoubleClick=onDoubleClicked" );
+		}
+	}
 
-    final class OnCloseListener implements EventListener
-    {
-        @Override
-        public void onEvent( Event event ) throws Exception
-        {
-            if ( listbox.getSelectedItem() != null ) {
-                setSelected( getValue() );
-            }
-            onClose();
-        }
-    }
-
-    final class SearchBoxItemRenderer implements ListitemRenderer
-    {
-
-        @Override
-        public void render( Listitem item, Object data ) throws Exception
-        {
-            Listcell lc = new Listcell( data.toString() );
-            lc.setParent( item );
-            item.setValue( data );
-            ComponentsCtrl.applyForward( item, "onDoubleClick=onDoubleClicked" );
-        }
-    }
-
-    protected Object getRemoteSession( Class remoteClass )
-    {
-        try {
-            return ServiceLocator.getInstance().getRemoteSession( remoteClass );
-        }
-        catch ( ServiceLocatorException e ) {
-            throw new NullPointerException( "Invalid EJB Session (possible null)" );
-        }
-    }
+	protected Object getRemoteSession( Class<?> remoteClass )
+	{
+		try {
+			return ServiceLocator.getInstance( ).getRemoteSession( remoteClass );
+		}
+		catch ( ServiceLocatorException e ) {
+			throw new NullPointerException( "Invalid EJB Session (possible null)" );
+		}
+	}
 
 }
