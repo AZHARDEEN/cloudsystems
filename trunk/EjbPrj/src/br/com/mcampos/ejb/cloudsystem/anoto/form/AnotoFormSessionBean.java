@@ -42,7 +42,12 @@ import javax.persistence.Query;
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements AnotoFormSessionLocal
 {
-    @EJB
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1935312146768416708L;
+
+	@EJB
     private AnotoFormUserSessionLocal formUserSession;
 
     @EJB
@@ -137,7 +142,8 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<FormMedia> getFiles( AnotoForm form ) throws ApplicationException
     {
-        List<FormMedia> list = ( List<FormMedia> )getResultList( FormMedia.formGetFiles, form.getId() );
+        @SuppressWarnings("unchecked")
+		List<FormMedia> list = ( List<FormMedia> )getResultList( FormMedia.formGetFiles, form.getId() );
         return list;
     }
 
@@ -168,7 +174,8 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<Pad> getPads( AnotoForm form ) throws ApplicationException
     {
-        List<Pad> padList = ( List<Pad> )getResultList( Pad.padFindAllNamedQuery, form.getApplication() );
+        @SuppressWarnings("unchecked")
+		List<Pad> padList = ( List<Pad> )getResultList( Pad.padFindAllNamedQuery, form.getApplication() );
         return padList;
     }
 
@@ -181,7 +188,8 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
     }
 
 
-    @TransactionAttribute( TransactionAttributeType.SUPPORTS )
+    @SuppressWarnings("unchecked")
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPen> getAvailablePens( AnotoForm form ) throws ApplicationException
     {
         Query query;
@@ -202,14 +210,16 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
     @TransactionAttribute( TransactionAttributeType.SUPPORTS )
     public List<AnotoPen> getPens( AnotoForm form ) throws ApplicationException
     {
-        List<AnotoPenPage> list = ( List<AnotoPenPage> )getResultList( AnotoPenPage.formPensQueryName, form );
+        @SuppressWarnings("unchecked")
+		List<AnotoPenPage> list = ( List<AnotoPenPage> )getResultList( AnotoPenPage.formPensQueryName, form );
         return AnotoUtils.getPenListFromPenPage( list, true );
     }
 
 
     public void add( AnotoForm form, List<AnotoPen> pens ) throws ApplicationException
     {
-        List<AnotoPage> list = ( List<AnotoPage> )getResultList( AnotoPage.formPagesGetAllNamedQuery, form );
+        @SuppressWarnings("unchecked")
+		List<AnotoPage> list = ( List<AnotoPage> )getResultList( AnotoPage.formPagesGetAllNamedQuery, form );
         if ( SysUtils.isEmpty( list ) )
             return;
         for ( AnotoPen pen : pens ) {
@@ -225,14 +235,15 @@ public class AnotoFormSessionBean extends Crud<Integer, AnotoForm> implements An
 
     protected boolean existsPgcPenPage( AnotoPenPage penPage ) throws ApplicationException
     {
-        List list = getResultList( PgcPenPage.getAllPgcQueryName, penPage );
+        List<?> list = getResultList( PgcPenPage.getAllPgcQueryName, penPage );
         return SysUtils.isEmpty( list ) ? false : true;
     }
 
 
     public void remove( AnotoForm form, List<AnotoPen> pens ) throws ApplicationException
     {
-        List<AnotoPage> list = ( List<AnotoPage> )getResultList( AnotoPage.formPagesGetAllNamedQuery, form );
+        @SuppressWarnings("unchecked")
+		List<AnotoPage> list = ( List<AnotoPage> )getResultList( AnotoPage.formPagesGetAllNamedQuery, form );
         if ( SysUtils.isEmpty( list ) )
             return;
         for ( AnotoPen pen : pens ) {

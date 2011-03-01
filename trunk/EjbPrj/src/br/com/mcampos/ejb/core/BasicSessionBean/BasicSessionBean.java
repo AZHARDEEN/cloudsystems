@@ -31,7 +31,7 @@ public abstract class BasicSessionBean
 	}
 
 
-	protected Object get( Class objClass, Object primaryKey )
+	protected Object get( Class<?> objClass, Object primaryKey )
 	{
 		try {
 			return getEntityManager().find( objClass, primaryKey );
@@ -58,7 +58,7 @@ public abstract class BasicSessionBean
 	}
 
 
-	protected List nativeQueryResultList( String nativeSQL ) throws ApplicationException
+	protected List<?> nativeQueryResultList( String nativeSQL ) throws ApplicationException
 	{
 		try {
 			Query query = getEntityManager().createNativeQuery( nativeSQL );

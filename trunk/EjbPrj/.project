@@ -3,6 +3,7 @@
 	<name>EjbPrj</name>
 	<comment></comment>
 	<projects>
+		<project>SysUtils</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
