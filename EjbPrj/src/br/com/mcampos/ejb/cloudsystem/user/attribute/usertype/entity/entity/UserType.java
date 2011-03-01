@@ -19,6 +19,10 @@ import javax.persistence.Table;
 @Table( name = "user_type" )
 public class UserType implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 458881291392798029L;
 	public static final String getAll = "UserType.findAll";
 	public static final String nextId = "UserType.nextId";
 

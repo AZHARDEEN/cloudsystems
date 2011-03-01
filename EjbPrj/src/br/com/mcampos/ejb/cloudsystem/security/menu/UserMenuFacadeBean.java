@@ -1,5 +1,13 @@
 package br.com.mcampos.ejb.cloudsystem.security.menu;
 
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.MenuDTO;
@@ -19,87 +27,81 @@ import br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.role.CollaboratorRoleUtil;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.role.entity.CollaboratorRole;
 import br.com.mcampos.ejb.cloudsystem.user.collaborator.role.session.CollaboratorRoleSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.login.LoginSessionLocal;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
-
-import java.util.List;
-
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 
 @Stateless( name = "UserMenuFacade", mappedName = "CloudSystems-EjbPrj-UserMenuFacade" )
 @TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class UserMenuFacadeBean extends AbstractSecurity implements UserMenuFacade
 {
-    public static final Integer messageId = 17;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4522487980714102423L;
 
-    @PersistenceContext( unitName = "EjbPrj" )
-    private transient EntityManager em;
+	public static final Integer messageId = 17;
 
-    @EJB
-    private CollaboratorRoleSessionLocal collaboratorRoleSession;
+	@PersistenceContext( unitName = "EjbPrj" )
+	private transient EntityManager em;
 
-    @EJB
-    private NewCollaboratorSessionLocal collaboratorSession;
+	@EJB
+	private CollaboratorRoleSessionLocal collaboratorRoleSession;
 
-    @EJB
-    private PermissionAssignmentSessionLocal permissionAssignmentSession;
+	@EJB
+	private NewCollaboratorSessionLocal collaboratorSession;
 
-    @EJB
-    private LoginSessionLocal loginSession;
+	@EJB
+	private PermissionAssignmentSessionLocal permissionAssignmentSession;
 
-    @EJB
-    private LoginPropertySessionLocal loginPropertySession;
+	@EJB
+	private LoginPropertySessionLocal loginPropertySession;
 
-    @EJB
-    private SystemUserPropertySessionLocal propertySession;
+	@EJB
+	private SystemUserPropertySessionLocal propertySession;
 
-    public UserMenuFacadeBean()
-    {
+	public UserMenuFacadeBean( )
+	{
 
-    }
+	}
 
-    protected EntityManager getEntityManager()
-    {
-        return em;
-    }
+	@Override
+	protected EntityManager getEntityManager( )
+	{
+		return em;
+	}
 
-    public Integer getMessageTypeId()
-    {
-        return messageId;
-    }
+	@Override
+	public Integer getMessageTypeId( )
+	{
+		return messageId;
+	}
 
-    public List<MenuDTO> getMenus( AuthenticationDTO auth ) throws ApplicationException
-    {
-        authenticate( auth );
-        Collaborator collaborator = collaboratorSession.get( auth.getCurrentCompany(), auth.getUserId() );
-        if ( collaborator == null )
-            throwException( 1 );
-        List<CollaboratorRole> collaboratorRoles = collaboratorRoleSession.getAll( collaborator );
-        if ( SysUtils.isEmpty( collaboratorRoles ) )
-            throwException( 2 );
-        List<Role> roles = RoleUtils.getRoles( CollaboratorRoleUtil.toRoleList( collaboratorRoles ) );
-        List<PermissionAssignment> permissions = permissionAssignmentSession.getPermissionsAssigments( roles );
-        List<Task> tasks = PermissionAssignmentUtil.toTaskList( permissions );
-        List<Menu> menus = TaskUtil.toMenuList( TaskUtil.getTasks( tasks ) );
-        menus = MenuUtils.getParents( menus );
-        return MenuUtils.organizeAndCopy( menus );
-    }
+	@Override
+	public List<MenuDTO> getMenus( AuthenticationDTO auth ) throws ApplicationException
+	{
+		authenticate( auth );
+		Collaborator collaborator = collaboratorSession.get( auth.getCurrentCompany( ), auth.getUserId( ) );
+		if ( collaborator == null )
+			throwException( 1 );
+		List<CollaboratorRole> collaboratorRoles = collaboratorRoleSession.getAll( collaborator );
+		if ( SysUtils.isEmpty( collaboratorRoles ) )
+			throwException( 2 );
+		List<Role> roles = RoleUtils.getRoles( CollaboratorRoleUtil.toRoleList( collaboratorRoles ) );
+		List<PermissionAssignment> permissions = permissionAssignmentSession.getPermissionsAssigments( roles );
+		List<Task> tasks = PermissionAssignmentUtil.toTaskList( permissions );
+		List<Menu> menus = TaskUtil.toMenuList( TaskUtil.getTasks( tasks ) );
+		menus = MenuUtils.getParents( menus );
+		return MenuUtils.organizeAndCopy( menus );
+	}
 
-    public String getInitialPage( AuthenticationDTO auth ) throws ApplicationException
-    {
-        authenticate( auth );
-        Collaborator collaborator = collaboratorSession.get( auth.getCurrentCompany(), auth.getUserId() );
-        SystemUserProperty sysProp = propertySession.get( 1 );
-        LoginProperty prop = loginPropertySession.get( collaborator, sysProp );
-        return ( prop != null ) ? prop.getValue() : null;
-    }
+	@Override
+	public String getInitialPage( AuthenticationDTO auth ) throws ApplicationException
+	{
+		authenticate( auth );
+		Collaborator collaborator = collaboratorSession.get( auth.getCurrentCompany( ), auth.getUserId( ) );
+		SystemUserProperty sysProp = propertySession.get( 1 );
+		LoginProperty prop = loginPropertySession.get( collaborator, sysProp );
+		return ( prop != null ) ? prop.getValue( ) : null;
+	}
 }

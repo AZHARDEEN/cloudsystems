@@ -5,7 +5,12 @@
   <persistence-unit name="EjbPrj">
     <description>Descrição do conector CloudSystems</description>
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <!-- this is for weblogic.
     <jta-data-source>jdbc/CloudDS</jta-data-source>
+    -->
+    <!-- For jboss, we need a java:someresource
+    -->
+	<jta-data-source>java:cloud_xa</jta-data-source>
     <class>br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage</class>
     <class>br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country</class>
@@ -97,8 +102,7 @@
     <class>br.com.imstecnologia.ejb.sped.fiscal.cfop.entity.Cfop</class>
     <properties>
       <property name="eclipselink.cache.type.default" value="NONE"/>
-      <property name="eclipselink.cache.shared.default" value="false"/>
-      <property name="eclipselink.target-server" value="WebLogic_10"/>
+      <property name="eclipselink.target-server" value="JBoss"/>
       <property name="eclipselink.target-database" value="PostgreSQL"/>
       <property name="eclipselink.logging.file" value="cloudsystems.log"/>
       <property name="eclipselink.logging.level" value="FINEST"/>

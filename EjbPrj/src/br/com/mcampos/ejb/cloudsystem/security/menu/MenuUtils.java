@@ -116,7 +116,7 @@ public final class MenuUtils
         return dtoList;
     }
 
-    private static MenuDTO addMenu( List menuList, Menu newMenu )
+    private static MenuDTO addMenu( List<MenuDTO> menuList, Menu newMenu )
     {
         MenuDTO dto, parentDTO = null;
         int nIndex;
@@ -141,7 +141,7 @@ public final class MenuUtils
         }
     }
 
-    private static MenuDTO addMenu( List menuList, MenuDTO dto )
+    private static MenuDTO addMenu( List<MenuDTO> menuList, MenuDTO dto )
     {
         int nIndex;
 

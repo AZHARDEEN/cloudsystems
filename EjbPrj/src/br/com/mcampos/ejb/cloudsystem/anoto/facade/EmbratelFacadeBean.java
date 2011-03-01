@@ -5,14 +5,12 @@ import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.AnotoSummary;
 import br.com.mcampos.dto.anoto.FormDTO;
-import br.com.mcampos.dto.anoto.PenDTO;
 import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.resale.DealerDTO;
 import br.com.mcampos.dto.resale.ResaleDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
-import br.com.mcampos.dto.user.ListUserDTO;
 import br.com.mcampos.dto.user.attributes.DocumentTypeDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
@@ -42,7 +40,6 @@ import br.com.mcampos.ejb.cloudsystem.resale.dealer.session.DealerSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.resale.dealer.type.entity.DealerType;
 import br.com.mcampos.ejb.cloudsystem.resale.entity.Resale;
 import br.com.mcampos.ejb.cloudsystem.resale.session.ResaleSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.user.UserUtil;
 import br.com.mcampos.ejb.cloudsystem.user.company.entity.Company;
 import br.com.mcampos.ejb.cloudsystem.user.company.session.CompanySessionLocal;
 import br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument;
@@ -70,7 +67,12 @@ import javax.persistence.PersistenceContext;
 @TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class EmbratelFacadeBean extends AbstractSecurity implements EmbratelFacade
 {
-    protected static final int SystemMessageTypeId = 38;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7356987152411304905L;
+
+	protected static final int SystemMessageTypeId = 38;
 
     protected static final String fieldFend = "Venda cadastrada FEND";
     protected static final String fieldRejeitadoCEP = "Venda rejeitada por CEP inválido";
@@ -144,31 +146,6 @@ public class EmbratelFacadeBean extends AbstractSecurity implements EmbratelFaca
     public List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException
     {
         return AnotoUtils.toFormList( formSession.getAll( getCompany( auth ) ) );
-    }
-
-    private List<PenDTO> linkToUser( List<PenDTO> pens ) throws ApplicationException
-    {
-        if ( SysUtils.isEmpty( pens ) )
-            return Collections.emptyList();
-        for ( PenDTO pen : pens ) {
-            linkToUser( pen );
-        }
-        return pens;
-    }
-
-    private PenDTO linkToUser( PenDTO pen ) throws ApplicationException
-    {
-        if ( pen == null )
-            return null;
-        AnotoPenUser penUser = penUserSession.getCurrentUser( pen.getId() );
-        if ( penUser != null ) {
-            ListUserDTO user = UserUtil.copy( penUser.getPerson() );
-            pen.setUser( user );
-        }
-        else {
-            pen.setUser( null );
-        }
-        return pen;
     }
 
     public List<ResaleDTO> getResales( AuthenticationDTO auth ) throws ApplicationException
@@ -321,7 +298,7 @@ public class EmbratelFacadeBean extends AbstractSecurity implements EmbratelFaca
         if ( SysUtils.isEmpty( fields ) == false ) {
             for ( Pgc field : fields ) {
                 pgcs.add( field.getId() );
-                List attachs = pgcAttachmentSession.get( field.getId() );
+                List<?> attachs = pgcAttachmentSession.get( field.getId() );
                 if ( SysUtils.isEmpty( attachs ) == false )
                     sum.addFoto();
                 sum.add( pgcFieldSession.summaryType( field ) );

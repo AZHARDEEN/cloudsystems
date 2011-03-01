@@ -44,7 +44,12 @@ import javax.persistence.PersistenceContext;
 @TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class ClientRoleFacadeBean extends AbstractSecurity implements ClientRoleFacade
 {
-    private static final Integer messageId = 31;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 190968146167921972L;
+
+	private static final Integer messageId = 31;
 
     @PersistenceContext( unitName = "EjbPrj" )
     private transient EntityManager em;
@@ -182,10 +187,11 @@ public class ClientRoleFacadeBean extends AbstractSecurity implements ClientRole
         return company;
     }
 
-    public List<ListUserDTO> getClients( AuthenticationDTO auth ) throws ApplicationException
+    @SuppressWarnings("unchecked")
+	public List<ListUserDTO> getClients( AuthenticationDTO auth ) throws ApplicationException
     {
         authenticate( auth );
-        List clients = clientSession.getAll();
-        return UserUtil.copy( clients );
+        List<?> clients = clientSession.getAll();
+        return UserUtil.copy( (List<Users>) clients );
     }
 }

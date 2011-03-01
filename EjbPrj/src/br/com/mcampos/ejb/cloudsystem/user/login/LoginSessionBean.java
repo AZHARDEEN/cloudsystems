@@ -59,7 +59,12 @@ import org.jasypt.util.text.BasicTextEncryptor;
 @TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class LoginSessionBean extends AbstractSecurity implements LoginSessionLocal
 {
-    private static final String encprytPassword = "Nj9nQ6jz6Bt3";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1356514789646755916L;
+
+	private static final String encprytPassword = "Nj9nQ6jz6Bt3";
 
     @PersistenceContext( unitName = "EjbPrj" )
     private transient EntityManager em;
@@ -477,16 +482,16 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         log.setLoginType( getEntityManager().find( AccessLogType.class, accessLogType ) );
         log.setIp( dto != null ? dto.getRemoteAddr() : "127.0.0.1" );
         log.setComputer( dto != null ? dto.getRemoteHost() : null );
-        log.setSessionId( dto.getSessionId() );
+        log.setSessionId( dto != null ? dto.getSessionId() : null );
         if ( dto != null ) {
             BasicTextEncryptor encrypt = new BasicTextEncryptor();
             encrypt.setPassword( encprytPassword );
             log.setAuthenticationId( encrypt.encrypt( dto.getSessionId() ) );
+            getEntityManager().persist( log );
+            return log.getAuthenticationId();
         }
         else
             return null;
-        getEntityManager().persist( log );
-        return log.getAuthenticationId();
     }
 
     /**
@@ -620,14 +625,15 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
      * @param newPassword Nova senha a ser verificada
      * @return Boolean
      */
-    @TransactionAttribute( TransactionAttributeType.MANDATORY )
+    @SuppressWarnings("unchecked")
+	@TransactionAttribute( TransactionAttributeType.MANDATORY )
     private Boolean isPasswordUsed( Login login, String newPassword )
     {
         List<LastUsedPassword> list;
         BasicPasswordEncryptor passwordEncryptor;
 
         try {
-            List retList;
+            List<?> retList;
 
             retList =
                     getEntityManager().createNamedQuery( "LastUsedPassword.findAll" ).setParameter( "id", login.getUserId() ).getResultList();
@@ -734,7 +740,7 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
     /**<penPageSequence>select o from Users o</penPageSequence>
      */
-    @SuppressWarnings( "unckecked" )
+    @SuppressWarnings( "unchecked" )
     public List<ListLoginDTO> getLoginByRange( int firstResult, int maxResults )
     {
         Query query = getEntityManager().createNamedQuery( "Login.findAll" );
@@ -811,7 +817,6 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
     public Integer getStatus( AuthenticationDTO currentUser ) throws ApplicationException
     {
         authenticate( currentUser );
-        Integer status = 0;
 
         Login login = getEntityManager().find( Login.class, currentUser.getUserId() );
         return login.getUserStatus().getId();
@@ -853,7 +858,8 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
         return getEntityManager().find( Login.class, person.getId() );
     }
 
-    public List<Login> getAll() throws ApplicationException
+    @SuppressWarnings("unchecked")
+	public List<Login> getAll() throws ApplicationException
     {
         try {
             Query query = getEntityManager().createNamedQuery( Login.getAll );
