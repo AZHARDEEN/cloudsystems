@@ -3,7 +3,7 @@
     <wb-module deploy-name="ViewPrj">
         <wb-resource deploy-path="/" source-path="/public_html"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <property name="context-root" value="ViewPrj"/>
         <property name="java-output-path" value="/ViewPrj/build/classes"/>
-        <property name="context-root" value="WEB"/>
     </wb-module>
 </project-modules>
