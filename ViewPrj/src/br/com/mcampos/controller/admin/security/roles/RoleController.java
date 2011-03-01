@@ -236,8 +236,8 @@ public class RoleController extends SecutityBaseController implements IDropEvent
     {
         super.doAfterCompose( comp );
         listTasks.setItemRenderer( new TaskListRenderer() );
-        treeTasks.setTreeitemRenderer( new TaskTreeRenderer( null, true, false ) );
-        getTree().setTreeitemRenderer( new RoleRenderer( this, true, true ) );
+        treeTasks.setItemRenderer( new TaskTreeRenderer( null, true, false ) );
+        getTree().setItemRenderer( new RoleRenderer( this, true, true ) );
 
         setLabels();
     }

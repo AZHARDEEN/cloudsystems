@@ -13,123 +13,120 @@ import org.zkoss.zul.event.TreeDataEvent;
 
 public class RoleModel extends AbstractTreeModel
 {
-	RoleFacade session;
-	AuthenticationDTO currentUser;
+    RoleFacade session;
+    AuthenticationDTO currentUser;
 
-	public RoleModel( AuthenticationDTO currentUser, Object root ) throws ApplicationException
-	{
-		super( root );
-		this.currentUser = currentUser;
-	}
+    public RoleModel( AuthenticationDTO currentUser, Object root ) throws ApplicationException
+    {
+        super( root );
+        this.currentUser = currentUser;
+    }
 
 
-	protected boolean isRole( Object node )
-	{
-		return ( node instanceof RoleDTO );
-	}
+    protected boolean isRole( Object node )
+    {
+        return ( node instanceof RoleDTO );
+    }
 
-	public boolean isLeaf( Object node )
-	{
-		return getChildCount( node ) == 0;
-	}
+    public boolean isLeaf( Object node )
+    {
+        return getChildCount( node ) == 0;
+    }
 
-	public Object getChild( Object parent, int index )
-	{
-		Object child = null;
-		if ( isRole( parent ) )
-			child = ( ( RoleDTO )parent ).getChildRoles().get( index );
-		return child;
-	}
+    public Object getChild( Object parent, int index )
+    {
+        Object child = null;
+        if ( isRole( parent ) )
+            child = ( ( RoleDTO )parent ).getChildRoles().get( index );
+        return child;
+    }
 
-	public int getChildCount( Object parent )
-	{
-		if ( isRole( parent ) )
-			return getChildCount( ( ( RoleDTO )parent ) );
-		return 0;
-	}
+    public int getChildCount( Object parent )
+    {
+        if ( isRole( parent ) )
+            return getChildCount( ( ( RoleDTO )parent ) );
+        return 0;
+    }
 
-	protected int getChildCount( RoleDTO role )
-	{
-		int childs = 0;
+    protected int getChildCount( RoleDTO role )
+    {
+        int childs = 0;
 
-		if ( role == null )
-			return childs;
-		childs = ( role.getChildRoles() != null ) ? role.getChildRoles().size() : 0;
-		return childs;
-	}
+        if ( role == null )
+            return childs;
+        childs = ( role.getChildRoles() != null ) ? role.getChildRoles().size() : 0;
+        return childs;
+    }
 
-	protected RoleFacade getSession()
-	{
-		if ( session == null )
-			session = ( RoleFacade )getRemoteSession( RoleFacade.class );
-		return session;
-	}
+    protected RoleFacade getSession()
+    {
+        if ( session == null )
+            session = ( RoleFacade )getRemoteSession( RoleFacade.class );
+        return session;
+    }
 
-	protected Object getRemoteSession( Class remoteClass )
-	{
-		try {
-			return ServiceLocator.getInstance().getRemoteSession( remoteClass );
-		}
-		catch ( ServiceLocatorException e ) {
-			throw new NullPointerException( "Invalid EJB Session (possible null)" );
-		}
-	}
+    protected Object getRemoteSession( Class remoteClass )
+    {
+        try {
+            return ServiceLocator.getInstance().getRemoteSession( remoteClass );
+        }
+        catch ( ServiceLocatorException e ) {
+            throw new NullPointerException( "Invalid EJB Session (possible null)" );
+        }
+    }
 
-	protected AuthenticationDTO getCurrentUser()
-	{
-		return currentUser;
-	}
+    protected AuthenticationDTO getCurrentUser()
+    {
+        return currentUser;
+    }
 
-	public void add( RoleDTO dto )
-	{
-		RoleDTO parent = find( dto.getParent() );
-		if ( parent != null ) {
-			parent.add( dto );
-			int nIndex = parent.getChildRoles().size();
-			nIndex--;
-			if ( nIndex == 0 ) {
-				RoleDTO p = parent.getParent();
-				fireEvent( p, 0, p.getChildRoles().size() - 1, TreeDataEvent.CONTENTS_CHANGED );
-			}
-			else {
-				fireEvent( parent, nIndex, nIndex, TreeDataEvent.INTERVAL_ADDED );
-			}
-		}
-	}
+    public void add( RoleDTO dto )
+    {
+        RoleDTO parent = find( dto.getParent() );
+        if ( parent != null ) {
+            parent.add( dto );
+            int nIndex = parent.getChildRoles().size();
+            nIndex--;
+            if ( nIndex == 0 ) {
+                RoleDTO p = parent.getParent();
+                fireEvent( p, 0, p.getChildRoles().size() - 1, TreeDataEvent.CONTENTS_CHANGED );
+            }
+            else {
+                fireEvent( parent, nIndex, nIndex, TreeDataEvent.INTERVAL_ADDED );
+            }
+        }
+    }
 
-	public void update( RoleDTO dto )
-	{
-		RoleDTO parent = find( dto.getParent() );
-		if ( parent != null ) {
-			int nIndex = parent.getChildRoles().indexOf( dto );
-			if ( nIndex >= 0 ) {
-				parent.getChildRoles().set( nIndex, dto );
-				fireEvent( parent, nIndex, nIndex, TreeDataEvent.CONTENTS_CHANGED );
-			}
-		}
-	}
+    public void update( RoleDTO dto )
+    {
+        RoleDTO parent = find( dto.getParent() );
+        if ( parent != null ) {
+            int nIndex = parent.getChildRoles().indexOf( dto );
+            if ( nIndex >= 0 ) {
+                parent.getChildRoles().set( nIndex, dto );
+                fireEvent( parent, nIndex, nIndex, TreeDataEvent.CONTENTS_CHANGED );
+            }
+        }
+    }
 
-	public void delete( RoleDTO dto )
-	{
-		RoleDTO parent = find( dto.getParent() );
-		if ( parent != null ) {
-			int nIndex = parent.getChildRoles().indexOf( dto );
-			if ( nIndex >= 0 ) {
-				fireEvent( parent, nIndex, nIndex, TreeDataEvent.INTERVAL_REMOVED );
-			}
-		}
-	}
+    public void delete( RoleDTO dto )
+    {
+        RoleDTO parent = find( dto.getParent() );
+        if ( parent != null ) {
+            int nIndex = parent.getChildRoles().indexOf( dto );
+            if ( nIndex >= 0 ) {
+                fireEvent( parent, nIndex, nIndex, TreeDataEvent.INTERVAL_REMOVED );
+            }
+        }
+    }
 
-	protected RoleDTO find( RoleDTO node )
-	{
-		RoleDTO root = ( RoleDTO )getRoot();
+    protected RoleDTO find( RoleDTO node )
+    {
+        RoleDTO root = ( RoleDTO )getRoot();
 
-		int[] path = getPath( root, node );
-		int nIndex = 0;
-		while ( nIndex < path.length ) {
-			root = root.getChildRoles().get( path[ nIndex ] );
-			nIndex++;
-		}
-		return root;
-	}
+        int nIndex = getIndexOfChild( root, node );
+        if ( nIndex >= 0 )
+            root = root.getChildRoles().get( nIndex );
+        return root;
+    }
 }

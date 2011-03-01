@@ -96,18 +96,16 @@
                                 <columns>
                                     <column align="center"/>
                                     <column align="center"/>
-                                    <column align="center"/>
                                 </columns>
                                 <rows>
                                     <row>
                                         <button id="btnFilter" label="##" image="/img/icontexto-webdev-search-016x016.png"/>
-                                        <button id="btnSummary" label="##" image="/img/icontexto-webdev-file-016x016.png"/>
                                         <menubar>
                                             <menu label="Exportar">
                                                 <menupopup>
-                                                    <menuitem id="mnuExport" label="##"
+                                                    <menuitem id="mnuExport" label="Lista"
                                                               image="/img/icontexto-webdev-file-016x016.png"/>
-                                                    <menuitem id="mnuExport2" label="##"
+                                                    <menuitem id="mnuExport2" label="Todos"
                                                               image="/img/icontexto-webdev-file-016x016.png"/>
                                                 </menupopup>
                                             </menu>
