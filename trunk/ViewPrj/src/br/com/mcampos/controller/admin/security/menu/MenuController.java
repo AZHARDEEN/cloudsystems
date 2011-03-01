@@ -100,8 +100,8 @@ public class MenuController extends BasicTreeCRUDController<MenuDTO> implements 
                     onDrop( event );
                 }
             } );
-        getTreeList().setTreeitemRenderer( this );
-        treeTasks.setTreeitemRenderer( new TaskTreeRenderer( null, true, false ) );
+        getTreeList().setItemRenderer( this );
+        treeTasks.setItemRenderer( new TaskTreeRenderer( null, true, false ) );
         listTasks.setItemRenderer( new TaskListRenderer() );
         refresh();
     }
