@@ -82,17 +82,6 @@ public class UserFacadeSessionBean implements UserFacadeSession
     }
 
 
-    public void add( AuthenticationDTO auth, PersonDTO dto ) throws ApplicationException
-    {
-        testParam( auth, dto );
-    }
-
-    public void add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException
-    {
-        testParam( auth, dto );
-    }
-
-
     public UserDTO getUserByDocument( AuthenticationDTO auth, UserDocumentDTO dto ) throws ApplicationException
     {
         if ( auth == null )

@@ -45,4 +45,8 @@ public interface ClientFacade extends Serializable
     PersonDTO getPerson( AuthenticationDTO auth, Integer clientSequence ) throws ApplicationException;
 
     PersonDTO getPerson( AuthenticationDTO auth, String document, Integer docTpe ) throws ApplicationException;
+    
+    ClientDTO add( CompanyDTO dto ) throws ApplicationException;
+
+    ClientDTO add( PersonDTO dto ) throws ApplicationException;
 }

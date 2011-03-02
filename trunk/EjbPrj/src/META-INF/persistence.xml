@@ -10,7 +10,7 @@
     -->
     <!-- For jboss, we need a java:someresource
     -->
-    <jta-data-source>cloud_xa</jta-data-source>
+    <jta-data-source>CloudDS</jta-data-source>
     <class>br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact</class>
     <class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage</class>
     <class>br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country</class>
@@ -101,11 +101,8 @@
     <class>br.com.mcampos.ejb.cloudsystem.typing.iab.entity.DadosIab</class>
     <class>br.com.imstecnologia.ejb.sped.fiscal.cfop.entity.Cfop</class>
     <properties>
-      <property name="eclipselink.cache.type.default" value="NONE"/>
       <property name="eclipselink.target-database" value="PostgreSQL"/>
-      <property name="eclipselink.logging.file" value="cloudsystems.log"/>
-      <property name="eclipselink.logging.level" value="FINEST"/>
-      <property name="eclipselink.logging.timestamp" value="true"/>
+      <property name="eclipselink.cache.shared.default" value="false"/>
     </properties>
   </persistence-unit>
 </persistence>
