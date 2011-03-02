@@ -62,20 +62,6 @@ public class UsersLocator extends BusinessDelegate
     }
 
 
-    public void add( AuthenticationDTO auth, PersonDTO dto ) throws ApplicationException
-    {
-        if ( dto == null )
-            throw new InvalidParameterException( "Parâmetro dto não pode ser nulo." );
-        getSessionBean().add( auth, dto );
-    }
-
-    public void add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException
-    {
-        if ( dto == null )
-            throw new InvalidParameterException( "Parâmetro dto não pode ser nulo." );
-        getSessionBean().add( auth, dto );
-    }
-
     public UserDTO getUserByDocument( AuthenticationDTO auth, UserDocumentDTO dto ) throws ApplicationException
     {
         return getSessionBean().getUserByDocument( auth, dto );

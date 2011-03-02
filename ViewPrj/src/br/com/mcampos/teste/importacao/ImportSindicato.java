@@ -11,6 +11,14 @@ import br.com.mcampos.dto.user.attributes.ContactTypeDTO;
 import br.com.mcampos.dto.user.attributes.GenderDTO;
 import br.com.mcampos.dto.user.attributes.TitleDTO;
 
+import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormFacade;
+import br.com.mcampos.ejb.cloudsystem.client.facade.ClientFacade;
+import br.com.mcampos.ejb.cloudsystem.user.person.facade.PersonFacade;
+
+import br.com.mcampos.ejb.facade.UserFacadeSession;
+import br.com.mcampos.util.locator.ServiceLocator;
+import br.com.mcampos.util.locator.ServiceLocatorException;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -227,11 +235,12 @@ public class ImportSindicato
         String strRead;
         String splitarray[], splitnome[];
         PersonDTO dto;
+        ClientFacade client = null;
         int nLine = 0;
         String part = "";
         String nome, comment;
 
-        String path = "F:\\sindicato\\";
+        String path = "E:\\sindicato\\";
 
 
         try {
@@ -304,7 +313,9 @@ public class ImportSindicato
                         dto.add( new UserContactDTO( new ContactTypeDTO( 4 ), splitarray[ 14 ], null ) );
 
                     try {
-                        //importSindicato.getLocator().add ( dto );
+                        if ( client == null )
+                            client = getSession();
+                        client.add( dto );
                     }
                     catch ( EJBException e ) {
                         System.out.println( "Erro ao incluir a linha " + nLine + "\n" +
@@ -339,4 +350,20 @@ public class ImportSindicato
             return;
         }
     }
+    
+    private static ClientFacade getSession()
+    {
+            return ( ClientFacade )getRemoteSession( ClientFacade.class );
+    }
+    
+    protected static Object getRemoteSession( Class remoteClass )
+    {
+        try {
+            return ServiceLocator.getInstance().getRemoteSession( remoteClass );
+        }
+        catch ( ServiceLocatorException e ) {
+            throw new NullPointerException( "Invalid EJB Session (possible null)" );
+        }
+    }
+    
 }
