@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -19,10 +18,8 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = UserDocument.getAll, query = "select o from UserDocument o" ),
-                 @NamedQuery( name = UserDocument.deleteFromUser, query = "delete from UserDocument o where o.user = ?1" ),
-                 @NamedQuery( name = UserDocument.getByDocument,
-                              query = "select o from UserDocument o where o.code = :document and o.documentType.id = :docType" ) } )
+@NamedQueries( { @NamedQuery( name = UserDocument.getAll, query = "select o from UserDocument o" ), @NamedQuery( name = UserDocument.deleteFromUser, query = "delete from UserDocument o where o.user = ?1" ),
+                 @NamedQuery( name = UserDocument.getByDocument, query = "select o from UserDocument o where o.code = :document and o.documentType.id = :docType" ) } )
 @Table( name = "user_document" )
 @IdClass( UserDocumentPK.class )
 public class UserDocument implements Serializable, Comparable<UserDocument>
@@ -35,6 +32,8 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
     public static final int typeIdentity = 2;
     public static final int typeEmail = 6;
     public static final int typeCNPJ = 10;
+    @SuppressWarnings( "compatibility:1114545442004045827" )
+    private static final long serialVersionUID = 2620133755870442127L;
 
 
     @Id
@@ -51,11 +50,11 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
     @Column( name = "udc_additional_ch" )
     private String additionalInfo;
 
-    @ManyToOne( fetch = FetchType.LAZY, optional = false )
+    @ManyToOne( optional = false )
     @JoinColumn( name = "usr_id_in", updatable = false, nullable = false )
     private Users user;
 
-    @ManyToOne( fetch = FetchType.LAZY, optional = false )
+    @ManyToOne( optional = false )
     @JoinColumn( name = "doc_id_in", referencedColumnName = "doc_id_in", nullable = false )
     private DocumentType documentType;
 

@@ -28,13 +28,9 @@ import javax.persistence.Transient;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = Menu.findaAll, query = "select o from Menu o where o.parentMenu is null" ),
-                 @NamedQuery( name = Menu.nextId, query = "select max(o.id) from Menu o " ) } )
-@NamedNativeQueries( { @NamedNativeQuery( name = Menu.nextSequence,
-                                          query = "select coalesce ( max (  mnu_sequence_in ), 0 ) + 1 from menu where coalesce ( mnu_parent_id, 0 ) = ?" ),
-                       @NamedNativeQuery( name = Menu.findSequence,
-                                          query = "select * from Menu where coalesce ( mnu_parent_id, 0 ) = ? and mnu_sequence_in = ?",
-                                          resultClass = Menu.class ) } )
+@NamedQueries( { @NamedQuery( name = Menu.findaAll, query = "select o from Menu o where o.parentMenu is null" ), @NamedQuery( name = Menu.nextId, query = "select max(o.id) from Menu o " ) } )
+@NamedNativeQueries( { @NamedNativeQuery( name = Menu.nextSequence, query = "select coalesce ( max (  mnu_sequence_in ), 0 ) + 1 from menu where coalesce ( mnu_parent_id, 0 ) = ?" ),
+                       @NamedNativeQuery( name = Menu.findSequence, query = "select * from Menu where coalesce ( mnu_parent_id, 0 ) = ? and mnu_sequence_in = ?", resultClass = Menu.class ) } )
 @Table( name = "menu" )
 public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface<MenuDTO>
 {
@@ -42,6 +38,8 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
     public static final String nextSequence = "Menu.nexSequence";
     public static final String findSequence = "Menu.findSequence";
     public static final String nextId = "Menu.nextId";
+    @SuppressWarnings( "compatibility:7729228071977450356" )
+    private static final long serialVersionUID = 2653881688634707914L;
 
     @Column( name = "mnu_description_ch", nullable = false, length = 64 )
     private String description;
@@ -66,7 +64,7 @@ public class Menu implements Serializable, Comparable<Menu>, EntityCopyInterface
     @OneToMany( mappedBy = "parentMenu", cascade = { CascadeType.REFRESH } )
     private List<Menu> subMenus;
 
-    @ManyToOne( fetch = FetchType.LAZY )
+    @ManyToOne
     @JoinColumn( name = "med_id_in" )
     private Media media;
 

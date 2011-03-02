@@ -8,6 +8,8 @@ import java.io.Serializable;
 public class BusinessDelegate implements Serializable
 {
     protected static final String ejbPrefix = "CloudSystems-EjbPrj-";
+    @SuppressWarnings( "compatibility:-5214889860329379697" )
+    private static final long serialVersionUID = 6118738841638308021L;
 
     public BusinessDelegate()
     {
@@ -31,16 +33,7 @@ public class BusinessDelegate implements Serializable
 
     public String makeEJBSessionNameLocator( Class cls )
     {
-        String name;
-        int firstChar;
-
-        /*get class name without package name, if any!!*/
-        name = cls.getName();
-        firstChar = name.lastIndexOf( '.' ) + 1;
-        if ( firstChar > 0 )
-            name = name.substring( firstChar );
-        name = ejbPrefix + name + "#" + cls.getName();
-        return name;
+        return ejbPrefix + cls.getSimpleName() + "#" + cls.getName();
     }
 
 }
