@@ -39,6 +39,8 @@ public class AnotoFormUser implements Serializable
     public static final String getFormUser = "AnotoFormUser.getFormUser";
     public static final String getUser = "AnotoFormUser.getUser";
     public static final String getAll = "AnotoFormUser.getAll";
+    @SuppressWarnings( "compatibility:-6252590853090785483" )
+    private static final long serialVersionUID = 7934535745287389394L;
 
     @Column( name = "afu_from_dt", nullable = false )
     @Temporal( value = TemporalType.TIMESTAMP )
@@ -63,7 +65,7 @@ public class AnotoFormUser implements Serializable
     @JoinColumn( name = "frm_id_in", columnDefinition = "Integer" )
     private AnotoForm form;
 
-    @ManyToOne( optional = false, fetch = FetchType.LAZY )
+    @ManyToOne( optional = false)
     @JoinColumn( name = "usr_id_in", columnDefinition = "Integer" )
     private Company company;
 

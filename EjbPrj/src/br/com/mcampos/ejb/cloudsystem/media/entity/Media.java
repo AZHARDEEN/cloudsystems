@@ -12,7 +12,6 @@ import java.security.InvalidParameterException;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,6 +27,8 @@ import javax.persistence.Table;
 @Table( name = "media" )
 public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Comparable<Media>
 {
+    @SuppressWarnings( "compatibility:5269327754381544397" )
+    private static final long serialVersionUID = -6128152754016719171L;
     @Id
     @Column( name = "med_id_in", nullable = false )
     @SequenceGenerator( name = "mediaIdGenerator", sequenceName = "seq_media", allocationSize = 1 )
@@ -42,7 +43,7 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
     @Column( name = "med_name_ch", nullable = false, length = 128 )
     private String name;
 
-    @Basic( fetch = FetchType.LAZY, optional = false )
+    @Basic( optional = false )
     @Lob
     @Column( name = "med_object_bin", nullable = false )
     private byte[] object;

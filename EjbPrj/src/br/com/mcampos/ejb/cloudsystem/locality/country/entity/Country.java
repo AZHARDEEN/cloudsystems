@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -18,13 +17,14 @@ import javax.persistence.Table;
 
 
 @Entity
-@NamedQueries( { @NamedQuery( name = Country.getAll, query = "select o from Country o" ),
-                 @NamedQuery( name = Country.getAllWithCities, query = "select o from Country o where o.regions IS NOT EMPTY" ) } )
+@NamedQueries( { @NamedQuery( name = Country.getAll, query = "select o from Country o" ), @NamedQuery( name = Country.getAllWithCities, query = "select o from Country o where o.regions IS NOT EMPTY" ) } )
 @Table( name = "country" )
 public class Country implements Serializable
 {
     public static final String getAll = "Country.findAll";
     public static final String getAllWithCities = "Country.findAllWithCities";
+    @SuppressWarnings( "compatibility:-6565834169689137194" )
+    private static final long serialVersionUID = 3346057474213180623L;
 
     @Column( name = "ctr_code3_ch" )
     private String code3;
@@ -36,7 +36,7 @@ public class Country implements Serializable
     @Column( name = "ctr_num_code_in" )
     private Integer numericCode;
 
-    @OneToMany( mappedBy = "country", fetch = FetchType.LAZY )
+    @OneToMany( mappedBy = "country" )
     private List<Region> regions;
 
 
