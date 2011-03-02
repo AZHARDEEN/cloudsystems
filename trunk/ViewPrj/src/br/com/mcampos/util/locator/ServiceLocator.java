@@ -68,16 +68,8 @@ public class ServiceLocator
 
     protected String makeEJBSessionNameLocator( Class cls )
     {
-        String name;
-        int firstChar;
-
         /*get class name without package name, if any!!*/
-        name = cls.getName();
-        firstChar = name.lastIndexOf( '.' ) + 1;
-        if ( firstChar > 0 )
-            name = name.substring( firstChar );
-        name = ejbPrefix + name + "#" + cls.getName();
-        return name;
+        return ejbPrefix + cls.getSimpleName() + "#" + cls.getName();
     }
 
     public Object getRemoteSession( Class cls ) throws ServiceLocatorException

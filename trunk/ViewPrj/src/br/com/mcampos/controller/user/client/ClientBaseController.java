@@ -17,6 +17,8 @@ import org.zkoss.zul.Listitem;
 
 public abstract class ClientBaseController extends LoggedBaseController
 {
+    @SuppressWarnings( "compatibility:5923228962476106190" )
+    private static final long serialVersionUID = 2966143738677016514L;
     private ClientFacade clientSession;
 
 
