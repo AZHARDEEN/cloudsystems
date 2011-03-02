@@ -26,10 +26,6 @@ public interface UserFacadeSession
 
     PersonDTO getPerson( AuthenticationDTO auth, Integer userId ) throws ApplicationException;
 
-    void add( AuthenticationDTO auth, PersonDTO dto ) throws ApplicationException;
-
-    void add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException;
-
     UserDTO getUser( AuthenticationDTO auth, Integer userId ) throws ApplicationException;
 
     UserDTO getUserByDocument( AuthenticationDTO auth, UserDocumentDTO dto ) throws ApplicationException;

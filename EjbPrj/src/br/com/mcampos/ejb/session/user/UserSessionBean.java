@@ -163,7 +163,7 @@ public class UserSessionBean extends AbstractSecurity implements UserSessionLoca
         userDocument = getUserDocumentoSession().find( dto );
         if ( userDocument == null )
             return null;
-        return getEntityManager().find( Users.class, userDocument.getUserId() );
+        return getEntityManager().find( Person.class, userDocument.getUserId() );
     }
 
 

@@ -113,6 +113,24 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
         return ClientUtil.toDTOList( list );
     }
 
+
+    public ClientDTO add( CompanyDTO dto ) throws ApplicationException
+    {
+        Company myCompany = companySession.get( 2 );
+        Company clientNotManaged = CompanyUtil.createEntity( dto );
+        clientNotManaged.setDocuments( UserDocumentUtil.toEntityList( clientNotManaged, dto.getDocumentList() ) );
+        Company managedCompany = companySession.get( clientNotManaged );
+        if ( managedCompany == null ) {
+            clientNotManaged.getDocuments().clear();
+            managedCompany = companySession.add( clientNotManaged );
+            refreshUserAttributes( managedCompany, dto );
+        }
+        Client client = new Client( myCompany, managedCompany );
+        client = clientSession.add( client );
+        return ClientUtil.copy( client );
+    }
+
+
     public ClientDTO add( AuthenticationDTO auth, CompanyDTO dto ) throws ApplicationException
     {
         Company myCompany = getCompany( auth );
@@ -204,6 +222,23 @@ public class ClientFacadeBean extends UserFacadeUtil implements ClientFacade
     public ClientDTO add( AuthenticationDTO auth, PersonDTO dto ) throws ApplicationException
     {
         Company myCompany = getCompany( auth );
+        Person clientNotManaged = PersonUtil.createEntity( dto );
+        clientNotManaged.setDocuments( UserDocumentUtil.toEntityList( clientNotManaged, dto.getDocumentList() ) );
+        Person managedPerson = personSession.find( clientNotManaged );
+        if ( managedPerson == null ) {
+            clientNotManaged.getDocuments().clear();
+            managedPerson = personSession.add( clientNotManaged );
+            refreshUserAttributes( managedPerson, dto );
+        }
+        Client client = new Client( myCompany, managedPerson );
+        client = clientSession.add( client );
+        return ClientUtil.copy( client );
+    }
+
+
+    public ClientDTO add( PersonDTO dto ) throws ApplicationException
+    {
+        Company myCompany = companySession.get( 2 );
         Person clientNotManaged = PersonUtil.createEntity( dto );
         clientNotManaged.setDocuments( UserDocumentUtil.toEntityList( clientNotManaged, dto.getDocumentList() ) );
         Person managedPerson = personSession.find( clientNotManaged );
