@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.cloudsystem.anoto.pgcpage;
 
 
+import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.page.session.AnotoPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
@@ -77,4 +78,11 @@ public class PgcPageSessionBean extends Crud<PgcPagePK, PgcPage> implements PgcP
         List<PgcPage> pages = ( List<PgcPage> )getResultList( PgcPage.getAnotherPageStatus, page.getPgc(), status );
         return SysUtils.isEmpty( pages ) == false;
     }
+
+    public List<PgcPage> getAll( AnotoForm form ) throws ApplicationException
+    {
+        return ( List<PgcPage> )getResultList( PgcPage.getAllByForm, form );
+    }
 }
+
+

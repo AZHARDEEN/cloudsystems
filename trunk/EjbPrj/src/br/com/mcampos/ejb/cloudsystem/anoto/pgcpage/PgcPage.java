@@ -31,12 +31,16 @@ import javax.persistence.Table;
 @Entity
 @NamedQueries( { @NamedQuery( name = "PgcPage.findAll", query = "select o from PgcPage o" ),
                  @NamedQuery( name = PgcPage.getAnotherPageStatus,
-                              query = "select o from PgcPage o where o.pgc = ?1 and o.revisionStatus <> ?2" ) } )
-@Table( name = "\"pgc_page\"" )
+                              query = "select o from PgcPage o where o.pgc = ?1 and o.revisionStatus <> ?2" ),
+                 @NamedQuery( name = PgcPage.getAllByForm,
+                              query = "select o from PgcPage o where o.anotoPage.pad.form = ?1 order by o.pgcId, o.bookId, o.pageId" ) } )
+@Table( name = "pgc_page" )
 @IdClass( PgcPagePK.class )
 public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
 {
     public static final String getAnotherPageStatus = "PgcPage.anotherPageStatus";
+
+    public static final String getAllByForm = "PgcPage.getAllByForm";
 
     @Id
     @Column( name = "pgc_id_in", nullable = false, insertable = false, updatable = false )

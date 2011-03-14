@@ -36,6 +36,17 @@ public class AnotoFormUtil
     }
 
 
+    public static FormDTO copy( AnotoForm entity )
+    {
+        FormDTO dto = new FormDTO( entity.getId() );
+        dto.setApplication( entity.getApplication() );
+        dto.setConcatenatePgc( entity.getConcatenatePgc() );
+        dto.setIcrImage( dto.getIcrImage() );
+        dto.setImagePath( dto.getImagePath() );
+        return dto;
+    }
+
+
     public static List<ListUserDTO> toListUserDTO( List<AnotoFormUser> list )
     {
         if ( SysUtils.isEmpty( list ) )
