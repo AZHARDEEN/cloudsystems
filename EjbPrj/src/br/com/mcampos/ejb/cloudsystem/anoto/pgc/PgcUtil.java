@@ -1,6 +1,8 @@
 package br.com.mcampos.ejb.cloudsystem.anoto.pgc;
 
+
 import br.com.mcampos.dto.anoto.PGCDTO;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatusUtil;
 import br.com.mcampos.ejb.cloudsystem.media.MediaUtil;
 
 public class PgcUtil
@@ -23,4 +25,16 @@ public class PgcUtil
         pgc.setTimediff( source.getTimeDiff() );
         return pgc;
     }
+
+    public static PGCDTO copy( Pgc entity )
+    {
+        PGCDTO dto = new PGCDTO();
+        dto.setId( entity.getId() );
+        dto.setInsertDate( entity.getInsertDate() );
+        dto.setPenId( entity.getPenId() );
+        dto.setPgcStatus( PgcStatusUtil.copy( entity.getPgcStatus() ) );
+        dto.setTimeDiff( entity.getTimediff() );
+        return dto;
+    }
+
 }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <weblogic-ejb-jar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://www.bea.com/ns/weblogic/weblogic-ejb-jar http://www.bea.com/ns/weblogic/weblogic-ejb-jar/1.0/weblogic-ejb-jar.xsd"
-                  xmlns="http://www.bea.com/ns/weblogic/weblogic-ejb-jar">    <!--weblogic-version:10.3.3-->
+                  xmlns="http://www.bea.com/ns/weblogic/weblogic-ejb-jar">
+    <!--weblogic-version:10.3.3-->
     <description>CloudSystems</description>
     <weblogic-enterprise-bean>
         <ejb-name>RegisterFacadeSession</ejb-name>
@@ -159,6 +160,9 @@
     <weblogic-enterprise-bean>
         <ejb-name>AnodeFacade</ejb-name>
         <stateless-session-descriptor/>
+        <transaction-descriptor>
+            <trans-timeout-seconds>300</trans-timeout-seconds>
+        </transaction-descriptor>
         <enable-call-by-reference>true</enable-call-by-reference>
     </weblogic-enterprise-bean>
     <weblogic-enterprise-bean>

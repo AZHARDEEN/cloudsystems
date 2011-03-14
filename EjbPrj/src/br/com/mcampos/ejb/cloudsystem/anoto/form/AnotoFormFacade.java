@@ -52,11 +52,9 @@ public interface AnotoFormFacade extends Serializable
 
     List<MediaDTO> getFiles( AuthenticationDTO auth, FormDTO form ) throws ApplicationException;
 
-    PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad, List<String> pages,
-                      Boolean bUnique ) throws ApplicationException;
+    PadDTO addToForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad, List<String> pages, Boolean bUnique ) throws ApplicationException;
 
-    void addToPage( AuthenticationDTO auth, PadDTO padDTO, String pageAddress,
-                    List<AnotoPageFieldDTO> fields ) throws ApplicationException;
+    void addToPage( AuthenticationDTO auth, PadDTO padDTO, String pageAddress, List<AnotoPageFieldDTO> fields ) throws ApplicationException;
 
     MediaDTO removeFromForm( AuthenticationDTO auth, FormDTO entity, MediaDTO pad ) throws ApplicationException;
 
@@ -76,4 +74,5 @@ public interface AnotoFormFacade extends Serializable
     void addCompany( AuthenticationDTO auth, FormDTO form, ListUserDTO dto ) throws ApplicationException;
 
     void deleteCompany( AuthenticationDTO auth, FormDTO form, ListUserDTO dto ) throws ApplicationException;
+
 }

@@ -2,35 +2,55 @@ package br.com.mcampos.controller.anoto.util;
 
 
 import br.com.mcampos.dto.anoto.AnotoResultList;
+import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
 import br.com.mcampos.dto.system.FieldTypeDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.cloudsystem.anode.facade.AnotoExportFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.util.locator.ServiceLocator;
 import br.com.mcampos.util.locator.ServiceLocatorException;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+
 import java.util.Date;
 import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 
 public class AnotoExport
 {
     private List<AnotoResultList> currentList = null;
     private AuthenticationDTO user;
+    private Boolean exportImages = false;
+    private FormDTO form = null;
 
     AnotoExportFacade session;
+
+    private final static String PATH = "c:\\temp\\anoto_res\\export";
 
 
     public AnotoExport( AuthenticationDTO user )
     {
         super();
         setUser( user );
+    }
+
+    public AnotoExport( AuthenticationDTO user, FormDTO form )
+    {
+        super();
+        setUser( user );
+        setForm( form );
     }
 
     public AnotoExport( AuthenticationDTO user, List<AnotoResultList> currentList )
@@ -75,6 +95,121 @@ public class AnotoExport
         return new Document( root );
     }
 
+    public void exportToFile( FormDTO form ) throws ApplicationException
+    {
+        setForm( form );
+        exportToFile();
+    }
+
+
+    private void createFile( Element root, Integer id )
+    {
+        Document doc = new Document( root );
+        XMLOutputter output = new XMLOutputter( Format.getPrettyFormat() );
+        String str = output.outputString( doc );
+
+
+        try {
+            String path = String.format( "%s\\%d.xml", getPath(), id );
+            File file = new File( path );
+            BufferedWriter writer = new BufferedWriter( new FileWriter( file ) );
+            writer.write( str );
+            writer.close();
+        }
+        catch ( Exception e ) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createFile( PgcPageDTO item, MediaDTO media )
+    {
+        try {
+            String imageFilename =
+                String.format( "%s\\image_%d_%d_%d_%d.jpg", getPath(), item.getPgc().getId(), item.getBookId() + 1,
+                               item.getPageId() + 1, media.getId() );
+            File file = new File( imageFilename );
+            FileOutputStream writer = new FileOutputStream( file );
+            writer.write( media.getObject() );
+            writer.close();
+        }
+        catch ( Exception e ) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String getPath()
+    {
+        String path = PATH;
+
+        File file = new File( path );
+        if ( file.exists() == false )
+            file.mkdirs();
+        return path;
+    }
+
+    public void exportToFile() throws ApplicationException
+    {
+        List<PgcPageDTO> list;
+        int oldPgc = 0, oldBook = 0;
+        Element root = null;
+        Element form = null;
+        Element book = null;
+
+
+        list = getSession().getPages( getUser(), getForm() );
+        if ( SysUtils.isEmpty( list ) )
+            return;
+        for ( PgcPageDTO item : list ) {
+            if ( oldPgc != item.getPgc().getId() ) {
+                if ( oldPgc != 0 && root != null ) {
+                    System.out.println( "***  Gravando pgc: " + item.getPgc().getId() );
+                    /*Grava o pgc*/
+                    createFile( root, item.getPgc().getId() );
+                    root = null;
+                }
+                root = new Element( "Export" );
+                Date now = new Date();
+                root.setAttribute( "timestamp", now.toString() );
+                form = createFormElement( item );
+                root.addContent( form );
+                oldPgc = item.getPgc().getId();
+                oldBook = 0;
+            }
+            if ( oldBook != ( item.getBookId() + 1 ) ) {
+                System.out.println( "***  Abrindo novo book: " + item.getBookId() + 1 );
+                oldBook = ( item.getBookId() + 1 );
+                book = new Element( "Book" );
+                book.setAttribute( "id", "" + oldBook );
+                form.addContent( book );
+            }
+
+            System.out.println( String.format( "Pgc: %d. Book: %d. Page: %d", item.getPgc().getId(), item.getBookId() + 1,
+                                               item.getPageId() + 1 ) );
+            Element page = createPageElement( item );
+            page.setAttribute( "id", "" + ( item.getPageId() + 1 ) );
+            book.addContent( page );
+            List<MediaDTO> medias = getSession().getImages( user, item );
+            if ( SysUtils.isEmpty( medias ) == false ) {
+                for ( MediaDTO media : medias ) {
+                    Element image = new Element( "Image" );
+                    String imageFilename =
+                        String.format( "image_%d_%d_%d_%d.jpg", item.getPgc().getId(), item.getBookId() + 1, item.getPageId() + 1,
+                                       media.getId() );
+                    System.out.println( "\tExporting " + imageFilename );
+                    image.setText( imageFilename );
+                    page.addContent( image );
+                    image.setAttribute( "mime", "image/jpeg" );
+                    createFile( item, media );
+                }
+            }
+            else
+                System.out.println( "\tNão existem imagems para esta página" );
+
+
+        }
+    }
+
+
     public Element exportToXML( AnotoResultList item, Element root ) throws ApplicationException
     {
         String xml = "";
@@ -87,11 +222,24 @@ public class AnotoExport
     protected Element createFormElement( AnotoResultList r )
     {
         Element root = new Element( "Form" );
+        root.setAttribute( "id", "" + r.getPgcPage().getPgc().getId() );
         root.addContent( new Element( "Application" ).setText( r.getForm().getApplication() ) );
         root.addContent( new Element( "Description" ).setText( r.getForm().getDescription() ) );
         root.addContent( new Element( "Pen" ).setText( r.getPen().getId() ) );
         return root;
     }
+
+
+    protected Element createFormElement( PgcPageDTO r )
+    {
+        Element root = new Element( "Form" );
+        root.setAttribute( "id", "" + r.getPgc().getId() );
+        root.addContent( new Element( "Application" ).setText( r.getAnotoPage().getPad().getForm().getApplication() ) );
+        root.addContent( new Element( "Description" ).setText( r.getAnotoPage().getPad().getForm().getDescription() ) );
+        root.addContent( new Element( "Pen" ).setText( r.getPgc().getPenId() ) );
+        return root;
+    }
+
 
     protected Element createBookElement( AnotoResultList r )
     {
@@ -116,6 +264,33 @@ public class AnotoExport
         for ( PgcFieldDTO field : fields ) {
             xmlFields.addContent( createField( field ) );
         }
+        return page;
+    }
+
+    private Element exportImage( Element page, PgcPageDTO pgcPage ) throws ApplicationException
+    {
+        if ( page == null )
+            return page;
+        if ( pgcPage == null )
+            return page;
+        if ( getExportImages() == false )
+            return page;
+        List<MediaDTO> medias = getSession().getImages( user, pgcPage );
+        if ( SysUtils.isEmpty( medias ) )
+            return page;
+        for ( MediaDTO media : medias ) {
+            try {
+                String value = SysUtils.getHexString( media.getObject(), "UTF-8" );
+                Element eImage = new Element( "Image" );
+                eImage.setAttribute( "mime", "image/jpeg" );
+                eImage.setText( "0x" + value );
+                page.addContent( eImage );
+            }
+            catch ( Exception e ) {
+                e.printStackTrace();
+            }
+        }
+
         return page;
     }
 
@@ -181,5 +356,25 @@ public class AnotoExport
         if ( session == null )
             session = getRemoteSession();
         return session;
+    }
+
+    public void setExportImages( Boolean exportImages )
+    {
+        this.exportImages = exportImages;
+    }
+
+    public Boolean getExportImages()
+    {
+        return exportImages;
+    }
+
+    public void setForm( FormDTO form )
+    {
+        this.form = form;
+    }
+
+    public FormDTO getForm()
+    {
+        return form;
     }
 }

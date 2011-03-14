@@ -9,6 +9,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+
 public class ServiceLocator
 {
     private static ServiceLocator myServiceLocator;
@@ -65,7 +66,7 @@ public class ServiceLocator
     protected String makeEJBSessionNameLocator( Class<?> cls )
     {
         /* get class name without package name, if any!! */
-        return ejbPrefix + cls.getSimpleName() + "#" + cls.getName( );
+        return ejbPrefix + cls.getSimpleName() + "#" + cls.getName();
     }
 
     public Object getRemoteSession( Class<?> cls ) throws ServiceLocatorException

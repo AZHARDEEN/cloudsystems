@@ -3,9 +3,11 @@ package br.com.mcampos.controller.anoto;
 
 import br.com.mcampos.controller.anoto.renderer.AnotoFormListRenderer;
 import br.com.mcampos.controller.anoto.renderer.MediaListRenderer;
+import br.com.mcampos.controller.anoto.util.AnotoExport;
 import br.com.mcampos.controller.core.LoggedBaseController;
 import br.com.mcampos.dto.anoto.FormDTO;
 import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.ejb.cloudsystem.anode.facade.AnodeFacade;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoFormFacade;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
@@ -13,6 +15,9 @@ import br.com.mcampos.sysutils.SysUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jdom.Document;
+
+import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Filedownload;
@@ -25,7 +30,10 @@ import org.zkoss.zul.Listitem;
 
 public class AnotoFormDownloadController extends LoggedBaseController
 {
+    @SuppressWarnings( "compatibility:-7648546457520714761" )
+    private static final long serialVersionUID = -134995036935713778L;
     private AnotoFormFacade session;
+    private AnodeFacade exportFacade;
 
     private Label labelAnotoFormDownloadTitle;
     private Listheader headerApplication;
@@ -36,6 +44,7 @@ public class AnotoFormDownloadController extends LoggedBaseController
     private Listbox listboxRecord;
 
     private Button btnExportOther;
+    private Button btnExportAllPgc;
 
     public AnotoFormDownloadController( char c )
     {
@@ -56,6 +65,7 @@ public class AnotoFormDownloadController extends LoggedBaseController
         setLabel( headerDescription );
         setLabel( listHeaderNameOther );
         setLabel( btnExportOther );
+        setLabel( btnExportAllPgc );
 
         if ( listAttachsOther != null ) {
             listAttachsOther.setItemRenderer( new MediaListRenderer() );
@@ -100,11 +110,47 @@ public class AnotoFormDownloadController extends LoggedBaseController
         }
     }
 
+    public void onClick$btnExportAllPgc()
+    {
+        AnotoExport export;
+        FormDTO formDTO = ( ( FormDTO )listboxRecord.getSelectedItem().getValue() );
+
+
+        Document doc;
+        try {
+            export = new AnotoExport( getLoggedInUser(), formDTO );
+            export.setExportImages( true );
+            export.exportToFile();
+            try {
+                Messagebox.show( "Foram exportados os pgc's!", "Exportar Pgc's", Messagebox.OK, Messagebox.INFORMATION );
+            }
+            catch ( Exception e ) {
+                e = null;
+            }
+        }
+        catch ( ApplicationException e ) {
+            try {
+                Messagebox.show( e.getMessage() );
+            }
+            catch ( InterruptedException f ) {
+                f = null;
+            }
+            doc = null;
+        }
+    }
+
     private AnotoFormFacade getSession()
     {
         if ( session == null )
             session = ( AnotoFormFacade )getRemoteSession( AnotoFormFacade.class );
         return session;
+    }
+
+    private AnodeFacade getExportSession()
+    {
+        if ( exportFacade == null )
+            exportFacade = ( AnodeFacade )getRemoteSession( AnodeFacade.class );
+        return exportFacade;
     }
 
     private void refreshOtherAttachs( FormDTO current )
