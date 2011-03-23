@@ -3,6 +3,7 @@ package br.com.mcampos.controller.anoto.util;
 
 import br.com.mcampos.dto.anoto.AnotoResultList;
 import br.com.mcampos.dto.anoto.FormDTO;
+import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
@@ -121,12 +122,41 @@ public class AnotoExport
         }
     }
 
+
+    private Element exportAttach( PGCDTO pgc ) throws ApplicationException
+    {
+        if ( pgc == null )
+            return null;
+        List<MediaDTO> medias = getSession().getAttachments( getUser(), pgc );
+        if ( SysUtils.isEmpty( medias ) )
+            return null;
+        Element attachs = new Element( "Attachs" );
+        for ( MediaDTO media : medias ) {
+            Element attach = new Element( "Attach" );
+            attach.setAttribute( "mime", media.getMimeType() );
+            String attachFileName = String.format( "attach_%d.%s", media.getId(), media.getFormat() );
+            attach.setText( attachFileName );
+            attachs.addContent( attach );
+            try {
+                String imageFilename = String.format( "%s\\%s", getPath(), attachFileName );
+                File file = new File( imageFilename );
+                FileOutputStream writer = new FileOutputStream( file );
+                writer.write( media.getObject() );
+                writer.close();
+            }
+            catch ( Exception e ) {
+                e.printStackTrace();
+            }
+        }
+        return attachs;
+    }
+
     private void createFile( PgcPageDTO item, MediaDTO media )
     {
         try {
             String imageFilename =
-                String.format( "%s\\image_%d_%d_%d_%d.jpg", getPath(), item.getPgc().getId(), item.getBookId() + 1,
-                               item.getPageId() + 1, media.getId() );
+                String.format( "%s\\image_%d_%d_%d_%d.jpg", getPath(), item.getPgc().getId(), item.getBookId() + 1, item.getPageId() +
+                               1, media.getId() );
             File file = new File( imageFilename );
             FileOutputStream writer = new FileOutputStream( file );
             writer.write( media.getObject() );
@@ -173,6 +203,9 @@ public class AnotoExport
                 form = createFormElement( item );
                 root.addContent( form );
                 oldPgc = item.getPgc().getId();
+                Element attachs = exportAttach( item.getPgc() );
+                if ( attachs != null )
+                    root.addContent( attachs );
                 oldBook = 0;
             }
             if ( oldBook != ( item.getBookId() + 1 ) ) {
@@ -183,8 +216,8 @@ public class AnotoExport
                 form.addContent( book );
             }
 
-            System.out.println( String.format( "Pgc: %d. Book: %d. Page: %d", item.getPgc().getId(), item.getBookId() + 1,
-                                               item.getPageId() + 1 ) );
+            System.out.println( String.format( "Pgc: %d. Book: %d. Page: %d", item.getPgc().getId(), item.getBookId() +
+                                               1, item.getPageId() + 1 ) );
             Element page = createPageElement( item );
             page.setAttribute( "id", "" + ( item.getPageId() + 1 ) );
             book.addContent( page );
@@ -193,8 +226,8 @@ public class AnotoExport
                 for ( MediaDTO media : medias ) {
                     Element image = new Element( "Image" );
                     String imageFilename =
-                        String.format( "image_%d_%d_%d_%d.jpg", item.getPgc().getId(), item.getBookId() + 1, item.getPageId() + 1,
-                                       media.getId() );
+                        String.format( "image_%d_%d_%d_%d.jpg", item.getPgc().getId(), item.getBookId() + 1, item.getPageId() +
+                                       1, media.getId() );
                     System.out.println( "\tExporting " + imageFilename );
                     image.setText( imageFilename );
                     page.addContent( image );

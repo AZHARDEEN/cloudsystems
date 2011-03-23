@@ -2,7 +2,7 @@ package br.com.mcampos.ejb.cloudsystem.anode.facade;
 
 
 import br.com.mcampos.dto.anoto.FormDTO;
-import br.com.mcampos.dto.anoto.PgcAttachmentDTO;
+import br.com.mcampos.dto.anoto.PGCDTO;
 import br.com.mcampos.dto.anoto.PgcFieldDTO;
 import br.com.mcampos.dto.anoto.PgcPageDTO;
 import br.com.mcampos.dto.security.AuthenticationDTO;
@@ -11,21 +11,23 @@ import br.com.mcampos.ejb.cloudsystem.anode.utils.AnotoUtils;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.user.entity.AnotoFormUser;
 import br.com.mcampos.ejb.cloudsystem.anoto.form.user.session.AnotoFormUserSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgc.PGCSessionLocal;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.entity.PgcAttachment;
+import br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.session.PgcAttachmentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPagePK;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPageUtil;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment;
-import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachmentSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField;
 import br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcFieldSessionLocal;
-import br.com.mcampos.ejb.cloudsystem.client.session.ClientSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.MediaUtil;
+import br.com.mcampos.ejb.cloudsystem.media.Session.MediaSessionLocal;
 import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.core.AbstractSecurity;
 import br.com.mcampos.exception.ApplicationException;
 import br.com.mcampos.sysutils.SysUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,17 +55,18 @@ public class AnotoExportFacadeBean extends AbstractSecurity implements AnotoExpo
     @EJB
     private PgcPageSessionLocal pgcPageSession;
 
-    @EJB
-    private PgcPageAttachmentSessionLocal pgcAttachmentSession;
 
     @EJB
     private PGCSessionLocal pgcSession;
 
     @EJB
+    private PgcAttachmentSessionLocal pgcAttachmentSession;
+
+    @EJB
     private AnotoFormUserSessionLocal formUser;
 
     @EJB
-    private ClientSessionLocal clientSession;
+    private MediaSessionLocal mediaSession;
 
 
     public AnotoExportFacadeBean()
@@ -91,14 +94,25 @@ public class AnotoExportFacadeBean extends AbstractSecurity implements AnotoExpo
     }
 
 
-    public List<PgcAttachmentDTO> getAttachments( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
+    public List<MediaDTO> getAttachments( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException
     {
         authenticate( auth );
-        PgcPage entity = pgcPageSession.get( new PgcPagePK( page ) );
-        List<PgcPageAttachment> attachs = Collections.emptyList();
+        Pgc entity = pgcSession.get( pgc.getId() );
+        List<PgcAttachment> attachs = Collections.emptyList();
         if ( entity != null )
-            attachs = pgcAttachmentSession.getAll( entity );
-        return Collections.emptyList();
+            attachs = pgcAttachmentSession.get( entity.getId() );
+        if ( SysUtils.isEmpty( attachs ) )
+            return Collections.emptyList();
+        List<MediaDTO> medias = new ArrayList<MediaDTO>( attachs.size() );
+        for ( PgcAttachment a : attachs ) {
+            MediaDTO mediaDto;
+            Media media;
+            media = mediaSession.get( a.getMediaId() );
+            mediaDto = media.toDTO();
+            mediaDto.setObject( media.getObject() );
+            medias.add( mediaDto );
+        }
+        return medias;
     }
 
     public List<MediaDTO> getImages( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
