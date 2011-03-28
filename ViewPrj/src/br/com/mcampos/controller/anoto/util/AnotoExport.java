@@ -103,7 +103,7 @@ public class AnotoExport
     }
 
 
-    private void createFile( Element root, Integer id )
+    private void createFile( Element root, int pgc_id )
     {
         Document doc = new Document( root );
         XMLOutputter output = new XMLOutputter( Format.getPrettyFormat() );
@@ -111,7 +111,8 @@ public class AnotoExport
 
 
         try {
-            String path = String.format( "%s\\%d.xml", getPath(), id );
+
+            String path = String.format( "%s\\%d.xml", getPath(), pgc_id );
             File file = new File( path );
             BufferedWriter writer = new BufferedWriter( new FileWriter( file ) );
             writer.write( str );
@@ -134,7 +135,7 @@ public class AnotoExport
         for ( MediaDTO media : medias ) {
             Element attach = new Element( "Attach" );
             attach.setAttribute( "mime", media.getMimeType() );
-            String attachFileName = String.format( "attach_%d.%s", media.getId(), media.getFormat() );
+            String attachFileName = String.format( "%d_%d_image_attach.%s", pgc.getId(), media.getId(), media.getFormat() );
             attach.setText( attachFileName );
             attachs.addContent( attach );
             try {
@@ -155,8 +156,8 @@ public class AnotoExport
     {
         try {
             String imageFilename =
-                String.format( "%s\\image_%d_%d_%d_%d.jpg", getPath(), item.getPgc().getId(), item.getBookId() + 1, item.getPageId() +
-                               1, media.getId() );
+                String.format( "%s\\%d_%d_%d_%d_page_image.jpg", getPath(), item.getPgc().getId(), item.getBookId() +
+                               1, item.getPageId() + 1, media.getId() );
             File file = new File( imageFilename );
             FileOutputStream writer = new FileOutputStream( file );
             writer.write( media.getObject() );
@@ -184,6 +185,7 @@ public class AnotoExport
         Element root = null;
         Element form = null;
         Element book = null;
+        int contador = 1;
 
 
         list = getSession().getPages( getUser(), getForm() );
@@ -191,18 +193,19 @@ public class AnotoExport
             return;
         for ( PgcPageDTO item : list ) {
             if ( oldPgc != item.getPgc().getId() ) {
-                if ( oldPgc != 0 && root != null ) {
-                    System.out.println( "***  Gravando pgc: " + item.getPgc().getId() );
+                if ( root != null ) {
+                    System.out.println( "[" + contador + "]" + "***  Gravando pgc: " + item.getPgc().getId() );
                     /*Grava o pgc*/
-                    createFile( root, item.getPgc().getId() );
+                    createFile( root, oldPgc );
                     root = null;
+                    contador++;
                 }
+                oldPgc = item.getPgc().getId();
                 root = new Element( "Export" );
                 Date now = new Date();
                 root.setAttribute( "timestamp", now.toString() );
                 form = createFormElement( item );
                 root.addContent( form );
-                oldPgc = item.getPgc().getId();
                 Element attachs = exportAttach( item.getPgc() );
                 if ( attachs != null )
                     root.addContent( attachs );
@@ -226,7 +229,7 @@ public class AnotoExport
                 for ( MediaDTO media : medias ) {
                     Element image = new Element( "Image" );
                     String imageFilename =
-                        String.format( "image_%d_%d_%d_%d.jpg", item.getPgc().getId(), item.getBookId() + 1, item.getPageId() +
+                        String.format( "%d_%d_%d_%d_page_image.jpg", item.getPgc().getId(), item.getBookId() + 1, item.getPageId() +
                                        1, media.getId() );
                     System.out.println( "\tExporting " + imageFilename );
                     image.setText( imageFilename );
@@ -237,8 +240,9 @@ public class AnotoExport
             }
             else
                 System.out.println( "\tNão existem imagems para esta página" );
-
-
+        }
+        if ( root != null ) {
+            createFile( root, oldPgc );
         }
     }
 
