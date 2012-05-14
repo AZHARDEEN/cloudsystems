@@ -2,10 +2,10 @@ package br.com.mcampos.ejb.cloudsystem.security.task;
 
 
 import br.com.mcampos.dto.security.TaskDTO;
-import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenu;
-import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 import br.com.mcampos.ejb.cloudsystem.security.permissionassignment.PermissionAssignment;
 import br.com.mcampos.ejb.cloudsystem.security.task.subtask.Subtask;
+import br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenu;
+import br.com.mcampos.ejb.entity.core.EntityCopyInterface;
 
 import java.io.Serializable;
 
@@ -39,12 +39,16 @@ public class Task implements Serializable, EntityCopyInterface<TaskDTO>, Compara
 	@Id
 	@Column( name = "tsk_id_in", nullable = false )
 	private Integer id;
+
 	@OneToMany( mappedBy = "task", cascade = CascadeType.REFRESH )
 	private List<Subtask> subtasks;
+
 	@OneToMany( mappedBy = "task", cascade = CascadeType.REFRESH )
 	private List<PermissionAssignment> permissionAssignmentList;
+
 	@OneToMany( mappedBy = "task", cascade = CascadeType.REFRESH )
 	private List<TaskMenu> taskMenuList;
+
 	@OneToMany( mappedBy = "subTask", cascade = CascadeType.REFRESH )
 	private List<Subtask> masterTaskList;
 
