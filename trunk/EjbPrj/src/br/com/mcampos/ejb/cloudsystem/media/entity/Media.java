@@ -12,6 +12,7 @@ import java.security.InvalidParameterException;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,7 +44,7 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
     @Column( name = "med_name_ch", nullable = false, length = 128 )
     private String name;
 
-    @Basic( optional = false )
+    @Basic( optional = false, fetch = FetchType.LAZY )
     @Lob
     @Column( name = "med_object_bin", nullable = false )
     private byte[] object;

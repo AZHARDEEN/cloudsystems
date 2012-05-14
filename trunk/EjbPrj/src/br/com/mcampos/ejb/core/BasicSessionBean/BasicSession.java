@@ -36,7 +36,7 @@ public class BasicSession<T> implements IBasicSession<T>, Serializable
     @PersistenceContext
     private transient EntityManager em;
 
-    private transient final T entity;
+    private transient final T entity = null;
 
     public BasicSession()
     {
@@ -67,9 +67,10 @@ public class BasicSession<T> implements IBasicSession<T>, Serializable
     }
 
     @Override
-    public T findById( Serializable id )
+    public T findById( Object id )
     {
-        return ( getEm().find( entity.getClass(), id ) );
+        //return ( getEm().find( entity.getClass(), id ) );
+        return null;
     }
 
     @Override
@@ -174,7 +175,7 @@ public class BasicSession<T> implements IBasicSession<T>, Serializable
 
     @Override
     @TransactionAttribute( value = TransactionAttributeType.REQUIRED )
-    public T delete( Serializable id )
+    public T delete( Object id )
     {
         T entity = findById( id );
         if ( entity == null ) {
@@ -188,4 +189,5 @@ public class BasicSession<T> implements IBasicSession<T>, Serializable
     {
         return this.em;
     }
+
 }

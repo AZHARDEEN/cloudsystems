@@ -9,11 +9,11 @@ import br.com.mcampos.exception.ApplicationException;
 import java.util.List;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.ListitemRenderer;
-import org.zkoss.zul.api.Intbox;
-import org.zkoss.zul.api.Listheader;
-import org.zkoss.zul.api.Textbox;
+import org.zkoss.zul.Textbox;
 
 
 public class MaskController extends BasicListController<AccountingMaskDTO>

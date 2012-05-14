@@ -29,12 +29,15 @@ public class Subtask implements Serializable
     @Id
     @Column( name = "stk_id_in", nullable = false, insertable = false, updatable = false )
     private Integer subtaskId;
+
     @Id
     @Column( name = "tsk_id_in", nullable = false, insertable = false, updatable = false )
     private Integer taskId;
+
     @ManyToOne
     @JoinColumn( name = "stk_id_in" )
     private Task subTask;
+
     @ManyToOne
     @JoinColumn( name = "tsk_id_in" )
     private Task task;

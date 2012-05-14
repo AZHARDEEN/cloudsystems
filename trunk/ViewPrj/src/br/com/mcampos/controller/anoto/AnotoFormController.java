@@ -58,6 +58,8 @@ import org.zkoss.zul.Window;
 
 public class AnotoFormController extends SimpleTableController<FormDTO>
 {
+    @SuppressWarnings( "compatibility:-4187399303111746730" )
+    private static final long serialVersionUID = 6328445810601958206L;
     private AnotoFormFacade session;
 
 

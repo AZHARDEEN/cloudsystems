@@ -9,14 +9,14 @@
   <properties>
    <property>
     <name>user</name>
-    <value></value>
+    <value>dba_cloud</value>
    </property>
    <property>
     <name>password</name>
     <value>cloud</value>
    </property>
   </properties>
-  <password-encrypted>A857C5B13F00E3D5</password-encrypted>
+  <password-encrypted>0BBD3033E52471E5BA8804B27BE170C296048379D9C652A2C0EED74F3B3CD190</password-encrypted>
  </jdbc-driver-params>
  <jdbc-connection-pool-params>
   <test-table-name>SQL SELECT 1</test-table-name>
