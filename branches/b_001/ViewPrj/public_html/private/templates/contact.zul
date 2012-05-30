@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<div id="divContactList" apply="br.com.mcampos.controller.commom.ContactListController" xmlns="http://www.zkoss.org/2005/zul">
+ <listbox fixedLayout="true" id="contactList" rows="4">
+  <listhead sizable="true">
+   <listheader id="headerContactType" label="##" sort="auto" align="left" width="30%"/>
+   <listheader id="headerContactDescription" label="##" sort="auto" align="left" width="30%"/>
+   <listheader id="headerContactObs" label="##" width="40%"/>
+  </listhead>
+ </listbox>
+ <separator bar="true"/>
+ <grid>
+  <columns>
+   <column width="20%"/>
+   <column/>
+  </columns>
+  <rows>
+   <row>
+    <label value="##" id="labelContactType"/>
+    <combobox id="contactType" width="150px" readonly="true"></combobox>
+   </row>
+   <row>
+    <label value="##" id="labelContactDescription"/>
+    <textbox id="contactId" maxlength="32" width="300px"/>
+   </row>
+   <row>
+    <label value="##" id="labelContactObs"/>
+    <textbox id="contactComent" width="99%" maxlength="255" multiline="true" rows="2"/>
+   </row>
+  </rows>
+ </grid>
+ <separator bar="true"/>
+ <div align="center">
+  <hbox align="center">
+   <button label="##" id="addContact" image="/img/icontexto-webdev-add-032x032.png"/>
+   <button label="##" id="updateContact" image="/img/icontexto-webdev-alert-032x032.png"/>
+   <button label="##" id="removeContact" image="/img/icontexto-webdev-remove-032x032.png"/>
+  </hbox>
+ </div>
+</div>

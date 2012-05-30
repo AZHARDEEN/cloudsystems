@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.typing.IabController">
+        <script type="text/JavaScript" defer="true">jq(document).ready( function() { jq('$cityId').autotab();
+                                                    jq('$intYear').autotab(); jq('$intSerie').autotab(); jq('$nota1').autotab();
+                                                    jq('$nota2').autotab(); jq('$nota3').autotab(); jq('$nota4').autotab(); } );</script>
+        <borderlayout id="borderLayout">
+            <north autoscroll="false" height="65px" fulfill="=/resources/title.zul"></north>
+            <center>
+                <!-- Por favor, nao mude o id desta div -->
+                <div id="recordDetail" align="center">
+                    <!-- view mode -->
+                    <panel title="Capa de Lote" width="700px" border="normal">
+                        <panelchildren>
+                            <grid width="100%" fixedLayout="true">
+                                <columns>
+                                    <column align="right" width="20%"/>
+                                    <column align="left" width="80%"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <label value="Identificador"/>
+                                        <intbox id="id" width="150px" maxlength="12"/>
+                                    </row>
+                                    <row>
+                                        <label value="Município"/>
+                                        <hlayout>
+                                            <intbox id="cityId" width="70px" maxlength="5"/>
+                                            <bandbox id="findCity" width="427px"></bandbox>
+                                        </hlayout>
+                                    </row>
+                                    <row>
+                                        <label value="Escola"/>
+                                        <textbox id="school" width="500px"/>
+                                    </row>
+                                    <row>
+                                        <label value="Professor/Classe"/>
+                                        <textbox id="teacher" width="500px"/>
+                                    </row>
+                                    <row>
+                                        <label value="Ano ou Série"/>
+                                        <hlayout>
+                                            <intbox id="intYear" width="20px" maxlength="1"/>
+                                            <intbox id="intSerie" width="20px" maxlength="1"/>
+                                        </hlayout>
+                                    </row>
+                                    <row>
+                                        <label value="Turno"/>
+                                        <combobox id="comboTurno" value="Matutino" readonly="true">
+                                            <comboitem value="Matutino" label="Matutino"/>
+                                            <comboitem value="Vespertino" label="Vespertino"/>
+                                            <comboitem value="Noturno" label="Noturno"/>
+                                        </combobox>
+                                    </row>
+                                    <row>
+                                        <label value="Turno"/>
+                                        <combobox id="comboType" value="Rural" readonly="true">
+                                            <comboitem value="Rural" label="Rural"/>
+                                            <comboitem value="Urbano" label="Urbano"/>
+                                        </combobox>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </panelchildren>
+                    </panel>
+                    <panel title="Dados do Lote" width="700px" border="normal">
+                        <panelchildren>
+                            <grid width="100%" fixedLayout="true">
+                                <columns>
+                                    <column align="right" width="20%"/>
+                                    <column align="left" width="80%"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <label value="Nome do Aluno"/>
+                                        <textbox id="name" width="500px" maxlength="50"/>
+                                    </row>
+                                    <row>
+                                        <label value="Data de Nascimento"/>
+                                        <datebox id="birthDate"/>
+                                    </row>
+                                    <row>
+                                        <label value="Sexo"/>
+                                        <combobox id="gender" readonly="true"></combobox>
+                                    </row>
+                                    <row>
+                                        <label value="Notas (1 a 4)"/>
+                                        <hlayout>
+                                            <intbox id="nota1" width="40px" maxlength="2"/>
+                                            <intbox id="nota2" width="40px" maxlength="2"/>
+                                            <intbox id="nota3" width="40px" maxlength="2"/>
+                                            <intbox id="nota4" width="40px" maxlength="2"/>
+                                        </hlayout>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </panelchildren>
+                    </panel>
+                </div>
+            </center>
+        </borderlayout>
+    </div>
+</zk>

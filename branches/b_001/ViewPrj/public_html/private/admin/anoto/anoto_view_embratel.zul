@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoViewEmbratelController">
+        <borderlayout id="borderLayout">
+            <north autoscroll="false" height="65px" fulfill="=/resources/title.zul"/>
+            <center flex="true" autoscroll="false">
+                <tabbox tabscroll="true" height="600px">
+                    <tabs>
+                        <tab id="tabFilter" label="##"/>
+                        <tab id="tabAnotoSearch" label="Resultado da Pesquisa"/>
+                        <tab id="tabSummary" label="Quadro Resumo"/>
+                    </tabs>
+                    <tabpanels>
+                        <tabpanel>
+                            <grid>
+                                <columns>
+                                    <column width="10%"/>
+                                    <column width="40%"/>
+                                    <column width="10%"/>
+                                    <column width="40%"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <label value="##" id="labelApplication"/>
+                                        <combobox id="cmbApplication" width="95%" readonly="true"/>
+                                        <label value="##" id="labelInitDate"/>
+                                        <hbox>
+                                            <datebox id="initDate" format="dd/MM/yyyy HH:mm:ss" width="180px"/>
+                                            <label value=" Até "/>
+                                            <datebox id="endDate" format="dd/MM/yyyy HH:mm:ss" width="180px"/>
+                                        </hbox>
+                                    </row>
+                                    <row id="rowResale">
+                                        <label value="Revenda" id="labelResale"/>
+                                        <combobox id="cmbResale" width="95%" readonly="true"/>
+                                        <label value="Cód Revenda" id="labelResaleCode"/>
+                                        <intbox id="resaleCode" width="150px"/>
+                                    </row>
+                                    <row id="rowDealer">
+                                        <label value="Vendedor" id="labelDealer"/>
+                                        <combobox id="cmbDealer" width="95%" readonly="true"/>
+                                        <label value="Cód Vendedor" id="labelDealerCode"/>
+                                        <intbox id="dealerCode" width="150px"/>
+                                    </row>
+                                    <row>
+                                        <label value="##" id="labelFieldValue"/>
+                                        <textbox id="txtFieldValue" width="99%"/>
+                                        <label value="Outros" id="labelFieldOutros"/>
+                                        <checkbox id="chkNoBackoffice" label="Pendente Backoffice"/>
+                                    </row>
+                                </rows>
+                            </grid>
+                            <grid id="gridCustomFields" height="110px">
+                                <columns>
+                                    <column width="50%" id="columnFieldName" label="##"/>
+                                    <column id="columnFieldValue" label="##"/>
+                                </columns>
+                            </grid>
+                            <separator height="15px"/>
+                            <grid align="center" width="100%">
+                                <columns>
+                                    <column align="center"/>
+                                </columns>
+                                <rows>
+                                    <row>
+                                        <button id="btnFilter" label="##" image="/img/icontexto-webdev-search-016x016.png"/>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </tabpanel>
+                        <tabpanel height="600px">
+                            <div>
+                                <toolbar>
+                                    <toolbarbutton id="btnEmbratelExport" label="##"
+                                                   image="/img/icontexto-webdev-file-016x016.png"/>
+                                    <toolbarbutton id="btnEmbratelExportAll" label="##"
+                                                   image="/img/icontexto-webdev-file-016x016.png"/>
+                                </toolbar>
+                                <listbox id="resultList" mold="paging" pageSize="20" rows="21">
+                                    <listhead sizable="true"></listhead>
+                                </listbox>
+                            </div>
+                        </tabpanel>
+                        <tabpanel height="600px">
+                            <borderlayout>
+                                <east width="50%" title="Gráficos" autoscroll="true">
+                                    <div>
+                                        <tabbox>
+                                            <tabs>
+                                                <tab id="tabGraphAttach" label="Anexos"/>
+                                                <tab id="tabGraphType" label="Tipo"/>
+                                                <tab id="tabChartPay" label="Pagamento"/>
+                                                <tab id="tabChartCategory" label="Categoria"/>
+                                                <tab id="tabChartStatus" label="Situação"/>
+                                            </tabs>
+                                            <tabpanels>
+                                                <tabpanel height="400px">
+                                                    <flashchart id="chartAttach" type="pie" height="200px"/>
+                                                </tabpanel>
+                                                <tabpanel height="400px">
+                                                    <flashchart id="chartType" type="pie" height="200px"/>
+                                                </tabpanel>
+                                                <tabpanel height="400px">
+                                                    <flashchart id="chartPay" type="pie" height="200px"/>
+                                                </tabpanel>
+                                                <tabpanel height="400px">
+                                                    <flashchart id="chartCategory" type="pie" height="200px"/>
+                                                </tabpanel>
+                                                <tabpanel height="400px">
+                                                    <flashchart id="chartStatus" type="pie" height="200px"/>
+                                                </tabpanel>
+                                            </tabpanels>
+                                        </tabbox>
+                                    </div>
+                                </east>
+                                <center autoscroll="true">
+                                    <div>
+                                        <grid>
+                                            <columns>
+                                                <column label="Formulários" align="left" width="200px"/>
+                                                <column align="center" label="Total" width="100px"/>
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <label value="Total Processado"/>
+                                                    <label value="" id="labelSummaryForms"/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                        <grid>
+                                            <columns>
+                                                <column label="Anexos" align="left" width="200px"/>
+                                                <column align="center" label="Total" width="100px"/>
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <label value="Com Foto"/>
+                                                    <label value=" " id="labelSummaryPhoto"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Sem-Foto"/>
+                                                    <label value=" " id="labelSummaryNoPhoto"/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                        <grid>
+                                            <columns>
+                                                <column label="Tipo" align="left" width="200px"/>
+                                                <column align="center" label="Total" width="100px"/>
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <label value="Pré-pago"/>
+                                                    <label value=" " id="labelSummaryPre"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Pós-Pago"/>
+                                                    <label value=" " id="labelSummaryPos"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Branco"/>
+                                                    <label value=" " id="labelEmptyType"/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                        <grid>
+                                            <columns>
+                                                <column label="Pagamento" align="left" width="200px"/>
+                                                <column align="center" label="Total" width="100px"/>
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <label value="Dinheiro"/>
+                                                    <label value=" " id="labelSummaryMoney"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Boleto"/>
+                                                    <label value=" " id="labelSummaryBoleto"/>
+                                                </row>
+                                                <row>
+                                                    <label value="DI"/>
+                                                    <label value=" " id="labelSummaryDI"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Branco"/>
+                                                    <label value=" " id="labelEmptyPayment"/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                        <grid>
+                                            <columns>
+                                                <column label="Categoria" align="left" width="200px"/>
+                                                <column align="center" label="Total" width="100px"/>
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <label value="PAP"/>
+                                                    <label value=" " id="labelSummaryPap"/>
+                                                </row>
+                                                <row>
+                                                    <label value="CVM"/>
+                                                    <label value=" " id="labelSummaryCvm"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Branco"/>
+                                                    <label value=" " id="labelEmptyCategory"/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                        <grid>
+                                            <columns>
+                                                <column label="Situação" align="left" width="200px"/>
+                                                <column align="center" label="Total" width="100px"/>
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <label value="Cadastrada FEND"/>
+                                                    <label value=" " id="labelSummaryFend"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Rejeitada CEP Inválido"/>
+                                                    <label value=" " id="labelSummaryRejectZip"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Rejeitada Análise Crédito"/>
+                                                    <label value=" " id="labelSummaryRejectCredit"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Branco"/>
+                                                    <label value=" " id="labelEmptySituation"/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </div>
+                                </center>
+                            </borderlayout>
+                        </tabpanel>
+                    </tabpanels>
+                </tabbox>
+            </center>
+        </borderlayout>
+    </div>
+</zk>

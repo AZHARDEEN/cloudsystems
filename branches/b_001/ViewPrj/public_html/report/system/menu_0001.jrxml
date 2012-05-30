@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="menu_0001" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     menu."mnu_id_in" AS menu_mnu_id_in,
+     menu."mnu_parent_id" AS menu_mnu_parent_id,
+     menu."mnu_description_ch" AS menu_mnu_description_ch,
+     menu."mnu_url_ch" AS menu_mnu_url_ch,
+     menu."mnu_sequence_in" AS menu_mnu_sequence_in,
+     menu."med_id_in" AS menu_med_id_in,
+     menu."mnu_separator_before_bt" AS menu_mnu_separator_before_bt,
+     menu."mnu_autocheck_bt" AS menu_mnu_autocheck_bt,
+     menu."mnu_checked_bt" AS menu_mnu_checked_bt,
+     menu."mnu_checkmark_bt" AS menu_mnu_checkmark_bt,
+     menu."mnu_disabled_bt" AS menu_mnu_disabled_bt
+FROM
+     "public"."menu" menu
+order by mnu_id_in]]>
+	</queryString>
+	<field name="menu_mnu_id_in" class="java.lang.Integer"/>
+	<field name="menu_mnu_parent_id" class="java.lang.Integer"/>
+	<field name="menu_mnu_description_ch" class="java.lang.String"/>
+	<field name="menu_mnu_url_ch" class="java.lang.String"/>
+	<field name="menu_mnu_sequence_in" class="java.lang.Integer"/>
+	<field name="menu_med_id_in" class="java.lang.Integer"/>
+	<field name="menu_mnu_separator_before_bt" class="java.lang.Boolean"/>
+	<field name="menu_mnu_autocheck_bt" class="java.lang.Boolean"/>
+	<field name="menu_mnu_checked_bt" class="java.lang.Boolean"/>
+	<field name="menu_mnu_checkmark_bt" class="java.lang.Boolean"/>
+	<field name="menu_mnu_disabled_bt" class="java.lang.Boolean"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="27" height="19"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{menu_mnu_id_in}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="37" y="0" width="91" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{menu_mnu_description_ch}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="138" y="0" width="224" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{menu_mnu_url_ch}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

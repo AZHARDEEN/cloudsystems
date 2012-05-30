@@ -1,0 +1,315 @@
+
+--Alteração em 10/06/2010 ################################################################################################
+
+DROP TABLE resivion_status cascade;
+
+CREATE TABLE revision_status
+(
+	rst_id_in            INTEGER NOT NULL ,
+	rst_description_ch   VARCHAR(64) NOT NULL ,
+CONSTRAINT  XPKresivion_status PRIMARY KEY (rst_id_in)
+);
+
+insert into revision_status ( rst_id_in, rst_description_ch ) values ( 1, 'Sem revisão' );
+insert into revision_status ( rst_id_in, rst_description_ch ) values ( 2, 'Em revisão' );
+insert into revision_status ( rst_id_in, rst_description_ch ) values ( 3, 'Revisado' );
+
+
+alter table pgc
+add column rst_id_in            INTEGER NOT NULL default 1;
+
+alter table pgc
+add CONSTRAINT FK_RevisionStatus_Pgc FOREIGN KEY (rst_id_in) REFERENCES revision_status (rst_id_in);
+
+CREATE  INDEX XIF3pgc ON pgc
+(rst_id_in   ASC);
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON revision_status TO cloud;
+
+
+DROP TABLE IF EXISTS client CASCADE ;
+
+
+
+CREATE TABLE client
+(
+	usr_id_in            INTEGER NOT NULL ,
+	cli_id_in            INTEGER NOT NULL ,
+	cli_from_dt          TIMESTAMP NOT NULL ,
+	cli_to_dt            TIMESTAMP NULL ,
+	cli_seq_in           INTEGER NOT NULL ,
+CONSTRAINT  XPKClients PRIMARY KEY (usr_id_in,cli_seq_in),
+CONSTRAINT FK_Company_Client FOREIGN KEY (usr_id_in) REFERENCES company (usr_id_in),
+CONSTRAINT FK_User_Client FOREIGN KEY (cli_id_in) REFERENCES users (usr_id_in)
+)
+	TABLESPACE tb_cloud_data;
+
+
+
+COMMENT ON TABLE client IS 'Tabela de clientes. Um cliente está sempre vinculado a uma EMPRESA nunca a uma pessoa.';
+
+
+
+
+COMMENT ON COLUMN client.usr_id_in IS 'Usar sequence: seq_usuario';
+
+
+
+
+COMMENT ON COLUMN client.cli_id_in IS 'Usar sequence: seq_usuario';
+
+
+
+CREATE  INDEX XIF1Clients ON client
+(usr_id_in   ASC);
+
+
+
+CREATE  INDEX XIF2Clients ON client
+(cli_id_in   ASC);
+
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON client TO cloud;
+
+
+alter table pgc_page
+add column rst_id_in            INTEGER NOT NULL default 1;
+
+alter table pgc_page
+add CONSTRAINT FK_RevisionStatus_Pgc FOREIGN KEY (rst_id_in) REFERENCES revision_status (rst_id_in);
+
+
+--Alteracao em 10/07/2010 ################################################################################################
+
+DROP TABLE IF EXISTS anoto_pen_user CASCADE ;
+
+
+
+CREATE TABLE anoto_pen_user
+(
+	usr_id_in            INTEGER NOT NULL ,
+	apu_seq_in           INTEGER NOT NULL ,
+	apu_from_dt          TIMESTAMP DEFAULT  now()  NOT NULL ,
+	apu_to_dt            TIMESTAMP NULL ,
+	pen_id_ch            VARCHAR(16) NOT NULL ,
+	frm_id_in            INTEGER NOT NULL ,
+	apg_id_ch            VARCHAR(16) NOT NULL ,
+	pad_id_in            INTEGER NOT NULL ,
+CONSTRAINT  XPKAnoto_Pen_User PRIMARY KEY (frm_id_in,pad_id_in,apg_id_ch,pen_id_ch,apu_seq_in) USING INDEX TABLESPACE TB_CLOUD_INDEX ,
+CONSTRAINT FK_PenUser_User FOREIGN KEY (usr_id_in) REFERENCES person (usr_id_in),
+CONSTRAINT FK_PenUser_PenPage FOREIGN KEY (pen_id_ch, frm_id_in, apg_id_ch, pad_id_in) REFERENCES anoto_pen_page (pen_id_ch, frm_id_in, apg_id_ch, pad_id_in)
+);
+
+
+
+
+COMMENT ON COLUMN anoto_pen_user.usr_id_in IS 'Usar sequence: seq_usuario';
+
+
+
+
+COMMENT ON COLUMN anoto_pen_user.pad_id_in IS 'Código sequencial da media. Este código é gerado por sequence (seq_media).';
+
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON anoto_pen_user TO cloud;
+
+
+
+--##########################################################################################################################
+
+DROP TABLE IF EXISTS pgc_pen_page CASCADE ;
+
+
+
+DROP TABLE IF EXISTS anoto_pen_page CASCADE ;
+
+
+
+CREATE TABLE anoto_pen_page
+(
+	pen_id_ch            VARCHAR(16) NOT NULL ,
+	pdp_insert_dt        TIMESTAMP DEFAULT  now()  NULL ,
+	frm_id_in            INTEGER NOT NULL ,
+	apg_id_ch            VARCHAR(16) NOT NULL ,
+	pad_id_in            INTEGER NOT NULL ,
+	pdp_seq_in           INTEGER NOT NULL ,
+	pdp_to_dt            TIMESTAMP NULL ,
+CONSTRAINT  FormPenPAD_PK PRIMARY KEY (frm_id_in,apg_id_ch,pad_id_in,pdp_seq_in) USING INDEX TABLESPACE TB_CLOUD_INDEX ,CONSTRAINT  UK_PenPage UNIQUE (pen_id_ch,apg_id_ch) USING INDEX TABLESPACE TB_CLOUD_INDEX ,
+CONSTRAINT FK_Pen_Pads FOREIGN KEY (pen_id_ch) REFERENCES anoto_pen (pen_id_ch),
+CONSTRAINT FK_AnotoPage_AnotoPenPage FOREIGN KEY (frm_id_in, apg_id_ch, pad_id_in) REFERENCES anoto_page (frm_id_in, apg_id_ch, pad_id_in) ON DELETE CASCADE
+);
+
+
+
+COMMENT ON TABLE anoto_pen_page IS 'Cadastro de vinculação entre a caneta e uma malha, que por sua vez, está vinculado a um formulário. Um detalhe importante: uma caneta NÃO pode estar vinculado a mais de uma malha com o mesmo endereço, porém um mesmo número de malha(também conhecido como ip) pode estar associado a mais de uma aplicação.
+
+
+';
+
+
+
+
+COMMENT ON COLUMN anoto_pen_page.pad_id_in IS 'Código sequencial da media. Este código é gerado por sequence (seq_media).';
+
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON anoto_pen_page TO cloud;
+
+
+
+CREATE TABLE pgc_pen_page
+(
+	pgc_id_in            INTEGER NOT NULL ,
+	frm_id_in            INTEGER NOT NULL ,
+	apg_id_ch            VARCHAR(16) NOT NULL ,
+	pad_id_in            INTEGER NOT NULL ,
+	pdp_seq_in           INTEGER NOT NULL ,
+CONSTRAINT  XPKpgc_pen_page PRIMARY KEY (pgc_id_in,frm_id_in,apg_id_ch,pad_id_in,pdp_seq_in) USING INDEX TABLESPACE TB_CLOUD_INDEX ,
+CONSTRAINT FK_PgcPenPage_Pgc FOREIGN KEY (pgc_id_in) REFERENCES pgc (pgc_id_in) ON DELETE CASCADE,
+CONSTRAINT FK_AnotoPenPage_PgcPenPage FOREIGN KEY (frm_id_in, apg_id_ch, pad_id_in, pdp_seq_in) REFERENCES anoto_pen_page (frm_id_in, apg_id_ch, pad_id_in, pdp_seq_in)
+);
+
+
+
+
+COMMENT ON COLUMN pgc_pen_page.pgc_id_in IS 'Código sequencial da media. Este código é gerado por sequence (seq_media).';
+
+
+
+
+COMMENT ON COLUMN pgc_pen_page.pad_id_in IS 'Código sequencial da media. Este código é gerado por sequence (seq_media).';
+
+
+
+CREATE  INDEX AK_PenPageForm ON pgc_pen_page
+(frm_id_in   ASC);
+
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON pgc_pen_page TO cloud;
+
+
+
+
+--##########################################################################################################################
+--21/07/2010
+alter table anoto_page_field add column apf_sequence_in      INTEGER DEFAULT  0  NULL;
+
+ALTER TABLE ANOTO_PEN ADD COLUMN pen_serial_ch        VARCHAR(32) NULL ,
+	ADD COLUMN pen_pin_ch           INTEGER NULL;
+
+ALTER TABLE PGC_FIELD ADD COLUMN 	pfl_sequence_in      INTEGER DEFAULT  0  NULL;
+
+
+
+
+--##########################################################################################################################
+--25/07/2010 - Apenas para o projeto da Embratel.
+insert into anoto_page_field values ( 1, '21.117.12.11', '521', 'Venda cadastrada FEND', 6, false, 0,0,0,0, true, null, true, 82 );
+insert into anoto_page_field values ( 1, '21.117.12.11', '521', 'Venda rejeitada por CEP inválido', 6, false, 0,0,0,0, true, null, true, 83 );
+insert into anoto_page_field values ( 1, '21.117.12.11', '521', 'Venda rejeitada por Análise Credito', 6, false, 0,0,0,0, true, null, true, 84 );
+
+
+
+
+--##########################################################################################################################
+--29/07/2010 - Possibilitar escolher a página inicial.
+
+DROP TABLE IF EXISTS login_property CASCADE ;
+
+
+
+DROP TABLE IF EXISTS system_user_property CASCADE ;
+
+
+
+CREATE TABLE system_user_property
+(
+	sup_id_in            INTEGER NOT NULL ,
+	sup_description_ch   VARCHAR(64) NOT NULL ,
+	flt_id_in            INTEGER NOT NULL ,
+CONSTRAINT  XPKsystem_user_property PRIMARY KEY (sup_id_in) USING INDEX TABLESPACE TB_CLOUD_INDEX ,
+CONSTRAINT R_206 FOREIGN KEY (flt_id_in) REFERENCES field_type (flt_id_in)
+);
+
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON system_user_property TO cloud;
+
+
+
+GRANT SELECT ON system_user_property TO jreport;
+
+
+
+INSERT INTO system_user_property(sup_id_in, sup_description_ch, flt_id_in) VALUES (1, 'Página Inicial', 1);
+
+
+
+
+CREATE TABLE login_property
+(
+	sup_id_in            INTEGER NOT NULL ,
+	Value                VARCHAR(512) NOT NULL ,
+	usr_id_in            INTEGER NOT NULL ,
+	col_seq_in           INTEGER NOT NULL ,
+CONSTRAINT  XPKlogin_properties PRIMARY KEY (sup_id_in,usr_id_in,col_seq_in) USING INDEX TABLESPACE TB_CLOUD_INDEX ,
+CONSTRAINT R_205 FOREIGN KEY (sup_id_in) REFERENCES system_user_property (sup_id_in),
+CONSTRAINT R_207 FOREIGN KEY (usr_id_in, col_seq_in) REFERENCES collaborator (usr_id_in, col_seq_in)
+);
+
+
+
+COMMENT ON TABLE login_property IS 'Cadastro de propriedades do login que pode afetar o funcionamento do sistema com opcoes do usuário';
+
+
+
+
+COMMENT ON COLUMN login_property.usr_id_in IS 'Usar sequence: seq_usuario';
+
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON login_property TO cloud;
+
+
+
+GRANT SELECT ON login_property TO jreport;
+
+--##########################################################################################################################
+--09/08/2010 - Possibilitar escolher a página inicial.
+
+alter table anoto_page_field add column apf_pk_bt            BOOLEAN DEFAULT  FALSE  NULL;
+
+
+
+--##########################################################################################################################
+--01/09/2010 - exemplo de uso do dblink
+select dblink_connect('dexion', ' hostaddr=127.0.0.1 port=5432 dbname=dexion_db user=postgres password=xxxx');
+
+
+insert into accounting_mask
+select
+	2 as usr_id_in,
+	estrutura as acm_mask_ch,
+	case when tipo_plano_contas = 'PLANO 022' then 1 when tipo_plano_contas='PLANO 112' then 2 when tipo_plano_contas = 'PLANO MODELO' then 3 when tipo_plano_contas = 'PLANO GERAL' then 4 end as amc_id_in,
+	tipo_plano_contas as acm_description_ch,
+	now()
+from
+	dexion.c_tipos_plano_contas
+
+
+
+INSERT INTO accounting_plan ( acp_number_ch,acp_description_ch,acp_simplified_number_ch,acn_id_in,usr_id_in,acm_id_in)
+select
+	CONTA AS acp_number_ch,
+	DESCRICAO as acp_description_ch,
+	SEQUENCIA as acp_simplified_number_ch,
+	CASE WHEN NATUREZA = 'D' THEN 'D' WHEN NATUREZA = 'C' THEN 'C' ELSE 'N' END as acn_id_in,
+	2 as usr_id_in,
+	case when tipo_plano_contas = 'PLANO 022' then 1 when tipo_plano_contas='PLANO 112' then 2 when tipo_plano_contas = 'PLANO MODELO' then 3 when tipo_plano_contas = 'PLANO GERAL' then 4 end as amc_id_in
+from
+	dexion.c_plano_contas
+
+

@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<ProviderSettings xmlns="http://xmlns.oracle.com/ide/hash">
+   <hash n="dataTypeSettings">
+      <value n="sourceKey" v="oracle.javatools.db.JdbcDatabase"/>
+   </hash>
+   <value n="id" v="5e3d4715-d80d-4eec-9f39-8d0e59ce5d49"/>
+   <value n="name" v="PostgreSQL"/>
+</ProviderSettings>
