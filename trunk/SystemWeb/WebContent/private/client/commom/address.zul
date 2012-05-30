@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk>
+    <div xmlns="http://www.zkoss.org/2005/zul" apply="br.com.mcampos.web.controller.client.commom.AddressController">
+        <grid fixedLayout="true">
+            <columns>
+                <column width="20%"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <label value="##" id="labelAddressType"/>
+                    <hbox>
+                        <combobox id="addressType" value="Residencial" readonly="true">
+                            <comboitem label="Residencial" value="1"/>
+                        </combobox>
+                    </hbox>
+                </row>
+                <row>
+                    <label value="##" id="labelAddressZipCode"/>
+                    <hbox>
+                        <textbox id="zip" width="100px" maxlength="10"/>
+                    </hbox>
+                </row>
+                <row>
+                    <label value="##" id="labelAddress"/>
+                    <textbox id="address" width="99%" maxlength="255" multiline="true" rows="2"/>
+                </row>
+                <row>
+                    <label value="##" id="labelAddressDistrict"/>
+                    <textbox id="hood" width="99%" maxlength="128"/>
+                </row>
+                <row>
+                    <label value="##" id="labelAddressCountry"/>
+                    <combobox id="country" width="300px" readonly="true"></combobox>
+                </row>
+                <row>
+                    <label value="##" id="labelAddressState"/>
+                    <combobox id="state" width="300px" readonly="true"></combobox>
+                </row>
+                <row>
+                    <label value="##" id="labelAddressCity"/>
+                    <combobox id="city" width="500px" readonly="true"></combobox>
+                </row>
+                <row>
+                    <label value="##" id="labelAddressObs"/>
+                    <textbox id="addressComment" width="99%" rows="2"></textbox>
+                </row>
+            </rows>
+        </grid>
+    </div>
+</zk>

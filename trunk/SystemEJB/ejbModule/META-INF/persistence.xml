@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+  <persistence-unit name="SystemEJB">
+  	<provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:/CloudDS</jta-data-source>
+    <class>br.com.mcampos.ejb.user.usertype.UserType</class>
+    <class>br.com.mcampos.ejb.user.address.Address</class>
+    <class>br.com.mcampos.ejb.user.address.AddressType</class>
+    <class>br.com.mcampos.ejb.user.UserContact</class>
+    <class>br.com.mcampos.ejb.user.document.UserDocument</class>
+    <class>br.com.mcampos.ejb.security.UserStatus</class>
+    <class>br.com.mcampos.ejb.user.Users</class>
+    <class>br.com.mcampos.ejb.user.person.Person</class>
+    <class>br.com.mcampos.ejb.user.person.gender.Gender</class>
+    <class>br.com.mcampos.ejb.user.person.civilstate.CivilState</class>
+    <class>br.com.mcampos.ejb.user.person.title.Title</class>
+    <class>br.com.mcampos.ejb.security.log.AccessLogType</class>
+    <class>br.com.mcampos.ejb.security.log.AccessLog</class>
+    <class>br.com.mcampos.ejb.locale.City</class>
+    <class>br.com.mcampos.ejb.locale.country.Country</class>
+    <class>br.com.mcampos.ejb.locale.CountryCurrency</class>
+    <class>br.com.mcampos.ejb.locale.CountryLanguage</class>
+    <class>br.com.mcampos.ejb.locale.CountryName</class>
+    <class>br.com.mcampos.ejb.locale.Currency</class>
+    <class>br.com.mcampos.ejb.locale.Region</class>
+    <class>br.com.mcampos.ejb.locale.State</class>
+    <class>br.com.mcampos.ejb.security.Login</class>
+    <class>br.com.mcampos.ejb.params.SystemParameters</class>
+    <class>br.com.mcampos.ejb.user.company.Company</class>
+    <class>br.com.mcampos.ejb.media.Media</class>
+    <class>br.com.mcampos.ejb.security.task.Task</class>
+    <class>br.com.mcampos.ejb.security.menu.Menu</class>
+    <class>br.com.mcampos.ejb.user.company.collaborator.Collaborator</class>
+    <class>br.com.mcampos.ejb.user.company.collaborator.CollaboratorPK</class>
+    <class>br.com.mcampos.ejb.user.company.collaborator.type.CollaboratorType</class>
+    <class>br.com.mcampos.ejb.security.role.Role</class>
+    <class>br.com.mcampos.ejb.user.client.Client</class>
+    <class>br.com.mcampos.ejb.user.client.ClientPK</class>
+    <class>br.com.mcampos.ejb.user.document.type.DocumentType</class>
+    <class>br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty</class>
+    <class>br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertyPK</class>
+    <class>br.com.mcampos.ejb.system.fieldtype.FieldType</class>
+    <class>br.com.mcampos.ejb.inep.task.InepTask</class>
+    <class>br.com.mcampos.ejb.inep.task.InepTaskPK</class>
+    <class>br.com.mcampos.ejb.inep.subscription.InepSubscription</class>
+    <class>br.com.mcampos.ejb.inep.subscription.InepSubscriptionPK</class>
+    <class>br.com.mcampos.ejb.inep.test.InepTest</class>
+    <class>br.com.mcampos.ejb.inep.test.InepTestPK</class>
+    <class>br.com.mcampos.ejb.inep.entity.InepDistribution</class>
+    <class>br.com.mcampos.ejb.inep.entity.InepDistributionPK</class>
+    <class>br.com.mcampos.ejb.email.EMail</class>
+    <class>br.com.mcampos.ejb.email.parttype.EMailPartType</class>
+    <class>br.com.mcampos.ejb.email.part.EMailPart</class>
+    <class>br.com.mcampos.ejb.email.part.EMailPartPK</class>
+    <class>br.com.mcampos.ejb.user.contact.type.ContactType</class>
+    <properties>
+    	<property name="eclipselink.target-database" value="PostgreSQL"/>
+    	<property name="eclipselink.target-server" value="JBoss"/>
+    	<property name="eclipselink.jdbc.native-sql" value="true"/>
+    </properties>
+  </persistence-unit>
+</persistence>

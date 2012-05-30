@@ -1,0 +1,109 @@
+package br.com.mcampos.web.controller.authentication;
+
+import org.zkoss.util.Locales;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
+
+import br.com.mcampos.ejb.security.Login;
+import br.com.mcampos.ejb.security.LoginSession;
+import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.Credential;
+import br.com.mcampos.web.core.BaseCaptchaDialogController;
+import br.com.mcampos.web.core.mdi.BaseLoggedMDIController;
+
+public class LoginController extends BaseCaptchaDialogController<LoginSession>
+{
+	private static final long serialVersionUID = -3608637091684592684L;
+
+	@Wire( "#identification" )
+	private Textbox identification;
+
+	@Wire( "#password" )
+	private Textbox password;
+
+	public LoginController( )
+	{
+		super( );
+	}
+
+	@Override
+	protected void onOk( )
+	{
+		redirect( "/private/index.zul" );
+	}
+
+	@Override
+	protected Class<LoginSession> getSessionClass( )
+	{
+		return LoginSession.class;
+	}
+
+	@Override
+	protected boolean validate( )
+	{
+		String value;
+
+		boolean bRet = super.validate( );
+		if ( bRet == false ) {
+			return false;
+		}
+
+		value = this.identification.getValue( );
+		if ( SysUtils.isEmpty( value ) ) {
+			this.identification.setFocus( true );
+			return false;
+		}
+
+		value = this.password.getValue( );
+		if ( SysUtils.isEmpty( value ) ) {
+			this.password.setFocus( true );
+			return false;
+		}
+		LoginSession session = getSession( );
+
+		Login login = session.loginByDocument( getCredential( ) );
+		if ( login == null ) {
+			showErrorMessage( "Erro ao realizar login. Identificação inexistente no sistema", "Login" );
+			this.identification.setFocus( true );
+			return false;
+		}
+		setSessionParameter( BaseLoggedMDIController.userSessionParamName, login );
+		return true;
+	}
+
+	private Credential getCredential( )
+	{
+		Credential c = new Credential( );
+
+		c.setIdentification( this.identification.getValue( ) );
+		c.setPassword( this.password.getValue( ) );
+
+		c.setLocale( Locales.getCurrent( ) );
+		c.setRemoteAddr( Executions.getCurrent( ).getRemoteAddr( ) );
+		c.setRemoteHost( Executions.getCurrent( ).getRemoteHost( ) );
+		c.setProgram( Executions.getCurrent( ).getBrowser( ) );
+		c.setSessionId( getSessionID( ) );
+
+		return c;
+	}
+
+	@Override
+	public void doAfterCompose( Window comp ) throws Exception
+	{
+		super.doAfterCompose( comp );
+
+		this.identification.setText( getSession( ).getProperty( "debug.login" ) );
+		this.password.setText( getSession( ).getProperty( "debug.password" ) );
+	}
+
+	@Listen( "onClick = #cmdForgotPassword" )
+	public void recoverPassword( Event evt )
+	{
+		gotoPage( "/public/forgot_password.zul", true );
+	}
+
+}

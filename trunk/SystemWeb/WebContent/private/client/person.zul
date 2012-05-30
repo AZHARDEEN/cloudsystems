@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<window width="100%" height="100%" closable="true" border="none" title="Cadastro de Pessoas" apply="br.com.mcampos.web.controller.client.ClientController">
+	    <script type="text/JavaScript" defer="true">jq(document).ready( function() { jq('$cpf').setMask ( 'cpf' ); } );</script>
+		<div id="divList" width="100%" height="100%">
+			<hlayout sclass="z-valign-middle">
+				<paging id="topPaging"/>
+				<div fulfill="=/templates/toolbar_crud_buttons.zul" />
+				<div>
+					<label value="Registros" />
+					<combobox id="comboMaxRecords" readonly="true" >
+						<comboitem label="20" value="20"/>
+						<comboitem label="30" value="30"/>
+						<comboitem label="50" value="50"/>
+						<comboitem label="100" value="100"/>
+						<comboitem label="150" value="150"/>
+						<comboitem label="200" value="200"/>
+					</combobox>
+				</div>
+			</hlayout>
+			<listbox vflex="true" id="listTable" rows="30">
+                <listhead>
+                    <listheader align="center" label="Código" value="userId" width="80px"/>
+                    <listheader align="left" label="CPF" sort="auto" value="CPF" width="150px"/>
+                    <listheader align="left" label="Nome" sort="auto" value="name" width="50%"/>
+                    <listheader align="left" label="E-mail" sort="auto" value="name" width="50%"/>
+                    <listheader align="left" label="Desde" sort="auto" value="fromDate" width="150px"/>
+                </listhead>
+			</listbox>
+		</div>
+		<div id="divData" visible="false">
+			<tabbox id="personTab">
+			    <tabs>
+			        <tab label="Dados Pessoais"/>
+			        <tab label="Endereço"/>
+			        <tab label="Documentos"/>
+			        <tab label="Contatos"/>
+			    </tabs>
+			    <tabpanels>
+			        <tabpanel >
+				        <grid fixedLayout="true">
+				            <columns>
+				                <column width="20%"/>
+				                <column/>
+				            </columns>
+				            <rows>
+				                <row>
+				                    <label value="CPF"/>
+				                    <textbox id="cpf" width="200px" maxlength="14" />
+				                </row>
+				                <row>
+				                    <label value="Nome Completo"/>
+				                    <textbox id="name" hflex = "1" maxlength="128"/>
+				                </row>
+				                <row>
+				                    <label value="Sexo"/>
+				                    <combobox id="gender" width="200px" readonly="true" apply= "br.com.mcampos.web.core.combobox.GenderComboboxController"/>
+				                </row>
+				                <row>
+				                    <label value="Tratamento"/>
+				                    <combobox id="title" width="200px" readonly="true" />
+				                </row>
+				                <row>
+				                    <label value="Estado Civil"/>
+				                    <combobox id="maritalStatus" width="200px" readonly="true" apply="br.com.mcampos.web.core.combobox.CivilStateComboboxController"/>
+				                </row>
+				                <row>
+				                    <label value="Data Nascimento"/>
+				                    <hbox>
+				                        <datebox id="birthdate" format="dd/MM/yyyy"/>
+				                        <div align="center">
+				                            <label value="DD/MM/YYYY. Ex.: 25/12/2009"/>
+				                        </div>
+				                    </hbox>
+				                </row>
+				                <row>
+				                    <label value="Naturalidade"/>
+				                    <vbox width="100%">
+				                        <combobox id="bornState" width="300px" readonly="true" />
+				                        <combobox id="bornCity" width="500px" readonly="true" />
+				                    </vbox>
+				                </row>
+				                <row>
+				                    <label value="Nome do Pai"/>
+				                    <textbox id="fatherName" hflex = "1" maxlength="128"/>
+				                </row>
+				                <row>
+				                    <label value="Nome da Mãe"/>
+				                    <textbox id="motherName" hflex = "1" maxlength="128"/>
+				                </row>
+				            </rows>
+				        </grid>
+			        </tabpanel>
+			        <tabpanel fulfill="=/private/client/commom/address.zul"></tabpanel>
+			        <tabpanel fulfill="=/private/client/commom/document.zul"></tabpanel>
+			        <tabpanel fulfill="=/private/client/commom/contact.zul"></tabpanel>
+			    </tabpanels>
+			</tabbox>
+			<separator></separator>
+			<div fulfill="=/templates/submit_cancel.zul" />
+		</div>
+	</window>
+</zk>
