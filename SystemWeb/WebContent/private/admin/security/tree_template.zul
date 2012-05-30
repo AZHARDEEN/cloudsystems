@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<div height="100%" id="divListBoxRecord" vflex="1">
+	    <tree id="tree" vflex="true" pagingPosition="both" mold="paging" autopaging="true">
+	        <treecols>
+	            <treecol id="treeColRole" label="Descrição" hflex = "1" />
+	        </treecols>
+	    </tree>
+	    <menupopup id="treePopup">
+	    	<menuitem label="Remover Item Selecionado" id="removeTreeitem" image="/img/icontexto-webdev-remove-016x016.png" />
+	    </menupopup>
+	    <menupopup id="treePopupMove">
+	    	<menuitem label="Mover Item para Raiz" id="moveTreeitemToRoot" image="/img/icontexto-webdev-site-map-016x016.png" />
+	    	<menuitem label="Remover Item Selecionado" id="removeTreeitemMove" image="/img/icontexto-webdev-remove-016x016.png" />
+	    </menupopup>
+	</div>
+</zk>

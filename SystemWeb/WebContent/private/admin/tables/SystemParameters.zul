@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window width="100%" height="100%" closable="true" border="none" title="Cadastro Parâmetros do Sistema"
+            apply="br.com.mcampos.web.controller.tables.SystemParametersController">
+        <borderlayout>
+            <center flex="true">
+                <listbox vflex="true" autopaging="true" id="listTable" multiple="true" mold="paging">
+                    <listhead>
+                        <listheader align="left" label="Código" width="30%" value="id"/>
+                        <listheader align="left" label="Descrição" sort="auto" value="Description"/>
+                        <listheader align="left" label="Valor" sort="auto" value="value"/>
+                    </listhead>
+                </listbox>
+            </center>
+            <east autoscroll="true" splittable="true" width="50%">
+                <div id="divEast">
+                    <div id="divInfo">
+                        <grid fixedLayout="true">
+                            <columns>
+                                <column label="Campo" width="100%"/>
+                                <column label="Valor"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <label value="Código"/>
+                                    <label id="infoId" width="100%"/>
+                                </row>
+                                <row>
+                                    <label value="Descrição"/>
+                                    <label id="infoDescription" width="100%"/>
+                                </row>
+                                <row>
+                                    <label value="Valor"/>
+                                    <label id="infoValue" width="100%"/>
+                                </row>
+                            </rows>
+                        </grid>
+                    <separator/>
+                    <div fulfill="=/templates/crud_buttons.zul"></div>
+                    </div>
+                    <div id="divEdit" visible="false">
+                        <grid fixedLayout="true">
+                            <columns>
+                                <column label="Campo" width="150px"/>
+                                <column label="Valor"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <label value="Código"/>
+                                    <textbox id="id" use="br.com.mcampos.web.core.dbwidgets.DBTextbox" PrimaryKey="true" width="100%"/>
+                                </row>
+                                <row>
+                                    <label value="Descrição"/>
+                                    <textbox id="description" width="100%" use="br.com.mcampos.web.core.dbwidgets.DBTextbox"/>
+                                </row>
+                                <row>
+                                    <label value="Valor"/>
+                                    <textbox id="value" width="100%" use="br.com.mcampos.web.core.dbwidgets.DBTextbox" multiline="true"/>
+                                </row>
+                            </rows>
+                        </grid>
+                    <separator/>
+                    <div fulfill="=/templates/save_cancel.zul"></div>
+                    </div>
+                </div>
+            </east>
+        </borderlayout>
+    </window>
+</zk>
