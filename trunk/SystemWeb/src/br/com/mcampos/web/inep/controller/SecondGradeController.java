@@ -14,6 +14,8 @@ public class SecondGradeController extends CoordinatorGradeController
 		}
 		showGrade( grade );
 
+		getMainWindow( ).setTitle( "Segunda Correção: [" + grade.getRevisor( ).getCollaborator( ).getPerson( ).getName( ) + "]" );
+
 	}
 
 }

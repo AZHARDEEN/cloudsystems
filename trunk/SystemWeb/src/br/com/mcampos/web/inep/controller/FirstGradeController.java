@@ -13,6 +13,7 @@ public class FirstGradeController extends CoordinatorGradeController
 			return;
 		}
 		showGrade( grade );
+		getMainWindow( ).setTitle( "Primeira Correção: [" + grade.getRevisor( ).getCollaborator( ).getPerson( ).getName( ) + "]" );
 	}
 
 }

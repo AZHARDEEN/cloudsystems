@@ -14,12 +14,13 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Toolbarbutton;
+import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.web.core.BaseController;
 import br.com.mcampos.web.inep.controller.event.CoordinatorEventChange;
 
-public abstract class CoordinatorGradeController extends BaseController
+public abstract class CoordinatorGradeController extends BaseController<Window>
 {
 	private static final long serialVersionUID = 5912281475527567535L;
 
@@ -40,12 +41,12 @@ public abstract class CoordinatorGradeController extends BaseController
 	protected abstract void showGrade( int nIndex, InepDistribution grade );
 
 	@Override
-	public void doAfterCompose( Component comp ) throws Exception
+	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
 		getCmdInepSave( ).setVisible( false );
 		getCmdCancel( ).setVisible( false );
-		this.sv6.setSelectedIndex( 0 );
+		this.sv6.setSelectedItem( null );
 		for ( Radio r : this.options ) {
 			r.setDisabled( true );
 		}
@@ -98,7 +99,9 @@ public abstract class CoordinatorGradeController extends BaseController
 			r.setDisabled( true );
 			r.setSclass( "" );
 		}
-		this.options[ d.getNota( ) ].setSclass( "strongRadio" );
+		if ( d.getNota( ) != null ) {
+			this.options[ d.getNota( ) ].setSclass( "strongRadio" );
+		}
 		setCurrent( d );
 	}
 
