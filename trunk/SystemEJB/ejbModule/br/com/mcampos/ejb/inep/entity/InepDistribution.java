@@ -16,7 +16,6 @@ import javax.persistence.Table;
 import br.com.mcampos.ejb.inep.revisor.InepRevisor;
 import br.com.mcampos.ejb.inep.test.InepTest;
 
-
 /**
  * The persistent class for the inep_distribution database table.
  * 
@@ -24,10 +23,15 @@ import br.com.mcampos.ejb.inep.test.InepTest;
 @Entity
 @Table( name = "inep_distribution", schema = "inep" )
 @NamedQueries( {
-		@NamedQuery( name = InepDistribution.getAllFromRevisor, query = "select o from InepDistribution o where o.revisor = ?1 and o.status.id = 1 and o.revisor.task = o.test.task order by o.test.subscription" ),
-	@NamedQuery( name = InepDistribution.getAllFromTest, query = "select o from InepDistribution o where o.test = ?1 and o.status.id = 2" )
+		@NamedQuery(
+				name = InepDistribution.getAllFromRevisor,
+				query = "select o from InepDistribution o where o.revisor = ?1 and o.status.id = 1 and o.revisor.task = o.test.task order by o.test.subscription" ),
+		@NamedQuery(
+				name = InepDistribution.getAllFromTest,
+				query = "select o from InepDistribution o where o.test = ?1 and o.status.id = 2" )
 } )
-public class InepDistribution implements Serializable {
+public class InepDistribution implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 	public static final String getAllFromRevisor = "InepDistribution.getAllFromRevisor";
 	public static final String getAllFromTest = "InepDistribution.getAllFromTest";
@@ -41,18 +45,26 @@ public class InepDistribution implements Serializable {
 
 	@ManyToOne( fetch = FetchType.EAGER, optional = false )
 	@JoinColumns( {
-		@JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
-		@JoinColumn( name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ),
-		@JoinColumn( name = "col_seq_in", referencedColumnName = "col_seq_in", updatable = false, insertable = false, nullable = false )
+			@JoinColumn(
+					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "col_seq_in", referencedColumnName = "col_seq_in", updatable = false, insertable = false,
+					nullable = false )
 	} )
 	private InepRevisor revisor;
 
 	@ManyToOne( fetch = FetchType.EAGER, optional = false )
 	@JoinColumns( {
-		@JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
-		@JoinColumn( name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ),
-		@JoinColumn( name = "tsk_id_in", referencedColumnName = "tsk_id_in", updatable = false, insertable = false, nullable = false ),
-		@JoinColumn( name = "isc_id_ch", referencedColumnName = "isc_id_ch", updatable = false, insertable = false, nullable = false ) } )
+			@JoinColumn(
+					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "tsk_id_in", referencedColumnName = "tsk_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "isc_id_ch", referencedColumnName = "isc_id_ch", updatable = false, insertable = false, nullable = false ) } )
 	private InepTest test;
 
 	@Column( name = "dis_adequacao_in" )
@@ -76,7 +88,8 @@ public class InepDistribution implements Serializable {
 	@Column( name = "dis_obs_tx" )
 	private String obs;
 
-	public InepDistribution() {
+	public InepDistribution( )
+	{
 	}
 
 	public InepDistribution( InepRevisor r, InepTest t )
@@ -84,14 +97,16 @@ public class InepDistribution implements Serializable {
 		getId( ).set( r, t );
 	}
 
-	public InepDistributionPK getId() {
+	public InepDistributionPK getId( )
+	{
 		if ( this.id == null ) {
-			this.id = new InepDistributionPK();
+			this.id = new InepDistributionPK( );
 		}
 		return this.id;
 	}
 
-	public void setId(InepDistributionPK id) {
+	public void setId( InepDistributionPK id )
+	{
 		this.id = id;
 	}
 
@@ -146,9 +161,6 @@ public class InepDistribution implements Serializable {
 
 	public Integer getNota( )
 	{
-		if ( this.nota == null ) {
-			this.nota = 0;
-		}
 		return this.nota;
 	}
 
@@ -192,7 +204,7 @@ public class InepDistribution implements Serializable {
 	{
 		this.revisor = revisor;
 		if ( getRevisor( ) != null ) {
-			getId( ).set( revisor  );
+			getId( ).set( revisor );
 		}
 	}
 
