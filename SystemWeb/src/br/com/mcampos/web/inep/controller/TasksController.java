@@ -19,6 +19,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Radiogroup;
+import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.packs.InepPackage;
@@ -29,7 +30,7 @@ import br.com.mcampos.web.core.BaseLoggedController;
 import br.com.mcampos.web.inep.controller.event.CoordinatorEventChange;
 import br.com.mcampos.web.inep.controller.renderer.InepDistributionRenderer;
 
-public class TasksController extends BaseLoggedController
+public class TasksController extends BaseLoggedController<Window>
 {
 	private static final long serialVersionUID = -4229563648862167526L;
 	public static final String coordinatorEvent = "coordinatorQueueEvent";
@@ -66,7 +67,7 @@ public class TasksController extends BaseLoggedController
 	private InepRevisor revisor;
 
 	@Override
-	public void doAfterCompose( Component comp ) throws Exception
+	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
 		getListbox( ).setItemRenderer( new InepDistributionRenderer( ) );
@@ -110,12 +111,14 @@ public class TasksController extends BaseLoggedController
 	{
 		if ( rev != null ) {
 			for ( Radiogroup item : this.notas ) {
-				item.setSelectedIndex( 0 );
+				item.setSelectedItem( null );
 			}
 			this.divGrid.setVisible( true );
 			showFrame( );
 			this.divListbox.setVisible( false );
-			this.notas[ 0 ].setSelectedIndex( rev.getNota( ) );
+			if ( rev.getNota( ) != null ) {
+				this.notas[ 0 ].setSelectedIndex( rev.getNota( ) );
+			}
 		}
 		else {
 			this.divFrame.setVisible( true );
@@ -141,6 +144,7 @@ public class TasksController extends BaseLoggedController
 				DlgComment dlg = ( (DlgComment) comp );
 
 				dlg.setDistribution( rev );
+				dlg.setMainController( this );
 				dlg.doModal( );
 			}
 		}
