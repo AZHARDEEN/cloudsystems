@@ -28,13 +28,21 @@ import br.com.mcampos.ejb.inep.test.InepTest;
 				query = "select o from InepDistribution o where o.revisor = ?1 and o.status.id = 1 and o.revisor.task = o.test.task order by o.test.subscription" ),
 		@NamedQuery(
 				name = InepDistribution.getAllFromTest,
-				query = "select o from InepDistribution o where o.test = ?1 and o.status.id = 2" )
+				query = "select o from InepDistribution o where o.test = ?1 and o.status.id = 2" ),
+		@NamedQuery(
+				name = InepDistribution.getRevisorCounter,
+				query = "select o.status.id, count(o) from InepDistribution o where o.revisor = ?1 group by o.status.id" ),
+		@NamedQuery(
+				name = InepDistribution.getCoordCounter,
+				query = "select o.status.id, count(o) from InepDistribution o where o.test.task = ?1 group by o.status.id" )
 } )
 public class InepDistribution implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	public static final String getAllFromRevisor = "InepDistribution.getAllFromRevisor";
 	public static final String getAllFromTest = "InepDistribution.getAllFromTest";
+	public static final String getRevisorCounter = "InepDistribution.getRevisorCounter";
+	public static final String getCoordCounter = "InepDistribution.getCoordinatorCounter";
 
 	@EmbeddedId
 	private InepDistributionPK id;

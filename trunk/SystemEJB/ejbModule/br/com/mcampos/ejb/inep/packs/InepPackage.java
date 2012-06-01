@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.inep.packs;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -11,9 +12,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import br.com.mcampos.ejb.user.company.Company;
-
 
 /**
  * The persistent class for the inep_package database table.
@@ -30,34 +32,45 @@ public class InepPackage implements Serializable, Comparable<InepPackage>
 	@EmbeddedId
 	private InepPackagePK id;
 
-	@Column(name="pct_code_ch")
+	@Column( name = "pct_code_ch" )
 	private String description;
-
 
 	@ManyToOne( fetch = FetchType.EAGER, optional = false )
 	@JoinColumn( name = "usr_id_in", insertable = false, updatable = false )
 	private Company company;
 
+	@Column( name = "pct_init_dt" )
+	@Temporal( TemporalType.DATE )
+	private Date initDate;
 
-	public InepPackage() {
+	@Column( name = "pct_end_dt" )
+	@Temporal( TemporalType.DATE )
+	private Date endDate;
+
+	public InepPackage( )
+	{
 	}
 
-	public InepPackagePK getId() {
+	public InepPackagePK getId( )
+	{
 		if ( this.id == null ) {
-			this.id = new InepPackagePK();
+			this.id = new InepPackagePK( );
 		}
 		return this.id;
 	}
 
-	public void setId(InepPackagePK id) {
+	public void setId( InepPackagePK id )
+	{
 		this.id = id;
 	}
 
-	public String getDescription() {
+	public String getDescription( )
+	{
 		return this.description;
 	}
 
-	public void setDescription(String pctCodeCh) {
+	public void setDescription( String pctCodeCh )
+	{
 		this.description = pctCodeCh;
 	}
 
@@ -107,4 +120,23 @@ public class InepPackage implements Serializable, Comparable<InepPackage>
 		}
 	}
 
+	public Date getInitDate( )
+	{
+		return this.initDate;
+	}
+
+	public void setInitDate( Date initDate )
+	{
+		this.initDate = initDate;
+	}
+
+	public Date getEndDate( )
+	{
+		return this.endDate;
+	}
+
+	public void setEndDate( Date endDate )
+	{
+		this.endDate = endDate;
+	}
 }

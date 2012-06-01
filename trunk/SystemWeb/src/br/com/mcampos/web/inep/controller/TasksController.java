@@ -19,8 +19,10 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Radiogroup;
+import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.dto.inep.InepTaskCounters;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.packs.InepPackage;
 import br.com.mcampos.ejb.inep.revisor.InepRevisor;
@@ -38,31 +40,38 @@ public class TasksController extends BaseLoggedController<Window>
 	private TeamSession session;
 
 	@Wire
-	Component mainCpomponent;
+	private Component mainCpomponent;
 
 	@Wire( "listbox#listTable" )
-	Listbox listbox;
+	private Listbox listbox;
 
 	@Wire( value = "paging" )
 	private List<Paging> pagings;
 
 	@Wire( "radiogroup" )
-	Radiogroup[ ] notas;
+	private Radiogroup[ ] notas;
 
 	@Wire
-	Combobox comboEvent;
+	private Combobox comboEvent;
 
 	@Wire( "#divGrid" )
-	Div divGrid;
+	private Div divGrid;
 
 	@Wire( "#divListbox" )
-	Div divListbox;
+	private Div divListbox;
 
 	@Wire( "#divFrame" )
-	Div divFrame;
+	private Div divFrame;
 
 	@Wire( "#framePdf" )
-	Iframe framePdf;
+	private Iframe framePdf;
+
+	@Wire
+	private Toolbarbutton countVariance;
+	@Wire
+	private Toolbarbutton countRevised;
+	@Wire
+	private Toolbarbutton countAll;
 
 	private InepRevisor revisor;
 
@@ -73,6 +82,7 @@ public class TasksController extends BaseLoggedController<Window>
 		getListbox( ).setItemRenderer( new InepDistributionRenderer( ) );
 		loadCombobox( );
 		// this.divGrid.setVisible( false );
+		updateCounters( );
 	}
 
 	protected Listbox getListbox( )
@@ -105,6 +115,7 @@ public class TasksController extends BaseLoggedController<Window>
 			list = getSession( ).getTests( (InepPackage) item.getValue( ), getAuthentication( ) );
 		}
 		getListbox( ).setModel( new ListModelList<InepDistribution>( list ) );
+		updateCounters( );
 	}
 
 	protected void showFields( InepDistribution rev )
@@ -173,6 +184,7 @@ public class TasksController extends BaseLoggedController<Window>
 			Messagebox.show( "Antes de finalizar uma correção, uma tarefa deve ser selecionada primeiro", "Correção",
 					Messagebox.OK, Messagebox.INFORMATION );
 		}
+		updateCounters( );
 	}
 
 	@Listen( "onClick = #cmdCancel" )
@@ -183,6 +195,7 @@ public class TasksController extends BaseLoggedController<Window>
 		this.divListbox.setVisible( true );
 		// this.divGrid.setVisible( false );
 		getListbox( ).clearSelection( );
+		updateCounters( );
 	}
 
 	private void showFrame( )
@@ -223,6 +236,37 @@ public class TasksController extends BaseLoggedController<Window>
 					getAuthentication( ) );
 		}
 		return this.revisor;
+	}
+
+	private void updateCounters( )
+	{
+		InepTaskCounters dto = getSession( ).getCounters( getRevisor( ) );
+		if ( dto != null ) {
+			int total = dto.getTasks( ) + dto.getRevised( ) + dto.getVariance( );
+			double percent = 0;
+
+			if ( total == 0 )
+			{
+				this.countAll.setLabel( "" + dto.getTasks( ) );
+				this.countRevised.setLabel( "" + dto.getRevised( ) );
+				this.countVariance.setLabel( "" + dto.getVariance( ) );
+			}
+			else
+			{
+				percent = ( (double) dto.getTasks( ) ) / ( (double) total );
+				this.countAll.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getTasks( ), total, percent ) );
+				percent = ( (double) dto.getRevised( ) ) / ( (double) total );
+				this.countRevised.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getRevised( ), total, percent ) );
+				percent = ( (double) dto.getVariance( ) ) / ( (double) total );
+				this.countVariance.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getVariance( ), total, percent ) );
+			}
+		}
+		else
+		{
+			this.countAll.setLabel( "" );
+			this.countRevised.setLabel( "" );
+			this.countVariance.setLabel( "" );
+		}
 	}
 
 }

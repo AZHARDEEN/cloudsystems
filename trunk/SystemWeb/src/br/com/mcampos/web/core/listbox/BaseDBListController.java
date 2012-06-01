@@ -85,7 +85,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 				for ( Paging item : getPaging( ) ) {
 					item.setVisible( false );
 				}
-				getListbox( ).setModel( new ListModelList<ENTITY>( getPagingSession( ).getAll( ) ) );
+				getListbox( ).setModel( new ListModelList<ENTITY>( getList( ) ) );
 			}
 		}
 	}
@@ -264,20 +264,24 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 	protected void loadPage( int activePage )
 	{
 		getListbox( ).setModel(
-				new ListModelList<ENTITY>( getPagingSession( ).getAll( null,
-						new DBPaging( activePage, ListboxParams.maxListBoxPageSize ) ) ) );
+				new ListModelList<ENTITY>( getAll( activePage ) ) );
+	}
+
+	protected Collection<ENTITY> getAll( int activePage )
+	{
+		return getPagingSession( ).getAll( null, new DBPaging( activePage, ListboxParams.maxListBoxPageSize ) );
 	}
 
 	private EventListener<PagingEvent> getEventListener( )
 	{
 		return new EventListener<PagingEvent>( )
-				{
+		{
 			@Override
 			public void onEvent( PagingEvent event )
 			{
 				onPaging( event );
 			}
-				};
+		};
 	}
 
 	@SuppressWarnings( "unchecked" )
