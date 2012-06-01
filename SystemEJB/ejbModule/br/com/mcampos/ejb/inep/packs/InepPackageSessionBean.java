@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionBean;
+import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
 /**
@@ -17,7 +18,7 @@ import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 @Stateless( name = "InepPackageSession", mappedName = "InepPackageSession" )
 @LocalBean
 public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepPackage> implements InepPackageSession,
-InepPackageSessionLocal
+		InepPackageSessionLocal
 {
 	@Override
 	protected Class<InepPackage> getEntityClass( )
@@ -38,11 +39,17 @@ InepPackageSessionLocal
 	@Override
 	public List<InepPackage> getAll( Authentication auth )
 	{
+		return getAll( auth, null );
+	}
+
+	@Override
+	public List<InepPackage> getAll( Authentication auth, DBPaging page )
+	{
 		Collaborator c = getCollaboratorSession( ).find( auth );
 		if ( c == null ) {
 			return Collections.emptyList( );
 		}
-		return findByNamedQuery( InepPackage.getAll, c.getCompany( ) );
+		return findByNamedQuery( InepPackage.getAll, page, c.getCompany( ) );
 	}
 
 }

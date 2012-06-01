@@ -10,6 +10,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import br.com.mcampos.dto.Authentication;
+import br.com.mcampos.dto.inep.InepTaskCounters;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionSessionLocal;
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
@@ -171,7 +172,8 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		}
 		rev.setStatus( getEntityManager( ).find( DistributionStatus.class, 2 ) );
 		if ( rev.getRevisor( ).isCoordenador( ).equals( false ) ) {
-			List<InepDistribution> others = this.distributionSession.findByNamedQuery( InepDistribution.getAllFromTest, rev.getTest( ) );
+			List<InepDistribution> others = this.distributionSession.findByNamedQuery( InepDistribution.getAllFromTest,
+					rev.getTest( ) );
 			for ( InepDistribution other : others )
 			{
 				if ( other.equals( rev ) ) {
@@ -188,8 +190,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 				}
 				if ( variance >= threshold || ( other.getNota( ) > 5 && rev.getNota( ).equals( other.getNota( ) ) == false ) )
 				{
-					List<InepRevisor> coordinators = this.revisorSession.findByNamedQuery( InepRevisor.getAllCoordinatorsToTask, rev.getRevisor( ).getTask( ) );
-					for ( InepRevisor coordinator : coordinators  )
+					List<InepRevisor> coordinators = this.revisorSession.findByNamedQuery( InepRevisor.getAllCoordinatorsToTask,
+							rev.getRevisor( ).getTask( ) );
+					for ( InepRevisor coordinator : coordinators )
 					{
 						InepDistribution dist = this.distributionSession
 								.get( new InepDistributionPK( coordinator, rev.getTest( ) ) );
@@ -245,4 +248,45 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		return obj;
 	}
 
+	@Override
+	public InepTaskCounters getCounters( InepRevisor rev )
+	{
+		InepTaskCounters dto = new InepTaskCounters( );
+		Query query;
+		if ( rev.isCoordenador( ) ) {
+			query = getEntityManager( ).createNamedQuery( InepDistribution.getCoordCounter );
+			query.setParameter( 1, rev.getTask( ) );
+		}
+		else {
+			query = getEntityManager( ).createNamedQuery( InepDistribution.getRevisorCounter );
+			query.setParameter( 1, rev );
+		}
+		try {
+			List<Object[ ]> values = query.getResultList( );
+			if ( values != null ) {
+				for ( Object[ ] obj : values )
+				{
+					int status = ( (Integer) obj[ 0 ] );
+					Long count = ( (Long) obj[ 1 ] );
+					switch ( status )
+					{
+					case 1:
+						dto.setTasks( count.intValue( ) );
+						break;
+					case 2:
+						dto.setRevised( count.intValue( ) );
+						break;
+					case 3:
+						dto.setVariance( count.intValue( ) );
+						break;
+					}
+				}
+			}
+		}
+		catch ( Exception e )
+		{
+			e = null;
+		}
+		return dto;
+	}
 }
