@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.inep.subscription;
+package br.com.mcampos.ejb.inep.entity;
 
 import java.io.Serializable;
 
@@ -11,8 +11,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import br.com.mcampos.ejb.inep.packs.InepPackage;
-import br.com.mcampos.ejb.inep.task.InepTask;
 
 
 /**

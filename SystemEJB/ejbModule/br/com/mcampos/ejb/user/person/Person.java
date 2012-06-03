@@ -1,6 +1,5 @@
 package br.com.mcampos.ejb.user.person;
 
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -15,7 +14,6 @@ import br.com.mcampos.ejb.user.Users;
 import br.com.mcampos.ejb.user.person.civilstate.CivilState;
 import br.com.mcampos.ejb.user.person.gender.Gender;
 import br.com.mcampos.ejb.user.person.title.Title;
-
 
 @Entity
 @Table( name = "\"person\"" )
@@ -55,13 +53,11 @@ public class Person extends Users implements Serializable
 	@Column( name = "usr_middle_name_ch" )
 	private String middleName;
 
-
-	public Person()
+	public Person( )
 	{
 	}
 
-
-	public CivilState getCivilState()
+	public CivilState getCivilState( )
 	{
 		return this.civilState;
 	}
@@ -71,7 +67,7 @@ public class Person extends Users implements Serializable
 		this.civilState = state;
 	}
 
-	public Gender getGender()
+	public Gender getGender( )
 	{
 		return this.gender;
 	}
@@ -81,7 +77,7 @@ public class Person extends Users implements Serializable
 		this.gender = gender;
 	}
 
-	public Title getTitle()
+	public Title getTitle( )
 	{
 		return this.title;
 	}
@@ -91,7 +87,7 @@ public class Person extends Users implements Serializable
 		this.title = title;
 	}
 
-	public City getBornCity()
+	public City getBornCity( )
 	{
 		return this.bornCity;
 	}
@@ -101,7 +97,7 @@ public class Person extends Users implements Serializable
 		this.bornCity = bornCity;
 	}
 
-	public String getFatherName()
+	public String getFatherName( )
 	{
 		return this.fatherName;
 	}
@@ -111,7 +107,7 @@ public class Person extends Users implements Serializable
 		this.fatherName = usr_father_name_ch;
 	}
 
-	public String getFirstName()
+	public String getFirstName( )
 	{
 		return this.firstName;
 	}
@@ -121,8 +117,7 @@ public class Person extends Users implements Serializable
 		this.firstName = usr_first_name_ch;
 	}
 
-
-	public String getLastName()
+	public String getLastName( )
 	{
 		return this.lastName;
 	}
@@ -132,7 +127,7 @@ public class Person extends Users implements Serializable
 		this.lastName = usr_last_name_ch;
 	}
 
-	public String getMiddleName()
+	public String getMiddleName( )
 	{
 		return this.middleName;
 	}
@@ -142,7 +137,7 @@ public class Person extends Users implements Serializable
 		this.middleName = usr_middle_name_ch;
 	}
 
-	public String getMotherName()
+	public String getMotherName( )
 	{
 		return this.motherName;
 	}

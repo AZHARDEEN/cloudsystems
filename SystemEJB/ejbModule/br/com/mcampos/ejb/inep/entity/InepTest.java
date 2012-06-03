@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.inep.test;
+package br.com.mcampos.ejb.inep.entity;
 
 import java.io.Serializable;
 
@@ -10,8 +10,6 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import br.com.mcampos.ejb.inep.subscription.InepSubscription;
-import br.com.mcampos.ejb.inep.task.InepTask;
 import br.com.mcampos.ejb.media.Media;
 
 /**

@@ -25,7 +25,7 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 	private static final long serialVersionUID = 4709477127092943298L;
 	public static final String queueName = "changeCompanyEventQueue";
 
-	private MenuFacade session = null;
+	private transient MenuFacade session = null;
 
 	@Wire( "#mainMenu" )
 	private Menubar mainMenu;
@@ -66,7 +66,7 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 		if ( this.mainMenu.getChildren( ) != null ) {
 			this.mainMenu.getChildren( ).clear( );
 		}
-		List<br.com.mcampos.ejb.security.menu.Menu> menus = getSession( ).getMenus( getAuthentication( ) );
+		List<br.com.mcampos.ejb.security.menu.Menu> menus = getSession( ).getMenus( getCurrentCollaborator( ) );
 		for ( br.com.mcampos.ejb.security.menu.Menu item : menus ) {
 			getDynamicMenu( ).getParentComponent( item );
 		}
@@ -105,7 +105,7 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 	{
 		super.doAfterCompose( comp );
 		EventQueues.lookup( queueName ).subscribe( new EventListener<Event>( )
-				{
+		{
 			@Override
 			public void onEvent( Event evt )
 			{
@@ -119,7 +119,7 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 					}
 				}
 			}
-				} );
+		} );
 	}
 
 	protected DynamicMenu getDynamicMenu( )

@@ -7,10 +7,11 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.inep.packs.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
+import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
 /**
  * Session Bean implementation class InepSubscriptionSessionBean
@@ -18,7 +19,7 @@ import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 @Stateless( name = "InepSubscriptionSession", mappedName = "InepSubscriptionSession" )
 @LocalBean
 public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscription> implements InepSubscriptionSession,
-InepSubscriptionSessionLocal
+		InepSubscriptionSessionLocal
 {
 	@EJB
 	InepPackageSessionLocal eventSession;
@@ -29,6 +30,7 @@ InepSubscriptionSessionLocal
 		return InepSubscription.class;
 	}
 
+	@Override
 	public List<InepSubscription> getAll( InepPackage event )
 	{
 		List<InepSubscription> list = Collections.emptyList( );
@@ -46,7 +48,7 @@ InepSubscriptionSessionLocal
 	}
 
 	@Override
-	public List<InepPackage> getEvents( Authentication auth )
+	public List<InepPackage> getEvents( Collaborator auth )
 	{
 		return getEventSession( ).getAll( auth );
 	}

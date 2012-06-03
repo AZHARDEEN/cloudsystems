@@ -6,7 +6,9 @@ import java.util.List;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventQueues;
+import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Combobox;
@@ -23,24 +25,20 @@ import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.dto.inep.InepTaskCounters;
+import br.com.mcampos.ejb.inep.entity.DistributionStatus;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
-import br.com.mcampos.ejb.inep.packs.InepPackage;
-import br.com.mcampos.ejb.inep.revisor.InepRevisor;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.team.TeamSession;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.web.core.BaseLoggedController;
+import br.com.mcampos.web.core.BaseDBLoggedController;
 import br.com.mcampos.web.inep.controller.event.CoordinatorEventChange;
 import br.com.mcampos.web.inep.controller.renderer.InepDistributionRenderer;
 
-public class TasksController extends BaseLoggedController<Window>
+public class TasksController extends BaseDBLoggedController<TeamSession>
 {
 	private static final long serialVersionUID = -4229563648862167526L;
 	public static final String coordinatorEvent = "coordinatorQueueEvent";
-
-	private TeamSession session;
-
-	@Wire
-	private Component mainCpomponent;
 
 	@Wire( "listbox#listTable" )
 	private Listbox listbox;
@@ -74,6 +72,8 @@ public class TasksController extends BaseLoggedController<Window>
 	private Toolbarbutton countAll;
 
 	private InepRevisor revisor;
+
+	private Integer testStatus = DistributionStatus.statusDistributed;
 
 	@Override
 	public void doAfterCompose( Window comp ) throws Exception
@@ -112,7 +112,7 @@ public class TasksController extends BaseLoggedController<Window>
 		List<InepDistribution> list = Collections.emptyList( );
 		Comboitem item = this.comboEvent.getSelectedItem( );
 		if ( item != null ) {
-			list = getSession( ).getTests( (InepPackage) item.getValue( ), getAuthentication( ) );
+			list = getSession( ).getTests( getRevisor( ), getTestStatus( ) );
 		}
 		getListbox( ).setModel( new ListModelList<InepDistribution>( list ) );
 		updateCounters( );
@@ -134,14 +134,6 @@ public class TasksController extends BaseLoggedController<Window>
 		else {
 			this.divFrame.setVisible( true );
 		}
-	}
-
-	public TeamSession getSession( )
-	{
-		if ( this.session == null ) {
-			this.session = (TeamSession) getSession( TeamSession.class );
-		}
-		return this.session;
 	}
 
 	@Listen( "onClick = #cmdObs" )
@@ -167,28 +159,39 @@ public class TasksController extends BaseLoggedController<Window>
 	}
 
 	@Listen( "onClick = #cmdInepSave" )
-	public void onClickSubmit( )
+	public void onClickSubmit( Event evt )
 	{
 		Listitem item = getListbox( ).getSelectedItem( );
 		if ( item != null ) {
 			InepDistribution rev = (InepDistribution) getListbox( ).getSelectedItem( ).getValue( );
-			rev.setNota( this.notas[ 0 ].getSelectedIndex( ) );
-			getSession( ).updateRevision( rev );
-			this.divFrame.setVisible( false );
-			this.divListbox.setVisible( true );
-			this.listbox.removeItemAt( this.listbox.getSelectedIndex( ) );
-			this.divGrid.setVisible( false );
-			getListbox( ).clearSelection( );
+			if ( rev.getStatus( ).getId( ).equals( 1 ) )
+			{
+				rev.setNota( this.notas[ 0 ].getSelectedIndex( ) );
+				getSession( ).updateRevision( rev );
+				this.divFrame.setVisible( false );
+				this.divListbox.setVisible( true );
+				this.listbox.removeItemAt( this.listbox.getSelectedIndex( ) );
+				this.divGrid.setVisible( false );
+				getListbox( ).clearSelection( );
+			}
+			else {
+				Messagebox.show( "Esta tarefa não pode mais ser alterada.", "Correção",
+						Messagebox.OK, Messagebox.INFORMATION );
+			}
+
 		}
 		else {
 			Messagebox.show( "Antes de finalizar uma correção, uma tarefa deve ser selecionada primeiro", "Correção",
 					Messagebox.OK, Messagebox.INFORMATION );
 		}
 		updateCounters( );
+		if ( evt != null ) {
+			evt.stopPropagation( );
+		}
 	}
 
 	@Listen( "onClick = #cmdCancel" )
-	public void onClickCancel( )
+	public void onClickCancel( Event evt )
 	{
 		showFields( null );
 		this.divFrame.setVisible( false );
@@ -196,20 +199,24 @@ public class TasksController extends BaseLoggedController<Window>
 		// this.divGrid.setVisible( false );
 		getListbox( ).clearSelection( );
 		updateCounters( );
+		if ( evt != null ) {
+			evt.stopPropagation( );
+		}
 	}
 
 	private void showFrame( )
 	{
 		InepDistribution item = (InepDistribution) this.listbox.getSelectedItem( ).getValue( );
 		this.divFrame.setVisible( true );
-		String.format( "/img/pdf/%s-%d-4.pdf", item.getId( ).getSubscriptionId( ), item.getId( ).getTaskId( ) );
+		// String.format( "/img/pdf/%s-%d-4.pdf", item.getId(
+		// ).getSubscriptionId( ), item.getId( ).getTaskId( ) );
 		AMedia media = new AMedia( null, null, null, getSession( ).getMedia( item.getTest( ) ) );
 		this.framePdf.setContent( media );
 	}
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getAuthentication( ) );
+		List<InepPackage> events = getSession( ).getEvents( getCurrentCollaborator( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );
@@ -233,7 +240,7 @@ public class TasksController extends BaseLoggedController<Window>
 	{
 		if ( this.revisor == null ) {
 			this.revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
-					getAuthentication( ) );
+					getCurrentCollaborator( ) );
 		}
 		return this.revisor;
 	}
@@ -267,6 +274,41 @@ public class TasksController extends BaseLoggedController<Window>
 			this.countRevised.setLabel( "" );
 			this.countVariance.setLabel( "" );
 		}
+	}
+
+	@Listen( "onClick=toolbarbutton" )
+	public void onCountersClick( MouseEvent evt )
+	{
+		if ( evt != null ) {
+			if ( evt.getTarget( ).equals( this.countAll ) ) {
+				setTestStatus( DistributionStatus.statusDistributed );
+			}
+			else if ( evt.getTarget( ).equals( this.countRevised ) ) {
+				setTestStatus( DistributionStatus.statusRevised );
+			}
+			else {
+				setTestStatus( DistributionStatus.statusVariance );
+			}
+			onSelectPackage( );
+			evt.stopPropagation( );
+		}
+	}
+
+	private Integer getTestStatus( )
+	{
+		return this.testStatus;
+	}
+
+	private void setTestStatus( Integer testStatus )
+	{
+		this.testStatus = testStatus;
+	}
+
+	@Override
+	protected Class<TeamSession> getSessionClass( )
+	{
+		// TODO Auto-generated method stub
+		return TeamSession.class;
 	}
 
 }

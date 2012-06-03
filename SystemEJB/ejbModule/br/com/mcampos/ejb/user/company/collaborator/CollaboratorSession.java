@@ -6,12 +6,14 @@ import javax.ejb.Remote;
 
 import org.omg.CORBA.portable.ApplicationException;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.core.SimpleDTO;
+import br.com.mcampos.ejb.security.Login;
 
 @Remote
-public interface CollaboratorSession extends BaseSessionInterface<Collaborator>{
-	Collaborator find ( Authentication auth );
-	List<SimpleDTO> getCompanies( Authentication auth ) throws ApplicationException;
+public interface CollaboratorSession extends BaseSessionInterface<Collaborator>
+{
+	Collaborator find( Login login, Integer companyId );
+
+	List<SimpleDTO> getCompanies( Login c ) throws ApplicationException;
 }

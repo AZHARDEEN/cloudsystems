@@ -5,11 +5,13 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.inep.subscription.InepSubscription;
-import br.com.mcampos.ejb.inep.subscription.InepSubscriptionPK;
+import br.com.mcampos.ejb.inep.entity.InepSubscription;
+import br.com.mcampos.ejb.inep.entity.InepSubscriptionPK;
+import br.com.mcampos.ejb.inep.entity.InepTask;
+import br.com.mcampos.ejb.inep.entity.InepTaskPK;
+import br.com.mcampos.ejb.inep.entity.InepTest;
+import br.com.mcampos.ejb.inep.entity.InepTestPK;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
-import br.com.mcampos.ejb.inep.task.InepTask;
-import br.com.mcampos.ejb.inep.task.InepTaskPK;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.media.Media;
 

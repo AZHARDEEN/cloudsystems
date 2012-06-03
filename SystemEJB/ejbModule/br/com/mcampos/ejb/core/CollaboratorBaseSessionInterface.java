@@ -1,12 +1,12 @@
 package br.com.mcampos.ejb.core;
 
-import br.com.mcampos.dto.Authentication;
+import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
 public interface CollaboratorBaseSessionInterface<ENTITY> extends BaseSessionInterface<ENTITY>
 {
-	String getProperty( Authentication auth, String name );
+	String getProperty( Collaborator auth, String name );
 
-	void setProperty( Authentication auth, String name, String value );
+	void setProperty( Collaborator auth, String name, String value );
 
-	void remove( Authentication auth, String name );
+	void remove( Collaborator auth, String name );
 }

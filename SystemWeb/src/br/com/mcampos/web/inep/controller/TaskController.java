@@ -1,6 +1,5 @@
 package br.com.mcampos.web.inep.controller;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.zkoss.zk.ui.event.Event;
@@ -13,8 +12,8 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.inep.packs.InepPackage;
-import br.com.mcampos.ejb.inep.task.InepTask;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.task.InepTaskSession;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.dbwidgets.DBWidget;
@@ -41,18 +40,17 @@ public class TaskController extends BaseDBListController<InepTaskSession, InepTa
 	}
 
 	@Override
-	protected void showFields( Collection<InepTask> entities )
+	protected void showFields( InepTask entity )
 	{
-		List<InepTask> fields = (List<InepTask>) entities;
 		for ( int nIndex = 0; nIndex < this.infoLabels.size( ); nIndex++ ) {
-			this.infoLabels.get( nIndex ).setValue( fields != null ? fields.get( 0 ).getField( nIndex ) : "" );
+			this.infoLabels.get( nIndex ).setValue( entity != null ? entity.getField( nIndex ) : "" );
 		}
 		for ( int nIndex = 0; nIndex < this.inputs.size( ); nIndex++ ) {
 			DBWidget input = this.inputs.get( nIndex );
-			input.setText( fields != null ? fields.get( 0 ).getField( nIndex ) : "" );
-			if ( getStatus( ) == statusUpdate ) {
+			input.setText( entity != null ? entity.getField( nIndex ) : "" );
+			if ( getStatus( ).equals( statusUpdate ) ) {
 				if ( input.isPrimaryKey( ) ) {
-					input.setDisabled( fields != null );
+					input.setDisabled( entity != null );
 				}
 			}
 		}
@@ -64,7 +62,7 @@ public class TaskController extends BaseDBListController<InepTaskSession, InepTa
 		for ( DBWidget input : this.inputs ) {
 			if ( input.getId( ).equals( "id" ) ) {
 				entity.getId( ).setId( Integer.parseInt( input.getText( ) ) );
-				entity.getId( ).setCompanyId( getAuthentication( ).getCompanyId( ) );
+				entity.getId( ).setCompanyId( getCurrentCollaborator( ).getCompany( ).getId( ) );
 			}
 			else {
 				entity.setDescription( input.getText( ) );
@@ -94,7 +92,7 @@ public class TaskController extends BaseDBListController<InepTaskSession, InepTa
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getAuthentication( ) );
+		List<InepPackage> events = getSession( ).getEvents( getCurrentCollaborator( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) ) {
 			getComboEvent( ).getItems( ).clear( );
@@ -124,12 +122,6 @@ public class TaskController extends BaseDBListController<InepTaskSession, InepTa
 	protected ListitemRenderer<InepTask> getListRenderer( )
 	{
 		return new InepTaskListRenderer( );
-	}
-
-	@Override
-	protected void loadPage( int activePage )
-	{
-		activePage = 1;
 	}
 
 }

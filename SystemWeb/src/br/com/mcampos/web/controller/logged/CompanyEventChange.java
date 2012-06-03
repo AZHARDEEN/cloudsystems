@@ -2,28 +2,27 @@ package br.com.mcampos.web.controller.logged;
 
 import org.zkoss.zk.ui.event.Event;
 
-import br.com.mcampos.dto.Authentication;
+import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
 public class CompanyEventChange extends Event
 {
 	private static final long serialVersionUID = 2038162350038996955L;
 	public static final String eventName = "onChangeCompany";
-	Authentication auth;
+	private Collaborator collaborator;
 
-	public CompanyEventChange( Authentication auth )
+	public CompanyEventChange( Collaborator collaborator )
 	{
 		super( eventName );
-		this.auth = auth;
+		setCollaborator( collaborator );
 	}
 
-	public Authentication getAuth( )
+	public Collaborator getCollaborator( )
 	{
-		return this.auth;
+		return this.collaborator;
 	}
 
-	public void setAuth( Authentication auth )
+	private void setCollaborator( Collaborator collaborator )
 	{
-		this.auth = auth;
+		this.collaborator = collaborator;
 	}
-
 }

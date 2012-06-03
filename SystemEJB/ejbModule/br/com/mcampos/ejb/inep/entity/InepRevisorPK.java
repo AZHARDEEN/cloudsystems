@@ -1,12 +1,10 @@
-package br.com.mcampos.ejb.inep.revisor;
+package br.com.mcampos.ejb.inep.entity;
 
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-import br.com.mcampos.ejb.inep.packs.InepPackage;
-import br.com.mcampos.ejb.inep.task.InepTask;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
 /**
@@ -16,19 +14,20 @@ import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 @Embeddable
 public class InepRevisorPK implements Serializable, Comparable<InepRevisorPK>
 {
-	//default serial version id, required for serializable classes.
+	// default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="usr_id_in")
+	@Column( name = "usr_id_in" )
 	private Integer companyId;
 
-	@Column(name="col_seq_in")
+	@Column( name = "col_seq_in" )
 	private Integer sequence;
 
 	@Column( name = "pct_id_in" )
 	private Integer eventId;
 
-	public InepRevisorPK() {
+	public InepRevisorPK( )
+	{
 	}
 
 	public InepRevisorPK( Collaborator c, InepPackage e )
@@ -55,35 +54,44 @@ public class InepRevisorPK implements Serializable, Comparable<InepRevisorPK>
 		setEventId( c.getId( ).getId( ) );
 	}
 
-	public Integer getCompanyId() {
+	public Integer getCompanyId( )
+	{
 		return this.companyId;
 	}
-	public void setCompanyId(Integer usrIdIn) {
+
+	public void setCompanyId( Integer usrIdIn )
+	{
 		this.companyId = usrIdIn;
 	}
-	public Integer getSequence() {
+
+	public Integer getSequence( )
+	{
 		return this.sequence;
 	}
-	public void setSequence(Integer colSeqIn) {
+
+	public void setSequence( Integer colSeqIn )
+	{
 		this.sequence = colSeqIn;
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		if (this == other) {
+	public boolean equals( Object other )
+	{
+		if ( this == other ) {
 			return true;
 		}
-		if (!(other instanceof InepRevisorPK)) {
+		if ( !( other instanceof InepRevisorPK ) ) {
 			return false;
 		}
-		InepRevisorPK castOther = (InepRevisorPK)other;
+		InepRevisorPK castOther = (InepRevisorPK) other;
 		return getCompanyId( ).equals( castOther.getCompanyId( ) ) && getSequence( ).equals( castOther.getSequence( ) )
 				&& getEventId( ).equals( castOther.getEventId( ) );
 
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode( )
+	{
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + getCompanyId( ).hashCode( );
@@ -115,6 +123,6 @@ public class InepRevisorPK implements Serializable, Comparable<InepRevisorPK>
 		if ( nRet == 0 ) {
 			nRet = getSequence( ).compareTo( o.getSequence( ) );
 		}
-		return 0;
+		return nRet;
 	}
 }

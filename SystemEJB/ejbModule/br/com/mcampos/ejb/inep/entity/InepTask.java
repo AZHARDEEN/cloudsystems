@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.inep.task;
+package br.com.mcampos.ejb.inep.entity;
 
 import java.io.Serializable;
 
@@ -12,8 +12,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import br.com.mcampos.ejb.inep.packs.InepPackage;
-
+import br.com.mcampos.ejb.core.BasicEntityRenderer;
 
 /**
  * The persistent class for the inep_task database table.
@@ -22,7 +21,7 @@ import br.com.mcampos.ejb.inep.packs.InepPackage;
 @Entity
 @Table( name = "inep_task", schema = "inep" )
 @NamedQueries( { @NamedQuery( name = InepTask.getAllEventTasks, query = "select o from InepTask o where o.event = ?1" ) } )
-public class InepTask implements Serializable, Comparable<InepTask>
+public class InepTask implements Serializable, Comparable<InepTask>, BasicEntityRenderer<InepTask>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -31,17 +30,19 @@ public class InepTask implements Serializable, Comparable<InepTask>
 	@EmbeddedId
 	private InepTaskPK id;
 
-	@Column(name="tsk_description_ch")
+	@Column( name = "tsk_description_ch" )
 	private String description;
 
 	@ManyToOne
 	@JoinColumns( {
-		@JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
-		@JoinColumn( name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ) } )
+			@JoinColumn(
+					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ) } )
 	private InepPackage event;
 
-
-	public InepTask() {
+	public InepTask( )
+	{
 	}
 
 	public InepTask( InepPackage event )
@@ -49,25 +50,30 @@ public class InepTask implements Serializable, Comparable<InepTask>
 		getId( ).set( event.getId( ) );
 	}
 
-	public InepTaskPK getId() {
+	public InepTaskPK getId( )
+	{
 		if ( this.id == null ) {
-			this.id = new InepTaskPK();
+			this.id = new InepTaskPK( );
 		}
 		return this.id;
 	}
 
-	public void setId(InepTaskPK id) {
+	public void setId( InepTaskPK id )
+	{
 		this.id = id;
 	}
 
-	public String getDescription() {
+	public String getDescription( )
+	{
 		return this.description;
 	}
 
-	public void setDescription(String tskDescriptionCh) {
+	public void setDescription( String tskDescriptionCh )
+	{
 		this.description = tskDescriptionCh;
 	}
 
+	@Override
 	public int compareTo( InepTask object, Integer field )
 	{
 		switch ( field ) {
@@ -92,6 +98,7 @@ public class InepTask implements Serializable, Comparable<InepTask>
 		return getId( ).compareTo( o.getId( ) );
 	}
 
+	@Override
 	public String getField( Integer field )
 	{
 		switch ( field ) {

@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.inep.packs;
+package br.com.mcampos.ejb.inep.entity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.mcampos.ejb.core.BasicEntityRenderer;
 import br.com.mcampos.ejb.user.company.Company;
 
 /**
@@ -24,7 +25,7 @@ import br.com.mcampos.ejb.user.company.Company;
 @Entity
 @Table( name = "inep_package", schema = "inep" )
 @NamedQueries( { @NamedQuery( name = InepPackage.getAll, query = "select o from InepPackage o where o.company = ?1" ) } )
-public class InepPackage implements Serializable, Comparable<InepPackage>
+public class InepPackage implements Serializable, Comparable<InepPackage>, BasicEntityRenderer<InepPackage>
 {
 	private static final long serialVersionUID = 1L;
 	public static final String getAll = "InepPackage.getAll";
@@ -84,6 +85,7 @@ public class InepPackage implements Serializable, Comparable<InepPackage>
 		this.company = company;
 	}
 
+	@Override
 	public int compareTo( InepPackage object, Integer field )
 	{
 		switch ( field ) {
@@ -108,6 +110,7 @@ public class InepPackage implements Serializable, Comparable<InepPackage>
 		return getId( ).compareTo( o.getId( ) );
 	}
 
+	@Override
 	public String getField( Integer field )
 	{
 		switch ( field ) {

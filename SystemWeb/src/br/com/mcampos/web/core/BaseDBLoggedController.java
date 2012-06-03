@@ -4,15 +4,15 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 
-import br.com.mcampos.dto.Authentication;
-import br.com.mcampos.ejb.core.SimpleDTO;
 import br.com.mcampos.ejb.security.Login;
+import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
-public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN>
+public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN> implements LoggedInterface
 {
 	private static final long serialVersionUID = 3928960337564242027L;
 
-	private boolean isLogged( )
+	@Override
+	public boolean isLogged( )
 	{
 		Login login = getLoggedUser( );
 		return login != null;
@@ -30,27 +30,25 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 		}
 	}
 
-	protected Login getLoggedUser( )
+	@Override
+	public Login getLoggedUser( )
 	{
 		return (Login) getSessionParameter( userSessionParamName );
 	}
 
-	protected Authentication getAuthentication( )
+	@Override
+	public Collaborator getCurrentCollaborator( )
 	{
-		Authentication auth = (Authentication) getSessionParameter( authenticationParamName );
-		if ( auth == null )
-		{
-			auth = new Authentication( );
-			auth.setUserId( getLoggedUser( ).getId( ) );
-			setSessionParameter( authenticationParamName, auth );
+		Collaborator c = (Collaborator) getSessionParameter( currentCollaborator );
+		Login l = getLoggedUser( );
+		if ( c.getPerson( ).equals( l.getPerson( ) ) == false ) {
+			return null;
 		}
-		return auth;
+		return c;
 	}
 
-	protected void setCurrentCompany( SimpleDTO company )
+	protected void setCollaborator( Collaborator c )
 	{
-		Authentication auth = getAuthentication( );
-		auth.setCompanyId( company.getId( ) );
+		setSessionParameter( currentCollaborator, c );
 	}
-
 }

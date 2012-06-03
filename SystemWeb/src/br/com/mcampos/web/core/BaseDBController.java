@@ -4,9 +4,10 @@ import javax.naming.NamingException;
 
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.web.core.session.BeanSessonInterface;
 import br.com.mcampos.web.locator.ServiceLocator;
 
-public abstract class BaseDBController<BEAN> extends BaseController<Window>
+public abstract class BaseDBController<BEAN> extends BaseController<Window> implements BeanSessonInterface<BEAN>
 {
 	private static final long serialVersionUID = -2456900330944095085L;
 	private Class<BEAN> persistentClass;
@@ -20,8 +21,9 @@ public abstract class BaseDBController<BEAN> extends BaseController<Window>
 		setPersistentClass( );
 	}
 
+	@Override
 	@SuppressWarnings( "unchecked" )
-	protected BEAN getSession( )
+	public BEAN getSession( )
 	{
 		try {
 			if ( this.session == null ) {

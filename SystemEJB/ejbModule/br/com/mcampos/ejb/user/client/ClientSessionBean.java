@@ -8,12 +8,10 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionBean;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.user.Users;
-import br.com.mcampos.ejb.user.company.Company;
-import br.com.mcampos.ejb.user.company.CompanySessionLocal;
+import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
 
 /**
@@ -24,9 +22,6 @@ import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
 public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> implements ClientSession, ClientSessionLocal
 {
 	@EJB
-	private CompanySessionLocal companySession;
-
-	@EJB
 	private UserDocumentSessionLocal userDocumentSession;
 
 	@Override
@@ -36,63 +31,53 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 	}
 
 	@Override
-	public List<Client> getAllPerson( Authentication auth, DBPaging paging )
+	public List<Client> getAllPerson( Collaborator auth, DBPaging paging )
 	{
 		List<Client> clients = Collections.emptyList( );
 
-		Company company = getCompanySession( ).get( auth.getCompanyId( ) );
-		if ( company != null ) {
-			clients = findByNamedQuery( Client.getAllPerson, paging, company );
+		if ( auth != null && auth.getCompany( ) != null ) {
+			clients = findByNamedQuery( Client.getAllPerson, paging, auth.getCompany( ) );
 		}
 		return clients;
 	}
 
 	@Override
-	public List<Client> getAllCompany( Authentication auth, DBPaging paging )
+	public List<Client> getAllCompany( Collaborator auth, DBPaging paging )
 	{
 		List<Client> clients = Collections.emptyList( );
 
-		Company company = getCompanySession( ).get( auth.getCompanyId( ) );
-		if ( company != null ) {
-			clients = findByNamedQuery( Client.getAllCompany, paging, company );
+		if ( auth != null && auth.getCompany( ) != null ) {
+			clients = findByNamedQuery( Client.getAllCompany, paging, auth.getCompany( ) );
 		}
 		return clients;
 	}
 
-	private CompanySessionLocal getCompanySession( )
-	{
-		return this.companySession;
-	}
-
 	@Override
-	public Long countPerson( Authentication auth )
+	public Long countPerson( Collaborator auth )
 	{
-		Company company = getCompanySession( ).get( auth.getCompanyId( ) );
-		if ( company == null ) {
+		if ( auth != null && auth.getCompany( ) != null ) {
 			return 0L;
 		}
 		Query query = getEntityManager( ).createNamedQuery( Client.countPerson );
-		query.setParameter( 1, company );
+		query.setParameter( 1, auth.getCompany( ) );
 		return (Long) query.getSingleResult( );
 	}
 
 	@Override
-	public Long countCompany( Authentication auth )
+	public Long countCompany( Collaborator auth )
 	{
-		Company company = getCompanySession( ).get( auth.getCompanyId( ) );
-		if ( company == null ) {
+		if ( auth != null && auth.getCompany( ) != null ) {
 			return 0L;
 		}
 		Query query = getEntityManager( ).createNamedQuery( Client.countCompany );
-		query.setParameter( 1, company );
+		query.setParameter( 1, auth.getCompany( ) );
 		return (Long) query.getSingleResult( );
 	}
 
 	@Override
-	public Users getUser( Authentication auth, String document )
+	public Users getUser( Collaborator auth, String document )
 	{
-		Company company = getCompanySession( ).get( auth.getCompanyId( ) );
-		if ( company == null ) {
+		if ( auth != null && auth.getCompany( ) != null ) {
 			return null;
 		}
 		Users user = this.userDocumentSession.getUserByDocument( document );
@@ -102,10 +87,9 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 	}
 
 	@Override
-	public Users getUser( Authentication auth, Integer id )
+	public Users getUser( Collaborator auth, Integer id )
 	{
-		Company company = getCompanySession( ).get( auth.getCompanyId( ) );
-		if ( company == null ) {
+		if ( auth != null && auth.getCompany( ) != null ) {
 			return null;
 		}
 		Users user = getEntityManager( ).find( Users.class, id );

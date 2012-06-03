@@ -6,14 +6,14 @@ import javax.ejb.Local;
 
 import org.omg.CORBA.portable.ApplicationException;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.core.SimpleDTO;
+import br.com.mcampos.ejb.security.Login;
 
 @Local
 public interface CollaboratorSessionLocal extends BaseSessionInterface<Collaborator>
 {
-	Collaborator find( Authentication auth );
+	Collaborator find( Login login, Integer companyId );
 
-	List<SimpleDTO> getCompanies( Authentication auth ) throws ApplicationException;
+	List<SimpleDTO> getCompanies( Login c ) throws ApplicationException;
 }

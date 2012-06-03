@@ -4,7 +4,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.inep.task.InepTask;
+import br.com.mcampos.ejb.inep.entity.InepTask;
 
 /**
  * Session Bean implementation class InepSessionBean

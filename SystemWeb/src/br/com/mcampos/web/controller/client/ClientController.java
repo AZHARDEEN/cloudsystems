@@ -124,7 +124,7 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 
 	private void loadListbox( )
 	{
-		List<Client> clients = getSession( ).getAllPerson( getAuthentication( ), getPaging( ) );
+		List<Client> clients = getSession( ).getAllPerson( getCurrentCollaborator( ), getPaging( ) );
 		getListBox( ).setModel( new ListModelList<Client>( clients ) );
 	}
 
@@ -135,7 +135,7 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 		getDivList( ).setVisible( false );
 		getDivData( ).setVisible( true );
 		Client client = getListBox( ).getSelectedItem( ).getValue( );
-		Person person = (Person) getSession( ).getUser( getAuthentication( ), client.getClient( ).getId( ) );
+		Person person = (Person) getSession( ).getUser( getCurrentCollaborator( ), client.getClient( ).getId( ) );
 		showRecord( person );
 	}
 
@@ -169,7 +169,7 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 	private void configPaging( )
 	{
 		getListobxPaging( ).setPageSize( getListBox( ).getRows( ) );
-		getListobxPaging( ).setTotalSize( getSession( ).countPerson( getAuthentication( ) ).intValue( ) );
+		getListobxPaging( ).setTotalSize( getSession( ).countPerson( getCurrentCollaborator( ) ).intValue( ) );
 	}
 
 	private Paging getListobxPaging( )
@@ -194,7 +194,7 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 		if ( SysUtils.isEmpty( doc ) ) {
 			return;
 		}
-		Person person = ( Person ) getSession( ).getUser( getAuthentication( ), doc );
+		Person person = (Person) getSession( ).getUser( getCurrentCollaborator( ), doc );
 		showRecord( person );
 
 		if ( evt != null ) {
@@ -276,6 +276,5 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 			break; /* Just now, There must be only One!!!! Teoria do highlander */
 		}
 	}
-
 
 }

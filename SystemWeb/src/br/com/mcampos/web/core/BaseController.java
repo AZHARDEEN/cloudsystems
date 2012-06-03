@@ -32,9 +32,6 @@ import br.com.mcampos.web.locator.ServiceLocator;
 public abstract class BaseController<T extends Component> extends SelectorComposer<T>
 {
 
-	public static final String userSessionParamName = "currentLoggedUser";
-	public static final String authenticationParamName = "authentications";
-
 	private static final long serialVersionUID = -246593656005980750L;
 	private transient HashMap<String, Object> arguments = new HashMap<String, Object>( );
 

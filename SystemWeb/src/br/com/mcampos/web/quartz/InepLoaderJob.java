@@ -17,33 +17,26 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.mcampos.ejb.inep.test.InepTestPK;
+import br.com.mcampos.ejb.inep.entity.InepTestPK;
 import br.com.mcampos.ejb.inep.test.InepTestSession;
 import br.com.mcampos.web.locator.ServiceLocator;
 
-public class loaderJob implements Serializable, Job
+public class InepLoaderJob implements Serializable, Job
 {
 	private static final long serialVersionUID = 4328234055384577345L;
-	private static final Logger logger = LoggerFactory.getLogger( loaderJob.class );
+	private static final Logger logger = LoggerFactory.getLogger( InepLoaderJob.class );
 	private static final String path = "T:/loader/inep/provas/";
 
-	private InepTestSession session;
+	private transient InepTestSession session;
 
 	@Override
 	public void execute( JobExecutionContext arg0 ) throws JobExecutionException
 	{
-		logger.info( "Verifying directory" );
 		String[ ] parts;
 		boolean bRet;
 
 		try {
 			String[ ] files = getFiles( );
-			if ( files != null ) {
-				logger.info( "There is: " + files.length );
-			}
-			else {
-				logger.info( "There is no files to process" );
-			}
 			for ( String file : files )
 			{
 				parts = file.split( "-" );
@@ -81,7 +74,6 @@ public class loaderJob implements Serializable, Job
 		File dir;
 
 		dir = new File( path );
-		logger.info( "Processing " + path );
 		FilenameFilter filter = new FilenameFilter( )
 		{
 			@Override
@@ -104,7 +96,9 @@ public class loaderJob implements Serializable, Job
 			}
 			File dest = new File( directory );
 			if ( dest.exists( ) == false ) {
-				dest.mkdirs( );
+				if ( dest.mkdirs( ) == false ) {
+					return;
+				}
 			}
 			if ( file.renameTo( new File( dest, file.getName( ) ) ) == false ) {
 				logger.error( "Error moving file " + filename + " to " + directory );

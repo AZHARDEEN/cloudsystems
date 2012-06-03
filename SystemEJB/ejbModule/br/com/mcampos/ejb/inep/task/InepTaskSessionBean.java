@@ -7,10 +7,11 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.inep.packs.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
+import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
 /**
  * Session Bean implementation class InepTaskSessionBean
@@ -29,11 +30,12 @@ public class InepTaskSessionBean extends SimpleSessionBean<InepTask> implements 
 	}
 
 	@Override
-	public List<InepPackage> getEvents( Authentication auth )
+	public List<InepPackage> getEvents( Collaborator auth )
 	{
 		return getEventSession( ).getAll( auth );
 	}
 
+	@Override
 	public List<InepTask> getAll( InepPackage event )
 	{
 		List<InepTask> tasks = Collections.emptyList( );
@@ -48,6 +50,5 @@ public class InepTaskSessionBean extends SimpleSessionBean<InepTask> implements 
 	{
 		return this.eventSession;
 	}
-
 
 }

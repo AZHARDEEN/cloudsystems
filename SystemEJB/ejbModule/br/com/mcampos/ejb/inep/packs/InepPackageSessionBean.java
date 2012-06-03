@@ -6,10 +6,11 @@ import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionBean;
 import br.com.mcampos.ejb.core.DBPaging;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
 /**
@@ -37,19 +38,40 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepPack
 	}
 
 	@Override
-	public List<InepPackage> getAll( Authentication auth )
+	public List<InepPackage> getAll( Collaborator auth )
 	{
 		return getAll( auth, null );
 	}
 
 	@Override
-	public List<InepPackage> getAll( Authentication auth, DBPaging page )
+	public List<InepPackage> getAll( Collaborator c, DBPaging page )
 	{
-		Collaborator c = getCollaboratorSession( ).find( auth );
 		if ( c == null ) {
 			return Collections.emptyList( );
 		}
 		return findByNamedQuery( InepPackage.getAll, page, c.getCompany( ) );
+	}
+
+	@Override
+	public Integer getNextId( Collaborator c )
+	{
+		if ( c == null ) {
+			return 0;
+		}
+		Query query = getEntityManager( ).createQuery(
+				"select max( o.id.id ) + 1 from InepPackage o where o.company = ?1" );
+		query.setParameter( 1, c.getCompany( ) );
+		Integer id;
+		try {
+			id = (Integer) query.getSingleResult( );
+			if ( id == null || id.equals( 0 ) ) {
+				id = 1;
+			}
+		}
+		catch ( Exception e ) {
+			id = 1;
+		}
+		return id;
 	}
 
 }

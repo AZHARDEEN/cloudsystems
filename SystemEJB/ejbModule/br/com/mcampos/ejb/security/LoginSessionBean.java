@@ -12,7 +12,6 @@ import javax.persistence.Query;
 
 import org.jasypt.util.password.BasicPasswordEncryptor;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.dto.MailDTO;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
@@ -225,9 +224,8 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	}
 
 	@Override
-	public Boolean changePassword( Authentication auth, Credential credential, String oldPasswor, String newPassword )
+	public Boolean changePassword( Login login, Credential credential, String oldPasswor, String newPassword )
 	{
-		Login login = get( auth.getUserId( ) );
 		if ( login == null ) {
 			return false;
 		}

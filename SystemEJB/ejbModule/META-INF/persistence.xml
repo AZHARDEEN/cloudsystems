@@ -42,12 +42,12 @@
     <class>br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty</class>
     <class>br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertyPK</class>
     <class>br.com.mcampos.ejb.system.fieldtype.FieldType</class>
-    <class>br.com.mcampos.ejb.inep.task.InepTask</class>
-    <class>br.com.mcampos.ejb.inep.task.InepTaskPK</class>
-    <class>br.com.mcampos.ejb.inep.subscription.InepSubscription</class>
-    <class>br.com.mcampos.ejb.inep.subscription.InepSubscriptionPK</class>
-    <class>br.com.mcampos.ejb.inep.test.InepTest</class>
-    <class>br.com.mcampos.ejb.inep.test.InepTestPK</class>
+    <class>br.com.mcampos.ejb.inep.entity.InepTask</class>
+    <class>br.com.mcampos.ejb.inep.entity.InepTaskPK</class>
+    <class>br.com.mcampos.ejb.inep.entity.InepSubscription</class>
+    <class>br.com.mcampos.ejb.inep.entity.InepSubscriptionPK</class>
+    <class>br.com.mcampos.ejb.inep.entity.InepTest</class>
+    <class>br.com.mcampos.ejb.inep.entity.InepTestPK</class>
     <class>br.com.mcampos.ejb.inep.entity.InepDistribution</class>
     <class>br.com.mcampos.ejb.inep.entity.InepDistributionPK</class>
     <class>br.com.mcampos.ejb.email.EMail</class>

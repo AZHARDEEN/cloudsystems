@@ -34,7 +34,7 @@ import br.com.mcampos.sysutils.SysUtils;
 @Table( name = "users" )
 @Inheritance( strategy = InheritanceType.JOINED )
 @DiscriminatorColumn( name = "ust_id_in", discriminatorType = DiscriminatorType.STRING )
-public abstract class Users implements Serializable
+public abstract class Users implements Serializable, Comparable<Users>
 {
 	private static final long serialVersionUID = 2007654781360689494L;
 
@@ -131,7 +131,7 @@ public abstract class Users implements Serializable
 	public List<UserDocument> getDocuments( )
 	{
 		if ( this.documents == null ) {
-			this.documents = new ArrayList<UserDocument> ();
+			this.documents = new ArrayList<UserDocument>( );
 		}
 		return this.documents;
 	}
@@ -165,7 +165,7 @@ public abstract class Users implements Serializable
 	public List<UserContact> getContacts( )
 	{
 		if ( this.contacts == null ) {
-			this.contacts = new ArrayList<UserContact> ();
+			this.contacts = new ArrayList<UserContact>( );
 		}
 		return this.contacts;
 	}
@@ -193,7 +193,7 @@ public abstract class Users implements Serializable
 	public List<Address> getAddresses( )
 	{
 		if ( this.addresses == null ) {
-			this.addresses = new ArrayList<Address> ();
+			this.addresses = new ArrayList<Address>( );
 		}
 		return this.addresses;
 	}
@@ -240,4 +240,28 @@ public abstract class Users implements Serializable
 	{
 		this.birthDate = usr_birth_dt;
 	}
+
+	@Override
+	public boolean equals( Object obj )
+	{
+		if ( obj instanceof Users ) {
+			Users other = (Users) obj;
+			return getId( ).equals( other.getId( ) );
+		}
+		else if ( obj instanceof Integer )
+		{
+			Integer id = (Integer) obj;
+			return getId( ).equals( id );
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int compareTo( Users o )
+	{
+		return getId( ).compareTo( o.getId( ) );
+	}
+
 }

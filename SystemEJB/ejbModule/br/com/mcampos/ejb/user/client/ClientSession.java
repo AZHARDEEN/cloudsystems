@@ -4,24 +4,24 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.user.Users;
+import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
 @Remote
 public interface ClientSession extends CollaboratorBaseSessionInterface<Client>
 {
-	List<Client> getAllPerson( Authentication auth, DBPaging paging );
+	List<Client> getAllPerson( Collaborator auth, DBPaging paging );
 
-	Long countPerson( Authentication auth );
+	Long countPerson( Collaborator auth );
 
-	List<Client> getAllCompany( Authentication auth, DBPaging paging );
+	List<Client> getAllCompany( Collaborator auth, DBPaging paging );
 
-	Long countCompany( Authentication auth );
+	Long countCompany( Collaborator auth );
 
-	public Users getUser( Authentication auth, String document );
+	public Users getUser( Collaborator auth, String document );
 
-	public Users getUser( Authentication auth, Integer id );
+	public Users getUser( Collaborator auth, Integer id );
 
 }

@@ -7,7 +7,7 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
-import br.com.mcampos.ejb.inep.revisor.InepRevisor;
+import br.com.mcampos.ejb.inep.entity.InepRevisor;
 
 /**
  * Session Bean implementation class DistributionSessionBean
@@ -15,7 +15,7 @@ import br.com.mcampos.ejb.inep.revisor.InepRevisor;
 @Stateless( name = "DistributionSession", mappedName = "DistributionSession" )
 @LocalBean
 public class DistributionSessionBean extends SimpleSessionBean<InepDistribution> implements DistributionSession,
-DistributionSessionLocal
+		DistributionSessionLocal
 {
 	@Override
 	protected Class<InepDistribution> getEntityClass( )
@@ -24,9 +24,9 @@ DistributionSessionLocal
 	}
 
 	@Override
-	public List<InepDistribution> get( InepRevisor rev )
+	public List<InepDistribution> get( InepRevisor rev, Integer status )
 	{
-		return findByNamedQuery( InepDistribution.getAllFromRevisor, rev );
+		return findByNamedQuery( InepDistribution.getAllFromRevisor, rev, status );
 	}
 
 }
