@@ -67,6 +67,7 @@ public class EmailValidationController extends BaseCaptchaDialogController<Regis
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
+		setLastLoginInfo( null, this.password );
 		String csToken = Executions.getCurrent( ).getParameter( "token" );
 		if ( csToken != null && csToken.isEmpty( ) == false ) {
 			this.token.setValue( csToken );

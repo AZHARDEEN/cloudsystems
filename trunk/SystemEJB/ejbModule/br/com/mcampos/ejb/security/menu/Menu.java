@@ -185,7 +185,9 @@ public class Menu implements Serializable, TaskRelationInterface, SelfRelationIn
 	{
 		if ( parent != null ) {
 			if ( parent.equals( getParent( ) ) == false ) {
-				parent.getParent( ).remove( this );
+				if ( parent.getParent( ) != null ) {
+					parent.getParent( ).remove( this );
+				}
 				this.parent = parent;
 				getParent( ).add( this );
 			}

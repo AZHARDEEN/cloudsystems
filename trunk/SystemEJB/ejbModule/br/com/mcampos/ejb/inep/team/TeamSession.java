@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
+import br.com.mcampos.dto.inep.InepAnaliticoCorrecao;
 import br.com.mcampos.dto.inep.InepTaskCounters;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
@@ -39,4 +40,10 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>
 	List<InepDistribution> getOtherDistributions( InepTest test );
 
 	InepTaskCounters getCounters( InepRevisor rev );
+
+	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepPackage event );
+
+	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepRevisor revisor );
+
+	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepTask task );
 }

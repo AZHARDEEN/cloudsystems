@@ -264,6 +264,9 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 
 	protected void showAddresses( List<Address> dto )
 	{
+		if ( dto == null || SysUtils.isEmpty( dto ) ) {
+			return;
+		}
 		for ( Address item : dto ) {
 			find( this.addressType, item.getAddressType( ) );
 			this.zip.setValue( item.getZip( ) );
