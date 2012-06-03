@@ -1,10 +1,14 @@
 package br.com.mcampos.ejb.inep.test;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.entity.InepSubscriptionPK;
 import br.com.mcampos.ejb.inep.entity.InepTask;
@@ -94,6 +98,15 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 		pk.setEventId( key.getEventId( ) );
 		pk.setId( key.getTaskId( ) );
 		return pk;
+	}
+
+	@Override
+	public List<InepTest> getTests( InepPackage event )
+	{
+		if ( event == null ) {
+			return Collections.emptyList( );
+		}
+		return findByNamedQuery( InepTest.getAllEventTests, event );
 	}
 
 }

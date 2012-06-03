@@ -20,6 +20,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Paging;
+import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
@@ -46,8 +47,14 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	@Wire( value = "paging" )
 	private List<Paging> pagings;
 
-	@Wire( "radiogroup" )
-	private Radiogroup[ ] notas;
+	@Wire( "radiogroup#sv6" )
+	private Radiogroup notas;
+
+	@Wire( "radio" )
+	private Radio[ ] options;
+
+	@Wire
+	private Toolbarbutton cmdInepSave;
 
 	@Wire
 	private Combobox comboEvent;
@@ -112,6 +119,9 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		List<InepDistribution> list = Collections.emptyList( );
 		Comboitem item = this.comboEvent.getSelectedItem( );
 		if ( item != null ) {
+			if ( getRevisor( ).isCoordenador( ) ) {
+				setTestStatus( DistributionStatus.statusVariance );
+			}
 			list = getSession( ).getTests( getRevisor( ), getTestStatus( ) );
 		}
 		getListbox( ).setModel( new ListModelList<InepDistribution>( list ) );
@@ -121,18 +131,28 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	protected void showFields( InepDistribution rev )
 	{
 		if ( rev != null ) {
-			for ( Radiogroup item : this.notas ) {
-				item.setSelectedItem( null );
-			}
+			this.notas.setSelectedItem( null );
 			this.divGrid.setVisible( true );
 			showFrame( );
 			this.divListbox.setVisible( false );
 			if ( rev.getNota( ) != null ) {
-				this.notas[ 0 ].setSelectedIndex( rev.getNota( ) );
+				this.notas.setSelectedIndex( rev.getNota( ) );
 			}
 		}
 		else {
 			this.divFrame.setVisible( true );
+		}
+		if ( isBlocked( rev ) ) {
+			this.cmdInepSave.setVisible( false );
+			for ( Radio r : this.options ) {
+				r.setDisabled( true );
+			}
+		}
+		else {
+			this.cmdInepSave.setVisible( true );
+			for ( Radio r : this.options ) {
+				r.setDisabled( false );
+			}
 		}
 	}
 
@@ -161,12 +181,19 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	@Listen( "onClick = #cmdInepSave" )
 	public void onClickSubmit( Event evt )
 	{
+		int nIndex = this.notas.getSelectedIndex( );
+		if ( nIndex < 0 )
+		{
+			Messagebox.show( "Por favor, atribua uma nota ao teste.", "Correção",
+					Messagebox.OK, Messagebox.INFORMATION );
+			return;
+		}
 		Listitem item = getListbox( ).getSelectedItem( );
 		if ( item != null ) {
 			InepDistribution rev = (InepDistribution) getListbox( ).getSelectedItem( ).getValue( );
-			if ( rev.getStatus( ).getId( ).equals( 1 ) )
+			if ( isBlocked( rev ) == false )
 			{
-				rev.setNota( this.notas[ 0 ].getSelectedIndex( ) );
+				rev.setNota( this.notas.getSelectedIndex( ) );
 				getSession( ).updateRevision( rev );
 				this.divFrame.setVisible( false );
 				this.divListbox.setVisible( true );
@@ -188,6 +215,20 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
+	}
+
+	private boolean isBlocked( InepDistribution test )
+	{
+		if ( test != null ) {
+			Integer status = test.getStatus( ).getId( );
+			if ( getRevisor( ).isCoordenador( ) ) {
+				return status.equals( DistributionStatus.statusVariance ) == false;
+			}
+			else {
+				return ( status.equals( DistributionStatus.statusDistributed ) == false );
+			}
+		}
+		return true;
 	}
 
 	@Listen( "onClick = #cmdCancel" )

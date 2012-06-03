@@ -29,8 +29,11 @@ import br.com.mcampos.ejb.core.BasicEntityRenderer;
 				name = InepDistribution.getAllFromRevisor,
 				query = "select o from InepDistribution o where o.revisor = ?1 and o.status.id = ?2 and o.revisor.task = o.test.task order by o.test.subscription" ),
 		@NamedQuery(
+				name = InepDistribution.getOtherDistribution,
+				query = "select o from InepDistribution o where o.test = ?1 and o.status.id = 3" ),
+		@NamedQuery(
 				name = InepDistribution.getAllFromTest,
-				query = "select o from InepDistribution o where o.test = ?1 and o.status.id = 2" ),
+				query = "select o from InepDistribution o where o.test = ?1" ),
 		@NamedQuery(
 				name = InepDistribution.getRevisorCounter,
 				query = "select o.status.id, count(o) from InepDistribution o where o.revisor = ?1 group by o.status.id" ),
@@ -43,6 +46,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 	private static final long serialVersionUID = 1L;
 	public static final String getAllFromRevisor = "InepDistribution.getAllFromRevisor";
 	public static final String getAllFromTest = "InepDistribution.getAllFromTest";
+	public static final String getOtherDistribution = "InepDistribution.getOtherDistribution";
 	public static final String getRevisorCounter = "InepDistribution.getRevisorCounter";
 	public static final String getCoordCounter = "InepDistribution.getCoordinatorCounter";
 

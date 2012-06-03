@@ -85,13 +85,16 @@ public abstract class CoordinatorGradeController extends BaseController<Window>
 		List<InepDistribution> grades = evt.getGrades( );
 
 		for ( InepDistribution grade : grades ) {
+			if ( grade.getNota( ) == null ) {
+				continue;
+			}
 			showGrade( nIndex++, grade );
 		}
 	}
 
 	protected void showGrade( InepDistribution d )
 	{
-		if ( d == null ) {
+		if ( d == null || d.getNota( ) == null ) {
 			return;
 		}
 		this.sv6.setSelectedIndex( d.getNota( ) );

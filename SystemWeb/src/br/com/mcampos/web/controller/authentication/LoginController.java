@@ -13,7 +13,7 @@ import br.com.mcampos.ejb.security.LoginSession;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.utils.dto.Credential;
 import br.com.mcampos.web.core.BaseCaptchaDialogController;
-import br.com.mcampos.web.core.mdi.BaseLoggedMDIController;
+import br.com.mcampos.web.core.LoggedInterface;
 
 public class LoginController extends BaseCaptchaDialogController<LoginSession>
 {
@@ -71,7 +71,11 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 			this.identification.setFocus( true );
 			return false;
 		}
-		setSessionParameter( BaseLoggedMDIController.userSessionParamName, login );
+		setSessionParameter( LoggedInterface.userSessionParamName, login );
+		setCookie( LoggedInterface.lastLoggedUserId, getCredential( ).getIdentification( ) );
+		if ( isDebugMode( ) ) {
+			setCookie( LoggedInterface.lastLoggedUserPassword, getCredential( ).getPassword( ) );
+		}
 		return true;
 	}
 
@@ -96,8 +100,8 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 	{
 		super.doAfterCompose( comp );
 
-		this.identification.setText( getSession( ).getProperty( "debug.login" ) );
-		this.password.setText( getSession( ).getProperty( "debug.password" ) );
+		setLastLoginInfo( this.identification, this.password );
+
 	}
 
 	@Listen( "onClick = #cmdForgotPassword" )

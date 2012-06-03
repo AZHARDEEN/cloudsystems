@@ -10,6 +10,9 @@ public interface LoggedInterface extends Serializable
 	public static final String userSessionParamName = "currentLoggedUser";
 	public static final String currentCollaborator = "currentCollaborator";
 
+	public static final String lastLoggedUserId = "lastLoggedUserId";
+	public static final String lastLoggedUserPassword = "lastLoggedUserPassword";
+
 	boolean isLogged( );
 
 	Login getLoggedUser( );

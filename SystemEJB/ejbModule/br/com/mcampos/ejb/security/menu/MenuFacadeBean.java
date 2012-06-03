@@ -69,11 +69,9 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	{
 		if ( task != null ) {
 			for ( Task child : task.getChilds( ) ) {
-				System.out.print( "\t\tChildTask: " + child.getId( ) + "-" + child.getDescription( ) );
 				addTaskToMenu( child, availableMenus );
 			}
 			for ( Menu menu : task.getMenus( ) ) {
-				System.out.print( "\t\tMenu: " + menu.getId( ) + "-" + menu.getDescription( ) );
 				addMenus( menu, availableMenus );
 			}
 		}

@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.ejb.inep.entity.InepTest;
 
 /**
  * Session Bean implementation class DistributionSessionBean
@@ -27,6 +28,12 @@ public class DistributionSessionBean extends SimpleSessionBean<InepDistribution>
 	public List<InepDistribution> get( InepRevisor rev, Integer status )
 	{
 		return findByNamedQuery( InepDistribution.getAllFromRevisor, rev, status );
+	}
+
+	@Override
+	public List<InepDistribution> get( InepTest test )
+	{
+		return findByNamedQuery( InepDistribution.getAllFromTest, test );
 	}
 
 }

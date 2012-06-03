@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.inep.team;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,7 +10,9 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import br.com.mcampos.dto.inep.InepAnaliticoCorrecao;
 import br.com.mcampos.dto.inep.InepTaskCounters;
+import br.com.mcampos.dto.inep.TaskGrade;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionSessionLocal;
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
@@ -144,10 +147,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	@Override
 	public InepDistribution getRevision( InepRevisor rev, InepDistribution t )
 	{
-		Query query = getEntityManager( )
-				.createQuery(
-						"from InepRevision o where o.id.packageId = ?1 and o.id.taskId = ?2 and o.id.companyId = ?3 and o.id.collaboratorId = ?4 and o.id.testId = ?5" );
-
+		String ql = "from InepRevision o where o.id.packageId = ?1 " +
+				"and o.id.taskId = ?2 and o.id.companyId = ?3 and o.id.collaboratorId = ?4 and o.id.testId = ?5";
+		Query query = getEntityManager( ).createQuery( ql );
 		query.setParameter( 1, t.getId( ).getEventId( ) );
 		query.setParameter( 2, t.getId( ).getTaskId( ) );
 		query.setParameter( 3, t.getId( ).getCompanyId( ) );
@@ -162,58 +164,116 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 	}
 
-	@Override
-	public InepDistribution updateRevision( InepDistribution rev )
+	private DistributionStatus getStatus( Integer status )
 	{
-		InepDistribution entity = getEntityManager( ).find( InepDistribution.class, rev.getId( ) );
+		return getEntityManager( ).find( DistributionStatus.class, status );
+	}
+
+	@Override
+	public InepDistribution updateRevision( InepDistribution dist )
+	{
+		InepDistribution entity = getEntityManager( ).find( InepDistribution.class, dist.getId( ) );
 		if ( entity != null ) {
-			rev = getEntityManager( ).merge( rev );
+			dist = getEntityManager( ).merge( dist );
 		}
 		else {
-			getEntityManager( ).persist( rev );
+			getEntityManager( ).persist( dist );
 		}
-		rev.setStatus( getEntityManager( ).find( DistributionStatus.class, 2 ) );
-		if ( rev.getRevisor( ).isCoordenador( ).equals( false ) ) {
-			List<InepDistribution> others = this.distributionSession.findByNamedQuery( InepDistribution.getAllFromTest,
-					rev.getTest( ) );
-			for ( InepDistribution other : others )
-			{
-				if ( other.equals( rev ) ) {
-					continue;
-				}
-				int variance = other.getNota( ).intValue( ) - rev.getNota( ).intValue( );
-				if ( variance < 0 ) {
-					variance *= -1;
-				}
-				Integer threshold = getProperty( ).getInt( "inep.threshold" );
-				if ( threshold == null ) {
-					threshold = 2;
-					getProperty( ).setInt( "inep.threshold", "Valor máximo admitido de discrepância", threshold );
-				}
-				if ( variance >= threshold || ( other.getNota( ) > 5 && rev.getNota( ).equals( other.getNota( ) ) == false ) )
-				{
-					List<InepRevisor> coordinators = this.revisorSession.findByNamedQuery( InepRevisor.getAllCoordinatorsToTask,
-							rev.getRevisor( ).getTask( ) );
-					for ( InepRevisor coordinator : coordinators )
-					{
-						InepDistribution dist = this.distributionSession
-								.get( new InepDistributionPK( coordinator, rev.getTest( ) ) );
-						if ( dist == null ) {
-							dist = new InepDistribution( coordinator, rev.getTest( ) );
-						}
-						dist.setStatus( this.distributionStatusSession.get( new Integer( 1 ) ) );
-						dist = this.distributionSession.merge( dist );
-					}
-				}
+		if ( dist.getRevisor( ).isCoordenador( ) == false ) {
+			dist.setStatus( getStatus( DistributionStatus.statusRevised ) );
+			if ( hasVariance( dist ) ) {
+				variance( dist, getStatus( DistributionStatus.statusVariance ) );
 			}
 		}
-		return rev;
+		else {
+			dist.setStatus( getStatus( DistributionStatus.statusFinalRevised ) );
+			variance( dist, getStatus( DistributionStatus.statusFinalRevised ) );
+		}
+		return dist;
+	}
+
+	private void variance( InepDistribution entity, DistributionStatus status )
+	{
+		List<InepRevisor> coordinators;
+		InepDistribution varianceDistribution;
+		if ( sendToAllFromTask( ) == false ) {
+			coordinators = this.revisorSession.findByNamedQuery( InepRevisor.getAllCoordinatorsToTask,
+					entity.getRevisor( ).getTask( ) );
+		}
+		else {
+			coordinators = this.revisorSession.findByNamedQuery( InepRevisor.getAllTeamByEventAndTask,
+					entity.getRevisor( ).getTask( ) );
+		}
+		for ( InepRevisor otherRevisor : coordinators )
+		{
+			varianceDistribution = this.distributionSession.get( new InepDistributionPK( otherRevisor, entity.getTest( ) ) );
+			if ( varianceDistribution == null ) {
+				varianceDistribution = new InepDistribution( otherRevisor, entity.getTest( ) );
+			}
+			varianceDistribution.setStatus( status );
+			varianceDistribution = this.distributionSession.merge( varianceDistribution );
+		}
+	}
+
+	private boolean hasVariance( InepDistribution entity )
+	{
+
+		boolean bRet = false;
+		if ( entity == null || entity.getRevisor( ).isCoordenador( ) ) {
+			return bRet;
+		}
+		List<InepDistribution> others;
+		Integer threshold;
+		int variance;
+
+		others = this.distributionSession.findByNamedQuery( InepDistribution.getAllFromTest, entity.getTest( ) );
+		threshold = getTreshold( );
+		for ( InepDistribution other : others ) {
+			if ( other.equals( entity ) || other.getNota( ) == null ) {
+				continue;
+			}
+			variance = other.getNota( ).intValue( ) - entity.getNota( ).intValue( );
+			if ( variance < 0 ) {
+				variance *= -1;
+			}
+			if ( variance > threshold || ( other.getNota( ) > 5 && entity.getNota( ).equals( other.getNota( ) ) == false ) ) {
+				bRet = true;
+				other.setStatus( getStatus( DistributionStatus.statusVariance ) );
+			}
+		}
+		if ( bRet == true ) {
+			entity.setStatus( getStatus( DistributionStatus.statusVariance ) );
+		}
+		return bRet;
+	}
+
+	private Boolean sendToAllFromTask( )
+	{
+		Boolean ret = getProperty( ).getBool( "inep.varianceSendToAll" );
+		if ( ret == null ) {
+			ret = true;
+			String description;
+
+			description = "Envia o teste com variancia para todos os corretores da tarefa (Senao envia somente coordenadores)";
+			getProperty( ).setBool( "inep.varianceSendToAll", description, true );
+		}
+		return ret;
+	}
+
+	private Integer getTreshold( )
+	{
+		Integer threshold = getProperty( ).getInt( "inep.threshold" );
+		if ( threshold == null ) {
+			threshold = 2;
+			getProperty( ).setInt( "inep.threshold", "Valor máximo admitido de discrepância", threshold );
+		}
+		return threshold;
 	}
 
 	@Override
 	public List<InepDistribution> getOtherDistributions( InepTest test )
 	{
-		List<InepDistribution> others = this.distributionSession.findByNamedQuery( InepDistribution.getAllFromTest, test );
+		List<InepDistribution> others = this.distributionSession.findByNamedQuery( InepDistribution.getOtherDistribution, test );
 
 		return others;
 	}
@@ -281,6 +341,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 						case 2:
 							dto.setRevised( count.intValue( ) );
 							break;
+						case 4:
 						case 3:
 							dto.setVariance( count.intValue( ) );
 							break;
@@ -294,5 +355,75 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			}
 		}
 		return dto;
+	}
+
+	@Override
+	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepRevisor revisor )
+	{
+		List<InepAnaliticoCorrecao> list = new ArrayList<InepAnaliticoCorrecao>( );
+		return list;
+	}
+
+	@Override
+	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepTask task )
+	{
+		List<InepAnaliticoCorrecao> list = new ArrayList<InepAnaliticoCorrecao>( );
+		return list;
+	}
+
+	@Override
+	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepPackage event )
+	{
+		final long startTime = System.nanoTime( );
+		List<InepAnaliticoCorrecao> list = new ArrayList<InepAnaliticoCorrecao>( );
+		String lastSubscription = "";
+
+		try {
+			InepAnaliticoCorrecao analitico = null;
+			List<InepTest> tests = this.testSession.getTests( event );
+			for ( InepTest test : tests )
+			{
+				if ( test.getSubscription( ).getId( ).getId( ).equals( lastSubscription ) == false )
+				{
+					analitico = new InepAnaliticoCorrecao( );
+					lastSubscription = test.getSubscription( ).getId( ).getId( );
+					analitico.setSubscritpion( test.getSubscription( ).getId( ).getId( ) );
+					list.add( analitico );
+				}
+				loadGrades( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
+			}
+		}
+		catch ( Exception e )
+		{
+			e = null;
+		}
+		final long endTime = System.nanoTime( ) - startTime;
+		System.out.println( "Duração: " + endTime / 100.0 );
+		return list;
+	}
+
+	private void loadGrades( InepTest s, TaskGrade grade )
+	{
+		if ( s == null || grade == null ) {
+			return;
+		}
+		List<InepDistribution> distributions = this.distributionSession.get( s );
+		for ( InepDistribution item : distributions )
+		{
+			if ( item.getNota( ) == null ) {
+				continue;
+			}
+			if ( item.getRevisor( ).isCoordenador( ) == false ) {
+				if ( grade.getFirstGrade( ) == null ) {
+					grade.setFirstGrade( item.getNota( ) );
+				}
+				else {
+					grade.setSecondGrade( item.getNota( ) );
+				}
+			}
+			else {
+				grade.setThirdGrade( item.getNota( ) );
+			}
+		}
 	}
 }
