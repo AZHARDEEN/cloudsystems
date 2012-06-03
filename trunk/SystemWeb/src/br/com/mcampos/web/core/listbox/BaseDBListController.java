@@ -34,7 +34,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 	@Wire( value = "paging" )
 	private List<Paging> pagings;
 
-	protected abstract void showFields( Collection<ENTITY> fields );
+	protected abstract void showFields( ENTITY targetEntity );
 
 	protected ListitemRenderer<?> getListRenderer( )
 	{
@@ -103,7 +103,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 	}
 
 	@SuppressWarnings( "unchecked" )
-	protected Collection<ENTITY> getSelectedRecords( )
+	protected List<ENTITY> getSelectedRecords( )
 	{
 		Set<Listitem> itens;
 
@@ -121,11 +121,11 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 	@Listen( "onSelect = listbox#listTable" )
 	public void onSelect( )
 	{
-		Collection<ENTITY> itens = getSelectedRecords( );
+		List<ENTITY> itens = getSelectedRecords( );
 		if ( itens != null ) {
-			showFields( itens );
 			if ( itens.size( ) == 1 ) {
 				allowUpdateAndDelete( true );
+				showFields( itens.get( 0 ) );
 			}
 			else {
 				allowDelete( true );
@@ -155,12 +155,12 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 	@Override
 	protected void onUpdate( )
 	{
-		Collection<ENTITY> items = getSelectedRecords( );
+		List<ENTITY> items = getSelectedRecords( );
 		if ( items != null ) {
-			showFields( items );
+			setTargetEntity( ( (ArrayList<ENTITY>) getSelectedRecords( ) ).get( 0 ) );
+			showFields( items.get( 0 ) );
 			disableListBox( true );
 		}
-		setTargetEntity( ( (ArrayList<ENTITY>) getSelectedRecords( ) ).get( 0 ) );
 	}
 
 	private void disableListBox( boolean bDisable )

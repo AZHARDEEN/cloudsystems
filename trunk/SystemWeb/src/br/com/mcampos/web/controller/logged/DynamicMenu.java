@@ -1,5 +1,7 @@
 package br.com.mcampos.web.controller.logged;
 
+import java.io.Serializable;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -13,8 +15,13 @@ import org.zkoss.zul.Menupopup;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.event.IClickEvent;
 
-public final class DynamicMenu
+public final class DynamicMenu implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6069397668281548120L;
+
 	protected static final String attrMenu = "dto";
 
 	private IClickEvent clickEvent;

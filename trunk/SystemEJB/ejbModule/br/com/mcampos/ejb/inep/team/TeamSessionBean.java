@@ -9,7 +9,6 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.dto.inep.InepTaskCounters;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionSessionLocal;
@@ -17,15 +16,16 @@ import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
 import br.com.mcampos.ejb.inep.entity.DistributionStatus;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.entity.InepDistributionPK;
-import br.com.mcampos.ejb.inep.packs.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.ejb.inep.entity.InepTask;
+import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
-import br.com.mcampos.ejb.inep.revisor.InepRevisor;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSessionLocal;
-import br.com.mcampos.ejb.inep.task.InepTask;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
-import br.com.mcampos.ejb.inep.test.InepTest;
 import br.com.mcampos.ejb.inep.test.InepTestSessionLocal;
 import br.com.mcampos.ejb.media.Media;
+import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 
 /**
@@ -124,19 +124,21 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public InepRevisor getRevisor( InepPackage event, Authentication auth )
+	public InepRevisor getRevisor( InepPackage event, Collaborator auth )
 	{
 		return getRevisorSession( ).get( event, auth );
 	}
 
 	@Override
-	public List<InepDistribution> getTests( InepPackage event, Authentication auth )
+	public List<InepDistribution> getTests( InepRevisor revisor, Integer status )
 	{
-		InepRevisor revisor = getRevisorSession( ).get( event, auth );
 		if ( revisor == null ) {
 			return Collections.emptyList( );
 		}
-		return this.distributionSession.get( revisor );
+		if ( status == null || status.intValue( ) < 1 ) {
+			status = 1;
+		}
+		return this.distributionSession.get( revisor, status );
 	}
 
 	@Override
@@ -227,7 +229,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepPackage> getEvents( Authentication auth )
+	public List<InepPackage> getEvents( Collaborator auth )
 	{
 		return this.taskSession.getEvents( auth );
 	}
@@ -252,40 +254,44 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	public InepTaskCounters getCounters( InepRevisor rev )
 	{
 		InepTaskCounters dto = new InepTaskCounters( );
-		Query query;
-		if ( rev.isCoordenador( ) ) {
-			query = getEntityManager( ).createNamedQuery( InepDistribution.getCoordCounter );
-			query.setParameter( 1, rev.getTask( ) );
-		}
-		else {
-			query = getEntityManager( ).createNamedQuery( InepDistribution.getRevisorCounter );
-			query.setParameter( 1, rev );
-		}
-		try {
-			List<Object[ ]> values = query.getResultList( );
-			if ( values != null ) {
-				for ( Object[ ] obj : values )
-				{
-					int status = ( (Integer) obj[ 0 ] );
-					Long count = ( (Long) obj[ 1 ] );
-					switch ( status )
+		if ( rev != null ) {
+			Query query;
+
+			if ( rev.isCoordenador( ) ) {
+				query = getEntityManager( ).createNamedQuery( InepDistribution.getCoordCounter );
+				query.setParameter( 1, rev.getTask( ) );
+			}
+			else {
+				query = getEntityManager( ).createNamedQuery( InepDistribution.getRevisorCounter );
+				query.setParameter( 1, rev );
+			}
+			try {
+				@SuppressWarnings( "unchecked" )
+				List<Object[ ]> values = query.getResultList( );
+				if ( values != null ) {
+					for ( Object[ ] obj : values )
 					{
-					case 1:
-						dto.setTasks( count.intValue( ) );
-						break;
-					case 2:
-						dto.setRevised( count.intValue( ) );
-						break;
-					case 3:
-						dto.setVariance( count.intValue( ) );
-						break;
+						int status = ( (Integer) obj[ 0 ] );
+						Long count = ( (Long) obj[ 1 ] );
+						switch ( status )
+						{
+						case 1:
+							dto.setTasks( count.intValue( ) );
+							break;
+						case 2:
+							dto.setRevised( count.intValue( ) );
+							break;
+						case 3:
+							dto.setVariance( count.intValue( ) );
+							break;
+						}
 					}
 				}
 			}
-		}
-		catch ( Exception e )
-		{
-			e = null;
+			catch ( Exception e )
+			{
+				e = null;
+			}
 		}
 		return dto;
 	}

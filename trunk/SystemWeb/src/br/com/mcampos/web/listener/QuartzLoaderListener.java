@@ -16,10 +16,10 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.mcampos.web.quartz.loaderJob;
+import br.com.mcampos.web.quartz.InepLoaderJob;
 
 /**
- * Application Lifecycle Listener implementation class QuartzLoaderListener
+ * Application Lifecycle Listener implementation class QuartzLoaderListener.
  * 
  */
 @WebListener( )
@@ -82,7 +82,7 @@ public class QuartzLoaderListener implements ServletContextListener
 
 	private JobDetail createLoaderJob( )
 	{
-		JobDetail job = JobBuilder.newJob( loaderJob.class )
+		JobDetail job = JobBuilder.newJob( InepLoaderJob.class )
 				.withIdentity( "loaderJob", "mcampos" ).build( );
 		return job;
 	}

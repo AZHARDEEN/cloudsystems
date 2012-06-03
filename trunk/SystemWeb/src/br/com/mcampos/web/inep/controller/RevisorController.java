@@ -1,6 +1,5 @@
 package br.com.mcampos.web.inep.controller;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,10 +13,10 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.inep.packs.InepPackage;
-import br.com.mcampos.ejb.inep.revisor.InepRevisor;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSession;
-import br.com.mcampos.ejb.inep.task.InepTask;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
@@ -44,11 +43,8 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	Label infoTeamMaster;
 
 	@Override
-	protected void showFields( Collection<InepRevisor> entities )
+	protected void showFields( InepRevisor field )
 	{
-		List<InepRevisor> fields = (List<InepRevisor>) entities;
-		InepRevisor field = fields.get( 0 );
-
 		this.revNome.setValue( field.getCollaborator( ).getPerson( ).getName( ) );
 		this.infoCPF.setValue( "" );
 		this.infoEmail.setValue( "" );
@@ -121,7 +117,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getAuthentication( ) );
+		List<InepPackage> events = getSession( ).getEvents( getCurrentCollaborator( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );
@@ -169,7 +165,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 
 		comboItem = getComboTask( ).getSelectedItem( );
 		if ( comboItem != null && comboItem.getValue( ) != null ) {
-			list = getSession().getAll( (InepTask ) comboItem.getValue () );
+			list = getSession( ).getAll( (InepTask) comboItem.getValue( ) );
 		}
 		else if ( getComboEvent( ).getSelectedItem( ) != null )
 		{

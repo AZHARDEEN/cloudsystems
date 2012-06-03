@@ -1,8 +1,5 @@
 package br.com.mcampos.web.controller.tables;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
@@ -35,14 +32,13 @@ public class DocumentTypeController extends SimpleTableController<DocumentTypeSe
 	}
 
 	@Override
-	protected void showFields( Collection<DocumentType> entities )
+	protected void showFields( DocumentType entity )
 	{
-		List<DocumentType> list = ( List<DocumentType> ) entities;
-		super.showFields( entities );
-		this.infoMask.setValue( list.get( 0 ).getMask( ) );
-		this.infoUniq.setValue( list.get( 0 ).getUniq( ) ? "Sim" : "Não" );
-		this.mask.setValue( list.get( 0 ).getMask( ) );
-		this.uniq.setChecked( list.get( 0 ).getUniq( ));
+		super.showFields( entity );
+		this.infoMask.setValue( entity.getMask( ) );
+		this.infoUniq.setValue( entity.getUniq( ) ? "Sim" : "Não" );
+		this.mask.setValue( entity.getMask( ) );
+		this.uniq.setChecked( entity.getUniq( ) );
 	}
 
 	@Override

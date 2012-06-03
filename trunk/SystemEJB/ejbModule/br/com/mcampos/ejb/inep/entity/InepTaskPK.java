@@ -1,18 +1,17 @@
-package br.com.mcampos.ejb.inep.subscription;
+package br.com.mcampos.ejb.inep.entity;
 
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-import br.com.mcampos.ejb.inep.packs.InepPackage;
 
 /**
- * The primary key class for the inep_subscription database table.
+ * The primary key class for the inep_task database table.
  * 
  */
 @Embeddable
-public class InepSubscriptionPK implements Serializable, Comparable<InepSubscriptionPK>
+public class InepTaskPK implements Serializable, Comparable<InepTaskPK>
 {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
@@ -23,34 +22,45 @@ public class InepSubscriptionPK implements Serializable, Comparable<InepSubscrip
 	@Column(name="pct_id_in")
 	private Integer eventId;
 
-	@Column(name="isc_id_ch")
-	private String id;
+	@Column(name="tsk_id_in")
+	private Integer id;
 
-	public InepSubscriptionPK() {
+	public InepTaskPK() {
 	}
 
-	public void set( InepPackage t )
+	public void set( InepPackagePK key )
 	{
-		setCompanyId( t.getId( ).getCompanyId( ) );
-		setEventId( t.getId( ).getId( ) );
+		setCompanyId( key.getCompanyId( ) );
+		setEventId( key.getId( ) );
 	}
+
 	public Integer getCompanyId() {
+		if ( this.companyId == null ) {
+			this.companyId = 0;
+		}
 		return this.companyId;
 	}
+
 	public void setCompanyId(Integer usrIdIn) {
 		this.companyId = usrIdIn;
 	}
+
 	public Integer getEventId() {
+		if ( this.eventId == null ) {
+			this.eventId = 0;
+		}
 		return this.eventId;
 	}
+
 	public void setEventId(Integer pctIdIn) {
 		this.eventId = pctIdIn;
 	}
-	public String getId() {
+
+	public Integer getId() {
 		return this.id;
 	}
-	public void setId(String iscIdCh) {
-		this.id = iscIdCh;
+	public void setId(Integer tskIdIn) {
+		this.id = tskIdIn;
 	}
 
 	@Override
@@ -58,10 +68,10 @@ public class InepSubscriptionPK implements Serializable, Comparable<InepSubscrip
 		if (this == other) {
 			return true;
 		}
-		if (!(other instanceof InepSubscriptionPK)) {
+		if (!(other instanceof InepTaskPK)) {
 			return false;
 		}
-		InepSubscriptionPK castOther = (InepSubscriptionPK)other;
+		InepTaskPK castOther = (InepTaskPK)other;
 		return
 				this.companyId.equals(castOther.companyId)
 				&& this.eventId.equals(castOther.eventId)
@@ -81,7 +91,7 @@ public class InepSubscriptionPK implements Serializable, Comparable<InepSubscrip
 	}
 
 	@Override
-	public int compareTo( InepSubscriptionPK o )
+	public int compareTo( InepTaskPK o )
 	{
 		int nRet;
 

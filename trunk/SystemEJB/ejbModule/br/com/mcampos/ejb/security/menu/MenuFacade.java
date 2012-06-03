@@ -6,14 +6,14 @@ import javax.ejb.Remote;
 
 import org.omg.CORBA.portable.ApplicationException;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.security.task.Task;
+import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
 @Remote
 public interface MenuFacade extends BaseSessionInterface<Menu>
 {
-	public List<Menu> getMenus( Authentication auth ) throws ApplicationException;
+	public List<Menu> getMenus( Collaborator auth ) throws ApplicationException;
 
 	public List<Menu> getTopContextMenu( ) throws ApplicationException;
 

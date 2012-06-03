@@ -5,14 +5,13 @@ import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.dto.Authentication;
-import br.com.mcampos.ejb.core.SimpleDTO;
 import br.com.mcampos.ejb.security.Login;
+import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.web.core.LoggedInterface;
 
-public class BaseLoggedMDIController extends BaseMDIController
+public class BaseLoggedMDIController extends BaseMDIController implements LoggedInterface
 {
 	private static final long serialVersionUID = 3441410095758996757L;
-
 
 	@Override
 	public void doAfterCompose( Window comp ) throws Exception
@@ -32,33 +31,27 @@ public class BaseLoggedMDIController extends BaseMDIController
 		}
 	}
 
-	private boolean isLogged ()
+	@Override
+	public boolean isLogged( )
 	{
 		return getLoggedUser( ) != null;
 	}
 
-	protected Login getLoggedUser( )
+	@Override
+	public Login getLoggedUser( )
 	{
 		return (Login) getSessionParameter( userSessionParamName );
 	}
 
-
-	protected Authentication getAuthentication ()
+	@Override
+	public Collaborator getCurrentCollaborator( )
 	{
-		Authentication auth = ( Authentication) getSessionParameter( authenticationParamName );
-		if ( auth == null )
-		{
-			auth = new Authentication( );
-			auth.setUserId( getLoggedUser( ).getId( ) );
-			setSessionParameter( authenticationParamName, auth );
+		Collaborator c = (Collaborator) getSessionParameter( currentCollaborator );
+		Login l = getLoggedUser( );
+		if ( c.getPerson( ).equals( l.getPerson( ) ) == false ) {
+			return null;
 		}
-		return auth;
-	}
-
-	protected void setCurrentCompany ( SimpleDTO company )
-	{
-		Authentication auth = getAuthentication( );
-		auth.setCompanyId( company.getId( ) );
+		return c;
 	}
 
 }

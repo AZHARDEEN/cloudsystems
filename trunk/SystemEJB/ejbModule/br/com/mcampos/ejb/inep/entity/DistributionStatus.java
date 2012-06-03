@@ -19,6 +19,11 @@ public class DistributionStatus extends SimpleTable<DistributionStatus> implemen
 {
 	private static final long serialVersionUID = 1L;
 
+	public static final Integer statusDistributed = 1;
+	public static final Integer statusRevised = 2;
+	public static final Integer statusVariance = 3;
+	public static final Integer statusFinalRevised = 4;
+
 	@Id
 	@Column( name = "ids_id_in" )
 	private Integer id;
@@ -26,26 +31,31 @@ public class DistributionStatus extends SimpleTable<DistributionStatus> implemen
 	@Column( name = "ids_description_ch" )
 	private String description;
 
-	public DistributionStatus() {
+	public DistributionStatus( )
+	{
 	}
 
 	@Override
-	public Integer getId() {
+	public Integer getId( )
+	{
 		return this.id;
 	}
 
 	@Override
-	public void setId(Integer dstIdIn) {
+	public void setId( Integer dstIdIn )
+	{
 		this.id = dstIdIn;
 	}
 
 	@Override
-	public String getDescription() {
+	public String getDescription( )
+	{
 		return this.description;
 	}
 
 	@Override
-	public void setDescription(String dstDescricaoCh) {
+	public void setDescription( String dstDescricaoCh )
+	{
 		this.description = dstDescricaoCh;
 	}
 }

@@ -7,13 +7,13 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.inep.packs.InepPackage;
-import br.com.mcampos.ejb.inep.task.InepTask;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.ejb.inep.entity.InepRevisorPK;
+import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
-import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 
 /**
  * Session Bean implementation class InepRevisorSessionBean
@@ -25,9 +25,6 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 	@EJB
 	private InepTaskSessionLocal taskSession;
 
-	@EJB
-	private CollaboratorSessionLocal collaboratorSession;
-
 	@Override
 	protected Class<InepRevisor> getEntityClass( )
 	{
@@ -35,7 +32,7 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 	}
 
 	@Override
-	public List<InepPackage> getEvents( Authentication auth )
+	public List<InepPackage> getEvents( Collaborator auth )
 	{
 		return getTaskSession( ).getEvents( auth );
 	}
@@ -75,9 +72,8 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 	}
 
 	@Override
-	public InepRevisor get( InepPackage event, Authentication auth )
+	public InepRevisor get( InepPackage event, Collaborator c )
 	{
-		Collaborator c = this.collaboratorSession.find( auth );
 		if ( c == null ) {
 			return null;
 		}

@@ -1,6 +1,5 @@
 package br.com.mcampos.web.inep.controller;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.zkoss.zk.ui.event.Event;
@@ -13,8 +12,8 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.inep.packs.InepPackage;
-import br.com.mcampos.ejb.inep.subscription.InepSubscription;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSession;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.dbwidgets.DBWidget;
@@ -41,18 +40,17 @@ public class SubscriptionController extends BaseDBListController<InepSubscriptio
 	}
 
 	@Override
-	protected void showFields( Collection<InepSubscription> entities )
+	protected void showFields( InepSubscription entity )
 	{
-		List<InepSubscription> fields = (List<InepSubscription>) entities;
-		for ( int nIndex = 0; nIndex < this.infoLabels.size( ); nIndex++ ) {
-			this.infoLabels.get( nIndex ).setValue( fields != null ? fields.get( 0 ).getField( nIndex ) : "" );
+		for ( int nIndex = 0; nIndex < getInfoLabels( ).size( ); nIndex++ ) {
+			getInfoLabels( ).get( nIndex ).setValue( entity != null ? entity.getField( nIndex ) : "" );
 		}
 		for ( int nIndex = 0; nIndex < this.inputs.size( ); nIndex++ ) {
 			DBWidget input = this.inputs.get( nIndex );
-			input.setText( fields != null ? fields.get( 0 ).getField( nIndex ) : "" );
-			if ( getStatus( ) == statusUpdate ) {
+			input.setText( entity != null ? entity.getField( nIndex ) : "" );
+			if ( getStatus( ).equals( statusUpdate ) ) {
 				if ( input.isPrimaryKey( ) ) {
-					input.setDisabled( fields != null );
+					input.setDisabled( entity != null );
 				}
 			}
 		}
@@ -88,7 +86,7 @@ public class SubscriptionController extends BaseDBListController<InepSubscriptio
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getAuthentication( ) );
+		List<InepPackage> events = getSession( ).getEvents( getCurrentCollaborator( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) ) {
 			getComboEvent( ).getItems( ).clear( );
@@ -114,5 +112,10 @@ public class SubscriptionController extends BaseDBListController<InepSubscriptio
 	protected ListitemRenderer<InepSubscription> getListRenderer( )
 	{
 		return new InepSubscriptionRenderer( );
+	}
+
+	private List<Label> getInfoLabels( )
+	{
+		return this.infoLabels;
 	}
 }

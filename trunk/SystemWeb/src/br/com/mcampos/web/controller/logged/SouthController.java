@@ -4,8 +4,6 @@ import static br.com.mcampos.web.core.ComboboxUtils.load;
 
 import java.util.List;
 
-import javax.naming.NamingException;
-
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -15,16 +13,14 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.SimpleDTO;
+import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSession;
-import br.com.mcampos.web.core.BaseLoggedController;
-import br.com.mcampos.web.locator.ServiceLocator;
+import br.com.mcampos.web.core.BaseDBLoggedController;
 
-public class SouthController extends BaseLoggedController<Window>
+public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 {
 	private static final long serialVersionUID = 1292892431343759655L;
-	private CollaboratorSession session = null;
 
 	@Wire( "#companies" )
 	Combobox companies;
@@ -36,38 +32,30 @@ public class SouthController extends BaseLoggedController<Window>
 	public void onSelectCompanies( )
 	{
 		Comboitem comboItem = this.companies.getSelectedItem( );
-		if ( comboItem != null ) {
-			Authentication auth = getAuthentication( );
-			setCurrentCompany( (SimpleDTO) comboItem.getValue( ) );
-			EventQueues.lookup( IndexController.queueName, true ).publish( new CompanyEventChange( auth ) );
+		if ( comboItem != null && comboItem.getValue( ) instanceof SimpleDTO ) {
+			SimpleDTO dto = (SimpleDTO) comboItem.getValue( );
+			Collaborator c = getSession( ).find( getLoggedUser( ), dto.getId( ) );
+			setCollaborator( c );
+			EventQueues.lookup( IndexController.queueName, true ).publish( new CompanyEventChange( c ) );
 		}
 	}
-
-
-	private CollaboratorSession getSession()
-	{
-		try {
-			if ( this.session == null ) {
-				this.session = ( CollaboratorSession ) ServiceLocator.getInstance().getRemoteSession( CollaboratorSession.class );
-			}
-		}
-		catch ( NamingException e ) {
-			e.printStackTrace();
-		}
-		return this.session;
-	}
-
 
 	@Override
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		List<SimpleDTO> list = getSession().getCompanies( getAuthentication( ) );
+		List<SimpleDTO> list = getSession( ).getCompanies( getLoggedUser( ) );
 		load( this.companies, list, true );
 		if ( this.companies.getSelectedIndex( ) != -1 ) {
 			onSelectCompanies( );
 		}
-		this.version.setValue( Executions.getCurrent( ).getDesktop( ).getWebApp().getVersion() );
+		this.version.setValue( Executions.getCurrent( ).getDesktop( ).getWebApp( ).getVersion( ) );
+	}
+
+	@Override
+	protected Class<CollaboratorSession> getSessionClass( )
+	{
+		return CollaboratorSession.class;
 	}
 
 }

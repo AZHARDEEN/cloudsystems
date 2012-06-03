@@ -23,10 +23,10 @@
                     </grid>
 		            <listbox vflex="true" autopaging="true" id="listTable" multiple="true" mold="paging">
 		                <listhead>
-		                    <listheader align="center" label="Código" width="80px" value="id"/>
+		                    <listheader align="center" label="Código" width="70px" value="id"/>
 		                    <listheader align="left" label="Nome do Corretor" sort="auto" value="description"/>
-		                    <listheader align="left" label="Tarefa Associada" sort="auto" value="task" width="120px"/>
-		                    <listheader align="left" label="Corretor" sort="auto" value="teamMaster" width="100px"/>
+		                    <listheader align="center" label="Tarefa" sort="auto" value="task" width="90px"/>
+		                    <listheader align="center" label="Coord." sort="auto" value="teamMaster" width="50px"/>
 		                </listhead>
 		            </listbox>
 	            </div>

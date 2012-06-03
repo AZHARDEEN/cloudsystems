@@ -10,25 +10,20 @@ import javax.ejb.Stateless;
 
 import org.omg.CORBA.portable.ApplicationException;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.SimpleDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.user.company.Company;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
-import br.com.mcampos.ejb.user.person.Person;
-import br.com.mcampos.ejb.user.person.PersonSessionLocal;
 import br.com.mcampos.sysutils.SysUtils;
 
 /**
  * Session Bean implementation class CollaboratorSessionBean
  */
-@Stateless(name = "CollaboratorSession", mappedName = "CollaboratorSession")
+@Stateless( name = "CollaboratorSession", mappedName = "CollaboratorSession" )
 @LocalBean
-public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> implements CollaboratorSession, CollaboratorSessionLocal {
-
-	@EJB
-	PersonSessionLocal personSession;
-
+public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> implements CollaboratorSession, CollaboratorSessionLocal
+{
 	@EJB
 	CompanySessionLocal companySession;
 
@@ -39,29 +34,31 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	}
 
 	@Override
-	public Collaborator find( Authentication auth )
+	public Collaborator find( Login login, Integer companyId )
 	{
-		Person person = getPerson( auth );
-		if ( person == null ) {
+		if ( login == null || companyId == null || login.getPerson( ) == null ) {
 			return null;
 		}
-		Company company = this.companySession.get( auth.getCompanyId( ) );
-		if ( company == null) {
+		Company company = this.companySession.get( companyId );
+		if ( company == null ) {
 			return null;
 		}
-		return getByNamedQuery( Collaborator.hasCollaborator, company, person );
+		return getByNamedQuery( Collaborator.hasCollaborator, company, login.getPerson( ) );
 	}
 
 	@Override
-	public List<SimpleDTO> getCompanies( Authentication auth ) throws ApplicationException
+	public List<SimpleDTO> getCompanies( Login auth ) throws ApplicationException
 	{
-		Person person = getPerson( auth );
+		List<Collaborator> list;
+		if ( auth == null || auth.getPerson( ) == null ) {
+			return Collections.emptyList( );
+		}
 		try {
-			List<Collaborator> list = findByNamedQuery( Collaborator.findCompanies, person );
-			if ( SysUtils.isEmpty( list )) {
+			list = findByNamedQuery( Collaborator.findCompanies, auth.getPerson( ) );
+			if ( SysUtils.isEmpty( list ) ) {
 				return Collections.emptyList( );
 			}
-			return toSimpleDTOList (list);
+			return toSimpleDTOList( list );
 		}
 		catch ( Exception e )
 		{
@@ -70,27 +67,18 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 		}
 	}
 
-
-	private List<SimpleDTO> toSimpleDTOList ( List<Collaborator> list)
+	private List<SimpleDTO> toSimpleDTOList( List<Collaborator> list )
 	{
-		if ( SysUtils.isEmpty( list )) {
+		if ( SysUtils.isEmpty( list ) ) {
 			return Collections.emptyList( );
 		}
 		List<SimpleDTO> dtos = new ArrayList<SimpleDTO>( list.size( ) );
 		for ( Collaborator item : list )
 		{
-			String name = SysUtils.isEmpty( item.getCompany( ).getNickName( ) ) ? item.getCompany( ).getName( ) : item.getCompany( ).getNickName( );
-			dtos.add( new SimpleDTO ( item.getCompany( ).getId( ), name ) );
+			String name = SysUtils.isEmpty( item.getCompany( ).getNickName( ) ) ? item.getCompany( ).getName( ) : item.getCompany( )
+					.getNickName( );
+			dtos.add( new SimpleDTO( item.getCompany( ).getId( ), name ) );
 		}
 		return dtos;
 	}
-
-
-	private Person getPerson ( Authentication auth )
-	{
-		Person person = this.personSession.get(  auth.getUserId( ) );
-		return person;
-	}
-
-
 }

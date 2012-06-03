@@ -237,8 +237,15 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	{
 		Query query = getEntityManager( ).createQuery(
 				"select max( o.id ) + 1 from " + getPersistentClass( ).getSimpleName( ) + " o" );
-		Integer id = (Integer) query.getSingleResult( );
-		if ( id == null || id.equals( 0 ) ) {
+		Integer id;
+		try {
+			id = (Integer) query.getSingleResult( );
+			if ( id == null || id.equals( 0 ) ) {
+				id = 1;
+			}
+		}
+		catch ( Exception e ) {
+			e = null;
 			id = 1;
 		}
 		return id;

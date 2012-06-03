@@ -1,8 +1,5 @@
 package br.com.mcampos.web.controller.tables;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
@@ -35,14 +32,13 @@ public class ContactTypeController extends SimpleTableController<ContactTypeSess
 	}
 
 	@Override
-	protected void showFields( Collection<ContactType> entities )
+	protected void showFields( ContactType entity )
 	{
-		List<ContactType> list = ( List<ContactType> ) entities;
-		super.showFields( entities );
-		this.infoMask.setValue( list.get( 0 ).getMask( ) );
-		this.infoUniq.setValue( list.get( 0 ).getDuplicate( ) ? "Sim" : "Não" );
-		this.mask.setValue( list.get( 0 ).getMask( ) );
-		this.uniq.setChecked( list.get( 0 ).getDuplicate( ) );
+		super.showFields( entity );
+		this.infoMask.setValue( entity.getMask( ) );
+		this.infoUniq.setValue( entity.getDuplicate( ) ? "Sim" : "Não" );
+		this.mask.setValue( entity.getMask( ) );
+		this.uniq.setChecked( entity.getDuplicate( ) );
 	}
 
 	@Override

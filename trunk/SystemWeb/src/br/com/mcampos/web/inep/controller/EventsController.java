@@ -1,7 +1,7 @@
 package br.com.mcampos.web.inep.controller;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Date;
 
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Datebox;
@@ -11,7 +11,7 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
 
 import br.com.mcampos.ejb.core.DBPaging;
-import br.com.mcampos.ejb.inep.packs.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.packs.InepPackageSession;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
@@ -53,11 +53,10 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	}
 
 	@Override
-	protected void showFields( Collection<InepPackage> entities )
+	protected void showFields( InepPackage e )
 	{
-		if ( entities != null )
+		if ( e != null )
 		{
-			InepPackage e = ( (List<InepPackage>) entities ).get( 0 );
 			this.infoInitDate.setValue( SysUtils.formatDate( e.getInitDate( ) ) );
 			this.infoEndDate.setValue( SysUtils.formatDate( e.getEndDate( ) ) );
 			this.initDate.setValue( e.getInitDate( ) );
@@ -71,12 +70,14 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 		{
 			this.infoInitDate.setValue( "" );
 			this.infoEndDate.setValue( "" );
-			this.initDate.setValue( null );
-			this.endDate.setValue( null );
 			this.infoId.setValue( "" );
 			this.infoDescription.setValue( "" );
-			this.id.setValue( 0 );
+
+			this.initDate.setValue( null );
+			this.endDate.setValue( new Date( ) );
+			this.id.setValue( getSession( ).getNextId( getCurrentCollaborator( ) ) );
 			this.description.setValue( "" );
+			this.description.setFocus( true );
 		}
 	}
 
@@ -84,10 +85,10 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	protected void updateTargetEntity( InepPackage target )
 	{
 		target.setEndDate( this.endDate.getValue( ) );
-		target.setInitDate( this.initDate.getValue( ) );
-		target.getId( ).setCompanyId( getAuthentication( ).getCompanyId( ) );
+		target.setInitDate( this.initDate.getValue( ) != null ? this.initDate.getValue( ) : new Date( ) );
+		target.getId( ).setCompanyId( getCurrentCollaborator( ).getCompany( ).getId( ) );
 		target.getId( ).setId( this.id.getValue( ) );
-		target.setDescription( this.description.getId( ) );
+		target.setDescription( this.description.getValue( ) );
 	}
 
 	@Override
@@ -111,6 +112,6 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	@Override
 	protected Collection<InepPackage> getAll( int activePage )
 	{
-		return getSession( ).getAll( getAuthentication( ), new DBPaging( activePage, ListboxParams.maxListBoxPageSize ) );
+		return getSession( ).getAll( getCurrentCollaborator( ), new DBPaging( activePage, ListboxParams.maxListBoxPageSize ) );
 	}
 }

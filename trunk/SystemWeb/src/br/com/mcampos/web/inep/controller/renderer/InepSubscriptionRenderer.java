@@ -2,7 +2,7 @@ package br.com.mcampos.web.inep.controller.renderer;
 
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.ejb.inep.subscription.InepSubscription;
+import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.web.core.listbox.BaseListRenderer;
 
 public class InepSubscriptionRenderer extends BaseListRenderer<InepSubscription>

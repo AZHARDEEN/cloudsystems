@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.inep.revisor;
+package br.com.mcampos.ejb.inep.entity;
 
 import java.io.Serializable;
 
@@ -13,10 +13,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import br.com.mcampos.ejb.inep.packs.InepPackage;
-import br.com.mcampos.ejb.inep.task.InepTask;
+import br.com.mcampos.ejb.core.BasicEntityRenderer;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
-
 
 /**
  * The persistent class for the inep_revisor database table.
@@ -24,12 +22,15 @@ import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
  */
 @Entity
 @Table( name = "inep_revisor", schema = "inep" )
-@NamedQueries( { @NamedQuery( name = InepRevisor.getTeamByTask, query = "select o from InepRevisor o " ),
-	@NamedQuery( name = InepRevisor.getAllTeamByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 " ),
-	@NamedQuery( name = InepRevisor.getAllTeamByEvent, query = "select o from InepRevisor o where o.task.event = ?1" ),
-	@NamedQuery( name = InepRevisor.getAllCoordinatorsToTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = true" ),
-	@NamedQuery( name = InepRevisor.getAllTeam, query = "select o from InepRevisor o where o.coordenador = false" ), } )
-public class InepRevisor implements Serializable, Comparable<InepRevisor>
+@NamedQueries( {
+		@NamedQuery( name = InepRevisor.getTeamByTask, query = "select o from InepRevisor o " ),
+		@NamedQuery( name = InepRevisor.getAllTeamByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 " ),
+		@NamedQuery( name = InepRevisor.getAllTeamByEvent, query = "select o from InepRevisor o where o.task.event = ?1" ),
+		@NamedQuery(
+				name = InepRevisor.getAllCoordinatorsToTask,
+				query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = true" ),
+		@NamedQuery( name = InepRevisor.getAllTeam, query = "select o from InepRevisor o where o.coordenador = false" ), } )
+public class InepRevisor implements Serializable, Comparable<InepRevisor>, BasicEntityRenderer<InepRevisor>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -42,23 +43,30 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>
 	@EmbeddedId
 	private InepRevisorPK id;
 
-	@Column(name="rvs_coordinator_bt")
+	@Column( name = "rvs_coordinator_bt" )
 	private Boolean coordenador;
 
 	@ManyToOne( fetch = FetchType.EAGER, optional = false )
 	@JoinColumns( {
-		@JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
-		@JoinColumn( name = "col_seq_in", referencedColumnName = "col_seq_in", updatable = false, insertable = false, nullable = false ) } )
+			@JoinColumn(
+					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "col_seq_in", referencedColumnName = "col_seq_in", updatable = false, insertable = false,
+					nullable = false ) } )
 	private Collaborator collaborator;
 
 	@ManyToOne( fetch = FetchType.EAGER, optional = false )
 	@JoinColumns( {
-		@JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
-		@JoinColumn( name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ),
-		@JoinColumn( name = "tsk_id_in", referencedColumnName = "tsk_id_in", updatable = false, insertable = false, nullable = false ) } )
+			@JoinColumn(
+					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "tsk_id_in", referencedColumnName = "tsk_id_in", updatable = false, insertable = false, nullable = false ) } )
 	private InepTask task;
 
-	public InepRevisor() {
+	public InepRevisor( )
+	{
 	}
 
 	public InepRevisor( Collaborator c, InepPackage e )
@@ -70,7 +78,7 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>
 	public InepRevisorPK getId( )
 	{
 		if ( this.id == null ) {
-			this.id = new InepRevisorPK();
+			this.id = new InepRevisorPK( );
 		}
 		return this.id;
 	}
@@ -85,7 +93,8 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>
 		return this.coordenador;
 	}
 
-	public void setCoordenador(Boolean rvsCoordinatorBt) {
+	public void setCoordenador( Boolean rvsCoordinatorBt )
+	{
 		this.coordenador = rvsCoordinatorBt;
 	}
 
@@ -102,6 +111,7 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>
 		}
 	}
 
+	@Override
 	public int compareTo( InepRevisor object, Integer field )
 	{
 		switch ( field ) {
@@ -109,6 +119,10 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>
 			return getId( ).compareTo( object.getId( ) );
 		case 1:
 			return getCollaborator( ).getPerson( ).getName( ).compareTo( object.getCollaborator( ).getPerson( ).getName( ) );
+		case 2:
+			return getTask( ).getDescription( ).compareTo( object.getTask( ).getDescription( ) );
+		case 3:
+			return isCoordenador( ).compareTo( object.isCoordenador( ) );
 		default:
 			return 0;
 		}
@@ -126,6 +140,7 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>
 		return getId( ).compareTo( o.getId( ) );
 	}
 
+	@Override
 	public String getField( Integer field )
 	{
 		switch ( field ) {
@@ -133,6 +148,10 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>
 			return getId( ).getSequence( ).toString( );
 		case 1:
 			return getCollaborator( ).getPerson( ).getName( );
+		case 2:
+			return getTask( ).getDescription( );
+		case 3:
+			return isCoordenador( ) ? "SIM" : "";
 		default:
 			return "";
 		}

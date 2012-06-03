@@ -10,7 +10,6 @@ import javax.ejb.Stateless;
 
 import org.omg.CORBA.portable.ApplicationException;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.security.role.Role;
 import br.com.mcampos.ejb.security.task.Task;
@@ -38,13 +37,13 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	}
 
 	@Override
-	public List<Menu> getMenus( Authentication auth ) throws ApplicationException
+	public List<Menu> getMenus( Collaborator collaborator ) throws ApplicationException
 	{
 		List<Menu> availableMenus = Collections.emptyList( );
-		Collaborator collaborator = this.collaboratorSession.find( auth );
 		if ( collaborator == null ) {
 			return Collections.emptyList( );
 		}
+		collaborator = this.collaboratorSession.merge( collaborator );
 		availableMenus = new ArrayList<Menu>( );
 		for ( Role role : collaborator.getRoles( ) )
 		{
@@ -53,6 +52,7 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 		return availableMenus;
 	}
 
+	@Override
 	public void addRoleToMenu( Role role, List<Menu> availableMenus )
 	{
 		if ( role != null ) {

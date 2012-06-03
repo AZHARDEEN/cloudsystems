@@ -4,15 +4,16 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import br.com.mcampos.dto.Authentication;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.inep.packs.InepPackage;
-import br.com.mcampos.ejb.inep.task.InepTask;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.ejb.inep.entity.InepTask;
+import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
 @Local
 public interface InepRevisorSessionLocal extends BaseSessionInterface<InepRevisor>
 {
-	public List<InepPackage> getEvents( Authentication auth );
+	public List<InepPackage> getEvents( Collaborator auth );
 
 	public List<InepTask> getTasks( InepPackage event );
 
@@ -20,5 +21,5 @@ public interface InepRevisorSessionLocal extends BaseSessionInterface<InepReviso
 
 	public List<InepRevisor> getAll( InepTask p );
 
-	public InepRevisor get( InepPackage event, Authentication auth );
+	public InepRevisor get( InepPackage event, Collaborator auth );
 }
