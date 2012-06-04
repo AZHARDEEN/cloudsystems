@@ -8,12 +8,17 @@
 			    overflow: hidden;
 			}
     	</style>
+    	<style>
+			tr.oddRow td.z-row-inner, tr.oddRow {
+				background-color: background-color:rgba(0,0,255,1);
+			}
+    	</style>
 		<hlayout sclass="z-valign-middle" >
 			<label value="Evento"/>
 			<combobox id="comboEvent" readonly="true" hflex="true"/>
 		</hlayout>
     	<separator orient="horizontal" />
-		<grid mold="paging" autopaging="true" vflex="true" emptyMessage="Não existem item para mostrar" id="dataGrid">
+		<grid mold="paging" autopaging="true" vflex="true" emptyMessage="Não existem item para mostrar" id="dataGrid" oddRowSclass="oddRow">
 		    <auxhead>
 		        <auxheader label="Inscrição" align="left" rowspan="2"/>
 		        <auxheader label="Tarefa 1" colspan="4" align="center"/>
