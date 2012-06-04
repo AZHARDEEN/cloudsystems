@@ -11,7 +11,7 @@ import br.com.mcampos.ejb.core.SimpleDTO;
 import br.com.mcampos.ejb.security.Login;
 
 @Remote
-public interface CollaboratorSession extends BaseSessionInterface<Collaborator>
+public interface CollaboratorSession extends BaseSessionInterface<Collaborator>, UserPropertyInterface
 {
 	Collaborator find( Login login, Integer companyId );
 

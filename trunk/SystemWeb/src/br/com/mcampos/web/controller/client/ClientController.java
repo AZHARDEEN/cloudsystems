@@ -25,6 +25,8 @@ import br.com.mcampos.ejb.user.client.Client;
 import br.com.mcampos.ejb.user.client.ClientSession;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.person.Person;
+import br.com.mcampos.ejb.user.person.gender.Gender;
+import br.com.mcampos.ejb.user.person.title.Title;
 import br.com.mcampos.sysutils.CPF;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
@@ -190,13 +192,15 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 	@Listen( "onBlur=#cpf" )
 	public void onBlur( Event evt )
 	{
-		String doc = CPF.removeMask( this.cpf.getValue( ) );
+		String doc = this.cpf.getValue( );
 		if ( SysUtils.isEmpty( doc ) ) {
 			return;
 		}
-		Person person = (Person) getSession( ).getUser( getCurrentCollaborator( ), doc );
+		Person person = (Person) getSession( ).getUser( getCurrentCollaborator( ), CPF.removeMask( doc ) );
 		showRecord( person );
-
+		if ( person == null ) {
+			this.cpf.setValue( doc );
+		}
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -226,6 +230,9 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 			this.documentList.setModel( new ListModelList<UserDocument>( person.getDocuments( ) ) );
 			this.contactList.setModel( new ListModelList<UserContact>( person.getContacts( ) ) );
 			find( this.gender, person.getGender( ) );
+			if ( this.gender.getSelectedItem( ) != null ) {
+				onSelectGender( null );
+			}
 			find( this.title, person.getTitle( ) );
 			find( this.maritalStatus, person.getTitle( ) );
 			this.fatherName.setValue( person.getFatherName( ) );
@@ -238,7 +245,7 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 		else {
 			this.cpf.setValue( "" );
 			this.name.setValue( "" );
-			this.birthdate.setValue( birth );
+			this.birthdate.setValue( null );
 			showAddresses( null );
 			this.documentList.setModel( new ListModelList<UserDocument>( ) );
 			this.contactList.setModel( new ListModelList<UserContact>( ) );
@@ -262,6 +269,37 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 		}
 	}
 
+	@Listen( "onSelect=#gender" )
+	public void onSelectGender( Event evt )
+	{
+		if ( evt != null ) {
+			evt.stopPropagation( );
+		}
+		Comboitem item = this.gender.getSelectedItem( );
+		if ( item != null ) {
+			loadTitle( (Gender) item.getValue( ) );
+		}
+	}
+
+	private void loadTitle( Gender gender )
+	{
+		List<Title> titles = getSession( ).getTitle( gender );
+		if ( this.title.getChildren( ) != null ) {
+			this.title.getChildren( ).clear( );
+		}
+		if ( SysUtils.isEmpty( titles ) == false ) {
+			for ( Title t : titles ) {
+				Comboitem item = this.title.appendItem( t.getDescription( ) );
+				if ( item != null ) {
+					item.setValue( t );
+				}
+			}
+			if ( this.title.getChildren( ).size( ) > 0 ) {
+				this.title.setSelectedIndex( 0 );
+			}
+		}
+	}
+
 	protected void showAddresses( List<Address> dto )
 	{
 		if ( dto == null || SysUtils.isEmpty( dto ) ) {
@@ -277,6 +315,17 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 			 * TODO: Find Address
 			 */
 			break; /* Just now, There must be only One!!!! Teoria do highlander */
+		}
+	}
+
+	@Listen( "onClick=#cmdCreate" )
+	public void onNewPerson( Event evt )
+	{
+		getDivList( ).setVisible( false );
+		getDivData( ).setVisible( true );
+		showRecord( null );
+		if ( evt != null ) {
+			evt.stopPropagation( );
 		}
 	}
 

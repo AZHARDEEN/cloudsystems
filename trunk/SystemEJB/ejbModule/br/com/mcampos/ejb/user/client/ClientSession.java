@@ -8,6 +8,8 @@ import br.com.mcampos.ejb.core.CollaboratorBaseSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.user.Users;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.ejb.user.person.gender.Gender;
+import br.com.mcampos.ejb.user.person.title.Title;
 
 @Remote
 public interface ClientSession extends CollaboratorBaseSessionInterface<Client>
@@ -23,5 +25,7 @@ public interface ClientSession extends CollaboratorBaseSessionInterface<Client>
 	public Users getUser( Collaborator auth, String document );
 
 	public Users getUser( Collaborator auth, Integer id );
+
+	List<Title> getTitle( Gender gender );
 
 }

@@ -15,6 +15,8 @@ import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.user.company.Company;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
+import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
+import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
 import br.com.mcampos.sysutils.SysUtils;
 
 /**
@@ -26,6 +28,9 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 {
 	@EJB
 	CompanySessionLocal companySession;
+
+	@EJB
+	LoginPropertySessionLocal propertySession;
 
 	@Override
 	protected Class<Collaborator> getEntityClass( )
@@ -80,5 +85,23 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 			dtos.add( new SimpleDTO( item.getCompany( ).getId( ), name ) );
 		}
 		return dtos;
+	}
+
+	@Override
+	public LoginProperty getProperty( Collaborator collaborator, String propertyName )
+	{
+		return this.propertySession.getProperty( collaborator, propertyName );
+	}
+
+	@Override
+	public void setProperty( Collaborator collaborator, String propertyName, String Value )
+	{
+		this.propertySession.setProperty( collaborator, propertyName, Value );
+	}
+
+	@Override
+	public LoginProperty remove( Collaborator collaborator, String propertyName )
+	{
+		return this.propertySession.remove( collaborator, propertyName );
 	}
 }

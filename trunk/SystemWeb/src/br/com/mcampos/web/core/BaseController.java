@@ -46,24 +46,42 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		super( );
 	}
 
-	protected String getCookie( String name )
+	protected Cookie findCookie( String name )
 	{
 		Cookie[ ] cookies = ( (HttpServletRequest) Executions.getCurrent( ).getNativeRequest( ) ).getCookies( );
 
 		if ( cookies != null ) {
 			for ( Cookie cookie : cookies ) {
 				if ( name.equalsIgnoreCase( cookie.getName( ) ) ) {
-					return cookie.getValue( );
+					return cookie;
 				}
 			}
 		}
 		return null;
+
+	}
+
+	protected String getCookie( String name )
+	{
+		Cookie c = findCookie( name );
+		if ( c != null ) {
+			return c.getValue( );
+		}
+		return null;
+	}
+
+	protected void deleteCookie( String name )
+	{
+		Cookie c = findCookie( name );
+		if ( c != null ) {
+			c.setMaxAge( 0 );
+		}
 	}
 
 	protected void setCookie( String name, String value )
 	{
 		// add cookie
-		setCookie( name, value, 0 );
+		setCookie( name, value, 15 );
 	}
 
 	protected void setCookie( String name, String value, int days )

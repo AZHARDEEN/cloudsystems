@@ -13,6 +13,9 @@ import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.user.Users;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
+import br.com.mcampos.ejb.user.person.gender.Gender;
+import br.com.mcampos.ejb.user.person.title.Title;
+import br.com.mcampos.ejb.user.person.title.TitleSessionLocal;
 
 /**
  * Session Bean implementation class ClientSessionBean
@@ -23,6 +26,9 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 {
 	@EJB
 	private UserDocumentSessionLocal userDocumentSession;
+
+	@EJB
+	TitleSessionLocal titleSession;
 
 	@Override
 	protected Class<Client> getEntityClass( )
@@ -55,7 +61,7 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 	@Override
 	public Long countPerson( Collaborator auth )
 	{
-		if ( auth != null && auth.getCompany( ) != null ) {
+		if ( auth == null || auth.getCompany( ) == null ) {
 			return 0L;
 		}
 		Query query = getEntityManager( ).createNamedQuery( Client.countPerson );
@@ -66,7 +72,7 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 	@Override
 	public Long countCompany( Collaborator auth )
 	{
-		if ( auth != null && auth.getCompany( ) != null ) {
+		if ( auth == null || auth.getCompany( ) == null ) {
 			return 0L;
 		}
 		Query query = getEntityManager( ).createNamedQuery( Client.countCompany );
@@ -77,25 +83,35 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 	@Override
 	public Users getUser( Collaborator auth, String document )
 	{
-		if ( auth != null && auth.getCompany( ) != null ) {
+		if ( auth == null || auth.getCompany( ) == null ) {
 			return null;
 		}
 		Users user = this.userDocumentSession.getUserByDocument( document );
-		user.getAddresses( ).size( );
-		user.getContacts( ).size( );
+		if ( user != null ) {
+			user.getAddresses( ).size( );
+			user.getContacts( ).size( );
+		}
 		return user;
 	}
 
 	@Override
 	public Users getUser( Collaborator auth, Integer id )
 	{
-		if ( auth != null && auth.getCompany( ) != null ) {
+		if ( auth == null || auth.getCompany( ) == null ) {
 			return null;
 		}
 		Users user = getEntityManager( ).find( Users.class, id );
-		user.getAddresses( ).size( );
-		user.getContacts( ).size( );
+		if ( user != null ) {
+			user.getAddresses( ).size( );
+			user.getContacts( ).size( );
+		}
 		return user;
 	}
 
+	@Override
+	public List<Title> getTitle( Gender gender )
+	{
+		List<Title> titles = this.titleSession.getAll( gender );
+		return titles;
+	}
 }
