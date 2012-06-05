@@ -13,6 +13,9 @@ import javax.persistence.Query;
 import br.com.mcampos.dto.inep.InepAnaliticoCorrecao;
 import br.com.mcampos.dto.inep.InepTaskCounters;
 import br.com.mcampos.dto.inep.TaskGrade;
+import br.com.mcampos.dto.inep.relatorios.BaseSubscriptionDTO;
+import br.com.mcampos.dto.inep.relatorios.NotasConsenso;
+import br.com.mcampos.dto.inep.relatorios.NotasIndividuaisCorretorDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionSessionLocal;
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
@@ -30,6 +33,8 @@ import br.com.mcampos.ejb.inep.test.InepTestSessionLocal;
 import br.com.mcampos.ejb.media.Media;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
+import br.com.mcampos.ejb.user.document.UserDocument;
+import br.com.mcampos.ejb.user.person.Person;
 
 /**
  * Session Bean implementation class TeamSessionBean
@@ -425,5 +430,70 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 				grade.setThirdGrade( item.getNota( ) );
 			}
 		}
+	}
+
+	@Override
+	public List<BaseSubscriptionDTO> report( InepPackage event, Integer report )
+	{
+		List<BaseSubscriptionDTO> list = Collections.emptyList( );
+		switch ( report )
+		{
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			list = notaConsenso( event );
+			break;
+		case 4:
+			list = notasIndividuais( event );
+			break;
+		}
+		return list;
+	}
+
+	private List<BaseSubscriptionDTO> notasIndividuais( InepPackage event )
+	{
+		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
+		List<InepDistribution> dists = this.distributionSession.getAll( event );
+		for ( InepDistribution item : dists )
+		{
+			NotasIndividuaisCorretorDTO dto = new NotasIndividuaisCorretorDTO( );
+			dto.setCpf( getCpf( item.getRevisor( ).getCollaborator( ).getPerson( ) ) );
+			dto.setNota( item.getNota( ) );
+			dto.setSubscription( item.getTest( ).getSubscription( ).getId( ).getId( ) );
+			dto.setTarefa( item.getTest( ).getTask( ).getId( ).getId( ) );
+			list.add( dto );
+		}
+		return list;
+	}
+
+	private List<BaseSubscriptionDTO> notaConsenso( InepPackage event )
+	{
+		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
+		List<InepDistribution> dists = this.distributionSession.getVariance( event );
+		for ( InepDistribution item : dists )
+		{
+			NotasConsenso dto = new NotasConsenso( );
+			dto.setNotaConsenso( item.getNota( ) );
+			dto.setSubscription( item.getTest( ).getSubscription( ).getId( ).getId( ) );
+			dto.setTarefa( item.getTest( ).getTask( ).getId( ).getId( ) );
+			list.add( dto );
+		}
+		return list;
+	}
+
+	private String getCpf( Person person )
+	{
+		String cpf = "";
+
+		for ( UserDocument doc : person.getDocuments( ) )
+		{
+			if ( doc.getType( ).getId( ).equals( UserDocument.typeCPF ) ) {
+				cpf = doc.getCode( );
+				break;
+			}
+		}
+		return cpf;
 	}
 }
