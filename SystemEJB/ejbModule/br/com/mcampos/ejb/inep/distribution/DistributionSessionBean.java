@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
+import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepTest;
 
@@ -34,6 +35,18 @@ public class DistributionSessionBean extends SimpleSessionBean<InepDistribution>
 	public List<InepDistribution> get( InepTest test )
 	{
 		return findByNamedQuery( InepDistribution.getAllFromTest, test );
+	}
+
+	@Override
+	public List<InepDistribution> getAll( InepPackage event )
+	{
+		return findByNamedQuery( InepDistribution.getAll, event );
+	}
+
+	@Override
+	public List<InepDistribution> getVariance( InepPackage event )
+	{
+		return findByNamedQuery( InepDistribution.getAllVariance, event );
 	}
 
 }
