@@ -42,10 +42,14 @@ import br.com.mcampos.ejb.core.BasicEntityRenderer;
 				query = "select o.status.id, count(o) from InepDistribution o where o.test.task = ?1 group by o.status.id" ),
 		@NamedQuery(
 				name = InepDistribution.getAll,
-				query = "select o from InepDistribution o where o.test.subscription.event =?1 and o.nota is not null order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
+				query = "select o from InepDistribution o where o.test.subscription.event =?1 and o.nota is not null " +
+						"and o.revisor.coordenador = false " +
+						"order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
 		@NamedQuery(
 				name = InepDistribution.getAllVariance,
-				query = "select o from InepDistribution o where o.test.subscription.event =?1 and o.status.id = 4 and o.nota is not null order by o.id.companyId, o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" )
+				query = "select o from InepDistribution o where o.test.subscription.event = ?1 and o.status.id = 4 " +
+						"and o.nota is not null and o.revisor.coordenador = true " +
+						"order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" )
 } )
 public class InepDistribution implements Serializable, BasicEntityRenderer<InepDistribution>
 {

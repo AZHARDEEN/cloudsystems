@@ -1,7 +1,5 @@
 package br.com.mcampos.ejb.locale;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,40 +10,42 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import br.com.mcampos.ejb.core.SimpleTable;
+import br.com.mcampos.ejb.locale.state.State;
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "City.findAll", query = "select o from City o" ) } )
-@Table( name = "\"city\"" )
-public class City implements Serializable
+@NamedQueries( { @NamedQuery( name = City.getAllByState, query = "select o from City o where o.state = ?1" ) } )
+@Table( name = "city" )
+public class City extends SimpleTable<City>
 {
 	private static final long serialVersionUID = 7598005142654813274L;
+
+	public static final String getAllByState = "City.getAllByState";
 
 	@Id
 	@Column( name = "cit_id_in", nullable = false )
 	private Integer id;
 
-
 	@Column( name = "cit_contry_capital_bt" )
 	private Boolean isCountryCapital;
 
-
 	@Column( name = "cit_name_ch", nullable = false )
-	private String name;
+	private String description;
 
 	@Column( name = "cit_state_capital_bt" )
 	private Boolean isStateCapital;
 
 	@ManyToOne
 	@JoinColumns( { @JoinColumn( name = "ctr_code_ch", referencedColumnName = "ctr_code_ch" ),
-		@JoinColumn( name = "reg_id_in", referencedColumnName = "reg_id_in" ),
-		@JoinColumn( name = "sta_id_in", referencedColumnName = "sta_id_in" ) } )
+			@JoinColumn( name = "reg_id_in", referencedColumnName = "reg_id_in" ),
+			@JoinColumn( name = "sta_id_in", referencedColumnName = "sta_id_in" ) } )
 	private State state;
 
-	public City()
+	public City( )
 	{
 	}
 
-	public Boolean getIsCountryCapital()
+	public Boolean getIsCountryCapital( )
 	{
 		return this.isCountryCapital;
 	}
@@ -55,7 +55,7 @@ public class City implements Serializable
 		this.isCountryCapital = cit_contry_capital_bt;
 	}
 
-	public Integer getId()
+	public Integer getId( )
 	{
 		return this.id;
 	}
@@ -65,17 +65,17 @@ public class City implements Serializable
 		this.id = cit_id_in;
 	}
 
-	public String getName()
+	public String getDescription( )
 	{
-		return this.name;
+		return this.description;
 	}
 
-	public void setName( String cit_name_ch )
+	public void setDescription( String cit_name_ch )
 	{
-		this.name = cit_name_ch;
+		this.description = cit_name_ch;
 	}
 
-	public Boolean getIsStateCapital()
+	public Boolean getIsStateCapital( )
 	{
 		return this.isStateCapital;
 	}
@@ -85,8 +85,7 @@ public class City implements Serializable
 		this.isStateCapital = cit_state_capital_bt;
 	}
 
-
-	public State getState()
+	public State getState( )
 	{
 		return this.state;
 	}
@@ -94,5 +93,11 @@ public class City implements Serializable
 	public void setState( State state2 )
 	{
 		this.state = state2;
+	}
+
+	@Override
+	public String toString( )
+	{
+		return getDescription( );
 	}
 }

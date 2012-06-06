@@ -1,4 +1,4 @@
-package br.com.mcampos.dto.inep.relatorios;
+package br.com.mcampos.dto.inep.reporting;
 
 public class NotasConsenso extends BaseSubscriptionDTO
 {
@@ -38,4 +38,11 @@ public class NotasConsenso extends BaseSubscriptionDTO
 		fields[ 2 ] = getNotaConsenso( ).toString( );
 		return fields;
 	}
+
+	@Override
+	public String getHeader( )
+	{
+		return "Inscrição;Tarefa;NotaConsenso";
+	}
+
 }

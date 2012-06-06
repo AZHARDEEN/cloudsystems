@@ -1,4 +1,4 @@
-package br.com.mcampos.dto.inep.relatorios;
+package br.com.mcampos.dto.inep.reporting;
 
 public class NotasFinaisDTO extends BaseSubscriptionDTO
 {
@@ -10,10 +10,12 @@ public class NotasFinaisDTO extends BaseSubscriptionDTO
 	Integer mediaTarefa2;
 	Integer mediaTarefa3;
 	Integer mediaTarefa4;
-	Integer notaFinal;
 
 	public Integer getMediaTarefa1( )
 	{
+		if ( this.mediaTarefa1 == null ) {
+			this.mediaTarefa1 = 0;
+		}
 		return this.mediaTarefa1;
 	}
 
@@ -24,6 +26,9 @@ public class NotasFinaisDTO extends BaseSubscriptionDTO
 
 	public Integer getMediaTarefa2( )
 	{
+		if ( this.mediaTarefa2 == null ) {
+			this.mediaTarefa2 = 0;
+		}
 		return this.mediaTarefa2;
 	}
 
@@ -34,6 +39,9 @@ public class NotasFinaisDTO extends BaseSubscriptionDTO
 
 	public Integer getMediaTarefa3( )
 	{
+		if ( this.mediaTarefa3 == null ) {
+			this.mediaTarefa3 = 0;
+		}
 		return this.mediaTarefa3;
 	}
 
@@ -44,6 +52,9 @@ public class NotasFinaisDTO extends BaseSubscriptionDTO
 
 	public Integer getMediaTarefa4( )
 	{
+		if ( this.mediaTarefa4 == null ) {
+			this.mediaTarefa4 = 0;
+		}
 		return this.mediaTarefa4;
 	}
 
@@ -54,12 +65,11 @@ public class NotasFinaisDTO extends BaseSubscriptionDTO
 
 	public Integer getNotaFinal( )
 	{
-		return this.notaFinal;
-	}
-
-	public void setNotaFinal( Integer notaFinal )
-	{
-		this.notaFinal = notaFinal;
+		float n;
+		n = ( getMediaTarefa1( ).intValue( ) + getMediaTarefa2( ).intValue( ) +
+				getMediaTarefa3( ).intValue( ) + getMediaTarefa4( ).intValue( ) );
+		n /= 4;
+		return Math.round( n );
 	}
 
 	@Override
@@ -73,6 +83,12 @@ public class NotasFinaisDTO extends BaseSubscriptionDTO
 		fields[ 4 ] = getMediaTarefa4( ).toString( );
 		fields[ 5 ] = getNotaFinal( ).toString( );
 		return fields;
+	}
+
+	@Override
+	public String getHeader( )
+	{
+		return "Inscrição;MediaTarefa1;MediaTarefa2;MediaTarefa3;MediaTarefa4;NotaFinal";
 	}
 
 }

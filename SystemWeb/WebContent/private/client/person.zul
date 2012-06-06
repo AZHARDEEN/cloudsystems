@@ -76,7 +76,7 @@
 				                <row>
 				                    <label value="Naturalidade"/>
 				                    <vbox width="100%">
-				                        <combobox id="bornState" width="300px" readonly="true" />
+				                        <combobox id="bornState" width="300px" readonly="true" apply="br.com.mcampos.web.core.combobox.StateComboboxController" />
 				                        <combobox id="bornCity" width="500px" readonly="true" />
 				                    </vbox>
 				                </row>

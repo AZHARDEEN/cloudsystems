@@ -25,7 +25,7 @@
     <class>br.com.mcampos.ejb.locale.CountryName</class>
     <class>br.com.mcampos.ejb.locale.Currency</class>
     <class>br.com.mcampos.ejb.locale.Region</class>
-    <class>br.com.mcampos.ejb.locale.State</class>
+    <class>br.com.mcampos.ejb.locale.state.State</class>
     <class>br.com.mcampos.ejb.security.Login</class>
     <class>br.com.mcampos.ejb.params.SystemParameters</class>
     <class>br.com.mcampos.ejb.user.company.Company</class>
@@ -55,6 +55,7 @@
     <class>br.com.mcampos.ejb.email.part.EMailPart</class>
     <class>br.com.mcampos.ejb.email.part.EMailPartPK</class>
     <class>br.com.mcampos.ejb.user.contact.type.ContactType</class>
+    <class>br.com.mcampos.ejb.inep.entity.SubscriptionGradeView</class>
     <properties>
     	<property name="eclipselink.target-database" value="PostgreSQL"/>
     	<property name="eclipselink.target-server" value="JBoss"/>

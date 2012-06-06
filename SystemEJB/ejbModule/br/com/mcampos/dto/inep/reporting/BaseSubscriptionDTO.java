@@ -1,4 +1,4 @@
-package br.com.mcampos.dto.inep.relatorios;
+package br.com.mcampos.dto.inep.reporting;
 
 import java.io.Serializable;
 
@@ -11,6 +11,8 @@ public abstract class BaseSubscriptionDTO implements Serializable, Comparable<Ba
 	private String subscription;
 
 	public abstract String[ ] getFields( );
+
+	public abstract String getHeader( );
 
 	public String getSubscription( )
 	{
