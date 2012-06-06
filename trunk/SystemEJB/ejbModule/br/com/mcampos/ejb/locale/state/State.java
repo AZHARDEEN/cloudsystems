@@ -1,6 +1,4 @@
-package br.com.mcampos.ejb.locale;
-
-import java.io.Serializable;
+package br.com.mcampos.ejb.locale.state;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -10,20 +8,24 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import br.com.mcampos.ejb.core.SimpleTable;
+import br.com.mcampos.ejb.locale.Region;
 
 @Entity
-@NamedQueries( { @NamedQuery( name = "State.findAll", query = "select o from State o" ) } )
-@Table( name = "\"state\"" )
+@NamedQueries( { @NamedQuery(
+		name = State.getCountryStates, query = "select o from State o where o.countryId = ?1 order by o.abbreviation" ) } )
+@Table( name = "state" )
 @IdClass( StatePK.class )
-public class State implements Serializable
+public class State extends SimpleTable<State>
 {
 	private static final long serialVersionUID = 1790623716239240147L;
+
+	public static final String getCountryStates = "State.getCountryState";
 
 	@Id
 	@Column( name = "ctr_code_ch", nullable = false, insertable = false, updatable = false )
@@ -37,29 +39,26 @@ public class State implements Serializable
 	@Column( name = "sta_id_in", nullable = false )
 	private Integer id;
 
-
 	@Column( name = "sta_abbreviation_ch" )
 	private String abbreviation;
 
 	@Column( name = "sta_flag_bin" )
-	@Lob
 	@Basic( fetch = FetchType.LAZY )
-	private Byte[] flag;
-
+	private Byte[ ] flag;
 
 	@Column( name = "sta_name_ch", nullable = false )
-	private String name;
+	private String description;
 
 	@ManyToOne
 	@JoinColumns( { @JoinColumn( name = "ctr_code_ch", referencedColumnName = "ctr_code_ch" ),
-		@JoinColumn( name = "reg_id_in", referencedColumnName = "reg_id_in" ) } )
+			@JoinColumn( name = "reg_id_in", referencedColumnName = "reg_id_in" ) } )
 	private Region region;
 
-	public State()
+	public State( )
 	{
 	}
 
-	public String getCountryId()
+	public String getCountryId( )
 	{
 		return this.countryId;
 	}
@@ -69,7 +68,7 @@ public class State implements Serializable
 		this.countryId = ctr_code_ch;
 	}
 
-	public Integer getRegionId()
+	public Integer getRegionId( )
 	{
 		return this.regionId;
 	}
@@ -79,7 +78,7 @@ public class State implements Serializable
 		this.regionId = reg_id_in;
 	}
 
-	public String getAbbreviation()
+	public String getAbbreviation( )
 	{
 		return this.abbreviation;
 	}
@@ -89,37 +88,41 @@ public class State implements Serializable
 		this.abbreviation = sta_abbreviation_ch;
 	}
 
-	public Byte[] getFlag()
+	public Byte[ ] getFlag( )
 	{
 		return this.flag;
 	}
 
-	public void setFlag( Byte[] sta_flag_bin )
+	public void setFlag( Byte[ ] sta_flag_bin )
 	{
 		this.flag = sta_flag_bin;
 	}
 
-	public Integer getId()
+	@Override
+	public Integer getId( )
 	{
 		return this.id;
 	}
 
+	@Override
 	public void setId( Integer sta_id_in )
 	{
 		this.id = sta_id_in;
 	}
 
-	public String getName()
+	@Override
+	public String getDescription( )
 	{
-		return this.name;
+		return this.description;
 	}
 
-	public void setName( String sta_name_ch )
+	@Override
+	public void setDescription( String sta_name_ch )
 	{
-		this.name = sta_name_ch;
+		this.description = sta_name_ch;
 	}
 
-	public Region getRegion()
+	public Region getRegion( )
 	{
 		return this.region;
 	}
@@ -128,9 +131,15 @@ public class State implements Serializable
 	{
 		this.region = region;
 		if ( region != null ) {
-			this.regionId = region.getId();
-			this.countryId = region.getCountryId();
+			this.regionId = region.getId( );
+			this.countryId = region.getCountryId( );
 		}
+	}
+
+	@Override
+	public String toString( )
+	{
+		return getAbbreviation( ) + "-" + getDescription( );
 	}
 
 }

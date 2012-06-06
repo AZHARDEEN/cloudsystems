@@ -19,6 +19,8 @@ import org.zkoss.zul.Window;
 import org.zkoss.zul.event.PagingEvent;
 
 import br.com.mcampos.ejb.core.DBPaging;
+import br.com.mcampos.ejb.locale.City;
+import br.com.mcampos.ejb.locale.state.State;
 import br.com.mcampos.ejb.user.UserContact;
 import br.com.mcampos.ejb.user.address.Address;
 import br.com.mcampos.ejb.user.client.Client;
@@ -26,10 +28,10 @@ import br.com.mcampos.ejb.user.client.ClientSession;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.ejb.user.person.gender.Gender;
-import br.com.mcampos.ejb.user.person.title.Title;
 import br.com.mcampos.sysutils.CPF;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
+import br.com.mcampos.web.core.ComboboxUtils;
 
 public class ClientController extends BaseDBLoggedController<ClientSession>
 {
@@ -229,15 +231,15 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 			showAddresses( person.getAddresses( ) );
 			this.documentList.setModel( new ListModelList<UserDocument>( person.getDocuments( ) ) );
 			this.contactList.setModel( new ListModelList<UserContact>( person.getContacts( ) ) );
-			find( this.gender, person.getGender( ) );
-			if ( this.gender.getSelectedItem( ) != null ) {
-				onSelectGender( null );
-			}
-			find( this.title, person.getTitle( ) );
-			find( this.maritalStatus, person.getTitle( ) );
+			ComboboxUtils.find( this.gender, person.getGender( ) );
+			ComboboxUtils.find( this.title, person.getTitle( ) );
+			ComboboxUtils.find( this.maritalStatus, person.getCivilState( ) );
 			this.fatherName.setValue( person.getFatherName( ) );
 			this.motherName.setValue( person.getMotherName( ) );
 			showCPF( person.getDocuments( ) );
+			if ( person.getBornCity( ) != null ) {
+				ComboboxUtils.find( this.bornState, person.getBornCity( ).getState( ) );
+			}
 			/*
 			 * TODO: Find Address
 			 */
@@ -251,6 +253,9 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 			this.contactList.setModel( new ListModelList<UserContact>( ) );
 			this.fatherName.setValue( "" );
 			this.motherName.setValue( "" );
+			ComboboxUtils.select( this.bornState, 0 );
+			ComboboxUtils.select( this.gender, 0 );
+			ComboboxUtils.select( this.maritalStatus, 0 );
 		}
 	}
 
@@ -272,31 +277,10 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 	@Listen( "onSelect=#gender" )
 	public void onSelectGender( Event evt )
 	{
+		Gender g = ComboboxUtils.getValue( this.gender );
+		ComboboxUtils.load( this.title, getSession( ).getTitle( g ), null, true );
 		if ( evt != null ) {
 			evt.stopPropagation( );
-		}
-		Comboitem item = this.gender.getSelectedItem( );
-		if ( item != null ) {
-			loadTitle( (Gender) item.getValue( ) );
-		}
-	}
-
-	private void loadTitle( Gender gender )
-	{
-		List<Title> titles = getSession( ).getTitle( gender );
-		if ( this.title.getChildren( ) != null ) {
-			this.title.getChildren( ).clear( );
-		}
-		if ( SysUtils.isEmpty( titles ) == false ) {
-			for ( Title t : titles ) {
-				Comboitem item = this.title.appendItem( t.getDescription( ) );
-				if ( item != null ) {
-					item.setValue( t );
-				}
-			}
-			if ( this.title.getChildren( ).size( ) > 0 ) {
-				this.title.setSelectedIndex( 0 );
-			}
 		}
 	}
 
@@ -326,6 +310,26 @@ public class ClientController extends BaseDBLoggedController<ClientSession>
 		showRecord( null );
 		if ( evt != null ) {
 			evt.stopPropagation( );
+		}
+	}
+
+	@Listen( "onSelect=#bornState" )
+	public void onChangeBornState( Event evt )
+	{
+		State state = ComboboxUtils.getValue( this.bornState );
+		if ( state != null ) {
+			loadCities( state, null );
+		}
+		if ( evt != null ) {
+			evt.stopPropagation( );
+		}
+	}
+
+	private void loadCities( State state, City selected )
+	{
+		ComboboxUtils.clear( this.bornCity );
+		if ( this.bornCity != null && state != null ) {
+			ComboboxUtils.load( this.bornCity, getSession( ).getCities( state ), selected, true );
 		}
 	}
 

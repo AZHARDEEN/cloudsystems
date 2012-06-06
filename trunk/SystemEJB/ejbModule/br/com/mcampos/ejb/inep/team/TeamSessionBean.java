@@ -13,9 +13,10 @@ import javax.persistence.Query;
 import br.com.mcampos.dto.inep.InepAnaliticoCorrecao;
 import br.com.mcampos.dto.inep.InepTaskCounters;
 import br.com.mcampos.dto.inep.TaskGrade;
-import br.com.mcampos.dto.inep.relatorios.BaseSubscriptionDTO;
-import br.com.mcampos.dto.inep.relatorios.NotasConsenso;
-import br.com.mcampos.dto.inep.relatorios.NotasIndividuaisCorretorDTO;
+import br.com.mcampos.dto.inep.reporting.BaseSubscriptionDTO;
+import br.com.mcampos.dto.inep.reporting.NotasConsenso;
+import br.com.mcampos.dto.inep.reporting.NotasFinaisDTO;
+import br.com.mcampos.dto.inep.reporting.NotasIndividuaisCorretorDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionSessionLocal;
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
@@ -26,6 +27,7 @@ import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.entity.InepTest;
+import br.com.mcampos.ejb.inep.entity.SubscriptionGradeView;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
@@ -441,6 +443,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		case 1:
 			break;
 		case 2:
+			list = notasFinais( event );
 			break;
 		case 3:
 			list = notaConsenso( event );
@@ -464,6 +467,34 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			dto.setSubscription( item.getTest( ).getSubscription( ).getId( ).getId( ) );
 			dto.setTarefa( item.getTest( ).getTask( ).getId( ).getId( ) );
 			list.add( dto );
+		}
+		return list;
+	}
+
+	@SuppressWarnings( "unchecked" )
+	private List<BaseSubscriptionDTO> notasFinais( InepPackage event )
+	{
+		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
+		List<SubscriptionGradeView> dists;
+		Query query = getEntityManager( ).createNamedQuery( SubscriptionGradeView.getAllByEvent );
+		query.setParameter( 1, event.getId( ).getCompanyId( ) );
+		query.setParameter( 2, event.getId( ).getId( ) );
+		try {
+			dists = query.getResultList( );
+			for ( SubscriptionGradeView item : dists )
+			{
+				NotasFinaisDTO dto = new NotasFinaisDTO( );
+				dto.setSubscription( item.getId( ).getId( ) );
+				dto.setMediaTarefa1( item.getTarefa1( ) );
+				dto.setMediaTarefa2( item.getTarefa2( ) );
+				dto.setMediaTarefa3( item.getTarefa3( ) );
+				dto.setMediaTarefa4( item.getTarefa4( ) );
+				list.add( dto );
+			}
+		}
+		catch ( Exception e )
+		{
+			e = null;
 		}
 		return list;
 	}

@@ -1,4 +1,4 @@
-package br.com.mcampos.dto.inep.relatorios;
+package br.com.mcampos.dto.inep.reporting;
 
 public class NotasIndividuaisCorretorDTO extends BaseSubscriptionDTO
 {
@@ -49,5 +49,11 @@ public class NotasIndividuaisCorretorDTO extends BaseSubscriptionDTO
 		fields[ 2 ] = getCpf( );
 		fields[ 3 ] = getNota( ).toString( );
 		return fields;
+	}
+
+	@Override
+	public String getHeader( )
+	{
+		return "Inscrição;CPF;Tarefa;Nota";
 	}
 }

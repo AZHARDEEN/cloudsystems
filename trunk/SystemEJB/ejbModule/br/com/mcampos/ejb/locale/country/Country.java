@@ -29,17 +29,16 @@ public class Country implements BasicEntityRenderer<Country>
 	@Column( name = "ctr_flag_bin" )
 	@Lob
 	@Basic( fetch = FetchType.LAZY )
-	private Byte[] flag;
+	private Byte[ ] flag;
 
 	@Column( name = "ctr_num_code_in" )
 	private Integer numericCode;
 
-
-	public Country()
+	public Country( )
 	{
 	}
 
-	public String getCode3()
+	public String getCode3( )
 	{
 		return this.code3;
 	}
@@ -49,7 +48,7 @@ public class Country implements BasicEntityRenderer<Country>
 		this.code3 = ctr_code3_ch;
 	}
 
-	public String getCode()
+	public String getCode( )
 	{
 		return this.code;
 	}
@@ -59,17 +58,17 @@ public class Country implements BasicEntityRenderer<Country>
 		this.code = ctr_code_ch;
 	}
 
-	public Byte[] getFlag()
+	public Byte[ ] getFlag( )
 	{
 		return this.flag;
 	}
 
-	public void setFlag( Byte[] ctr_flag_bin )
+	public void setFlag( Byte[ ] ctr_flag_bin )
 	{
 		this.flag = ctr_flag_bin;
 	}
 
-	public Integer getNumericCode()
+	public Integer getNumericCode( )
 	{
 		return this.numericCode;
 	}
@@ -105,6 +104,12 @@ public class Country implements BasicEntityRenderer<Country>
 			return getNumericCode( ).compareTo( object.getNumericCode( ) );
 		}
 		return 0;
+	}
+
+	@Override
+	public String toString( )
+	{
+		return getCode( ) + "[" + getCode3( ) + "]";
 	}
 
 }

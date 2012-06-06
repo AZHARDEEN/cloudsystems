@@ -1,4 +1,4 @@
-package br.com.mcampos.dto.inep.relatorios;
+package br.com.mcampos.dto.inep.reporting;
 
 public class PacoteInscricao extends BaseSubscriptionDTO
 {
@@ -22,5 +22,11 @@ public class PacoteInscricao extends BaseSubscriptionDTO
 		fields[ 0 ] = getPacote( ).toString( );
 		fields[ 1 ] = getSubscription( );
 		return fields;
+	}
+
+	@Override
+	public String getHeader( )
+	{
+		return null;
 	}
 }

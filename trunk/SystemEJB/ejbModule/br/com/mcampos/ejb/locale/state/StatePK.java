@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.locale;
+package br.com.mcampos.ejb.locale.state;
 
 import java.io.Serializable;
 

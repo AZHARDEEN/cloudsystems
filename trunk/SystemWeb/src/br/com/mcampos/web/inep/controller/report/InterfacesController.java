@@ -12,7 +12,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.dto.inep.relatorios.BaseSubscriptionDTO;
+import br.com.mcampos.dto.inep.reporting.BaseSubscriptionDTO;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.team.TeamSession;
 import br.com.mcampos.sysutils.SysUtils;
@@ -56,7 +56,8 @@ public class InterfacesController extends BaseDBLoggedController<TeamSession>
 		if ( SysUtils.isEmpty( list ) ) {
 			return;
 		}
-		StringBuffer buffer = new StringBuffer( );
+		StringBuffer buffer = new StringBuffer( list.get( 0 ).getHeader( ) );
+		buffer.append( "\n" );
 		for ( BaseSubscriptionDTO item : list ) {
 			String[ ] fields = item.getFields( );
 			boolean first = true;

@@ -75,19 +75,7 @@ public class Title extends SimpleTable<Title>
 	@Override
 	public String toString( )
 	{
-		StringBuffer buffer = new StringBuffer( );
-		buffer.append( getClass( ).getName( ) + "@" + Integer.toHexString( hashCode( ) ) );
-		buffer.append( '[' );
-		buffer.append( "ttl_abrev_ch=" );
-		buffer.append( getAbreviation( ) );
-		buffer.append( ',' );
-		buffer.append( "ttl_description_ch=" );
-		buffer.append( getDescription( ) );
-		buffer.append( ',' );
-		buffer.append( "ttl_id_in=" );
-		buffer.append( getId( ) );
-		buffer.append( ']' );
-		return buffer.toString( );
+		return getDescription( );
 	}
 
 	@Override

@@ -10,6 +10,10 @@ import javax.persistence.Query;
 
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionBean;
 import br.com.mcampos.ejb.core.DBPaging;
+import br.com.mcampos.ejb.locale.City;
+import br.com.mcampos.ejb.locale.CitySessionLocal;
+import br.com.mcampos.ejb.locale.state.State;
+import br.com.mcampos.ejb.locale.state.StateSessionLocal;
 import br.com.mcampos.ejb.user.Users;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
@@ -29,6 +33,12 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 
 	@EJB
 	TitleSessionLocal titleSession;
+
+	@EJB
+	StateSessionLocal stateSession;
+
+	@EJB
+	CitySessionLocal citySession;
 
 	@Override
 	protected Class<Client> getEntityClass( )
@@ -113,5 +123,17 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 	{
 		List<Title> titles = this.titleSession.getAll( gender );
 		return titles;
+	}
+
+	@Override
+	public List<State> getStates( String countryCode )
+	{
+		return this.stateSession.getAll( countryCode );
+	}
+
+	@Override
+	public List<City> getCities( State state )
+	{
+		return this.citySession.getAll( state );
 	}
 }
