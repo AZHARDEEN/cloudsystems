@@ -15,7 +15,7 @@ public class ClientPersonRenderer extends BaseListRenderer<Client>
 	{
 		super.render( item, data, index );
 
-		addCell( item, data.getClient( ).getId( ).toString( ) );
+		addCell( item, data.getId( ).getSequence( ).toString( ) );
 
 		UserDocument cpf = null;
 		UserDocument email = null;

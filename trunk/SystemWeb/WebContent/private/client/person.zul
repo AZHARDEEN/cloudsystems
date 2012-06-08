@@ -2,7 +2,7 @@
 <zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
 	<window width="100%" height="100%" closable="true" border="none" title="Cadastro de Pessoas" apply="br.com.mcampos.web.controller.client.ClientController">
 	    <script type="text/JavaScript" defer="true">jq(document).ready( function() { jq('$cpf').setMask ( 'cpf' ); } );</script>
-		<div id="divList" width="100%" height="100%">
+		<div id="divList" width="100%" height="100%" >
 			<hlayout sclass="z-valign-middle">
 				<paging id="topPaging"/>
 				<div fulfill="=/templates/toolbar_crud_buttons.zul" />
@@ -54,15 +54,15 @@
 				                </row>
 				                <row>
 				                    <label value="Sexo"/>
-				                    <combobox id="gender" width="200px" readonly="true" apply= "br.com.mcampos.web.core.combobox.GenderComboboxController"/>
+				                    <combobox id="gender" width="200px" readonly="true" use= "br.com.mcampos.web.core.combobox.GenderCombobox"/>
 				                </row>
 				                <row>
 				                    <label value="Tratamento"/>
-				                    <combobox id="title" width="200px" readonly="true" />
+				                    <combobox id="title" width="200px" readonly="true" use="br.com.mcampos.web.core.combobox.TitleCombobox"/>
 				                </row>
 				                <row>
 				                    <label value="Estado Civil"/>
-				                    <combobox id="maritalStatus" width="200px" readonly="true" apply="br.com.mcampos.web.core.combobox.CivilStateComboboxController"/>
+				                    <combobox id="maritalStatus" width="200px" readonly="true" use="br.com.mcampos.web.core.combobox.CivilStateCombobox"/>
 				                </row>
 				                <row>
 				                    <label value="Data Nascimento"/>
@@ -76,8 +76,8 @@
 				                <row>
 				                    <label value="Naturalidade"/>
 				                    <vbox width="100%">
-				                        <combobox id="bornState" width="300px" readonly="true" apply="br.com.mcampos.web.core.combobox.StateComboboxController" />
-				                        <combobox id="bornCity" width="500px" readonly="true" />
+				                        <combobox id="bornState" width="300px" readonly="true" use="br.com.mcampos.web.core.combobox.StateCombobox" />
+				                        <combobox id="bornCity" width="500px" readonly="true" use="br.com.mcampos.web.core.combobox.CityCombobox"/>
 				                    </vbox>
 				                </row>
 				                <row>

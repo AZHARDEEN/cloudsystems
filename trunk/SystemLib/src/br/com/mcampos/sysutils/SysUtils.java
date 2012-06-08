@@ -13,15 +13,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public final class SysUtils
 {
 
 	static final byte[ ] HEX_CHAR_TABLE = { (byte) '0', (byte) '1', (byte) '2', (byte) '3', (byte) '4', (byte) '5', (byte) '6',
-		(byte) '7',
-		(byte) '8', (byte) '9', (byte) 'a', (byte) 'b', (byte) 'c', (byte) 'd', (byte) 'e',
-		(byte) 'f' };
+			(byte) '7',
+			(byte) '8', (byte) '9', (byte) 'a', (byte) 'b', (byte) 'c', (byte) 'd', (byte) 'e',
+			(byte) 'f' };
 
 	public SysUtils( )
 	{
@@ -112,12 +111,10 @@ public final class SysUtils
 		return fieldValue.toLowerCase( );
 	}
 
-	public static String removeAccents( String str )
+	public static String unaccent( String str )
 	{
 		if ( SysUtils.isEmpty( str ) == false ) {
-			String nfdNormalizedString = Normalizer.normalize( str, Normalizer.Form.NFD );
-			Pattern pattern = Pattern.compile( "\\p{InCombiningDiacriticalMarks}+" );
-			return pattern.matcher( nfdNormalizedString ).replaceAll( "" );
+			return Normalizer.normalize( str.trim( ), Normalizer.Form.NFD ).replaceAll( "\\p{IsM}+", "" );
 		}
 		else {
 			return str;
@@ -212,7 +209,7 @@ public final class SysUtils
 	}
 
 	public static Object invokeMethod( Object object, String methodName, Object[ ] arguments ) throws NoSuchMethodException,
-	IllegalArgumentException, IllegalAccessException, InvocationTargetException
+			IllegalArgumentException, IllegalAccessException, InvocationTargetException
 	{
 		Method method = getDeclaredMethod( object, methodName );
 		method.setAccessible( true );
@@ -220,20 +217,20 @@ public final class SysUtils
 	}
 
 	public static <T> T newInstance( Class<T> clazz ) throws IllegalArgumentException, SecurityException, InstantiationException,
-	IllegalAccessException, InvocationTargetException, NoSuchMethodException
+			IllegalAccessException, InvocationTargetException, NoSuchMethodException
 	{
 		return newInstance( clazz, new Class[ 0 ], new Object[ 0 ] );
 	}
 
 	public static <T> T newInstance( Class<T> clazz, Class<?>[ ] paramClazzes, Object[ ] params ) throws IllegalArgumentException,
-	SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
+			SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
 	{
 
 		return clazz.getConstructor( paramClazzes ).newInstance( params );
 	}
 
 	public static void setFieldValue( Object object, String fieldName, Object newValue ) throws IllegalArgumentException,
-	IllegalAccessException, NoSuchFieldException
+			IllegalAccessException, NoSuchFieldException
 	{
 
 		Field field = getDeclaredField( object, fieldName );

@@ -6,15 +6,12 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.locale.City;
-import br.com.mcampos.ejb.locale.CitySession;
-import br.com.mcampos.ejb.locale.CitySessionLocal;
 import br.com.mcampos.ejb.locale.state.State;
 
 /**
  * Session Bean implementation class CitySessionBean
  */
-@Stateless
+@Stateless( name = "CitySession", mappedName = "CitySession" )
 @LocalBean
 public class CitySessionBean extends SimpleSessionBean<City> implements CitySession, CitySessionLocal
 {

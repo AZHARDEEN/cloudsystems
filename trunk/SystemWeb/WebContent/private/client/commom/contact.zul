@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<div id="divContactList"  xmlns="http://www.zkoss.org/2005/zul" apply="br.com.mcampos.web.controller.client.commom.ContactController">
- <listbox fixedLayout="true" id="contactList" rows="4">
-  <listhead sizable="true">
-   <listheader id="headerContactType" label="##" sort="auto" align="left" width="30%"/>
-   <listheader id="headerContactDescription" label="##" sort="auto" align="left" width="30%"/>
-   <listheader id="headerContactObs" label="##" width="40%"/>
-  </listhead>
- </listbox>
- <separator bar="true"/>
- <grid>
-  <columns>
-   <column width="20%"/>
-   <column/>
-  </columns>
-  <rows>
-   <row>
-    <label value="##" id="labelContactType"/>
-    <combobox id="contactType" width="150px" readonly="true" apply="br.com.mcampos.web.core.combobox.ContactTypeComboboxController"/>
-   </row>
-   <row>
-    <label value="##" id="labelContactDescription"/>
-    <textbox id="contactId" maxlength="32" width="300px"/>
-   </row>
-   <row>
-    <label value="##" id="labelContactObs"/>
-    <textbox id="contactComent" width="99%" maxlength="255" multiline="true" rows="2"/>
-   </row>
-  </rows>
- </grid>
- <separator bar="true"/>
- <div align="center">
-  <hbox align="center">
-   <button label="##" id="addContact" image="/img/icontexto-webdev-add-032x032.png"/>
-   <button label="##" id="updateContact" image="/img/icontexto-webdev-alert-032x032.png"/>
-   <button label="##" id="removeContact" image="/img/icontexto-webdev-remove-032x032.png"/>
-  </hbox>
- </div>
-</div>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<div id = "divContactList" apply="br.com.mcampos.web.controller.client.commom.ContactController">
+		<listbox fixedLayout="true" id="contactList" rows= "4">
+			<listhead sizable="true" >
+				<listheader label="Espécie" sort="auto" align="left" width="30%" />
+				<listheader label="Descrição" sort="auto" align="left" width="30%" />
+				<listheader label="Observação" width= "40%" />
+			</listhead>
+		</listbox>
+		<separator bar="true"/>
+		<grid >
+			<columns>
+				<column width="25%" />
+				<column />
+			</columns>
+			<rows>
+				<row>
+					<label value="Espécie" />
+					<combobox id="contactType" width="150px" use="br.com.mcampos.web.core.combobox.ContactTypeCombobox" >
+					</combobox>
+				</row>
+				<row>
+					<label value="Descrição" />
+					<textbox id="contactId" maxlength="32" width="300px" />
+				</row>
+				<row>
+					<label value="Observação" />
+					<textbox id="contactComent" width="99%" maxlength="255" multiline="true" rows="2" />
+				</row>
+			</rows>
+		</grid>
+		<separator bar="true"/>
+		<div align="center" >
+			<hbox align="center" >
+				<button label="Adicionar" id="addContact" tooltiptext="Adiciona o novo contato a lista" image="/img/icontexto-webdev-add-032x032.png" />
+				<button label="Atualizar" id="updateContact" disabled="true" tooltiptext="Atualiza o contato selecionado na lista" image="/img/icontexto-webdev-alert-032x032.png" />
+				<button label="Remover" id="removeContact" disabled="true" tooltiptext="Remove o contato selecionado na lista" image="/img/icontexto-webdev-remove-032x032.png" />
+			</hbox>
+		</div>
+	</div>
+</zk>

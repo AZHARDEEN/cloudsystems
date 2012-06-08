@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.com.mcampos.ejb.locale.City;
+import br.com.mcampos.ejb.locale.city.City;
 import br.com.mcampos.ejb.user.Users;
 
 

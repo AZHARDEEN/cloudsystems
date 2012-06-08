@@ -6,12 +6,9 @@ import javax.ejb.Remote;
 
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
-import br.com.mcampos.ejb.locale.City;
-import br.com.mcampos.ejb.locale.state.State;
 import br.com.mcampos.ejb.user.Users;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
-import br.com.mcampos.ejb.user.person.gender.Gender;
-import br.com.mcampos.ejb.user.person.title.Title;
+import br.com.mcampos.ejb.user.document.type.DocumentType;
 
 @Remote
 public interface ClientSession extends CollaboratorBaseSessionInterface<Client>
@@ -28,10 +25,9 @@ public interface ClientSession extends CollaboratorBaseSessionInterface<Client>
 
 	public Users getUser( Collaborator auth, Integer id );
 
-	List<Title> getTitle( Gender gender );
+	Client addNewPerson( Collaborator auth, Client newEntity );
 
-	List<State> getStates( String countryCode );
+	Client updatePerson( Collaborator auth, Client newEntity );
 
-	List<City> getCities( State state );
-
+	DocumentType getDocumentType( Integer type );
 }

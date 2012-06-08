@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import br.com.mcampos.ejb.locale.City;
+import br.com.mcampos.ejb.locale.city.City;
 import br.com.mcampos.ejb.user.Users;
 import br.com.mcampos.ejb.user.person.civilstate.CivilState;
 import br.com.mcampos.ejb.user.person.gender.Gender;

@@ -1,7 +1,6 @@
 package br.com.mcampos.ejb.user;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,7 +71,8 @@ public abstract class Users implements Serializable, Comparable<Users>
 	private List<Address> addresses;
 
 	@Column( name = "usr_birth_dt" )
-	private Timestamp birthDate;
+	@Temporal( value = TemporalType.DATE )
+	private Date birthDate;
 
 	public Users( )
 	{
@@ -90,6 +90,9 @@ public abstract class Users implements Serializable, Comparable<Users>
 
 	public Date getInsertDate( )
 	{
+		if ( this.insertDate == null ) {
+			this.insertDate = new Date( );
+		}
 		return this.insertDate;
 	}
 
@@ -139,6 +142,9 @@ public abstract class Users implements Serializable, Comparable<Users>
 	public void setDocuments( List<UserDocument> userDocumentList )
 	{
 		this.documents = userDocumentList;
+		for ( UserDocument i : getDocuments( ) ) {
+			i.setUser( this );
+		}
 	}
 
 	public UserDocument add( UserDocument userDocument )
@@ -173,6 +179,9 @@ public abstract class Users implements Serializable, Comparable<Users>
 	public void setContacts( List<UserContact> userContactList )
 	{
 		this.contacts = userContactList;
+		for ( UserContact i : getContacts( ) ) {
+			i.setUser( this );
+		}
 	}
 
 	public UserContact add( UserContact userContact )
@@ -201,6 +210,9 @@ public abstract class Users implements Serializable, Comparable<Users>
 	public void setAddresses( List<Address> addressList )
 	{
 		this.addresses = addressList;
+		for ( Address i : getAddresses( ) ) {
+			i.setUser( this );
+		}
 	}
 
 	public Address add( Address address )
@@ -231,12 +243,12 @@ public abstract class Users implements Serializable, Comparable<Users>
 		return this.userType;
 	}
 
-	public Timestamp getBirthDate( )
+	public Date getBirthDate( )
 	{
 		return this.birthDate;
 	}
 
-	public void setBirthDate( Timestamp usr_birth_dt )
+	public void setBirthDate( Date usr_birth_dt )
 	{
 		this.birthDate = usr_birth_dt;
 	}

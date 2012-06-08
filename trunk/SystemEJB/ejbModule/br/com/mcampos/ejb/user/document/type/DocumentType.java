@@ -34,6 +34,11 @@ public class DocumentType extends SimpleTable<DocumentType>
 	{
 	}
 
+	public DocumentType( Integer type )
+	{
+		setId( type );
+	}
+
 	@Override
 	public Integer getId( )
 	{
@@ -56,11 +61,13 @@ public class DocumentType extends SimpleTable<DocumentType>
 		this.mask = docMaskCh;
 	}
 
+	@Override
 	public String getDescription( )
 	{
 		return this.description;
 	}
 
+	@Override
 	public void setDescription( String docNameCh )
 	{
 		this.description = docNameCh;

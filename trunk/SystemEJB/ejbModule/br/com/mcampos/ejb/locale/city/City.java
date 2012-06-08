@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.locale;
+package br.com.mcampos.ejb.locale.city;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
