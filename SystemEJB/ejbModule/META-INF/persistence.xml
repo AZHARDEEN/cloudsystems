@@ -18,7 +18,7 @@
     <class>br.com.mcampos.ejb.user.person.title.Title</class>
     <class>br.com.mcampos.ejb.security.log.AccessLogType</class>
     <class>br.com.mcampos.ejb.security.log.AccessLog</class>
-    <class>br.com.mcampos.ejb.locale.City</class>
+    <class>br.com.mcampos.ejb.locale.city.City</class>
     <class>br.com.mcampos.ejb.locale.country.Country</class>
     <class>br.com.mcampos.ejb.locale.CountryCurrency</class>
     <class>br.com.mcampos.ejb.locale.CountryLanguage</class>

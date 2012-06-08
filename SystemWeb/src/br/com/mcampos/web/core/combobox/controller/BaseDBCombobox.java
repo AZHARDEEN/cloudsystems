@@ -1,4 +1,4 @@
-package br.com.mcampos.web.core.combobox;
+package br.com.mcampos.web.core.combobox.controller;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +14,7 @@ import org.zkoss.zul.ComboitemRenderer;
 import br.com.mcampos.ejb.core.ReadOnlySessionInterface;
 import br.com.mcampos.ejb.core.SimpleEntity;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.web.core.combobox.BasicComboitemRenderer;
 import br.com.mcampos.web.locator.ServiceLocator;
 
 public abstract class BaseDBCombobox<BEAN> extends SelectorComposer<Combobox>

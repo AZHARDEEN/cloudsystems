@@ -1,4 +1,4 @@
-package br.com.mcampos.web.core.combobox;
+package br.com.mcampos.web.core.combobox.controller;
 
 import java.util.List;
 

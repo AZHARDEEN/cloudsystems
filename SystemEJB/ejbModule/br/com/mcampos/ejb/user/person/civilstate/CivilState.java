@@ -1,6 +1,5 @@
 package br.com.mcampos.ejb.user.person.civilstate;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +8,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import br.com.mcampos.ejb.core.SimpleTable;
-
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "CivilState.findAll", query = "select o from CivilState o" ) } )
@@ -25,9 +23,8 @@ public class CivilState extends SimpleTable<CivilState>
 	@Column( name = "cst_id_in", nullable = false, unique = true )
 	private Integer id;
 
-
 	@Override
-	public String getDescription()
+	public String getDescription( )
 	{
 		return this.description;
 	}
@@ -39,7 +36,7 @@ public class CivilState extends SimpleTable<CivilState>
 	}
 
 	@Override
-	public Integer getId()
+	public Integer getId( )
 	{
 		return this.id;
 	}
@@ -51,17 +48,8 @@ public class CivilState extends SimpleTable<CivilState>
 	}
 
 	@Override
-	public String toString()
+	public String toString( )
 	{
-		StringBuffer buffer = new StringBuffer();
-		buffer.append( getClass().getName() + "@" + Integer.toHexString( hashCode() ) );
-		buffer.append( '[' );
-		buffer.append( "cst_description_ch=" );
-		buffer.append( getDescription() );
-		buffer.append( ',' );
-		buffer.append( "cst_id_in=" );
-		buffer.append( getId() );
-		buffer.append( ']' );
-		return buffer.toString();
+		return getDescription( );
 	}
 }

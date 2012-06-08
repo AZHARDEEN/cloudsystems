@@ -5,11 +5,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-
 @Embeddable
 public class UserDocumentPK implements Serializable, Comparable<UserDocumentPK>
 {
-	//default serial version id, required for serializable classes.
+	// default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
 	@Column( name = "usr_id_in", unique = true, nullable = false )
@@ -18,12 +17,15 @@ public class UserDocumentPK implements Serializable, Comparable<UserDocumentPK>
 	@Column( name = "doc_id_in", unique = true, nullable = false )
 	private Integer docId;
 
-	public UserDocumentPK()
+	public UserDocumentPK( )
 	{
 	}
 
-	public Integer getUserId()
+	public Integer getUserId( )
 	{
+		if ( this.userId == null ) {
+			this.userId = 0;
+		}
 		return this.userId;
 	}
 
@@ -32,7 +34,7 @@ public class UserDocumentPK implements Serializable, Comparable<UserDocumentPK>
 		this.userId = usrIdIn;
 	}
 
-	public Integer getDocId()
+	public Integer getDocId( )
 	{
 		return this.docId;
 	}
@@ -51,18 +53,18 @@ public class UserDocumentPK implements Serializable, Comparable<UserDocumentPK>
 		if ( !( other instanceof UserDocumentPK ) ) {
 			return false;
 		}
-		UserDocumentPK castOther = ( UserDocumentPK ) other;
-		return this.userId.equals( castOther.userId ) && this.docId.equals( castOther.docId );
+		UserDocumentPK castOther = (UserDocumentPK) other;
+		return getUserId( ).equals( castOther.userId ) && getDocId( ).equals( castOther.docId );
 
 	}
 
 	@Override
-	public int hashCode()
+	public int hashCode( )
 	{
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.userId.hashCode();
-		hash = hash * prime + this.docId.hashCode();
+		hash = hash * prime + getUserId( ).hashCode( );
+		hash = hash * prime + getDocId( ).hashCode( );
 
 		return hash;
 	}

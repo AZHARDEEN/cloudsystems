@@ -36,11 +36,11 @@
                 </row>
                 <row>
                     <label value="##" id="labelAddressState"/>
-                    <combobox id="state" width="300px" readonly="true"></combobox>
+                    <combobox id="state" width="300px" readonly="true" use="br.com.mcampos.web.core.combobox.StateCombobox"/>
                 </row>
                 <row>
-                    <label value="##" id="labelAddressCity"/>
-                    <combobox id="city" width="500px" readonly="true"></combobox>
+                    <label value="##" id="labelAddressCity" />
+                    <combobox id="city" width="500px" readonly="true" use="br.com.mcampos.web.core.combobox.CityCombobox"/>
                 </row>
                 <row>
                     <label value="##" id="labelAddressObs"/>

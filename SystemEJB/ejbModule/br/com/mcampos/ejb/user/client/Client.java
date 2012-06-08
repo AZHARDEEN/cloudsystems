@@ -1,12 +1,12 @@
 package br.com.mcampos.ejb.user.client;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -36,9 +36,12 @@ import br.com.mcampos.ejb.user.company.Company;
 				query = "select o from Client o where o.company = ?1 and o.toDate is null and o.client.userType.id = '2' order by o.client.name" ),
 		@NamedQuery(
 				name = Client.countCompany,
-				query = "select count(o) from Client o where o.company = ?1 and o.toDate is null and o.client.userType.id = '2'" )
+				query = "select count(o) from Client o where o.company = ?1 and o.toDate is null and o.client.userType.id = '2'" ),
+		@NamedQuery(
+				name = Client.nextId,
+				query = "select coalesce ( max (o.id.sequence), 0 ) + 1 from Client o where o.company = ?1 " )
 } )
-public class Client implements Serializable
+public class Client implements Serializable, Comparable<Client>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -46,6 +49,7 @@ public class Client implements Serializable
 	public static final String countPerson = "Client.countPerson";
 	public static final String getAllCompany = "Client.getAllCompany";
 	public static final String countCompany = "Client.countCompany";
+	public static final String nextId = "Client.nextId";
 
 	@EmbeddedId
 	private ClientPK id;
@@ -58,19 +62,30 @@ public class Client implements Serializable
 	@JoinColumn( name = "cli_id_in", referencedColumnName = "usr_id_in", insertable = true, updatable = true, nullable = false )
 	private Users client;
 
-	@ManyToOne( optional = false )
+	@ManyToOne( optional = false, fetch = FetchType.EAGER )
 	@JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", insertable = false, updatable = false, nullable = false )
 	private Company company;
 
 	@Column( name = "cli_to_dt" )
-	private Timestamp toDate;
+	@Temporal( TemporalType.TIMESTAMP )
+	private Date toDate;
 
 	public Client( )
 	{
+
+	}
+
+	public Client( Company c, Users u )
+	{
+		setCompany( c );
+		setClient( u );
 	}
 
 	public ClientPK getId( )
 	{
+		if ( this.id == null ) {
+			this.id = new ClientPK( );
+		}
 		return this.id;
 	}
 
@@ -89,12 +104,12 @@ public class Client implements Serializable
 		this.fromDate = cliFromDt;
 	}
 
-	public Timestamp getToDate( )
+	public Date getToDate( )
 	{
 		return this.toDate;
 	}
 
-	public void setToDate( Timestamp cliToDt )
+	public void setToDate( Date cliToDt )
 	{
 		this.toDate = cliToDt;
 	}
@@ -117,6 +132,31 @@ public class Client implements Serializable
 	public void setCompany( Company company )
 	{
 		this.company = company;
+		if ( getCompany( ) != null ) {
+			getId( ).set( company );
+		}
 	}
 
+	@Override
+	public int compareTo( Client o )
+	{
+		return getId( ).compareTo( o.getId( ) );
+	}
+
+	@Override
+	public boolean equals( Object obj )
+	{
+		if ( obj instanceof Client ) {
+			Client other = (Client) obj;
+			return getId( ).equals( other.getId( ) );
+		}
+		else if ( obj instanceof ClientPK )
+		{
+			ClientPK other = (ClientPK) obj;
+			return getId( ).equals( other );
+		}
+		else {
+			return false;
+		}
+	}
 }

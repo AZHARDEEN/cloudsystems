@@ -7,7 +7,6 @@ import br.com.mcampos.ejb.core.BasicEntityRenderer;
 
 public class BaseComparator implements Comparator<BasicEntityRenderer<?>>, Serializable
 {
-	@SuppressWarnings( "compatibility:-6032106302087464523" )
 	private static final long serialVersionUID = 1L;
 	private boolean asc = true;
 	private int fieldIndex = 0;

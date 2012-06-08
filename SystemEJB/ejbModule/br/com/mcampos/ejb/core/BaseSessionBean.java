@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.EJB;
 
 import br.com.mcampos.ejb.params.SystemParameterSessionLocal;
+import br.com.mcampos.sysutils.SysUtils;
 
 public abstract class BaseSessionBean<T> extends PagingSessionBean<T> implements BaseSessionInterface<T>
 {
@@ -39,12 +40,12 @@ public abstract class BaseSessionBean<T> extends PagingSessionBean<T> implements
 	@Override
 	public Collection<T> merge( Collection<T> entities )
 	{
-		if ( entities == null || entities.size( ) == 0 ) {
-			return Collections.emptyList( );
-		}
-		List<T> merged = new ArrayList<T>( entities.size( ) );
-		for ( T item : entities ) {
-			merged.add( merge( item ) );
+		List<T> merged = Collections.emptyList( );
+		if ( SysUtils.isEmpty( entities ) == false ) {
+			merged = new ArrayList<T>( entities.size( ) );
+			for ( T item : entities ) {
+				merged.add( merge( item ) );
+			}
 		}
 		return merged;
 	}

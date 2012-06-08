@@ -1,4 +1,4 @@
-package br.com.mcampos.web.core.combobox;
+package br.com.mcampos.web.core.combobox.controller;
 
 import br.com.mcampos.ejb.user.person.gender.GenderSession;
 

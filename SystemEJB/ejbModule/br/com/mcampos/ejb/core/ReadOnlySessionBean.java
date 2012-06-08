@@ -250,4 +250,22 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		}
 		return id;
 	}
+
+	public Integer getNextId( String namedQuery, Object... params )
+	{
+		Query query = getEntityManager( ).createNamedQuery( namedQuery );
+		Integer id;
+		try {
+			setQueryParams( query, params );
+			id = (Integer) query.getSingleResult( );
+			if ( id == null || id.equals( 0 ) ) {
+				id = 1;
+			}
+		}
+		catch ( Exception e ) {
+			e = null;
+			id = 1;
+		}
+		return id;
+	}
 }

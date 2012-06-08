@@ -12,6 +12,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import br.com.mcampos.ejb.user.contact.type.ContactType;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "UserContact.findAll", query = "select o from UserContact o" ) } )
@@ -21,8 +22,9 @@ public class UserContact implements Serializable
 {
 	private static final long serialVersionUID = -8452887413412919630L;
 
-	@Column( name = "cct_id_in", nullable = false )
-	private Integer contactId;
+	@ManyToOne
+	@JoinColumn( name = "cct_id_in", nullable = false, insertable = true, updatable = true )
+	private ContactType type;
 
 	@Id
 	@Column( name = "uct_description_ch", nullable = false )
@@ -39,7 +41,7 @@ public class UserContact implements Serializable
 	@JoinColumn( name = "usr_id_in" )
 	private Users user;
 
-	public UserContact()
+	public UserContact( )
 	{
 	}
 
@@ -48,17 +50,7 @@ public class UserContact implements Serializable
 		this.user = user;
 	}
 
-	public Integer getContactId()
-	{
-		return this.contactId;
-	}
-
-	public void setContactId( Integer cct_id_in )
-	{
-		this.contactId = cct_id_in;
-	}
-
-	public String getDescription()
+	public String getDescription( )
 	{
 		return this.description;
 	}
@@ -68,7 +60,7 @@ public class UserContact implements Serializable
 		this.description = uct_description_ch;
 	}
 
-	public String getObs()
+	public String getObs( )
 	{
 		return this.obs;
 	}
@@ -78,7 +70,7 @@ public class UserContact implements Serializable
 		this.obs = uct_observation_tx;
 	}
 
-	public Integer getUserId()
+	public Integer getUserId( )
 	{
 		return this.userId;
 	}
@@ -88,7 +80,7 @@ public class UserContact implements Serializable
 		this.userId = usr_id_in;
 	}
 
-	public Users getUser()
+	public Users getUser( )
 	{
 		return this.user;
 	}
@@ -99,6 +91,16 @@ public class UserContact implements Serializable
 		if ( user != null ) {
 			user.add( this );
 		}
+	}
+
+	public ContactType getType( )
+	{
+		return this.type;
+	}
+
+	public void setType( ContactType type )
+	{
+		this.type = type;
 	}
 
 }
