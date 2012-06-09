@@ -41,6 +41,15 @@ public abstract class BaseUserSession<BEAN extends Users> extends SimpleSessionB
 			}
 		}
 		for ( Address item : u.getAddresses( ) ) {
+			if ( item.getFromDate( ) == null ) {
+				item.setFromDate( new Date( ) );
+			}
+			if ( SysUtils.isEmpty( item.getAddress( ) ) == false ) {
+				item.setAddress( SysUtils.unaccent( item.getAddress( ).trim( ).toUpperCase( ) ) );
+			}
+			if ( SysUtils.isEmpty( item.getDistrict( ) ) == false ) {
+				item.setDistrict( SysUtils.unaccent( item.getDistrict( ).trim( ).toUpperCase( ) ) );
+			}
 			if ( item.getUser( ) == null || item.getUser( ).equals( u ) == false ) {
 				item.setUser( u );
 			}
@@ -58,20 +67,19 @@ public abstract class BaseUserSession<BEAN extends Users> extends SimpleSessionB
 		List<Address> addresses = new ArrayList<Address>( );
 		List<UserContact> contacts = new ArrayList<UserContact>( );
 
+		configAttributes( newEntity );
 		for ( UserContact i : newEntity.getContacts( ) ) {
 			contacts.add( i );
 		}
+		newEntity.getContacts( ).clear( );
 		for ( UserDocument i : newEntity.getDocuments( ) ) {
 			documents.add( i );
 		}
+		newEntity.getDocuments( ).clear( );
 		for ( Address i : newEntity.getAddresses( ) ) {
 			addresses.add( i );
 		}
-
-		newEntity.getContacts( ).clear( );
-		newEntity.getDocuments( ).clear( );
 		newEntity.getAddresses( ).clear( );
-		configAttributes( newEntity );
 		newEntity = super.merge( newEntity );
 		for ( UserContact i : contacts ) {
 			newEntity.add( i );

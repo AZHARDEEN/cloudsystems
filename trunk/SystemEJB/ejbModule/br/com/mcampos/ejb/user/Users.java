@@ -139,24 +139,24 @@ public abstract class Users implements Serializable, Comparable<Users>
 		return this.documents;
 	}
 
-	public void setDocuments( List<UserDocument> userDocumentList )
+	public void setDocuments( List<UserDocument> list )
 	{
-		this.documents = userDocumentList;
-		for ( UserDocument i : getDocuments( ) ) {
-			i.setUser( this );
+		getDocuments( ).clear( );
+		for ( UserDocument i : list ) {
+			add( i );
 		}
 	}
 
-	public UserDocument add( UserDocument userDocument )
+	public UserDocument add( UserDocument item )
 	{
-		if ( userDocument != null ) {
-			userDocument.setUser( this );
-			int nIndex = getDocuments( ).indexOf( userDocument );
+		if ( item != null ) {
+			int nIndex = getDocuments( ).indexOf( item );
 			if ( nIndex < 0 ) {
-				getDocuments( ).add( userDocument );
+				getDocuments( ).add( item );
+				item.setUser( this );
 			}
 		}
-		return userDocument;
+		return item;
 	}
 
 	public UserDocument remove( UserDocument item )
@@ -176,18 +176,24 @@ public abstract class Users implements Serializable, Comparable<Users>
 		return this.contacts;
 	}
 
-	public void setContacts( List<UserContact> userContactList )
+	public void setContacts( List<UserContact> list )
 	{
-		this.contacts = userContactList;
-		for ( UserContact i : getContacts( ) ) {
-			i.setUser( this );
+		getContacts( ).clear( );
+		for ( UserContact i : list ) {
+			add( i );
 		}
 	}
 
-	public UserContact add( UserContact userContact )
+	public UserContact add( UserContact item )
 	{
-		getContacts( ).add( userContact );
-		return userContact;
+		if ( item != null ) {
+			int nIndex = getContacts( ).indexOf( item );
+			if ( nIndex < 0 ) {
+				getContacts( ).add( item );
+				item.setUser( this );
+			}
+		}
+		return item;
 	}
 
 	public UserContact remove( UserContact item )
@@ -207,21 +213,24 @@ public abstract class Users implements Serializable, Comparable<Users>
 		return this.addresses;
 	}
 
-	public void setAddresses( List<Address> addressList )
+	public void setAddresses( List<Address> list )
 	{
-		this.addresses = addressList;
-		for ( Address i : getAddresses( ) ) {
-			i.setUser( this );
+		getAddresses( ).clear( );
+		for ( Address i : list ) {
+			add( i );
 		}
 	}
 
-	public Address add( Address address )
+	public Address add( Address item )
 	{
-		if ( address != null ) {
-			address.setUser( this );
+		if ( item != null ) {
+			int nIndex = getAddresses( ).indexOf( item );
+			if ( nIndex < 0 ) {
+				getAddresses( ).add( item );
+				item.setUser( this );
+			}
 		}
-		getAddresses( ).add( address );
-		return address;
+		return item;
 	}
 
 	public Address remove( Address address )
@@ -256,6 +265,9 @@ public abstract class Users implements Serializable, Comparable<Users>
 	@Override
 	public boolean equals( Object obj )
 	{
+		if ( obj == null ) {
+			return false;
+		}
 		if ( obj instanceof Users ) {
 			Users other = (Users) obj;
 			return getId( ).equals( other.getId( ) );
