@@ -1,6 +1,5 @@
 package br.com.mcampos.ejb.core;
 
-
 public abstract class SimpleTable<ENTITY> implements SimpleEntity<ENTITY>
 {
 	private static final long serialVersionUID = -3732259968767551014L;
@@ -9,11 +8,11 @@ public abstract class SimpleTable<ENTITY> implements SimpleEntity<ENTITY>
 	public abstract String getDescription( );
 
 	@Override
-	public abstract Integer getId();
+	public abstract Integer getId( );
 
-	public SimpleTable()
+	public SimpleTable( )
 	{
-		super();
+		super( );
 	}
 
 	public SimpleTable( Integer id, String description )
@@ -21,7 +20,6 @@ public abstract class SimpleTable<ENTITY> implements SimpleEntity<ENTITY>
 		setId( id );
 		setDescription( description );
 	}
-
 
 	@Override
 	public int compareTo( ENTITY object, Integer field )
@@ -39,13 +37,23 @@ public abstract class SimpleTable<ENTITY> implements SimpleEntity<ENTITY>
 	@Override
 	public boolean equals( Object obj )
 	{
+		if ( obj == null ) {
+			return false;
+		}
 		return getId( ).equals( ( (SimpleTable<?>) obj ).getId( ) );
 	}
 
 	@Override
 	public int compareTo( ENTITY o )
 	{
-		return getId( ).compareTo( ( (SimpleTable<?>) o ).getId( ) );
+		if ( o == null ) {
+			return 1;
+		}
+		int nRet = 0;
+		if ( getId( ) != null ) {
+			nRet = getId( ).compareTo( ( (SimpleTable<?>) o ).getId( ) );
+		}
+		return nRet;
 	}
 
 	@Override
@@ -53,9 +61,9 @@ public abstract class SimpleTable<ENTITY> implements SimpleEntity<ENTITY>
 	{
 		switch ( field ) {
 		case 0:
-			return getId().toString();
+			return getId( ).toString( );
 		case 1:
-			return getDescription();
+			return getDescription( );
 		default:
 			return "";
 		}

@@ -12,9 +12,11 @@ import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.user.UserContact;
 import br.com.mcampos.ejb.user.Users;
+import br.com.mcampos.ejb.user.address.Address;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.document.type.DocumentType;
 import br.com.mcampos.web.core.BaseDBLoggedController;
+import br.com.mcampos.web.renderer.AddressListRenderer;
 import br.com.mcampos.web.renderer.UserContactListRenderer;
 import br.com.mcampos.web.renderer.UserDocumentListRenderer;
 
@@ -27,6 +29,9 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN>
 
 	@Wire
 	private Listbox documentList;
+
+	@Wire
+	private Listbox addressList;
 
 	@Wire
 	private Textbox name;
@@ -46,12 +51,18 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN>
 		return this.documentList;
 	}
 
+	protected Listbox getAddressList( )
+	{
+		return this.addressList;
+	}
+
 	@Override
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
 		getContactList( ).setItemRenderer( new UserContactListRenderer( ) );
 		getDocumentList( ).setItemRenderer( new UserDocumentListRenderer( ) );
+		getAddressList( ).setItemRenderer( new AddressListRenderer( ) );
 	}
 
 	protected void show( Users u )
@@ -60,6 +71,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN>
 		{
 			getDocumentList( ).setModel( new ListModelList<UserDocument>( u.getDocuments( ) ) );
 			getContactList( ).setModel( new ListModelList<UserContact>( u.getContacts( ) ) );
+			getAddressList( ).setModel( new ListModelList<Address>( u.getAddresses( ) ) );
 			this.name.setValue( u.getName( ) );
 			this.birthdate.setValue( u.getBirthDate( ) );
 			setCurrentUser( u );
@@ -110,12 +122,26 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN>
 		}
 	}
 
+	private List<Address> getAddresses( )
+	{
+		if ( getAddressList( ) != null && getAddressList( ).getModel( ) != null ) {
+			Object objList = getAddressList( ).getModel( );
+			@SuppressWarnings( "unchecked" )
+			ListModelList<Address> l = (ListModelList<Address>) objList;
+			return l.getInnerList( );
+		}
+		else {
+			return Collections.emptyList( );
+		}
+	}
+
 	protected void update( Users u )
 	{
 		u.setName( this.name.getValue( ) );
 		u.setBirthDate( this.birthdate.getValue( ) );
 		u.setDocuments( getDocuments( ) );
 		u.setContacts( getContacts( ) );
+		u.setAddresses( getAddresses( ) );
 	}
 
 	protected Users getCurrentUser( )

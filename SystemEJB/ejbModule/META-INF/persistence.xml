@@ -6,7 +6,6 @@
   	<provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>java:/CloudDS</jta-data-source>
     <class>br.com.mcampos.ejb.user.usertype.UserType</class>
-    <class>br.com.mcampos.ejb.user.address.Address</class>
     <class>br.com.mcampos.ejb.user.address.AddressType</class>
     <class>br.com.mcampos.ejb.user.UserContact</class>
     <class>br.com.mcampos.ejb.user.document.UserDocument</class>
@@ -56,6 +55,8 @@
     <class>br.com.mcampos.ejb.email.part.EMailPartPK</class>
     <class>br.com.mcampos.ejb.user.contact.type.ContactType</class>
     <class>br.com.mcampos.ejb.inep.entity.SubscriptionGradeView</class>
+    <class>br.com.mcampos.ejb.user.address.Address</class>
+    <class>br.com.mcampos.ejb.user.address.AddressPK</class>
     <properties>
     	<property name="eclipselink.target-database" value="PostgreSQL"/>
     	<property name="eclipselink.target-server" value="JBoss"/>

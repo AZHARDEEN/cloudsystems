@@ -17,7 +17,7 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Di
 {
 	private static final long serialVersionUID = 993535382863182500L;
 
-	@Wire( "#removeDocument, #removeContact, #updateDocument, #updateContact" )
+	@Wire( "#removeDocument, #removeContact, #removeAddress, #updateDocument, #updateContact, #updateAddress" )
 	private Button[ ] itemButtons;
 
 	protected abstract Listbox getListbox( );
@@ -28,7 +28,7 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Di
 
 	protected abstract void update( DATA data );
 
-	@Listen( "onSelect = #documentList, #contactList" )
+	@Listen( "onSelect = #documentList, #contactList, #addressList" )
 	public void onSelect( Event evt )
 	{
 		Listitem selectedItem;
@@ -65,7 +65,7 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Di
 		}
 	}
 
-	@Listen( "onClick = #removeDocument, #removeContact" )
+	@Listen( "onClick = #removeDocument, #removeContact, #removeAddress" )
 	public void onRemove( Event evt )
 	{
 		DATA item = getSelected( );
@@ -83,7 +83,7 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Di
 		}
 	}
 
-	@Listen( "onClick = #addDocument, #addContact" )
+	@Listen( "onClick = #addDocument, #addContact, #addAddress" )
 	public void onNew( Event evt )
 	{
 		DATA newItem = createNew( );
@@ -95,7 +95,7 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Di
 		}
 	}
 
-	@Listen( "onClick = #updateDocument, #updateContact" )
+	@Listen( "onClick = #updateDocument, #updateContact, #updateAddress" )
 	public void onUpdate( Event evt )
 	{
 		DATA newItem = getSelected( );
@@ -113,6 +113,10 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Di
 		Object objModel = ( getListbox( ).getModel( ) );
 		@SuppressWarnings( "unchecked" )
 		ListModelList<DATA> model = (ListModelList<DATA>) objModel;
+		if ( model == null ) {
+			model = new ListModelList<DATA>( );
+			getListbox( ).setModel( model );
+		}
 		return model;
 	}
 
@@ -122,8 +126,7 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Di
 			getListbox( ).setSelectedIndex( nIndex );
 			Events.sendEvent( getListbox( ), new Event( Events.ON_SELECT, getListbox( ) ) );
 		}
-		else
-		{
+		else {
 			getListbox( ).clearSelection( );
 			showRecord( null );
 			enableItemButtons( false );

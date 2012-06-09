@@ -1,17 +1,13 @@
 package br.com.mcampos.ejb.user.address;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,134 +15,129 @@ import javax.persistence.TemporalType;
 import br.com.mcampos.ejb.locale.city.City;
 import br.com.mcampos.ejb.user.Users;
 
-
+/**
+ * The persistent class for the address database table.
+ * 
+ */
 @Entity
-@NamedQueries( { @NamedQuery( name = "Address.findAll", query = "select o from Address o" ) } )
-@Table( name = "\"address\"" )
-@IdClass( AddressPK.class )
-public class Address implements Serializable
+@Table( name = "address" )
+public class Address implements Serializable, Comparable<Address>
 {
-	private static final long serialVersionUID = 346524316312636700L;
+	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column( name = "adt_id_in", nullable = false, insertable = false, updatable = false )
-	private Integer addressTypeId;
+	@EmbeddedId
+	private AddressPK id;
 
-	@Id
-	@Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
-	private Integer userId;
-
-	@Id
-	@Column( name = "adr_to_dt", nullable = true, insertable = true, updatable = true )
-	@Temporal( value = TemporalType.DATE )
-	private Date toDate;
-
-
-	@Column( name = "adr_adress_ch", nullable = false )
+	@Column( name = "adr_adress_ch", nullable = false, length = 256 )
 	private String address;
 
-	@Column( name = "adr_district_ch" )
+	@Column( name = "adr_district_ch", length = 64 )
 	private String district;
 
 	@Column( name = "adr_from_dt", nullable = false )
 	@Temporal( value = TemporalType.DATE )
 	private Date fromDate;
 
-
-	@Column( name = "adr_obs_tx" )
+	@Column( name = "adr_obs_tx", length = 2147483647 )
 	private String obs;
 
+	@Column( name = "adr_to_dt" )
+	@Temporal( value = TemporalType.DATE )
+	private Date toDate;
 
-	@Column( name = "adr_zip_code_ch", nullable = false )
+	@Column( name = "adr_zip_code_ch", nullable = false, length = 24 )
 	private String zip;
 
-	@ManyToOne
+	@ManyToOne( optional = false )
 	@JoinColumn( name = "cit_id_in", nullable = false, insertable = true, updatable = true )
 	private City city;
 
-	@ManyToOne
-	@JoinColumn( name = "usr_id_in" )
+	@ManyToOne( optional = false )
+	@JoinColumn( name = "usr_id_in", insertable = false, updatable = false, nullable = false )
 	private Users user;
 
-	@ManyToOne
-	@JoinColumn( name = "adt_id_in", insertable = true, updatable = true, nullable = false )
-	private AddressType addressType;
+	@ManyToOne( optional = false )
+	@JoinColumn( name = "adt_id_in", insertable = false, updatable = false, nullable = false )
+	private AddressType type;
 
-	public Address()
+	public Address( )
 	{
 	}
 
-	public String getAddress()
+	public AddressPK getId( )
+	{
+		if ( this.id == null ) {
+			this.id = new AddressPK( );
+		}
+		return this.id;
+	}
+
+	public void setId( AddressPK id )
+	{
+		this.id = id;
+	}
+
+	public String getAddress( )
 	{
 		return this.address;
 	}
 
-	public void setAddress( String adr_adress_ch )
+	public void setAddress( String adrAdressCh )
 	{
-		this.address = adr_adress_ch;
+		this.address = adrAdressCh;
 	}
 
-	public String getDistrict()
+	public String getDistrict( )
 	{
 		return this.district;
 	}
 
-	public void setDistrict( String adr_district_ch )
+	public void setDistrict( String adrDistrictCh )
 	{
-		this.district = adr_district_ch;
+		this.district = adrDistrictCh;
 	}
 
-	public Date getFromDate()
+	public Date getFromDate( )
 	{
 		return this.fromDate;
 	}
 
-	public void setFromDate( Date adr_from_dt )
+	public void setFromDate( Date adrFromDt )
 	{
-		this.fromDate = adr_from_dt;
+		this.fromDate = adrFromDt;
 	}
 
-	public String getObs()
+	public String getObs( )
 	{
 		return this.obs;
 	}
 
-	public void setObs( String adr_obs_tx )
+	public void setObs( String adrObsTx )
 	{
-		this.obs = adr_obs_tx;
+		this.obs = adrObsTx;
 	}
 
-	public Date getToDate()
+	public Date getToDate( )
 	{
 		return this.toDate;
 	}
 
-	public void setToDate( Date adr_to_dt )
+	public void setToDate( Date adrToDt )
 	{
-		this.toDate = adr_to_dt;
+		this.toDate = adrToDt;
 	}
 
-	public String getZip()
+	public String getZip( )
 	{
 		return this.zip;
 	}
 
-	public void setZip( String adr_zip_code_ch )
+	public void setZip( String adrZipCodeCh )
 	{
-		this.zip = adr_zip_code_ch;
+		this.zip = adrZipCodeCh;
 	}
 
-	public Integer getAddressTypeId()
-	{
-		return this.addressTypeId;
-	}
-
-	public void setAddressTypeId( Integer adt_id_in )
-	{
-		this.addressTypeId = adt_id_in;
-	}
-
-	public City getCity()
+	public City getCity( )
 	{
 		return this.city;
 	}
@@ -156,39 +147,67 @@ public class Address implements Serializable
 		this.city = city;
 	}
 
-	public Integer getUserId()
-	{
-		return this.userId;
-	}
-
-	public void setUserId( Integer usr_id_in )
-	{
-		this.userId = usr_id_in;
-	}
-
-	public Users getUser()
+	public Users getUser( )
 	{
 		return this.user;
 	}
 
-	public void setUser( Users users2 )
+	public void setUser( Users user )
 	{
-		this.user = users2;
-		if ( users2 != null ) {
-			this.userId = users2.getId();
+		this.user = user;
+		if ( getUser( ) != null )
+		{
+			getId( ).setUserId( getUser( ).getId( ) );
+			getUser( ).add( this );
 		}
 	}
 
-	public AddressType getAddressType()
+	@Override
+	public int compareTo( Address o )
 	{
-		return this.addressType;
+		if ( o == null ) {
+			return 1;
+		}
+		int nRet = 0;
+		if ( getUser( ) != null ) {
+			nRet = getUser( ).compareTo( o.getUser( ) );
+		}
+		if ( nRet == 0 && getType( ) != null ) {
+			nRet = getType( ).compareTo( o.getType( ) );
+		}
+		return nRet;
 	}
 
-	public void setAddressType( AddressType addressType )
+	@Override
+	public boolean equals( Object obj )
 	{
-		this.addressType = addressType;
-		if ( addressType != null ) {
-			this.addressTypeId = addressType.getId();
+		if ( obj == null ) {
+			return false;
+		}
+		if ( obj instanceof Address ) {
+			Address other = (Address) obj;
+			if ( getUser( ) != null && getUser( ).equals( other.getUser( ) ) ) {
+				return getType( ).equals( other.getType( ) );
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+	}
+
+	public AddressType getType( )
+	{
+		return this.type;
+	}
+
+	public void setType( AddressType type )
+	{
+		this.type = type;
+		if ( getType( ) != null ) {
+			getId( ).setAddressType( getType( ).getId( ) );
 		}
 	}
 }

@@ -105,8 +105,12 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 		}
 		Users user = getEntityManager( ).find( Users.class, id );
 		if ( user != null ) {
-			user.getAddresses( ).size( );
-			user.getContacts( ).size( );
+			int nSize;
+			nSize = user.getAddresses( ).size( );
+			nSize = user.getContacts( ).size( );
+			if ( nSize > 0 ) {
+				nSize = 0;
+			}
 		}
 		return user;
 	}
