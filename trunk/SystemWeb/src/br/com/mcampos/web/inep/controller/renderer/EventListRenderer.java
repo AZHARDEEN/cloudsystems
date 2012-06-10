@@ -15,5 +15,4 @@ public class EventListRenderer extends BaseListRenderer<InepPackage>
 		addCell( item, data.getId( ).getId( ).toString( ) );
 		addCell( item, data.getDescription( ) );
 	}
-
 }

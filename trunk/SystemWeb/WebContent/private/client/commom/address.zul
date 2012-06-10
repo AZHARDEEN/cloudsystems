@@ -24,15 +24,15 @@
                </row>
                <row>
                    <label value="##" id="labelAddressZipCode"/>
-                   <textbox id="zip" width="100px" maxlength="10"/>
+                   <textbox id="zip" width="100px" maxlength="10" />
                </row>
                <row>
                    <label value="##" id="labelAddress"/>
-                   <textbox id="address" width="99%" maxlength="255" multiline="true" rows="2"/>
+                   <textbox id="address" width="99%" maxlength="255" multiline="true" rows="2" />
                </row>
                <row>
                    <label value="##" id="labelAddressDistrict"/>
-                   <textbox id="hood" width="99%" maxlength="128"/>
+                   <textbox id="hood" width="99%" maxlength="128" />
                </row>
                <row>
                    <label value="##" id="labelAddressState"/>
