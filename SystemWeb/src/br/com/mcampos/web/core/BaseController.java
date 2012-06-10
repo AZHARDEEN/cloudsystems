@@ -187,6 +187,20 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		}
 	}
 
+	protected void unloadMe( )
+	{
+		Component parent = null;
+
+		if ( parent == null && getMainWindow( ) != null ) {
+			parent = getMainWindow( ).getParent( );
+		}
+		if ( parent != null ) {
+			if ( SysUtils.isEmpty( parent.getChildren( ) ) == false ) {
+				parent.getChildren( ).clear( );
+			}
+		}
+	}
+
 	protected void redirect( String uri )
 	{
 		Executions.getCurrent( ).sendRedirect( uri );

@@ -167,4 +167,10 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN>
 		u.setCode( document );
 		model.add( u );
 	}
+
+	protected boolean validate( Users user )
+	{
+		return true;
+	}
+
 }

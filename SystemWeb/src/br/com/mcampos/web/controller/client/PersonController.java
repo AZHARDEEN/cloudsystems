@@ -13,7 +13,6 @@ import org.zkoss.zul.Div;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Paging;
-import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 import org.zkoss.zul.event.PagingEvent;
 
@@ -21,20 +20,15 @@ import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.user.client.Client;
 import br.com.mcampos.ejb.user.client.ClientSession;
 import br.com.mcampos.ejb.user.document.UserDocument;
+import br.com.mcampos.ejb.user.document.type.DocumentType;
 import br.com.mcampos.ejb.user.person.Person;
-import br.com.mcampos.sysutils.CPF;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.web.core.combobox.CityCombobox;
-import br.com.mcampos.web.core.combobox.CivilStateCombobox;
-import br.com.mcampos.web.core.combobox.GenderCombobox;
-import br.com.mcampos.web.core.combobox.StateCombobox;
-import br.com.mcampos.web.core.combobox.TitleCombobox;
 
-public class ClientController extends UserController<ClientSession>
+public class PersonController extends BasePersonController<ClientSession>
 {
 	private static final long serialVersionUID = -2213603323351941998L;
 	private static final int defaultRows = 30;
-	private static final Logger logger = LoggerFactory.getLogger( ClientController.class );
+	private static final Logger logger = LoggerFactory.getLogger( PersonController.class );
 
 	private DBPaging paging;
 
@@ -53,29 +47,8 @@ public class ClientController extends UserController<ClientSession>
 	@Wire
 	private Combobox comboMaxRecords;
 
-	@Wire
-	private Textbox cpf;
-
-	@Wire
-	private GenderCombobox gender;
-	@Wire
-	protected StateCombobox state;
-	@Wire
-	private TitleCombobox title;
-	@Wire
-	private CivilStateCombobox maritalStatus;
-	@Wire
-	private CityCombobox bornCity;
-	@Wire
-	private StateCombobox bornState;
-
 	@Wire( "#cmdUpdate,#cmdDelete" )
 	Button[ ] itemButtons;
-
-	@Wire
-	private Textbox fatherName;
-	@Wire
-	private Textbox motherName;
 
 	private Client currentClient;
 
@@ -99,12 +72,19 @@ public class ClientController extends UserController<ClientSession>
 	}
 
 	@Override
+	protected void show( Person person )
+	{
+		super.show( person );
+		if ( person != null ) {
+			getCurrentClient( ).setClient( person );
+		}
+	}
+
+	@Override
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
 		setCurrentClient( null );
-		this.gender.addDetail( this.title );
-		this.bornState.addDetail( this.bornCity );
 		configPaging( );
 		getListBox( ).setItemRenderer( new ClientPersonRenderer( ) );
 		loadListbox( );
@@ -115,16 +95,6 @@ public class ClientController extends UserController<ClientSession>
 		List<Client> clients = getSession( ).getAllPerson( getCurrentCollaborator( ), getPaging( ) );
 		getListBox( ).setModel( new ListModelList<Client>( clients ) );
 		enableItemButtons( false );
-	}
-
-	private void merge( )
-	{
-		Client client = getCurrentClient( );
-		if ( client.getClient( ) == null ) {
-			client.setClient( new Person( ) );
-		}
-		update( client );
-
 	}
 
 	private Listbox getListBox( )
@@ -158,56 +128,21 @@ public class ClientController extends UserController<ClientSession>
 		return this.comboMaxRecords;
 	}
 
-	private void showCPF( List<UserDocument> docs )
-	{
-		this.cpf.setValue( "" );
-		for ( UserDocument doc : docs ) {
-			if ( doc.getType( ).getId( ).equals( UserDocument.typeCPF ) ) {
-				this.cpf.setValue( doc.getCode( ) );
-				break;
-			}
-		}
-	}
-
-	protected void show( Person person )
-	{
-		super.show( person );
-		if ( person != null ) {
-			this.gender.find( person.getGender( ) );
-			this.title.find( person.getTitle( ) );
-			this.maritalStatus.find( person.getCivilState( ) );
-			this.fatherName.setValue( person.getFatherName( ) );
-			this.motherName.setValue( person.getMotherName( ) );
-			showCPF( person.getDocuments( ) );
-			if ( person.getBornCity( ) != null ) {
-				this.bornState.find( person.getBornCity( ).getState( ) );
-				this.bornCity.find( person.getBornCity( ) );
-			}
-			getCurrentClient( ).setClient( person );
-		}
-		else {
-			this.cpf.setValue( "" );
-			this.fatherName.setValue( "" );
-			this.motherName.setValue( "" );
-			this.bornState.setSelectedIndex( 0 );
-			this.gender.setSelectedIndex( 0 );
-			this.maritalStatus.setSelectedIndex( 0 );
-		}
-	}
-
 	private Client update( Client client )
 	{
 		if ( client == null ) {
 			return null;
 		}
-		updatePerson( (Person) client.getClient( ) );
-		client = getSession( ).addNewPerson( getCurrentCollaborator( ), client );
-		int nIndex = getModel( ).indexOf( client );
-		if ( nIndex >= 0 ) {
-			getModel( ).set( nIndex, client );
-		}
-		else {
-			getModel( ).add( client );
+		if ( validate( client.getClient( ) ) ) {
+			updatePerson( (Person) client.getClient( ) );
+			client = getSession( ).addNewPerson( getCurrentCollaborator( ), client );
+			int nIndex = getModel( ).indexOf( client );
+			if ( nIndex >= 0 ) {
+				getModel( ).set( nIndex, client );
+			}
+			else {
+				getModel( ).add( client );
+			}
 		}
 		return client;
 	}
@@ -217,20 +152,6 @@ public class ClientController extends UserController<ClientSession>
 	{
 		Object obj = getListBox( ).getModel( );
 		return (ListModelList<Client>) obj;
-	}
-
-	private void updatePerson( Person person )
-	{
-		if ( person == null ) {
-			return;
-		}
-		super.update( person );
-		person.setTitle( this.title.getSelectedValue( ) );
-		person.setCivilState( this.maritalStatus.getSelectedValue( ) );
-		person.setFatherName( this.fatherName.getValue( ) );
-		person.setMotherName( this.motherName.getValue( ) );
-		person.setGender( this.gender.getSelectedValue( ) );
-		person.setBornCity( this.bornCity.getSelectedValue( ) );
 	}
 
 	private Client getCurrentClient( )
@@ -255,19 +176,54 @@ public class ClientController extends UserController<ClientSession>
 		}
 	}
 
+	@Override
+	protected void onOk( )
+	{
+		Client client = getCurrentClient( );
+		if ( client.getClient( ) == null ) {
+			client.setClient( new Person( ) );
+		}
+		update( client );
+	}
+
+	@Override
+	protected void onCancel( )
+	{
+		getDivList( ).setVisible( true );
+		getDivData( ).setVisible( false );
+	}
+
 	private void onUpdate( )
 	{
 		Client client = getListBox( ).getSelectedItem( ).getValue( );
 		setCurrentClient( client );
 		Person person = (Person) getSession( ).getUser( getCurrentCollaborator( ), client.getClient( ).getId( ) );
 		show( person );
-		getName( ).setFocus( true );
+		if ( SysUtils.isEmpty( getCpf( ).getValue( ) ) ) {
+			getCpf( ).setFocus( true );
+		}
+		else {
+			getName( ).setFocus( true );
+		}
 	}
 
 	private void onNew( )
 	{
 		setCurrentClient( null );
 		show( null );
+	}
+
+	@Override
+	protected Person getPerson( String doc )
+	{
+		Person person = (Person) getSession( ).getUser( getCurrentCollaborator( ), doc );
+		return person;
+	}
+
+	@Override
+	protected DocumentType getDocumentType( Integer type )
+	{
+		return getSession( ).getDocumentType( UserDocument.typeCPF );
 	}
 
 	/*
@@ -304,26 +260,6 @@ public class ClientController extends UserController<ClientSession>
 		}
 	}
 
-	@Listen( "onClick = #cmdSubmit, #cmdCancel " )
-	public void onClickSubmitCancel( Event evt )
-	{
-		if ( evt != null ) {
-			if ( evt.getTarget( ).getId( ).equals( "cmdSubmit" ) ) {
-				merge( );
-			}
-			evt.stopPropagation( );
-			getDivList( ).setVisible( true );
-			getDivData( ).setVisible( false );
-		}
-		if ( evt != null ) {
-			logger.info( "onClickSubmitCancel: " + evt.getTarget( ).getId( ) );
-			evt.stopPropagation( );
-		}
-		else {
-			logger.warn( "onClickSubmitCancel with evt null " );
-		}
-	}
-
 	@Listen( "onPaging = paging" )
 	public void onPaging( PagingEvent evt )
 	{
@@ -336,28 +272,6 @@ public class ClientController extends UserController<ClientSession>
 		}
 		else {
 			logger.warn( "onPaging with evt null " );
-		}
-	}
-
-	@Listen( "onBlur=#cpf" )
-	public void onBlur( Event evt )
-	{
-		String doc = this.cpf.getValue( );
-		if ( SysUtils.isEmpty( doc ) ) {
-			return;
-		}
-		Person person = (Person) getSession( ).getUser( getCurrentCollaborator( ), CPF.removeMask( doc ) );
-		show( person );
-		if ( person == null ) {
-			this.cpf.setValue( doc );
-			addDocument( CPF.removeMask( doc ), getSession( ).getDocumentType( UserDocument.typeCPF ) );
-		}
-		if ( evt != null ) {
-			logger.info( "onBlur: " + evt.getTarget( ).getId( ) );
-			evt.stopPropagation( );
-		}
-		else {
-			logger.warn( "onBlur with evt null " );
 		}
 	}
 

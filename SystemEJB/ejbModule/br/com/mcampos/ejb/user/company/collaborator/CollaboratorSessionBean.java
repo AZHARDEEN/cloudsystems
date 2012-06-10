@@ -48,7 +48,13 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 		if ( company == null ) {
 			return null;
 		}
-		return getByNamedQuery( Collaborator.hasCollaborator, company, login.getPerson( ) );
+		Collaborator c = getByNamedQuery( Collaborator.hasCollaborator, company, login.getPerson( ) );
+		if ( c != null ) {
+			c.getPerson( ).getAddresses( ).size( );
+			c.getPerson( ).getDocuments( ).size( );
+			c.getPerson( ).getContacts( ).size( );
+		}
+		return c;
 	}
 
 	@Override
