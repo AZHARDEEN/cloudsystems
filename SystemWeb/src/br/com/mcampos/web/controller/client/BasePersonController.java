@@ -32,8 +32,6 @@ public abstract class BasePersonController<T> extends UserController<T>
 	@Wire
 	private GenderCombobox gender;
 	@Wire
-	protected StateCombobox state;
-	@Wire
 	private TitleCombobox title;
 	@Wire
 	private CivilStateCombobox maritalStatus;
@@ -46,7 +44,7 @@ public abstract class BasePersonController<T> extends UserController<T>
 	@Wire
 	private Textbox motherName;
 
-	protected abstract void onOk( );
+	protected abstract boolean onOk( );
 
 	protected abstract void onCancel( );
 
@@ -87,11 +85,6 @@ public abstract class BasePersonController<T> extends UserController<T>
 	protected GenderCombobox getGender( )
 	{
 		return this.gender;
-	}
-
-	protected StateCombobox getState( )
-	{
-		return this.state;
 	}
 
 	protected TitleCombobox getTitle( )
@@ -146,11 +139,11 @@ public abstract class BasePersonController<T> extends UserController<T>
 	protected boolean validate( Person person )
 	{
 		if ( super.validate( person ) ) {
-			if ( SysUtils.isEmpty( getName( ).getName( ) ) ) {
+			if ( SysUtils.isEmpty( getName( ).getValue( ) ) ) {
 				showErrorMessage( "O nome deve estar prenchido", "Cadastro de Pessoas" );
 				return false;
 			}
-			if ( SysUtils.isEmpty( getCpf( ).getName( ) ) ) {
+			if ( SysUtils.isEmpty( getCpf( ).getValue( ) ) ) {
 				showErrorMessage( "O cpf deve estar preenchido", "Cadastro de Pessoas" );
 				return false;
 			}
@@ -168,11 +161,11 @@ public abstract class BasePersonController<T> extends UserController<T>
 			return;
 		}
 		super.update( person );
+		person.setGender( getGender( ).getSelectedValue( ) );
 		person.setTitle( getTitle( ).getSelectedValue( ) );
 		person.setCivilState( getMaritalStatus( ).getSelectedValue( ) );
 		person.setFatherName( getFatherName( ).getValue( ) );
 		person.setMotherName( getMotherName( ).getValue( ) );
-		person.setGender( getGender( ).getSelectedValue( ) );
 		person.setBornCity( getBornCity( ).getSelectedValue( ) );
 	}
 
@@ -181,7 +174,9 @@ public abstract class BasePersonController<T> extends UserController<T>
 	{
 		if ( evt != null ) {
 			if ( evt.getTarget( ).getId( ).equals( "cmdSubmit" ) ) {
-				onOk( );
+				if ( !onOk( ) ) {
+					return;
+				}
 			}
 			evt.stopPropagation( );
 			onCancel( );

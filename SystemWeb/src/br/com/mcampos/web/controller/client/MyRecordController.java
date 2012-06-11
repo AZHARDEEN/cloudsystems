@@ -17,11 +17,15 @@ public class MyRecordController extends BasePersonController<PersonSession>
 	}
 
 	@Override
-	protected void onOk( )
+	protected boolean onOk( )
 	{
 		if ( validate( getCurrentCollaborator( ).getPerson( ) ) ) {
 			updatePerson( getCurrentCollaborator( ).getPerson( ) );
 			getSession( ).merge( getCurrentCollaborator( ).getPerson( ) );
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 
@@ -48,6 +52,10 @@ public class MyRecordController extends BasePersonController<PersonSession>
 	{
 		// TODO Auto-generated method stub
 		super.doAfterCompose( comp );
+		getCurrentCollaborator( ).setPerson( getSession( ).get( getCurrentCollaborator( ).getPerson( ).getId( ) ) );
+		getBornState( ).load( );
+		getMaritalStatus( ).load( );
+		getGender( ).load( );
 		show( getCurrentCollaborator( ).getPerson( ) );
 		getName( ).setFocus( true );
 	}

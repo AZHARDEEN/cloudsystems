@@ -118,6 +118,7 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox
 		if ( getItemCount( ) <= 0 || item == null ) {
 			return;
 		}
+		logger.info( "Looking for: " + item.toString( ) );
 		for ( Component child : getChildren( ) ) {
 			if ( child instanceof Comboitem ) {
 				Comboitem cbItem = (Comboitem) child;
@@ -153,9 +154,9 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox
 
 	public void onCreate( Event evt )
 	{
-		if ( ( this instanceof DetailInterface ) == false )
+		if ( ( this instanceof DetailInterface ) == false && this.getItemCount( ) == 0 )
 		{
-			logger.info( "onCreate: " + evt.getTarget( ).getId( ) );
+			logger.info( "onCreate calling load: " + evt.getTarget( ).getId( ) );
 			load( );
 		}
 	}
