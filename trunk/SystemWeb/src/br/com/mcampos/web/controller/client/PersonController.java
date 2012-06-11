@@ -177,13 +177,20 @@ public class PersonController extends BasePersonController<ClientSession>
 	}
 
 	@Override
-	protected void onOk( )
+	protected boolean onOk( )
 	{
+
 		Client client = getCurrentClient( );
-		if ( client.getClient( ) == null ) {
-			client.setClient( new Person( ) );
+		if ( validate( client.getClient( ) ) ) {
+			if ( client.getClient( ) == null ) {
+				client.setClient( new Person( ) );
+			}
+			update( client );
+			return true;
 		}
-		update( client );
+		else {
+			return false;
+		}
 	}
 
 	@Override

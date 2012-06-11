@@ -1,5 +1,7 @@
 package br.com.mcampos.ejb.user.person;
 
+import java.io.Serializable;
+
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.user.BaseUserSession;
@@ -32,7 +34,18 @@ public class PersonSessionBean extends BaseUserSession<Person> implements Person
 		newEntity.setFirstName( s[ 0 ] );
 		newEntity.setMiddleName( s[ 1 ] );
 		newEntity.setLastName( s[ 2 ] );
+		lazyLoad( newEntity );
 		return newEntity;
+	}
+
+	private void lazyLoad( Person person )
+	{
+		if ( person == null ) {
+			return;
+		}
+		person.getAddresses( ).size( );
+		person.getDocuments( ).size( );
+		person.getContacts( ).size( );
 	}
 
 	public String[ ] splitName( String name )
@@ -69,4 +82,13 @@ public class PersonSessionBean extends BaseUserSession<Person> implements Person
 		return splitted;
 	}
 
+	@Override
+	public Person get( Serializable key )
+	{
+		Person p = super.get( key );
+		if ( p != null ) {
+			lazyLoad( p );
+		}
+		return p;
+	}
 }

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -22,19 +23,19 @@ public class Person extends Users implements Serializable
 {
 	private static final long serialVersionUID = 8776906464314360656L;
 
-	@ManyToOne( optional = true )
+	@ManyToOne( fetch = FetchType.EAGER, optional = true )
 	@JoinColumn( name = "cst_id_in", referencedColumnName = "cst_id_in", insertable = true, updatable = true, nullable = true )
 	private CivilState civilState;
 
-	@ManyToOne( optional = true )
+	@ManyToOne( fetch = FetchType.EAGER, optional = true )
 	@JoinColumn( name = "gnd_id_in", referencedColumnName = "gnd_id_in", insertable = true, updatable = true, nullable = true )
 	private Gender gender;
 
-	@ManyToOne( optional = true )
+	@ManyToOne( fetch = FetchType.EAGER, optional = true )
 	@JoinColumn( name = "ttl_id_in", referencedColumnName = "ttl_id_in", insertable = true, updatable = true, nullable = true )
 	private Title title;
 
-	@ManyToOne
+	@ManyToOne( fetch = FetchType.EAGER, optional = true )
 	@JoinColumn( name = "usr_born_city_in", nullable = true, insertable = true, updatable = true )
 	private City bornCity;
 
