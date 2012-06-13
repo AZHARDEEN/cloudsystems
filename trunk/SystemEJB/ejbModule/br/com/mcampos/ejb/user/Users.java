@@ -23,6 +23,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.com.mcampos.ejb.user.address.Address;
 import br.com.mcampos.ejb.user.document.UserDocument;
@@ -288,4 +289,34 @@ public abstract class Users implements Serializable, Comparable<Users>
 		return getId( ).compareTo( o.getId( ) );
 	}
 
+	@Transient
+	public String getEmail( )
+	{
+		for ( UserDocument document : getDocuments( ) )
+		{
+			if ( document.getType( ).getId( ).equals( UserDocument.typeEmail ) ) {
+				return document.getCode( );
+			}
+		}
+		return null;
+	}
+
+	@Transient
+	public String getDocument( )
+	{
+		for ( UserDocument document : getDocuments( ) )
+		{
+			if ( getUserType( ).getId( ).equals( 1 ) ) {
+				if ( document.getType( ).getId( ).equals( UserDocument.typeCPF ) ) {
+					return document.getCode( );
+				}
+			}
+			else {
+				if ( document.getType( ).getId( ).equals( UserDocument.typeCNPJ ) ) {
+					return document.getCode( );
+				}
+			}
+		}
+		return null;
+	}
 }

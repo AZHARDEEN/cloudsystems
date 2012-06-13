@@ -9,6 +9,7 @@ import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.user.Users;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.document.type.DocumentType;
+import br.com.mcampos.ejb.user.person.Person;
 
 @Remote
 public interface ClientSession extends CollaboratorBaseSessionInterface<Client>
@@ -30,4 +31,6 @@ public interface ClientSession extends CollaboratorBaseSessionInterface<Client>
 	Client updatePerson( Collaborator auth, Client newEntity );
 
 	DocumentType getDocumentType( Integer type );
+
+	List<Person> reportClientList( Collaborator auth );
 }
