@@ -1,6 +1,9 @@
 package br.com.mcampos.web.controller.client;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +26,7 @@ import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.document.type.DocumentType;
 import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.web.core.report.ReportItem;
 
 public class PersonController extends BasePersonController<ClientSession>
 {
@@ -336,4 +340,32 @@ public class PersonController extends BasePersonController<ClientSession>
 			logger.warn( "onDelete with evt null " );
 		}
 	}
+
+	@Override
+	protected List<ReportItem> getReports( )
+	{
+		List<ReportItem> list = new ArrayList<ReportItem>( );
+		ReportItem item;
+		item = new ReportItem( "Listagem de Clientes" );
+		item.setReportUrl( "/reports/client_report.jrxml" );
+		Callable<List<Person>> callable = new Callable<List<Person>>( )
+		{
+			@Override
+			public List<Person> call( )
+			{
+				return getPersonList( );
+			}
+		};
+		item.setCallable( callable );
+		list.add( item );
+		return list;
+	}
+
+	private List<Person> getPersonList( )
+	{
+		List<Person> list = Collections.emptyList( );
+		list = getSession( ).reportClientList( getCurrentCollaborator( ) );
+		return list;
+	}
+
 }

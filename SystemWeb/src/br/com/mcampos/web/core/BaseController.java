@@ -27,9 +27,10 @@ import org.zkoss.zul.impl.LabelElement;
 import org.zkoss.zul.impl.XulElement;
 
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.locator.ServiceLocator;
 
-public abstract class BaseController<T extends Component> extends SelectorComposer<T>
+public abstract class BaseController<T extends Component> extends SelectorComposer<T> implements ISessionParameter
 {
 
 	private static final long serialVersionUID = -246593656005980750L;
@@ -95,7 +96,8 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		response.addCookie( userCookie );
 	}
 
-	protected String getSessionID( )
+	@Override
+	public String getSessionID( )
 	{
 		Object obj;
 
@@ -111,24 +113,28 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		}
 	}
 
-	protected Object getSessionAttribute( String name )
+	@Override
+	public Object getSessionAttribute( String name )
 	{
 		return ( Sessions.getCurrent( ) != null ) ? Sessions.getCurrent( ).getAttribute( name ) : null;
 	}
 
-	protected void setSessionAttribute( String name, Object value )
+	@Override
+	public void setSessionAttribute( String name, Object value )
 	{
 		if ( Sessions.getCurrent( ) != null ) {
 			Sessions.getCurrent( ).setAttribute( name, value );
 		}
 	}
 
-	protected void setSessionParameter( String name, Object value )
+	@Override
+	public void setSessionParameter( String name, Object value )
 	{
 		setSessionAttribute( name, value );
 	}
 
-	protected Object getSessionParameter( String name )
+	@Override
+	public Object getSessionParameter( String name )
 	{
 		Object value;
 
@@ -136,9 +142,24 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		return value;
 	}
 
-	protected void clearSessionParameter( String name )
+	@Override
+	public void clearSessionParameter( String name )
 	{
 		setSessionParameter( name, null );
+	}
+
+	@Override
+	public void pushSessionParameter( String name, Object value )
+	{
+		setSessionAttribute( name, value );
+	}
+
+	@Override
+	public Object popSessionParameter( String name )
+	{
+		Object obj = getSessionAttribute( name );
+		clearSessionParameter( name );
+		return obj;
 	}
 
 	protected Object getParameter( String name )
@@ -176,14 +197,26 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 					parent.getChildren( ).clear( );
 				}
 			}
-			Component c = Executions.getCurrent( ).createComponents( uri, parent, parameters );
-			if ( c != null )
-			{
-				c.setAttribute( "zulPage", uri );
-			}
+			createComponents( uri, parent, parameters );
 		}
 		else {
 			redirect( uri );
+		}
+	}
+
+	protected Component createComponents( String uri, Component parent, Map<?, ?> parameters )
+	{
+		Component c = Executions.getCurrent( ).createComponents( uri, parent, parameters );
+		if ( c != null ) {
+			c.setAttribute( "zulPage", uri );
+		}
+		return c;
+	}
+
+	protected void doModal( Window w, IDialogEvent evt )
+	{
+		if ( w != null ) {
+			w.doModal( );
 		}
 	}
 

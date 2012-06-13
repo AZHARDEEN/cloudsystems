@@ -17,5 +17,7 @@
 	    <toolbarbutton id="cmdDelete" image="/img/icontexto-webdev-remove-016x016.png" label="##" disabled="true"/>
 	    <separator bar="true" orient="vertical"/>
 	    <toolbarbutton id="cmdRefresh" label="##" image="/img/icontexto-webdev-reload-016x016.png"/>
+	    <separator bar="true" orient="vertical"/>
+	    <toolbarbutton id="cmdReport" label="Relatórios" image="/img/icontexto-webdev-print-016x016.png"/>
 	</toolbar>
 </zk>

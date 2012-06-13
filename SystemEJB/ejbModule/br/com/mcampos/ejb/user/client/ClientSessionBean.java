@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.user.client;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -170,5 +171,20 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 			entity.setToDate( new Date( ) );
 			return merge( entity );
 		}
+	}
+
+	@Override
+	public List<Person> reportClientList( Collaborator auth )
+	{
+		List<Client> clients = Collections.emptyList( );
+		List<Person> persons = Collections.emptyList( );
+		if ( auth != null && auth.getCompany( ) != null ) {
+			clients = findByNamedQuery( Client.getAllPerson, auth.getCompany( ) );
+			persons = new ArrayList<Person>( clients.size( ) );
+			for ( Client client : clients ) {
+				persons.add( (Person) client.getClient( ) );
+			}
+		}
+		return persons;
 	}
 }

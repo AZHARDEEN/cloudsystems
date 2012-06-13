@@ -3,6 +3,9 @@ package br.com.mcampos.web.controller.client;
 import java.util.Collections;
 import java.util.List;
 
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.ListModelList;
@@ -15,12 +18,16 @@ import br.com.mcampos.ejb.user.Users;
 import br.com.mcampos.ejb.user.address.Address;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.document.type.DocumentType;
+import br.com.mcampos.web.core.BaseController;
 import br.com.mcampos.web.core.BaseDBLoggedController;
+import br.com.mcampos.web.core.event.IDialogEvent;
+import br.com.mcampos.web.core.report.BaseReportWindow;
+import br.com.mcampos.web.core.report.ReportItem;
 import br.com.mcampos.web.renderer.AddressListRenderer;
 import br.com.mcampos.web.renderer.UserContactListRenderer;
 import br.com.mcampos.web.renderer.UserDocumentListRenderer;
 
-public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN>
+public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> implements IDialogEvent
 {
 	private static final long serialVersionUID = 4025873645295022522L;
 
@@ -171,6 +178,34 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN>
 	protected boolean validate( Users user )
 	{
 		return true;
+	}
+
+	@Listen( "onClick=#cmdReport" )
+	public void onReport( Event evt )
+	{
+		Component c = createComponents( BaseReportWindow.reportTemplateName, getMainWindow( ), null );
+		if ( c != null && c instanceof BaseReportWindow ) {
+			BaseReportWindow w = (BaseReportWindow) c;
+
+			w.setReports( getReports( ) );
+			doModal( w, this );
+		}
+		if ( evt != null ) {
+			evt.stopPropagation( );
+		}
+	}
+
+	protected List<ReportItem> getReports( )
+	{
+		return Collections.emptyList( );
+	}
+
+	@Override
+	public void onOK( BaseController<? extends Component> wndController )
+	{
+		if ( wndController == this ) {
+
+		}
 	}
 
 }
