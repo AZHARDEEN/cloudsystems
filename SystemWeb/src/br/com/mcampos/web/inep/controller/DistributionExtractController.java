@@ -81,7 +81,12 @@ public class DistributionExtractController extends BaseDBLoggedController<TeamSe
 		List<InepAnaliticoCorrecao> list = Collections.emptyList( );
 		Comboitem item = this.comboEvent.getSelectedItem( );
 		if ( item != null ) {
-			list = getSession( ).getAnaliticoCorrecao( (InepPackage) item.getValue( ) );
+			if ( getRevisor( ).isCoordenador( ) ) {
+				list = getSession( ).getAnaliticoCorrecao( (InepPackage) item.getValue( ) );
+			}
+			else {
+				list = getSession( ).getAnaliticoCorrecao( getRevisor( ).getTask( ) );
+			}
 		}
 		this.dataGrid.setModel( new ListModelList<InepAnaliticoCorrecao>( list ) );
 	}
