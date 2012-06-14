@@ -367,14 +367,62 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	@Override
 	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepRevisor revisor )
 	{
+		final long startTime = System.nanoTime( );
 		List<InepAnaliticoCorrecao> list = new ArrayList<InepAnaliticoCorrecao>( );
+		String lastSubscription = "";
+
+		try {
+			InepAnaliticoCorrecao analitico = null;
+			List<InepTest> tests = this.testSession.getTests( revisor );
+			for ( InepTest test : tests )
+			{
+				if ( test.getSubscription( ).getId( ).getId( ).equals( lastSubscription ) == false )
+				{
+					analitico = new InepAnaliticoCorrecao( );
+					lastSubscription = test.getSubscription( ).getId( ).getId( );
+					analitico.setSubscritpion( test.getSubscription( ).getId( ).getId( ) );
+					list.add( analitico );
+				}
+				loadGrades( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
+			}
+		}
+		catch ( Exception e )
+		{
+			e = null;
+		}
+		final long endTime = System.nanoTime( ) - startTime;
+		System.out.println( "Duração: " + endTime / 100.0 );
 		return list;
 	}
 
 	@Override
 	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepTask task )
 	{
+		final long startTime = System.nanoTime( );
 		List<InepAnaliticoCorrecao> list = new ArrayList<InepAnaliticoCorrecao>( );
+		String lastSubscription = "";
+
+		try {
+			InepAnaliticoCorrecao analitico = null;
+			List<InepTest> tests = this.testSession.getTests( task );
+			for ( InepTest test : tests )
+			{
+				if ( test.getSubscription( ).getId( ).getId( ).equals( lastSubscription ) == false )
+				{
+					analitico = new InepAnaliticoCorrecao( );
+					lastSubscription = test.getSubscription( ).getId( ).getId( );
+					analitico.setSubscritpion( test.getSubscription( ).getId( ).getId( ) );
+					list.add( analitico );
+				}
+				loadGrades( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
+			}
+		}
+		catch ( Exception e )
+		{
+			e = null;
+		}
+		final long endTime = System.nanoTime( ) - startTime;
+		System.out.println( "Duração: " + endTime / 100.0 );
 		return list;
 	}
 

@@ -85,38 +85,23 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="754cea71-bfa0-4715-8be3-74e5d6a6fbe5" x="0" y="0" width="240" height="15"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Courier New" size="10" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 	<columnFooter>
 		<band/>
 	</columnFooter>
 	<pageFooter>
-		<band height="17">
-			<textField>
-				<reportElement uuid="1ae9a9ea-90cc-49fa-8ebb-252ebc0ff3c2" mode="Transparent" x="0" y="4" width="515" height="13" backcolor="#E6E6E6"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement uuid="ec697d5c-0a79-4001-a07b-3819d4902055" mode="Transparent" x="515" y="4" width="40" height="13" backcolor="#E6E6E6"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement uuid="156d2b87-854e-40ad-950e-ea6c175961ac" x="0" y="4" width="100" height="13"/>
+		<band height="19">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="156d2b87-854e-40ad-950e-ea6c175961ac" x="0" y="4" width="180" height="13"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement uuid="1ae9a9ea-90cc-49fa-8ebb-252ebc0ff3c2" mode="Transparent" x="289" y="4" width="266" height="13" backcolor="#E6E6E6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band/>
-	</summary>
 </jasperReport>

@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.concurrent.Callable;
 
+import net.sf.jasperreports.engine.JasperPrint;
+
+import org.zkoss.util.media.Media;
+
 import br.com.mcampos.sysutils.SysUtils;
 
 public class ReportItem implements Serializable
@@ -14,6 +18,8 @@ public class ReportItem implements Serializable
 	private Object value;
 	private String reportUrl;
 	private Integer reportFormat;
+	private Media media;
+	private JasperPrint print;
 
 	private transient Callable<? extends Collection<?>> callable;
 
@@ -82,5 +88,25 @@ public class ReportItem implements Serializable
 	public void setReportFormat( Integer reportFormat )
 	{
 		this.reportFormat = reportFormat;
+	}
+
+	public Media getMedia( )
+	{
+		return this.media;
+	}
+
+	public void setMedia( Media media )
+	{
+		this.media = media;
+	}
+
+	public JasperPrint getPrint( )
+	{
+		return this.print;
+	}
+
+	public void setPrint( JasperPrint print )
+	{
+		this.print = print;
 	}
 }

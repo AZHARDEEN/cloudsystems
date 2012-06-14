@@ -6,6 +6,7 @@
 				<combobox id="exportFormat" width="1" readonly="true" >
 					<comboitem label="PDF" value="1" />
 					<comboitem label="Xml" value="2" />
+					<comboitem label="Html" value="3" />
 				</combobox>
 			</hlayout>
 			<listbox vflex="true" id="listReport" rows="5" >

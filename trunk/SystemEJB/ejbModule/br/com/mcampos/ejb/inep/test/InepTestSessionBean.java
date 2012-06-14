@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.entity.InepSubscriptionPK;
 import br.com.mcampos.ejb.inep.entity.InepTask;
@@ -107,6 +108,24 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 			return Collections.emptyList( );
 		}
 		return findByNamedQuery( InepTest.getAllEventTests, event );
+	}
+
+	@Override
+	public List<InepTest> getTests( InepTask task )
+	{
+		if ( task == null ) {
+			return Collections.emptyList( );
+		}
+		return findByNamedQuery( InepTest.getAllEventTasks, task );
+	}
+
+	@Override
+	public List<InepTest> getTests( InepRevisor revisor )
+	{
+		if ( revisor == null ) {
+			return Collections.emptyList( );
+		}
+		return findByNamedQuery( InepTest.getAllEventTests, revisor );
 	}
 
 }

@@ -7,6 +7,7 @@ import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -88,7 +89,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		super.doAfterCompose( comp );
 		getListbox( ).setItemRenderer( new InepDistributionRenderer( ) );
 		loadCombobox( );
-		// this.divGrid.setVisible( false );
 		updateCounters( );
 	}
 
@@ -118,7 +118,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	{
 		List<InepDistribution> list = Collections.emptyList( );
 		Comboitem item = this.comboEvent.getSelectedItem( );
-		if ( item != null ) {
+		if ( item != null && getRevisor( ) != null ) {
 			if ( getRevisor( ).isCoordenador( ) ) {
 				setTestStatus( DistributionStatus.statusVariance );
 			}
@@ -132,15 +132,13 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	{
 		if ( rev != null ) {
 			this.notas.setSelectedItem( null );
-			this.divGrid.setVisible( true );
 			showFrame( );
-			this.divListbox.setVisible( false );
 			if ( rev.getNota( ) != null ) {
 				this.notas.setSelectedIndex( rev.getNota( ) );
 			}
 		}
 		else {
-			this.divFrame.setVisible( true );
+			hideTasks( );
 		}
 		if ( isBlocked( rev ) ) {
 			this.cmdInepSave.setVisible( false );
@@ -172,9 +170,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 			}
 		}
 		else {
-			Messagebox.show( "Antes de editar um comentário sobre a correção, uma tarefa deve ser selecionada primeiro",
-					"Correção",
-					Messagebox.OK, Messagebox.INFORMATION );
+			showMessage( "Antes de editar um comentário sobre a correção, uma tarefa deve ser selecionada primeiro" );
 		}
 	}
 
@@ -184,8 +180,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		int nIndex = this.notas.getSelectedIndex( );
 		if ( nIndex < 0 )
 		{
-			Messagebox.show( "Por favor, atribua uma nota ao teste.", "Correção",
-					Messagebox.OK, Messagebox.INFORMATION );
+			showMessage( "Por favor, atribua uma nota ao teste." );
 			return;
 		}
 		Listitem item = getListbox( ).getSelectedItem( );
@@ -195,15 +190,12 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 			{
 				rev.setNota( this.notas.getSelectedIndex( ) );
 				getSession( ).updateRevision( rev );
-				this.divFrame.setVisible( false );
-				this.divListbox.setVisible( true );
+				showTasks( );
 				this.listbox.removeItemAt( this.listbox.getSelectedIndex( ) );
-				this.divGrid.setVisible( false );
 				getListbox( ).clearSelection( );
 			}
 			else {
-				Messagebox.show( "Esta tarefa não pode mais ser alterada.", "Correção",
-						Messagebox.OK, Messagebox.INFORMATION );
+				showMessage( "Esta tarefa não pode mais ser alterada." );
 			}
 
 		}
@@ -234,10 +226,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	@Listen( "onClick = #cmdCancel" )
 	public void onClickCancel( Event evt )
 	{
-		showFields( null );
-		this.divFrame.setVisible( false );
-		this.divListbox.setVisible( true );
-		// this.divGrid.setVisible( false );
+		showTasks( );
 		getListbox( ).clearSelection( );
 		updateCounters( );
 		if ( evt != null ) {
@@ -245,10 +234,24 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		}
 	}
 
+	private void showTasks( )
+	{
+		showFields( null );
+		this.divFrame.setVisible( false );
+		this.divListbox.setVisible( true );
+		getListbox( ).setVisible( true );
+	}
+
+	private void hideTasks( )
+	{
+		this.divFrame.setVisible( true );
+		this.divListbox.setVisible( false );
+	}
+
 	private void showFrame( )
 	{
 		InepDistribution item = (InepDistribution) this.listbox.getSelectedItem( ).getValue( );
-		this.divFrame.setVisible( true );
+		hideTasks( );
 		// String.format( "/img/pdf/%s-%d-4.pdf", item.getId(
 		// ).getSubscriptionId( ), item.getId( ).getTaskId( ) );
 		AMedia media = new AMedia( null, null, null, getSession( ).getMedia( item.getTest( ) ) );
@@ -350,6 +353,21 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	{
 		// TODO Auto-generated method stub
 		return TeamSession.class;
+	}
+
+	private void showMessage( String msg )
+	{
+		showTasks( );
+		Messagebox.show( msg, "Correção",
+				Messagebox.OK, Messagebox.INFORMATION, new EventListener<Event>( )
+				{
+					@Override
+					public void onEvent( Event evt )
+					{
+						hideTasks( );
+					}
+				} );
+
 	}
 
 }
