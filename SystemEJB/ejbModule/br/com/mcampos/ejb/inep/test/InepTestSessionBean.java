@@ -110,6 +110,14 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 		return findByNamedQuery( InepTest.getAllEventTests, event );
 	}
 
+	public List<InepTest> getTestsWithVariance( InepPackage event )
+	{
+		if ( event == null ) {
+			return Collections.emptyList( );
+		}
+		return findByNamedQuery( InepTest.getAllTestsWithVariance, event );
+	}
+
 	@Override
 	public List<InepTest> getTests( InepTask task )
 	{

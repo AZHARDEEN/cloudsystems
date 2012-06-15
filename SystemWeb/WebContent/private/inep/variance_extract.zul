@@ -1,7 +1,7 @@
 <?page title="Extrato da Situação da Distribuição" contentType="text/html;charset=UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
     <window width="100%" height="100%" closable="true" border="none" title="Extrato da Situação das Tarefas" 
-    	apply = "br.com.mcampos.web.inep.controller.DistributionExtractController" >
+    	apply = "br.com.mcampos.web.inep.controller.VarianceExtratController" >
     	<style>
 			.z-grid-autopaging .z-row-cnt {
 			    height:15px;

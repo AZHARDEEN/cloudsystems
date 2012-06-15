@@ -49,4 +49,10 @@ public class DistributionSessionBean extends SimpleSessionBean<InepDistribution>
 		return findByNamedQuery( InepDistribution.getAllVariance, event );
 	}
 
+	@Override
+	public List<InepDistribution> getVariance( InepTest test )
+	{
+		return findByNamedQuery( InepDistribution.getAllVarianceFromTest, test );
+	}
+
 }

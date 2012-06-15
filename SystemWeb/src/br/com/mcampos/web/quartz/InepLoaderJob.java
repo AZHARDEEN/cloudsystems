@@ -25,7 +25,7 @@ public class InepLoaderJob implements Serializable, Job
 {
 	private static final long serialVersionUID = 4328234055384577345L;
 	private static final Logger logger = LoggerFactory.getLogger( InepLoaderJob.class );
-	private static final String path = "T:/loader/inep/provas/";
+	private static final String path = "D:/loader/inep/provas/";
 
 	private transient InepTestSession session;
 

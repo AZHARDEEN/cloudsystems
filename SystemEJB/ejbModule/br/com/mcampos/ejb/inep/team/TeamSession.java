@@ -49,4 +49,9 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>
 	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepTask task );
 
 	public List<BaseSubscriptionDTO> report( InepPackage event, Integer report );
+
+	public List<InepAnaliticoCorrecao> getAnaliticoDivergencia( InepPackage event );
+
+	public List<InepAnaliticoCorrecao> getAnaliticoDivergencia( InepTask task );
+
 }
