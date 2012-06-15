@@ -19,4 +19,6 @@ public interface InepTestSessionLocal extends BaseSessionInterface<InepTest>
 
 	List<InepTest> getTests( InepRevisor revisor );
 
+	List<InepTest> getTestsWithVariance( InepPackage event );
+
 }

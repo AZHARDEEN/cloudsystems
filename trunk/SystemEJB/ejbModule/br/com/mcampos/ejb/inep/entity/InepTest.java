@@ -26,13 +26,21 @@ import br.com.mcampos.ejb.media.Media;
 				query = "select o from InepTest o where o.subscription.event = ?1 order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
 		@NamedQuery(
 				name = InepTest.getAllEventTasks,
-				query = "select o from InepTest o where o.task = ?1 order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" )
+				query = "select o from InepTest o where o.task = ?1 order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
+		@NamedQuery(
+				name = InepTest.getAllTestsWithVariance,
+				query = "select o from InepTest o where o.subscription.event = ?1 "
+						+
+						"and o.subscription in ( select t.test.subscription from InepDistribution t where t.status.id in ( 3, 4 ) ) "
+						+
+						"order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" )
 } )
 public class InepTest implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	public static final String getAllEventTests = "InepTest.getAllEventTests";
 	public static final String getAllEventTasks = "InepTest.getAllEventTask";
+	public static final String getAllTestsWithVariance = "InepTest.getAllTestsWithVariance";
 
 	@EmbeddedId
 	private InepTestPK id;

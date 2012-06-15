@@ -482,6 +482,31 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		}
 	}
 
+	private void loadGradesWithVariance( InepTest s, TaskGrade grade )
+	{
+		if ( s == null || grade == null ) {
+			return;
+		}
+		List<InepDistribution> distributions = this.distributionSession.getVariance( s );
+		for ( InepDistribution item : distributions )
+		{
+			if ( item.getNota( ) == null ) {
+				continue;
+			}
+			if ( item.getRevisor( ).isCoordenador( ) == false ) {
+				if ( grade.getFirstGrade( ) == null ) {
+					grade.setFirstGrade( item.getNota( ) );
+				}
+				else {
+					grade.setSecondGrade( item.getNota( ) );
+				}
+			}
+			else {
+				grade.setThirdGrade( item.getNota( ) );
+			}
+		}
+	}
+
 	@Override
 	public List<BaseSubscriptionDTO> report( InepPackage event, Integer report )
 	{
@@ -574,5 +599,38 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			}
 		}
 		return cpf;
+	}
+
+	@Override
+	public List<InepAnaliticoCorrecao> getAnaliticoDivergencia( InepPackage event )
+	{
+		final long startTime = System.nanoTime( );
+		List<InepAnaliticoCorrecao> list = new ArrayList<InepAnaliticoCorrecao>( );
+		try {
+			InepAnaliticoCorrecao analitico = null;
+			List<InepTest> tests = this.testSession.getTestsWithVariance( event );
+			for ( InepTest test : tests )
+			{
+				analitico = new InepAnaliticoCorrecao( );
+				test.getSubscription( ).getId( ).getId( );
+				analitico.setSubscritpion( test.getSubscription( ).getId( ).getId( ) );
+				list.add( analitico );
+				loadGradesWithVariance( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
+			}
+		}
+		catch ( Exception e )
+		{
+			e = null;
+		}
+		final long endTime = System.nanoTime( ) - startTime;
+		System.out.println( "Duração: " + endTime / 100.0 );
+		return list;
+	}
+
+	@Override
+	public List<InepAnaliticoCorrecao> getAnaliticoDivergencia( InepTask task )
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

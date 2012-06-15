@@ -13,14 +13,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
-
-import br.com.mcampos.sysutils.SysUtils;
 
 public class TestLoader
 {
 
 	public static final String path = "T:/temp/inep/";
+
 	public static void main( String[ ] args )
 	{
 		Connection connection = null;
@@ -48,21 +48,23 @@ public class TestLoader
 	static public Connection getConnection( ) throws SQLException, ClassNotFoundException
 	{
 		Class.forName( "org.postgresql.Driver" );
-		String url = "jdbc:postgresql://localhost/db_cloud";
+		String url = "jdbc:postgresql://69.59.21.123:5500/inep";
 		Properties props = new Properties( );
 		props.setProperty( "user", "cloud" );
 		props.setProperty( "password", "cloud" );
 		return DriverManager.getConnection( url, props );
 	}
 
-	static public String[] getFilesToInsert ()
+	static public String[ ] getFilesToInsert( )
 	{
 		File dir = new File( path );
-		String[] children = null;
+		String[ ] children = null;
 
-		FilenameFilter filter = new FilenameFilter() {
+		FilenameFilter filter = new FilenameFilter( )
+		{
 			@Override
-			public boolean accept(File dir, String name) {
+			public boolean accept( File dir, String name )
+			{
 				name = name.toLowerCase( );
 				return !name.startsWith( "." ) && name.endsWith( ".pdf" );
 			}
@@ -72,21 +74,63 @@ public class TestLoader
 	}
 
 	static public void insertFiles( String[ ] files, Connection conn ) throws SQLException, NumberFormatException,
-	FileNotFoundException
+			FileNotFoundException
 	{
-		byte[ ] blob;
-		String[ ] fileParts;
+		Statement stmt = conn.createStatement( );
+		PreparedStatement pStmt;
+		ArrayList<Integer> revisorList = new ArrayList<Integer>( );
+		ArrayList<String> testList = new ArrayList<String>( );
 
-		if ( files == null || conn == null || conn.isClosed( ) ) {
-			return;
+		for ( int task = 1; task <= 4; task++ ) {
+			System.out.println( "TASK " + task );
+			ResultSet rset = stmt
+					.executeQuery( "select col_seq_in from inep.inep_revisor where usr_id_In = 13623 and rvs_coordinator_bt = false and tsk_id_in = "
+							+ task );
+			while ( rset.next( ) ) {
+				revisorList.add( rset.getInt( "col_seq_in" ) );
+			}
+			rset.close( );
+			rset = stmt.executeQuery( "select isc_id_ch from inep.inep_test where usr_id_in = 13623 and tsk_id_in = " + task );
+			while ( rset.next( ) ) {
+				testList.add( rset.getString( "isc_id_ch" ) );
+			}
+			rset.close( );
+			int revIndex = 0;
+			System.out.println( "Running " + task );
+			for ( int nIndex = 0; nIndex < testList.size( ); nIndex++ ) {
+				if ( nIndex % 100 == 0 && nIndex > 0 ) {
+					System.out.println( "Partial!!!!! " + task + "- " + nIndex );
+				}
+				pStmt = conn
+						.prepareStatement( "INSERT INTO inep.inep_distribution( usr_id_in, pct_id_in, isc_id_ch, tsk_id_in, col_seq_in, ids_id_in )"
+								+
+								"VALUES (13623,1,?,?,?,1) " );
+				pStmt.setString( 1, testList.get( nIndex ) );
+				pStmt.setInt( 2, task );
+				pStmt.setInt( 3, revisorList.get( revIndex ) );
+				pStmt.execute( );
+				pStmt.close( );
+				revIndex++;
+				if ( revIndex >= revisorList.size( ) ) {
+					revIndex = 0;
+				}
+				pStmt = conn
+						.prepareStatement( "INSERT INTO inep.inep_distribution( usr_id_in, pct_id_in, isc_id_ch, tsk_id_in, col_seq_in, ids_id_in )"
+								+
+								"VALUES (13623,1,?,?,?,1) " );
+				pStmt.setString( 1, testList.get( nIndex ) );
+				pStmt.setInt( 2, task );
+				pStmt.setInt( 3, revisorList.get( revIndex ) );
+				pStmt.execute( );
+				pStmt.close( );
+				revIndex++;
+				if ( revIndex >= revisorList.size( ) ) {
+					revIndex = 0;
+				}
+			}
+			System.out.println( "Donne!!!!! " + task );
 		}
-		for ( String item : files ) {
-			System.out.println( "Inserindo " + item );
-			blob = read( item );
-			fileParts = item.split( "-" );
-			insertIntoDatabase( item, blob, fileParts[ 0 ], Integer.parseInt( fileParts[ 1 ] ), conn );
-			System.out.println( ":) " + item + "Inserido com sucesso" );
-		}
+		return;
 	}
 
 	static public byte[ ] read( String aInputFileName )
@@ -127,7 +171,7 @@ public class TestLoader
 
 	static public void insertIntoDatabase( String filename, byte[ ] blob, String subscription, Integer task, Connection conn )
 			throws SQLException, FileNotFoundException
-			{
+	{
 		subscription = getSubscription( conn, subscription );
 		Long idMedia = insertMedia( conn, blob, filename );
 		PreparedStatement pStmt;
@@ -142,7 +186,7 @@ public class TestLoader
 		if ( pStmt != null ) {
 			pStmt.close( );
 		}
-			}
+	}
 
 	static public String getSubscription( Connection conn, String subscription ) throws SQLException
 	{
@@ -154,10 +198,6 @@ public class TestLoader
 
 		if ( rSet.next( ) ) {
 			s = rSet.getString( "isc_id_ch" );
-		}
-		if ( SysUtils.isEmpty( s ) ) {
-			stmt.execute( "INSERT INTO inep.inep_subscription VALUES ( 13623, 1, '" + subscription + "')" );
-			s = subscription;
 		}
 		rSet.close( );
 		return s;

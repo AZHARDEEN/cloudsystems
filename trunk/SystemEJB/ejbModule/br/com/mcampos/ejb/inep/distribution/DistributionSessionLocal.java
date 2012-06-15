@@ -17,6 +17,8 @@ public interface DistributionSessionLocal extends BaseSessionInterface<InepDistr
 
 	List<InepDistribution> get( InepTest test );
 
+	List<InepDistribution> getVariance( InepTest test );
+
 	List<InepDistribution> getAll( InepPackage event );
 
 	List<InepDistribution> getVariance( InepPackage event );
