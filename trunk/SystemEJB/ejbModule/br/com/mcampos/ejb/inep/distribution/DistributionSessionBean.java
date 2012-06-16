@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
@@ -28,31 +29,31 @@ public class DistributionSessionBean extends SimpleSessionBean<InepDistribution>
 	@Override
 	public List<InepDistribution> get( InepRevisor rev, Integer status )
 	{
-		return findByNamedQuery( InepDistribution.getAllFromRevisor, rev, status );
+		return findByNamedQuery( InepDistribution.getAllFromRevisor, new DBPaging( 0, 45 ), rev, status );
 	}
 
 	@Override
 	public List<InepDistribution> get( InepTest test )
 	{
-		return findByNamedQuery( InepDistribution.getAllFromTest, test );
+		return findByNamedQuery( InepDistribution.getAllFromTest, new DBPaging( 0, 45 ), test );
 	}
 
 	@Override
 	public List<InepDistribution> getAll( InepPackage event )
 	{
-		return findByNamedQuery( InepDistribution.getAll, event );
+		return findByNamedQuery( InepDistribution.getAll, new DBPaging( 0, 45 ), event );
 	}
 
 	@Override
 	public List<InepDistribution> getVariance( InepPackage event )
 	{
-		return findByNamedQuery( InepDistribution.getAllVariance, event );
+		return findByNamedQuery( InepDistribution.getAllVariance, new DBPaging( 0, 45 ), event );
 	}
 
 	@Override
 	public List<InepDistribution> getVariance( InepTest test )
 	{
-		return findByNamedQuery( InepDistribution.getAllVarianceFromTest, test );
+		return findByNamedQuery( InepDistribution.getAllVarianceFromTest, new DBPaging( 0, 45 ), test );
 	}
 
 }
