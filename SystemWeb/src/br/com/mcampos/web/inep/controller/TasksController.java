@@ -7,7 +7,6 @@ import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -19,10 +18,10 @@ import org.zkoss.zul.Iframe;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
@@ -60,8 +59,8 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	@Wire
 	private Combobox comboEvent;
 
-	@Wire( "#divGrid" )
-	private Div divGrid;
+	@Wire
+	private South inepGrade;
 
 	@Wire( "#divListbox" )
 	private Div divListbox;
@@ -169,18 +168,13 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 				dlg.doModal( );
 			}
 		}
-		else {
-			showMessage( "Antes de editar um comentário sobre a correção, uma tarefa deve ser selecionada primeiro" );
-		}
 	}
 
 	@Listen( "onClick = #cmdInepSave" )
 	public void onClickSubmit( Event evt )
 	{
 		int nIndex = this.notas.getSelectedIndex( );
-		if ( nIndex < 0 )
-		{
-			showMessage( "Por favor, atribua uma nota ao teste." );
+		if ( nIndex < 0 ) {
 			return;
 		}
 		Listitem item = getListbox( ).getSelectedItem( );
@@ -194,14 +188,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 				this.listbox.removeItemAt( this.listbox.getSelectedIndex( ) );
 				getListbox( ).clearSelection( );
 			}
-			else {
-				showMessage( "Esta tarefa não pode mais ser alterada." );
-			}
-
-		}
-		else {
-			Messagebox.show( "Antes de finalizar uma correção, uma tarefa deve ser selecionada primeiro", "Correção",
-					Messagebox.OK, Messagebox.INFORMATION );
 		}
 		updateCounters( );
 		if ( evt != null ) {
@@ -239,6 +225,9 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		showFields( null );
 		this.divFrame.setVisible( false );
 		this.divListbox.setVisible( true );
+		if ( this.inepGrade != null ) {
+			this.inepGrade.setVisible( false );
+		}
 		getListbox( ).setVisible( true );
 	}
 
@@ -246,6 +235,9 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	{
 		this.divFrame.setVisible( true );
 		this.divListbox.setVisible( false );
+		if ( this.inepGrade != null ) {
+			this.inepGrade.setVisible( true );
+		}
 	}
 
 	private void showFrame( )
@@ -304,11 +296,11 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 			}
 			else
 			{
-				percent = ( (double) dto.getTasks( ) ) / ( (double) total );
+				percent = ( ( (double) dto.getTasks( ) ) / ( (double) total ) * 100 );
 				this.countAll.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getTasks( ), total, percent ) );
-				percent = ( (double) dto.getRevised( ) ) / ( (double) total );
+				percent = ( ( (double) dto.getRevised( ) ) / ( (double) total ) * 100 );
 				this.countRevised.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getRevised( ), total, percent ) );
-				percent = ( (double) dto.getVariance( ) ) / ( (double) total );
+				percent = ( ( (double) dto.getVariance( ) ) / ( (double) total ) * 100 );
 				this.countVariance.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getVariance( ), total, percent ) );
 			}
 		}
@@ -354,20 +346,4 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		// TODO Auto-generated method stub
 		return TeamSession.class;
 	}
-
-	private void showMessage( String msg )
-	{
-		showTasks( );
-		Messagebox.show( msg, "Correção",
-				Messagebox.OK, Messagebox.INFORMATION, new EventListener<Event>( )
-				{
-					@Override
-					public void onEvent( Event evt )
-					{
-						hideTasks( );
-					}
-				} );
-
-	}
-
 }

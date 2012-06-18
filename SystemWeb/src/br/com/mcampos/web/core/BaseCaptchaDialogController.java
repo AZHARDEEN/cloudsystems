@@ -29,18 +29,6 @@ public abstract class BaseCaptchaDialogController<BEAN> extends BaseDialogContro
 		try {
 			sCaptcha = this.captcha.getValue( );
 			sRecaptcha = this.recapctcha.getValue( );
-		}
-		catch ( Exception e ) {
-			if ( sRecaptcha == null || sRecaptcha.length( ) <= 0 ) {
-				showErrorMessage( "A validação captcha não está preenchida. Por favor tente de novo" );
-				this.recapctcha.focus( );
-				return false;
-			}
-		}
-
-		Boolean verifyCaptcha = false;
-		if ( verifyCaptcha == true )
-		{
 			if ( SysUtils.isEmpty( sRecaptcha ) ) {
 				showErrorMessage( "A validação captcha não está preenchida. Por favor tente de novo" );
 				this.recapctcha.focus( );
@@ -51,8 +39,13 @@ public abstract class BaseCaptchaDialogController<BEAN> extends BaseDialogContro
 				this.recapctcha.focus( );
 				return false;
 			}
+			return true;
 		}
-		return true;
+		catch ( Exception e ) {
+			showErrorMessage( "A validação captcha está inválida. Por favor tente de novo" );
+			this.recapctcha.focus( );
+			return false;
+		}
 	}
 
 	private void showErrorMessage( String msg )

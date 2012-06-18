@@ -1,36 +1,20 @@
 <zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
-	<div id="divGrid" align="center">
+	<div id="divGrid" align="center" height="55px">
 	    <radiogroup id="sv6"/>
-		<style dynamic="true">
-		.strongRadio {
-			color: red;
-			font-weight:bold;
-		}
-		</style>	    
-		<grid height="100%" width="100%">
-		    <columns>
-		        <column width="100px"/>
-		        <column/>
-		    </columns>
-		    <rows>
-				<row>
-					<label value="Nota Final"/>
-					<hlayout sclass="z-valign-middle">
-						<radio label="0" radiogroup="sv6" />
-						<radio label="1" radiogroup="sv6" />
-						<radio label="2" radiogroup="sv6" />
-						<radio label="3" radiogroup="sv6" />
-						<radio label="4" radiogroup="sv6" />
-						<radio label="5" radiogroup="sv6" />
-						<radio label="Anulado" radiogroup="sv6" />
-						<radio label="Branco" radiogroup="sv6" />
-			            <separator spacing="50px" />
-			            <toolbarbutton label="Comentários" id="cmdObs" image="/img/icontexto-webdev-file-032x032.png"/>
-			            <toolbarbutton label="Finalizar Correção" id="cmdInepSave" image="/img/icontexto-webdev-ok-032x032.png"/>
-			            <toolbarbutton label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png"/>
-					</hlayout>
-				</row>
-		    </rows>
-		</grid>
+		<hlayout sclass="z-valign-middle">
+			<label value="Nota Final"/>
+			<radio label="0" radiogroup="sv6" />
+			<radio label="1" radiogroup="sv6" />
+			<radio label="2" radiogroup="sv6" />
+			<radio label="3" radiogroup="sv6" />
+			<radio label="4" radiogroup="sv6" />
+			<radio label="5" radiogroup="sv6" />
+			<radio label="Anulado" radiogroup="sv6" />
+			<radio label="Branco" radiogroup="sv6" />
+            <separator spacing="50px" />
+            <toolbarbutton label="Comentários" id="cmdObs" image="/img/icontexto-webdev-file-032x032.png"/>
+            <toolbarbutton label="Confirmar" id="cmdInepSave" image="/img/icontexto-webdev-ok-032x032.png"/>
+            <toolbarbutton label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png"/>
+		</hlayout>
 	</div>
 </zk>

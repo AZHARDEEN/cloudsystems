@@ -39,7 +39,10 @@ import br.com.mcampos.ejb.core.BasicEntityRenderer;
 				query = "select o.status.id, count(o) from InepDistribution o where o.revisor = ?1 group by o.status.id" ),
 		@NamedQuery(
 				name = InepDistribution.getCoordCounter,
-				query = "select o.status.id, count(o) from InepDistribution o where o.test.task = ?1 group by o.status.id" ),
+				query = "select o.status.id, count( distinct o.id.subscriptionId ) from InepDistribution o where o.test.task = ?1 group by o.status.id" ),
+		@NamedQuery(
+				name = InepDistribution.getWorkStatus,
+				query = "select o.id.taskId,  o.status.id, count(o) from InepDistribution o where o.test.subscription.event = ?1 group by o.id.taskId,  o.status.id" ),
 		@NamedQuery(
 				name = InepDistribution.getAll,
 				query = "select o from InepDistribution o where o.test.subscription.event =?1 and o.nota is not null " +
@@ -67,6 +70,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 	public static final String getAll = "InepDistribution.getAll";
 	public static final String getAllVariance = "InepDistribution.getAllVariance";
 	public static final String getAllVarianceFromTest = "InepDistribution.getAllVarianceFromTest";
+	public static final String getWorkStatus = "InepDistribution.getWorkStatus";
 
 	@EmbeddedId
 	private InepDistributionPK id;

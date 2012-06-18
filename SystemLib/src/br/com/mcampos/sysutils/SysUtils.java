@@ -1,5 +1,6 @@
 package br.com.mcampos.sysutils;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -258,6 +259,22 @@ public final class SysUtils
 		if ( nIndex >= 0 ) {
 			list.remove( nIndex );
 		}
+	}
+
+	public static String getExtension( File f )
+	{
+		String ext = null;
+		String s = f.getName( );
+		int i = s.lastIndexOf( '.' );
+
+		if ( i > 0 && i < s.length( ) - 1 ) {
+			ext = s.substring( i + 1 ).toLowerCase( );
+		}
+
+		if ( ext == null ) {
+			return "";
+		}
+		return ext;
 	}
 
 }

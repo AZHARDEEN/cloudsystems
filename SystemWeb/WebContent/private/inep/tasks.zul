@@ -2,9 +2,9 @@
 <zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
 <window width="100%" height="100%" closable="true" border="none" title="Tarefas" apply="br.com.mcampos.web.inep.controller.TasksController">
     <borderlayout id="mainCpomponent" >
-    	<north flex="true" fulfill="=/private/inep/north_task.zul" />
-        <center flex="true" fulfill="=/private/inep/task_list_template.zul" />
-        <south fulfill="=/private/inep/inep_grade.zul" height="60px" />
+    	<north fulfill="=/private/inep/north_task.zul" flex = "true" />
+        <south fulfill="=/private/inep/inep_grade.zul" id="inepGrade" flex="true" visible="false"/>
+        <center fulfill="=/private/inep/task_list_template.zul" />
     </borderlayout>
 </window>
 </zk>

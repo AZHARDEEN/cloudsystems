@@ -1,5 +1,6 @@
 <zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
 	<div width="100%">
+		<separator bar="true" orient="horizontal" width="100%"/>	    
 		<hlayout sclass="z-valign-middle" >
 			<style dynamic="true">
 				.varianceStyle {
@@ -11,7 +12,7 @@
 				.tasksStyle {
 					background-color:rgba(0,0,255,0.1);
 				}
-			</style>	    
+			</style>
 			<label value="Evento"/>
 			<combobox id="comboEvent" readonly="true" hflex="true"/>
 			<separator  bar="true" orient="vertical"/>

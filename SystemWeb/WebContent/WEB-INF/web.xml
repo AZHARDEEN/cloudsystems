@@ -63,22 +63,17 @@
   <welcome-file-list>
     <welcome-file>index.zul</welcome-file>
   </welcome-file-list>
-  
-  
-  
-	<!-- JASPER REPORTS -->  
-	<servlet>
-		<servlet-name>ImageServlet</servlet-name>
-		<servlet-class>
+  <servlet>
+    <servlet-name>ImageServlet</servlet-name>
+    <servlet-class>
 			net.sf.jasperreports.j2ee.servlets.ImageServlet
 		</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-		<servlet-mapping>
-		<servlet-name>ImageServlet</servlet-name>
-		<url-pattern>/images</url-pattern>
-		<url-pattern>/image</url-pattern>
-		<url-pattern>/servlets/image</url-pattern>
-	</servlet-mapping>
-     
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ImageServlet</servlet-name>
+    <url-pattern>/images</url-pattern>
+    <url-pattern>/image</url-pattern>
+    <url-pattern>/servlets/image</url-pattern>
+  </servlet-mapping>
 </web-app>
