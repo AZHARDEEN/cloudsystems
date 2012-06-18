@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="ejbModule"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="con" path="org.eclipse.datatools.connectivity.jdt.DRIVERLIBRARY/PostgreSQL JDBC Driver"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SystemLib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jasypt">
 		<attributes>
