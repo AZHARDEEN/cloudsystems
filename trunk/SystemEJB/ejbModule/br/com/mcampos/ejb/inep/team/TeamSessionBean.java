@@ -633,4 +633,14 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<Object[ ]> getWorkStatus( InepPackage event )
+	{
+		Query query = getEntityManager( ).createNamedQuery( InepDistribution.getWorkStatus );
+		query.setParameter( 1, event );
+		@SuppressWarnings( "unchecked" )
+		List<Object[ ]> list = query.getResultList( );
+		return list;
+	}
 }

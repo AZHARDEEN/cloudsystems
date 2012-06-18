@@ -54,4 +54,6 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>
 
 	public List<InepAnaliticoCorrecao> getAnaliticoDivergencia( InepTask task );
 
+	public List<Object[ ]> getWorkStatus( InepPackage event );
+
 }

@@ -19,7 +19,7 @@ import net.sf.jasperreports.j2ee.servlets.ImageServlet;
  * Servlet implementation class JasperReportServlet
  */
 @WebServlet( description = "JasperReportServlet handler", urlPatterns = { JasperReportServlet.reportUrl } )
-public class JasperReportServlet extends HttpServlet
+public class JasperReportServlet extends BaseReportServlet
 {
 	private static final long serialVersionUID = 1L;
 
@@ -35,30 +35,13 @@ public class JasperReportServlet extends HttpServlet
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	@Override
-	protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+	protected void doGetPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
 	{
-		doGetPost( request, response );
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	@Override
-	protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
-	{
-		doGetPost( request, response );
-	}
-
-	private void doGetPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
-	{
-		ReportItem item = (ReportItem) request.getSession( ).getAttribute( JasperReportController.paramName );
+		ReportItem item = getReportItem( request );
 		if ( item != null ) {
-			this.getServletConfig( ).getServletContext( );
 			PrintWriter printWriter = response.getWriter( );
 			try {
 				JRHtmlExporter htmlExporter = new JRHtmlExporter( );

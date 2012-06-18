@@ -173,12 +173,16 @@ public class RegisterController extends BaseCaptchaDialogController<RegisterSess
 	{
 		super.doAfterCompose( comp );
 
+		/*
+		
 		this.name.setValue( "Luzia Fonseca Azevedo" );
 		this.cpf.setValue( "61908355115" );
 		this.email.setValue( "tr081225@gmail.com" );
 		this.re_email.setValue( "tr081225@gmail.com" );
 		this.password.setValue( "123456" );
 		this.repassword.setValue( "123456" );
+		
+		*/
 	}
 
 }
