@@ -5,7 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
-		<defaultValueExpression><![CDATA["T:\\Workspaces\\indigo\\cloudsystems\\SystemWeb\\WebContent"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["T:\\Workspaces\\indigo\\cloudsystems\\SystemWeb\\WebContent\\img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
