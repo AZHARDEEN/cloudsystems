@@ -14,11 +14,14 @@ import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.ejb.user.company.collaborator.UserPropertyInterface;
 
 @Remote
-public interface TeamSession extends BaseSessionInterface<InepRevisor>
+public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserPropertyInterface
 {
 	List<InepTask> getTasks( );
+
+	List<InepTask> getTasks( InepPackage evt );
 
 	List<InepRevisor> getTeam( InepTask task );
 

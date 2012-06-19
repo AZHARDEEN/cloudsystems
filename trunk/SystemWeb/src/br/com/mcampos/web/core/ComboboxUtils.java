@@ -60,7 +60,7 @@ public final class ComboboxUtils
 				Comboitem item = c.appendItem( dto.toString( ) );
 				if ( item != null ) {
 					item.setValue( dto );
-					if ( itemToSelect != null && item.equals( itemToSelect ) ) {
+					if ( itemToSelect != null && dto.equals( itemToSelect ) ) {
 						selectedItem = item;
 					}
 				}
@@ -70,7 +70,9 @@ public final class ComboboxUtils
 				select( c, selectedItem );
 			}
 			else {
-				select( c, 0 );
+				if ( bSelectFirst == true ) {
+					select( c, 0 );
+				}
 			}
 		}
 	}

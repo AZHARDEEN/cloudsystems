@@ -16,8 +16,6 @@ public class DlgComment extends Window
 
 	private Button cmdSaveComment;
 
-	private TasksController mainController;
-
 	public InepDistribution getDistribution( )
 	{
 		return this.distribution;
@@ -56,15 +54,4 @@ public class DlgComment extends Window
 		}
 		return this.cmdSaveComment;
 	}
-
-	public TasksController getMainController( )
-	{
-		return this.mainController;
-	}
-
-	public void setMainController( TasksController mainController )
-	{
-		this.mainController = mainController;
-	}
-
 }

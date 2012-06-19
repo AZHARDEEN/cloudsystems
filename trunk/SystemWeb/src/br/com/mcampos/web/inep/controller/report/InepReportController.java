@@ -7,6 +7,7 @@ import java.util.Map;
 
 import net.sf.jasperreports.engine.JRException;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -20,9 +21,12 @@ import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.team.TeamSession;
+import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
+import br.com.mcampos.web.core.ComboboxUtils;
 import br.com.mcampos.web.core.report.JDBCReportServlet;
 import br.com.mcampos.web.core.report.JasperReportController;
 import br.com.mcampos.web.core.report.ReportItem;
@@ -32,11 +36,25 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 {
 	private static final long serialVersionUID = -8511479189709820364L;
 
+	private static final String defaultReportFormat = "defaultReportFormat";
+
 	@Wire( "#exportFormat" )
 	private Combobox cmbFormat;
 
+	@Wire
+	private Combobox cmbTask;
+
+	@Wire
+	private Combobox cmbRevisor;
+
 	@Wire( "#listReport" )
 	private Listbox listbox;
+
+	@Wire( "#generalView" )
+	Component generalView;
+
+	@Wire( "#divTarefa" )
+	Component generalDiv;
 
 	@Wire
 	private Combobox comboEvent;
@@ -52,6 +70,7 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 			if ( getCmbFormat( ) != null && getCmbFormat( ).getSelectedItem( ) != null ) {
 				String value = (String) getCmbFormat( ).getSelectedItem( ).getValue( );
 				r.setReportFormat( Integer.parseInt( value ) );
+				getSession( ).setProperty( getCurrentCollaborator( ), defaultReportFormat, value );
 				try {
 					doReport( r );
 				}
@@ -105,12 +124,23 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		if ( getListbox( ) != null ) {
 			this.listbox.setItemRenderer( new ReportListRenderer( ) );
 		}
-		if ( getCmbFormat( ) != null ) {
-			if ( getCmbFormat( ).getItemCount( ) > 0 ) {
+		if ( getCmbFormat( ) != null && getCmbFormat( ).getItemCount( ) > 0 ) {
+			LoginProperty p = getSession( ).getProperty( getCurrentCollaborator( ), defaultReportFormat );
+			if ( p != null && SysUtils.isEmpty( p.getValue( ) ) == false ) {
+				ComboboxUtils.find( getCmbFormat( ), p.getValue( ) );
+			}
+			else {
 				getCmbFormat( ).setSelectedIndex( 0 );
 			}
 		}
 		loadCombobox( );
+		if ( getRevisor( ) == null ) {
+			this.generalView.setVisible( true );
+		}
+		else if ( getRevisor( ).isCoordenador( ) ) {
+			this.generalView.setVisible( true );
+			this.generalDiv.setVisible( false );
+		}
 	}
 
 	public void setReports( )
@@ -135,6 +165,74 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		item.setParams( configReportParams( ) );
 		list.add( item );
 
+		if ( getRevisor( ) == null ) {
+			/*Relatorio 4*/
+			item = new ReportItem( "Situação da Correção - Corretores" );
+			item.setReportUrl( "/reports/inep/inep_1" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 5*/
+			item = new ReportItem( "Situação da Correção - Coordenadores" );
+			item.setReportUrl( "/reports/inep/inep_1_2" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			item = new ReportItem( "Tarefas Não Corrigidas" );
+			item.setReportUrl( "/reports/inep/inep_4_1" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			item = new ReportItem( "Tarefas Corrigidas" );
+			item.setReportUrl( "/reports/inep/inep_4" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+		}
+		else {
+
+			if ( getRevisor( ).isCoordenador( ) ) {
+				/*Relatorio 4*/
+				item = new ReportItem( "Situação da Correção - Corretores" );
+				item.setReportUrl( "/reports/inep/inep_2" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
+				/*Relatorio 5*/
+				item = new ReportItem( "Extrato de Correção" );
+				item.setReportUrl( "/reports/inep/inep_1_1" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
+				item = new ReportItem( "Tarefas Não Corrigidas" );
+				item.setReportUrl( "/reports/inep/inep_4_1" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
+				item = new ReportItem( "Tarefas Corrigidas" );
+				item.setReportUrl( "/reports/inep/inep_4" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+			}
+			else {
+				/*Relatorio 4*/
+				item = new ReportItem( "Meu Extrato de Correção" );
+				item.setReportUrl( "/reports/inep/inep_3" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
+				item = new ReportItem( "Minhas Tarefas Não Corrigidas" );
+				item.setReportUrl( "/reports/inep/inep_4_1" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
+				item = new ReportItem( "Minhas Tarefas Corrigidas" );
+				item.setReportUrl( "/reports/inep/inep_4" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+			}
+		}
+
 		if ( getListbox( ) != null ) {
 			getListbox( ).setModel( new ListModelList<ReportItem>( list ) );
 		}
@@ -145,7 +243,6 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		Map<String, Object> params = new HashMap<String, Object>( );
 
 		InepPackage event = (InepPackage) ( getComboEvent( ).getSelectedItem( ).getValue( ) );
-		params.put( "COLLABORATOR_ID", getCurrentCollaborator( ).getId( ).getSequence( ) );
 		params.put( "COMPANY_ID", getCurrentCollaborator( ).getId( ).getCompanyId( ) );
 		if ( event != null ) {
 			params.put( "EVENT_ID", event.getId( ).getId( ) );
@@ -153,6 +250,23 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		if ( getRevisor( ) != null ) {
 			params.put( "EVENT_ID", getRevisor( ).getId( ).getEventId( ) );
 			params.put( "TASK_ID", getRevisor( ).getTask( ).getId( ).getId( ) );
+			params.put( "COLLABORATOR_ID", getRevisor( ).getId( ).getSequence( ) );
+			if ( getRevisor( ).isCoordenador( ) ) {
+				if ( getCmbRevisor( ).getSelectedItem( ) != null ) {
+					InepRevisor rev = getCmbRevisor( ).getSelectedItem( ).getValue( );
+					params.put( "COLLABORATOR_ID", rev.getId( ).getSequence( ) );
+				}
+			}
+		}
+		else {
+			if ( getCmbRevisor( ).getSelectedItem( ) != null ) {
+				InepRevisor rev = getCmbRevisor( ).getSelectedItem( ).getValue( );
+				params.put( "COLLABORATOR_ID", rev.getId( ).getSequence( ) );
+			}
+			if ( getCmbTask( ).getSelectedItem( ) != null ) {
+				InepTask task = getCmbTask( ).getSelectedItem( ).getValue( );
+				params.put( "TASK_ID", task.getId( ).getId( ) );
+			}
 		}
 		return params;
 	}
@@ -194,15 +308,55 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		}
 	}
 
+	private void loadTasks( InepPackage event )
+	{
+
+		ComboboxUtils.load( getCmbTask( ), getSession( ).getTasks( event ),
+				getRevisor( ) == null ? null : getRevisor( ).getTask( ), true );
+	}
+
+	private void loadRevisor( InepTask task )
+	{
+		ComboboxUtils.load( getCmbRevisor( ), getSession( ).getTeam( task ), getRevisor( ) == null ? null : getRevisor( ), true );
+	}
+
+	@Listen( "onSelect = #cmbTask" )
+	public void onSelectTask( Event evt )
+	{
+		loadRevisor( (InepTask) getCmbTask( ).getSelectedItem( ).getValue( ) );
+		if ( evt != null ) {
+			evt.stopPropagation( );
+		}
+	}
+
+	@Listen( "onSelect = #cmbRevisor" )
+	public void onSelectRevisor( Event evt )
+	{
+		setReports( );
+		if ( evt != null ) {
+			evt.stopPropagation( );
+		}
+	}
+
 	@Listen( "onSelect = #comboEvent" )
 	public void onSelectPackage( Event evt )
 	{
 		Comboitem item = this.comboEvent.getSelectedItem( );
 		if ( item != null ) {
-			setReports( );
+			loadTasks( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ) );
 		}
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
+	}
+
+	private Combobox getCmbTask( )
+	{
+		return this.cmbTask;
+	}
+
+	private Combobox getCmbRevisor( )
+	{
+		return this.cmbRevisor;
 	}
 }

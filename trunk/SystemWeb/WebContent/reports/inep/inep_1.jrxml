@@ -16,7 +16,7 @@
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[33]]></defaultValueExpression>
 	</parameter>
-	<parameter name="TASK_ID" class="java.lang.Integer">
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -46,8 +46,6 @@ where
 	inep_revisor.rvs_coordinator_bt = false
 and inep_revisor."usr_id_in" = $P{COMPANY_ID}
 and inep_revisor."pct_id_in" = $P{EVENT_ID}
-and inep_revisor."tsk_id_in" = $P{TASK_ID}
-and inep_revisor.col_seq_in = $P{COLLABORATOR_ID}
 order by
      inep_revisor."usr_id_in",
      inep_revisor."tsk_id_in",
@@ -151,7 +149,6 @@ order by
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
-			<elementGroup/>
 			<textField>
 				<reportElement uuid="0af04a80-25d8-4fa2-82ea-bc62ca5891e1" x="0" y="1" width="295" height="17"/>
 				<textElement/>

@@ -1,16 +1,16 @@
 <zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
 	<div align="Center" >
-	<window title="Relatórios" border="normal" closable="true" width="480px" apply="br.com.mcampos.web.inep.controller.report.InepReportController" >
+	<window title="Relatórios" border="normal" closable="true" width="680px" apply="br.com.mcampos.web.inep.controller.report.InepReportController" >
 		<vlayout>
 			<hlayout sclass="z-valign-middle">
 				<label value="Evento"/>
 				<combobox id="comboEvent" readonly="true" hflex="true"/>
 				<label  value="Formato: "/>
-				<combobox id="exportFormat" width="1" readonly="true" >
+				<combobox id="exportFormat" width="50px" readonly="true" >
 					<comboitem label="PDF" value="1" />
 					<comboitem label="Xml" value="2" />
 					<comboitem label="Html" value="3" />
-					<comboitem label="Excell" value="4" />
+					<comboitem label="Excel" value="4" />
 					<comboitem label="rtf" value="5" />
 					<comboitem label="csv" value="6" />
 					<comboitem label="txt" value="7" />
@@ -18,18 +18,23 @@
 					<comboitem label="ods" value="9" />
 				</combobox>
 			</hlayout>
-			<listbox vflex="true" id="listReport" rows="5" >
+			<hlayout sclass="z-valign-middle" visible="false" id="generalView">
+				<div id = "divTarefa" >
+					<label value="Tarefa"/>
+					<combobox id="cmbTask" readonly="true" width="100px"/>
+				</div>
+				<label  value="Corretor"/>
+				<combobox id="cmbRevisor" readonly="true" hflex="true">
+				</combobox>
+			</hlayout>
+			<listbox vflex="true" id="listReport" rows="15" >
 		        <listhead>
-					<listheader align="center" label="Nome do Relatório" id="headerReportName" hflex="1"/>
+					<listheader align="Left" label="Nome do Relatório" id="headerReportName" hflex="1"/>
 		        </listhead>
 			</listbox>
 		</vlayout>
 	    <div align="center" xmlns="http://www.zkoss.org/2005/zul">
-	        <hbox>
-	            <button label="Ok" id="cmdSubmit" image="/img/icontexto-webdev-ok-032x032.png" width="150px" forward="reportDlg.onOK" disabled="true"/>
-	            <separator width="50px"/>
-	            <button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png" dir="reverse" width="150px" forward="reportDlg.onCancel"/>
-	        </hbox>
+            <button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png" dir="reverse" width="150px" forward="reportDlg.onCancel"/>
 	    </div>	
     </window>
     </div>
