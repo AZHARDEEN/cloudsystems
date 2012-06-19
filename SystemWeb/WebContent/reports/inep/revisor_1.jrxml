@@ -43,6 +43,13 @@ AND tsk_id_in = $P{TASK_ID}]]>
 	<variable name="isc_id_ch_1" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{isc_id_ch}]]></variableExpression>
 	</variable>
+	<variable name="notaFinal" class="java.lang.Float">
+		<variableExpression><![CDATA[($F{dis_grade_in} + $F{grade2}) / 2
+ ]]></variableExpression>
+	</variable>
+	<variable name="notaFinal2" class="java.lang.Float">
+		<variableExpression><![CDATA[$F{grade3}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -74,45 +81,45 @@ AND tsk_id_in = $P{TASK_ID}]]>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="19" splitType="Stretch">
+		<band height="43" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="d7bffd8f-4187-46b5-8fe9-fb6992e3b0f1" x="3" y="0" width="100" height="15"/>
+				<reportElement uuid="d7bffd8f-4187-46b5-8fe9-fb6992e3b0f1" x="3" y="26" width="100" height="15"/>
 				<textElement/>
 				<text><![CDATA[Inscrição]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="962d7c54-637f-45f7-bf4d-a6c1c12ac849" x="104" y="0" width="30" height="15"/>
+				<reportElement uuid="962d7c54-637f-45f7-bf4d-a6c1c12ac849" x="3" y="0" width="30" height="15"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Tarefa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="549fa061-83b9-4542-8b5a-2d91084b0c47" x="135" y="0" width="30" height="15"/>
+				<reportElement uuid="549fa061-83b9-4542-8b5a-2d91084b0c47" x="135" y="26" width="30" height="15"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Nota]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e642ea4b-a676-451b-ba65-37a7756caf21" x="167" y="0" width="30" height="15"/>
+				<reportElement uuid="e642ea4b-a676-451b-ba65-37a7756caf21" x="167" y="26" width="30" height="15"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Nota2]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ec83021d-35a9-41b1-a3cf-c2c9ae947c10" x="199" y="0" width="30" height="15"/>
+				<reportElement uuid="ec83021d-35a9-41b1-a3cf-c2c9ae947c10" x="248" y="26" width="30" height="15"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Rev]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2ff32063-eb28-4f00-8a10-80f83cd85175" x="229" y="0" width="30" height="15"/>
+				<reportElement uuid="2ff32063-eb28-4f00-8a10-80f83cd85175" x="309" y="25" width="30" height="15"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Final]]></text>
 			</staticText>
-			<staticText>
-				<reportElement uuid="5956dc4c-cd44-45ff-9b09-1cd4d8c19115" x="263" y="0" width="100" height="15"/>
-				<textElement/>
-				<text><![CDATA[Observação]]></text>
-			</staticText>
 			<line>
-				<reportElement uuid="2592040c-b3ea-44cc-a251-3b335a410f23" x="0" y="15" width="553" height="1"/>
+				<reportElement uuid="2592040c-b3ea-44cc-a251-3b335a410f23" x="0" y="42" width="553" height="1"/>
 			</line>
+			<textField>
+				<reportElement uuid="7977588c-cb5d-4f3d-a6aa-9b1e9afd699a" x="33" y="0" width="30" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{tsk_id_in}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
@@ -121,11 +128,6 @@ AND tsk_id_in = $P{TASK_ID}]]>
 				<reportElement uuid="279e30a6-60d4-4060-baac-d8e862faa734" x="1" y="0" width="100" height="15"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="7977588c-cb5d-4f3d-a6aa-9b1e9afd699a" x="102" y="0" width="30" height="15"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{tsk_id_in}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="3fb4b4e6-6ab5-45f2-a9d2-3fefd58cd77c" x="165" y="0" width="30" height="15"/>
@@ -138,21 +140,25 @@ AND tsk_id_in = $P{TASK_ID}]]>
 				<textFieldExpression><![CDATA[$F{dis_grade_in}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="e814d3b5-36e8-489f-97fb-2c55c214ec8f" x="197" y="0" width="30" height="15"/>
+				<reportElement uuid="e814d3b5-36e8-489f-97fb-2c55c214ec8f" x="248" y="2" width="30" height="15"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{grade3}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="bee95387-bf24-4534-8baa-c8f8a5a818ea" x="229" y="0" width="30" height="15"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{final_grade}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="2aa9d7b2-5890-4279-a8ff-ac90698edac4" x="263" y="0" width="290" height="15"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{dis_obs_tx}]]></textFieldExpression>
-			</textField>
 			<elementGroup/>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+				<reportElement uuid="1205188d-faaa-4b36-9491-ff8bc61ae930" x="309" y="0" width="30" height="15">
+					<printWhenExpression><![CDATA[$F{ids_id_in}.equals( 2 )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{notaFinal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+				<reportElement uuid="f04a1df6-f28f-4685-b7a5-e3ec94e01d5c" x="309" y="0" width="30" height="15">
+					<printWhenExpression><![CDATA[$F{ids_id_in}.equals( 4 )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{notaFinal2}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>

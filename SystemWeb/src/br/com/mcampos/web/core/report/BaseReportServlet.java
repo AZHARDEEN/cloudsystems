@@ -265,7 +265,7 @@ public abstract class BaseReportServlet extends HttpServlet
 	protected Connection getConnection( ) throws SQLException, ClassNotFoundException
 	{
 		Class.forName( "org.postgresql.Driver" );
-		String url = "jdbc:postgresql://localhost:5500/inep";
+		String url = "jdbc:postgresql://69.59.21.123:5500/inep";
 		Properties props = new Properties( );
 		props.setProperty( "user", "jreport" );
 		props.setProperty( "password", "jreport" );

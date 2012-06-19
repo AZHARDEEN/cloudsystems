@@ -167,4 +167,10 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 		this.task = task;
 	}
 
+	@Override
+	public String toString( )
+	{
+		return getCollaborator( ).getPerson( ).getName( );
+	}
+
 }

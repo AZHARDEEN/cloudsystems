@@ -124,4 +124,10 @@ public class InepTask implements Serializable, Comparable<InepTask>, BasicEntity
 		}
 	}
 
+	@Override
+	public String toString( )
+	{
+		return getDescription( );
+	}
+
 }

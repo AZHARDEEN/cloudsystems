@@ -35,6 +35,8 @@ import br.com.mcampos.ejb.inep.test.InepTestSessionLocal;
 import br.com.mcampos.ejb.media.Media;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
+import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
+import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.person.Person;
 
@@ -49,22 +51,25 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	private InepTaskSessionLocal taskSession;
 
 	@EJB
-	DistributionSessionLocal distributionSession;
+	private DistributionSessionLocal distributionSession;
 
 	@EJB
-	DistributionStatusSessionLocal distributionStatusSession;
+	private DistributionStatusSessionLocal distributionStatusSession;
 
 	@EJB
-	InepPackageSessionLocal packageSession;
+	private InepPackageSessionLocal packageSession;
 
 	@EJB
-	CollaboratorSessionLocal collaboratorSession;
+	private CollaboratorSessionLocal collaboratorSession;
 
 	@EJB
-	InepRevisorSessionLocal revisorSession;
+	private InepRevisorSessionLocal revisorSession;
 
 	@EJB
-	InepTestSessionLocal testSession;
+	private InepTestSessionLocal testSession;
+
+	@EJB
+	private LoginPropertySessionLocal propertySession;
 
 	public TeamSessionBean( )
 	{
@@ -83,13 +88,20 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
+	public List<InepTask> getTasks( InepPackage evt )
+	{
+		List<InepTask> list = this.taskSession.getAll( evt );
+		return list;
+	}
+
+	@Override
 	public List<InepRevisor> getTeam( InepTask task )
 	{
 		InepTask entityTask = this.taskSession.get( task.getId( ) );
 		if ( entityTask == null ) {
 			return Collections.emptyList( );
 		}
-		List<InepRevisor> team = findByNamedQuery( InepRevisor.getTeamByTask, entityTask );
+		List<InepRevisor> team = findByNamedQuery( InepRevisor.getAllTeamByEventAndTask, entityTask );
 		return team;
 	}
 
@@ -243,7 +255,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			if ( variance < 0 ) {
 				variance *= -1;
 			}
-			if ( variance > threshold || ( other.getNota( ) > 5 && entity.getNota( ).equals( other.getNota( ) ) == false ) ) {
+			if ( variance >= threshold || ( other.getNota( ) > 5 && entity.getNota( ).equals( other.getNota( ) ) == false ) ) {
 				bRet = true;
 				other.setStatus( getStatus( DistributionStatus.statusVariance ) );
 			}
@@ -643,4 +655,23 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		List<Object[ ]> list = query.getResultList( );
 		return list;
 	}
+
+	@Override
+	public LoginProperty getProperty( Collaborator collaborator, String propertyName )
+	{
+		return this.propertySession.getProperty( collaborator, propertyName );
+	}
+
+	@Override
+	public void setProperty( Collaborator collaborator, String propertyName, String Value )
+	{
+		this.propertySession.setProperty( collaborator, propertyName, Value );
+	}
+
+	@Override
+	public LoginProperty remove( Collaborator collaborator, String propertyName )
+	{
+		return this.propertySession.remove( collaborator, propertyName );
+	}
+
 }
