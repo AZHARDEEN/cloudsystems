@@ -255,7 +255,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			if ( variance < 0 ) {
 				variance *= -1;
 			}
-			if ( variance >= threshold || ( other.getNota( ) > 5 && entity.getNota( ).equals( other.getNota( ) ) == false ) ) {
+			if ( variance > threshold || ( other.getNota( ) > 5 && entity.getNota( ).equals( other.getNota( ) ) == false ) ) {
 				bRet = true;
 				other.setStatus( getStatus( DistributionStatus.statusVariance ) );
 			}
@@ -283,7 +283,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		Integer threshold = getProperty( ).getInt( "inep.threshold" );
 		if ( threshold == null ) {
-			threshold = 2;
+			threshold = 1;
 			getProperty( ).setInt( "inep.threshold", "Valor máximo admitido de discrepância", threshold );
 		}
 		return threshold;
@@ -362,7 +362,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 							break;
 						case 4:
 						case 3:
-							dto.setVariance( count.intValue( ) );
+							dto.setVariance( dto.getVariance( ) + count.intValue( ) );
 							break;
 						}
 					}
@@ -543,7 +543,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	private List<BaseSubscriptionDTO> notasIndividuais( InepPackage event )
 	{
 		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
-		List<InepDistribution> dists = this.distributionSession.getAll( event );
+		List<InepDistribution> dists = this.distributionSession.getAllforReport( event );
 		for ( InepDistribution item : dists )
 		{
 			NotasIndividuaisCorretorDTO dto = new NotasIndividuaisCorretorDTO( );
@@ -587,7 +587,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	private List<BaseSubscriptionDTO> notaConsenso( InepPackage event )
 	{
 		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
-		List<InepDistribution> dists = this.distributionSession.getVariance( event );
+		List<InepDistribution> dists = this.distributionSession.getVarianceForReport( event );
 		for ( InepDistribution item : dists )
 		{
 			NotasConsenso dto = new NotasConsenso( );

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="400"/>
-	<property name="ireport.y" value="132"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="124"/>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
 		<defaultValueExpression><![CDATA["T:\\Workspaces\\indigo\\cloudsystems\\SystemWeb\\WebContent\\img"]]></defaultValueExpression>
@@ -89,21 +89,21 @@ order by
 					<text><![CDATA[Tarefa]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="c46be5aa-bee9-4969-bb47-f3e81f9c4645" x="310" y="19" width="70" height="20"/>
+					<reportElement uuid="c46be5aa-bee9-4969-bb47-f3e81f9c4645" x="287" y="19" width="53" height="19"/>
 					<textElement textAlignment="Center">
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[Distribuídas]]></text>
+					<text><![CDATA[A Corrigir]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="819ad66c-87a5-4543-8c47-578f433f176c" x="400" y="18" width="70" height="20"/>
+					<reportElement uuid="819ad66c-87a5-4543-8c47-578f433f176c" x="352" y="19" width="55" height="20"/>
 					<textElement textAlignment="Center">
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[Corrigidas]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="5a5efa7a-78d5-49f8-819c-23cfad31e399" x="483" y="18" width="70" height="20"/>
+					<reportElement uuid="5a5efa7a-78d5-49f8-819c-23cfad31e399" x="419" y="18" width="70" height="20"/>
 					<textElement textAlignment="Center">
 						<font isBold="true"/>
 					</textElement>
@@ -161,17 +161,17 @@ order by
 				<textFieldExpression><![CDATA[$F{users_usr_name_ch}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="b2969af5-f89a-46ae-b9ad-4734e4d23396" x="310" y="1" width="71" height="17"/>
+				<reportElement uuid="b2969af5-f89a-46ae-b9ad-4734e4d23396" x="287" y="1" width="53" height="17"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{distribuido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="246d5573-891e-4276-9d90-c5492143bbfc" x="400" y="1" width="70" height="17"/>
+				<reportElement uuid="246d5573-891e-4276-9d90-c5492143bbfc" x="352" y="0" width="55" height="17"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{corrigido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="f24f054c-7ae5-46f4-8110-7446ab9a4da6" x="483" y="1" width="70" height="17"/>
+				<reportElement uuid="f24f054c-7ae5-46f4-8110-7446ab9a4da6" x="419" y="1" width="70" height="17"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{variance}]]></textFieldExpression>
 			</textField>

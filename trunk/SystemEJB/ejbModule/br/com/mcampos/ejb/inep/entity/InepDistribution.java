@@ -36,10 +36,13 @@ import br.com.mcampos.ejb.core.BasicEntityRenderer;
 				query = "select o from InepDistribution o where o.test = ?1" ),
 		@NamedQuery(
 				name = InepDistribution.getRevisorCounter,
-				query = "select o.status.id, count(o) from InepDistribution o where o.revisor = ?1 group by o.status.id" ),
+				query = "select o.status.id, count(o) from InepDistribution o where o.revisor = ?1 " +
+						"and ( ( o.status.id in ( 1, 2 ) ) or ( o.status.id in ( 3, 4 ) and o.nota is not null ) )" +
+						"group by o.status.id" ),
 		@NamedQuery(
 				name = InepDistribution.getCoordCounter,
-				query = "select o.status.id, count( distinct o.id.subscriptionId ) from InepDistribution o where o.test.task = ?1 group by o.status.id" ),
+				query = "select o.status.id, count( distinct o.id.subscriptionId ) from InepDistribution o where " +
+						"o.test.task = ?1 group by o.status.id" ),
 		@NamedQuery(
 				name = InepDistribution.getWorkStatus,
 				query = "select o.id.taskId,  o.status.id, count(o) from InepDistribution o where o.test.subscription.event = ?1 group by o.id.taskId,  o.status.id" ),

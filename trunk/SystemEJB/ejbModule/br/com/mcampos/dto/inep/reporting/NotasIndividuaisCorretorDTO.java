@@ -54,6 +54,6 @@ public class NotasIndividuaisCorretorDTO extends BaseSubscriptionDTO
 	@Override
 	public String getHeader( )
 	{
-		return "Inscrição;CPF;Tarefa;Nota";
+		return "Inscrição;Tarefa;CPF;Nota";
 	}
 }
