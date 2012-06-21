@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="194"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
@@ -20,12 +20,30 @@
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select * from inep.revisorextractview
-where
-    usr_id_in = $P{COMPANY_ID}
-and pct_id_in = $P{EVENT_ID}
-and col_seq_in = $P{COLLABORATOR_ID}
-AND tsk_id_in = $P{TASK_ID}]]>
+		<![CDATA[SELECT
+     revisorextractview."usr_id_in" AS usr_id_in,
+     revisorextractview."pct_id_in" AS pct_id_in,
+     revisorextractview."isc_id_ch" AS isc_id_ch,
+     revisorextractview."tsk_id_in" AS tsk_id_in,
+     revisorextractview."col_seq_in" AS col_seq_in,
+     revisorextractview."ids_id_in" AS ids_id_in,
+     revisorextractview."dis_grade_in" AS dis_grade_in,
+     revisorextractview."dis_obs_tx" AS dis_obs_tx,
+     revisorextractview."dis_insert_dt" AS dis_insert_dt,
+     revisorextractview."dis_update_dt" AS dis_update_dt,
+     revisorextractview."grade2" AS grade2,
+     revisorextractview."grade3" AS grade3,
+     revisorextractview."final_grade" AS final_grade,
+     users."usr_name_ch" AS users_usr_name_ch
+FROM
+     "public"."collaborator" collaborator INNER JOIN "inep"."revisorextractview" revisorextractview ON collaborator."usr_id_in" = revisorextractview."usr_id_in"
+     AND collaborator."col_seq_in" = revisorextractview."col_seq_in"
+     INNER JOIN "public"."users" users ON collaborator."col_id_in" = users."usr_id_in"
+WHERE
+     revisorextractview.usr_id_in = $P{COMPANY_ID}
+     and pct_id_in = $P{EVENT_ID}
+     and revisorextractview.col_seq_in = $P{COLLABORATOR_ID}
+ AND tsk_id_in = $P{TASK_ID}]]>
 	</queryString>
 	<field name="usr_id_in" class="java.lang.Integer"/>
 	<field name="pct_id_in" class="java.lang.Integer"/>
@@ -40,12 +58,12 @@ AND tsk_id_in = $P{TASK_ID}]]>
 	<field name="grade2" class="java.lang.Integer"/>
 	<field name="grade3" class="java.lang.Integer"/>
 	<field name="final_grade" class="java.lang.Integer"/>
+	<field name="users_usr_name_ch" class="java.lang.String"/>
 	<variable name="isc_id_ch_1" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{isc_id_ch}]]></variableExpression>
 	</variable>
 	<variable name="notaFinal" class="java.lang.Float">
-		<variableExpression><![CDATA[($F{dis_grade_in} + $F{grade2}) / 2
- ]]></variableExpression>
+		<variableExpression><![CDATA[($F{dis_grade_in} + $F{grade2}) / 2]]></variableExpression>
 	</variable>
 	<variable name="notaFinal2" class="java.lang.Float">
 		<variableExpression><![CDATA[$F{grade3}]]></variableExpression>
@@ -60,7 +78,7 @@ AND tsk_id_in = $P{TASK_ID}]]>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[Extrato de Correção]]></text>
+				<text><![CDATA[Extrato de Correção - Corretor]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -83,7 +101,7 @@ AND tsk_id_in = $P{TASK_ID}]]>
 	<columnHeader>
 		<band height="43" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="d7bffd8f-4187-46b5-8fe9-fb6992e3b0f1" x="3" y="26" width="100" height="15"/>
+				<reportElement uuid="d7bffd8f-4187-46b5-8fe9-fb6992e3b0f1" x="2" y="26" width="100" height="15"/>
 				<textElement/>
 				<text><![CDATA[Inscrição]]></text>
 			</staticText>
@@ -93,24 +111,24 @@ AND tsk_id_in = $P{TASK_ID}]]>
 				<text><![CDATA[Tarefa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="549fa061-83b9-4542-8b5a-2d91084b0c47" x="135" y="26" width="30" height="15"/>
+				<reportElement uuid="549fa061-83b9-4542-8b5a-2d91084b0c47" x="166" y="26" width="87" height="15"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Nota]]></text>
+				<text><![CDATA[Nota do Corretor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e642ea4b-a676-451b-ba65-37a7756caf21" x="167" y="26" width="30" height="15"/>
+				<reportElement uuid="e642ea4b-a676-451b-ba65-37a7756caf21" x="277" y="26" width="98" height="15"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Nota2]]></text>
+				<text><![CDATA[Outra Nota]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ec83021d-35a9-41b1-a3cf-c2c9ae947c10" x="248" y="26" width="30" height="15"/>
+				<reportElement uuid="ec83021d-35a9-41b1-a3cf-c2c9ae947c10" x="379" y="26" width="100" height="15"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Rev]]></text>
+				<text><![CDATA[Nota Coordenador]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2ff32063-eb28-4f00-8a10-80f83cd85175" x="309" y="25" width="30" height="15"/>
+				<reportElement uuid="2ff32063-eb28-4f00-8a10-80f83cd85175" x="497" y="26" width="52" height="15"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Final]]></text>
+				<text><![CDATA[Nota Final]]></text>
 			</staticText>
 			<line>
 				<reportElement uuid="2592040c-b3ea-44cc-a251-3b335a410f23" x="0" y="42" width="553" height="1"/>
@@ -120,41 +138,62 @@ AND tsk_id_in = $P{TASK_ID}]]>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{tsk_id_in}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement uuid="c3b5b96b-a5c1-46d0-9f46-f44d6659066a" x="132" y="0" width="321" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{users_usr_name_ch}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3cbf6012-18d0-457a-85d2-e0a65e3303d8" x="453" y="0" width="100" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{col_seq_in}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1b644af0-f006-4f81-a2d9-50d55b60a73b" x="78" y="0" width="54" height="16"/>
+				<textElement/>
+				<text><![CDATA[Corretor(a)]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<textField>
-				<reportElement uuid="279e30a6-60d4-4060-baac-d8e862faa734" x="1" y="0" width="100" height="15"/>
+				<reportElement uuid="279e30a6-60d4-4060-baac-d8e862faa734" x="2" y="0" width="100" height="15"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="3fb4b4e6-6ab5-45f2-a9d2-3fefd58cd77c" x="165" y="0" width="30" height="15"/>
+				<reportElement uuid="3fb4b4e6-6ab5-45f2-a9d2-3fefd58cd77c" x="277" y="0" width="98" height="15">
+					<printWhenExpression><![CDATA[$F{grade2} <= 5]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{grade2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="8fa29b48-cbda-4cd9-8e2f-bbf2a639506f" x="133" y="0" width="30" height="15"/>
+				<reportElement uuid="8fa29b48-cbda-4cd9-8e2f-bbf2a639506f" x="166" y="0" width="87" height="15">
+					<printWhenExpression><![CDATA[$F{dis_grade_in} <= 5]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{dis_grade_in}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="e814d3b5-36e8-489f-97fb-2c55c214ec8f" x="248" y="2" width="30" height="15"/>
+				<reportElement uuid="e814d3b5-36e8-489f-97fb-2c55c214ec8f" x="379" y="0" width="100" height="15">
+					<printWhenExpression><![CDATA[$F{grade3} <= 5]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{grade3}]]></textFieldExpression>
 			</textField>
 			<elementGroup/>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement uuid="1205188d-faaa-4b36-9491-ff8bc61ae930" x="309" y="0" width="30" height="15">
-					<printWhenExpression><![CDATA[$F{ids_id_in}.equals( 2 )]]></printWhenExpression>
+				<reportElement uuid="1205188d-faaa-4b36-9491-ff8bc61ae930" x="497" y="0" width="52" height="15">
+					<printWhenExpression><![CDATA[$F{ids_id_in}.equals( 2 ) && $V{notaFinal} <= 5]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{notaFinal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
-				<reportElement uuid="f04a1df6-f28f-4685-b7a5-e3ec94e01d5c" x="309" y="0" width="30" height="15">
-					<printWhenExpression><![CDATA[$F{ids_id_in}.equals( 4 )]]></printWhenExpression>
+				<reportElement uuid="f04a1df6-f28f-4685-b7a5-e3ec94e01d5c" x="497" y="0" width="52" height="15">
+					<printWhenExpression><![CDATA[$F{ids_id_in}.equals( 4 ) && $V{notaFinal2} <= 5]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{notaFinal2}]]></textFieldExpression>

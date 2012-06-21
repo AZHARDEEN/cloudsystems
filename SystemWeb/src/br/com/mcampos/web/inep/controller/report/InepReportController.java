@@ -79,7 +79,6 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 					e.printStackTrace( );
 				}
 			}
-			onCancel( evt );
 		}
 	}
 
@@ -153,14 +152,8 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		item.setParams( configReportParams( ) );
 		list.add( item );
 
-		/*Relatorio 2*/
-		item = new ReportItem( "Extrato de Correção por Tarefa" );
-		item.setReportUrl( "/reports/inep/revisor_2" );
-		item.setParams( configReportParams( ) );
-		list.add( item );
-
 		/*Relatorio 3*/
-		item = new ReportItem( "Grade de Correção" );
+		item = new ReportItem( "Extrato de Correção Geral" );
 		item.setReportUrl( "/reports/inep/revisor_3" );
 		item.setParams( configReportParams( ) );
 		list.add( item );

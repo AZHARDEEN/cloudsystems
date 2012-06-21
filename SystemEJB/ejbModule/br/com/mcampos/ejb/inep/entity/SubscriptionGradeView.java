@@ -28,58 +28,58 @@ public class SubscriptionGradeView implements Serializable
 	@EmbeddedId
 	private InepSubscriptionPK id;
 
-	@Column( name = "tarefa1" )
-	private Integer tarefa1;
+	@Column( name = "nf1" )
+	private Double tarefa1;
 
-	@Column( name = "tarefa2" )
-	private Integer tarefa2;
+	@Column( name = "nf2" )
+	private Double tarefa2;
 
-	@Column( name = "tarefa3" )
-	private Integer tarefa3;
+	@Column( name = "nf3" )
+	private Double tarefa3;
 
-	@Column( name = "tarefa4" )
-	private Integer tarefa4;
+	@Column( name = "nf4" )
+	private Double tarefa4;
 
 	public SubscriptionGradeView( )
 	{
 	}
 
-	public Integer getTarefa1( )
+	public Double getTarefa1( )
 	{
 		return this.tarefa1;
 	}
 
-	public void setTarefa1( Integer tarefa1 )
+	public void setTarefa1( Double tarefa1 )
 	{
 		this.tarefa1 = tarefa1;
 	}
 
-	public Integer getTarefa2( )
+	public Double getTarefa2( )
 	{
 		return this.tarefa2;
 	}
 
-	public void setTarefa2( Integer tarefa2 )
+	public void setTarefa2( Double tarefa2 )
 	{
 		this.tarefa2 = tarefa2;
 	}
 
-	public Integer getTarefa3( )
+	public Double getTarefa3( )
 	{
 		return this.tarefa3;
 	}
 
-	public void setTarefa3( Integer tarefa3 )
+	public void setTarefa3( Double tarefa3 )
 	{
 		this.tarefa3 = tarefa3;
 	}
 
-	public Integer getTarefa4( )
+	public Double getTarefa4( )
 	{
 		return this.tarefa4;
 	}
 
-	public void setTarefa4( Integer tarefa4 )
+	public void setTarefa4( Double tarefa4 )
 	{
 		this.tarefa4 = tarefa4;
 	}

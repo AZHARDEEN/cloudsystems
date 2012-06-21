@@ -116,6 +116,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 						new CoordinatorEventChange( getSession( ).getOtherDistributions( d.getTest( ) ) ) );
 			}
 		}
+		updateCounters( );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -241,6 +242,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
+		updateCounters( );
 		logger.info( "onClickCancel - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 

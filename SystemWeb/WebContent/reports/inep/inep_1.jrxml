@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="131"/>
+	<property name="ireport.y" value="22"/>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
 		<defaultValueExpression><![CDATA["T:\\Workspaces\\indigo\\cloudsystems\\SystemWeb\\WebContent\\img"]]></defaultValueExpression>
@@ -61,7 +61,10 @@ order by
 	<field name="distribuido" class="java.lang.Long"/>
 	<field name="corrigido" class="java.lang.Long"/>
 	<field name="variance" class="java.lang.Long"/>
-	<group name="Tarefa">
+	<variable name="total" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{distribuido} + $F{corrigido} + $F{variance}]]></variableExpression>
+	</variable>
+	<group name="Tarefa" keepTogether="true">
 		<groupExpression><![CDATA[$F{inep_revisor_tsk_id_in}]]></groupExpression>
 		<groupHeader>
 			<band height="39">
@@ -90,24 +93,29 @@ order by
 					<text><![CDATA[Tarefa]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="c46be5aa-bee9-4969-bb47-f3e81f9c4645" x="310" y="19" width="70" height="20"/>
+					<reportElement uuid="c46be5aa-bee9-4969-bb47-f3e81f9c4645" x="290" y="19" width="53" height="20"/>
 					<textElement textAlignment="Center"/>
-					<text><![CDATA[Distribuídas]]></text>
+					<text><![CDATA[A Corrigir]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="819ad66c-87a5-4543-8c47-578f433f176c" x="400" y="18" width="70" height="20"/>
+					<reportElement uuid="819ad66c-87a5-4543-8c47-578f433f176c" x="359" y="18" width="55" height="20"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Corrigidas]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="5a5efa7a-78d5-49f8-819c-23cfad31e399" x="483" y="18" width="70" height="20"/>
+					<reportElement uuid="5a5efa7a-78d5-49f8-819c-23cfad31e399" x="427" y="18" width="66" height="20"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Discrepância]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="dfd9720e-d9ef-4308-a2dc-277a4e49aab5" x="494" y="19" width="60" height="20"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Total]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="50">
+			<band height="13">
 				<line>
 					<reportElement uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd" x="0" y="0" width="555" height="1"/>
 				</line>
@@ -145,29 +153,34 @@ order by
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="22" splitType="Stretch"/>
+		<band height="8" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<textField>
-				<reportElement uuid="0af04a80-25d8-4fa2-82ea-bc62ca5891e1" x="0" y="1" width="295" height="17"/>
+				<reportElement uuid="0af04a80-25d8-4fa2-82ea-bc62ca5891e1" x="0" y="1" width="232" height="17"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{users_usr_name_ch}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="b2969af5-f89a-46ae-b9ad-4734e4d23396" x="310" y="1" width="71" height="17"/>
+				<reportElement uuid="b2969af5-f89a-46ae-b9ad-4734e4d23396" x="290" y="1" width="54" height="17"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{distribuido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="246d5573-891e-4276-9d90-c5492143bbfc" x="400" y="1" width="70" height="17"/>
+				<reportElement uuid="246d5573-891e-4276-9d90-c5492143bbfc" x="359" y="1" width="55" height="17"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{corrigido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="f24f054c-7ae5-46f4-8110-7446ab9a4da6" x="483" y="1" width="70" height="17"/>
+				<reportElement uuid="f24f054c-7ae5-46f4-8110-7446ab9a4da6" x="427" y="1" width="66" height="17"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{variance}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b2ec7599-5762-4ce2-9eb2-513923a70c39" x="498" y="0" width="55" height="18"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
