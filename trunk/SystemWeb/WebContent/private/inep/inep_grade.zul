@@ -11,10 +11,9 @@
 			<radio label="5" radiogroup="sv6" />
 			<radio label="Anulado" radiogroup="sv6" />
 			<radio label="Branco" radiogroup="sv6" />
-            <separator spacing="50px" />
-            <toolbarbutton label="Comentários" id="cmdObs" image="/img/icontexto-webdev-file-032x032.png"/>
-            <toolbarbutton label="Confirmar" id="cmdInepSave" image="/img/icontexto-webdev-ok-032x032.png"/>
-            <toolbarbutton label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png"/>
+            <button label="Comentários" id="cmdObs" image="/img/icontexto-webdev-file-016x016.png" autodisable="cmdObs,cmdInepSave,cmdCancel"/>
+            <button label="Salvar" id="cmdInepSave" image="/img/icontexto-webdev-ok-016x016.png" autodisable="cmdObs,cmdInepSave,cmdCancel"/>
+            <button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-016x016.png" autodisable="cmdObs,cmdInepSave,cmdCancel"/>
 		</hlayout>
 	</div>
 </zk>

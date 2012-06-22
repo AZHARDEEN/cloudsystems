@@ -13,6 +13,7 @@ import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Div;
@@ -57,7 +58,13 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	private Radio[ ] options;
 
 	@Wire
-	private Toolbarbutton cmdInepSave;
+	private Button cmdInepSave;
+
+	@Wire
+	private Button cmdCancel;
+
+	@Wire
+	private Button cmdObs;
 
 	@Wire
 	private Combobox comboEvent;
@@ -92,7 +99,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		getListbox( ).setItemRenderer( new InepDistributionRenderer( ) );
 		loadCombobox( );
 		updateCounters( );
-		logger.info( "doAfterCompose - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	protected Listbox getListbox( )
@@ -120,7 +126,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
-		logger.info( "onSelect - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	@Listen( "onSelect = #comboEvent" )
@@ -139,7 +144,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
-		logger.info( "onSelectPackage - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	protected void showFields( InepDistribution rev )
@@ -166,13 +170,11 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 				r.setDisabled( false );
 			}
 		}
-		logger.info( "showFields - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	@Listen( "onClick = #cmdObs" )
 	public void onClickComments( Event evt )
 	{
-		logger.info( "onClickComments - before - Listbox: " + getListbox( ).getItemCount( ) );
 		Listitem item = getListbox( ).getSelectedItem( );
 		if ( item != null ) {
 			InepDistribution rev = (InepDistribution) getListbox( ).getSelectedItem( ).getValue( );
@@ -187,33 +189,33 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
-		logger.info( "onClickComments - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	@Listen( "onClick = #cmdInepSave" )
 	public void onClickSubmit( Event evt )
 	{
 		int nIndex = this.notas.getSelectedIndex( );
-		if ( nIndex < 0 ) {
-			return;
-		}
-		Listitem item = getListbox( ).getSelectedItem( );
-		if ( item != null ) {
-			InepDistribution rev = (InepDistribution) getListbox( ).getSelectedItem( ).getValue( );
-			if ( isBlocked( rev ) == false )
-			{
-				rev.setNota( this.notas.getSelectedIndex( ) );
-				getSession( ).updateRevision( rev );
-				showTasks( );
-				this.listbox.removeItemAt( this.listbox.getSelectedIndex( ) );
-				getListbox( ).clearSelection( );
+		if ( nIndex >= 0 ) {
+			Listitem item = getListbox( ).getSelectedItem( );
+			if ( item != null ) {
+				InepDistribution rev = (InepDistribution) getListbox( ).getSelectedItem( ).getValue( );
+				if ( isBlocked( rev ) == false )
+				{
+					rev.setNota( this.notas.getSelectedIndex( ) );
+					getSession( ).updateRevision( rev );
+					showTasks( );
+					this.listbox.removeItemAt( this.listbox.getSelectedIndex( ) );
+					getListbox( ).clearSelection( );
+				}
 			}
+			updateCounters( );
 		}
-		updateCounters( );
+		this.cmdInepSave.setDisabled( false );
+		this.cmdObs.setDisabled( false );
+		this.cmdCancel.setDisabled( false );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
-		logger.info( "onClickSubmit - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	private boolean isBlocked( InepDistribution test )
@@ -221,15 +223,12 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		if ( test != null ) {
 			Integer status = test.getStatus( ).getId( );
 			if ( getRevisor( ).isCoordenador( ) ) {
-				logger.info( "isBlocked 1 - Listbox: " + getListbox( ).getItemCount( ) );
 				return status.equals( DistributionStatus.statusVariance ) == false;
 			}
 			else {
-				logger.info( "isBlocked 2 - Listbox: " + getListbox( ).getItemCount( ) );
 				return ( status.equals( DistributionStatus.statusDistributed ) == false );
 			}
 		}
-		logger.info( "isBlocked 3 - Listbox: " + getListbox( ).getItemCount( ) );
 		return true;
 	}
 
@@ -243,7 +242,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 			evt.stopPropagation( );
 		}
 		updateCounters( );
-		logger.info( "onClickCancel - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	private void showTasks( )
@@ -255,7 +253,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 			this.inepGrade.setVisible( false );
 		}
 		getListbox( ).setVisible( true );
-		logger.info( "showTasks - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	private void hideTasks( )
@@ -265,7 +262,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		if ( this.inepGrade != null ) {
 			this.inepGrade.setVisible( true );
 		}
-		logger.info( "hideTasks - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	private void showFrame( )
@@ -276,7 +272,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		// ).getSubscriptionId( ), item.getId( ).getTaskId( ) );
 		AMedia media = new AMedia( null, null, null, getSession( ).getMedia( item.getTest( ) ) );
 		this.framePdf.setContent( media );
-		logger.info( "showFrame - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	private void loadCombobox( )
@@ -294,7 +289,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 			getComboEvent( ).setSelectedIndex( 0 );
 			onSelectPackage( null );
 		}
-		logger.info( "loadCombobox - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	public Combobox getComboEvent( )
@@ -340,7 +334,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 			this.countRevised.setLabel( "" );
 			this.countVariance.setLabel( "" );
 		}
-		logger.info( "updateCounters - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	@Listen( "onClick=toolbarbutton" )
@@ -359,7 +352,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 			onSelectPackage( evt );
 			evt.stopPropagation( );
 		}
-		logger.info( "onCountersClick - Listbox: " + getListbox( ).getItemCount( ) );
 	}
 
 	private Integer getTestStatus( )

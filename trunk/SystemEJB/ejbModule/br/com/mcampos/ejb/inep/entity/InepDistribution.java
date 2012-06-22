@@ -45,7 +45,8 @@ import br.com.mcampos.ejb.core.BasicEntityRenderer;
 						"o.test.task = ?1 group by o.status.id" ),
 		@NamedQuery(
 				name = InepDistribution.getWorkStatus,
-				query = "select o.id.taskId,  o.status.id, count(o) from InepDistribution o where o.test.subscription.event = ?1 group by o.id.taskId,  o.status.id" ),
+				query = "select o.id.taskId,  o.status.id, count(o) from InepDistribution o where o.test.subscription.event = ?1 " +
+						"group by o.id.taskId,  o.status.id order by o.id.taskId,  o.status.id" ),
 		@NamedQuery(
 				name = InepDistribution.getAll,
 				query = "select o from InepDistribution o where o.test.subscription.event =?1 and o.nota is not null " +
