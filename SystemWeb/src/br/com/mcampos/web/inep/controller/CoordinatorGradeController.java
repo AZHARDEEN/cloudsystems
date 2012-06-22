@@ -10,10 +10,10 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
-import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
@@ -25,10 +25,10 @@ public abstract class CoordinatorGradeController extends BaseController<Window>
 	private static final long serialVersionUID = 5912281475527567535L;
 
 	@Wire
-	Toolbarbutton cmdInepSave;
+	Button cmdInepSave;
 
 	@Wire
-	Toolbarbutton cmdCancel;
+	Button cmdCancel;
 
 	@Wire
 	Radiogroup sv6;
@@ -69,12 +69,12 @@ public abstract class CoordinatorGradeController extends BaseController<Window>
 
 	}
 
-	private Toolbarbutton getCmdInepSave( )
+	private Button getCmdInepSave( )
 	{
 		return this.cmdInepSave;
 	}
 
-	private Toolbarbutton getCmdCancel( )
+	private Button getCmdCancel( )
 	{
 		return this.cmdCancel;
 	}
