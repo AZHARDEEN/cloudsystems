@@ -65,9 +65,11 @@ public class NotasFinaisDTO extends BaseSubscriptionDTO
 
 	public Double getNotaFinal( )
 	{
-		double n;
-		n = ( getMediaTarefa1( ).doubleValue( ) + getMediaTarefa2( ).doubleValue( ) +
-				getMediaTarefa3( ).doubleValue( ) + getMediaTarefa4( ).doubleValue( ) );
+		double n = 0;
+		n += getMediaTarefa1( ).doubleValue( ) > 5 ? 0 : getMediaTarefa1( ).doubleValue( );
+		n += getMediaTarefa2( ).doubleValue( ) > 5 ? 0 : getMediaTarefa2( ).doubleValue( );
+		n += getMediaTarefa3( ).doubleValue( ) > 5 ? 0 : getMediaTarefa3( ).doubleValue( );
+		n += getMediaTarefa4( ).doubleValue( ) > 5 ? 0 : getMediaTarefa4( ).doubleValue( );
 		n /= 4;
 		return n;
 	}
