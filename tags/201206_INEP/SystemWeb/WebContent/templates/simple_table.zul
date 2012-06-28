@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <borderlayout>
+        <center flex="true">
+            <listbox vflex="true" autopaging="true" id="listTable" multiple="true" mold="paging">
+                <listhead>
+                    <listheader align="center" label="Código" width="80px" value="id"/>
+                    <listheader align="left" label="Descrição" sort="auto" value="description"/>
+                </listhead>
+            </listbox>
+        </center>
+        <east autoscroll="true" splittable="true" width="50%">
+            <div id="divEast">
+                <div id="divInfo">
+                    <grid fixedLayout="true">
+                        <columns>
+                            <column label="Campo" width="150px"/>
+                            <column label="Valor"/>
+                        </columns>
+                        <rows>
+                            <row>
+                            <label value="Código"/>
+                            <label id="infoId" width="100%"/>
+                        </row>
+                            <row>
+                            <label value="Descrição"/>
+                            <label id="infoDescription" width="100%"/>
+                        </row>
+                        </rows>
+                    </grid>
+                <separator/>
+                <div fulfill="=/templates/crud_buttons.zul"></div>
+                </div>
+                <div id="divEdit" visible="false">
+                    <grid fixedLayout="true">
+                        <columns>
+                            <column label="Campo" width="150px"/>
+                            <column label="Valor"/>
+                        </columns>
+                        <rows>
+                            <row>
+                            <label value="Código"/>
+                            <intbox id="id" use="br.com.mcampos.web.core.dbwidgets.DBIntbox" PrimaryKey="true"/>
+                        </row>
+                            <row>
+                            <label value="Descrição"/>
+                            <textbox id="description" width="100%" use="br.com.mcampos.web.core.dbwidgets.DBTextbox"/>
+                        </row>
+                        </rows>
+                    </grid>
+                <separator/>
+                <div fulfill="=/templates/save_cancel.zul"></div>
+                </div>
+            </div>
+        </east>
+    </borderlayout>
+</zk>

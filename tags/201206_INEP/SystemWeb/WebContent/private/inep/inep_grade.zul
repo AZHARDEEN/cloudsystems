@@ -1,0 +1,19 @@
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<div id="divGrid" align="center" height="55px">
+	    <radiogroup id="sv6"/>
+		<hlayout sclass="z-valign-middle">
+			<label value="Nota Final"/>
+			<radio label="0" radiogroup="sv6" />
+			<radio label="1" radiogroup="sv6" />
+			<radio label="2" radiogroup="sv6" />
+			<radio label="3" radiogroup="sv6" />
+			<radio label="4" radiogroup="sv6" />
+			<radio label="5" radiogroup="sv6" />
+			<radio label="Anulado" radiogroup="sv6" />
+			<radio label="Branco" radiogroup="sv6" />
+            <button label="Comentários" id="cmdObs" image="/img/icontexto-webdev-file-016x016.png" autodisable="cmdObs,cmdInepSave,cmdCancel"/>
+            <button label="Salvar" id="cmdInepSave" image="/img/icontexto-webdev-ok-016x016.png" autodisable="cmdObs,cmdInepSave,cmdCancel"/>
+            <button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-016x016.png" autodisable="cmdObs,cmdInepSave,cmdCancel"/>
+		</hlayout>
+	</div>
+</zk>

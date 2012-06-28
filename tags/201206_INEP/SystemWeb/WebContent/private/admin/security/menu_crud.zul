@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+    <div id="recordDetail">
+        <!-- view mode -->
+        <div id="recordView" width="1">
+            <grid width="100%">
+                <columns>
+                    <column align="right" width="30%"/>
+                    <column align="left"/>
+                </columns>
+                <rows>
+                    <row>
+                        Código
+                        <label id="recordId"/>
+                    </row>
+                    <row>
+                        Descrição
+                        <label id="recordDescription"/>
+                    </row>
+                    <row>
+                        URL
+                        <label id="recordURL"/>
+                    </row>
+                    <row>
+                        Seqüencia
+                        <label id="recordSequence"/>
+                    </row>
+                    <row>
+                        Caminho para Imagem
+                        <label id="recordImagePath"/>
+                    </row>
+                    <row>
+                        Propriedades do Menu
+                        <div align="center">
+                            Separador Antes
+                            <checkbox id="recordSeparator" disabled="true"/>
+                            Autocheck
+                            <checkbox id="recordAutocheck" disabled="true"/>
+                            Checked
+                            <checkbox id="recordChecked" disabled="true"/>
+                            Checkmark
+                            <checkbox id="recordCheckmark" disabled="true"/>
+                            Desabilitado
+                            <checkbox id="recordDisabled" disabled="true"/>
+                        </div>
+                    </row>
+                </rows>
+            </grid>
+            <div id="div_crud_buttons" fulfill="=/templates/crud_buttons.zul"></div>
+            <separator />
+            <div >
+                <listbox id="listTasks" height="200px">
+                    <listhead>
+                        <listheader label="Tarefas Associadas"/>
+                    </listhead>
+                </listbox>
+			    <menupopup id="listPopupTaskRole">
+			    	<menuitem label="Remover Tarefa Associada" id="removeTaskItem" image="/img/icontexto-webdev-remove-016x016.png" />
+			    </menupopup>
+            </div>
+        </div>
+        <!-- Por favor, nao mude o id desta div -->
+        <div id="recordEdit" visible="false" droppable="true">
+            <grid width="100%" fixedLayout="true">
+                <columns>
+                    <column align="right" width="30%"/>
+                    <column align="left" width="70%"/>
+                </columns>
+                <rows>
+                    <row>
+                        Código
+                        <intbox id="editId" width="100px" constraint="no negative, no zero"/>
+                    </row>
+                    <row>
+                        Descrição
+                        <textbox id="editDescription" width="99%"/>
+                    </row>
+                    <row>
+                        URL
+                        <textbox id="editURL" width="99%"/>
+                    </row>
+                    <row>
+                        Seqüencia
+                        <intbox id="editSequence" width="100px"/>
+                    </row>
+                    <row>
+                        Caminho para Imagem
+                        <textbox id="editImagePath" hflex="1" />
+                    </row>
+                    <row>
+                        Propriedades do Menu
+                        <div align="center">
+                            Separador Antes
+                            <checkbox id="editSeparator" width="99%"/>
+                            Autocheck
+                            <checkbox id="editAutocheck" width="99%"/>
+                            Checked
+                            <checkbox id="editChecked" width="99%"/>
+                            Checkmark
+                            <checkbox id="editCheckmark" width="99%"/>
+                            Desabilitado
+                            <checkbox id="editDisabled" width="99%"/>
+                        </div>
+                    </row>
+                </rows>
+            </grid>
+            <separator/>
+            <div id="div_submit_cancel" fulfill="=/templates/save_cancel.zul"></div>
+        </div>
+    </div>
+</zk>

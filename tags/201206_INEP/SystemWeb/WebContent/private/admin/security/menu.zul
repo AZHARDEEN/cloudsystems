@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+    <window width="100%" height="100%" id="rootParent" closable="true" border="none" title="Cadastro de Menus do Sistema" 
+    apply="br.com.mcampos.web.controller.admin.security.MenuController">
+        <borderlayout id="borderLayout">
+            <west size="40%" fulfill="=/private/admin/security/tree_template.zul">
+            </west>
+            <center autoscroll="true" flex="true">
+                <div>
+                    <tabbox>
+                        <tabs>
+                            <tab label="Informações do Menu Selecionado"/>
+                            <tab label="Lista Geral de Tarefas"/>
+                        </tabs>
+                        <tabpanels>
+	                        <tabpanel id="panelData" fulfill="=/private/admin/security/menu_crud.zul"/>
+	                        <tabpanel id="panelFreeTasks" fulfill="=/private/admin/security/tree_tasks.zul" />
+                        </tabpanels>
+                    </tabbox>
+                </div>
+            </center>
+        </borderlayout>
+    </window>
+</zk>

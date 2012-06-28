@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="397"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T:\\Workspaces\\indigo\\cloudsystems\\SystemWeb\\WebContent\\img"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+	*,
+	case when task1_grade3 is null then ( ( task1_grade1 + task1_grade2 ) / 2 ) else task1_grade3 end as finalgrade1,
+	case when task2_grade3 is null then ( ( task2_grade1 + task2_grade2 ) / 2 ) else task2_grade3 end as finalgrade2,
+	case when task3_grade3 is null then ( ( task3_grade1 + task3_grade2 ) / 2 ) else task3_grade3 end as finalgrade3,
+	case when task4_grade3 is null then ( ( task4_grade1 + task4_grade2 ) / 2 ) else task4_grade3 end as finalgrade4
+from
+	inep.gradeview2
+order by usr_id_in, pct_id_in, isc_id_ch	]]>
+	</queryString>
+	<field name="usr_id_in" class="java.lang.Integer"/>
+	<field name="pct_id_in" class="java.lang.Integer"/>
+	<field name="isc_id_ch" class="java.lang.String"/>
+	<field name="task1_grade1" class="java.math.BigDecimal"/>
+	<field name="task1_grade2" class="java.math.BigDecimal"/>
+	<field name="task1_grade3" class="java.math.BigDecimal"/>
+	<field name="task2_grade1" class="java.math.BigDecimal"/>
+	<field name="task2_grade2" class="java.math.BigDecimal"/>
+	<field name="task2_grade3" class="java.math.BigDecimal"/>
+	<field name="task3_grade1" class="java.math.BigDecimal"/>
+	<field name="task3_grade2" class="java.math.BigDecimal"/>
+	<field name="task3_grade3" class="java.math.BigDecimal"/>
+	<field name="task4_grade1" class="java.math.BigDecimal"/>
+	<field name="task4_grade2" class="java.math.BigDecimal"/>
+	<field name="task4_grade3" class="java.math.BigDecimal"/>
+	<field name="finalgrade1" class="java.math.BigDecimal"/>
+	<field name="finalgrade2" class="java.math.BigDecimal"/>
+	<field name="finalgrade3" class="java.math.BigDecimal"/>
+	<field name="finalgrade4" class="java.math.BigDecimal"/>
+	<variable name="finalgrade" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($F{finalgrade1}.floatValue()
++$F{finalgrade2}.floatValue()
++$F{finalgrade3}.floatValue()
++$F{finalgrade4}.floatValue()) / 4f + 0.005]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="0" y="0" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Extrato de Correção]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="53" splitType="Stretch">
+			<image>
+				<reportElement uuid="b8f3d208-d5c0-4eec-a205-6241c030a737" x="3" y="1" width="117" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "\\inep\\logo_celpe_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="4312c333-ca76-4c9c-bb9f-42a166d16665" x="144" y="2" width="231" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "\\inep\\logo_inep_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="54632e40-5f44-4f64-9069-37b26efbf901" x="388" y="3" width="165" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "\\inep\\logo_br_60.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d7bffd8f-4187-46b5-8fe9-fb6992e3b0f1" x="0" y="0" width="100" height="29"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Inscrição]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="2592040c-b3ea-44cc-a251-3b335a410f23" x="103" y="14" width="396" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="7d15c3aa-d479-4544-86d3-e8eade6f7a04" x="103" y="0" width="81" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Tarefa 1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="98c47e13-3509-4eac-988a-0c38cd6b5999" x="205" y="0" width="80" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Tarefa 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="898cf399-f73c-4149-a69b-3c6a6415064e" x="310" y="0" width="80" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Tarefa 3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="07e91671-0e04-42a6-a8ba-dfd877db30e3" x="415" y="0" width="84" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Tarefa 4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9df45af7-eb54-4b8b-b8f7-0d61b211efd3" x="103" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[N1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a20f2efd-30a5-4657-895a-5f8470b13ff1" x="124" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[N2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8f7156c6-cae4-458d-a92d-7e50d1423ac1" x="144" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ac0c4cd0-0952-485a-853a-f90b416e987f" x="164" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="23df9ff5-4f4b-4eee-b6d6-99404466f254" x="245" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ed72389f-1545-464b-959f-bec7de9d2c9b" x="225" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[N2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3a6309bb-d0b6-4870-b3dd-8f70e75c9572" x="205" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[N1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9b1c39ef-2a36-41a6-8b79-f0b40b196c6e" x="265" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="329bfac1-b371-4244-a4c5-0a2d38d25c5a" x="350" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b29fd083-397d-4500-98ba-10f3bea91945" x="330" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[N2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6b091c91-176e-4810-8eef-6e4e88602669" x="310" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[N1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="56c13442-d276-4ec6-a792-a4b04ef9fd24" x="370" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f046fb00-6bf7-4973-9b57-1dc60d454dcf" x="459" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2d157a95-8823-45d7-b625-8add93f0ce1f" x="439" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[N2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="629e7193-7cb5-4915-a333-2b183d945bf5" x="419" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[N1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e40b02cd-f3d6-4d42-a7ef-bbe9270fb6ed" x="479" y="15" width="20" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ad452c9a-af23-4822-8dd8-63dcbc08c2c6" x="499" y="0" width="54" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Nota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="09f1390c-819f-44ad-9a8a-965d04b926b8" x="499" y="14" width="54" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Final]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<frame>
+				<reportElement uuid="67e1d8df-b54a-4c81-9f18-a957ab4292b0" style="Row" mode="Opaque" x="0" y="0" width="553" height="17"/>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+					<reportElement uuid="06e715a5-ad67-4c75-8d8b-784a9488cd69" x="499" y="0" width="54" height="17"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{finalgrade}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+					<reportElement uuid="0bdf623e-4cd0-4f49-8ad6-f3ba0e93af04" x="479" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{finalgrade4}.floatValue() <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{finalgrade4}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+					<reportElement uuid="a0b84d36-7e17-4518-9db2-ed60e29cc050" x="370" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{finalgrade3}.floatValue() <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{finalgrade3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+					<reportElement uuid="dff7c732-965c-46ae-a7c8-6cc78dec2966" x="265" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{finalgrade2}.floatValue() <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{finalgrade2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
+					<reportElement uuid="5a4035d2-881c-4752-b5c6-3c43f7fc9cdd" x="164" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{finalgrade1}.floatValue() <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{finalgrade1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="54fd638f-2e79-4125-a27c-aa45e8151cef" x="103" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{task1_grade1} <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task1_grade1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="a37d3e75-4681-4fa2-96a1-30869adfcb31" x="124" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{task1_grade2} <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task1_grade2}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="56fe2d4d-7afd-4ed1-8760-1d6db8d30986" x="144" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{task1_grade3} <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task1_grade3}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="77a2453e-577d-4955-8d77-95b5498fb335" x="205" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{task2_grade1} <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task2_grade1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="894e5d79-061c-4dbe-9762-5f475b142a17" x="245" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{task2_grade3} <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task2_grade3}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="27601ca0-bf7a-4c54-be5c-40a6965d1e7b" x="225" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{task2_grade2} <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task2_grade2}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="f63e57cd-2e9c-4608-9702-15fd53070f9a" x="310" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{task3_grade1} <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task3_grade1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="d2f21fe2-8fa0-4a2d-bbf3-15654a7edcbb" x="330" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{task3_grade2} <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task3_grade2}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="fbf20fa2-e10a-476d-80be-9163a4c4a6e5" x="350" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{task3_grade3} <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task3_grade3}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="05ddc80c-eec4-4241-b5d6-187473d400ae" x="419" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{task4_grade1} <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task4_grade1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="24f7160c-4f62-4e08-99f5-93d62e947188" x="439" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{task4_grade2} <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task4_grade2}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="e2f4cada-ce2a-4e97-9ff6-e77a3c547bdc" x="459" y="0" width="20" height="17">
+						<printWhenExpression><![CDATA[$F{task4_grade3} <= 5]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task4_grade3}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="279e30a6-60d4-4060-baac-d8e862faa734" x="3" y="0" width="100" height="17"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="4" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7" x="455" y="0" width="100" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd" x="0" y="0" width="555" height="1"/>
+			</line>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6" x="0" y="0" width="199" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="3" splitType="Stretch"/>
+	</summary>
+</jasperReport>

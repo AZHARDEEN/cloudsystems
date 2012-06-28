@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<window width="100%" height="100%" closable="true" border="none" title="Cadastro de Empresas" apply="br.com.mcampos.web.controller.client.CompanyController">
+		<div id="divToolbar" fulfill="=/templates/toolbar.zul">
+		</div>
+		<tabbox id="personTab">
+		    <tabs>
+		        <tab label="Dados Cadastrais"/>
+		        <tab label="Endereço"/>
+		        <tab label="Documentos"/>
+		        <tab label="Contatos"/>
+		    </tabs>
+		    <tabpanels>
+		        <tabpanel >
+					<grid>
+						<columns>
+							<column width="150px"/>
+							<column />
+						</columns>
+						<rows>
+							<row>
+								<label value="Razão Social" />
+								<textbox id="name"  maxlength="128" hflex = "1"/>
+							</row>
+							<row>
+								<label value="Nome de Fantasia" />
+								<textbox id="nickName"  maxlength="128" hflex = "1"/>
+							</row>
+							<row>
+								<label value="Data da Fundação" />
+								<datebox id="bitdhDate" width="150px" />
+							</row>
+							<row>
+								<label value="" />
+								<hlayout>
+									<checkbox id="ieIsento" label="Isento Inscrição Estadual" />
+									<separator width="30px"></separator>
+									<checkbox id="imIsento" label="Isento Inscrição Municipal" />
+								</hlayout>
+							</row>
+						</rows>
+					</grid>
+		        </tabpanel>
+		        <tabpanel fulfill="=/private/client/commom/address.zul"></tabpanel>
+		        <tabpanel fulfill="=/private/client/commom/document.zul"></tabpanel>
+		        <tabpanel fulfill="=/private/client/commom/contact.zul"></tabpanel>
+		    </tabpanels>
+		</tabbox>	
+	</window>
+</zk>
