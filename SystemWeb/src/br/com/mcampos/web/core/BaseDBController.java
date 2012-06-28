@@ -1,9 +1,13 @@
 package br.com.mcampos.web.core;
 
+import java.util.Map;
+
 import javax.naming.NamingException;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.ejb.core.ReadOnlySessionBean;
 import br.com.mcampos.web.core.session.BeanSessonInterface;
 import br.com.mcampos.web.locator.ServiceLocator;
 
@@ -40,4 +44,19 @@ public abstract class BaseDBController<BEAN> extends BaseController<Window> impl
 	{
 		this.persistentClass = getSessionClass( );
 	}
+
+	@Override
+	protected Component createComponents( String uri, Component parent, Map<?, ?> parameters )
+	{
+		try {
+			return super.createComponents( uri, parent, parameters );
+		}
+		catch ( Exception e )
+		{
+			ReadOnlySessionBean<?> session = (ReadOnlySessionBean<?>) getSession( );
+			session.storeException( e );
+			return null;
+		}
+	}
+
 }

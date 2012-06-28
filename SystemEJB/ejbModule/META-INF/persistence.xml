@@ -57,6 +57,9 @@
     <class>br.com.mcampos.ejb.inep.entity.SubscriptionGradeView</class>
     <class>br.com.mcampos.ejb.user.address.Address</class>
     <class>br.com.mcampos.ejb.user.address.AddressPK</class>
+    <class>br.com.mcampos.ejb.core.entity.ProgramException</class>
+    <class>br.com.mcampos.ejb.core.entity.ProgramExceptionTrace</class>
+    <class>br.com.mcampos.ejb.core.entity.ProgramExceptionTracePK</class>
     <properties>
     	<property name="eclipselink.target-database" value="PostgreSQL"/>
     	<property name="eclipselink.target-server" value="JBoss"/>
