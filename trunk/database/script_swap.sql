@@ -1,6 +1,6 @@
 DECLARE @inscricao, @t1, @t2, @result, @c1, @c2, @c3, @c4, @result2;
 
---comentário de teste
+
 set @inscricao = '201201003487';
 set @t1 = 3;
 set @t2 = 4;
