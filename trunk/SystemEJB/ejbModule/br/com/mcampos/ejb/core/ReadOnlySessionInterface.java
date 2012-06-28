@@ -40,4 +40,6 @@ public interface ReadOnlySessionInterface<T>
 	Integer getNextId( );
 
 	Integer getNextId( String namedQuery, Object... params );
+
+	void storeException( Exception e );
 }

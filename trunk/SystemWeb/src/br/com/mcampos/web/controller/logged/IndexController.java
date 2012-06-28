@@ -1,10 +1,12 @@
 package br.com.mcampos.web.controller.logged;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.NamingException;
 
 import org.omg.CORBA.portable.ApplicationException;
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.EventQueues;
@@ -128,6 +130,19 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 			this.dynamicMenu = new DynamicMenu( this.mainMenu, this );
 		}
 		return this.dynamicMenu;
+	}
+
+	@Override
+	protected Component createComponents( String uri, Component parent, Map<?, ?> parameters )
+	{
+		try {
+			return super.createComponents( uri, parent, parameters );
+		}
+		catch ( Exception e )
+		{
+			getSession( ).storeException( e );
+			return null;
+		}
 	}
 
 }

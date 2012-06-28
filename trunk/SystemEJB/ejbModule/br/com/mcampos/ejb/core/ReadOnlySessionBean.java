@@ -13,6 +13,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import br.com.mcampos.ejb.core.entity.ProgramException;
+import br.com.mcampos.ejb.core.entity.ProgramExceptionTrace;
+
 public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface<T>
 {
 	@Resource
@@ -55,6 +58,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			entity = getEntityManager( ).find( getPersistentClass( ), key );
 		}
 		catch ( Exception e ) {
+			storeException( e );
 			entity = null;
 		}
 		return entity;
@@ -91,6 +95,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			return query.getResultList( );
 		}
 		catch ( Exception e ) {
+			storeException( e );
 			return Collections.emptyList( );
 		}
 	}
@@ -102,6 +107,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			return (T) query.getSingleResult( );
 		}
 		catch ( Exception e ) {
+			storeException( e );
 			return null;
 		}
 	}
@@ -245,12 +251,13 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			}
 		}
 		catch ( Exception e ) {
-			e = null;
+			storeException( e );
 			id = 1;
 		}
 		return id;
 	}
 
+	@Override
 	public Integer getNextId( String namedQuery, Object... params )
 	{
 		Query query = getEntityManager( ).createNamedQuery( namedQuery );
@@ -263,9 +270,37 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			}
 		}
 		catch ( Exception e ) {
-			e = null;
+			storeException( e );
 			id = 1;
 		}
 		return id;
+	}
+
+	@Override
+	public void storeException( Exception e )
+	{
+		if ( e == null ) {
+			return;
+		}
+		try {
+			ProgramException entity = new ProgramException( );
+			entity.setDescription( e.getMessage( ) );
+			getEntityManager( ).persist( entity );
+			StackTraceElement[ ] elements = e.getStackTrace( );
+			int nIndex = 1;
+			for ( StackTraceElement item : elements ) {
+				ProgramExceptionTrace trace = new ProgramExceptionTrace( );
+				trace.getId( ).setId( nIndex++ );
+				trace.setClassName( item.getClassName( ) );
+				trace.setFileName( item.getFileName( ) );
+				trace.setLine( item.getLineNumber( ) );
+				trace.setMethod( item.getMethodName( ) );
+				entity.add( trace );
+			}
+		}
+		catch ( Exception ex ) {
+			ex = null;
+			// just it doesn't matter here
+		}
 	}
 }
