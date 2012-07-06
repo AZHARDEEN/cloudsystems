@@ -20,7 +20,7 @@ public class Credential implements Serializable
 		this.sessionId = sessionId;
 	}
 
-	public String getSessionId()
+	public String getSessionId( )
 	{
 		return this.sessionId;
 	}
@@ -30,7 +30,7 @@ public class Credential implements Serializable
 		this.remoteAddr = remoteAddr;
 	}
 
-	public String getRemoteAddr()
+	public String getRemoteAddr( )
 	{
 		return this.remoteAddr;
 	}
@@ -40,7 +40,7 @@ public class Credential implements Serializable
 		this.remoteHost = remoteHost;
 	}
 
-	public String getRemoteHost()
+	public String getRemoteHost( )
 	{
 		return this.remoteHost;
 	}
@@ -50,7 +50,7 @@ public class Credential implements Serializable
 		this.locale = locale;
 	}
 
-	public Locale getLocale()
+	public Locale getLocale( )
 	{
 		return this.locale;
 	}
@@ -60,7 +60,7 @@ public class Credential implements Serializable
 		this.identification = identification;
 	}
 
-	public String getIdentification()
+	public String getIdentification( )
 	{
 		return this.identification;
 	}
@@ -70,7 +70,7 @@ public class Credential implements Serializable
 		this.password = password;
 	}
 
-	public String getPassword()
+	public String getPassword( )
 	{
 		return this.password;
 	}
@@ -80,8 +80,9 @@ public class Credential implements Serializable
 		this.program = program;
 	}
 
-	public String getProgram()
+	public String getProgram( )
 	{
 		return this.program;
 	}
+
 }

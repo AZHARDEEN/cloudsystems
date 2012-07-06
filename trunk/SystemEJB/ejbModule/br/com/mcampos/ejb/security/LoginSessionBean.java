@@ -5,9 +5,11 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.jasypt.util.password.BasicPasswordEncryptor;
@@ -19,6 +21,8 @@ import br.com.mcampos.ejb.email.EMail;
 import br.com.mcampos.ejb.email.part.EmailPartSessionLocal;
 import br.com.mcampos.ejb.params.SystemParameterSessionLocal;
 import br.com.mcampos.ejb.params.SystemParameters;
+import br.com.mcampos.ejb.security.lastusedpwd.LastUsedPassword;
+import br.com.mcampos.ejb.security.lastusedpwd.LastUsedPasswordSessionLocal;
 import br.com.mcampos.ejb.security.log.AccessLog;
 import br.com.mcampos.ejb.security.log.AccessLogSessionLocal;
 import br.com.mcampos.ejb.security.log.AccessLogType;
@@ -47,6 +51,9 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 
 	@EJB
 	private UserStatusSessionLocal statusSession;
+
+	@EJB
+	private LastUsedPasswordSessionLocal lupSession;
 
 	@Override
 	protected Class<Login> getEntityClass( )
@@ -229,11 +236,35 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		if ( login == null ) {
 			return false;
 		}
-		if ( verifyPassword( login, credential ) == false ) {
+		Login entity = get( login.getId( ) );
+		if ( entity == null ) {
 			return false;
 		}
-		log( login, getLogTypeSession( ).get( AccessLogType.accessLogTypeNormalLogin ), credential );
+		if ( verifyPassword( entity, oldPasswor ) == false || isPasswordUsed( entity, newPassword ) ) {
+			return false;
+		}
+		archivePassword( entity );
+		entity.setPassword( encryptPassword( newPassword ) );
+		archivePassword( entity );
+		entity.setTryCount( 0 );
+		setPasswordExpirationDate( entity );
+		entity.setStatus( this.statusSession.get( UserStatus.statusOk ) );
+		log( entity, getLogTypeSession( ).get( AccessLogType.accessLogTypeNormalLogin ), credential );
+		sendMail( EMail.templatePasswordChanged, entity );
 		return true;
+	}
+
+	private String encryptPassword( String password )
+	{
+		try {
+			BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor( );
+			String encryptedPassword = passwordEncryptor.encryptPassword( password );
+			return encryptedPassword;
+		}
+		catch ( Exception e )
+		{
+			return null;
+		}
 	}
 
 	@Override
@@ -287,8 +318,6 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	@Override
 	public Boolean add( Person person, String password )
 	{
-		String encryptedPassword;
-		BasicPasswordEncryptor passwordEncryptor;
 		Login login;
 
 		if ( person == null || password == null ) {
@@ -306,9 +335,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		 * inserido no banco de dados, fica a situação inicial - sem login.
 		 */
 		login.setPerson( person );
-		passwordEncryptor = new BasicPasswordEncryptor( );
-		encryptedPassword = passwordEncryptor.encryptPassword( password );
-		login.setPassword( encryptedPassword );
+		login.setPassword( encryptPassword( password ) );
 		login.setToken( RandomString.randomstring( ) );
 		setPasswordExpirationDate( login );
 		login.setStatus( this.statusSession.get( UserStatus.statusEmailNotValidated ) );
@@ -391,4 +418,48 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		return true;
 	}
 
+	private Boolean isPasswordUsed( Login login, String newPassword )
+	{
+		BasicPasswordEncryptor passwordEncryptor;
+
+		try {
+			List<LastUsedPassword> list;
+
+			list = this.lupSession.findByNamedQuery( LastUsedPassword.findAllByLogin, new DBPaging( 0, 50 ), login );
+			passwordEncryptor = new BasicPasswordEncryptor( );
+			for ( LastUsedPassword password : list ) {
+				if ( passwordEncryptor.checkPassword( newPassword, password.getId( ).getPassword( ) ) ) {
+					return true;
+				}
+			}
+		}
+		catch ( NoResultException e ) {
+			return false;
+		}
+		return false;
+	}
+
+	@Override
+	public Boolean isPasswordUsed( Integer id, String newPassword )
+	{
+		Login login = get( id );
+		return isPasswordUsed( login, newPassword );
+	}
+
+	private void archivePassword( Login login )
+	{
+		LastUsedPassword lastUsedPassword;
+
+		lastUsedPassword = this.lupSession.get( login );
+		if ( lastUsedPassword == null ) {
+			this.lupSession.closeAllUsedPassword( login );
+			lastUsedPassword = new LastUsedPassword( login );
+			lastUsedPassword.setFromDate( new Date( ) );
+			this.lupSession.persist( lastUsedPassword );
+		}
+		else {
+			lastUsedPassword.setToDate( new Date( ) );
+			this.lupSession.merge( lastUsedPassword );
+		}
+	}
 }

@@ -60,6 +60,8 @@
     <class>br.com.mcampos.ejb.core.entity.ProgramException</class>
     <class>br.com.mcampos.ejb.core.entity.ProgramExceptionTrace</class>
     <class>br.com.mcampos.ejb.core.entity.ProgramExceptionTracePK</class>
+    <class>br.com.mcampos.ejb.security.lastusedpwd.LastUsedPassword</class>
+    <class>br.com.mcampos.ejb.security.lastusedpwd.LastUsedPasswordPK</class>
     <properties>
     	<property name="eclipselink.target-database" value="PostgreSQL"/>
     	<property name="eclipselink.target-server" value="JBoss"/>

@@ -18,4 +18,8 @@ public interface LoginSession extends BaseSessionInterface<Login>
 
 	Boolean sendValidationEmail( Integer userId );
 
+	boolean verifyPassword( Integer userId, String password );
+
+	Boolean isPasswordUsed( Integer id, String newPassword );
+
 }

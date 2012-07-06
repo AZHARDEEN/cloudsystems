@@ -20,6 +20,7 @@ public class EMail extends SimpleTable<EMail>
 	public static final Integer templateValidationEmail = 1;
 	public static final Integer templateEmailValidated = 2;
 	public static final Integer templateNewPassword = 3;
+	public static final Integer templatePasswordChanged = 4;
 
 	@Id
 	@Column( name = "eml_id_in" )
