@@ -35,7 +35,7 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 	private Integer id;
 
 	@Column( name = "lgi_passwd_exp_dt" )
-	@Temporal( TemporalType.DATE )
+	@Temporal( TemporalType.TIMESTAMP )
 	private Date expDate;
 
 	@Column( name = "lgi_password_ch" )
