@@ -2,7 +2,6 @@ package br.com.mcampos.web.inep.controller;
 
 import java.util.List;
 
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.ListModelList;
@@ -12,6 +11,7 @@ import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabpanel;
 import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
+import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepTask;
@@ -19,9 +19,13 @@ import br.com.mcampos.ejb.inep.team.TeamSession;
 import br.com.mcampos.web.core.BaseController;
 import br.com.mcampos.web.inep.controller.renderer.RevisorListRenderer;
 
-
-public class TeamController extends BaseController
+public class TeamController extends BaseController<Window>
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1481224347756300890L;
+
 	@Wire( "#tabTasks" )
 	Tabs tabBox;
 
@@ -33,7 +37,7 @@ public class TeamController extends BaseController
 	private TeamSession session;
 
 	@Override
-	public void doAfterCompose( Component comp ) throws Exception
+	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
 		createTabs( );
@@ -41,7 +45,7 @@ public class TeamController extends BaseController
 
 	private void createTabs( )
 	{
-		List<InepTask> tasks = getSession().getTasks( );
+		List<InepTask> tasks = getSession( ).getTasks( );
 		Tabpanel newPanel;
 		int nIndex = 0;
 
@@ -56,7 +60,7 @@ public class TeamController extends BaseController
 		}
 	}
 
-	private Listbox loadTeam ( Listbox list, InepTask task )
+	private Listbox loadTeam( Listbox list, InepTask task )
 	{
 		List<InepRevisor> team = getSession( ).getTeam( task );
 		ListModelList<InepRevisor> model = new ListModelList<InepRevisor>( team );
@@ -65,7 +69,6 @@ public class TeamController extends BaseController
 
 		return list;
 	}
-
 
 	private TeamSession getSession( )
 	{

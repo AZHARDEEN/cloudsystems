@@ -58,6 +58,10 @@ import br.com.mcampos.ejb.core.BasicEntityRenderer;
 						"and o.nota is not null and o.revisor.coordenador = true " +
 						"order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
 		@NamedQuery(
+				name = InepDistribution.getAllSubscription,
+				query = "select o from InepDistribution o where o.test.subscription = ?1 " +
+						"order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
+		@NamedQuery(
 				name = InepDistribution.getAllVarianceFromTest,
 				query = "select o from InepDistribution o where o.test.subscription.event = ?1 and o.status.id in (3, 4) " +
 						"and o.nota is not null and o.revisor.coordenador = true " +
@@ -72,6 +76,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 	public static final String getRevisorCounter = "InepDistribution.getRevisorCounter";
 	public static final String getCoordCounter = "InepDistribution.getCoordinatorCounter";
 	public static final String getAll = "InepDistribution.getAll";
+	public static final String getAllSubscription = "InepDistribution.getAllSubscription";
 	public static final String getAllVariance = "InepDistribution.getAllVariance";
 	public static final String getAllVarianceFromTest = "InepDistribution.getAllVarianceFromTest";
 	public static final String getWorkStatus = "InepDistribution.getWorkStatus";

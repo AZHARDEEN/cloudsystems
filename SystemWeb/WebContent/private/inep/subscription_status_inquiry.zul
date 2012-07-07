@@ -1,0 +1,52 @@
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+    <window width="100%" height="100%" closable="true" border="none" title="Consulta Status Inscrição" apply="br.com.mcampos.web.inep.controller.SubscriptionStatus">
+		<div align="center" width="100%">
+			<grid width="800px">
+				<columns>
+					<column width="25%"/>
+					<column width="75%"/>
+				</columns>
+				<rows>
+					<row>
+						<label value="Evento: " />
+						<combobox id="comboEvent" readonly="true" width="400px"/>
+					</row>
+					<row>
+						<label value="Inscrição: " />
+						<bandbox maxlength="32" id="subscription" width="200px" mold="rounded">
+					        <bandpopup>
+					            <listbox height="250px" width="300px" mold="paging" autopaging="true" id="list">
+					                <listhead>
+					                    <listheader label="Inscrições" />
+					                </listhead>
+					            </listbox>
+					        </bandpopup>					
+						</bandbox>
+					</row>
+				</rows>
+			</grid>
+		</div>
+		<style dynamic="true">
+			.varianceStyle {
+				background-color:rgba(255,0,0,0.1);
+			}
+			.revisedStyle {
+				background-color:rgba(0,255,0,0.1);
+			}
+			.tasksStyle {
+				background-color:rgba(0,0,255,0.1);
+			}
+		</style>
+		<listbox width="100%" emptyMessage="Não existem informações da inscrição" id="listDetail" oddRowSclass="" >
+			<listhead>
+				<listheader label="Tarefa" 		width="50px" 	align="Center"/>
+				<listheader label="Corretor" 	width="250px" 	align="Left"/>
+				<listheader label="Id" 			width="30px" 	align="Center"/>
+				<listheader label="Status" 		width="180px" 	align="Left"/>
+				<listheader label="Nota"   		width="35px" 	align="Center"/>
+				<listheader label="Distriuído Em" width="150px" align="Left"/>
+				<listheader label="Última Atual." width="150px" align="Left"/>
+			</listhead>
+		</listbox>
+	</window>
+</zk>

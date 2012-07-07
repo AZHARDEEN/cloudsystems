@@ -26,6 +26,10 @@ public abstract class BaseCaptchaDialogController<BEAN> extends BaseDialogContro
 	{
 		String sCaptcha = null, sRecaptcha = null;
 
+		if ( isDebugMode( ) ) {
+			return true;
+		}
+
 		try {
 			sCaptcha = this.captcha.getValue( );
 			sRecaptcha = this.recapctcha.getValue( );

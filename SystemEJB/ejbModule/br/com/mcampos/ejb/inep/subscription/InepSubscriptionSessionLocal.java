@@ -15,4 +15,7 @@ public interface InepSubscriptionSessionLocal extends BaseSessionInterface<InepS
 	List<InepPackage> getEvents( Collaborator auth );
 
 	public List<InepSubscription> getAll( InepPackage event );
+
+	public List<InepSubscription> getAll( InepPackage event, String subs );
+
 }

@@ -11,40 +11,49 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-
-
 /**
  * The persistent class for the inep_subscription database table.
  * 
  */
 @Entity
 @Table( name = "inep_subscription", schema = "inep" )
-@NamedQueries( { @NamedQuery( name = InepSubscription.getAllEventSubs, query = "select o from InepSubscription o where o.event = ?1" ) } )
+@NamedQueries( {
+		@NamedQuery( name = InepSubscription.getAllEventSubs, query = "select o from InepSubscription o where o.event = ?1" ),
+		@NamedQuery(
+				name = InepSubscription.getAllEventSubsById,
+				query = "select o from InepSubscription o where o.event = ?1 and o.id.id like ?2" )
+} )
 public class InepSubscription implements Serializable, Comparable<InepSubscription>
 {
 	private static final long serialVersionUID = 1L;
 	public static final String getAllEventSubs = "InepSubscription.getAllEventSubs";
+	public static final String getAllEventSubsById = "InepSubscription.getAllEventSubsById";
 
 	@EmbeddedId
 	private InepSubscriptionPK id;
 
 	@ManyToOne
 	@JoinColumns( {
-		@JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
-		@JoinColumn( name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ) } )
+			@JoinColumn(
+					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ) } )
 	private InepPackage event;
 
-	public InepSubscription() {
+	public InepSubscription( )
+	{
 	}
 
-	public InepSubscriptionPK getId() {
+	public InepSubscriptionPK getId( )
+	{
 		if ( this.id == null ) {
-			this.id = new InepSubscriptionPK();
+			this.id = new InepSubscriptionPK( );
 		}
 		return this.id;
 	}
 
-	public void setId(InepSubscriptionPK id) {
+	public void setId( InepSubscriptionPK id )
+	{
 		this.id = id;
 	}
 
@@ -80,7 +89,7 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 	@Override
 	public boolean equals( Object obj )
 	{
-		return getId( ).equals( ( (InepTask) obj ).getId( ) );
+		return getId( ).equals( ( (InepSubscription) obj ).getId( ) );
 	}
 
 	public String getField( Integer field )
