@@ -72,6 +72,7 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 				r.setReportFormat( Integer.parseInt( value ) );
 				getSession( ).setProperty( getCurrentCollaborator( ), defaultReportFormat, value );
 				try {
+					getListbox( ).setSelectedItem( null );
 					doReport( r );
 				}
 				catch ( JRException e ) {
@@ -155,6 +156,12 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		/*Relatorio 3*/
 		item = new ReportItem( "Extrato de Correção Geral" );
 		item.setReportUrl( "/reports/inep/revisor_3" );
+		item.setParams( configReportParams( ) );
+		list.add( item );
+
+		/*Relatorio 3*/
+		item = new ReportItem( "Inscrições com Pendências" );
+		item.setReportUrl( "/reports/inep/revisor_3_1" );
 		item.setParams( configReportParams( ) );
 		list.add( item );
 

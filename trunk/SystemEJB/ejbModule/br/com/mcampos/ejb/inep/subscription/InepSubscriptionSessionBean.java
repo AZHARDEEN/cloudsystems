@@ -53,4 +53,23 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 		return getEventSession( ).getAll( auth );
 	}
 
+	@Override
+	public List<InepSubscription> getAll( InepPackage event, String subs )
+	{
+		List<InepSubscription> list = Collections.emptyList( );
+
+		subs = subs.replaceAll( "\\*", "%" );
+		subs = subs.replaceAll( "\\?", "_" );
+		int nIndex;
+		nIndex = subs.indexOf( '%' );
+		if ( nIndex < 0 ) {
+			nIndex = subs.indexOf( '_' );
+		}
+		if ( nIndex < 0 ) {
+			subs = "%" + subs + "%";
+		}
+		list = findByNamedQuery( InepSubscription.getAllEventSubsById, event, subs );
+		return list;
+	}
+
 }

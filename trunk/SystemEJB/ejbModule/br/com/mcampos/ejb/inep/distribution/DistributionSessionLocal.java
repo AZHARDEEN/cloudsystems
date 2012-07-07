@@ -8,6 +8,7 @@ import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.entity.InepTest;
 
 @Local
@@ -20,6 +21,8 @@ public interface DistributionSessionLocal extends BaseSessionInterface<InepDistr
 	List<InepDistribution> getVariance( InepTest test );
 
 	List<InepDistribution> getAll( InepPackage event );
+
+	List<InepDistribution> getAll( InepSubscription s );
 
 	List<InepDistribution> getAllforReport( InepPackage event );
 

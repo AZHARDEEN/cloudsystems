@@ -25,11 +25,13 @@ import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.entity.InepDistributionPK;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.inep.entity.SubscriptionGradeView;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSessionLocal;
+import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.inep.test.InepTestSessionLocal;
 import br.com.mcampos.ejb.media.Media;
@@ -70,6 +72,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 	@EJB
 	private LoginPropertySessionLocal propertySession;
+
+	@EJB
+	private InepSubscriptionSessionLocal subscriptionSession;
 
 	public TeamSessionBean( )
 	{
@@ -672,6 +677,18 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	public LoginProperty remove( Collaborator collaborator, String propertyName )
 	{
 		return this.propertySession.remove( collaborator, propertyName );
+	}
+
+	@Override
+	public List<InepSubscription> getSubscriptions( InepPackage event, String part )
+	{
+		return this.subscriptionSession.getAll( event, part );
+	}
+
+	@Override
+	public List<InepDistribution> getDistribution( InepSubscription e )
+	{
+		return this.distributionSession.getAll( e );
 	}
 
 }

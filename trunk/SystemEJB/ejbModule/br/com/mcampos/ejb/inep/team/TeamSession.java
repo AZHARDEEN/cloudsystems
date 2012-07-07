@@ -11,6 +11,7 @@ import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
@@ -58,5 +59,9 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserProp
 	public List<InepAnaliticoCorrecao> getAnaliticoDivergencia( InepTask task );
 
 	public List<Object[ ]> getWorkStatus( InepPackage event );
+
+	public List<InepSubscription> getSubscriptions( InepPackage event, String part );
+
+	public List<InepDistribution> getDistribution( InepSubscription e );
 
 }
