@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<zk xmlns="http://www.zkoss.org/2005/zul">
-   <div align="center" id="rootParent" apply="br.com.mcampos.web.controller.LogoutController"></div>
+<zk xmlns="http://www.zkoss.org/2005/zul" apply="br.com.mcampos.web.controller.LogoutController">
+   <div align="center" id="rootParent" ></div>
 </zk>

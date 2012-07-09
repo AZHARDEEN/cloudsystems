@@ -7,7 +7,8 @@ import java.util.ArrayList;
 
 public class BookmarkSession implements Serializable
 {
-    public static final String parameterName = "Bookmark";
+	private static final long serialVersionUID = 8084516862720739363L;
+	public static final String parameterName = "Bookmark";
     private ArrayList<Bookmark> bookmarks = new ArrayList<Bookmark>( 5 );
     private Integer nIndex = -1;
 

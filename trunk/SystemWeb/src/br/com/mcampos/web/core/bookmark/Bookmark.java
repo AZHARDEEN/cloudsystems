@@ -7,8 +7,8 @@ import java.util.HashMap;
 
 public class Bookmark implements Serializable
 {
-
-    private String uri;
+	private static final long serialVersionUID = -6342330891431749547L;
+	private String uri;
     private HashMap<String, Object> parameters;
 
     public Bookmark()

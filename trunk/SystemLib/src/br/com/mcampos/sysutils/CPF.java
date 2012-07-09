@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 public class CPF implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -873123898678107661L;
+
 	private static final int[] pesoCPF = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
 
 	private String code;

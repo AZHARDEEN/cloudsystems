@@ -4,5 +4,5 @@ import org.zkoss.zk.ui.event.SelectEvent;
 
 public interface ISelectEvent
 {
-	public void onSelect( SelectEvent evt );
+	public void onSelect( @SuppressWarnings("rawtypes") SelectEvent evt );
 }
