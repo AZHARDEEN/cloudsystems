@@ -5,18 +5,18 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SystemEJB"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SystemLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jasypt"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/postgresql">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/jasypt"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/postgresql">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/zk">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/zk">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/bwcaptcha">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/bwcaptcha">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
@@ -27,18 +27,23 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/composite"/>
-	<classpathentry kind="lib" path="T:/workspaces/servers/jboss-as-7.1.1.Final/modules/javax/servlet/api/main/jboss-servlet-api_3.0_spec-1.0.0.Final.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/quartz">
+	<classpathentry kind="lib" path="T:/Workspaces/servers/jboss-as-7.1.1.Final/modules/javax/servlet/api/main/jboss-servlet-api_3.0_spec-1.0.0.Final.jar" sourcepath="C:/Users/marcelo/.m2/repository/org/jboss/spec/javax/servlet/jboss-servlet-api_3.0_spec/1.0.0.Final/jboss-servlet-api_3.0_spec-1.0.0.Final-sources.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/quartz">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jasperreports">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/jasperreports">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/IText">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/IText">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/crystalreport">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
