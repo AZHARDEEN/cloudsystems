@@ -92,4 +92,8 @@
           <param-name>crystal_image_use_relative</param-name>
           <param-value>webapp</param-value>
   </context-param>
+  <context-param>
+        <param-name>crystal_document_view</param-name>
+        <param-value>weblayout</param-value>
+</context-param>
 </web-app>
