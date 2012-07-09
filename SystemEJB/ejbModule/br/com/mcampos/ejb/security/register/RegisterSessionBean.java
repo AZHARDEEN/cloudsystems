@@ -5,8 +5,6 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import br.com.mcampos.dto.RegisterDTO;
 import br.com.mcampos.ejb.security.LoginSessionLocal;
@@ -28,9 +26,8 @@ public class RegisterSessionBean implements RegisterSession
 {
 	@Resource
 	SessionContext sessionContext;
-	@PersistenceContext( unitName = "SystemEJB" )
-	private EntityManager em;
-
+	
+	
 	@EJB
 	UserDocumentSessionLocal userDocumentSession;
 
@@ -45,11 +42,6 @@ public class RegisterSessionBean implements RegisterSession
 
 	@EJB
 	PersonSessionLocal personSession;
-
-	private EntityManager getEm( )
-	{
-		return this.em;
-	}
 
 	@Override
 	public Boolean register( RegisterDTO dto ) throws Exception

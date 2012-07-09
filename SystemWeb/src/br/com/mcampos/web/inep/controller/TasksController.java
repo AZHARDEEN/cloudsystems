@@ -43,6 +43,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 {
 	private static final long serialVersionUID = -4229563648862167526L;
 	public static final String coordinatorEvent = "coordinatorQueueEvent";
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger( TasksController.class );
 
 	@Wire( "listbox#listTable" )
