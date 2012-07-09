@@ -278,7 +278,7 @@ public class PersonController extends BasePersonController<ClientSession>
 		getPaging( ).setPage( page );
 		loadListbox( );
 		if ( evt != null ) {
-			logger.info( "onPaging: " + evt.getTarget( ).getId( ) );
+			logger.info( "onPaging: " + evt.getActivePage( ) );
 			evt.stopPropagation( );
 		}
 		else {
