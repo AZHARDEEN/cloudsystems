@@ -62,6 +62,35 @@
     <class>br.com.mcampos.ejb.core.entity.ProgramExceptionTracePK</class>
     <class>br.com.mcampos.ejb.security.lastusedpwd.LastUsedPassword</class>
     <class>br.com.mcampos.ejb.security.lastusedpwd.LastUsedPasswordPK</class>
+    <class>br.com.mcampos.ejb.fdigital.AnotoForm</class>
+    <class>br.com.mcampos.ejb.fdigital.AnotoFormUser</class>
+    <class>br.com.mcampos.ejb.fdigital.AnotoFormUserPK</class>
+    <class>br.com.mcampos.ejb.fdigital.AnotoPage</class>
+    <class>br.com.mcampos.ejb.fdigital.AnotoPagePK</class>
+    <class>br.com.mcampos.ejb.fdigital.AnotoPageField</class>
+    <class>br.com.mcampos.ejb.fdigital.AnotoPageFieldPK</class>
+    <class>br.com.mcampos.ejb.fdigital.AnotoPen</class>
+    <class>br.com.mcampos.ejb.fdigital.AnotoPenPage</class>
+    <class>br.com.mcampos.ejb.fdigital.AnotoPenPagePK</class>
+    <class>br.com.mcampos.ejb.fdigital.AnotoPenUser</class>
+    <class>br.com.mcampos.ejb.fdigital.AnotoPenUserPK</class>
+    <class>br.com.mcampos.ejb.fdigital.Pad</class>
+    <class>br.com.mcampos.ejb.fdigital.PadPK</class>
+    <class>br.com.mcampos.ejb.fdigital.Pgc</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcAttachment</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcAttachmentPK</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcAttachmentType</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcField</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcFieldPK</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcPage</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcPagePK</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcPageAttachment</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcPageAttachmentPK</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcProcessedImage</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcProcessedImagePK</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcProperty</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcPropertyPK</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcStatus</class>
     <properties>
     	<property name="eclipselink.target-database" value="PostgreSQL"/>
     	<property name="eclipselink.target-server" value="JBoss"/>
