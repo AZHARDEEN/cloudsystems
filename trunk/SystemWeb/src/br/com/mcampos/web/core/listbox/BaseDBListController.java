@@ -71,7 +71,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 	{
 		int totalSize;
 
-		if ( SysUtils.isEmpty( getPaging( ) ) == false ) {
+		if ( SysUtils.isEmpty( getPaging( ) ) == false && getPagingSession( ) != null ) {
 			totalSize = getPagingSession( ).count( );
 			if ( totalSize >= rows ) {
 				setPagingEventListener( );

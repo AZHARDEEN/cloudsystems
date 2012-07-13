@@ -282,6 +282,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		if ( e == null ) {
 			return;
 		}
+		e.printStackTrace( );
 		try {
 			ProgramException entity = new ProgramException( );
 			entity.setDescription( e.getMessage( ) );

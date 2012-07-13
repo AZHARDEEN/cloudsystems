@@ -62,7 +62,7 @@
     <class>br.com.mcampos.ejb.core.entity.ProgramExceptionTracePK</class>
     <class>br.com.mcampos.ejb.security.lastusedpwd.LastUsedPassword</class>
     <class>br.com.mcampos.ejb.security.lastusedpwd.LastUsedPasswordPK</class>
-    <class>br.com.mcampos.ejb.fdigital.AnotoForm</class>
+    <class>br.com.mcampos.ejb.fdigital.form.AnotoForm</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoFormUser</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoFormUserPK</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPage</class>
