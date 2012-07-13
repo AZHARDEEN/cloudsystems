@@ -83,5 +83,17 @@
 	<language-config>
 	    <addon-uri>/WEB-INF/lang-addon.xml</addon-uri>
 	</language-config>
+	
+	<language-addon>
+	    <component>
+	        <component-name>button</component-name>
+	        <extends>button</extends>
+	        <property>
+	            <property-name>autodisable</property-name>
+	            <property-value>self</property-value>
+	        </property>
+	    </component>
+	</language-addon>
+	
 </zk>
 
