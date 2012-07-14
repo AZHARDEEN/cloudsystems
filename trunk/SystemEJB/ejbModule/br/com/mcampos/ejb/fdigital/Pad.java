@@ -1,83 +1,130 @@
 package br.com.mcampos.ejb.fdigital;
 
 import java.io.Serializable;
-import javax.persistence.*;
-
-import br.com.mcampos.ejb.fdigital.form.AnotoForm;
-
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import br.com.mcampos.ejb.fdigital.form.AnotoForm;
+import br.com.mcampos.ejb.media.Media;
 
 /**
  * The persistent class for the pad database table.
  * 
  */
 @Entity
-@Table(name="pad")
-public class Pad implements Serializable {
+@Table( name = "pad" )
+public class Pad implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private PadPK id;
 
-    @Temporal( TemporalType.DATE)
-	@Column(name="pad_insert_dt")
-	private Date padInsertDt;
+	@Temporal( TemporalType.TIMESTAMP )
+	@Column( name = "pad_insert_dt" )
+	private Date insertDate;
 
-	@Column(name="pad_unique_bt")
-	private Boolean padUniqueBt;
+	@Column( name = "pad_unique_bt" )
+	private Boolean unique;
 
-	//bi-directional many-to-one association to AnotoPage
-	@OneToMany(mappedBy="pad")
+	// bi-directional many-to-one association to AnotoPage
+	@OneToMany( mappedBy = "pad" )
 	private List<AnotoPage> anotoPages;
 
-	//bi-directional many-to-one association to AnotoForm
-    @ManyToOne
-	@JoinColumn(name="frm_id_in", nullable=false, insertable=false, updatable=false)
-	private AnotoForm anotoForm;
+	// bi-directional many-to-one association to AnotoForm
+	@ManyToOne
+	@JoinColumn( name = "frm_id_in", nullable = false, insertable = false, updatable = false )
+	private AnotoForm form;
 
-    public Pad() {
-    }
+	@OneToOne
+	@JoinColumn( name = "pad_id_in", referencedColumnName = "med_id_in", nullable = false, insertable = false, updatable = false )
+	private Media media;
 
-	public PadPK getId() {
+	public Pad( )
+	{
+	}
+
+	public PadPK getId( )
+	{
+		if ( getId( ) == null )
+			id = new PadPK( );
 		return this.id;
 	}
 
-	public void setId(PadPK id) {
+	public void setId( PadPK id )
+	{
 		this.id = id;
 	}
-	
-	public Date getPadInsertDt() {
-		return this.padInsertDt;
+
+	public Date getInsertDate( )
+	{
+		return this.insertDate;
 	}
 
-	public void setPadInsertDt(Date padInsertDt) {
-		this.padInsertDt = padInsertDt;
+	public void setInsertDate( Date padInsertDt )
+	{
+		this.insertDate = padInsertDt;
 	}
 
-	public Boolean getPadUniqueBt() {
-		return this.padUniqueBt;
+	public Boolean getUnique( )
+	{
+		return this.unique;
 	}
 
-	public void setPadUniqueBt(Boolean padUniqueBt) {
-		this.padUniqueBt = padUniqueBt;
+	public void setUnique( Boolean padUniqueBt )
+	{
+		this.unique = padUniqueBt;
 	}
 
-	public List<AnotoPage> getAnotoPages() {
+	public List<AnotoPage> getAnotoPages( )
+	{
 		return this.anotoPages;
 	}
 
-	public void setAnotoPages(List<AnotoPage> anotoPages) {
+	public void setAnotoPages( List<AnotoPage> anotoPages )
+	{
 		this.anotoPages = anotoPages;
 	}
-	
-	public AnotoForm getAnotoForm() {
-		return this.anotoForm;
+
+	public AnotoForm getForm( )
+	{
+		return this.form;
 	}
 
-	public void setAnotoForm(AnotoForm anotoForm) {
-		this.anotoForm = anotoForm;
+	public void setForm( AnotoForm anotoForm )
+	{
+		this.form = anotoForm;
 	}
-	
+
+	/**
+	 * @return the media
+	 */
+	public Media getMedia( )
+	{
+		return media;
+	}
+
+	/**
+	 * @param media
+	 *            the media to set
+	 */
+	public void setMedia( Media media )
+	{
+		this.media = media;
+		if ( getMedia( ) != null ) {
+			getId( ).setId( getMedia( ).getId( ) );
+		}
+	}
+
 }

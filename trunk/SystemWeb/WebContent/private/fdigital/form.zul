@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<zk xmlns="http://www.zkoss.org/2005/zul">
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
     <window width="100%" height="100%" closable="true" border="none" title="Cadastro de Formulários da Caneta Digital" 
     	apply = "br.com.mcampos.web.fdigital.controller.AnotoFormController">
         <borderlayout>
@@ -7,9 +7,8 @@
                 <div width="100%" height="100%" id="divListBoxRecord">
 	                <listbox vflex="true" autopaging="true" id="listTable" multiple="true" mold="paging">
 	                    <listhead>
-	                        <listheader align="center" label="Código" id="lblId" width="80px" value="id"/>
-	                        <listheader align="left" label="Descrição" id="lblDescription" sort="auto" value="description"/>
-	                        <listheader align="left" label="Abrev." id="lblAbbrev" sort="auto" width="60px" value="abreviation"/>
+	                        <listheader align="left" label="Aplicação" sort="auto" width="160px" value="application"/>
+	                        <listheader align="left" label="Descrição" sort="auto" value="description"/>
 	                    </listhead>
 	                </listbox>
                 </div>
@@ -59,9 +58,9 @@
                                 <column align="left"/>
                             </columns>
                             <rows>
-                                <row>
+                                <row visible="false">
                                     <label id="labelEditCode" value="##"/>
-                                    <intbox id="id" width="99%" value="1"/>
+                                    <intbox id="id" width="99%" value="1" />
                                 </row>
                                 <row>
                                     <label id="labelEditApplication" value="##"/>
@@ -69,7 +68,7 @@
                                 </row>
                                 <row>
                                     <label id="labelEditDescription" value="##"/>
-                                    <textbox id="description" width="99%" value=""/>
+                                    <textbox id="description" width="99%" value="" use="br.com.mcampos.web.core.dbwidgets.DBTextbox" />
                                 </row>
                                 <row>
                                     <label id="labelEditIcrImage" value="##"/>
@@ -92,22 +91,22 @@
                         <panelchildren>
                             <tabbox id="associationTab">
                                 <tabs>
-                                    <tab label="##" id="tabPadFile"/>
-                                    <tab label="##" id="tabFormUsers"/>
-                                    <tab label="##" id="tabPen"/>
-                                    <tab label="##" id="tabOtherFiles"/>
+                                    <tab label="Arquivos PAD" id="tabPadFile"/>
+                                    <tab label="Usuários" id="tabFormUsers"/>
+                                    <tab label="Canetas" id="tabPen"/>
+                                    <tab label="Outros Arquivos" id="tabOtherFiles"/>
                                 </tabs>
                                 <tabpanels>
                                     <tabpanel>
                                         <toolbar>
-                                            <toolbarbutton id="btnAddAttach" label="##" disabled="true" upload="true,native"
+                                            <toolbarbutton id="btnAddAttach" label="Novo Arquivo PAD" disabled="true" upload="true,native"
                                                            image="/img/icontexto-webdev-add-016x016.png"/>
-                                            <toolbarbutton id="btnProperties" label="##" disabled="true"
+                                            <toolbarbutton id="btnProperties" label="Propriedades" disabled="true"
                                                            image="/img/icontexto-webdev-alert-016x016.png"/>
-                                            <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="##"
+                                            <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="Exportar PAD"
                                                            id="btnExport"/>
                                             <separator/>
-                                            <toolbarbutton id="btnRemoveAttach" label="##" disabled="true"
+                                            <toolbarbutton id="btnRemoveAttach" label="Excluir PAD Selecionado" disabled="true"
                                                            image="/img/icontexto-webdev-remove-016x016.png"/>
                                         </toolbar>
                                         <listbox id="listAttachs" fixedLayout="true" height="200px">

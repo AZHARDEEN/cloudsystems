@@ -1,5 +1,7 @@
 package br.com.mcampos.ejb.fdigital.form;
 
+import java.util.Date;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -16,5 +18,15 @@ public class AnotoFormSessionBean extends SimpleSessionBean<AnotoForm> implement
 	protected Class<AnotoForm> getEntityClass( )
 	{
 		return AnotoForm.class;
+	}
+
+	@Override
+	public AnotoForm merge( AnotoForm newEntity )
+	{
+		if ( newEntity.getId( ) == null || newEntity.getId( ).equals( 0 ) )
+			newEntity.setId( getNextId( ) );
+		if ( newEntity.getFrmInsertDt( ) == null )
+			newEntity.setFrmInsertDt( new Date( ) );
+		return super.merge( newEntity );
 	}
 }

@@ -13,24 +13,24 @@ public class PadPK implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="frm_id_in", unique=true, nullable=false)
-	private Integer frmIdIn;
+	private Integer formId;
 
 	@Column(name="pad_id_in", unique=true, nullable=false)
-	private Integer padIdIn;
+	private Integer id;
 
     public PadPK() {
     }
-	public Integer getFrmIdIn() {
-		return this.frmIdIn;
+	public Integer getFormId() {
+		return this.formId;
 	}
-	public void setFrmIdIn(Integer frmIdIn) {
-		this.frmIdIn = frmIdIn;
+	public void setFormId(Integer frmIdIn) {
+		this.formId = frmIdIn;
 	}
-	public Integer getPadIdIn() {
-		return this.padIdIn;
+	public Integer getId() {
+		return this.id;
 	}
-	public void setPadIdIn(Integer padIdIn) {
-		this.padIdIn = padIdIn;
+	public void setId(Integer padIdIn) {
+		this.id = padIdIn;
 	}
 
 	public boolean equals(Object other) {
@@ -42,16 +42,16 @@ public class PadPK implements Serializable {
 		}
 		PadPK castOther = (PadPK)other;
 		return 
-			this.frmIdIn.equals(castOther.frmIdIn)
-			&& this.padIdIn.equals(castOther.padIdIn);
+			this.formId.equals(castOther.formId)
+			&& this.id.equals(castOther.id);
 
     }
     
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.frmIdIn.hashCode();
-		hash = hash * prime + this.padIdIn.hashCode();
+		hash = hash * prime + this.formId.hashCode();
+		hash = hash * prime + this.id.hashCode();
 		
 		return hash;
     }
