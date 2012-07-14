@@ -5,8 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -14,7 +13,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import br.com.mcampos.ejb.core.SimpleTable;
-import br.com.mcampos.ejb.fdigital.AnotoFormUser;
 import br.com.mcampos.ejb.fdigital.Pad;
 
 /**
@@ -28,35 +26,30 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue( strategy = GenerationType.AUTO )
 	@Column( name = "frm_id_in", unique = true, nullable = false )
 	private Integer id;
 
 	@Column( name = "frm_concat_pgc_bt" )
-	private Boolean frmConcatPgcBt;
+	private Boolean concatenate;
 
 	@Column( name = "frm_description_ch", length = 64 )
 	private String descriptions;
 
 	@Column( name = "frm_icr_image_bt" )
-	private Boolean frmIcrImageBt;
+	private Boolean icr;
 
 	@Column( name = "frm_image_filepath_ch", length = 1024 )
-	private String frmImageFilepathCh;
+	private String imagePath;
 
 	@Temporal( TemporalType.TIMESTAMP )
 	@Column( name = "frm_insert_dt", nullable = false )
 	private Date insertDate;
 
 	@Column( name = "frm_ip_ch", nullable = false, length = 16 )
-	private String frmIpCh;
-
-	// bi-directional many-to-one association to AnotoFormUser
-	@OneToMany( mappedBy = "anotoForm" )
-	private List<AnotoFormUser> anotoFormUsers;
+	private String application;
 
 	// bi-directional many-to-one association to Pad
-	@OneToMany( mappedBy = "anotoForm" )
+	@OneToMany( mappedBy = "form", fetch = FetchType.EAGER )
 	private List<Pad> pads;
 
 	public AnotoForm( )
@@ -75,14 +68,14 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 		this.id = frmIdIn;
 	}
 
-	public Boolean getFrmConcatPgcBt( )
+	public Boolean getConcatenate( )
 	{
-		return this.frmConcatPgcBt;
+		return this.concatenate;
 	}
 
-	public void setFrmConcatPgcBt( Boolean frmConcatPgcBt )
+	public void setConcatenate( Boolean frmConcatPgcBt )
 	{
-		this.frmConcatPgcBt = frmConcatPgcBt;
+		this.concatenate = frmConcatPgcBt;
 	}
 
 	@Override
@@ -97,24 +90,24 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 		this.descriptions = frmDescriptionCh;
 	}
 
-	public Boolean getFrmIcrImageBt( )
+	public Boolean getIcr( )
 	{
-		return this.frmIcrImageBt;
+		return this.icr;
 	}
 
-	public void setFrmIcrImageBt( Boolean frmIcrImageBt )
+	public void setIcr( Boolean frmIcrImageBt )
 	{
-		this.frmIcrImageBt = frmIcrImageBt;
+		this.icr = frmIcrImageBt;
 	}
 
-	public String getFrmImageFilepathCh( )
+	public String getImagePath( )
 	{
-		return this.frmImageFilepathCh;
+		return this.imagePath;
 	}
 
-	public void setFrmImageFilepathCh( String frmImageFilepathCh )
+	public void setImagePath( String frmImageFilepathCh )
 	{
-		this.frmImageFilepathCh = frmImageFilepathCh;
+		this.imagePath = frmImageFilepathCh;
 	}
 
 	public Date getFrmInsertDt( )
@@ -127,24 +120,20 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 		this.insertDate = frmInsertDt;
 	}
 
-	public String getFrmIpCh( )
+	public String getApplication( )
 	{
-		return this.frmIpCh;
+		return this.application;
 	}
 
-	public void setFrmIpCh( String frmIpCh )
+	public void setApplication( String frmIpCh )
 	{
-		this.frmIpCh = frmIpCh;
+		this.application = frmIpCh;
 	}
 
-	public List<AnotoFormUser> getAnotoFormUsers( )
+	@Override
+	public String getField( Integer field )
 	{
-		return this.anotoFormUsers;
-	}
-
-	public void setAnotoFormUsers( List<AnotoFormUser> anotoFormUsers )
-	{
-		this.anotoFormUsers = anotoFormUsers;
+		return super.getField( field );
 	}
 
 	public List<Pad> getPads( )
