@@ -7,5 +7,5 @@ import br.com.mcampos.ejb.core.BaseSessionInterface;
 @Remote
 public interface AnotoFormSession extends BaseSessionInterface<AnotoForm>
 {
-
+	AnotoForm getRelationships( AnotoForm f );
 }

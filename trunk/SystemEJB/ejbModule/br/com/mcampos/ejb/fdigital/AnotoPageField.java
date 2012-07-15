@@ -56,7 +56,7 @@ public class AnotoPageField implements Serializable {
 		@JoinColumn(name="frm_id_in", referencedColumnName="frm_id_in", nullable=false, insertable=false, updatable=false),
 		@JoinColumn(name="pad_id_in", referencedColumnName="pad_id_in", nullable=false, insertable=false, updatable=false)
 		})
-	private AnotoPage anotoPage;
+	private AnotoPage page;
 
     public AnotoPageField() {
     }
@@ -157,12 +157,12 @@ public class AnotoPageField implements Serializable {
 		this.fltIdIn = fltIdIn;
 	}
 
-	public AnotoPage getAnotoPage() {
-		return this.anotoPage;
+	public AnotoPage getPage() {
+		return this.page;
 	}
 
-	public void setAnotoPage(AnotoPage anotoPage) {
-		this.anotoPage = anotoPage;
+	public void setPage(AnotoPage anotoPage) {
+		this.page = anotoPage;
 	}
 	
 }

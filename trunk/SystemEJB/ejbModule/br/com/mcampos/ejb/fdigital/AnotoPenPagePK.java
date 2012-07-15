@@ -13,24 +13,24 @@ public class AnotoPenPagePK implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="frm_id_in", unique=true, nullable=false)
-	private Integer frmIdIn;
+	private Integer formId;
 
 	@Column(name="apg_id_ch", unique=true, nullable=false, length=16)
 	private String apgIdCh;
 
 	@Column(name="pad_id_in", unique=true, nullable=false)
-	private Integer padIdIn;
+	private Integer padId;
 
 	@Column(name="pdp_seq_in", unique=true, nullable=false)
-	private Integer pdpSeqIn;
+	private Integer sequence;
 
     public AnotoPenPagePK() {
     }
-	public Integer getFrmIdIn() {
-		return this.frmIdIn;
+	public Integer getFormId() {
+		return this.formId;
 	}
-	public void setFrmIdIn(Integer frmIdIn) {
-		this.frmIdIn = frmIdIn;
+	public void setFormId(Integer frmIdIn) {
+		this.formId = frmIdIn;
 	}
 	public String getApgIdCh() {
 		return this.apgIdCh;
@@ -38,17 +38,17 @@ public class AnotoPenPagePK implements Serializable {
 	public void setApgIdCh(String apgIdCh) {
 		this.apgIdCh = apgIdCh;
 	}
-	public Integer getPadIdIn() {
-		return this.padIdIn;
+	public Integer getPadId() {
+		return this.padId;
 	}
-	public void setPadIdIn(Integer padIdIn) {
-		this.padIdIn = padIdIn;
+	public void setPadId(Integer padIdIn) {
+		this.padId = padIdIn;
 	}
-	public Integer getPdpSeqIn() {
-		return this.pdpSeqIn;
+	public Integer getSequence() {
+		return this.sequence;
 	}
-	public void setPdpSeqIn(Integer pdpSeqIn) {
-		this.pdpSeqIn = pdpSeqIn;
+	public void setSequence(Integer pdpSeqIn) {
+		this.sequence = pdpSeqIn;
 	}
 
 	public boolean equals(Object other) {
@@ -60,20 +60,20 @@ public class AnotoPenPagePK implements Serializable {
 		}
 		AnotoPenPagePK castOther = (AnotoPenPagePK)other;
 		return 
-			this.frmIdIn.equals(castOther.frmIdIn)
+			this.formId.equals(castOther.formId)
 			&& this.apgIdCh.equals(castOther.apgIdCh)
-			&& this.padIdIn.equals(castOther.padIdIn)
-			&& this.pdpSeqIn.equals(castOther.pdpSeqIn);
+			&& this.padId.equals(castOther.padId)
+			&& this.sequence.equals(castOther.sequence);
 
     }
     
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.frmIdIn.hashCode();
+		hash = hash * prime + this.formId.hashCode();
 		hash = hash * prime + this.apgIdCh.hashCode();
-		hash = hash * prime + this.padIdIn.hashCode();
-		hash = hash * prime + this.pdpSeqIn.hashCode();
+		hash = hash * prime + this.padId.hashCode();
+		hash = hash * prime + this.sequence.hashCode();
 		
 		return hash;
     }

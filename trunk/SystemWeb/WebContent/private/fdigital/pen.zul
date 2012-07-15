@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+    <window width="100%" height="100%" closable="true" border="none" title="Cadastro de Canetas" 
+    	apply = "br.com.mcampos.web.fdigital.controller.AnotoPenController">
+	    <borderlayout>
+	        <center flex="true">
+	        	<div>
+	        		<paging />
+		            <listbox id="listTable" multiple="true" emptyMessage="Não Existem Canetas Cadastradas" rows="19" >
+		                <listhead>
+		                    <listheader align="left" label="Código" width="140px" value="id"/>
+		                    <listheader align="left" label="Descrição" sort="auto" value="description"/>
+		                </listhead>
+		            </listbox>
+	            </div>
+	        </center>
+	        <east autoscroll="true" splittable="true" width="50%">
+	            <div id="divEast">
+	                <div id="divInfo">
+	                    <grid fixedLayout="true">
+	                        <columns>
+	                            <column label="Campo" width="150px"/>
+	                            <column label="Valor"/>
+	                        </columns>
+	                        <rows>
+	                            <row>
+		                            <label value="Código"/>
+		                            <label id="infoId" width="100%"/>
+	                        	</row>
+	                            <row>
+		                            <label value="Descrição"/>
+		                            <label id="infoDescription" width="100%"/>
+	                        	</row>
+	                        </rows>
+	                    </grid>
+	                <separator/>
+	                <div fulfill="=/templates/crud_buttons.zul"></div>
+	                </div>
+	                <div id="divEdit" visible="false">
+	                    <grid fixedLayout="true">
+	                        <columns>
+	                            <column label="Campo" width="150px"/>
+	                            <column label="Valor"/>
+	                        </columns>
+	                        <rows>
+	                            <row>
+	                            <label value="Código"/>
+	                            <intbox id="id" use="br.com.mcampos.web.core.dbwidgets.DBIntbox" PrimaryKey="true"/>
+	                        </row>
+	                            <row>
+	                            <label value="Descrição"/>
+	                            <textbox id="description" width="100%" use="br.com.mcampos.web.core.dbwidgets.DBTextbox"/>
+	                        </row>
+	                        </rows>
+	                    </grid>
+	                <separator/>
+	                <div fulfill="=/templates/save_cancel.zul"></div>
+	                </div>
+	            </div>
+	        </east>
+	    </borderlayout>
+	</window>
+</zk>

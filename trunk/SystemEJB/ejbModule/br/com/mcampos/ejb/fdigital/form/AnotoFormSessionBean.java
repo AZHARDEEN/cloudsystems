@@ -23,10 +23,27 @@ public class AnotoFormSessionBean extends SimpleSessionBean<AnotoForm> implement
 	@Override
 	public AnotoForm merge( AnotoForm newEntity )
 	{
-		if ( newEntity.getId( ) == null || newEntity.getId( ).equals( 0 ) )
+		if ( newEntity.getId( ) == null || newEntity.getId( ).equals( 0 ) ) {
 			newEntity.setId( getNextId( ) );
-		if ( newEntity.getFrmInsertDt( ) == null )
+		}
+		if ( newEntity.getFrmInsertDt( ) == null ) {
 			newEntity.setFrmInsertDt( new Date( ) );
+		}
 		return super.merge( newEntity );
+	}
+
+	@Override
+	public AnotoForm getRelationships( AnotoForm f )
+	{
+		if ( f == null ) {
+			return null;
+		}
+		f = get( f.getId( ) );
+		if ( f == null ) {
+			return null;
+		}
+		f.getPads( ).size( );
+		f.getClients( ).size( );
+		return f;
 	}
 }

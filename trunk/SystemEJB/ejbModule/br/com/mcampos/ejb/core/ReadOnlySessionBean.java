@@ -15,6 +15,7 @@ import javax.persistence.Query;
 
 import br.com.mcampos.ejb.core.entity.ProgramException;
 import br.com.mcampos.ejb.core.entity.ProgramExceptionTrace;
+import br.com.mcampos.sysutils.SysUtils;
 
 public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface<T>
 {
@@ -64,6 +65,11 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		return entity;
 	}
 
+	protected String allQueryOrderByClause( String entityAlias )
+	{
+		return null;
+	}
+
 	protected Query getAllQuery( String whereClause )
 	{
 		String sqlQuery;
@@ -76,6 +82,16 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			}
 			else {
 				sqlQuery += " where " + whereClause;
+			}
+		}
+		String orderBy = allQueryOrderByClause( "t" );
+		if ( SysUtils.isEmpty( orderBy ) == false ) {
+			orderBy = orderBy.toLowerCase( );
+			if ( orderBy.indexOf( "order by" ) >= 0 ) {
+				sqlQuery += orderBy;
+			}
+			else {
+				sqlQuery += " order by " + orderBy;
 			}
 		}
 		Query query = getEntityManager( ).createQuery( sqlQuery );
