@@ -135,14 +135,7 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 	@Override
 	protected Component createComponents( String uri, Component parent, Map<?, ?> parameters )
 	{
-		try {
-			return super.createComponents( uri, parent, parameters );
-		}
-		catch ( Exception e )
-		{
-			getSession( ).storeException( e );
-			return null;
-		}
+		return super.createComponents( uri, parent, parameters );
 	}
 
 }

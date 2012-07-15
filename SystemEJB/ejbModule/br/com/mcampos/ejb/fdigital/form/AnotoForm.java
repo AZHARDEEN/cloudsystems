@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -14,6 +13,7 @@ import javax.persistence.TemporalType;
 
 import br.com.mcampos.ejb.core.SimpleTable;
 import br.com.mcampos.ejb.fdigital.Pad;
+import br.com.mcampos.ejb.fdigital.form.user.AnotoFormUser;
 
 /**
  * The persistent class for the anoto_form database table.
@@ -49,8 +49,12 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 	private String application;
 
 	// bi-directional many-to-one association to Pad
-	@OneToMany( mappedBy = "form", fetch = FetchType.EAGER )
+	@OneToMany( mappedBy = "form" )
 	private List<Pad> pads;
+
+	// bi-directional many-to-one association to Pad
+	@OneToMany( mappedBy = "form" )
+	private List<AnotoFormUser> clients;
 
 	public AnotoForm( )
 	{
@@ -144,5 +148,15 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 	public void setPads( List<Pad> pads )
 	{
 		this.pads = pads;
+	}
+
+	public List<AnotoFormUser> getClients( )
+	{
+		return this.clients;
+	}
+
+	public void setClients( List<AnotoFormUser> clients )
+	{
+		this.clients = clients;
 	}
 }

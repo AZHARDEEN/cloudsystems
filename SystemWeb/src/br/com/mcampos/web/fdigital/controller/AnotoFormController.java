@@ -1,6 +1,7 @@
 package br.com.mcampos.web.fdigital.controller;
 
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
@@ -12,8 +13,10 @@ import org.zkoss.zul.Window;
 import br.com.mcampos.ejb.fdigital.Pad;
 import br.com.mcampos.ejb.fdigital.form.AnotoForm;
 import br.com.mcampos.ejb.fdigital.form.AnotoFormSession;
+import br.com.mcampos.ejb.fdigital.form.user.AnotoFormUser;
 import br.com.mcampos.web.core.SimpleTableController;
 import br.com.mcampos.web.core.listbox.BasicListRenderer;
+import br.com.mcampos.web.fdigital.renderer.ClientListRenderer;
 import br.com.mcampos.web.fdigital.renderer.PadListRenderer;
 
 public class AnotoFormController extends SimpleTableController<AnotoFormSession, AnotoForm>
@@ -47,6 +50,18 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 	@Wire
 	private Listbox listAttachs;
 
+	@Wire
+	private Listbox listUsers;
+
+	@Wire
+	private Button btnAddAttach;
+
+	@Wire
+	private Button btnAddUser;
+
+	@Wire
+	private Button btnAddAttachOther;
+
 	@Override
 	protected Class<AnotoFormSession> getSessionClass( )
 	{
@@ -57,6 +72,7 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 	protected void showFields( AnotoForm entity )
 	{
 		if ( entity != null ) {
+			entity = getSession( ).getRelationships( entity );
 			this.recordIP.setValue( entity.getApplication( ) );
 			this.recordImagePath.setValue( entity.getImagePath( ) );
 			this.recordIcrImage.setValue( entity.getIcr( ).toString( ) );
@@ -64,9 +80,11 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 
 			this.application.setText( entity.getApplication( ) );
 			this.editIcrImage.setChecked( entity.getIcr( ) );
-			editConcatPgc.setChecked( entity.getConcatenate( ) );
-			editImagePath.setText( entity.getImagePath( ) );
-			listAttachs.setModel( new ListModelList<Pad>( entity.getPads( ) ) );
+			this.editConcatPgc.setChecked( entity.getConcatenate( ) );
+			this.editImagePath.setText( entity.getImagePath( ) );
+
+			this.listAttachs.setModel( new ListModelList<Pad>( entity.getPads( ) ) );
+			this.listUsers.setModel( new ListModelList<AnotoFormUser>( entity.getClients( ) ) );
 		}
 		else {
 			this.recordIP.setValue( "" );
@@ -76,12 +94,16 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 
 			this.application.setRawValue( "" );
 			this.editIcrImage.setChecked( false );
-			editConcatPgc.setChecked( false );
-			editImagePath.setRawValue( "" );
-			listAttachs.setModel( new ListModelList<Pad>( ) );
+			this.editConcatPgc.setChecked( false );
+			this.editImagePath.setRawValue( "" );
+			this.listAttachs.setModel( new ListModelList<Pad>( ) );
+			this.listUsers.setModel( new ListModelList<AnotoFormUser>( ) );
 
 		}
 		super.showFields( entity );
+		this.btnAddAttach.setDisabled( entity == null );
+		this.btnAddUser.setDisabled( entity == null );
+		this.btnAddAttachOther.setDisabled( entity == null );
 	}
 
 	@Override
@@ -89,10 +111,10 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 	{
 		super.updateTargetEntity( target );
 		if ( target != null ) {
-			target.setApplication( application.getText( ) );
-			target.setConcatenate( editConcatPgc.isChecked( ) );
-			target.setIcr( editIcrImage.isChecked( ) );
-			target.setImagePath( editImagePath.getText( ) );
+			target.setApplication( this.application.getText( ) );
+			target.setConcatenate( this.editConcatPgc.isChecked( ) );
+			target.setIcr( this.editIcrImage.isChecked( ) );
+			target.setImagePath( this.editImagePath.getText( ) );
 		}
 	}
 
@@ -112,7 +134,16 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		listAttachs.setItemRenderer( new PadListRenderer( ) );
+		this.listAttachs.setItemRenderer( new PadListRenderer( ) );
+		this.listUsers.setItemRenderer( new ClientListRenderer( ) );
 	}
 
+	@Override
+	public void onRefresh( )
+	{
+		super.onRefresh( );
+		this.btnAddAttach.setDisabled( true );
+		this.btnAddUser.setDisabled( true );
+		this.btnAddAttachOther.setDisabled( true );
+	}
 }

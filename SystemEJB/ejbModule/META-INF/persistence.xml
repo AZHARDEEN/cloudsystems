@@ -63,13 +63,13 @@
     <class>br.com.mcampos.ejb.security.lastusedpwd.LastUsedPassword</class>
     <class>br.com.mcampos.ejb.security.lastusedpwd.LastUsedPasswordPK</class>
     <class>br.com.mcampos.ejb.fdigital.form.AnotoForm</class>
-    <class>br.com.mcampos.ejb.fdigital.AnotoFormUser</class>
-    <class>br.com.mcampos.ejb.fdigital.AnotoFormUserPK</class>
+    <class>br.com.mcampos.ejb.fdigital.form.user.AnotoFormUser</class>
+    <class>br.com.mcampos.ejb.fdigital.form.user.AnotoFormUserPK</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPage</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPagePK</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPageField</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPageFieldPK</class>
-    <class>br.com.mcampos.ejb.fdigital.AnotoPen</class>
+    <class>br.com.mcampos.ejb.fdigital.pen.AnotoPen</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPenPage</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPenPagePK</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPenUser</class>
@@ -91,10 +91,9 @@
     <class>br.com.mcampos.ejb.fdigital.PgcProperty</class>
     <class>br.com.mcampos.ejb.fdigital.PgcPropertyPK</class>
     <class>br.com.mcampos.ejb.fdigital.PgcStatus</class>
+    <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
-    	<property name="eclipselink.target-database" value="PostgreSQL"/>
-    	<property name="eclipselink.target-server" value="JBoss"/>
-    	<property name="eclipselink.jdbc.native-sql" value="true"/>
+    	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
     </properties>
   </persistence-unit>
 </persistence>

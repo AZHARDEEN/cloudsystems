@@ -17,6 +17,7 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Window;
 import org.zkoss.zul.event.PagingEvent;
+import org.zkoss.zul.ext.Paginal;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
@@ -32,7 +33,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 	Listbox listbox;
 
 	@Wire( value = "paging" )
-	private List<Paging> pagings;
+	private List<Paginal> pagings;
 
 	protected abstract void showFields( ENTITY targetEntity );
 
@@ -51,8 +52,12 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 		return this.listbox;
 	}
 
-	protected List<Paging> getPaging( )
+	protected List<Paginal> getPaging( )
 	{
+		if ( this.pagings == null && getListbox( ).getPaginal( ) != null ) {
+			this.pagings = new ArrayList<Paginal>( );
+			this.pagings.add( getListbox( ).getPaginal( ) );
+		}
 		return this.pagings;
 	}
 
@@ -62,9 +67,18 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 		super.doAfterCompose( comp );
 		setupComparator( );
 		getListbox( ).setItemRenderer( getListRenderer( ) );
-		initPaging( 0, ListboxParams.maxListBoxPageSize );
+		initPaging( 0, getRows( ) );
 		loadPage( 0 );
+	}
 
+	private int getRows( )
+	{
+		int rows = getListbox( ).getRows( );
+		if ( rows == 0 ) {
+			rows = ListboxParams.maxListBoxPageSize;
+			getListbox( ).setRows( rows );
+		}
+		return rows;
 	}
 
 	protected void initPaging( int page, int rows )
@@ -75,15 +89,17 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 			totalSize = getPagingSession( ).count( );
 			if ( totalSize >= rows ) {
 				setPagingEventListener( );
-				for ( Paging item : getPaging( ) ) {
+				for ( Paginal item : getPaging( ) ) {
 					item.setTotalSize( totalSize );
 					item.setActivePage( page );
 					item.setPageSize( rows );
 				}
 			}
 			else {
-				for ( Paging item : getPaging( ) ) {
-					item.setVisible( false );
+				for ( Paginal item : getPaging( ) ) {
+					if ( item instanceof Paging ) {
+						( (Paging) item ).setVisible( false );
+					}
 				}
 				getListbox( ).setModel( new ListModelList<ENTITY>( getList( ) ) );
 			}
@@ -176,6 +192,13 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 	protected void onCancel( )
 	{
 		disableListBox( false );
+		List<ENTITY> items = getSelectedRecords( );
+		if ( items != null ) {
+			showFields( items.get( 0 ) );
+		}
+		else {
+			showFields( null );
+		}
 	}
 
 	@Override
@@ -242,7 +265,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 
 	protected void setPagingEventListener( )
 	{
-		for ( Paging item : getPaging( ) ) {
+		for ( Paginal item : getPaging( ) ) {
 			item.addEventListener( "onPaging", getEventListener( ) );
 		}
 
@@ -250,7 +273,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 
 	private void setActivePage( int activePage )
 	{
-		for ( Paging item : getPaging( ) ) {
+		for ( Paginal item : getPaging( ) ) {
 			item.setActivePage( activePage );
 		}
 	}
@@ -269,7 +292,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 
 	protected Collection<ENTITY> getAll( int activePage )
 	{
-		return getPagingSession( ).getAll( null, new DBPaging( activePage, ListboxParams.maxListBoxPageSize ) );
+		return getPagingSession( ).getAll( null, new DBPaging( activePage, getRows( ) ) );
 	}
 
 	private EventListener<PagingEvent> getEventListener( )
