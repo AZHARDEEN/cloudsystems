@@ -173,6 +173,7 @@
                                 <listbox id="listAttachsOther" rows="13" autopaging="true" mold="paging">
                                     <listhead sizable="true">
                                         <listheader align="left" label="##" id="listHeaderNameOther"/>
+                                        <listheader align="left" label="Tamanho(Bytes)" />
                                     </listhead>
                                 </listbox>
                             </tabpanel>

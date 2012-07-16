@@ -91,6 +91,8 @@
     <class>br.com.mcampos.ejb.fdigital.PgcProperty</class>
     <class>br.com.mcampos.ejb.fdigital.PgcPropertyPK</class>
     <class>br.com.mcampos.ejb.fdigital.PgcStatus</class>
+    <class>br.com.mcampos.ejb.fdigital.form.media.FormMedia</class>
+    <class>br.com.mcampos.ejb.fdigital.form.media.FormMediaPK</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

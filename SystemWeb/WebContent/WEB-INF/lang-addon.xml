@@ -12,4 +12,13 @@
         <extends>textbox</extends>
         <component-class>br.com.mcampos.web.core.dbwidgets.DBIntbox</component-class>
     </component>
+    <component>
+        <component-name>button</component-name>
+        <extends>button</extends>
+        <property>
+            <property-name>autodisable</property-name>
+            <property-value>self</property-value>
+        </property>
+    </component>
 </language-addon>
+

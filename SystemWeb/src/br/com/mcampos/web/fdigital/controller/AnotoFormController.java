@@ -1,5 +1,9 @@
 package br.com.mcampos.web.fdigital.controller;
 
+import java.io.IOException;
+
+import org.zkoss.zk.ui.event.UploadEvent;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Checkbox;
@@ -10,13 +14,17 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.ejb.fdigital.Pad;
 import br.com.mcampos.ejb.fdigital.form.AnotoForm;
 import br.com.mcampos.ejb.fdigital.form.AnotoFormSession;
+import br.com.mcampos.ejb.fdigital.form.media.FormMedia;
 import br.com.mcampos.ejb.fdigital.form.user.AnotoFormUser;
 import br.com.mcampos.web.core.SimpleTableController;
+import br.com.mcampos.web.core.UploadMedia;
 import br.com.mcampos.web.core.listbox.BasicListRenderer;
 import br.com.mcampos.web.fdigital.renderer.ClientListRenderer;
+import br.com.mcampos.web.fdigital.renderer.FormMediaListRenderer;
 import br.com.mcampos.web.fdigital.renderer.PadListRenderer;
 
 public class AnotoFormController extends SimpleTableController<AnotoFormSession, AnotoForm>
@@ -49,6 +57,9 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 
 	@Wire
 	private Listbox listAttachs;
+
+	@Wire
+	private Listbox listAttachsOther;
 
 	@Wire
 	private Listbox listUsers;
@@ -85,6 +96,7 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 
 			this.listAttachs.setModel( new ListModelList<Pad>( entity.getPads( ) ) );
 			this.listUsers.setModel( new ListModelList<AnotoFormUser>( entity.getClients( ) ) );
+			listAttachsOther.setModel( new ListModelList<FormMedia>( entity.getMedias( ) ) );
 		}
 		else {
 			this.recordIP.setValue( "" );
@@ -98,6 +110,7 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 			this.editImagePath.setRawValue( "" );
 			this.listAttachs.setModel( new ListModelList<Pad>( ) );
 			this.listUsers.setModel( new ListModelList<AnotoFormUser>( ) );
+			listAttachsOther.setModel( new ListModelList<FormMedia>( ) );
 
 		}
 		super.showFields( entity );
@@ -136,6 +149,7 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 		super.doAfterCompose( comp );
 		this.listAttachs.setItemRenderer( new PadListRenderer( ) );
 		this.listUsers.setItemRenderer( new ClientListRenderer( ) );
+		listAttachsOther.setItemRenderer( new FormMediaListRenderer( ) );
 	}
 
 	@Override
@@ -145,5 +159,43 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 		this.btnAddAttach.setDisabled( true );
 		this.btnAddUser.setDisabled( true );
 		this.btnAddAttachOther.setDisabled( true );
+	}
+
+	@Listen( "onUpload=button" )
+	public void onUpload( UploadEvent evt )
+	{
+		if ( evt != null && getListbox( ).getSelectedItem( ) != null ) {
+			try {
+				MediaDTO m = UploadMedia.getMedia( evt.getMedia( ) );
+				processUpload( m );
+			} catch( IOException e ) {
+				e.printStackTrace( );
+			}
+			evt.stopPropagation( );
+		}
+	}
+
+	private void processUpload( MediaDTO m )
+	{
+		if ( m == null )
+			return;
+		if ( m.getFormat( ).equalsIgnoreCase( "PAD" ) ) {
+			uploadPADFile( m );
+		}
+		else
+			uploadOtherFile( m );
+	}
+
+	private void uploadPADFile( MediaDTO m )
+	{
+		AnotoForm form = getListbox( ).getSelectedItem( ).getValue( );
+		getSession( ).add( form, m );
+
+	}
+
+	private void uploadOtherFile( MediaDTO m )
+	{
+		AnotoForm form = getListbox( ).getSelectedItem( ).getValue( );
+		getSession( ).add( form, m );
 	}
 }
