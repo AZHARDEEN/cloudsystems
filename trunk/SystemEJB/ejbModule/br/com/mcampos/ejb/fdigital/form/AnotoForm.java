@@ -13,7 +13,9 @@ import javax.persistence.TemporalType;
 
 import br.com.mcampos.ejb.core.SimpleTable;
 import br.com.mcampos.ejb.fdigital.Pad;
+import br.com.mcampos.ejb.fdigital.form.media.FormMedia;
 import br.com.mcampos.ejb.fdigital.form.user.AnotoFormUser;
+import br.com.mcampos.sysutils.SysUtils;
 
 /**
  * The persistent class for the anoto_form database table.
@@ -55,6 +57,10 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 	// bi-directional many-to-one association to Pad
 	@OneToMany( mappedBy = "form" )
 	private List<AnotoFormUser> clients;
+
+	// bi-directional many-to-one association to Pad
+	@OneToMany( mappedBy = "form" )
+	private List<FormMedia> medias;
 
 	public AnotoForm( )
 	{
@@ -159,4 +165,85 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 	{
 		this.clients = clients;
 	}
+
+	/**
+	 * @return the medias
+	 */
+	public List<FormMedia> getMedias( )
+	{
+		return medias;
+	}
+
+	/**
+	 * @param medias
+	 *            the medias to set
+	 */
+	public void setMedias( List<FormMedia> medias )
+	{
+		this.medias = medias;
+	}
+
+	public FormMedia add( FormMedia item )
+	{
+		if ( item != null ) {
+			int nIndex = getMedias( ).indexOf( item );
+			if ( nIndex < 0 ) {
+				getMedias( ).add( item );
+				item.setForm( this );
+			}
+		}
+		return item;
+	}
+
+	public Pad add( Pad item )
+	{
+		if ( item != null ) {
+			int nIndex = getMedias( ).indexOf( item );
+			if ( nIndex < 0 ) {
+				getPads( ).add( item );
+				item.setForm( this );
+			}
+		}
+		return item;
+	}
+
+	public AnotoFormUser add( AnotoFormUser item )
+	{
+		if ( item != null ) {
+			int nIndex = getClients( ).indexOf( item );
+			if ( nIndex < 0 ) {
+				getClients( ).add( item );
+				item.setForm( this );
+			}
+		}
+		return item;
+	}
+
+	public AnotoFormUser remove( AnotoFormUser item )
+	{
+		SysUtils.remove( getClients( ), item );
+		if ( item != null ) {
+			item.setForm( null );
+		}
+		return item;
+	}
+
+	public Pad remove( Pad item )
+	{
+		SysUtils.remove( getClients( ), item );
+		if ( item != null ) {
+			item.setForm( null );
+		}
+		return item;
+	}
+
+	public FormMedia remove( FormMedia item )
+	{
+		SysUtils.remove( getClients( ), item );
+		if ( item != null ) {
+			item.setForm( null );
+		}
+		return item;
+	}
+
 }

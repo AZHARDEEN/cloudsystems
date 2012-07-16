@@ -31,6 +31,14 @@
 		                            <label value="Descrição"/>
 		                            <label id="infoDescription" width="100%"/>
 	                        	</row>
+	                            <row>
+		                            <label value="Pin"/>
+		                            <label id="infoPin" width="100%"/>
+	                        	</row>
+	                            <row>
+		                            <label value="Serial"/>
+		                            <label id="infoSerial" width="100%"/>
+	                        	</row>
 	                        </rows>
 	                    </grid>
 	                <separator/>
@@ -44,13 +52,21 @@
 	                        </columns>
 	                        <rows>
 	                            <row>
-	                            <label value="Código"/>
-	                            <intbox id="id" use="br.com.mcampos.web.core.dbwidgets.DBIntbox" PrimaryKey="true"/>
-	                        </row>
+		                            <label value="Código"/>
+		                            <textbox id="id" use="br.com.mcampos.web.core.dbwidgets.DBTextbox" PrimaryKey="true"/>
+	                        	</row>
 	                            <row>
-	                            <label value="Descrição"/>
-	                            <textbox id="description" width="100%" use="br.com.mcampos.web.core.dbwidgets.DBTextbox"/>
-	                        </row>
+		                            <label value="Descrição"/>
+		                            <textbox id="description" width="100%" use="br.com.mcampos.web.core.dbwidgets.DBTextbox"/>
+		                        </row>
+	                            <row>
+		                            <label value="Pin"/>
+		                            <intbox id="pin" width="100%" use="br.com.mcampos.web.core.dbwidgets.DBIntbox"/>
+		                        </row>
+	                            <row>
+		                            <label value="Serial" />
+		                            <textbox id="serial" width="100%" use="br.com.mcampos.web.core.dbwidgets.DBTextbox"/>
+		                        </row>
 	                        </rows>
 	                    </grid>
 	                <separator/>

@@ -105,6 +105,7 @@ public class Pad implements Serializable
 	public void setForm( AnotoForm anotoForm )
 	{
 		this.form = anotoForm;
+		getId( ).setFormId( getForm( ) != null ? getForm( ).getId( ) : null );
 	}
 
 	/**

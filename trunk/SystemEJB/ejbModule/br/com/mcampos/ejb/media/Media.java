@@ -43,13 +43,18 @@ public class Media implements Serializable
 
 	@Basic( fetch = FetchType.LAZY )
 	@Column( name = "med_object_bin", columnDefinition = "bytea" )
-	private byte[ ] object;
+	private byte[] object;
 
 	@Column( name = "med_size_in", nullable = false )
 	private Integer size;
 
 	public Media( )
 	{
+	}
+
+	public Media( Integer id )
+	{
+		setId( id );
 	}
 
 	public Integer getId( )
@@ -102,12 +107,12 @@ public class Media implements Serializable
 		this.name = medNameCh;
 	}
 
-	public byte[ ] getObject( )
+	public byte[] getObject( )
 	{
 		return this.object;
 	}
 
-	public void setObject( byte[ ] medObjectBin )
+	public void setObject( byte[] medObjectBin )
 	{
 		this.object = medObjectBin;
 		setSize( getObject( ) != null ? getObject( ).length : 0 );
