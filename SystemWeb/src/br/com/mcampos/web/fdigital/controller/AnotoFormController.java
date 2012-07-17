@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jdom2.Element;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -17,10 +18,12 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.ejb.fdigital.AnotoPageField;
 import br.com.mcampos.ejb.fdigital.form.AnotoForm;
 import br.com.mcampos.ejb.fdigital.form.AnotoFormSession;
 import br.com.mcampos.ejb.fdigital.form.media.FormMedia;
 import br.com.mcampos.ejb.fdigital.form.pad.Pad;
+import br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPage;
 import br.com.mcampos.ejb.fdigital.form.user.AnotoFormUser;
 import br.com.mcampos.web.core.SimpleTableController;
 import br.com.mcampos.web.core.UploadMedia;
@@ -86,7 +89,7 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 	protected void showFields( AnotoForm entity )
 	{
 		if ( entity != null ) {
-			entity = getSession( ).getRelationships( entity );
+			entity = lazyInitForm( entity );
 			this.recordIP.setValue( entity.getApplication( ) );
 			this.recordImagePath.setValue( entity.getImagePath( ) );
 			this.recordIcrImage.setValue( entity.getIcr( ).toString( ) );
@@ -170,7 +173,7 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 		if ( evt != null && getListbox( ).getSelectedItem( ) != null ) {
 			try {
 				MediaDTO m = UploadMedia.getMedia( evt.getMedia( ) );
-				processUpload( m );
+				uploadPADFile( m );
 			}
 			catch ( IOException e ) {
 				e.printStackTrace( );
@@ -192,19 +195,66 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 		}
 	}
 
+	private AnotoForm lazyInitForm( AnotoForm form )
+	{
+		if ( form == null ) {
+			return null;
+		}
+		try {
+			if ( form.getPads( ).size( ) > 0 ) {
+				form.getPads( ).get( 0 );
+			}
+			if ( form.getMedias( ).size( ) > 0 ) {
+				form.getMedias( ).get( 0 );
+			}
+			if ( form.getClients( ).size( ) > 0 ) {
+				form.getClients( ).get( 0 );
+			}
+		}
+		catch ( Exception e ) {
+			form = getSession( ).getRelationships( form );
+		}
+		return form;
+	}
+
 	private void uploadPADFile( MediaDTO m )
 	{
 		AnotoForm form = getListbox( ).getSelectedItem( ).getValue( );
+		form = lazyInitForm( form );
+		getListbox( ).getSelectedItem( ).setValue( form );
 		PadFile file = new PadFile( getSession( ), (AnotoForm) getListbox( ).getSelectedItem( ).getValue( ) );
 		if ( file.isPadFile( m ) ) {
-			List<String> pages = new ArrayList<String>( file.getPages( ).size( ) );
-			for ( int nIndex = 0; nIndex < file.getPages( ).size( ); nIndex++ ) {
-				String strPage = file.getPageAddress( file.getPages( ).get( nIndex ) );
-				pages.add( strPage );
+			List<AnotoPage> pages = new ArrayList<AnotoPage>( file.getPages( ).size( ) );
+			for ( Element e : file.getPages( ) ) {
+				AnotoPage page = new AnotoPage( );
+				page.getId( ).setId( file.getPageAddress( e ) );
+				page.setDescription( file.getPageName( e ) );
+				pages.add( page );
+				getFields( file, e, page );
 			}
-			getSession( ).add( form, m, pages );
+			form = getSession( ).add( form, m, pages );
+			this.listAttachs.setModel( new ListModelList<Pad>( form.getPads( ) ) );
 		}
+		else {
+			showErrorMessage( "Erro ao carregar o arquivo " + m.getName( ), "Inserir arquivo PAD" );
+		}
+	}
 
+	private void getFields( PadFile file, Element e, AnotoPage page )
+	{
+		for ( Element item : file.getFields( e ) )
+		{
+			AnotoPageField field = new AnotoPageField( );
+			field.getId( ).setId( file.getProperty( item, "name" ) );
+			field.setTop( Integer.parseInt( file.getProperty( item, "top" ) ) );
+			field.setHeight( Integer.parseInt( file.getProperty( item, "height" ) ) );
+			field.setLeft( Integer.parseInt( file.getProperty( item, "left" ) ) );
+			field.setWidth( Integer.parseInt( file.getProperty( item, "width" ) ) );
+			field.setExport( true );
+			field.setIrc( false );
+			field.setSearch( true );
+			page.add( field );
+		}
 	}
 
 	private void uploadOtherFile( MediaDTO m )

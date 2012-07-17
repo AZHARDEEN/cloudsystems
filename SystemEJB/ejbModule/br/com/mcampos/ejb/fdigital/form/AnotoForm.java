@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.fdigital.form;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -148,6 +149,9 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 
 	public List<Pad> getPads( )
 	{
+		if ( this.pads == null ) {
+			this.pads = new ArrayList<Pad>( );
+		}
 		return this.pads;
 	}
 
@@ -158,6 +162,9 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 
 	public List<AnotoFormUser> getClients( )
 	{
+		if ( this.clients == null ) {
+			this.clients = new ArrayList<AnotoFormUser>( );
+		}
 		return this.clients;
 	}
 
@@ -171,7 +178,10 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 	 */
 	public List<FormMedia> getMedias( )
 	{
-		return medias;
+		if ( this.medias == null ) {
+			this.medias = new ArrayList<FormMedia>( );
+		}
+		return this.medias;
 	}
 
 	/**

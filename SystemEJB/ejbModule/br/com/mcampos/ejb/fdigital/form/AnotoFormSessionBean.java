@@ -13,9 +13,9 @@ import br.com.mcampos.ejb.fdigital.form.media.FormMedia;
 import br.com.mcampos.ejb.fdigital.form.media.FormMediaSessionLocal;
 import br.com.mcampos.ejb.fdigital.form.pad.Pad;
 import br.com.mcampos.ejb.fdigital.form.pad.PadSessionLocal;
+import br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPage;
 import br.com.mcampos.ejb.media.Media;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
-import br.com.mcampos.sysutils.SysUtils;
 
 /**
  * Session Bean implementation class AnotoFormSessionBean
@@ -122,9 +122,9 @@ public class AnotoFormSessionBean extends SimpleSessionBean<AnotoForm> implement
 	}
 
 	@Override
-	public AnotoForm add( AnotoForm f, MediaDTO m, List<String> pages )
+	public AnotoForm add( AnotoForm f, MediaDTO m, List<AnotoPage> pages )
 	{
-		if ( f == null || m == null || m.getObject( ) == null || SysUtils.isEmpty( pages ) ) {
+		if ( f == null || m == null || m.getObject( ) == null ) {
 			return null;
 		}
 		merge( f );

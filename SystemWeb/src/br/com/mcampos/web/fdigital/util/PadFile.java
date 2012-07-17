@@ -33,6 +33,7 @@ public class PadFile
 {
 	private static final String pagesChildName = "pages";
 	private static final String addressAttributeName = "address";
+	private static final String nameAttributeName = "name";
 
 	private static String httpPath;
 	private AnotoForm form;
@@ -50,6 +51,13 @@ public class PadFile
 	{
 		setForm( form );
 		setSession( session );
+		ByteArrayInputStream is = new ByteArrayInputStream( pad );
+		InputStreamReader reader = new InputStreamReader( is );
+		load( reader );
+	}
+
+	private void load( byte[ ] pad ) throws JDOMException, IOException
+	{
 		ByteArrayInputStream is = new ByteArrayInputStream( pad );
 		InputStreamReader reader = new InputStreamReader( is );
 		load( reader );
@@ -82,9 +90,11 @@ public class PadFile
 			return false;
 		}
 		try {
+			load( media.getObject( ) );
 			return register( savePad( media.getName( ), media.getObject( ) ) );
 		}
 		catch ( Exception e ) {
+			e.printStackTrace( );
 			return false;
 		}
 	}
@@ -100,6 +110,16 @@ public class PadFile
 		return pageElement.getAttributeValue( addressAttributeName );
 	}
 
+	public String getPageName( Element pageElement )
+	{
+		return pageElement.getAttributeValue( nameAttributeName );
+	}
+
+	public String getProperty( Element pageElement, String propertyName )
+	{
+		return pageElement.getAttributeValue( propertyName );
+	}
+
 	public List<Element> getPages( )
 	{
 		Element pages;
@@ -110,6 +130,19 @@ public class PadFile
 		else {
 			return Collections.emptyList( );
 		}
+	}
+
+	public List<Element> getFields( Element page )
+	{
+		Element fields;
+		fields = page == null ? null : page.getChild( "drawing_area" );
+		if ( fields != null ) {
+			return fields.getChildren( "user_area" );
+		}
+		else {
+			return Collections.emptyList( );
+		}
+
 	}
 
 	public Element getRoot( )
@@ -169,7 +202,7 @@ public class PadFile
 	{
 		String path = getPadPath( name );
 		File f = new File( path );
-		if ( f.delete( ) == false ) {
+		if ( f.exists( ) && f.delete( ) == false ) {
 			return null;
 		}
 		FileOutputStream writer = new FileOutputStream( f );
