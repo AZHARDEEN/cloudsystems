@@ -13,6 +13,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPage;
 import br.com.mcampos.ejb.fdigital.pen.AnotoPen;
 
 /**

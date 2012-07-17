@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.fdigital;
+package br.com.mcampos.ejb.fdigital.form.pad.page;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,6 +11,10 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import br.com.mcampos.ejb.fdigital.AnotoPageField;
+import br.com.mcampos.ejb.fdigital.AnotoPenPage;
+import br.com.mcampos.ejb.fdigital.form.pad.Pad;
 
 /**
  * The persistent class for the anoto_page database table.
@@ -53,8 +57,16 @@ public class AnotoPage implements Serializable
 	{
 	}
 
+	public AnotoPage( Pad pad )
+	{
+		setPad( pad );
+	}
+
 	public AnotoPagePK getId( )
 	{
+		if ( this.id == null ) {
+			this.id = new AnotoPagePK( );
+		}
 		return this.id;
 	}
 
@@ -91,6 +103,14 @@ public class AnotoPage implements Serializable
 	public void setPad( Pad pad )
 	{
 		this.pad = pad;
+		if ( getPad( ) != null ) {
+			getId( ).setFormId( pad.getForm( ).getId( ) );
+			getId( ).setPadId( pad.getId( ).getId( ) );
+		}
+		else {
+			getId( ).setFormId( null );
+			getId( ).setPadId( null );
+		}
 	}
 
 	public List<AnotoPageField> getFields( )

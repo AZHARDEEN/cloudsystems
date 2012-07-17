@@ -12,8 +12,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import br.com.mcampos.ejb.core.SimpleTable;
-import br.com.mcampos.ejb.fdigital.Pad;
 import br.com.mcampos.ejb.fdigital.form.media.FormMedia;
+import br.com.mcampos.ejb.fdigital.form.pad.Pad;
 import br.com.mcampos.ejb.fdigital.form.user.AnotoFormUser;
 import br.com.mcampos.sysutils.SysUtils;
 

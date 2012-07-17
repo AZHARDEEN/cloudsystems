@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.fdigital.form;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -10,8 +11,11 @@ import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.fdigital.form.media.FormMedia;
 import br.com.mcampos.ejb.fdigital.form.media.FormMediaSessionLocal;
+import br.com.mcampos.ejb.fdigital.form.pad.Pad;
+import br.com.mcampos.ejb.fdigital.form.pad.PadSessionLocal;
 import br.com.mcampos.ejb.media.Media;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
+import br.com.mcampos.sysutils.SysUtils;
 
 /**
  * Session Bean implementation class AnotoFormSessionBean
@@ -25,6 +29,9 @@ public class AnotoFormSessionBean extends SimpleSessionBean<AnotoForm> implement
 
 	@EJB
 	private FormMediaSessionLocal formMediaSession;
+
+	@EJB
+	private PadSessionLocal padSession;
 
 	@Override
 	protected Class<AnotoForm> getEntityClass( )
@@ -70,14 +77,15 @@ public class AnotoFormSessionBean extends SimpleSessionBean<AnotoForm> implement
 	@Override
 	public AnotoForm add( AnotoForm f, MediaDTO m )
 	{
-		if ( f == null || m == null )
+		if ( f == null || m == null ) {
 			return null;
+		}
 		f = merge( f );
-		Media media = mediaSession.add( m );
+		Media media = this.mediaSession.add( m );
 		FormMedia fm = new FormMedia( );
 		fm.setMedia( media );
 		f.add( fm );
-		formMediaSession.merge( fm );
+		this.formMediaSession.merge( fm );
 		return f;
 	}
 
@@ -92,11 +100,45 @@ public class AnotoFormSessionBean extends SimpleSessionBean<AnotoForm> implement
 	@Override
 	public AnotoForm remove( AnotoForm f, FormMedia fm )
 	{
-		if ( f == null || fm == null )
+		if ( f == null || fm == null ) {
 			return null;
+		}
 		f = merge( f );
 		f.remove( fm );
-		formMediaSession.remove( fm );
+		this.formMediaSession.remove( fm );
+		return f;
+	}
+
+	@Override
+	public byte[ ] getObject( Media media )
+	{
+		Media m = this.mediaSession.get( media.getId( ) );
+		if ( m != null ) {
+			return m.getObject( );
+		}
+		else {
+			return null;
+		}
+	}
+
+	@Override
+	public AnotoForm add( AnotoForm f, MediaDTO m, List<String> pages )
+	{
+		if ( f == null || m == null || m.getObject( ) == null || SysUtils.isEmpty( pages ) ) {
+			return null;
+		}
+		merge( f );
+		m.setFormat( "pad" );
+		m.setMimeType( "application/xml" );
+		Media media = this.mediaSession.add( m );
+		if ( media == null ) {
+			return null;
+		}
+		Pad pad = new Pad( );
+		pad.setMedia( media );
+		f.add( pad );
+		this.padSession.merge( pad );
+		this.padSession.add( pad, pages );
 		return f;
 	}
 }

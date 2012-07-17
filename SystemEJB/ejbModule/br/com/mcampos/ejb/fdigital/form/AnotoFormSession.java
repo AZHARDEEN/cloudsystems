@@ -1,10 +1,13 @@
 package br.com.mcampos.ejb.fdigital.form;
 
+import java.util.List;
+
 import javax.ejb.Remote;
 
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.fdigital.form.media.FormMedia;
+import br.com.mcampos.ejb.media.Media;
 
 @Remote
 public interface AnotoFormSession extends BaseSessionInterface<AnotoForm>
@@ -13,6 +16,10 @@ public interface AnotoFormSession extends BaseSessionInterface<AnotoForm>
 
 	AnotoForm add( AnotoForm f, MediaDTO m );
 
+	AnotoForm add( AnotoForm f, MediaDTO m, List<String> pages );
+
 	AnotoForm remove( AnotoForm f, FormMedia fm );
+
+	byte[ ] getObject( Media media );
 
 }

@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.fdigital;
+package br.com.mcampos.ejb.fdigital.form.pad;
 
 import java.io.Serializable;
 import javax.persistence.*;

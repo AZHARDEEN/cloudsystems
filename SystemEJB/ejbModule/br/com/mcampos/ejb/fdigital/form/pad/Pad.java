@@ -1,6 +1,7 @@
-package br.com.mcampos.ejb.fdigital;
+package br.com.mcampos.ejb.fdigital.form.pad;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import br.com.mcampos.ejb.fdigital.form.AnotoForm;
+import br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPage;
 import br.com.mcampos.ejb.media.Media;
+import br.com.mcampos.sysutils.SysUtils;
 
 /**
  * The persistent class for the pad database table.
@@ -40,7 +43,7 @@ public class Pad implements Serializable
 
 	// bi-directional many-to-one association to AnotoPage
 	@OneToMany( mappedBy = "pad" )
-	private List<AnotoPage> anotoPages;
+	private List<AnotoPage> pages;
 
 	// bi-directional many-to-one association to AnotoForm
 	@ManyToOne
@@ -57,8 +60,9 @@ public class Pad implements Serializable
 
 	public PadPK getId( )
 	{
-		if ( getId( ) == null )
-			id = new PadPK( );
+		if ( getId( ) == null ) {
+			this.id = new PadPK( );
+		}
 		return this.id;
 	}
 
@@ -87,14 +91,17 @@ public class Pad implements Serializable
 		this.unique = padUniqueBt;
 	}
 
-	public List<AnotoPage> getAnotoPages( )
+	public List<AnotoPage> getPages( )
 	{
-		return this.anotoPages;
+		if ( this.pages == null ) {
+			this.pages = new ArrayList<AnotoPage>( );
+		}
+		return this.pages;
 	}
 
-	public void setAnotoPages( List<AnotoPage> anotoPages )
+	public void setPages( List<AnotoPage> anotoPages )
 	{
-		this.anotoPages = anotoPages;
+		this.pages = anotoPages;
 	}
 
 	public AnotoForm getForm( )
@@ -113,7 +120,7 @@ public class Pad implements Serializable
 	 */
 	public Media getMedia( )
 	{
-		return media;
+		return this.media;
 	}
 
 	/**
@@ -126,6 +133,27 @@ public class Pad implements Serializable
 		if ( getMedia( ) != null ) {
 			getId( ).setId( getMedia( ).getId( ) );
 		}
+	}
+
+	public AnotoPage remove( AnotoPage item )
+	{
+		SysUtils.remove( getPages( ), item );
+		if ( item != null ) {
+			item.setPad( null );
+		}
+		return item;
+	}
+
+	public AnotoPage add( AnotoPage item )
+	{
+		if ( item != null ) {
+			int nIndex = getPages( ).indexOf( item );
+			if ( nIndex < 0 ) {
+				getPages( ).add( item );
+				item.setPad( this );
+			}
+		}
+		return item;
 	}
 
 }
