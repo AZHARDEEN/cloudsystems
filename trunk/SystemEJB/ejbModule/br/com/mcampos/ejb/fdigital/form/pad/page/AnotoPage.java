@@ -1,8 +1,10 @@
 package br.com.mcampos.ejb.fdigital.form.pad.page;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -15,6 +17,7 @@ import javax.persistence.Table;
 import br.com.mcampos.ejb.fdigital.AnotoPageField;
 import br.com.mcampos.ejb.fdigital.AnotoPenPage;
 import br.com.mcampos.ejb.fdigital.form.pad.Pad;
+import br.com.mcampos.sysutils.SysUtils;
 
 /**
  * The persistent class for the anoto_page database table.
@@ -46,12 +49,12 @@ public class AnotoPage implements Serializable
 	private Pad pad;
 
 	// bi-directional many-to-one association to AnotoPageField
-	@OneToMany( mappedBy = "page" )
+	@OneToMany( mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true )
 	private List<AnotoPageField> fields;
 
 	// bi-directional many-to-one association to AnotoPenPage
-	@OneToMany( mappedBy = "page" )
-	private List<AnotoPenPage> anotoPenPages;
+	@OneToMany( mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true )
+	private List<AnotoPenPage> pens;
 
 	public AnotoPage( )
 	{
@@ -106,15 +109,24 @@ public class AnotoPage implements Serializable
 		if ( getPad( ) != null ) {
 			getId( ).setFormId( pad.getForm( ).getId( ) );
 			getId( ).setPadId( pad.getId( ).getId( ) );
+			for ( AnotoPageField field : getFields( ) ) {
+				field.setPage( this );
+			}
 		}
 		else {
 			getId( ).setFormId( null );
 			getId( ).setPadId( null );
+			for ( AnotoPageField field : getFields( ) ) {
+				field.setPage( null );
+			}
 		}
 	}
 
 	public List<AnotoPageField> getFields( )
 	{
+		if ( this.fields == null ) {
+			this.fields = new ArrayList<AnotoPageField>( );
+		}
 		return this.fields;
 	}
 
@@ -123,13 +135,38 @@ public class AnotoPage implements Serializable
 		this.fields = anotoPageFields;
 	}
 
-	public List<AnotoPenPage> getAnotoPenPages( )
+	public List<AnotoPenPage> getPens( )
 	{
-		return this.anotoPenPages;
+		if ( this.pens == null ) {
+			this.pens = new ArrayList<AnotoPenPage>( );
+		}
+		return this.pens;
 	}
 
-	public void setAnotoPenPages( List<AnotoPenPage> anotoPenPages )
+	public void setPens( List<AnotoPenPage> anotoPenPages )
 	{
-		this.anotoPenPages = anotoPenPages;
+		this.pens = anotoPenPages;
 	}
+
+	public AnotoPageField remove( AnotoPageField item )
+	{
+		SysUtils.remove( getFields( ), item );
+		if ( item != null ) {
+			item.setPage( null );
+		}
+		return item;
+	}
+
+	public AnotoPageField add( AnotoPageField item )
+	{
+		if ( item != null ) {
+			int nIndex = getFields( ).indexOf( item );
+			if ( nIndex < 0 ) {
+				getFields( ).add( item );
+				item.setPage( this );
+			}
+		}
+		return item;
+	}
+
 }

@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.fdigital.form.pad;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -27,15 +28,26 @@ public class PadSessionBean extends SimpleSessionBean<Pad> implements PadSession
 	}
 
 	@Override
-	public Pad add( Pad pad, List<String> pages )
+	public Pad add( Pad pad, List<AnotoPage> pages )
 	{
-		for ( String ip : pages ) {
-			AnotoPage page = new AnotoPage( );
-			page.getId( ).setId( ip );
+		for ( AnotoPage page : pages ) {
 			pad.add( page );
 			this.pageSession.merge( page );
 		}
 		return pad;
+	}
+
+	@Override
+	public Pad merge( Pad newEntity )
+	{
+		newEntity = super.merge( newEntity );
+		if ( newEntity.getInsertDate( ) == null ) {
+			newEntity.setInsertDate( new Date( ) );
+		}
+		if ( newEntity.getUnique( ) == null ) {
+			newEntity.setUnique( false );
+		}
+		return newEntity;
 	}
 
 }

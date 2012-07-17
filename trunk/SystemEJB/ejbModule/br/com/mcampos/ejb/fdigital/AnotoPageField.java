@@ -1,170 +1,214 @@
 package br.com.mcampos.ejb.fdigital;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPage;
-
+import br.com.mcampos.ejb.system.fieldtype.FieldType;
 
 /**
  * The persistent class for the anoto_page_field database table.
  * 
  */
 @Entity
-@Table(name="anoto_page_field")
-public class AnotoPageField implements Serializable {
+@Table( name = "anoto_page_field" )
+public class AnotoPageField implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private AnotoPageFieldPK id;
 
-	@Column(name="aft_icr_bt", nullable=false)
-	private Boolean aftIcrBt;
+	@Column( name = "aft_icr_bt", nullable = false )
+	private Boolean irc;
 
-	@Column(name="alf_alias_ch", length=256)
-	private String alfAliasCh;
+	@Column( name = "alf_alias_ch", length = 256 )
+	private String alias;
 
-	@Column(name="alf_height_in")
-	private Integer alfHeightIn;
+	@Column( name = "alf_height_in" )
+	private Integer height;
 
-	@Column(name="alf_search_bt")
-	private Boolean alfSearchBt;
+	@Column( name = "alf_search_bt" )
+	private Boolean search;
 
-	@Column(name="alf_top_in")
-	private Integer alfTopIn;
+	@Column( name = "alf_top_in" )
+	private Integer top;
 
-	@Column(name="alf_width_in")
-	private Integer alfWidthIn;
+	@Column( name = "alf_width_in" )
+	private Integer width;
 
-	@Column(name="apf_export_bt")
-	private Boolean apfExportBt;
+	@Column( name = "apf_export_bt" )
+	private Boolean export;
 
-	@Column(name="apf_left_in")
-	private Integer apfLeftIn;
+	@Column( name = "apf_left_in" )
+	private Integer left;
 
-	@Column(name="apf_pk_bt")
-	private Boolean apfPkBt;
+	@Column( name = "apf_pk_bt" )
+	private Boolean pk;
 
-	@Column(name="apf_sequence_in")
-	private Integer apfSequenceIn;
+	@Column( name = "apf_sequence_in" )
+	private Integer sequence;
 
-	@Column(name="flt_id_in", nullable=false)
-	private Integer fltIdIn;
+	@ManyToOne
+	@JoinColumn(
+			name = "flt_id_in", referencedColumnName = "flt_id_in", nullable = false, insertable = true, updatable = true )
+	private FieldType type;
 
-	//bi-directional many-to-one association to AnotoPage
-    @ManyToOne
-	@JoinColumns({
-		@JoinColumn(name="apg_id_ch", referencedColumnName="apg_id_ch", nullable=false, insertable=false, updatable=false),
-		@JoinColumn(name="frm_id_in", referencedColumnName="frm_id_in", nullable=false, insertable=false, updatable=false),
-		@JoinColumn(name="pad_id_in", referencedColumnName="pad_id_in", nullable=false, insertable=false, updatable=false)
-		})
+	// bi-directional many-to-one association to AnotoPage
+	@ManyToOne
+	@JoinColumns( {
+			@JoinColumn(
+					name = "apg_id_ch", referencedColumnName = "apg_id_ch", nullable = false, insertable = false, updatable = false ),
+			@JoinColumn(
+					name = "frm_id_in", referencedColumnName = "frm_id_in", nullable = false, insertable = false, updatable = false ),
+			@JoinColumn(
+					name = "pad_id_in", referencedColumnName = "pad_id_in", nullable = false, insertable = false, updatable = false )
+	} )
 	private AnotoPage page;
 
-    public AnotoPageField() {
-    }
+	public AnotoPageField( )
+	{
+	}
 
-	public AnotoPageFieldPK getId() {
+	public AnotoPageFieldPK getId( )
+	{
+		if ( this.id == null ) {
+			this.id = new AnotoPageFieldPK( );
+		}
 		return this.id;
 	}
 
-	public void setId(AnotoPageFieldPK id) {
+	public void setId( AnotoPageFieldPK id )
+	{
 		this.id = id;
 	}
-	
-	public Boolean getAftIcrBt() {
-		return this.aftIcrBt;
+
+	public Boolean getIrc( )
+	{
+		return this.irc;
 	}
 
-	public void setAftIcrBt(Boolean aftIcrBt) {
-		this.aftIcrBt = aftIcrBt;
+	public void setIrc( Boolean aftIcrBt )
+	{
+		this.irc = aftIcrBt;
 	}
 
-	public String getAlfAliasCh() {
-		return this.alfAliasCh;
+	public String getAlias( )
+	{
+		return this.alias;
 	}
 
-	public void setAlfAliasCh(String alfAliasCh) {
-		this.alfAliasCh = alfAliasCh;
+	public void setAlias( String alfAliasCh )
+	{
+		this.alias = alfAliasCh;
 	}
 
-	public Integer getAlfHeightIn() {
-		return this.alfHeightIn;
+	public Integer getHeight( )
+	{
+		return this.height;
 	}
 
-	public void setAlfHeightIn(Integer alfHeightIn) {
-		this.alfHeightIn = alfHeightIn;
+	public void setHeight( Integer alfHeightIn )
+	{
+		this.height = alfHeightIn;
 	}
 
-	public Boolean getAlfSearchBt() {
-		return this.alfSearchBt;
+	public Boolean getSearch( )
+	{
+		return this.search;
 	}
 
-	public void setAlfSearchBt(Boolean alfSearchBt) {
-		this.alfSearchBt = alfSearchBt;
+	public void setSearch( Boolean alfSearchBt )
+	{
+		this.search = alfSearchBt;
 	}
 
-	public Integer getAlfTopIn() {
-		return this.alfTopIn;
+	public Integer getTop( )
+	{
+		return this.top;
 	}
 
-	public void setAlfTopIn(Integer alfTopIn) {
-		this.alfTopIn = alfTopIn;
+	public void setTop( Integer alfTopIn )
+	{
+		this.top = alfTopIn;
 	}
 
-	public Integer getAlfWidthIn() {
-		return this.alfWidthIn;
+	public Integer getWidth( )
+	{
+		return this.width;
 	}
 
-	public void setAlfWidthIn(Integer alfWidthIn) {
-		this.alfWidthIn = alfWidthIn;
+	public void setWidth( Integer alfWidthIn )
+	{
+		this.width = alfWidthIn;
 	}
 
-	public Boolean getApfExportBt() {
-		return this.apfExportBt;
+	public Boolean getExport( )
+	{
+		return this.export;
 	}
 
-	public void setApfExportBt(Boolean apfExportBt) {
-		this.apfExportBt = apfExportBt;
+	public void setExport( Boolean apfExportBt )
+	{
+		this.export = apfExportBt;
 	}
 
-	public Integer getApfLeftIn() {
-		return this.apfLeftIn;
+	public Integer getLeft( )
+	{
+		return this.left;
 	}
 
-	public void setApfLeftIn(Integer apfLeftIn) {
-		this.apfLeftIn = apfLeftIn;
+	public void setLeft( Integer apfLeftIn )
+	{
+		this.left = apfLeftIn;
 	}
 
-	public Boolean getApfPkBt() {
-		return this.apfPkBt;
+	public Boolean getPk( )
+	{
+		return this.pk;
 	}
 
-	public void setApfPkBt(Boolean apfPkBt) {
-		this.apfPkBt = apfPkBt;
+	public void setPk( Boolean apfPkBt )
+	{
+		this.pk = apfPkBt;
 	}
 
-	public Integer getApfSequenceIn() {
-		return this.apfSequenceIn;
+	public Integer getSequence( )
+	{
+		return this.sequence;
 	}
 
-	public void setApfSequenceIn(Integer apfSequenceIn) {
-		this.apfSequenceIn = apfSequenceIn;
+	public void setSequence( Integer apfSequenceIn )
+	{
+		this.sequence = apfSequenceIn;
 	}
 
-	public Integer getFltIdIn() {
-		return this.fltIdIn;
-	}
-
-	public void setFltIdIn(Integer fltIdIn) {
-		this.fltIdIn = fltIdIn;
-	}
-
-	public AnotoPage getPage() {
+	public AnotoPage getPage( )
+	{
 		return this.page;
 	}
 
-	public void setPage(AnotoPage anotoPage) {
+	public void setPage( AnotoPage anotoPage )
+	{
 		this.page = anotoPage;
+		getId( ).set( anotoPage );
 	}
-	
+
+	public FieldType getType( )
+	{
+		return this.type;
+	}
+
+	public void setType( FieldType type )
+	{
+		this.type = type;
+	}
+
 }

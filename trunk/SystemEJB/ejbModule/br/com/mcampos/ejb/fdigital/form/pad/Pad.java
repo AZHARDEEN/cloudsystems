@@ -60,7 +60,7 @@ public class Pad implements Serializable
 
 	public PadPK getId( )
 	{
-		if ( getId( ) == null ) {
+		if ( this.id == null ) {
 			this.id = new PadPK( );
 		}
 		return this.id;
