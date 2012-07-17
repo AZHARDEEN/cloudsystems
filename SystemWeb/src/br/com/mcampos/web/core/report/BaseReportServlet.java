@@ -83,6 +83,7 @@ public abstract class BaseReportServlet extends HttpServlet
 		realPath = getRealPath( "/img" );
 		params.put( "IMAGE_PATH", realPath );
 
+		Connection conn = null;
 		try {
 			realPath = getRealPath( report );
 			File file = new File( realPath );
@@ -90,23 +91,32 @@ public abstract class BaseReportServlet extends HttpServlet
 			if ( SysUtils.isEmpty( name ) ) {
 				name = realPath + ".jrxml";
 			}
+			conn = getConnection( );
 			JasperReport jasperReport = JasperCompileManager.compileReport( name );
-			return JasperFillManager.fillReport( jasperReport, params, getConnection( ) );
-		}
-		catch ( JRException e ) {
+			JasperPrint nRet = JasperFillManager.fillReport( jasperReport, params, conn );
+			return nRet;
+		} catch( JRException e ) {
 			logger.error( "JRException", e );
-		}
-		catch ( SQLException e ) {
+		} catch( SQLException e ) {
 			logger.error( "JRException", e );
-		}
-		catch ( ClassNotFoundException e ) {
+		} catch( ClassNotFoundException e ) {
 			logger.error( "JRException", e );
+		} finally {
+			try {
+				if ( conn != null && conn.isClosed( ) == false ) {
+					conn.close( );
+					conn = null;
+				}
+			} catch( SQLException e ) {
+				e.printStackTrace( );
+			}
 		}
 		return null;
 	}
 
 	/**
-	 * Sends a file to the ServletResponse output stream. Typically you want the browser to receive a different name than the name the file has been saved
+	 * Sends a file to the ServletResponse output stream. Typically you want the
+	 * browser to receive a different name than the name the file has been saved
 	 * in your local database, since your local names need to be unique.
 	 * 
 	 * @param resp
@@ -114,13 +124,13 @@ public abstract class BaseReportServlet extends HttpServlet
 	 * @param filename
 	 *            The name of the file you want to download.
 	 */
-	protected void doDownload( HttpServletResponse resp, String filename, byte[ ] bbuf ) throws IOException
+	protected void doDownload( HttpServletResponse resp, String filename, byte[] bbuf ) throws IOException
 	{
 		ServletOutputStream op = resp.getOutputStream( );
 		ServletContext context = getServletConfig( ).getServletContext( );
 		String mimetype = context.getMimeType( filename );
 
-		resp.setContentType( ( mimetype != null ) ? mimetype : "application/octet-stream" );
+		resp.setContentType( (mimetype != null) ? mimetype : "application/octet-stream" );
 		resp.setContentLength( bbuf.length );
 		resp.setHeader( "Content-Disposition", "attachment; filename=\"" + filename + "\"" );
 		op.write( bbuf, 0, bbuf.length );
@@ -161,8 +171,7 @@ public abstract class BaseReportServlet extends HttpServlet
 				htmlExporter.setParameter( JRHtmlExporterParameter.CHARACTER_ENCODING, "UTF-8" );
 				htmlExporter.setParameter( JRHtmlExporterParameter.IMAGES_URI, "image?image=" );
 				htmlExporter.exportReport( );
-			}
-			catch ( JRException e ) {
+			} catch( JRException e ) {
 				logger.error( "JRException", e );
 			}
 		}
@@ -178,11 +187,10 @@ public abstract class BaseReportServlet extends HttpServlet
 		JasperPrint print = compileReport( item.getReportUrl( ), item.getParams( ) );
 		if ( print != null ) {
 			try {
-				byte[ ] obj = JasperExportManager.exportReportToPdf( print );
+				byte[] obj = JasperExportManager.exportReportToPdf( print );
 				File file = new File( item.getReportUrl( ) );
 				doDownload( response, file.getName( ) + ".pdf", obj );
-			}
-			catch ( JRException e ) {
+			} catch( JRException e ) {
 				logger.error( "JRException", e );
 			}
 		}
@@ -201,8 +209,7 @@ public abstract class BaseReportServlet extends HttpServlet
 				String xml = JasperExportManager.exportReportToXml( print );
 				File file = new File( item.getReportUrl( ) );
 				doDownload( response, file.getName( ) + ".xml", xml, null );
-			}
-			catch ( JRException e ) {
+			} catch( JRException e ) {
 				logger.error( "JRException", e );
 			}
 		}
@@ -255,8 +262,7 @@ public abstract class BaseReportServlet extends HttpServlet
 				File file = new File( item.getReportUrl( ) );
 				response.setHeader( "Content-Disposition", "attachment; filename=\"" + file.getName( ) + extension + "\"" );
 				exporter.exportReport( );
-			}
-			catch ( JRException e ) {
+			} catch( JRException e ) {
 				logger.error( "JRException", e );
 			}
 		}
