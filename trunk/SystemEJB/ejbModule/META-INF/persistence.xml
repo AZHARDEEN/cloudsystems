@@ -65,8 +65,8 @@
     <class>br.com.mcampos.ejb.fdigital.form.AnotoForm</class>
     <class>br.com.mcampos.ejb.fdigital.form.user.AnotoFormUser</class>
     <class>br.com.mcampos.ejb.fdigital.form.user.AnotoFormUserPK</class>
-    <class>br.com.mcampos.ejb.fdigital.AnotoPage</class>
-    <class>br.com.mcampos.ejb.fdigital.AnotoPagePK</class>
+    <class>br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPage</class>
+    <class>br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPagePK</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPageField</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPageFieldPK</class>
     <class>br.com.mcampos.ejb.fdigital.pen.AnotoPen</class>
@@ -74,8 +74,8 @@
     <class>br.com.mcampos.ejb.fdigital.AnotoPenPagePK</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPenUser</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPenUserPK</class>
-    <class>br.com.mcampos.ejb.fdigital.Pad</class>
-    <class>br.com.mcampos.ejb.fdigital.PadPK</class>
+    <class>br.com.mcampos.ejb.fdigital.form.pad.Pad</class>
+    <class>br.com.mcampos.ejb.fdigital.form.pad.PadPK</class>
     <class>br.com.mcampos.ejb.fdigital.Pgc</class>
     <class>br.com.mcampos.ejb.fdigital.PgcAttachment</class>
     <class>br.com.mcampos.ejb.fdigital.PgcAttachmentPK</class>
