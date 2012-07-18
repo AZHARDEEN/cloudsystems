@@ -14,9 +14,9 @@ import br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPageSessionLocal;
 /**
  * Session Bean implementation class PadSessionBean
  */
-@Stateless
+@Stateless( name = "PadSession", mappedName = "PadSession" )
 @LocalBean
-public class PadSessionBean extends SimpleSessionBean<Pad> implements PadSessionLocal
+public class PadSessionBean extends SimpleSessionBean<Pad> implements PadSessionLocal, PadSession
 {
 	@EJB
 	private AnotoPageSessionLocal pageSession;
