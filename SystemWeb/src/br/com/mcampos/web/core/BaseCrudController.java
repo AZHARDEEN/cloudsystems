@@ -30,6 +30,9 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 	@Wire( "#cmdUpdate" )
 	private Button updateButton;
 
+	@Wire( "#cmdCreate" )
+	private Button createButton;
+
 	@Wire( "#cmdDelete" )
 	private Button deleteButton;
 
@@ -111,7 +114,7 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 		}
 
 		Messagebox
-		.show( deleteMsg, deleteTitle, Messagebox.YES + Messagebox.NO, Messagebox.QUESTION, getMessageboxEventListener( ) );
+				.show( deleteMsg, deleteTitle, Messagebox.YES + Messagebox.NO, Messagebox.QUESTION, getMessageboxEventListener( ) );
 	}
 
 	@SuppressWarnings( "unchecked" )
@@ -128,7 +131,7 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 	private EventListener<Event> getMessageboxEventListener( )
 	{
 		return new EventListener<Event>( )
-				{
+		{
 			@Override
 			public void onEvent( Event event )
 			{
@@ -136,7 +139,7 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 					delete( );
 				}
 			}
-				};
+		};
 
 	}
 
@@ -215,5 +218,20 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 	protected ENTITY getTargetEntity( )
 	{
 		return this.targetEntity;
+	}
+
+	protected Button getUpdateButton( )
+	{
+		return this.updateButton;
+	}
+
+	protected Button getCreateButton( )
+	{
+		return this.createButton;
+	}
+
+	protected Button getDeleteButton( )
+	{
+		return this.deleteButton;
 	}
 }

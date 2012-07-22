@@ -7,16 +7,18 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.fdigital.AnotoPageField;
+import br.com.mcampos.ejb.fdigital.form.AnotoForm;
+import br.com.mcampos.ejb.fdigital.page.AnotoPageField;
 import br.com.mcampos.ejb.system.fieldtype.FieldTypeSessionLocal;
 
 /**
  * Session Bean implementation class AnotoPageSessionBean
  */
-@Stateless
+@Stateless( name = "AnotoPageSession", mappedName = "AnotoPageSession" )
 @LocalBean
-public class AnotoPageSessionBean extends SimpleSessionBean<AnotoPage> implements AnotoPageSessionLocal
+public class AnotoPageSessionBean extends SimpleSessionBean<AnotoPage> implements AnotoPageSessionLocal, AnotoPageSession
 {
 	@EJB
 	private FieldTypeSessionLocal fieldTypeSession;
@@ -42,6 +44,12 @@ public class AnotoPageSessionBean extends SimpleSessionBean<AnotoPage> implement
 			page.add( f );
 		}
 		return page;
+	}
+
+	@Override
+	public List<AnotoPage> getAll( AnotoForm form, DBPaging paging )
+	{
+		return findByNamedQuery( AnotoPage.getAll, paging, form );
 	}
 
 }

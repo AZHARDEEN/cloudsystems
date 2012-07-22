@@ -71,7 +71,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 		loadPage( 0 );
 	}
 
-	private int getRows( )
+	protected int getRows( )
 	{
 		int rows = getListbox( ).getRows( );
 		if ( rows == 0 ) {

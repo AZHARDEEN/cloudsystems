@@ -67,8 +67,8 @@
     <class>br.com.mcampos.ejb.fdigital.form.user.AnotoFormUserPK</class>
     <class>br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPage</class>
     <class>br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPagePK</class>
-    <class>br.com.mcampos.ejb.fdigital.AnotoPageField</class>
-    <class>br.com.mcampos.ejb.fdigital.AnotoPageFieldPK</class>
+    <class>br.com.mcampos.ejb.fdigital.page.AnotoPageField</class>
+    <class>br.com.mcampos.ejb.fdigital.page.AnotoPageFieldPK</class>
     <class>br.com.mcampos.ejb.fdigital.pen.AnotoPen</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPenPage</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPenPagePK</class>
@@ -76,7 +76,7 @@
     <class>br.com.mcampos.ejb.fdigital.AnotoPenUserPK</class>
     <class>br.com.mcampos.ejb.fdigital.form.pad.Pad</class>
     <class>br.com.mcampos.ejb.fdigital.form.pad.PadPK</class>
-    <class>br.com.mcampos.ejb.fdigital.Pgc</class>
+    <class>br.com.mcampos.ejb.fdigital.pgc.Pgc</class>
     <class>br.com.mcampos.ejb.fdigital.PgcAttachment</class>
     <class>br.com.mcampos.ejb.fdigital.PgcAttachmentPK</class>
     <class>br.com.mcampos.ejb.fdigital.PgcAttachmentType</class>
@@ -90,9 +90,12 @@
     <class>br.com.mcampos.ejb.fdigital.PgcProcessedImagePK</class>
     <class>br.com.mcampos.ejb.fdigital.PgcProperty</class>
     <class>br.com.mcampos.ejb.fdigital.PgcPropertyPK</class>
-    <class>br.com.mcampos.ejb.fdigital.PgcStatus</class>
+    <class>br.com.mcampos.ejb.fdigital.pgcstatus.PgcStatus</class>
     <class>br.com.mcampos.ejb.fdigital.form.media.FormMedia</class>
     <class>br.com.mcampos.ejb.fdigital.form.media.FormMediaPK</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcPenPage</class>
+    <class>br.com.mcampos.ejb.fdigital.PgcPenPagePK</class>
+    <class>br.com.mcampos.ejb.system.revisionstatus.RevisionStatus</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

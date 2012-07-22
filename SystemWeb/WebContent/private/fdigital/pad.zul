@@ -6,11 +6,11 @@
                 <div width="100%" height="100%" id="divListBoxRecord">
 					<hlayout valign="middle">
 						<label value="Formulário" />
-						<combobox readonly="true" use="br.com.mcampos.web.fdigital.combobox.FormCombobox" hflex="true"/>
+						<combobox readonly="true" use="br.com.mcampos.web.fdigital.combobox.FormCombobox" hflex="true" id="comboForm"/>
 					</hlayout>
 	                <listbox vflex="true" autopaging="true" id="listTable" multiple="true" mold="paging">
 	                    <listhead>
-	                        <listheader align="left" label="Aplicação" sort="auto" width="160px" value="application"/>
+	                        <listheader align="left" label="IP" sort="auto" value="description"/>
 	                        <listheader align="left" label="Descrição" sort="auto" value="description"/>
 	                    </listhead>
 	                </listbox>
