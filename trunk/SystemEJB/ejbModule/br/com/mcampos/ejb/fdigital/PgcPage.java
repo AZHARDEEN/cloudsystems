@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPage;
+import br.com.mcampos.ejb.fdigital.pgc.Pgc;
 
 import java.util.List;
 

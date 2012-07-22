@@ -11,12 +11,15 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import br.com.mcampos.ejb.fdigital.AnotoPageField;
+import br.com.mcampos.ejb.core.BasicEntityRenderer;
 import br.com.mcampos.ejb.fdigital.AnotoPenPage;
 import br.com.mcampos.ejb.fdigital.form.pad.Pad;
+import br.com.mcampos.ejb.fdigital.page.AnotoPageField;
 import br.com.mcampos.sysutils.SysUtils;
 
 /**
@@ -24,10 +27,14 @@ import br.com.mcampos.sysutils.SysUtils;
  * 
  */
 @Entity
+@NamedQueries( {
+		@NamedQuery( name = AnotoPage.getAll, query = "select o from AnotoPage o where o.pad.form = ?1" )
+} )
 @Table( name = "anoto_page" )
-public class AnotoPage implements Serializable
+public class AnotoPage implements Serializable, BasicEntityRenderer<AnotoPage>, Comparable<AnotoPage>
 {
 	private static final long serialVersionUID = 1L;
+	public static final String getAll = "AnotoPage.getAll";
 
 	@EmbeddedId
 	private AnotoPagePK id;
@@ -167,6 +174,41 @@ public class AnotoPage implements Serializable
 			}
 		}
 		return item;
+	}
+
+	@Override
+	public String getField( Integer field )
+	{
+		switch ( field ) {
+		case 0:
+			return getId( ).getId( );
+		case 1:
+			return getDescription( );
+		}
+		return null;
+	}
+
+	@Override
+	public int compareTo( AnotoPage object, Integer field )
+	{
+		switch ( field ) {
+		case 0:
+			return getId( ).compareTo( object.getId( ) );
+		case 1:
+			return getDescription( ).compareTo( object.getDescription( ) );
+		}
+		return 0;
+	}
+
+	@Override
+	public int compareTo( AnotoPage o )
+	{
+		return getId( ).compareTo( o.getId( ) );
+	}
+
+	public String getIp( )
+	{
+		return getId( ).getId( );
 	}
 
 }

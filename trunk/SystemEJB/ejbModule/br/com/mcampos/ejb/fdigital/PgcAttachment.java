@@ -3,6 +3,8 @@ package br.com.mcampos.ejb.fdigital;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import br.com.mcampos.ejb.fdigital.pgc.Pgc;
+
 
 /**
  * The persistent class for the pgc_attachment database table.

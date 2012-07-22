@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.fdigital;
+package br.com.mcampos.ejb.fdigital.page;
 
 import java.io.Serializable;
 
