@@ -76,8 +76,9 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 		sqlQuery = "select t from " + getPersistentClass( ).getSimpleName( ) + " as t ";
 		if ( whereClause != null && whereClause.isEmpty( ) == false ) {
-			whereClause = whereClause.trim( ).toLowerCase( );
-			if ( whereClause.startsWith( "where" ) ) {
+			whereClause = whereClause.trim( );
+			String where = whereClause.substring( 0, 5 );
+			if ( where.compareToIgnoreCase( "where" ) == 0 ) {
 				sqlQuery += " " + whereClause;
 			}
 			else {
@@ -140,7 +141,19 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		return getResultList( query );
 	}
 
-	private void setQueryParams( Query query, Object... params )
+	@Override
+	public Collection<T> getAll( String whereClause, DBPaging page, Object... params )
+	{
+		Query query = getAllQuery( whereClause );
+		if ( page != null ) {
+			query.setMaxResults( page.getRows( ) );
+			query.setFirstResult( page.getRows( ) * page.getPage( ) );
+		}
+		setQueryParams( query, params );
+		return getResultList( query );
+	}
+
+	protected void setQueryParams( Query query, Object... params )
 	{
 		if ( params != null && params.length > 0 ) {
 			for ( int i = 0; i < params.length; i++ ) {
@@ -149,7 +162,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		}
 	}
 
-	private void setQueryParams( Query query, Map<String, Object> params )
+	protected void setQueryParams( Query query, Map<String, Object> params )
 	{
 		for ( Entry<String, Object> entry : params.entrySet( ) ) {
 			query.setParameter( entry.getKey( ), entry.getValue( ) );

@@ -13,6 +13,8 @@ public interface ReadOnlySessionInterface<T>
 
 	public Collection<T> getAll( String whereClause, DBPaging page );
 
+	public Collection<T> getAll( String whereClause, DBPaging page, Object... params );
+
 	List<T> findByNamedQuery( String namedQuery, Object... params );
 
 	List<T> findByNamedQuery( String namedQuery, DBPaging paging, Object... params );

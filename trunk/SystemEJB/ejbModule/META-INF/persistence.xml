@@ -70,8 +70,8 @@
     <class>br.com.mcampos.ejb.fdigital.page.AnotoPageField</class>
     <class>br.com.mcampos.ejb.fdigital.page.AnotoPageFieldPK</class>
     <class>br.com.mcampos.ejb.fdigital.pen.AnotoPen</class>
-    <class>br.com.mcampos.ejb.fdigital.AnotoPenPage</class>
-    <class>br.com.mcampos.ejb.fdigital.AnotoPenPagePK</class>
+    <class>br.com.mcampos.ejb.fdigital.penpage.AnotoPenPage</class>
+    <class>br.com.mcampos.ejb.fdigital.penpage.AnotoPenPagePK</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPenUser</class>
     <class>br.com.mcampos.ejb.fdigital.AnotoPenUserPK</class>
     <class>br.com.mcampos.ejb.fdigital.form.pad.Pad</class>
@@ -96,6 +96,7 @@
     <class>br.com.mcampos.ejb.fdigital.PgcPenPage</class>
     <class>br.com.mcampos.ejb.fdigital.PgcPenPagePK</class>
     <class>br.com.mcampos.ejb.system.revisionstatus.RevisionStatus</class>
+    <class>br.com.mcampos.ejb.system.operators.Operator</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

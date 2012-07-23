@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.fdigital.pgc;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,13 +17,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.com.mcampos.ejb.fdigital.AnotoPenPage;
+import br.com.mcampos.ejb.core.BasicEntityRenderer;
 import br.com.mcampos.ejb.fdigital.PgcAttachment;
 import br.com.mcampos.ejb.fdigital.PgcPage;
 import br.com.mcampos.ejb.fdigital.PgcProperty;
+import br.com.mcampos.ejb.fdigital.penpage.AnotoPenPage;
 import br.com.mcampos.ejb.fdigital.pgcstatus.PgcStatus;
 import br.com.mcampos.ejb.media.Media;
 import br.com.mcampos.ejb.system.revisionstatus.RevisionStatus;
+import br.com.mcampos.sysutils.SysUtils;
 
 /**
  * The persistent class for the pgc database table.
@@ -31,7 +33,7 @@ import br.com.mcampos.ejb.system.revisionstatus.RevisionStatus;
  */
 @Entity
 @Table( name = "pgc" )
-public class Pgc implements Serializable
+public class Pgc implements BasicEntityRenderer<Pgc>, Comparable<Pgc>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -59,7 +61,7 @@ public class Pgc implements Serializable
 	// bi-directional many-to-one association to PgcStatus
 	@ManyToOne( optional = false )
 	@JoinColumn( name = "pgs_id_in", nullable = false, insertable = true, updatable = true )
-	private PgcStatus pgcStatus;
+	private PgcStatus status;
 
 	// bi-directional many-to-one association to PgcAttachment
 	@OneToMany( mappedBy = "pgc" )
@@ -82,11 +84,11 @@ public class Pgc implements Serializable
 					@JoinColumn( name = "pad_id_in", referencedColumnName = "pad_id_in", nullable = false ),
 					@JoinColumn( name = "pdp_seq_in", referencedColumnName = "pdp_seq_in", nullable = false )
 			} )
-	private List<AnotoPenPage> anotoPenPages;
+	private List<AnotoPenPage> penPages;
 
 	// bi-directional many-to-one association to PgcProperty
 	@OneToMany( mappedBy = "pgc" )
-	private List<PgcProperty> pgcProperties;
+	private List<PgcProperty> properties;
 
 	@ManyToOne( optional = false )
 	@JoinColumn( name = "pgc_id_in", referencedColumnName = "med_id_in", insertable = false, updatable = false, nullable = false )
@@ -151,14 +153,17 @@ public class Pgc implements Serializable
 		this.timeDiff = pgcTimeDiffIn;
 	}
 
-	public PgcStatus getPgcStatus( )
+	public PgcStatus getStatus( )
 	{
-		return this.pgcStatus;
+		if ( this.status == null ) {
+			this.status = new PgcStatus( );
+		}
+		return this.status;
 	}
 
-	public void setPgcStatus( PgcStatus pgcStatus )
+	public void setStatus( PgcStatus pgcStatus )
 	{
-		this.pgcStatus = pgcStatus;
+		this.status = pgcStatus;
 	}
 
 	public List<PgcAttachment> getPgcAttachments( )
@@ -181,24 +186,27 @@ public class Pgc implements Serializable
 		this.pgcPages = pgcPages;
 	}
 
-	public List<AnotoPenPage> getAnotoPenPages( )
+	public List<AnotoPenPage> getPenPages( )
 	{
-		return this.anotoPenPages;
+		return this.penPages;
 	}
 
-	public void setAnotoPenPages( List<AnotoPenPage> anotoPenPages )
+	public void setPenPages( List<AnotoPenPage> anotoPenPages )
 	{
-		this.anotoPenPages = anotoPenPages;
+		this.penPages = anotoPenPages;
 	}
 
-	public List<PgcProperty> getPgcProperties( )
+	public List<PgcProperty> getProperties( )
 	{
-		return this.pgcProperties;
+		if ( this.properties == null ) {
+			this.properties = new ArrayList<PgcProperty>( );
+		}
+		return this.properties;
 	}
 
-	public void setPgcProperties( List<PgcProperty> pgcProperties )
+	public void setProperties( List<PgcProperty> pgcProperties )
 	{
-		this.pgcProperties = pgcProperties;
+		this.properties = pgcProperties;
 	}
 
 	public Media getMedia( )
@@ -228,4 +236,64 @@ public class Pgc implements Serializable
 	{
 		this.revisionStatus = revisionStatus;
 	}
+
+	public PgcProperty add( PgcProperty item )
+	{
+		if ( item != null ) {
+			int nIndex = getProperties( ).indexOf( item );
+			if ( nIndex < 0 ) {
+				getProperties( ).add( item );
+				item.setPgc( this );
+			}
+		}
+		return item;
+	}
+
+	public PgcProperty remove( PgcProperty item )
+	{
+		SysUtils.remove( getProperties( ), item );
+		if ( item != null ) {
+			item.setPgc( null );
+		}
+		return item;
+	}
+
+	public void setStatus( Integer status )
+	{
+		getStatus( ).setId( status );
+	}
+
+	@Override
+	public int compareTo( Pgc o )
+	{
+		if ( getId( ) == null ) {
+			return -1;
+		}
+		return getId( ).compareTo( o.getId( ) );
+	}
+
+	@Override
+	public String getField( Integer field )
+	{
+		switch ( field ) {
+		case 0:
+			return getId( ).toString( );
+		case 1:
+			return getDescription( ).toString( );
+		}
+		return null;
+	}
+
+	@Override
+	public int compareTo( Pgc object, Integer field )
+	{
+		switch ( field ) {
+		case 0:
+			return getId( ).compareTo( object.getId( ) );
+		case 1:
+			return getDescription( ).compareTo( object.getDescription( ) );
+		}
+		return 0;
+	}
+
 }

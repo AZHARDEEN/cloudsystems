@@ -73,8 +73,12 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 	{
 		super.doAfterCompose( comp );
 		setStatus( statusNone );
-		this.updateButton.setDisabled( true );
-		this.deleteButton.setDisabled( true );
+		if ( this.updateButton != null ) {
+			this.updateButton.setDisabled( true );
+		}
+		if ( this.deleteButton != null ) {
+			this.deleteButton.setDisabled( true );
+		}
 	}
 
 	private void setStatus( Integer status )
@@ -172,8 +176,12 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 
 	private void changeButtons( boolean enableOperations )
 	{
-		this.divInfo.setVisible( enableOperations );
-		this.divEdit.setVisible( !enableOperations );
+		if ( this.divInfo != null ) {
+			this.divInfo.setVisible( enableOperations );
+		}
+		if ( this.divEdit != null ) {
+			this.divEdit.setVisible( !enableOperations );
+		}
 	}
 
 	protected void allowUpdateAndDelete( boolean bAllow )
@@ -184,12 +192,16 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 
 	protected void allowUpdate( boolean bAllow )
 	{
-		this.updateButton.setDisabled( !bAllow );
+		if ( this.updateButton != null ) {
+			this.updateButton.setDisabled( !bAllow );
+		}
 	}
 
 	protected void allowDelete( boolean bAllow )
 	{
-		this.deleteButton.setDisabled( !bAllow );
+		if ( this.deleteButton != null ) {
+			this.deleteButton.setDisabled( !bAllow );
+		}
 	}
 
 	protected void onSave( )
