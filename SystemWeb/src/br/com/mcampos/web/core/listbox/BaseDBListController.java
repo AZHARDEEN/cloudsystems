@@ -81,12 +81,17 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 		return rows;
 	}
 
+	protected int getCount( )
+	{
+		return getPagingSession( ).count( );
+	}
+
 	protected void initPaging( int page, int rows )
 	{
 		int totalSize;
 
 		if ( SysUtils.isEmpty( getPaging( ) ) == false && getPagingSession( ) != null ) {
-			totalSize = getPagingSession( ).count( );
+			totalSize = getCount( );
 			if ( totalSize >= rows ) {
 				setPagingEventListener( );
 				for ( Paginal item : getPaging( ) ) {

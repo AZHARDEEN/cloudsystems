@@ -14,8 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.ejb.fdigital.PgcProperty;
+import br.com.mcampos.ejb.fdigital.pen.AnotoPen;
+import br.com.mcampos.ejb.fdigital.penpage.AnotoPenPage;
 import br.com.mcampos.ejb.fdigital.pgc.Pgc;
 import br.com.mcampos.ejb.fdigital.upload.UploadSession;
+import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.locator.ServiceLocator;
 
 import com.anoto.api.NoSuchPermissionException;
@@ -99,19 +103,25 @@ public class PgcFile implements Serializable, Runnable
 
 	private boolean processPgcFile( )
 	{
-		Pgc pgc = getSession( ).add( getPgc( ) );
-		if ( pgc == null ) {
-			return false;
-		}
-		setCurrentPgc( pgc );
-		if ( getPen( ) != null ) {
-			List<String> pages = getPageAddresess( );
-			for ( String page : pages ) {
-				logger.info( "This pgc has page:" + page );
+		// Pgc pgc = getSession( ).add( getPgc( ) );
+		createPgcObject( );
+		if ( getPen( ) != null && getCurrentPgc( ).getStatus( ).getId( ).equals( 1 ) ) {
+			if ( getCurrentPgc( ).getStatus( ).getId( ).equals( 1 ) ) {
+				getPageAddresess( );
+			}
+			if ( getCurrentPgc( ).getStatus( ).getId( ).equals( 1 ) ) {
+				getProperties( );
 			}
 		}
-		setCurrentPgc( getSession( ).update( getCurrentPgc( ) ) );
+		setCurrentPgc( getSession( ).persist( getCurrentPgc( ), getPgc( ) ) );
 		return true;
+	}
+
+	private void createPgcObject( )
+	{
+		Pgc pgc = new Pgc( );
+		pgc.setStatus( 1 );
+		setCurrentPgc( pgc );
 	}
 
 	public Pgc getCurrentPgc( )
@@ -136,6 +146,9 @@ public class PgcFile implements Serializable, Runnable
 				penSerial = getCurrentPen( ).getPenData( ).getPenSerial( );
 				logger.info( "Pen Serial" + penSerial );
 				getCurrentPgc( ).setPenId( penSerial );
+				if ( existsPen( penSerial ) == false ) {
+					getCurrentPgc( ).setStatus( 2 );
+				}
 			}
 		}
 		catch ( Exception e ) {
@@ -144,10 +157,16 @@ public class PgcFile implements Serializable, Runnable
 		}
 		finally {
 			if ( pen == null ) {
-				getSession( ).setStatus( getCurrentPgc( ), 6 );
+				getCurrentPgc( ).setStatus( 6 );
 			}
 		}
 		return pen;
+	}
+
+	private boolean existsPen( String penId )
+	{
+		AnotoPen pen = getSession( ).getPen( penId );
+		return pen != null ? true : false;
 	}
 
 	public Pen getCurrentPen( )
@@ -160,8 +179,9 @@ public class PgcFile implements Serializable, Runnable
 		this.currentPen = currentPen;
 	}
 
-	private List<String> getPageAddresess( )
+	private void getPageAddresess( )
 	{
+		logger.info( "getPageAddesses" );
 		@SuppressWarnings( "rawtypes" )
 		Iterator it = getCurrentPen( ).getPageAddresses( );
 		List<String> addresses = null;
@@ -171,6 +191,50 @@ public class PgcFile implements Serializable, Runnable
 			}
 			addresses.add( (String) it.next( ) );
 		}
-		return addresses;
+		if ( SysUtils.isEmpty( addresses ) ) {
+			getCurrentPgc( ).setStatus( 4 );
+			logger.warn( "Pgc does not have any pages" );
+			return;
+		}
+		List<AnotoPenPage> penPages = getSession( ).getPenPages( getCurrentPgc( ).getPenId( ), addresses );
+		if ( SysUtils.isEmpty( penPages ) ) {
+			getCurrentPgc( ).setStatus( 3 );
+			logger.warn( "PenPage not found" );
+			return;
+		}
+		getCurrentPgc( ).setPenPages( penPages );
 	}
+
+	private List<PgcProperty> getProperties( )
+	{
+		List<PgcProperty> properties = new ArrayList<PgcProperty>( );
+		try {
+			@SuppressWarnings( "rawtypes" )
+			Iterator it = getCurrentPen( ).getPropertyIds( );
+			while ( it != null && it.hasNext( ) ) {
+				Short obj = (Short) it.next( );
+				if ( obj != null ) {
+					String[ ] values = getCurrentPen( ).getProperty( obj );
+					if ( values != null && values.length > 0 ) {
+						for ( String v : values ) {
+							v = v.replaceAll( "'", "" );
+							if ( SysUtils.isEmpty( v ) ) {
+								continue;
+							}
+							PgcProperty p = new PgcProperty( );
+							p.getId( ).setId( obj.intValue( ) );
+							logger.info( "Adding property: " + obj + " - " + v );
+							p.setValue( v );
+							properties.add( p );
+						}
+					}
+				}
+			}
+		}
+		catch ( Exception e ) {
+			logger.error( "Error getting property", e );
+		}
+		return properties;
+	}
+
 }

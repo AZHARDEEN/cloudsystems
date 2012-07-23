@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.fdigital;
+package br.com.mcampos.ejb.fdigital.penpage;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -24,13 +24,17 @@ import br.com.mcampos.ejb.fdigital.pen.AnotoPen;
 @Table( name = "anoto_pen_page" )
 @NamedQueries( {
 		@NamedQuery( name = AnotoPenPage.getFormPen,
-				query = "select distinct o.pen from AnotoPenPage o where o.page.pad.form = ?1 and o.toDate is null" )
+				query = "select distinct o.pen from AnotoPenPage o where o.page.pad.form = ?1 and o.toDate is null" ),
+		@NamedQuery( name = AnotoPenPage.getPenPage,
+				query = "select distinct o.pen from AnotoPenPage o where o.pen = ?1 and o.page.id.id = ?2 and o.toDate is null" )
 } )
 public class AnotoPenPage implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
 	public static final String getFormPen = "AnotoPenPage.getFormPen";
+
+	public static final String getPenPage = "AnotoPenPage.getPenPage";
 
 	@EmbeddedId
 	private AnotoPenPagePK id;

@@ -13,33 +13,33 @@ public class PgcPropertyPK implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="pgc_id_in", unique=true, nullable=false)
-	private Integer pgcIdIn;
+	private Integer pgcId;
 
 	@Column(name="pgp_id_in", unique=true, nullable=false)
-	private Integer pgpIdIn;
+	private Integer id;
 
 	@Column(name="pgp_seq_in", unique=true, nullable=false)
-	private Integer pgpSeqIn;
+	private Integer sequence;
 
     public PgcPropertyPK() {
     }
-	public Integer getPgcIdIn() {
-		return this.pgcIdIn;
+	public Integer getPgcId() {
+		return this.pgcId;
 	}
-	public void setPgcIdIn(Integer pgcIdIn) {
-		this.pgcIdIn = pgcIdIn;
+	public void setPgcId(Integer pgcIdIn) {
+		this.pgcId = pgcIdIn;
 	}
-	public Integer getPgpIdIn() {
-		return this.pgpIdIn;
+	public Integer getId() {
+		return this.id;
 	}
-	public void setPgpIdIn(Integer pgpIdIn) {
-		this.pgpIdIn = pgpIdIn;
+	public void setId(Integer pgpIdIn) {
+		this.id = pgpIdIn;
 	}
-	public Integer getPgpSeqIn() {
-		return this.pgpSeqIn;
+	public Integer getSequence() {
+		return this.sequence;
 	}
-	public void setPgpSeqIn(Integer pgpSeqIn) {
-		this.pgpSeqIn = pgpSeqIn;
+	public void setSequence(Integer pgpSeqIn) {
+		this.sequence = pgpSeqIn;
 	}
 
 	public boolean equals(Object other) {
@@ -51,18 +51,18 @@ public class PgcPropertyPK implements Serializable {
 		}
 		PgcPropertyPK castOther = (PgcPropertyPK)other;
 		return 
-			this.pgcIdIn.equals(castOther.pgcIdIn)
-			&& this.pgpIdIn.equals(castOther.pgpIdIn)
-			&& this.pgpSeqIn.equals(castOther.pgpSeqIn);
+			this.pgcId.equals(castOther.pgcId)
+			&& this.id.equals(castOther.id)
+			&& this.sequence.equals(castOther.sequence);
 
     }
     
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.pgcIdIn.hashCode();
-		hash = hash * prime + this.pgpIdIn.hashCode();
-		hash = hash * prime + this.pgpSeqIn.hashCode();
+		hash = hash * prime + this.pgcId.hashCode();
+		hash = hash * prime + this.id.hashCode();
+		hash = hash * prime + this.sequence.hashCode();
 		
 		return hash;
     }

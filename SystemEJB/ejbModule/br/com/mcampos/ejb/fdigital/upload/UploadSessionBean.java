@@ -1,12 +1,19 @@
 package br.com.mcampos.ejb.fdigital.upload;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.ejb.fdigital.pen.AnotoPen;
+import br.com.mcampos.ejb.fdigital.pen.AnotoPenSessionLocal;
+import br.com.mcampos.ejb.fdigital.penpage.AnotoPenPage;
+import br.com.mcampos.ejb.fdigital.penpage.AnotoPenPageSessionLocal;
 import br.com.mcampos.ejb.fdigital.pgc.Pgc;
 import br.com.mcampos.ejb.fdigital.pgc.PgcSessionLocal;
 import br.com.mcampos.ejb.fdigital.pgcstatus.PgcStatus;
@@ -34,13 +41,18 @@ public class UploadSessionBean implements UploadSession
 	@EJB
 	private RevisionStatusSessionLocal revisionStatus;
 
-	@Override
-	public Pgc add( MediaDTO dto )
+	@EJB
+	private AnotoPenSessionLocal penSession;
+
+	@EJB
+	private AnotoPenPageSessionLocal penPageSession;
+
+	private Pgc add( MediaDTO dto )
 	{
 		Media media = this.mediaSession.add( dto );
 		Pgc n = new Pgc( media );
 		n.setInsertDate( new Date( ) );
-		n.setPgcStatus( this.pgcStatus.get( 1 ) );
+		n.setStatus( this.pgcStatus.get( 1 ) );
 		n.setRevisionStatus( this.revisionStatus.get( 1 ) );
 		return this.pgcSession.merge( n );
 	}
@@ -59,14 +71,51 @@ public class UploadSessionBean implements UploadSession
 		if ( s == null ) {
 			return;
 		}
-		pgc.setPgcStatus( s );
+		pgc.setStatus( s );
 	}
 
-	public Pgc update( Pgc pgc )
+	@Override
+	public Pgc persist( Pgc pgc, MediaDTO dto )
 	{
-		if ( pgc == null ) {
+		if ( pgc == null || dto == null ) {
 			return null;
 		}
+		Media media = this.mediaSession.add( dto );
+		if ( media == null ) {
+			return null;
+		}
+		pgc.setMedia( media );
+		pgc.setInsertDate( new Date( ) );
+		if ( pgc.getStatus( ) == null || pgc.getStatus( ).getId( ) == null ) {
+			pgc.getStatus( ).setId( 1 );
+		}
+		pgc.setStatus( this.pgcStatus.get( ( pgc.getStatus( ).getId( ) ) ) );
+		pgc.setRevisionStatus( this.revisionStatus.get( 1 ) );
 		return this.pgcSession.merge( pgc );
+	}
+
+	@Override
+	public AnotoPen getPen( String pen )
+	{
+		AnotoPen entity = this.penSession.get( pen );
+		return entity;
+	}
+
+	@Override
+	public List<AnotoPenPage> getPenPages( String penId, List<String> pages )
+	{
+		AnotoPen pen = getPen( penId );
+		if ( pen == null ) {
+			return Collections.emptyList( );
+		}
+		ArrayList<AnotoPenPage> list = new ArrayList<AnotoPenPage>( pages.size( ) );
+		for ( String pageId : pages ) {
+			AnotoPenPage penPage = this.penPageSession.get( pen, pageId );
+			if ( penPage == null ) {
+				return Collections.emptyList( );
+			}
+			list.add( penPage );
+		}
+		return list;
 	}
 }

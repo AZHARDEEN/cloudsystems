@@ -17,9 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.com.mcampos.ejb.core.BasicEntityRenderer;
-import br.com.mcampos.ejb.fdigital.AnotoPenPage;
 import br.com.mcampos.ejb.fdigital.form.pad.Pad;
 import br.com.mcampos.ejb.fdigital.page.AnotoPageField;
+import br.com.mcampos.ejb.fdigital.penpage.AnotoPenPage;
 import br.com.mcampos.sysutils.SysUtils;
 
 /**

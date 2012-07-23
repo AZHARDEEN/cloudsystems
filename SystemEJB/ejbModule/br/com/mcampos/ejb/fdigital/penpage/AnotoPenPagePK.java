@@ -1,4 +1,4 @@
-package br.com.mcampos.ejb.fdigital;
+package br.com.mcampos.ejb.fdigital.penpage;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -16,7 +16,7 @@ public class AnotoPenPagePK implements Serializable {
 	private Integer formId;
 
 	@Column(name="apg_id_ch", unique=true, nullable=false, length=16)
-	private String apgIdCh;
+	private String pageId;
 
 	@Column(name="pad_id_in", unique=true, nullable=false)
 	private Integer padId;
@@ -32,11 +32,11 @@ public class AnotoPenPagePK implements Serializable {
 	public void setFormId(Integer frmIdIn) {
 		this.formId = frmIdIn;
 	}
-	public String getApgIdCh() {
-		return this.apgIdCh;
+	public String getPageId() {
+		return this.pageId;
 	}
-	public void setApgIdCh(String apgIdCh) {
-		this.apgIdCh = apgIdCh;
+	public void setPageId(String apgIdCh) {
+		this.pageId = apgIdCh;
 	}
 	public Integer getPadId() {
 		return this.padId;
@@ -61,7 +61,7 @@ public class AnotoPenPagePK implements Serializable {
 		AnotoPenPagePK castOther = (AnotoPenPagePK)other;
 		return 
 			this.formId.equals(castOther.formId)
-			&& this.apgIdCh.equals(castOther.apgIdCh)
+			&& this.pageId.equals(castOther.pageId)
 			&& this.padId.equals(castOther.padId)
 			&& this.sequence.equals(castOther.sequence);
 
@@ -71,7 +71,7 @@ public class AnotoPenPagePK implements Serializable {
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + this.formId.hashCode();
-		hash = hash * prime + this.apgIdCh.hashCode();
+		hash = hash * prime + this.pageId.hashCode();
 		hash = hash * prime + this.padId.hashCode();
 		hash = hash * prime + this.sequence.hashCode();
 		

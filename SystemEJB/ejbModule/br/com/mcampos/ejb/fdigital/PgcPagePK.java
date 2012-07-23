@@ -13,33 +13,33 @@ public class PgcPagePK implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="pgc_id_in", unique=true, nullable=false)
-	private Integer pgcIdIn;
+	private Integer pgcId;
 
 	@Column(name="ppg_book_id", unique=true, nullable=false)
-	private Integer ppgBookId;
+	private Integer bookId;
 
 	@Column(name="ppg_page_id", unique=true, nullable=false)
-	private Integer ppgPageId;
+	private Integer id;
 
     public PgcPagePK() {
     }
-	public Integer getPgcIdIn() {
-		return this.pgcIdIn;
+	public Integer getPgcId() {
+		return this.pgcId;
 	}
-	public void setPgcIdIn(Integer pgcIdIn) {
-		this.pgcIdIn = pgcIdIn;
+	public void setPgcId(Integer pgcIdIn) {
+		this.pgcId = pgcIdIn;
 	}
-	public Integer getPpgBookId() {
-		return this.ppgBookId;
+	public Integer getBookId() {
+		return this.bookId;
 	}
-	public void setPpgBookId(Integer ppgBookId) {
-		this.ppgBookId = ppgBookId;
+	public void setBookId(Integer ppgBookId) {
+		this.bookId = ppgBookId;
 	}
-	public Integer getPpgPageId() {
-		return this.ppgPageId;
+	public Integer getId() {
+		return this.id;
 	}
-	public void setPpgPageId(Integer ppgPageId) {
-		this.ppgPageId = ppgPageId;
+	public void setId(Integer ppgPageId) {
+		this.id = ppgPageId;
 	}
 
 	public boolean equals(Object other) {
@@ -51,18 +51,18 @@ public class PgcPagePK implements Serializable {
 		}
 		PgcPagePK castOther = (PgcPagePK)other;
 		return 
-			this.pgcIdIn.equals(castOther.pgcIdIn)
-			&& this.ppgBookId.equals(castOther.ppgBookId)
-			&& this.ppgPageId.equals(castOther.ppgPageId);
+			this.pgcId.equals(castOther.pgcId)
+			&& this.bookId.equals(castOther.bookId)
+			&& this.id.equals(castOther.id);
 
     }
     
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.pgcIdIn.hashCode();
-		hash = hash * prime + this.ppgBookId.hashCode();
-		hash = hash * prime + this.ppgPageId.hashCode();
+		hash = hash * prime + this.pgcId.hashCode();
+		hash = hash * prime + this.bookId.hashCode();
+		hash = hash * prime + this.id.hashCode();
 		
 		return hash;
     }
