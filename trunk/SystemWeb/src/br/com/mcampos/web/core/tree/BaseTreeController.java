@@ -15,10 +15,10 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.web.controller.admin.security.treenode.BaseTreeNode;
-import br.com.mcampos.web.core.BaseDBController;
+import br.com.mcampos.web.core.BaseDBLoggedController;
 import br.com.mcampos.web.core.event.IDropEvent;
 
-public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBController<SESSION> implements IDropEvent
+public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBLoggedController<SESSION> implements IDropEvent
 {
 	@Wire( "#tree" )
 	private Tree tree;
@@ -66,7 +66,7 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBControll
 	{
 		Object obj;
 
-		obj = ( getTree( ).getModel( ) );
+		obj = (getTree( ).getModel( ));
 		if ( obj == null ) {
 			obj = new AdvancedTreeModel<ENTITY>( getRoot( ) );
 		}
@@ -184,7 +184,7 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBControll
 	@Listen( "onClick = #cmdSave, #cmdCancel; onOK = textbox" )
 	public void onSave( Event evt )
 	{
-		if ( ( evt.getTarget( ).getId( ).equalsIgnoreCase( "cmdSave" ) || evt.getName( ).equalsIgnoreCase( "onOK" ) ) ) {
+		if ( (evt.getTarget( ).getId( ).equalsIgnoreCase( "cmdSave" ) || evt.getName( ).equalsIgnoreCase( "onOK" )) ) {
 			if ( validateRecord( ) == false ) {
 				return;
 			}
@@ -200,8 +200,7 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBControll
 					node = insert( );
 					getModel( ).add( getRoot( ), node );
 				}
-			}
-			catch ( Exception e )
+			} catch( Exception e )
 			{
 				if ( isUpdating( ) ) {
 					showErrorMessage( "Erro ao tentar atualizar o item selecionado", "Atualização" );
@@ -231,8 +230,7 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBControll
 			getModel( ).remove( nodeToDelete );
 			try {
 				remove( getSession( ), nodeToDelete.getData( ) );
-			}
-			catch ( Exception e )
+			} catch( Exception e )
 			{
 				showErrorMessage( "Erro ao excluir item", "Exclusao" );
 			}
@@ -256,11 +254,11 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBControll
 					| Messagebox.NO,
 					Messagebox.QUESTION, 2, new EventListener<Event>( )
 					{
-				@Override
-				public void onEvent( Event event ) throws Exception
-				{
-					onDeleteEntity( event );
-				}
+						@Override
+						public void onEvent( Event event ) throws Exception
+						{
+							onDeleteEntity( event );
+						}
 					} );
 		}
 	}
@@ -271,8 +269,8 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBControll
 	{
 		Treerow source = (Treerow) evt.getDragged( );
 		Treerow target = (Treerow) evt.getTarget( );
-		Object vSource = ( (Treeitem) source.getParent( ) ).getValue( );
-		BaseTreeNode<ENTITY> vTarget = ( (Treeitem) target.getParent( ) ).getValue( );
+		Object vSource = ((Treeitem) source.getParent( )).getValue( );
+		BaseTreeNode<ENTITY> vTarget = ((Treeitem) target.getParent( )).getValue( );
 		if ( vSource instanceof BaseTreeNode ) {
 			BaseTreeNode<ENTITY> r = (BaseTreeNode<ENTITY>) vSource;
 
@@ -280,8 +278,7 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBControll
 				changeParent( getSession( ), r.getData( ), vTarget.getData( ) );
 				getModel( ).remove( r );
 				getModel( ).add( vTarget, r );
-			}
-			catch ( Exception e )
+			} catch( Exception e )
 			{
 				showErrorMessage( "Erro ao mover item", "Mover" );
 			}

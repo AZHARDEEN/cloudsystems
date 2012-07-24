@@ -47,16 +47,6 @@ public class UploadSessionBean implements UploadSession
 	@EJB
 	private AnotoPenPageSessionLocal penPageSession;
 
-	private Pgc add( MediaDTO dto )
-	{
-		Media media = this.mediaSession.add( dto );
-		Pgc n = new Pgc( media );
-		n.setInsertDate( new Date( ) );
-		n.setStatus( this.pgcStatus.get( 1 ) );
-		n.setRevisionStatus( this.revisionStatus.get( 1 ) );
-		return this.pgcSession.merge( n );
-	}
-
 	@Override
 	public void setStatus( Pgc pgc, Integer status )
 	{
@@ -89,7 +79,7 @@ public class UploadSessionBean implements UploadSession
 		if ( pgc.getStatus( ) == null || pgc.getStatus( ).getId( ) == null ) {
 			pgc.getStatus( ).setId( 1 );
 		}
-		pgc.setStatus( this.pgcStatus.get( ( pgc.getStatus( ).getId( ) ) ) );
+		pgc.setStatus( this.pgcStatus.get( (pgc.getStatus( ).getId( )) ) );
 		pgc.setRevisionStatus( this.revisionStatus.get( 1 ) );
 		return this.pgcSession.merge( pgc );
 	}
@@ -109,7 +99,7 @@ public class UploadSessionBean implements UploadSession
 			return Collections.emptyList( );
 		}
 		ArrayList<AnotoPenPage> list = new ArrayList<AnotoPenPage>( pages.size( ) );
-		for ( String pageId : pages ) {
+		for( String pageId : pages ) {
 			AnotoPenPage penPage = this.penPageSession.get( pen, pageId );
 			if ( penPage == null ) {
 				return Collections.emptyList( );

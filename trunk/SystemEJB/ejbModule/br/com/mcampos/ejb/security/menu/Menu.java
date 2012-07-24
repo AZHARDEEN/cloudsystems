@@ -27,12 +27,14 @@ import br.com.mcampos.ejb.security.task.Task;
  */
 @Entity
 @Table( name = "menu" )
-@NamedQueries( { @NamedQuery( name = Menu.getTopMenu, query = "select o from Menu o where o.parent is null" ) } )
+@NamedQueries( { @NamedQuery( name = Menu.getTopMenu, query = "select o from Menu o where o.parent is null" ),
+		@NamedQuery( name = Menu.getByUrl, query = "select o from Menu o where o.url = ?1" ) } )
 public class Menu implements Serializable, TaskRelationInterface, SelfRelationInterface<Menu>, Comparable<Menu>
 {
 	private static final long serialVersionUID = 1L;
 
 	public static final String getTopMenu = "Menu.getTopMenu";
+	public static final String getByUrl = "Menu.getByUrl";
 
 	@Id
 	@Column( name = "mnu_id_in", unique = true, nullable = false )
@@ -245,7 +247,7 @@ public class Menu implements Serializable, TaskRelationInterface, SelfRelationIn
 	public boolean equals( Object obj )
 	{
 		if ( obj instanceof Menu ) {
-			return getId( ).equals( ( (Menu) obj ).getId( ) );
+			return getId( ).equals( ((Menu) obj).getId( ) );
 		}
 		else if ( obj instanceof Integer ) {
 			return getId( ).equals( obj );
@@ -284,7 +286,7 @@ public class Menu implements Serializable, TaskRelationInterface, SelfRelationIn
 	public void add( Menu child )
 	{
 		if ( child != null && getChilds( ).contains( child ) == false ) {
-			assert ( getChilds( ).add( child ) );
+			assert (getChilds( ).add( child ));
 			child.setParent( this );
 		}
 	}
@@ -293,7 +295,7 @@ public class Menu implements Serializable, TaskRelationInterface, SelfRelationIn
 	public Menu remove( Menu child )
 	{
 		if ( child != null && getChilds( ).contains( child ) ) {
-			assert ( getChilds( ).remove( child ) );
+			assert (getChilds( ).remove( child ));
 			child.setParent( null );
 		}
 		return child;

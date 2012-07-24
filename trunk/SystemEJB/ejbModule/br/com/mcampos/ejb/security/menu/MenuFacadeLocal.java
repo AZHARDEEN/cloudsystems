@@ -34,4 +34,6 @@ public interface MenuFacadeLocal extends BaseSessionInterface<Menu>
 	 * this is local only and only
 	 */
 	public void addRoleToMenu( Role role, List<Menu> availableMenus );
+
+	public Menu get( String Url );
 }
