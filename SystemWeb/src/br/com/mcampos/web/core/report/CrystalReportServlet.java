@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.crystaldecisions.report.web.viewer.CrPrintMode;
 import com.crystaldecisions.report.web.viewer.CrystalReportViewer;
-import com.crystaldecisions.reports.reportengineinterface.JPEReportSourceFactory;
 import com.crystaldecisions.sdk.occa.report.application.OpenReportOptions;
 import com.crystaldecisions.sdk.occa.report.application.ReportClientDocument;
 import com.crystaldecisions.sdk.occa.report.data.ConnectionInfo;
@@ -20,7 +19,6 @@ import com.crystaldecisions.sdk.occa.report.data.IConnectionInfo;
 import com.crystaldecisions.sdk.occa.report.lib.ReportSDKException;
 import com.crystaldecisions.sdk.occa.report.lib.ReportSDKExceptionBase;
 import com.crystaldecisions.sdk.occa.report.reportsource.IReportSource;
-import com.crystaldecisions.sdk.occa.report.reportsource.IReportSourceFactory2;
 
 /**
  * Servlet implementation class CrystalReportServlet
@@ -41,7 +39,8 @@ public class CrystalReportServlet extends HttpServlet
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
 	protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
@@ -50,7 +49,8 @@ public class CrystalReportServlet extends HttpServlet
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
 	protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
@@ -63,8 +63,7 @@ public class CrystalReportServlet extends HttpServlet
 		response.setContentType( CONTENT_TYPE );
 		try {
 			doReport( "clients", request, response );
-		}
-		catch ( Exception e ) {
+		} catch( Exception e ) {
 			e.printStackTrace( );
 			showErrorMessage( response );
 		}
@@ -86,59 +85,58 @@ public class CrystalReportServlet extends HttpServlet
 	{
 		CrystalReportViewer viewer = new CrystalReportViewer( );
 
-		viewer.setReportSource( getSource ( request ) );
-		viewer.setDatabaseLogonInfos( getConnectionInfo() );
-		viewer.setEnableLogonPrompt(false);
+		viewer.setReportSource( getSource( request ) );
+		viewer.setDatabaseLogonInfos( getConnectionInfo( ) );
+		viewer.setEnableLogonPrompt( false );
 		viewer.setOwnPage( true );
 		viewer.setBestFitPage( true );
 		viewer.setHasLogo( false );
 		viewer.setHasRefreshButton( true );
 		viewer.setName( "Relatório" );
-		viewer.setReuseParameterValuesOnRefresh(false);
-		viewer.setPrintMode(CrPrintMode.ACTIVEX);
+		viewer.setReuseParameterValuesOnRefresh( false );
+		viewer.setPrintMode( CrPrintMode.ACTIVEX );
 		viewer.processHttpRequest( request, response, getServletContext( ), response.getWriter( ) );
 		response.getWriter( ).close( );
 	}
-	
-	
-	private IReportSource getSource ( HttpServletRequest request ) throws ReportSDKException
+
+	private IReportSource getSource( HttpServletRequest request ) throws ReportSDKException
 	{
-		//IReportSourceFactory2 rsf =new JPEReportSourceFactory();
-		//IReportSource rptSource = (IReportSource)rsf.createReportSource( getReportRealFilename(),request.getLocale());
-		//return rptSource;
-		
-		
+		// IReportSourceFactory2 rsf =new JPEReportSourceFactory();
+		// IReportSource rptSource = (IReportSource)rsf.createReportSource(
+		// getReportRealFilename(),request.getLocale());
+		// return rptSource;
+
 		IReportSource rptSource = null;
-		String reportName = getReportRealFilename();
-		ReportClientDocument reportClientDocument = (ReportClientDocument) request.getSession().getAttribute( reportName );
-		
+		String reportName = getReportRealFilename( );
+		ReportClientDocument reportClientDocument = (ReportClientDocument) request.getSession( ).getAttribute( reportName );
+
 		if ( reportClientDocument == null ) {
-			reportClientDocument = new ReportClientDocument();
-			reportClientDocument.setReportAppServer(ReportClientDocument.inprocConnectionString);  // Version 12+
-			reportClientDocument.setLocale(request.getLocale());
-			reportClientDocument.enableBuiltinControllers();
-			reportClientDocument.open(getReportRealFilename(), OpenReportOptions._openAsReadOnly + OpenReportOptions._discardSavedData  );
-			rptSource = reportClientDocument.getReportSource();
-			request.getSession().setAttribute(reportName, reportClientDocument );
+			reportClientDocument = new ReportClientDocument( );
+			reportClientDocument.setReportAppServer( ReportClientDocument.inprocConnectionString ); // Version
+																									// 12+
+			reportClientDocument.setLocale( request.getLocale( ) );
+			reportClientDocument.enableBuiltinControllers( );
+			reportClientDocument.open( getReportRealFilename( ), OpenReportOptions._openAsReadOnly + OpenReportOptions._discardSavedData );
+			rptSource = reportClientDocument.getReportSource( );
+			request.getSession( ).setAttribute( reportName, reportClientDocument );
 		}
 		return rptSource;
 	}
-	
-	private ConnectionInfos getConnectionInfo ()
+
+	private ConnectionInfos getConnectionInfo( )
 	{
-	     ConnectionInfos connInfos = new ConnectionInfos();
-	     IConnectionInfo connInfo1 = new ConnectionInfo();
-	     connInfo1.setUserName("jreport");
-	     connInfo1.setPassword("jreport");
-	     connInfos.add(connInfo1);	
-	     return connInfos;
+		ConnectionInfos connInfos = new ConnectionInfos( );
+		IConnectionInfo connInfo1 = new ConnectionInfo( );
+		connInfo1.setUserName( "jreport" );
+		connInfo1.setPassword( "jreport" );
+		connInfos.add( connInfo1 );
+		return connInfos;
 	}
-	
-	
-	private String getReportRealFilename ()
+
+	private String getReportRealFilename( )
 	{
 		String reportName = "clients";
-		
+
 		reportName = "/reports/" + reportName + ".rpt";
 		reportName = getServletContext( ).getRealPath( reportName );
 		return reportName;

@@ -10,9 +10,12 @@ import javax.ejb.Stateless;
 
 import org.omg.CORBA.portable.ApplicationException;
 
+import br.com.mcampos.dto.AuthorizedPageOptions;
 import br.com.mcampos.ejb.core.SimpleDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.security.Login;
+import br.com.mcampos.ejb.security.menu.Menu;
+import br.com.mcampos.ejb.security.menu.MenuFacadeLocal;
 import br.com.mcampos.ejb.user.company.Company;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
@@ -27,10 +30,13 @@ import br.com.mcampos.sysutils.SysUtils;
 public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> implements CollaboratorSession, CollaboratorSessionLocal
 {
 	@EJB
-	CompanySessionLocal companySession;
+	private CompanySessionLocal companySession;
 
 	@EJB
-	LoginPropertySessionLocal propertySession;
+	private LoginPropertySessionLocal propertySession;
+
+	@EJB
+	private MenuFacadeLocal menuSession;
 
 	@Override
 	protected Class<Collaborator> getEntityClass( )
@@ -70,8 +76,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 				return Collections.emptyList( );
 			}
 			return toSimpleDTOList( list );
-		}
-		catch ( Exception e )
+		} catch( Exception e )
 		{
 			e.printStackTrace( );
 			return Collections.emptyList( );
@@ -84,7 +89,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 			return Collections.emptyList( );
 		}
 		List<SimpleDTO> dtos = new ArrayList<SimpleDTO>( list.size( ) );
-		for ( Collaborator item : list )
+		for( Collaborator item : list )
 		{
 			String name = SysUtils.isEmpty( item.getCompany( ).getNickName( ) ) ? item.getCompany( ).getName( ) : item.getCompany( )
 					.getNickName( );
@@ -109,5 +114,59 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	public LoginProperty remove( Collaborator collaborator, String propertyName )
 	{
 		return this.propertySession.remove( collaborator, propertyName );
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.com.mcampos.ejb.user.company.collaborator.CollaboratorSession#verifyAccess
+	 * (br.com.mcampos.ejb.user.company.collaborator.Collaborator,
+	 * java.lang.String)
+	 */
+	@Override
+	public AuthorizedPageOptions verifyAccess( Collaborator c, String mnuUrl )
+	{
+		Menu menu = menuSession.get( mnuUrl );
+		AuthorizedPageOptions auth = new AuthorizedPageOptions( );
+		if ( menu == null ) {
+			/*
+			 * this is, maybe, some kind of resource or template.
+			 */
+			System.out.println( "Menu is null for url - " + mnuUrl );
+			auth.setAuthorized( true );
+		}
+		try {
+			List<Menu> menus = getMenus( c );
+			if ( SysUtils.isEmpty( menus ) ) {
+				System.out.println( "Menu list is null - " + mnuUrl );
+				auth.setAuthorized( false );
+			}
+			else if ( menus.contains( menu ) == false ) {
+				System.out.println( "List does not contais menu for url - " + mnuUrl );
+				auth.setAuthorized( false );
+			}
+			else {
+				System.out.println( "Ok for - " + mnuUrl );
+				auth.setAuthorized( true );
+			}
+		} catch( ApplicationException e ) {
+			e.printStackTrace( );
+			auth.setAuthorized( false );
+		}
+		return auth;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.com.mcampos.ejb.user.company.collaborator.CollaboratorSession#getMenus
+	 * (br.com.mcampos.ejb.user.company.collaborator.Collaborator)
+	 */
+	@Override
+	public List<Menu> getMenus( Collaborator collaborator ) throws ApplicationException
+	{
+		return menuSession.getMenus( collaborator );
 	}
 }
