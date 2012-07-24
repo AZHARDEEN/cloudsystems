@@ -3,74 +3,8 @@
 	<window width="100%" height="100%" closable="true" border="none" title="Cadastro de Pessoas" apply="br.com.mcampos.web.controller.client.MyRecordController">
 	    <script type="text/JavaScript" defer="true">jq(document).ready( function() { jq('$cpf').setMask ( 'cpf' ); } );</script>
 		<div id="divData">
-			<tabbox id="personTab">
-			    <tabs>
-			        <tab label="Dados Pessoais"/>
-			        <tab label="Endereço"/>
-			        <tab label="Documentos"/>
-			        <tab label="Contatos"/>
-			    </tabs>
-			    <tabpanels>
-			        <tabpanel >
-				        <grid fixedLayout="true">
-				            <columns>
-				                <column width="20%"/>
-				                <column/>
-				            </columns>
-				            <rows>
-				                <row>
-				                    <label value="CPF" />
-				                    <textbox id="cpf" width="200px" maxlength="14" />
-				                </row>
-				                <row>
-				                    <label value="Nome Completo" />
-				                    <textbox id="name" hflex = "1" maxlength="128" />
-				                </row>
-				                <row>
-				                    <label value="Sexo" />
-				                    <combobox id="gender" width="200px" readonly="true" use= "br.com.mcampos.web.core.combobox.GenderCombobox"/>
-				                </row>
-				                <row>
-				                    <label value="Tratamento" />
-				                    <combobox id="title" width="200px" readonly="true" use="br.com.mcampos.web.core.combobox.TitleCombobox"/>
-				                </row>
-				                <row>
-				                    <label value="Estado Civil"/>
-				                    <combobox id="maritalStatus" width="200px" readonly="true" use="br.com.mcampos.web.core.combobox.CivilStateCombobox"/>
-				                </row>
-				                <row>
-				                    <label value="Data Nascimento"/>
-				                    <hbox>
-				                        <datebox id="birthdate" format="dd/MM/yyyy"/>
-				                        <div align="center">
-				                            <label value="DD/MM/YYYY. Ex.: 25/12/2009"/>
-				                        </div>
-				                    </hbox>
-				                </row>
-				                <row>
-				                    <label value="Naturalidade"/>
-				                    <vbox width="100%">
-				                        <combobox id="bornState" width="300px" readonly="true" use="br.com.mcampos.web.core.combobox.StateCombobox" />
-				                        <combobox id="bornCity" width="500px" readonly="true" use="br.com.mcampos.web.core.combobox.CityCombobox"/>
-				                    </vbox>
-				                </row>
-				                <row>
-				                    <label value="Nome do Pai"/>
-				                    <textbox id="fatherName" hflex = "1" maxlength="128"/>
-				                </row>
-				                <row>
-				                    <label value="Nome da Mãe"/>
-				                    <textbox id="motherName" hflex = "1" maxlength="128"/>
-				                </row>
-				            </rows>
-				        </grid>
-			        </tabpanel>
-			        <tabpanel fulfill="=/private/client/commom/address.zul"></tabpanel>
-			        <tabpanel fulfill="=/private/client/commom/document.zul"></tabpanel>
-			        <tabpanel fulfill="=/private/client/commom/contact.zul"></tabpanel>
-			    </tabpanels>
-			</tabbox>
-			<separator></separator>
+			<tabbox id="personTab" fulfill="=/private/client/commom/person_tab.zul" />
+			<separator />
 			<div fulfill="=/templates/submit_cancel.zul" />
 		</div>
 	</window>

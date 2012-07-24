@@ -54,6 +54,21 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Di
 		}
 	}
 
+	@Listen( "onAfterRender=listbox" )
+	public void afterRender( Event evt )
+	{
+		if ( evt != null ) {
+			if ( evt.getTarget( ) instanceof Listbox ) {
+				Listbox l = (Listbox) evt.getTarget( );
+				if ( l.getItemCount( ) > 0 ) {
+					l.setSelectedIndex( 0 );
+					onSelect( null );
+				}
+			}
+			evt.stopPropagation( );
+		}
+	}
+
 	private DATA getSelected( )
 	{
 		Listitem item = getListbox( ).getSelectedItem( );

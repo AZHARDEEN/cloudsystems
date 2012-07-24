@@ -50,8 +50,8 @@
  		<separator bar="true"/>
 		<div align="center" >
 			<hbox align="center" >
-				<button label="Adicionar" id="addAddress" tooltiptext="Adiciona o novo endereço a lista" image="/img/icontexto-webdev-add-032x032.png" />
-				<button label="Atualizar" id="updateAddress" disabled="true" tooltiptext="Atualiza o endereço selecionado na lista" image="/img/icontexto-webdev-alert-032x032.png" />
+				<button label="Novo" id="addAddress" tooltiptext="Adiciona o novo endereço à lista" image="/img/icontexto-webdev-add-032x032.png" />
+				<button label="Editar" id="updateAddress" disabled="true" tooltiptext="Atualiza o endereço selecionado na lista" image="/img/icontexto-webdev-alert-032x032.png" />
 				<button label="Remover" id="removeAddress" disabled="true" tooltiptext="Remove o endereço selecionado na lista" image="/img/icontexto-webdev-remove-032x032.png" />
 			</hbox>
 		</div>

@@ -33,10 +33,10 @@
 		<separator bar="true"/>
 		<div align="center" >
 			<hbox align="center" >
-				<button label="Adicionar" id="addDocument" 
+				<button label="Novo" id="addDocument" 
 					tooltiptext="Adiciona um novo documento ao cadastro desta pessoa" 
 					image="/img/icontexto-webdev-add-032x032.png" />
-				<button label="Atualizar" id="updateDocument" disabled="true"
+				<button label="Editar" id="updateDocument" disabled="true"
 					tooltiptext="Atualiza o documento selecionado deste cadastro" 
 					image="/img/icontexto-webdev-alert-032x032.png" />
 				<button label="Remover" id="removeDocument" disabled="true"

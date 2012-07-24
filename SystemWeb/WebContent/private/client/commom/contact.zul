@@ -33,8 +33,8 @@
 		<separator bar="true"/>
 		<div align="center" >
 			<hbox align="center" >
-				<button label="Adicionar" id="addContact" tooltiptext="Adiciona o novo contato a lista" image="/img/icontexto-webdev-add-032x032.png" />
-				<button label="Atualizar" id="updateContact" disabled="true" tooltiptext="Atualiza o contato selecionado na lista" image="/img/icontexto-webdev-alert-032x032.png" />
+				<button label="Novo" id="addContact" tooltiptext="Adiciona um novo contato à lista" image="/img/icontexto-webdev-add-032x032.png" />
+				<button label="Editar" id="updateContact" disabled="true" tooltiptext="Atualiza o contato selecionado na lista" image="/img/icontexto-webdev-alert-032x032.png" />
 				<button label="Remover" id="removeContact" disabled="true" tooltiptext="Remove o contato selecionado na lista" image="/img/icontexto-webdev-remove-032x032.png" />
 			</hbox>
 		</div>
