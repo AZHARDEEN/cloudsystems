@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.omg.CORBA.portable.ApplicationException;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Intbox;
@@ -11,6 +14,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.TreeitemRenderer;
+import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.security.menu.Menu;
 import br.com.mcampos.ejb.security.menu.MenuFacade;
@@ -87,8 +91,7 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 		Menu rootMenu = new Menu( );
 		try {
 			rootMenu.setChilds( getSession( ).getTopContextMenu( ) );
-		}
-		catch ( ApplicationException e ) {
+		} catch( ApplicationException e ) {
 			e.printStackTrace( );
 		}
 		return MenuNode.createNode( rootMenu );
@@ -200,7 +203,7 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 	{
 		Task rootTask = new Task( );
 		rootTask.setChilds( getSession( ).getRootTask( ) );
-		return ( TaskNode.createNode( rootTask ) );
+		return (TaskNode.createNode( rootTask ));
 	}
 
 	@Override
@@ -225,5 +228,16 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 	protected void addTask( MenuFacade session, Menu entity, Task task )
 	{
 		session.add( entity, task );
+	}
+
+	@Listen( "onClick=#btnFilePath,#btnPath" )
+	public void onClickFilePath( Event evt )
+	{
+		Component c = createComponents( "/templates/file_path_dialog.zul", getMainWindow( ), null );
+		if ( c != null && c instanceof Window ) {
+			((Window) c).doModal( );
+		}
+		if ( evt != null )
+			evt.stopPropagation( );
 	}
 }

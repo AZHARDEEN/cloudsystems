@@ -19,7 +19,10 @@
                     </row>
                     <row>
                         URL
-                        <label id="recordURL"/>
+                        <hlayout valign="middle">
+                        	<label id="recordURL"/>
+                        	<button id="btnFilePath" label="..." />
+                        </hlayout>
                     </row>
                     <row>
                         Seqüencia
@@ -27,7 +30,10 @@
                     </row>
                     <row>
                         Caminho para Imagem
-                        <label id="recordImagePath"/>
+                        <hlayout valign="middle">
+	                        <label id="recordImagePath"/>
+	                       	<button id="btnPath" label="..." />
+                        </hlayout>
                     </row>
                     <row>
                         Propriedades do Menu
