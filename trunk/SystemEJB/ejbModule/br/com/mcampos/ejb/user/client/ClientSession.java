@@ -30,6 +30,10 @@ public interface ClientSession extends CollaboratorBaseSessionInterface<Client>
 
 	Client updatePerson( Collaborator auth, Client newEntity );
 
+	Client addNewCompany( Collaborator auth, Client newEntity );
+
+	Client updateCompany( Collaborator auth, Client newEntity );
+
 	DocumentType getDocumentType( Integer type );
 
 	List<Person> reportClientList( Collaborator auth );

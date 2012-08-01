@@ -13,8 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import br.com.mcampos.ejb.core.entity.ProgramException;
-import br.com.mcampos.ejb.core.entity.ProgramExceptionTrace;
 import br.com.mcampos.sysutils.SysUtils;
 
 public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface<T>
@@ -124,7 +122,6 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			return (T) query.getSingleResult( );
 		}
 		catch ( Exception e ) {
-			storeException( e );
 			return null;
 		}
 	}
@@ -312,6 +309,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			return;
 		}
 		e.printStackTrace( );
+		/*
 		try {
 			ProgramException entity = new ProgramException( );
 			entity.setDescription( e.getMessage( ) );
@@ -332,5 +330,6 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			ex = null;
 			// just it doesn't matter here
 		}
+		*/
 	}
 }

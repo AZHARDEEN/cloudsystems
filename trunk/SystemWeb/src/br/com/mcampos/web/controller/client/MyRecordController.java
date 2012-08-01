@@ -1,7 +1,11 @@
 package br.com.mcampos.web.controller.client;
 
+import java.util.List;
+
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.ejb.user.Users;
+import br.com.mcampos.ejb.user.client.Client;
 import br.com.mcampos.ejb.user.document.type.DocumentType;
 import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.ejb.user.person.PersonSession;
@@ -58,6 +62,49 @@ public class MyRecordController extends BasePersonController<PersonSession>
 		getGender( ).load( );
 		show( getCurrentCollaborator( ).getPerson( ) );
 		getName( ).setFocus( true );
+	}
+
+	@Override
+	protected Users createEmptyEntity( )
+	{
+		return null;
+	}
+
+	@Override
+	protected List<Client> getClients( )
+	{
+		return null;
+	}
+
+	@Override
+	protected Long getCount( )
+	{
+		return null;
+	}
+
+	@Override
+	protected void onUpdate( )
+	{
+
+	}
+
+	@Override
+	protected void onNew( )
+	{
+
+	}
+
+	@Override
+	protected boolean remove( Client client )
+	{
+		return false;
+	}
+
+	@Override
+	protected Client update( Client client )
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
