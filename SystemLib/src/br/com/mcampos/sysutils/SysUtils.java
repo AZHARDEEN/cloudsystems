@@ -1,6 +1,9 @@
 package br.com.mcampos.sysutils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -275,6 +278,21 @@ public final class SysUtils
 			return "";
 		}
 		return ext;
+	}
+
+	public static byte[ ] readByteFromStream( InputStream inputStream ) throws Exception
+	{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream( );
+		DataOutputStream dos = new DataOutputStream( baos );
+		byte[ ] data = new byte[ 4096 ];
+		int count = inputStream.read( data );
+		while ( count != -1 )
+		{
+			dos.write( data, 0, count );
+			count = inputStream.read( data );
+		}
+
+		return baos.toByteArray( );
 	}
 
 }

@@ -15,6 +15,7 @@ import br.com.mcampos.ejb.core.CollaboratorBaseSessionBean;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.user.Users;
 import br.com.mcampos.ejb.user.company.Company;
+import br.com.mcampos.ejb.user.company.CompanySessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
 import br.com.mcampos.ejb.user.document.type.DocumentType;
@@ -33,6 +34,9 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 
 	@EJB
 	private PersonSessionLocal personSession;
+
+	@EJB
+	private CompanySessionLocal companySession;
 
 	@Override
 	protected Class<Client> getEntityClass( )
@@ -139,6 +143,23 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 		if ( client.getId( ).getSequence( ) == null ) {
 			client.getId( ).setSequence( getSequence( client.getCompany( ) ) );
 		}
+	}
+
+	@Override
+	public Client addNewCompany( Collaborator auth, Client newEntity )
+	{
+		configClient( newEntity );
+		return updatePerson( auth, newEntity );
+	}
+
+	@Override
+	public Client updateCompany( Collaborator auth, Client newEntity )
+	{
+		if ( auth.getCompany( ).equals( newEntity.getCompany( ) ) == false ) {
+			newEntity.setCompany( auth.getCompany( ) );
+		}
+		newEntity.setClient( this.companySession.merge( (Company) newEntity.getClient( ) ) );
+		return super.merge( newEntity );
 	}
 
 	private Integer getSequence( Company c )

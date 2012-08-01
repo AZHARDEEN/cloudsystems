@@ -22,10 +22,16 @@ public abstract class BaseSessionBean<T> extends PagingSessionBean<T> implements
 		if ( newEntity == null ) {
 			return null;
 		}
-		T merged = getEntityManager( ).merge( newEntity );
-		getEntityManager( ).flush( );
-		getEntityManager( ).refresh( merged );
-		return merged;
+		try {
+			T merged = getEntityManager( ).merge( newEntity );
+			getEntityManager( ).flush( );
+			getEntityManager( ).refresh( merged );
+			return merged;
+		}
+		catch ( Exception e ) {
+			e.printStackTrace( );
+			return null;
+		}
 	}
 
 	@Override

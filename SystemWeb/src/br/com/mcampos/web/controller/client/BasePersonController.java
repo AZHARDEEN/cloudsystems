@@ -11,7 +11,6 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.user.document.UserDocument;
-import br.com.mcampos.ejb.user.document.type.DocumentType;
 import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.sysutils.CPF;
 import br.com.mcampos.sysutils.SysUtils;
@@ -44,13 +43,7 @@ public abstract class BasePersonController<T> extends UserController<T>
 	@Wire
 	private Textbox motherName;
 
-	protected abstract boolean onOk( );
-
-	protected abstract void onCancel( );
-
 	protected abstract Person getPerson( String doc );
-
-	protected abstract DocumentType getDocumentType( Integer type );
 
 	protected void show( Person person )
 	{
@@ -167,27 +160,6 @@ public abstract class BasePersonController<T> extends UserController<T>
 		person.setFatherName( getFatherName( ).getValue( ) );
 		person.setMotherName( getMotherName( ).getValue( ) );
 		person.setBornCity( getBornCity( ).getSelectedValue( ) );
-	}
-
-	@Listen( "onClick = #cmdSubmit, #cmdCancel " )
-	public void onClickSubmitCancel( Event evt )
-	{
-		if ( evt != null ) {
-			if ( evt.getTarget( ).getId( ).equals( "cmdSubmit" ) ) {
-				if ( !onOk( ) ) {
-					return;
-				}
-			}
-			evt.stopPropagation( );
-			onCancel( );
-		}
-		if ( evt != null ) {
-			logger.info( "onClickSubmitCancel: " + evt.getTarget( ).getId( ) );
-			evt.stopPropagation( );
-		}
-		else {
-			logger.warn( "onClickSubmitCancel with evt null " );
-		}
 	}
 
 	@Listen( "onBlur=#cpf" )

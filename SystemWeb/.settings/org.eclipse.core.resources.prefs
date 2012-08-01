@@ -2,3 +2,7 @@ eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/i3-label.properties=UTF-8
 encoding//WebContent/reports/client_report.jrxml=UTF-8
 encoding//WebContent/reports/template.jrxml=UTF-8
+encoding//src/br/com/mcampos/web/fdigital/samabsd/webservice/InovadoraWS.java=UTF-8
+encoding//src/br/com/mcampos/web/fdigital/samabsd/webservice/InovadoraWSPortBindingStub.java=UTF-8
+encoding//src/br/com/mcampos/web/fdigital/samabsd/webservice/InovadoraWSService.java=UTF-8
+encoding//src/br/com/mcampos/web/fdigital/samabsd/webservice/InovadoraWSServiceLocator.java=UTF-8
