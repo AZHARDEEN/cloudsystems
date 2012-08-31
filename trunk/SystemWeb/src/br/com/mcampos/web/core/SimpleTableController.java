@@ -58,7 +58,7 @@ public abstract class SimpleTableController<SESSION, ENTITY> extends BaseDBListC
 				entity.setId( Integer.parseInt( input.getText( ) ) );
 			}
 			else {
-				entity.setDescription( input.getText( ) );
+				entity.setCode( input.getText( ) );
 			}
 		}
 	}
@@ -73,7 +73,7 @@ public abstract class SimpleTableController<SESSION, ENTITY> extends BaseDBListC
 			showError( "O campo Código não pode estar vazio" );
 			return false;
 		}
-		if ( entity.getDescription( ) == null || entity.getDescription( ).isEmpty( ) ) {
+		if ( entity.getCode( ) == null || entity.getCode( ).isEmpty( ) ) {
 			showError( "O campo descrição não pode estar vazio" );
 			return false;
 		}
