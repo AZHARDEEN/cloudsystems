@@ -67,7 +67,7 @@ public abstract class BaseDBCombobox<BEAN> extends SelectorComposer<Combobox>
 			Comboitem item;
 
 			if ( dto instanceof SimpleEntity<?> ) {
-				item = getCombobox( ).appendItem( ( (SimpleEntity<?>) dto ).getDescription( ) );
+				item = getCombobox( ).appendItem( ( (SimpleEntity<?>) dto ).getCode( ) );
 			}
 			else {
 				item = getCombobox( ).appendItem( dto.toString( ) );

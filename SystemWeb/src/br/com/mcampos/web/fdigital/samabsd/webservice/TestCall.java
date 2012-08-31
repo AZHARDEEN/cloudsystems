@@ -138,6 +138,7 @@ public class TestCall
 				xml.append( "\t<Fields>\n" );
 			}
 			String fieldName = rSet.getString( "pfl_name_ch" ).trim( );
+			fieldName = fieldName.replaceAll( " ", "_" );
 			int type = rSet.getInt( "flt_id_in" );
 			if ( rSet.getBoolean( "pfl_has_penstrokes_bt" ) ) {
 				xml.append( "\t\t<" );
@@ -169,7 +170,7 @@ public class TestCall
 				xml.append( " filled=\"false\" type=\"" );
 				xml.append( type == 6 ? "Boolean" : "String" );
 				xml.append( "\"" );
-				xml.append( " />\n" );
+				xml.append( "/>\n" );
 			}
 		}
 		xml.append( "\t</Fields>\n" );

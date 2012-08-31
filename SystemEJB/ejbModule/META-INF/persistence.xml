@@ -97,6 +97,16 @@
     <class>br.com.mcampos.ejb.fdigital.PgcPenPagePK</class>
     <class>br.com.mcampos.ejb.system.revisionstatus.RevisionStatus</class>
     <class>br.com.mcampos.ejb.system.operators.Operator</class>
+    <class>br.com.mcampos.ejb.gdf.AdministrativeRegion</class>
+    <class>br.com.mcampos.ejb.gdf.BuildingType</class>
+    <class>br.com.mcampos.ejb.gdf.DestinationType</class>
+    <class>br.com.mcampos.ejb.gdf.OperationType</class>
+    <class>br.com.mcampos.ejb.gdf.ProjectType</class>
+    <class>br.com.mcampos.ejb.gdf.RegionalDivision</class>
+    <class>br.com.mcampos.ejb.gdf.ServiceOrderType</class>
+    <class>br.com.mcampos.ejb.gdf.ServiceTerm</class>
+    <class>br.com.mcampos.ejb.gdf.StuffType</class>
+    <class>br.com.mcampos.ejb.gdf.WorkType</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

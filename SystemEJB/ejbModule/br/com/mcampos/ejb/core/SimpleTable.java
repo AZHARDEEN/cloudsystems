@@ -18,7 +18,6 @@ public abstract class SimpleTable<ENTITY> implements SimpleEntity<ENTITY>
 	public SimpleTable( Integer id, String description )
 	{
 		setId( id );
-		setDescription( description );
 	}
 
 	@Override
