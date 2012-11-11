@@ -3,6 +3,8 @@
 	<name>SystemWeb</name>
 	<comment></comment>
 	<projects>
+		<project>SystemEJB</project>
+		<project>SystemLib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

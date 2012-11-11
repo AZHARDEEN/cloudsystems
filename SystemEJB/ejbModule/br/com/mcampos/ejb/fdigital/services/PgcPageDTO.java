@@ -1,6 +1,6 @@
-package br.com.mcampos.web.fdigital.samabsd.webservice;
+package br.com.mcampos.ejb.fdigital.services;
 
-public class PgcPage
+class PgcPageDTO
 {
 	private int pgc_id_in;
 	private int ppg_book_id;
