@@ -12,7 +12,7 @@ public class BasicComboitemRenderer implements ComboitemRenderer<SimpleEntity<?>
 	public void render( Comboitem item, SimpleEntity<?> entity, int index ) throws Exception
 	{
 		item.setValue( entity );
-		item.setLabel( entity.getCode( ) );
+		item.setLabel( entity.getDescription( ) );
 	}
 
 }
