@@ -36,10 +36,8 @@ public class SamaBSBClient
 	@Schedule( second = "*/30", minute = "*", hour = "*", persistent = false )
 	public void lookForForms( )
 	{
-		logger.info( "Timer Started" );
 		try {
 			Connection conn = getConnection( );
-			logger.info( "The connections was acquired" );
 			InovadoraWSServiceLocator stub = new InovadoraWSServiceLocator( );
 			InovadoraWS service = stub.getInovadoraWSPort( );
 			List<PgcPageDTO> list = getPgcs( conn );
@@ -85,7 +83,14 @@ public class SamaBSBClient
 		}
 		ArrayList<PgcPageDTO> list = new ArrayList<PgcPageDTO>( );
 		ResultSet rSet = conn.createStatement( ).executeQuery(
-				"select distinct pgc_id_in from pgc_page where frm_id_in = 7 and coalesce ( ppg_exported_bt, 'false') = false " +
+				"select " +
+						"distinct pgc.pgc_id_in " +
+						"from  " +
+						"pgc_page, pgc " +
+						"where  " +
+						"pgc.pgc_id_in = pgc_page.pgc_id_in " +
+						"and	frm_id_in in ( 7, 8 ) and coalesce ( ppg_exported_bt, 'false') = false " +
+						"and pgc.rst_id_in = 3 " +
 						"order by pgc_id_in " );
 		while ( rSet.next( ) ) {
 			PgcPageDTO item = new PgcPageDTO( );
@@ -100,9 +105,6 @@ public class SamaBSBClient
 			else {
 				logger.info( "Found " + list.size( ) + " records to export to SAMA" );
 			}
-		}
-		else {
-			logger.info( "There are no records to export to SAMA" );
 		}
 		return list;
 	}
