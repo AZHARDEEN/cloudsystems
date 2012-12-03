@@ -76,7 +76,8 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 				return Collections.emptyList( );
 			}
 			return toSimpleDTOList( list );
-		} catch( Exception e )
+		}
+		catch ( Exception e )
 		{
 			e.printStackTrace( );
 			return Collections.emptyList( );
@@ -89,7 +90,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 			return Collections.emptyList( );
 		}
 		List<SimpleDTO> dtos = new ArrayList<SimpleDTO>( list.size( ) );
-		for( Collaborator item : list )
+		for ( Collaborator item : list )
 		{
 			String name = SysUtils.isEmpty( item.getCompany( ).getNickName( ) ) ? item.getCompany( ).getName( ) : item.getCompany( )
 					.getNickName( );
@@ -127,7 +128,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public AuthorizedPageOptions verifyAccess( Collaborator c, String mnuUrl )
 	{
-		Menu menu = menuSession.get( mnuUrl );
+		Menu menu = this.menuSession.get( mnuUrl );
 		AuthorizedPageOptions auth = new AuthorizedPageOptions( );
 		if ( menu == null ) {
 			/*
@@ -150,7 +151,8 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 				System.out.println( "Ok for - " + mnuUrl );
 				auth.setAuthorized( true );
 			}
-		} catch( ApplicationException e ) {
+		}
+		catch ( ApplicationException e ) {
 			e.printStackTrace( );
 			auth.setAuthorized( false );
 		}
@@ -167,6 +169,15 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public List<Menu> getMenus( Collaborator collaborator ) throws ApplicationException
 	{
-		return menuSession.getMenus( collaborator );
+		return this.menuSession.getMenus( collaborator );
+	}
+
+	@Override
+	public Collaborator merge( Collaborator newEntity )
+	{
+		if ( newEntity.getId( ).getSequence( ) == null || newEntity.getId( ).getSequence( ).equals( 0 ) ) {
+			newEntity.getId( ).setSequence( getNextId( Collaborator.maxSequence, newEntity.getCompany( ) ) );
+		}
+		return super.merge( newEntity );
 	}
 }

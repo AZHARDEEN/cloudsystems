@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import br.com.mcampos.ejb.user.company.Company;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
 /**
@@ -25,6 +26,12 @@ public class InepPackagePK implements Serializable, Comparable<InepPackagePK>
 
 	public InepPackagePK( )
 	{
+	}
+
+	public InepPackagePK( Company c, Integer id )
+	{
+		setCompanyId( c.getId( ) );
+		setId( id );
 	}
 
 	public Integer getCompanyId( )

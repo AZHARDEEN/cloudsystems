@@ -126,6 +126,9 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 	@Temporal( TemporalType.TIMESTAMP )
 	private Date updateDate;
 
+	@Column( name = "dis_priority_in" )
+	private Integer priority;
+
 	public InepDistribution( )
 	{
 	}
@@ -189,6 +192,9 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 	public void setTest( InepTest test )
 	{
 		this.test = test;
+		if ( getTest( ) != null ) {
+			getId( ).set( test );
+		}
 	}
 
 	public String getObs( )
@@ -244,6 +250,16 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 		default:
 			return 0;
 		}
+	}
+
+	public Integer getPriority( )
+	{
+		return this.priority;
+	}
+
+	public void setPriority( Integer priority )
+	{
+		this.priority = priority;
 	}
 
 }

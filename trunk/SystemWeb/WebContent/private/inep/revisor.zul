@@ -34,6 +34,8 @@
 	        </center>
 	        <east autoscroll="true" splittable="true" width="50%">
 	            <div id="divEast">
+	            	<toolbarbutton id="loadRevisor" label="Carregar Revisores"></toolbarbutton>
+	            	<toolbarbutton id="distribute" label="Distribuir"></toolbarbutton>
 	                <div id="divInfo">
 	                    <grid fixedLayout="true">
 	                        <columns>

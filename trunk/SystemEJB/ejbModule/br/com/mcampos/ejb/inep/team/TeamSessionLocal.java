@@ -19,8 +19,6 @@ public interface TeamSessionLocal extends BaseSessionInterface<InepRevisor>
 
 	List<InepRevisor> getTeam( InepTask task );
 
-	void distribute( );
-
 	List<InepPackage> getPackages( InepRevisor rev );
 
 	List<InepDistribution> getTests( InepRevisor rev, Integer testStatus );

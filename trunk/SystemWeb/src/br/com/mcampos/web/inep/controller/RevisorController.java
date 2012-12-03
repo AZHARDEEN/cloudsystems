@@ -1,8 +1,16 @@
 package br.com.mcampos.web.inep.controller;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import javax.naming.NamingException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -13,6 +21,8 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.dto.inep.CorretorDTO;
+import br.com.mcampos.ejb.inep.InepSession;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepTask;
@@ -21,10 +31,15 @@ import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
 import br.com.mcampos.web.inep.controller.renderer.RevisorListRenderer;
+import br.com.mcampos.web.locator.ServiceLocator;
 
 public class RevisorController extends BaseDBListController<InepRevisorSession, InepRevisor>
 {
+	public static final String path = "T:\\temp\\201212_carga_inep.csv";
+	private static final Logger logger = LoggerFactory.getLogger( RevisorController.class );
+
 	private static final long serialVersionUID = -1355230877237131653L;
+	private transient InepSession inepSession = null;
 
 	@Wire
 	Combobox comboEvent;
@@ -172,6 +187,80 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 			list = getSession( ).getAll( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ) );
 		}
 		getListbox( ).setModel( new ListModelList<InepRevisor>( list ) );
+	}
+
+	@Listen( "onClick = #loadRevisor" )
+	public void loadRevisor( )
+	{
+		File sourcefile = new File( path );
+		if ( !sourcefile.exists( ) ) {
+			System.out.println( "Arquivo " + path + " nao existe" );
+			return;
+		}
+		try {
+			logger.debug( "Loading records" );
+			load( sourcefile );
+		}
+		catch ( IOException e ) {
+			e.printStackTrace( );
+		}
+	}
+
+	@Listen( "onClick = #distribute" )
+	public void distribute( )
+	{
+		List<InepTask> tasks = getInepSession( ).getTasks( );
+
+		for ( InepTask task : tasks ) {
+			System.out.println( "Distributing task: " + task.getDescription( ) );
+			getInepSession( ).distribute( task );
+		}
+	}
+
+	public void load( File file ) throws IOException
+	{
+		BufferedReader input = new BufferedReader( new FileReader( file ) );
+		String line;
+		InepSession is = getInepSession( );
+
+		while ( ( line = input.readLine( ) ) != null ) {
+			System.out.println( line );
+			CorretorDTO dto = new CorretorDTO( );
+
+			String values[] = line.split( ";" );
+			if ( values.length >= 5 ) {
+				dto.setCpf( values[ 0 ].trim( ) );
+				dto.setEmail( values[ 1 ].trim( ) );
+				dto.setNome( values[ 2 ].trim( ) );
+				dto.setCoordenador( values[ 3 ].toUpperCase( ).equals( "S" ) );
+				dto.setTarefa( Integer.parseInt( values[ 4 ].trim( ) ) );
+				dto.setEvento( 1 );
+				dto.setUser( 13623 );
+				try {
+					if ( is.loadCorretore( dto ) == false ) {
+						break;
+					}
+				}
+				catch ( Exception e ) {
+					e.printStackTrace( );
+					break;
+				}
+			}
+		}
+		input.close( );
+	}
+
+	private InepSession getInepSession( )
+	{
+		try {
+			if ( this.inepSession == null ) {
+				this.inepSession = (InepSession) ServiceLocator.getInstance( ).getRemoteSession( InepSession.class );
+			}
+		}
+		catch ( NamingException e ) {
+			e.printStackTrace( );
+		}
+		return this.inepSession;
 	}
 
 }

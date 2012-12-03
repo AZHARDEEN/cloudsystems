@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-
 /**
  * The primary key class for the inep_task database table.
  * 
@@ -13,19 +12,27 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class InepTaskPK implements Serializable, Comparable<InepTaskPK>
 {
-	//default serial version id, required for serializable classes.
+	// default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="usr_id_in")
+	@Column( name = "usr_id_in" )
 	private Integer companyId;
 
-	@Column(name="pct_id_in")
+	@Column( name = "pct_id_in" )
 	private Integer eventId;
 
-	@Column(name="tsk_id_in")
+	@Column( name = "tsk_id_in" )
 	private Integer id;
 
-	public InepTaskPK() {
+	public InepTaskPK( )
+	{
+	}
+
+	public InepTaskPK( InepPackage e, int id )
+	{
+		setCompanyId( e.getCompany( ).getId( ) );
+		setEventId( e.getId( ).getId( ) );
+		setId( id );
 	}
 
 	public void set( InepPackagePK key )
@@ -34,58 +41,66 @@ public class InepTaskPK implements Serializable, Comparable<InepTaskPK>
 		setEventId( key.getId( ) );
 	}
 
-	public Integer getCompanyId() {
+	public Integer getCompanyId( )
+	{
 		if ( this.companyId == null ) {
 			this.companyId = 0;
 		}
 		return this.companyId;
 	}
 
-	public void setCompanyId(Integer usrIdIn) {
+	public void setCompanyId( Integer usrIdIn )
+	{
 		this.companyId = usrIdIn;
 	}
 
-	public Integer getEventId() {
+	public Integer getEventId( )
+	{
 		if ( this.eventId == null ) {
 			this.eventId = 0;
 		}
 		return this.eventId;
 	}
 
-	public void setEventId(Integer pctIdIn) {
+	public void setEventId( Integer pctIdIn )
+	{
 		this.eventId = pctIdIn;
 	}
 
-	public Integer getId() {
+	public Integer getId( )
+	{
 		return this.id;
 	}
-	public void setId(Integer tskIdIn) {
+
+	public void setId( Integer tskIdIn )
+	{
 		this.id = tskIdIn;
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		if (this == other) {
+	public boolean equals( Object other )
+	{
+		if ( this == other ) {
 			return true;
 		}
-		if (!(other instanceof InepTaskPK)) {
+		if ( !( other instanceof InepTaskPK ) ) {
 			return false;
 		}
-		InepTaskPK castOther = (InepTaskPK)other;
-		return
-				this.companyId.equals(castOther.companyId)
-				&& this.eventId.equals(castOther.eventId)
-				&& this.id.equals(castOther.id);
+		InepTaskPK castOther = (InepTaskPK) other;
+		return this.companyId.equals( castOther.companyId )
+				&& this.eventId.equals( castOther.eventId )
+				&& this.id.equals( castOther.id );
 
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode( )
+	{
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.companyId.hashCode();
-		hash = hash * prime + this.eventId.hashCode();
-		hash = hash * prime + this.id.hashCode();
+		hash = hash * prime + this.companyId.hashCode( );
+		hash = hash * prime + this.eventId.hashCode( );
+		hash = hash * prime + this.id.hashCode( );
 
 		return hash;
 	}
