@@ -27,7 +27,7 @@ import br.com.mcampos.ejb.core.BasicEntityRenderer;
 @NamedQueries( {
 		@NamedQuery(
 				name = InepDistribution.getAllFromRevisor,
-				query = "select o from InepDistribution o where o.revisor = ?1 and o.status.id = ?2 and o.revisor.task = o.test.task order by o.test.subscription" ),
+				query = "select o from InepDistribution o where o.revisor = ?1 and o.status.id = ?2 and o.revisor.task = o.test.task order by o.priority, o.test.subscription" ),
 		@NamedQuery(
 				name = InepDistribution.getOtherDistribution,
 				query = "select o from InepDistribution o where o.test = ?1 and o.status.id = 3" ),
