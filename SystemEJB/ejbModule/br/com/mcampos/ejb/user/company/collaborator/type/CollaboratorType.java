@@ -17,6 +17,11 @@ public class CollaboratorType implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
+	public static final Integer typeEmployee = 2;
+	public static final Integer typeManager = 4;
+	public static final Integer typeDirector = 3;
+	public static final Integer typeAdministrator = 1;
+
 	@Id
 	@Column( name = "clt_id_in", unique = true, nullable = false )
 	private Integer id;

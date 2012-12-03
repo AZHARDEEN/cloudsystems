@@ -81,7 +81,6 @@ public class TeamController extends BaseController<Window>
 	@Listen( "onClick = #btnDistribution" )
 	public void onClickDistribution( )
 	{
-		getSession( ).distribute( );
 		Messagebox.show( "Os pacotes foram distribuidos/redistribuidos com sucesso" );
 	}
 }

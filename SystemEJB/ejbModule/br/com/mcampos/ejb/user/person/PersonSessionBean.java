@@ -2,15 +2,20 @@ package br.com.mcampos.ejb.user.person;
 
 import java.io.Serializable;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.user.BaseUserSession;
+import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
 import br.com.mcampos.ejb.user.usertype.UserType;
 import br.com.mcampos.sysutils.SysUtils;
 
 @Stateless( name = "PersonSession", mappedName = "PersonSession" )
 public class PersonSessionBean extends BaseUserSession<Person> implements PersonSession, PersonSessionLocal
 {
+	@EJB
+	UserDocumentSessionLocal userDocumentSession;
+
 	@Override
 	protected Class<Person> getEntityClass( )
 	{
@@ -90,5 +95,11 @@ public class PersonSessionBean extends BaseUserSession<Person> implements Person
 			lazyLoad( p );
 		}
 		return p;
+	}
+
+	@Override
+	public Person getByDocument( String document )
+	{
+		return (Person) this.userDocumentSession.getUserByDocument( document );
 	}
 }

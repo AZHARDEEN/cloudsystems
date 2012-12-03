@@ -19,7 +19,6 @@ import br.com.mcampos.dto.inep.reporting.NotasFinaisDTO;
 import br.com.mcampos.dto.inep.reporting.NotasIndividuaisCorretorDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionSessionLocal;
-import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
 import br.com.mcampos.ejb.inep.entity.DistributionStatus;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.entity.InepDistributionPK;
@@ -29,7 +28,6 @@ import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.inep.entity.SubscriptionGradeView;
-import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
@@ -54,12 +52,6 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 	@EJB
 	private DistributionSessionLocal distributionSession;
-
-	@EJB
-	private DistributionStatusSessionLocal distributionStatusSession;
-
-	@EJB
-	private InepPackageSessionLocal packageSession;
 
 	@EJB
 	private CollaboratorSessionLocal collaboratorSession;
@@ -108,39 +100,6 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		}
 		List<InepRevisor> team = findByNamedQuery( InepRevisor.getAllTeamByEventAndTask, entityTask );
 		return team;
-	}
-
-	@Override
-	public void distribute( )
-	{
-		Query query = getEntityManager( ).createQuery( "delete from Distribution" );
-
-		query.executeUpdate( );
-
-		List<InepPackage> packs = (List<InepPackage>) this.packageSession.getAll( );
-		List<InepRevisor> team = findByNamedQuery( InepRevisor.getAllTeam );
-		int x = 0, y = 1;
-		InepDistribution entity;
-		DistributionStatus status = this.distributionStatusSession.get( new Integer( 1 ) );
-		for ( InepPackage pack : packs )
-		{
-			if ( x >= team.size( ) - 1 ) {
-				x = 0;
-			}
-			if ( y >= team.size( ) ) {
-				y = x + 1;
-			}
-			System.out.println( "Distribuindo para dupla: " + x + " e " + y );
-			entity = new InepDistribution( );
-			entity.setStatus( status );
-			this.distributionSession.merge( entity );
-
-			entity = new InepDistribution( );
-			entity.setStatus( status );
-			this.distributionSession.merge( entity );
-			y++;
-			x++;
-		}
 	}
 
 	@Override

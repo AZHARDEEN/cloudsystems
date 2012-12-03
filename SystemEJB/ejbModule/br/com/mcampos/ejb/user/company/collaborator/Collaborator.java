@@ -22,6 +22,7 @@ import br.com.mcampos.ejb.security.role.Role;
 import br.com.mcampos.ejb.user.company.Company;
 import br.com.mcampos.ejb.user.company.collaborator.type.CollaboratorType;
 import br.com.mcampos.ejb.user.person.Person;
+import br.com.mcampos.sysutils.SysUtils;
 
 /**
  * The persistent class for the collaborator database table.
@@ -38,6 +39,8 @@ import br.com.mcampos.ejb.user.person.Person;
 				query = "select o from Collaborator o where o.company = ?1 and o.person = ?2 and o.toDate is null " ),
 		@NamedQuery( name = Collaborator.findCompanies,
 				query = "from Collaborator o where o.person = ?1 and o.toDate is null" ),
+		@NamedQuery( name = Collaborator.maxSequence,
+				query = "select max ( id.sequence ) + 1 from Collaborator o where o.company = ?1 " ),
 } )
 public class Collaborator implements Serializable, Comparable<Collaborator>
 {
@@ -46,6 +49,7 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 	public static final String hasCollaborator = "Collaborator.hasCollaborator";
 	public static final String getAllCompanyCollaborator = "Collaborator.getAllCompanyCollaborator";
 	public static final String getAllCompanyCollaboratorType = "Collaborator.getAllCompanyCollaboratorType";
+	public static final String maxSequence = "Collaborator.getMaxSequence";
 
 	@EmbeddedId
 	private CollaboratorPK id;
@@ -175,6 +179,23 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 	public int compareTo( Collaborator o )
 	{
 		return getId( ).compareTo( o.getId( ) );
+	}
+
+	public Role add( Role item )
+	{
+		if ( item != null ) {
+			int nIndex = getRoles( ).indexOf( item );
+			if ( nIndex < 0 ) {
+				getRoles( ).add( item );
+			}
+		}
+		return item;
+	}
+
+	public Role remove( Role item )
+	{
+		SysUtils.remove( getRoles( ), item );
+		return item;
 	}
 
 }

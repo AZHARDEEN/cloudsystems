@@ -25,10 +25,9 @@ import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 @NamedQueries( {
 		@NamedQuery( name = InepRevisor.getTeamByTask, query = "select o from InepRevisor o " ),
 		@NamedQuery( name = InepRevisor.getAllTeamByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 " ),
+		@NamedQuery( name = InepRevisor.getAllRevisorByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = false " ),
 		@NamedQuery( name = InepRevisor.getAllTeamByEvent, query = "select o from InepRevisor o where o.task.event = ?1" ),
-		@NamedQuery(
-				name = InepRevisor.getAllCoordinatorsToTask,
-				query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = true" ),
+		@NamedQuery( name = InepRevisor.getAllCoordinatorsToTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = true" ),
 		@NamedQuery( name = InepRevisor.getAllTeam, query = "select o from InepRevisor o where o.coordenador = false" ), } )
 public class InepRevisor implements Serializable, Comparable<InepRevisor>, BasicEntityRenderer<InepRevisor>
 {
@@ -38,6 +37,7 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 	public static final String getAllTeam = "InepRevisor.getAllTeam";
 	public static final String getAllTeamByEvent = "InepRevisor.getAllTeamByEvent";
 	public static final String getAllTeamByEventAndTask = "InepRevisor.getAllTeamByEventAndTask";
+	public static final String getAllRevisorByEventAndTask = "InepRevisor.getAllRevisorByEventAndTask";
 	public static final String getAllCoordinatorsToTask = "InepRevisor.getAllCoordinatorsToTask";
 
 	@EmbeddedId
@@ -51,8 +51,7 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 			@JoinColumn(
 					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
 			@JoinColumn(
-					name = "col_seq_in", referencedColumnName = "col_seq_in", updatable = false, insertable = false,
-					nullable = false ) } )
+					name = "col_seq_in", referencedColumnName = "col_seq_in", updatable = false, insertable = false, nullable = false ) } )
 	private Collaborator collaborator;
 
 	@ManyToOne( fetch = FetchType.EAGER, optional = false )
@@ -64,6 +63,9 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 			@JoinColumn(
 					name = "tsk_id_in", referencedColumnName = "tsk_id_in", updatable = false, insertable = false, nullable = false ) } )
 	private InepTask task;
+
+	@Column( name = "tsk_id_in", nullable = false, updatable = true, insertable = true )
+	private Integer taskId;
 
 	public InepRevisor( )
 	{
@@ -165,12 +167,26 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 	public void setTask( InepTask task )
 	{
 		this.task = task;
+		if ( task != null ) {
+			getId( ).set( task );
+			setTaskId( task.getId( ).getId( ) );
+		}
 	}
 
 	@Override
 	public String toString( )
 	{
 		return getCollaborator( ).getPerson( ).getName( );
+	}
+
+	public Integer getTaskId( )
+	{
+		return this.taskId;
+	}
+
+	public void setTaskId( Integer taskId )
+	{
+		this.taskId = taskId;
 	}
 
 }

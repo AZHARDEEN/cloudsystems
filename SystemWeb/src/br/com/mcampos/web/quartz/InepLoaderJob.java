@@ -44,8 +44,14 @@ public class InepLoaderJob implements Serializable, Job
 					moveFile( path + file, path + "ERR/" );
 					continue;
 				}
-				bRet = processFile( path + file, parts[ 0 ], Integer.parseInt( parts[ 1 ] ) );
-				moveFile( path + file, bRet ? path + "PRO/" : path + "ERR/" );
+				try {
+					bRet = processFile( path + file, parts[ 0 ].trim( ), Integer.parseInt( parts[ 1 ].trim( ) ) );
+					moveFile( path + file, bRet ? path + "PRO/" : path + "ERR/" );
+				}
+				catch ( Exception e ) {
+					moveFile( path + file, path + "ERR/" );
+					logger.error( e.getMessage( ) );
+				}
 			}
 		}
 		catch ( Exception e )
