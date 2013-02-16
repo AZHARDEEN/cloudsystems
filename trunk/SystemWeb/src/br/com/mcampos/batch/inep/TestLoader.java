@@ -27,8 +27,12 @@ public class TestLoader
 		try {
 			connection = getConnection( );
 			connection.setAutoCommit( false );
-			insertFiles( getFilesToInsert( ), connection );
-			connection.commit( );
+			// insertFiles( getFilesToInsert( ), connection );
+			Integer targets[] = { 47, 114138, 28, 114153 };
+			for ( int target : targets ) {
+				redistributeFrom( target, connection );
+				connection.commit( );
+			}
 			connection.close( );
 		}
 		catch ( Exception e ) {
@@ -71,6 +75,96 @@ public class TestLoader
 		};
 		children = dir.list( filter );
 		return children;
+	}
+
+	static public void redistributeFrom( Integer from, Connection conn ) throws SQLException
+	{
+		Statement stmt = conn.createStatement( );
+		int task;
+		ArrayList<Integer> others = new ArrayList<Integer>( );
+		String sql;
+		int nIndex = 0;
+
+		System.out.println( "Getting task for revisor " + from );
+		sql = "SELECT distinct tsk_id_in FROM INEP.INEP_DISTRIBUTION WHERE COL_SEQ_IN = " + from
+				+ " AND IDS_ID_IN = 1 AND USR_ID_IN = 13623 AND PCT_ID_IN = 1";
+		ResultSet rset = stmt.executeQuery( sql );
+		if ( rset.next( ) ) {
+			task = rset.getInt( 1 );
+			System.out.println( "Got task " + task );
+			rset.close( );
+			System.out.println( "Getting others revisors" );
+			sql = "select col_seq_in from inep.inep_revisor where  COL_SEQ_IN <> " + from + " AND USR_ID_IN = 13623 AND PCT_ID_IN = 1 and tsk_id_in = "
+					+ task + " and rvs_coordinator_bt is false";
+			rset = stmt.executeQuery( sql );
+			while ( rset.next( ) ) {
+				others.add( rset.getInt( 1 ) );
+			}
+			rset.close( );
+			System.out.println( "Found " + others.size( ) + " Revisors" );
+			if ( others.size( ) > 0 ) {
+				sql = "SELECT isc_id_ch, dis_priority_in FROM INEP.INEP_DISTRIBUTION WHERE COL_SEQ_IN = " + from
+						+ " AND IDS_ID_IN = 1 AND USR_ID_IN = 13623 AND PCT_ID_IN = 1";
+				rset = stmt.executeQuery( sql );
+				int other = 0;
+				while ( rset.next( ) ) {
+					String test = rset.getString( 1 );
+					Integer priority = rset.getInt( 2 );
+					other = others.get( nIndex );
+					nIndex++;
+					if ( nIndex >= others.size( ) ) {
+						nIndex = 0;
+					}
+					while ( canDistributeTo( conn, test, other ) == false ) {
+						other = others.get( nIndex );
+						nIndex++;
+						if ( nIndex >= others.size( ) ) {
+							nIndex = 0;
+						}
+					}
+					System.out.println( "Redistributing " + test + " to " + other + " from task " + task );
+					distribute( conn, test, task, from, other, priority );
+				}
+			}
+			rset.close( );
+		}
+		else {
+			System.out.println( "Error getting task" );
+		}
+		stmt.close( );
+	}
+
+	static boolean canDistributeTo( Connection conn, String test, Integer other ) throws SQLException
+	{
+		Statement stmt = conn.createStatement( );
+		String sql;
+		boolean bRet = true;
+
+		sql = "select 1 from inep.inep_distribution where USR_ID_IN = 13623 AND PCT_ID_IN = 1 AND COL_SEQ_IN = "
+				+ other + " AND ISC_ID_CH = '" + test + "'";
+		ResultSet rset = stmt.executeQuery( sql );
+		if ( rset.next( ) ) {
+			bRet = false;
+		}
+		rset.close( );
+		stmt.close( );
+		return bRet;
+	}
+
+	static boolean distribute( Connection conn, String test, Integer task, Integer from, Integer other, Integer priority ) throws SQLException
+	{
+		Statement stmt = conn.createStatement( );
+		String sql;
+		boolean bRet = true;
+
+		sql = String.format( "insert into inep.inep_distribution values ( 13623, 1, '%s', %d, %d, 1, null, null, now(), null, %d ) ",
+				test, task, other, priority );
+		stmt.executeUpdate( sql );
+		sql = String.format( "delete from inep.inep_distribution where usr_id_in = 13623 and pct_id_in = 1 and isc_id_ch = '%s' and tsk_id_in = %d " +
+				" and col_seq_in = %d", test, task, from );
+		stmt.executeUpdate( sql );
+		stmt.close( );
+		return bRet;
 	}
 
 	static public void insertFiles( String[ ] files, Connection conn ) throws SQLException, NumberFormatException,

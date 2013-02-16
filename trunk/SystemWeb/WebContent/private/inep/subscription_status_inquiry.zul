@@ -9,7 +9,10 @@
 				<rows>
 					<row>
 						<label value="Evento: " />
-						<combobox id="comboEvent" readonly="true" width="400px"/>
+						<hlayout>
+							<combobox id="comboEvent" readonly="true" width="400px"/>
+							<combobox id="cmbTask" width="150px" visible = "false" />
+						</hlayout>
 					</row>
 					<row>
 						<label value="Inscrição: " />
@@ -37,16 +40,32 @@
 				background-color:rgba(0,0,255,0.1);
 			}
 		</style>
-		<listbox width="100%" emptyMessage="Não existem informações da inscrição" id="listDetail" oddRowSclass="" >
-			<listhead>
-				<listheader label="Tarefa" 		width="50px" 	align="Center"/>
-				<listheader label="Corretor" 	width="250px" 	align="Left"/>
-				<listheader label="Id" 			width="30px" 	align="Center"/>
-				<listheader label="Status" 		width="180px" 	align="Left"/>
-				<listheader label="Nota"   		width="35px" 	align="Center"/>
-				<listheader label="Distriuído Em" width="150px" align="Left"/>
-				<listheader label="Última Atual." width="150px" align="Left"/>
-			</listhead>
-		</listbox>
+		<tabbox>
+			<tabs>
+				<tab label="Prova" />
+				<tab label="Notas" />
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+		            <div id="divFrame" height="100%" width="100%">
+						<iframe width="100%" height="100%" id="framePdf">
+						</iframe>
+			        </div>
+				</tabpanel>
+				<tabpanel>
+					<listbox width="100%" emptyMessage="Não existem informações da inscrição" id="listDetail" oddRowSclass="" rows="10">
+						<listhead>
+							<listheader label="Tarefa" 		width="50px" 	align="Center"/>
+							<listheader label="Corretor" 	width="250px" 	align="Left"/>
+							<listheader label="Id" 			width="30px" 	align="Center"/>
+							<listheader label="Status" 		width="180px" 	align="Left"/>
+							<listheader label="Nota"   		width="35px" 	align="Center"/>
+							<listheader label="Distriuído Em" width="150px" align="Left"/>
+							<listheader label="Última Atual." width="150px" align="Left"/>
+						</listhead>
+					</listbox>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
 	</window>
 </zk>
