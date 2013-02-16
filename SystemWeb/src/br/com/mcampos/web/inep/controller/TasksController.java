@@ -21,6 +21,7 @@ import org.zkoss.zul.Iframe;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
@@ -43,7 +44,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 {
 	private static final long serialVersionUID = -4229563648862167526L;
 	public static final String coordinatorEvent = "coordinatorQueueEvent";
-	@SuppressWarnings("unused")
+	@SuppressWarnings( "unused" )
 	private static final Logger logger = LoggerFactory.getLogger( TasksController.class );
 
 	@Wire( "listbox#listTable" )
@@ -203,7 +204,13 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 				if ( isBlocked( rev ) == false )
 				{
 					rev.setNota( this.notas.getSelectedIndex( ) );
-					getSession( ).updateRevision( rev );
+					try {
+						getSession( ).updateRevision( rev );
+					}
+					catch ( Exception e ) {
+						Messagebox.show( e.getMessage( ), "Erro Atualizando inscrição " + rev.getId( ).getSubscriptionId( ), Messagebox.OK,
+								Messagebox.ERROR );
+					}
 					showTasks( );
 					this.listbox.removeItemAt( this.listbox.getSelectedIndex( ) );
 					getListbox( ).clearSelection( );

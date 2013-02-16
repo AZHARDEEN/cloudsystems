@@ -27,6 +27,7 @@ import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.entity.InepTest;
+import br.com.mcampos.ejb.inep.entity.InepTestPK;
 import br.com.mcampos.ejb.inep.entity.SubscriptionGradeView;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
@@ -157,6 +158,10 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		InepDistribution entity = getEntityManager( ).find( InepDistribution.class, dist.getId( ) );
 		if ( entity != null ) {
+			if ( entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) == false
+					&& entity.getRevisor( ).isCoordenador( ) == false ) {
+				throw new RuntimeException( "Uma nota já foi atribuída para esta prova. Nota atribuida anteriormente foi: " + entity.getNota( ) );
+			}
 			dist = getEntityManager( ).merge( dist );
 		}
 		else {
@@ -648,6 +653,25 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	public List<InepDistribution> getDistribution( InepSubscription e )
 	{
 		return this.distributionSession.getAll( e );
+	}
+
+	@Override
+	public byte[ ] getMedia( InepSubscription s, InepTask t )
+	{
+		InepTestPK key = new InepTestPK( );
+
+		key.set( t, s );
+		byte[ ] obj = null;
+
+		InepTest merged = this.testSession.get( key );
+		if ( merged == null ) {
+			return null;
+		}
+		Media media = merged.getMedia( );
+		if ( media != null ) {
+			obj = media.getObject( );
+		}
+		return obj;
 	}
 
 }

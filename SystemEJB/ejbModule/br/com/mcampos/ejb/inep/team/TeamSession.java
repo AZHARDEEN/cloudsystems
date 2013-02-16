@@ -40,6 +40,8 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserProp
 
 	byte[ ] getMedia( InepTest test );
 
+	byte[ ] getMedia( InepSubscription s, InepTask t );
+
 	List<InepDistribution> getOtherDistributions( InepTest test );
 
 	InepTaskCounters getCounters( InepRevisor rev );
