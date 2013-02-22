@@ -43,16 +43,6 @@ public class PersonSessionBean extends BaseUserSession<Person> implements Person
 		return newEntity;
 	}
 
-	private void lazyLoad( Person person )
-	{
-		if ( person == null ) {
-			return;
-		}
-		person.getAddresses( ).size( );
-		person.getDocuments( ).size( );
-		person.getContacts( ).size( );
-	}
-
 	public String[ ] splitName( String name )
 	{
 		if ( SysUtils.isEmpty( name ) ) {

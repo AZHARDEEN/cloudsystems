@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.com.mcampos.ejb.user.Users;
+import br.com.mcampos.ejb.user.company.type.CompanyType;
 
 /**
  * The persistent class for the company database table.
@@ -24,8 +25,9 @@ public class Company extends Users implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="ctp_id_in", nullable=false)
-	private Integer ctpIdIn;
+	@ManyToOne
+	@JoinColumn(name="ctp_id_in", nullable = false)
+	private CompanyType type;
 
 	@Column(name="usr_isento_ie_bt")
 	private Boolean ieIsento;
@@ -46,14 +48,6 @@ public class Company extends Users implements Serializable
 	private List<Company> companies;
 
 	public Company() {
-	}
-
-	public Integer getCtpIdIn() {
-		return this.ctpIdIn;
-	}
-
-	public void setCtpIdIn(Integer ctpIdIn) {
-		this.ctpIdIn = ctpIdIn;
 	}
 
 	public Boolean getIeIsento() {
@@ -96,4 +90,12 @@ public class Company extends Users implements Serializable
 		this.companies = companies;
 	}
 
+	public CompanyType getType() {
+		return type;
+	}
+
+	public void setType(CompanyType type) {
+		this.type = type;
+	}
+	
 }

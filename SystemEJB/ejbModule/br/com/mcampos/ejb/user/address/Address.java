@@ -155,24 +155,20 @@ public class Address implements Serializable, Comparable<Address>
 	public void setUser( Users user )
 	{
 		this.user = user;
-		if ( getUser( ) != null )
-		{
+		if ( getUser( ) != null ) {
 			getId( ).setUserId( getUser( ).getId( ) );
-			getUser( ).add( this );
 		}
 	}
 
 	@Override
 	public int compareTo( Address o )
 	{
-		if ( o == null ) {
-			return 1;
+		if ( o == null || getUser() == null || getType() == null ) {
+			return -1;
 		}
 		int nRet = 0;
-		if ( getUser( ) != null ) {
-			nRet = getUser( ).compareTo( o.getUser( ) );
-		}
-		if ( nRet == 0 && getType( ) != null ) {
+		nRet = getUser( ).compareTo( o.getUser( ) );
+		if ( nRet == 0 ) {
 			nRet = getType( ).compareTo( o.getType( ) );
 		}
 		return nRet;
@@ -181,12 +177,12 @@ public class Address implements Serializable, Comparable<Address>
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( obj == null ) {
+		if ( obj == null || getUser() == null || getType () == null) {
 			return false;
 		}
 		if ( obj instanceof Address ) {
 			Address other = (Address) obj;
-			if ( getUser( ) != null && getUser( ).equals( other.getUser( ) ) ) {
+			if ( getUser( ).equals( other.getUser( ) ) ) {
 				return getType( ).equals( other.getType( ) );
 			}
 			else {

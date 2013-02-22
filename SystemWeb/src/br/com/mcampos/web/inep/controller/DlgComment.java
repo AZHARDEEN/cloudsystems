@@ -1,6 +1,6 @@
 package br.com.mcampos.web.inep.controller;
 
-import org.zkforge.ckez.CKeditor;
+import org.zkforge.fckez.FCKeditor;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Window;
 
@@ -10,7 +10,7 @@ public class DlgComment extends Window
 {
 	private static final long serialVersionUID = -7655874360902980047L;
 
-	private CKeditor editor;
+	private FCKeditor editor;
 
 	private InepDistribution distribution;
 
@@ -29,10 +29,10 @@ public class DlgComment extends Window
 		}
 	}
 
-	public CKeditor getEditor( )
+	public FCKeditor getEditor( )
 	{
 		if ( this.editor == null ) {
-			this.editor = (CKeditor) getFellow( "editCommend" );
+			this.editor = (FCKeditor) getFellow( "editCommend" );
 		}
 		return this.editor;
 	}

@@ -107,6 +107,7 @@
     <class>br.com.mcampos.ejb.gdf.ServiceTerm</class>
     <class>br.com.mcampos.ejb.gdf.StuffType</class>
     <class>br.com.mcampos.ejb.gdf.WorkType</class>
+    <class>br.com.mcampos.ejb.user.company.type.CompanyType</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
