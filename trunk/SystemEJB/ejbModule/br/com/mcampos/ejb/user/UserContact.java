@@ -90,7 +90,6 @@ public class UserContact implements Serializable, Comparable<UserContact>
 		this.user = user;
 		if ( user != null ) {
 			setUserId( user.getId( ) );
-			user.add( this );
 		}
 	}
 

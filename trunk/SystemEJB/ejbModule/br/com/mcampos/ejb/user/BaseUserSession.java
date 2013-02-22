@@ -10,6 +10,7 @@ import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.user.address.Address;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
+import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.sysutils.SysUtils;
 
 public abstract class BaseUserSession<BEAN extends Users> extends SimpleSessionBean<BEAN>
@@ -55,6 +56,9 @@ public abstract class BaseUserSession<BEAN extends Users> extends SimpleSessionB
 			}
 		}
 		u.setName( SysUtils.unaccent( u.getName( ).toUpperCase( ) ) );
+		if ( SysUtils.isEmpty(u.getNickName()) == false ) {
+			u.setNickName(SysUtils.unaccent( u.getNickName().toUpperCase( ) ) );
+		}
 		if ( u.getInsertDate( ) == null ) {
 			u.setInsertDate( new Date( ) );
 		}
@@ -92,4 +96,15 @@ public abstract class BaseUserSession<BEAN extends Users> extends SimpleSessionB
 		}
 		return newEntity;
 	}
+	
+	protected void lazyLoad( Users item )
+	{
+		if ( item == null ) {
+			return;
+		}
+		item.getAddresses( ).size( );
+		item.getDocuments( ).size( );
+		item.getContacts( ).size( );
+	}
+	
 }

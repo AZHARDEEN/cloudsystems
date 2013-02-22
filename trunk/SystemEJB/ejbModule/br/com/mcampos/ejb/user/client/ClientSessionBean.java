@@ -149,7 +149,7 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 	public Client addNewCompany( Collaborator auth, Client newEntity )
 	{
 		configClient( newEntity );
-		return updatePerson( auth, newEntity );
+		return updateCompany(auth, newEntity );
 	}
 
 	@Override
