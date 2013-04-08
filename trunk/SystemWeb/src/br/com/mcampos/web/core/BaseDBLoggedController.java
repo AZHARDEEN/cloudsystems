@@ -91,7 +91,8 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 			if ( this.collaboratorSession == null ) {
 				this.collaboratorSession = (CollaboratorSession) ServiceLocator.getInstance( ).getRemoteSession( CollaboratorSession.class );
 			}
-		} catch( NamingException e ) {
+		}
+		catch ( NamingException e ) {
 			e.printStackTrace( );
 		}
 		return this.collaboratorSession;
@@ -102,7 +103,7 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	 */
 	protected AuthorizedPageOptions getAuthorizedPageOptions( )
 	{
-		return authorizedPageOptions;
+		return this.authorizedPageOptions;
 	}
 
 	/**

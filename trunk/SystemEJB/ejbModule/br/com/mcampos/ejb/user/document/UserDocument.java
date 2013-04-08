@@ -28,6 +28,7 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
 	public static final int typeIdentity = 2;
 	public static final int typeEmail = 6;
 	public static final int typeCNPJ = 10;
+	public static final int typeAssefaz = 13;
 
 	@EmbeddedId
 	private UserDocumentPK id;

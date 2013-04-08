@@ -104,4 +104,10 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 			}
 		}
 	}
+
+	@Override
+	protected boolean isValidAccess( String path )
+	{
+		return true;
+	}
 }

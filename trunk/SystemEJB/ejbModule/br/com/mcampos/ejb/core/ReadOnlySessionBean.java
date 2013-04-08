@@ -119,7 +119,13 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	private T getSingleResult( Query query )
 	{
 		try {
-			return (T) query.getSingleResult( );
+			Object obj;
+			obj = query.getSingleResult( );
+			if ( obj == null ) {
+				return null;
+			}
+			System.out.println( obj.getClass( ).getName( ) );
+			return (T) obj;
 		}
 		catch ( Exception e ) {
 			return null;

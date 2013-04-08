@@ -9,4 +9,6 @@ import br.com.mcampos.ejb.core.BaseSessionInterface;
 public interface MediaSessionBeanLocal extends BaseSessionInterface<Media>
 {
 	Media add( MediaDTO m );
+
+	Media findByName( String name );
 }
