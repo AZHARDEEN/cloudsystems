@@ -107,7 +107,12 @@
     <class>br.com.mcampos.ejb.gdf.ServiceTerm</class>
     <class>br.com.mcampos.ejb.gdf.StuffType</class>
     <class>br.com.mcampos.ejb.gdf.WorkType</class>
-    <class>br.com.mcampos.ejb.user.company.type.CompanyType</class>
+    <class>br.com.mcampos.ejb.user.company.type.CompanyType</class>    <class>br.com.mcampos.ejb.system.fileupload.FileUpload</class>
+    <class>br.com.mcampos.ejb.system.fileupload.FileUploadPK</class>
+    <class>br.com.mcampos.ejb.system.fileupload.UploadStatus</class>
+    <class>br.com.mcampos.ejb.system.fileupload.RejectedRecord</class>
+    <class>br.com.mcampos.ejb.system.fileupload.RejectedRecordPK</class>
+    <class>br.com.mcampos.ejb.user.client.entry.ClientEntry</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

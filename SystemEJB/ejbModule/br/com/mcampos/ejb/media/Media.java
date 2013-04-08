@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.media;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -10,8 +10,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the media database table.
@@ -19,9 +23,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table( name = "media" )
+@NamedQueries( {
+		@NamedQuery( name = Media.getByName, query = "from Media o where o.name = ?1" ),
+} )
 public class Media implements Serializable
 {
 	private static final long serialVersionUID = 1L;
+	public static final String getByName = "Media.getMediaByName";
 
 	@Id
 	@SequenceGenerator( name = "mediaIdGenerator", sequenceName = "seq_media", allocationSize = 1 )
@@ -33,9 +41,10 @@ public class Media implements Serializable
 	private String format;
 
 	@Column( name = "med_inset_dt" )
-	private Timestamp medInsetDt;
+	@Temporal( TemporalType.TIMESTAMP )
+	private Date medInsetDt;
 
-	@Column( name = "med_mime_ch", length = 64 )
+	@Column( name = "med_mime_ch", length = 128 )
 	private String mimeType;
 
 	@Column( name = "med_name_ch", nullable = false, length = 128 )
@@ -43,7 +52,7 @@ public class Media implements Serializable
 
 	@Basic( fetch = FetchType.LAZY )
 	@Column( name = "med_object_bin", columnDefinition = "bytea" )
-	private byte[] object;
+	private byte[ ] object;
 
 	@Column( name = "med_size_in", nullable = false )
 	private Integer size;
@@ -77,12 +86,12 @@ public class Media implements Serializable
 		this.format = medFormatCh;
 	}
 
-	public Timestamp getMedInsetDt( )
+	public Date getMedInsetDt( )
 	{
 		return this.medInsetDt;
 	}
 
-	public void setMedInsetDt( Timestamp medInsetDt )
+	public void setMedInsetDt( Date medInsetDt )
 	{
 		this.medInsetDt = medInsetDt;
 	}
@@ -107,12 +116,12 @@ public class Media implements Serializable
 		this.name = medNameCh;
 	}
 
-	public byte[] getObject( )
+	public byte[ ] getObject( )
 	{
 		return this.object;
 	}
 
-	public void setObject( byte[] medObjectBin )
+	public void setObject( byte[ ] medObjectBin )
 	{
 		this.object = medObjectBin;
 		setSize( getObject( ) != null ? getObject( ).length : 0 );

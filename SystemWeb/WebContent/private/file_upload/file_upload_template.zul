@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<window width="100%" height="100%" closable="true" border="none" title="Carregar Arquivo" apply="br.com.mcampos.web.controller.upload.FileUploadController">
+		<vlayout>
+			<button id="btnNewFile" label="Enviar Novo Arquivo"  upload="true,native" image="/img/icontexto-webdev-add-016x016.png" />
+			<listbox emptyMessage="Não Existem Arquivos Carregados" id="listFiles">
+	            <listhead sizable="true">
+					<listheader align="left" value="mediaId" 			label="Código" 		sort="auto" width="60px"/>
+					<listheader align="left" value="name" 				label="Nome"   		sort="auto"/>
+					<listheader align="left" value="date" 				label="Data"   		sort="auto" width= "80px"/>
+					<listheader align="left" value="time" 				label="Hora"   		sort="auto" width = "80px"/>
+					<listheader align="left" value="responsable" 		label="Responsável"	sort="auto" />
+					<listheader align="left" value="statusDescription" label="Status" 		sort="auto" width="150px"/>
+	            </listhead>
+			</listbox>
+		</vlayout>
+	</window>
+</zk>

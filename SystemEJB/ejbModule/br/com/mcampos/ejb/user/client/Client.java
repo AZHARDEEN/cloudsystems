@@ -38,6 +38,9 @@ import br.com.mcampos.ejb.user.company.Company;
 				name = Client.countCompany,
 				query = "select count(o) from Client o where o.company = ?1 and o.toDate is null and o.client.userType.id = '2'" ),
 		@NamedQuery(
+				name = Client.getClientFromUser,
+				query = "from Client o where o.company = ?1 and o.toDate is null and o.client = ?2" ),
+		@NamedQuery(
 				name = Client.nextId,
 				query = "select coalesce ( max (o.id.sequence), 0 ) + 1 from Client o where o.company = ?1 " )
 } )
@@ -50,6 +53,7 @@ public class Client implements Serializable, Comparable<Client>
 	public static final String getAllCompany = "Client.getAllCompany";
 	public static final String countCompany = "Client.countCompany";
 	public static final String nextId = "Client.nextId";
+	public static final String getClientFromUser = "Client.getClientFromUser";
 
 	@EmbeddedId
 	private ClientPK id;

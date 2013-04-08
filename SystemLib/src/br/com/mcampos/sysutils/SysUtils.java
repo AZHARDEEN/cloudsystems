@@ -11,12 +11,14 @@ import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.Normalizer;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public final class SysUtils
 {
@@ -295,4 +297,27 @@ public final class SysUtils
 		return baos.toByteArray( );
 	}
 
+	public static Date parseDate( String value, String format )
+	{
+
+		if ( isEmpty( value ) || isEmpty( format ) ) {
+			return null;
+		}
+
+		SimpleDateFormat formatter = new SimpleDateFormat( format );
+		try {
+			Date date = formatter.parse( value );
+			return date;
+		}
+		catch ( ParseException e ) {
+			System.out.println( "Error parsing date: " + value );
+			e.printStackTrace( );
+			return null;
+		}
+	}
+
+	public static Locale Locale_BR( )
+	{
+		return new Locale( "pt", "BR" );
+	}
 }

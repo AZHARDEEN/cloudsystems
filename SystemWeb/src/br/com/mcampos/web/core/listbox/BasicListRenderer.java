@@ -9,10 +9,9 @@ import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
-import br.com.mcampos.ejb.core.BasicEntityRenderer;
 import br.com.mcampos.sysutils.SysUtils;
 
-public class BasicListRenderer implements ListitemRenderer<BasicEntityRenderer<?>>
+public class BasicListRenderer implements ListitemRenderer<Object>
 {
 	public BasicListRenderer( )
 	{
@@ -20,7 +19,7 @@ public class BasicListRenderer implements ListitemRenderer<BasicEntityRenderer<?
 	}
 
 	@Override
-	public void render( Listitem item, BasicEntityRenderer<?> data, int Index )
+	public void render( Listitem item, Object data, int Index )
 	{
 		if ( item == null || data == null ) {
 			return;

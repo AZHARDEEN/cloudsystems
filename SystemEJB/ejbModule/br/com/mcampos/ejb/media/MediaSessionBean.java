@@ -1,5 +1,7 @@
 package br.com.mcampos.ejb.media;
 
+import java.util.Date;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
@@ -30,7 +32,9 @@ public class MediaSessionBean extends SimpleSessionBean<Media> implements MediaS
 	@Override
 	public Media add( MediaDTO m )
 	{
-		return merge( createEntity( m ) );
+		Media entity = createEntity( m );
+
+		return merge( entity );
 	}
 
 	private Media createEntity( MediaDTO source )
@@ -41,7 +45,15 @@ public class MediaSessionBean extends SimpleSessionBean<Media> implements MediaS
 		target.setName( source.getName( ) );
 		target.setObject( source.getObject( ) );
 		target.setFormat( source.getFormat( ) );
+		target.setMedInsetDt( new Date( ) );
 		return target;
 
+	}
+
+	@Override
+	public Media findByName( String name )
+	{
+		Media media = getByNamedQuery( Media.getByName, name );
+		return media;
 	}
 }

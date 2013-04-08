@@ -123,6 +123,7 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 	@Override
 	public Client addNewPerson( Collaborator auth, Client newEntity )
 	{
+		newEntity.setCompany( auth.getCompany( ) );
 		configClient( newEntity );
 		return updatePerson( auth, newEntity );
 	}
@@ -207,5 +208,33 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 			}
 		}
 		return persons;
+	}
+
+	@Override
+	public Client getClient( Collaborator auth, String document )
+	{
+		Users u = getUser( auth, document );
+		if ( u == null ) {
+			return null;
+		}
+		return getByNamedQuery( Client.getClientFromUser, auth.getCompany( ), u );
+	}
+
+	@Override
+	public Client getClient( Collaborator auth, Integer id )
+	{
+		Users u = getEntityManager( ).find( Users.class, id );
+		return getClient( auth, u );
+	}
+
+	@Override
+	public Client getClient( Collaborator auth, Users user )
+	{
+		if ( user == null ) {
+			return null;
+		}
+		Client c;
+		c = getByNamedQuery( Client.getClientFromUser, auth.getCompany( ), user );
+		return c;
 	}
 }

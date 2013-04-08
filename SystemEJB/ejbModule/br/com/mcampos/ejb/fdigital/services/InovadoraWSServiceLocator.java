@@ -31,7 +31,7 @@ public class InovadoraWSServiceLocator extends org.apache.axis.client.Service im
 	}
 
 	// Use to get a proxy class for InovadoraWSPort
-	private java.lang.String InovadoraWSPort_address = "http://byron.apilab.ufsc.br:8080/InovadoraWS/InovadoraWS";
+	private java.lang.String InovadoraWSPort_address = "http://test.samabsd.com.br/InovadoraWS/InovadoraWS";
 
 	@Override
 	public java.lang.String getInovadoraWSPortAddress( )
