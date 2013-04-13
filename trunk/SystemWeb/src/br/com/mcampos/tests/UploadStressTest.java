@@ -17,9 +17,15 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.com.mcampos.web.locator.ServiceLocator;
 
 public class UploadStressTest
 {
+	private static final Logger logger = LoggerFactory.getLogger( UploadStressTest.class.getSimpleName( ) );
+	
 	public void upload( String filetoUpload ) throws ParseException, IOException
 	{
 		String url = "http://localhost:8080/System/upload_pgc";
@@ -60,7 +66,7 @@ public class UploadStressTest
 			return;
 		}
 		for ( String file : files ) {
-			System.out.println( "Processando arquivo: " + file );
+			logger.info( "Processando arquivo: " + file );
 			try {
 				ust.upload( "T:\\temp\\pgc\\" + file );
 			}

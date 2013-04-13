@@ -194,7 +194,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	{
 		File sourcefile = new File( path );
 		if ( !sourcefile.exists( ) ) {
-			System.out.println( "Arquivo " + path + " nao existe" );
+			logger.info( "Arquivo " + path + " nao existe" );
 			return;
 		}
 		try {
@@ -212,7 +212,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 		List<InepTask> tasks = getInepSession( ).getTasks( );
 
 		for ( InepTask task : tasks ) {
-			System.out.println( "Distributing task: " + task.getDescription( ) );
+			logger.info( "Distributing task: " + task.getDescription( ) );
 			getInepSession( ).distribute( task );
 		}
 	}
@@ -224,7 +224,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 		InepSession is = getInepSession( );
 
 		while ( ( line = input.readLine( ) ) != null ) {
-			System.out.println( line );
+			logger.info( line );
 			CorretorDTO dto = new CorretorDTO( );
 
 			String values[] = line.split( ";" );
@@ -242,7 +242,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 					}
 				}
 				catch ( Exception e ) {
-					e.printStackTrace( );
+					logger.error ( "load", e );
 					break;
 				}
 			}
@@ -258,7 +258,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 			}
 		}
 		catch ( NamingException e ) {
-			e.printStackTrace( );
+			logger.error ( "getInepSession", e );
 		}
 		return this.inepSession;
 	}

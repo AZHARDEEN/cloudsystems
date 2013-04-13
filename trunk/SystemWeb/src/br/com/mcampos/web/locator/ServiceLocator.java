@@ -9,6 +9,11 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.com.mcampos.ejb.fdigital.services.SamaBSBClient;
+
 
 public class ServiceLocator
 {
@@ -16,6 +21,8 @@ public class ServiceLocator
 	private InitialContext context = null;
 	private final Map<String, Object> cache;
 
+	private static final Logger logger = LoggerFactory.getLogger( ServiceLocator.class.getSimpleName( ) );
+	
 
 	private ServiceLocator() throws NamingException
 	{
@@ -53,6 +60,7 @@ public class ServiceLocator
 			home = this.cache.get( name );
 		}
 		else {
+			logger.info( "Looking up for ejb: " + name ); 
 			home = this.context.lookup( name );
 			this.cache.put( name, home );
 		}
@@ -84,7 +92,7 @@ public class ServiceLocator
 			// EJB deployment on the server.
 			// Since we haven't deployed the application as a .ear, the app name
 			// for us will be an empty string
-			final String appName = "system";
+			final String appName = "System";
 			// This is the module name of the deployed EJBs on the server. This
 			// is typically the jar name of the
 			// EJB deployment, without the .jar suffix, but can be overridden
@@ -104,7 +112,7 @@ public class ServiceLocator
 			final String viewClassName = cls.getName( );
 			// let's do the lookup
 
-			String contextName = "ejb:" + appName + "/" + moduleName + "/" + distinctName + "/" + beanName + "!" + viewClassName;
+			String contextName = "ejb:" + appName + "/" + moduleName + "/" + distinctName + beanName + "!" + viewClassName;
 			return contextName;
 		}
 		else {

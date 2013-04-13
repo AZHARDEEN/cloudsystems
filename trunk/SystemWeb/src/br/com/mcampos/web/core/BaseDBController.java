@@ -3,6 +3,7 @@ package br.com.mcampos.web.core;
 import java.util.Map;
 
 import javax.naming.NamingException;
+import javax.rmi.PortableRemoteObject;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Window;
@@ -30,7 +31,8 @@ public abstract class BaseDBController<BEAN> extends BaseController<Window> impl
 	{
 		try {
 			if ( this.session == null ) {
-				this.session = (BEAN) ServiceLocator.getInstance( ).getRemoteSession( this.persistentClass );
+				Object obj = ServiceLocator.getInstance( ).getRemoteSession( this.persistentClass );
+				this.session = (BEAN) PortableRemoteObject.narrow( obj, this.persistentClass );
 			}
 		} catch( NamingException e ) {
 			e.printStackTrace( );

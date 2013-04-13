@@ -16,10 +16,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.com.mcampos.web.locator.ServiceLocator;
+
 public class TestLoader
 {
 
 	public static final String path = "T:/temp/inep/";
+	private static final Logger logger = LoggerFactory.getLogger( TestLoader.class.getSimpleName( ) );
 
 	public static void main( String[ ] args )
 	{
@@ -85,15 +91,15 @@ public class TestLoader
 		String sql;
 		int nIndex = 0;
 
-		System.out.println( "Getting task for revisor " + from );
+		logger.info( "Getting task for revisor " + from );
 		sql = "SELECT distinct tsk_id_in FROM INEP.INEP_DISTRIBUTION WHERE COL_SEQ_IN = " + from
 				+ " AND IDS_ID_IN = 1 AND USR_ID_IN = 13623 AND PCT_ID_IN = 1";
 		ResultSet rset = stmt.executeQuery( sql );
 		if ( rset.next( ) ) {
 			task = rset.getInt( 1 );
-			System.out.println( "Got task " + task );
+			logger.info( "Got task " + task );
 			rset.close( );
-			System.out.println( "Getting others revisors" );
+			logger.info( "Getting others revisors" );
 			sql = "select col_seq_in from inep.inep_revisor where  COL_SEQ_IN <> " + from + " AND USR_ID_IN = 13623 AND PCT_ID_IN = 1 and tsk_id_in = "
 					+ task + " and rvs_coordinator_bt is false";
 			rset = stmt.executeQuery( sql );
@@ -101,7 +107,7 @@ public class TestLoader
 				others.add( rset.getInt( 1 ) );
 			}
 			rset.close( );
-			System.out.println( "Found " + others.size( ) + " Revisors" );
+			logger.info( "Found " + others.size( ) + " Revisors" );
 			if ( others.size( ) > 0 ) {
 				sql = "SELECT isc_id_ch, dis_priority_in FROM INEP.INEP_DISTRIBUTION WHERE COL_SEQ_IN = " + from
 						+ " AND IDS_ID_IN = 1 AND USR_ID_IN = 13623 AND PCT_ID_IN = 1";
@@ -122,14 +128,14 @@ public class TestLoader
 							nIndex = 0;
 						}
 					}
-					System.out.println( "Redistributing " + test + " to " + other + " from task " + task );
+					logger.info( "Redistributing " + test + " to " + other + " from task " + task );
 					distribute( conn, test, task, from, other, priority );
 				}
 			}
 			rset.close( );
 		}
 		else {
-			System.out.println( "Error getting task" );
+			logger.info( "Error getting task" );
 		}
 		stmt.close( );
 	}
@@ -176,7 +182,7 @@ public class TestLoader
 		ArrayList<String> testList = new ArrayList<String>( );
 
 		for ( int task = 1; task <= 4; task++ ) {
-			System.out.println( "TASK " + task );
+			logger.info( "TASK " + task );
 			ResultSet rset = stmt
 					.executeQuery( "select col_seq_in from inep.inep_revisor where usr_id_In = 13623 and rvs_coordinator_bt = false and tsk_id_in = "
 							+ task );
@@ -190,10 +196,10 @@ public class TestLoader
 			}
 			rset.close( );
 			int revIndex = 0;
-			System.out.println( "Running " + task );
+			logger.info( "Running " + task );
 			for ( int nIndex = 0; nIndex < testList.size( ); nIndex++ ) {
 				if ( nIndex % 100 == 0 && nIndex > 0 ) {
-					System.out.println( "Partial!!!!! " + task + "- " + nIndex );
+					logger.info( "Partial!!!!! " + task + "- " + nIndex );
 				}
 				pStmt = conn
 						.prepareStatement( "INSERT INTO inep.inep_distribution( usr_id_in, pct_id_in, isc_id_ch, tsk_id_in, col_seq_in, ids_id_in )"
@@ -222,7 +228,7 @@ public class TestLoader
 					revIndex = 0;
 				}
 			}
-			System.out.println( "Donne!!!!! " + task );
+			logger.info( "Donne!!!!! " + task );
 		}
 		return;
 	}
