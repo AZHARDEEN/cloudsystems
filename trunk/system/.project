@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>system</name>
+	<name>System</name>
 	<comment></comment>
 	<projects>
+		<project>SystemWeb</project>
 		<project>SystemEJB</project>
 		<project>SystemLib</project>
-		<project>SystemWeb</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
