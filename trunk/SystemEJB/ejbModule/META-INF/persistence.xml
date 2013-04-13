@@ -107,7 +107,8 @@
     <class>br.com.mcampos.ejb.gdf.ServiceTerm</class>
     <class>br.com.mcampos.ejb.gdf.StuffType</class>
     <class>br.com.mcampos.ejb.gdf.WorkType</class>
-    <class>br.com.mcampos.ejb.user.company.type.CompanyType</class>    <class>br.com.mcampos.ejb.system.fileupload.FileUpload</class>
+    <class>br.com.mcampos.ejb.user.company.type.CompanyType</class>    
+    <class>br.com.mcampos.ejb.system.fileupload.FileUpload</class>
     <class>br.com.mcampos.ejb.system.fileupload.FileUploadPK</class>
     <class>br.com.mcampos.ejb.system.fileupload.UploadStatus</class>
     <class>br.com.mcampos.ejb.system.fileupload.RejectedRecord</class>

@@ -87,7 +87,7 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 	@EJB
 	private DistributionSessionLocal distributionSession;
 
-	private static final Logger logger = LoggerFactory.getLogger( InepSessionBean.class );
+	private static final Logger logger = LoggerFactory.getLogger( InepSessionBean.class.getSimpleName( ) );
 
 	@Override
 	protected Class<InepTask> getEntityClass( )
@@ -228,9 +228,9 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		List<InepRevisor> team = this.teamSession.findByNamedQuery( InepRevisor.getAllRevisorByEventAndTask, task );
 		ArrayList<InepRevisor> pairs = new ArrayList<InepRevisor>( team );
 		ArrayList<InepRevisor> assigneds = new ArrayList<InepRevisor>( team.size( ) );
-		System.out.println( "Getting tests....." );
+		logger.info( "Getting tests....." );
 		List<InepTest> tests = this.testSession.findByNamedQuery( InepTest.getAllEventTasks, task );
-		System.out.println( "Done..." );
+		logger.info( "Done..." );
 		InepRevisor current;
 		Boolean mustAdd = false;
 
@@ -270,7 +270,7 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 			}
 			x++;
 			if ( ( nIndex % 100 ) == 0 ) {
-				System.out.println( "Working..." + nIndex );
+				logger.info( "Working..." + nIndex );
 			}
 			nIndex++;
 		}

@@ -9,10 +9,13 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import org.omg.CORBA.portable.ApplicationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.dto.AuthorizedPageOptions;
 import br.com.mcampos.ejb.core.SimpleDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.ejb.inep.InepSessionBean;
 import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.menu.Menu;
 import br.com.mcampos.ejb.security.menu.MenuFacadeLocal;
@@ -29,6 +32,9 @@ import br.com.mcampos.sysutils.SysUtils;
 @LocalBean
 public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> implements CollaboratorSession, CollaboratorSessionLocal
 {
+
+	private static final Logger logger = LoggerFactory.getLogger( CollaboratorSessionBean.class.getSimpleName( ) );
+	
 	@EJB
 	private CompanySessionLocal companySession;
 
@@ -128,27 +134,28 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public AuthorizedPageOptions verifyAccess( Collaborator c, String mnuUrl )
 	{
+
 		Menu menu = this.menuSession.get( mnuUrl );
 		AuthorizedPageOptions auth = new AuthorizedPageOptions( );
 		if ( menu == null ) {
 			/*
 			 * this is, maybe, some kind of resource or template.
 			 */
-			System.out.println( "Menu is null for url - " + mnuUrl );
+			logger.info( "Menu is null for url - " + mnuUrl );
 			auth.setAuthorized( true );
 		}
 		try {
 			List<Menu> menus = getMenus( c );
 			if ( SysUtils.isEmpty( menus ) ) {
-				System.out.println( "Menu list is null - " + mnuUrl );
+				logger.info( "Menu list is null - " + mnuUrl );
 				auth.setAuthorized( false );
 			}
 			else if ( menus.contains( menu ) == false ) {
-				System.out.println( "List does not contais menu for url - " + mnuUrl );
+				logger.info( "List does not contais menu for url - " + mnuUrl );
 				auth.setAuthorized( false );
 			}
 			else {
-				System.out.println( "Ok for - " + mnuUrl );
+				logger.info( "Ok for - " + mnuUrl );
 				auth.setAuthorized( true );
 			}
 		}
