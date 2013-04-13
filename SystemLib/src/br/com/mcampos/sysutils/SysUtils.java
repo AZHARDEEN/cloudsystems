@@ -20,9 +20,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+
 public final class SysUtils
 {
-
 	static final byte[ ] HEX_CHAR_TABLE = { (byte) '0', (byte) '1', (byte) '2', (byte) '3', (byte) '4', (byte) '5', (byte) '6',
 			(byte) '7',
 			(byte) '8', (byte) '9', (byte) 'a', (byte) 'b', (byte) 'c', (byte) 'd', (byte) 'e',
@@ -310,7 +310,6 @@ public final class SysUtils
 			return date;
 		}
 		catch ( ParseException e ) {
-			System.out.println( "Error parsing date: " + value );
 			e.printStackTrace( );
 			return null;
 		}
