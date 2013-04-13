@@ -3,7 +3,7 @@
 	<name>SystemEJB</name>
 	<comment></comment>
 	<projects>
-		<project>system</project>
+		<project>SystemLib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

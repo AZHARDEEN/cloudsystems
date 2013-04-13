@@ -124,7 +124,6 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			if ( obj == null ) {
 				return null;
 			}
-			System.out.println( obj.getClass( ).getName( ) );
 			return (T) obj;
 		}
 		catch ( Exception e ) {

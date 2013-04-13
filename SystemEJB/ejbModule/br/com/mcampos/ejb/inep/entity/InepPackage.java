@@ -24,7 +24,7 @@ import br.com.mcampos.ejb.user.company.Company;
  */
 @Entity
 @Table( name = "inep_package", schema = "inep" )
-@NamedQueries( { @NamedQuery( name = InepPackage.getAll, query = "select o from InepPackage o where o.company = ?1" ) } )
+@NamedQueries( { @NamedQuery( name = InepPackage.getAll, query = "from InepPackage o where o.company = ?1 and ( o.endDate is null or o.endDate >= current_timestamp() )" ) } )
 public class InepPackage implements Serializable, Comparable<InepPackage>, BasicEntityRenderer<InepPackage>
 {
 	private static final long serialVersionUID = 1L;
@@ -54,10 +54,10 @@ public class InepPackage implements Serializable, Comparable<InepPackage>, Basic
 
 	public InepPackagePK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new InepPackagePK( );
+		if ( id == null ) {
+			id = new InepPackagePK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( InepPackagePK id )
@@ -67,17 +67,17 @@ public class InepPackage implements Serializable, Comparable<InepPackage>, Basic
 
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	public void setDescription( String pctCodeCh )
 	{
-		this.description = pctCodeCh;
+		description = pctCodeCh;
 	}
 
 	public Company getCompany( )
 	{
-		return this.company;
+		return company;
 	}
 
 	public void setCompany( Company company )
@@ -125,7 +125,7 @@ public class InepPackage implements Serializable, Comparable<InepPackage>, Basic
 
 	public Date getInitDate( )
 	{
-		return this.initDate;
+		return initDate;
 	}
 
 	public void setInitDate( Date initDate )
@@ -135,7 +135,7 @@ public class InepPackage implements Serializable, Comparable<InepPackage>, Basic
 
 	public Date getEndDate( )
 	{
-		return this.endDate;
+		return endDate;
 	}
 
 	public void setEndDate( Date endDate )
