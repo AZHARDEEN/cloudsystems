@@ -37,6 +37,8 @@ public class InepLoaderJob implements Serializable, Job
 
 		try {
 			String[ ] files = getFiles( );
+			if ( files == null )
+				return;
 			for ( String file : files )
 			{
 				parts = file.split( "-" );

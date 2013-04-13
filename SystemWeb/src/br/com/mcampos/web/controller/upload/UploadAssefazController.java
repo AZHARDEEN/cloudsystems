@@ -7,14 +7,20 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.upload.AssefazDTO;
 import br.com.mcampos.dto.upload.RejectedDTO;
 import br.com.mcampos.ejb.system.fileupload.FileUpload;
+import br.com.mcampos.web.locator.ServiceLocator;
 
 public class UploadAssefazController extends FileUploadController
 {
 	private static final long serialVersionUID = -85915790781570020L;
+	private static final Logger logger = LoggerFactory.getLogger( UploadAssefazController.class.getSimpleName( ) );
+	
 
 	@Override
 	protected boolean processFile( FileUpload fileUpload, MediaDTO media )
@@ -34,7 +40,7 @@ public class UploadAssefazController extends FileUploadController
 					continue;
 				}
 				nRecords++;
-				System.out.println( line );
+				logger.info( line );
 				dto.set( line );
 				dto.setLineNumber( nLines );
 				if ( processRecord( fileUpload, dto, rejecteds ) == false ) {

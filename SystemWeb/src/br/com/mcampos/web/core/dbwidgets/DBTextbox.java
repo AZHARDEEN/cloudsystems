@@ -4,7 +4,7 @@ import org.zkoss.composite.Composite;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zul.Textbox;
 
-@Composite
+@Composite ( name = "DBTextbox" )
 public class DBTextbox extends Textbox implements DBWidget
 {
 	private static final long serialVersionUID = -4504710666255311568L;

@@ -7,10 +7,16 @@ import java.util.Properties;
 
 import javax.xml.rpc.ServiceException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.mcampos.ejb.fdigital.services.InovadoraWSServiceLocator;
+import br.com.mcampos.web.locator.ServiceLocator;
 
 public class TestCall
-{
+{	
+	private static final Logger logger = LoggerFactory.getLogger( TestCall.class.getSimpleName( ) );
+
 	public static void main( String[ ] args )
 	{
 		TestCall tc = new TestCall( );
@@ -39,7 +45,7 @@ public class TestCall
 			List<PgcPageDTO> list = getPgcs( conn );
 			for ( PgcPageDTO item : list ) {
 				String xml = getXml( conn, item );
-				System.out.println( xml );
+				logger.info( xml );
 				if ( false ) {
 					service.addFicha( xml );
 				}

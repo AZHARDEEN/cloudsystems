@@ -112,7 +112,7 @@ public abstract class BaseCaptchaDialogController<BEAN> extends BaseDialogContro
 			}
 		}
 		catch ( Exception e ) {
-			e = null;
+			e.printStackTrace();
 			return false;
 		}
 	}
