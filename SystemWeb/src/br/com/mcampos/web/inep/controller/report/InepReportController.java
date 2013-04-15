@@ -1,7 +1,6 @@
 package br.com.mcampos.web.inep.controller.report;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -103,12 +102,12 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 
 	public Combobox getCmbFormat( )
 	{
-		return this.cmbFormat;
+		return cmbFormat;
 	}
 
 	public Listbox getListbox( )
 	{
-		return this.listbox;
+		return listbox;
 	}
 
 	private void doReport( ReportItem item ) throws JRException
@@ -122,7 +121,7 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 	{
 		super.doAfterCompose( comp );
 		if ( getListbox( ) != null ) {
-			this.listbox.setItemRenderer( new ReportListRenderer( ) );
+			listbox.setItemRenderer( new ReportListRenderer( ) );
 		}
 		if ( getCmbFormat( ) != null && getCmbFormat( ).getItemCount( ) > 0 ) {
 			LoginProperty p = getSession( ).getProperty( getCurrentCollaborator( ), defaultReportFormat );
@@ -135,11 +134,11 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		}
 		loadCombobox( );
 		if ( getRevisor( ) == null ) {
-			this.generalView.setVisible( true );
+			generalView.setVisible( true );
 		}
 		else if ( getRevisor( ).isCoordenador( ) ) {
-			this.generalView.setVisible( true );
-			this.generalDiv.setVisible( false );
+			generalView.setVisible( true );
+			generalDiv.setVisible( false );
 		}
 	}
 
@@ -238,12 +237,12 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		}
 	}
 
-	private Map<String, Object> configReportParams( )
+	@Override
+	protected Map<String, Object> configReportParams( )
 	{
-		Map<String, Object> params = new HashMap<String, Object>( );
+		Map<String, Object> params = super.configReportParams( );
 
 		InepPackage event = (InepPackage) ( getComboEvent( ).getSelectedItem( ).getValue( ) );
-		params.put( "COMPANY_ID", getCurrentCollaborator( ).getId( ).getCompanyId( ) );
 		if ( event != null ) {
 			params.put( "EVENT_ID", event.getId( ).getId( ) );
 		}
@@ -273,11 +272,11 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 
 	public InepRevisor getRevisor( )
 	{
-		if ( this.revisor == null ) {
-			this.revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
+		if ( revisor == null ) {
+			revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
 					getCurrentCollaborator( ) );
 		}
-		return this.revisor;
+		return revisor;
 	}
 
 	@Override
@@ -288,7 +287,7 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 
 	public Combobox getComboEvent( )
 	{
-		return this.comboEvent;
+		return comboEvent;
 	}
 
 	private void loadCombobox( )
@@ -341,7 +340,7 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 	@Listen( "onSelect = #comboEvent" )
 	public void onSelectPackage( Event evt )
 	{
-		Comboitem item = this.comboEvent.getSelectedItem( );
+		Comboitem item = comboEvent.getSelectedItem( );
 		if ( item != null ) {
 			loadTasks( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ) );
 		}
@@ -352,11 +351,11 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 
 	private Combobox getCmbTask( )
 	{
-		return this.cmbTask;
+		return cmbTask;
 	}
 
 	private Combobox getCmbRevisor( )
 	{
-		return this.cmbRevisor;
+		return cmbRevisor;
 	}
 }

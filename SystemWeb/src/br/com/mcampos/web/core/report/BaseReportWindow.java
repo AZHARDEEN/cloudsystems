@@ -1,19 +1,9 @@
 package br.com.mcampos.web.core.report;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
@@ -21,7 +11,6 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
@@ -41,7 +30,7 @@ public class BaseReportWindow extends Window
 
 	public IDialogEvent getCallEvent( )
 	{
-		return this.callEvent;
+		return callEvent;
 	}
 
 	public void setCallEvent( IDialogEvent callEvent )
@@ -80,7 +69,7 @@ public class BaseReportWindow extends Window
 	public void onCreate( Event evt )
 	{
 		if ( getListbox( ) != null ) {
-			this.listbox.setItemRenderer( new ReportListRenderer( ) );
+			listbox.setItemRenderer( new ReportListRenderer( ) );
 		}
 		if ( getCmbFormat( ) != null ) {
 			if ( getCmbFormat( ).getItemCount( ) > 0 ) {
@@ -99,18 +88,18 @@ public class BaseReportWindow extends Window
 
 	public Listbox getListbox( )
 	{
-		if ( this.listbox == null ) {
-			this.listbox = (Listbox) getFellow( "listReport" );
+		if ( listbox == null ) {
+			listbox = (Listbox) getFellow( "listReport" );
 		}
-		return this.listbox;
+		return listbox;
 	}
 
 	public Button getBtnOk( )
 	{
-		if ( this.btnOk == null ) {
-			this.btnOk = (Button) getFellow( "cmdSubmit" );
+		if ( btnOk == null ) {
+			btnOk = (Button) getFellow( "cmdSubmit" );
 		}
-		return this.btnOk;
+		return btnOk;
 	}
 
 	protected void onSelect( Event evt )
@@ -152,50 +141,16 @@ public class BaseReportWindow extends Window
 
 	public Combobox getCmbFormat( )
 	{
-		if ( this.cmbFormat == null ) {
-			this.cmbFormat = (Combobox) getFellow( "exportFormat" );
+		if ( cmbFormat == null ) {
+			cmbFormat = (Combobox) getFellow( "exportFormat" );
 		}
-		return this.cmbFormat;
+		return cmbFormat;
 	}
 
-	@SuppressWarnings( { "unchecked", "rawtypes" } )
 	private void doReport( ReportItem item ) throws JRException
 	{
-		JasperReport jasperReport;
-		JasperPrint jasperPrint;
-
-		String reportUrl = getDesktop( ).getWebApp( ).getRealPath( item.getReportUrl( ) );
-		jasperReport = JasperCompileManager.compileReport( reportUrl );
-		Collection<?> collection = Collections.emptyList( );
-		try {
-			collection = item.getCallable( ).call( );
-		}
-		catch ( Exception e ) {
-			e = null;
-		}
-		JRBeanCollectionDataSource jrCollection = new JRBeanCollectionDataSource( collection );
-		jasperPrint = JasperFillManager.fillReport( jasperReport, new HashMap( ), jrCollection );
-		AMedia media;
-		switch ( item.getReportFormat( ) ) {
-		case 2:
-			String xml = JasperExportManager.exportReportToXml( jasperPrint );
-			Filedownload.save( xml, "text/xml", null );
-			break;
-		case 3:
-			item.setReportUrl( reportUrl );
-			item.setPrint( jasperPrint );
-			pushSessionParameter( JasperReportController.paramName, item );
-			Executions.getCurrent( ).sendRedirect( JasperReportServlet.reportUrl, "_blank" );
-			break;
-		default:
-			byte[ ] obj;
-			obj = JasperExportManager.exportReportToPdf( jasperPrint );
-			media = new AMedia( null, null, null, obj );
-			item.setMedia( media );
-			pushSessionParameter( JasperReportController.paramName, item );
-			Executions.getCurrent( ).sendRedirect( "/private/report.zul", "_blank" );
-			break;
-		}
+		pushSessionParameter( JasperReportController.paramName, item );
+		Executions.getCurrent( ).sendRedirect( JDBCReportServlet.reportUrl, "_blank" );
 	}
 
 }

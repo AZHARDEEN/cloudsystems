@@ -1,9 +1,7 @@
 package br.com.mcampos.web.controller.client;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,24 +102,9 @@ public class PersonController extends BasePersonController<ClientSession>
 		List<ReportItem> list = new ArrayList<ReportItem>( );
 		ReportItem item;
 		item = new ReportItem( "Listagem de Clientes" );
-		item.setReportUrl( "/reports/client_report.jrxml" );
-		Callable<List<Person>> callable = new Callable<List<Person>>( )
-		{
-			@Override
-			public List<Person> call( )
-			{
-				return getPersonList( );
-			}
-		};
-		item.setCallable( callable );
+		item.setReportUrl( "/reports/client_report" );
+		item.setParams( configReportParams( ) );
 		list.add( item );
-		return list;
-	}
-
-	private List<Person> getPersonList( )
-	{
-		List<Person> list = Collections.emptyList( );
-		list = getSession( ).reportClientList( getCurrentCollaborator( ) );
 		return list;
 	}
 

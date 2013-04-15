@@ -34,7 +34,8 @@ public abstract class BaseDBController<BEAN> extends BaseController<Window> impl
 				Object obj = ServiceLocator.getInstance( ).getRemoteSession( this.persistentClass );
 				this.session = (BEAN) PortableRemoteObject.narrow( obj, this.persistentClass );
 			}
-		} catch( NamingException e ) {
+		}
+		catch ( NamingException e ) {
 			e.printStackTrace( );
 		}
 		return this.session;
@@ -50,5 +51,4 @@ public abstract class BaseDBController<BEAN> extends BaseController<Window> impl
 	{
 		return super.createComponents( uri, parent, parameters );
 	}
-
 }
