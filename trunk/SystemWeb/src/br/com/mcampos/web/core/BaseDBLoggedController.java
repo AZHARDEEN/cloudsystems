@@ -1,5 +1,8 @@
 package br.com.mcampos.web.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.naming.NamingException;
 
 import org.slf4j.Logger;
@@ -113,6 +116,15 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	protected void setAuthorizedPageOptions( AuthorizedPageOptions authorizedPageOptions )
 	{
 		this.authorizedPageOptions = authorizedPageOptions;
+	}
+
+	protected Map<String, Object> configReportParams( )
+	{
+		Map<String, Object> params = new HashMap<String, Object>( );
+
+		params.put( "COMPANY_ID", getCurrentCollaborator( ).getId( ).getCompanyId( ) );
+		params.put( "COLLABORATOR_ID", getCurrentCollaborator( ).getId( ).getSequence( ) );
+		return params;
 	}
 
 }
