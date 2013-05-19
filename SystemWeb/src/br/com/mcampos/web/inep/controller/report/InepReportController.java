@@ -164,6 +164,12 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		item.setParams( configReportParams( ) );
 		list.add( item );
 
+		/*Relatorio 5*/
+		item = new ReportItem( "Notas da Parte Oral" );
+		item.setReportUrl( "/reports/inep/inep_5" );
+		item.setParams( configReportParams( ) );
+		list.add( item );
+
 		if ( getRevisor( ) == null ) {
 			/*Relatorio 4*/
 			item = new ReportItem( "Situação da Correção - Corretores" );
@@ -317,6 +323,9 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 	private void loadRevisor( InepTask task )
 	{
 		ComboboxUtils.load( getCmbRevisor( ), getSession( ).getTeam( task ), getRevisor( ) == null ? null : getRevisor( ), true );
+		if ( getLoggedUser( ).getId( ).equals( 1 ) ) {
+			setReports( );
+		}
 	}
 
 	@Listen( "onSelect = #cmbTask" )

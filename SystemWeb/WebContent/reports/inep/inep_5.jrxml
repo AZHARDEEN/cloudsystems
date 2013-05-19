@@ -8,7 +8,7 @@
 		<defaultValueExpression><![CDATA["T:\\Workspaces\\indigo\\cloudsystems\\SystemWeb\\WebContent\\img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>

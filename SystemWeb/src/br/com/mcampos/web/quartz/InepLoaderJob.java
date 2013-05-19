@@ -4,30 +4,26 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
+import java.util.List;
 
-import javax.naming.NamingException;
-
-import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepTestPK;
-import br.com.mcampos.ejb.inep.test.InepTestSession;
-import br.com.mcampos.web.locator.ServiceLocator;
+import br.com.mcampos.sysutils.SysUtils;
 
-public class InepLoaderJob implements Serializable, Job
+public class InepLoaderJob extends InepBaseJob
 {
 	private static final long serialVersionUID = 4328234055384577345L;
 	private static final Logger logger = LoggerFactory.getLogger( InepLoaderJob.class );
-	private static final String path = "D:/loader/inep/provas/";
 
-	private transient InepTestSession session;
+	public static final String jobName = "loaderJob";
+	public static final String jobGroup = "mcampos";
 
 	@Override
 	public void execute( JobExecutionContext arg0 ) throws JobExecutionException
@@ -36,23 +32,50 @@ public class InepLoaderJob implements Serializable, Job
 		boolean bRet;
 
 		try {
-			String[ ] files = getFiles( );
-			if ( files == null )
+			List<InepPackage> currentEvents;
+
+			if ( amIRunning( arg0 ) ) {
+				logger.info( "Already running!!!!" );
 				return;
-			for ( String file : files )
-			{
-				parts = file.split( "-" );
-				if ( parts == null || parts.length < 2 ) {
-					moveFile( path + file, path + "ERR/" );
-					continue;
-				}
-				try {
-					bRet = processFile( path + file, parts[ 0 ].trim( ), Integer.parseInt( parts[ 1 ].trim( ) ) );
-					moveFile( path + file, bRet ? path + "PRO/" : path + "ERR/" );
-				}
-				catch ( Exception e ) {
-					moveFile( path + file, path + "ERR/" );
-					logger.error( e.getMessage( ) );
+			}
+
+			currentEvents = getSession( ).getAvailableEvents( );
+			if ( SysUtils.isEmpty( currentEvents ) )
+				return;
+			for ( InepPackage item : currentEvents ) {
+				String[ ] files = getFiles( item, ".pdf" );
+				if ( files == null )
+					return;
+				for ( String file : files )
+				{
+					String eventPath = getBasePath( item );
+					parts = file.split( "-" );
+					if ( parts == null || parts.length < 2 ) {
+						moveFile( eventPath + file, eventPath + "ERR/" );
+						continue;
+					}
+					try {
+						String subscripton = parts[ 0 ].trim( );
+						Integer task;
+						try {
+							String aux = parts[ 1 ].trim( );
+							int nIndex = aux.indexOf( '.' );
+							if ( nIndex > 0 ) {
+								aux = aux.substring( 0, nIndex );
+							}
+							task = Integer.parseInt( aux );
+						}
+						catch ( NumberFormatException e ) {
+							moveFile( eventPath + file, eventPath + "ERR/" );
+							continue;
+						}
+						bRet = processFile( item, eventPath + file, subscripton, task );
+						moveFile( eventPath + file, bRet ? eventPath + "PRO/" : eventPath + "ERR/" );
+					}
+					catch ( Exception e ) {
+						moveFile( eventPath + file, eventPath + "ERR/" );
+						logger.error( e.getMessage( ) );
+					}
 				}
 			}
 		}
@@ -62,7 +85,7 @@ public class InepLoaderJob implements Serializable, Job
 		}
 	}
 
-	private boolean processFile( String file, String subscription, Integer task )
+	private boolean processFile( InepPackage pack, String file, String subscription, Integer task )
 	{
 		InepTestPK key = new InepTestPK( );
 		byte[ ] object = read( file );
@@ -70,66 +93,11 @@ public class InepLoaderJob implements Serializable, Job
 			return false;
 		}
 		logger.info( "File has " + object.length + " bytes " );
-		key.setCompanyId( 13623 );
-		key.setEventId( 1 );
+		key.setCompanyId( pack.getId( ).getCompanyId( ) );
+		key.setEventId( pack.getId( ).getId( ) );
 		key.setSubscriptionId( subscription );
 		key.setTaskId( task );
 		return getSession( ).insert( key, object );
-	}
-
-	private String[ ] getFiles( )
-	{
-		File dir;
-
-		dir = new File( path );
-		FilenameFilter filter = new FilenameFilter( )
-		{
-			@Override
-			public boolean accept( File dir, String name )
-			{
-				name = name.toLowerCase( );
-				return !name.startsWith( "." ) && name.endsWith( ".pdf" );
-			}
-		};
-		return dir.list( filter );
-	}
-
-	private void moveFile( String filename, String directory )
-	{
-		try {
-			logger.info( "Moving " + filename + " to " + directory );
-			File file = new File( filename );
-			if ( file.exists( ) == false ) {
-				return;
-			}
-			File dest = new File( directory );
-			if ( dest.exists( ) == false ) {
-				if ( dest.mkdirs( ) == false ) {
-					return;
-				}
-			}
-			if ( file.renameTo( new File( dest, file.getName( ) ) ) == false ) {
-				logger.error( "Error moving file " + filename + " to " + directory );
-			}
-		}
-		catch ( Exception e )
-		{
-			logger.error( "Error moving file " + filename + " to directory:  " + directory );
-			logger.error( e.getMessage( ) );
-		}
-	}
-
-	protected InepTestSession getSession( )
-	{
-		try {
-			if ( this.session == null ) {
-				this.session = (InepTestSession) ServiceLocator.getInstance( ).getRemoteSession( InepTestSession.class );
-			}
-		}
-		catch ( NamingException e ) {
-			e.printStackTrace( );
-		}
-		return this.session;
 	}
 
 	private byte[ ] read( String aInputFileName )
@@ -167,5 +135,4 @@ public class InepLoaderJob implements Serializable, Job
 		}
 		return result;
 	}
-
 }

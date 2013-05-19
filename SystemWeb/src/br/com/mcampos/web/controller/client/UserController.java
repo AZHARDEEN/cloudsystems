@@ -28,7 +28,6 @@ import br.com.mcampos.ejb.user.client.Client;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.document.type.DocumentType;
 import br.com.mcampos.ejb.user.person.Person;
-import br.com.mcampos.web.core.BaseController;
 import br.com.mcampos.web.core.BaseDBLoggedController;
 import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.core.report.BaseReportWindow;
@@ -255,11 +254,8 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 	}
 
 	@Override
-	public void onOK( BaseController<? extends Component> wndController )
+	public void onOK( Window wnd )
 	{
-		if ( wndController == this ) {
-
-		}
 	}
 
 	protected Listbox getListBox( )

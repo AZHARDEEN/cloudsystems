@@ -57,10 +57,10 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 
 	protected Cookie findCookie( String name )
 	{
-		Cookie[] cookies = ((HttpServletRequest) Executions.getCurrent( ).getNativeRequest( )).getCookies( );
+		Cookie[ ] cookies = ( (HttpServletRequest) Executions.getCurrent( ).getNativeRequest( ) ).getCookies( );
 
 		if ( cookies != null ) {
-			for( Cookie cookie : cookies ) {
+			for ( Cookie cookie : cookies ) {
 				if ( name.equalsIgnoreCase( cookie.getName( ) ) ) {
 					return cookie;
 				}
@@ -99,7 +99,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		HttpServletResponse response = (HttpServletResponse) Executions.getCurrent( ).getNativeResponse( );
 		Cookie userCookie = new Cookie( name, value );
 		if ( days > 0 ) {
-			userCookie.setMaxAge( (days * 24) * (3600) );
+			userCookie.setMaxAge( ( days * 24 ) * ( 3600 ) );
 		}
 		response.addCookie( userCookie );
 	}
@@ -124,7 +124,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	@Override
 	public Object getSessionAttribute( String name )
 	{
-		return (Sessions.getCurrent( ) != null) ? Sessions.getCurrent( ).getAttribute( name ) : null;
+		return ( Sessions.getCurrent( ) != null ) ? Sessions.getCurrent( ).getAttribute( name ) : null;
 	}
 
 	@Override
@@ -224,6 +224,9 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	protected void doModal( Window w, IDialogEvent evt )
 	{
 		if ( w != null ) {
+			if ( w instanceof BaseDialogWindow ) {
+				( (BaseDialogWindow) w ).setCallEvent( evt );
+			}
 			w.doModal( );
 		}
 	}
@@ -259,24 +262,24 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		// set the new preferred locale
 		// otherwise it will use the default language (no session attribute
 		// and/or language parameter
-		if ( !(sessLang == null) ) {
+		if ( !( sessLang == null ) ) {
 			Locale preferredLocale = org.zkoss.util.Locales.getLocale( sessLang );
 			Sessions.getCurrent( ).setAttribute( org.zkoss.web.Attributes.PREFERRED_LOCALE, preferredLocale );
 			org.zkoss.util.Locales.setThreadLocal( org.zkoss.util.Locales.getLocale( sessLang ) );
 		}
 		// Iterate through variables of the current class
-		for( Field f : this.getClass( ).getDeclaredFields( ) ) {
+		for ( Field f : this.getClass( ).getDeclaredFields( ) ) {
 			String compName = this.getClass( ).getName( ) + "." + f.getName( );
 			String compLabel = Labels.getLabel( compName );
 			// only set lable if value found, otherwise it renders empty
-			if ( !(compLabel == null) ) {
+			if ( !( compLabel == null ) ) {
 				String compType = f.getType( ).getName( );
 				if ( compType.equals( "org.zkoss.zul.Button" ) ) {
-					((Button) f.get( this )).setLabel( compLabel );
+					( (Button) f.get( this ) ).setLabel( compLabel );
 				}
 				else if ( compType.equals( "org.zkoss.zul.Label" ) )
 				{
-					((Label) f.get( this )).setValue( compLabel );
+					( (Label) f.get( this ) ).setValue( compLabel );
 					// Other component types need to be implemented if required
 				}
 			}
@@ -339,7 +342,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		super.doAfterCompose( comp );
 		if ( SysUtils.isEmpty( this.labels ) == false ) {
-			for( XulElement item : this.labels ) {
+			for ( XulElement item : this.labels ) {
 				setLabel( item );
 			}
 		}
@@ -349,7 +352,8 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		try {
 			Messagebox.show( msg, title, Messagebox.OK, Messagebox.ERROR );
-		} catch( Exception e ) {
+		}
+		catch ( Exception e ) {
 			e = null;
 		}
 	}
@@ -358,7 +362,8 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		try {
 			return ServiceLocator.getInstance( ).getRemoteSession( zClass );
-		} catch( NamingException e ) {
+		}
+		catch ( NamingException e ) {
 			e.printStackTrace( );
 		}
 		return null;
@@ -402,5 +407,4 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		setRequestPath( pd.getRequestPath( ) );
 		return super.doBeforeCompose( page, parent, compInfo );
 	}
-
 }

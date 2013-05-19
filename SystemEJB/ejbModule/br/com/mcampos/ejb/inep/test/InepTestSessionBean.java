@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.inep.test;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepSubscription;
@@ -16,6 +18,8 @@ import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.entity.InepTaskPK;
 import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.inep.entity.InepTestPK;
+import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
+import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.media.Media;
@@ -32,6 +36,12 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 
 	@EJB
 	InepTaskSessionLocal taskSession;
+
+	@EJB
+	InepPackageSessionLocal eventSession;
+
+	@EJB
+	InepOralTestSessionLocal oralSession;
 
 	@Override
 	protected Class<InepTest> getEntityClass( )
@@ -51,7 +61,7 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 		if ( subscription == null ) {
 			subscription = new InepSubscription( );
 			subscription.setId( getSubscriptionPK( key ) );
-			this.subscriptionSession.merge( subscription );
+			subscriptionSession.merge( subscription );
 		}
 		InepTask task = getTask( key );
 		if ( task == null ) {
@@ -71,9 +81,16 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 		return true;
 	}
 
+	@Override
+	public boolean insert( InepOralTest entity, boolean createSubscription )
+	{
+		oralSession.add( entity, createSubscription );
+		return true;
+	}
+
 	private InepSubscription getSubscription( InepTestPK key )
 	{
-		return this.subscriptionSession.get( getSubscriptionPK( key ) );
+		return subscriptionSession.get( getSubscriptionPK( key ) );
 
 	}
 
@@ -88,7 +105,7 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 
 	private InepTask getTask( InepTestPK key )
 	{
-		return this.taskSession.get( getTaskPK( key ) );
+		return taskSession.get( getTaskPK( key ) );
 
 	}
 
@@ -110,6 +127,7 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 		return findByNamedQuery( InepTest.getAllEventTests, event );
 	}
 
+	@Override
 	public List<InepTest> getTestsWithVariance( InepPackage event )
 	{
 		if ( event == null ) {
@@ -134,6 +152,26 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 			return Collections.emptyList( );
 		}
 		return findByNamedQuery( InepTest.getAllEventTests, revisor );
+	}
+
+	@Override
+	public List<InepPackage> getAvailableEvents( )
+	{
+		return eventSession.getAvailable( );
+	}
+
+	@Override
+	public void setGrade( InepTest test, double grade )
+	{
+		test.setGrade( new BigDecimal( grade ) );
+
+		List<InepTest> tests = findByNamedQuery( InepTest.getAllSubscription, test.getSubscription( ) );
+		double dSubscriptionGrade = 0D;
+		for ( InepTest item : tests ) {
+			dSubscriptionGrade += item.getGrade( ).doubleValue( );
+		}
+		dSubscriptionGrade /= 4;
+		test.getSubscription( ).setWrittenGrade( new BigDecimal( dSubscriptionGrade ) );
 	}
 
 }

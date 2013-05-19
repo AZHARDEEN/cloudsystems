@@ -34,6 +34,7 @@
 	        </center>
 	        <east autoscroll="true" splittable="true" width="50%">
 	            <div id="divEast">
+	            	<toolbarbutton id="addRevisor" label="Incluir Novo Revisor"></toolbarbutton>
 	            	<toolbarbutton id="loadRevisor" label="Carregar Revisores"></toolbarbutton>
 	            	<toolbarbutton id="distribute" label="Distribuir"></toolbarbutton>
 	                <div id="divInfo">

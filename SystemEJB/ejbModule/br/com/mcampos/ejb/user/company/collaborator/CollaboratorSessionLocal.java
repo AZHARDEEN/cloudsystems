@@ -16,4 +16,6 @@ public interface CollaboratorSessionLocal extends BaseSessionInterface<Collabora
 	Collaborator find( Login login, Integer companyId );
 
 	List<SimpleDTO> getCompanies( Login c ) throws ApplicationException;
+
+	Collaborator add( Login login, Integer companyId );
 }

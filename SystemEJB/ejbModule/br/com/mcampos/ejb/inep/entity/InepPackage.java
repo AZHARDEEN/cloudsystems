@@ -24,11 +24,17 @@ import br.com.mcampos.ejb.user.company.Company;
  */
 @Entity
 @Table( name = "inep_package", schema = "inep" )
-@NamedQueries( { @NamedQuery( name = InepPackage.getAll, query = "from InepPackage o where o.company = ?1 and ( o.endDate is null or o.endDate >= current_timestamp() )" ) } )
+@NamedQueries(
+{
+		@NamedQuery(
+				name = InepPackage.getAll, query = "from InepPackage o where o.company = ?1 and ( o.endDate is null or o.endDate >= current_timestamp() )" ),
+		@NamedQuery( name = InepPackage.getAllAvailable, query = "from InepPackage o where ( o.endDate is null or o.endDate >= current_timestamp() )" )
+} )
 public class InepPackage implements Serializable, Comparable<InepPackage>, BasicEntityRenderer<InepPackage>
 {
 	private static final long serialVersionUID = 1L;
 	public static final String getAll = "InepPackage.getAll";
+	public static final String getAllAvailable = "InepPackage.getAllAvailable";
 
 	@EmbeddedId
 	private InepPackagePK id;

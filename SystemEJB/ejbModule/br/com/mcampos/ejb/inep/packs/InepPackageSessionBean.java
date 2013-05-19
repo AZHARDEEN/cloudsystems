@@ -74,4 +74,10 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepPack
 		return id;
 	}
 
+	@Override
+	public List<InepPackage> getAvailable( )
+	{
+		return findByNamedQuery( InepPackage.getAllAvailable );
+	}
+
 }

@@ -8,9 +8,11 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.Normalizer;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +21,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 
 public final class SysUtils
 {
@@ -318,5 +319,23 @@ public final class SysUtils
 	public static Locale Locale_BR( )
 	{
 		return new Locale( "pt", "BR" );
+	}
+
+	public static Number parseNumber( String value )
+	{
+		try {
+			return NumberFormat.getInstance( Locale_BR( ) ).parse( value );
+		}
+		catch ( ParseException e ) {
+			e.printStackTrace( );
+			return null;
+		}
+	}
+
+	public static BigDecimal parseBigDecimal( String value )
+	{
+		Number number = parseNumber( value );
+
+		return new BigDecimal( number.doubleValue( ) );
 	}
 }
