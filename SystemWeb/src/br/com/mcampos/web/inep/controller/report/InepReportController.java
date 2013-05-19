@@ -170,6 +170,12 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		item.setParams( configReportParams( ) );
 		list.add( item );
 
+		/*Relatorio 6*/
+		item = new ReportItem( "Notas Finais (Escrita + Oral)" );
+		item.setReportUrl( "/reports/inep/inep_6" );
+		item.setParams( configReportParams( ) );
+		list.add( item );
+
 		if ( getRevisor( ) == null ) {
 			/*Relatorio 4*/
 			item = new ReportItem( "Situação da Correção - Corretores" );
