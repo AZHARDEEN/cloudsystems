@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.web.quartz.InepLoaderJob;
+import br.com.mcampos.web.quartz.InepOralTestGradeLoader;
 
 /**
  * Application Lifecycle Listener implementation class QuartzLoaderListener.
@@ -47,7 +48,10 @@ public class QuartzLoaderListener implements ServletContextListener
 			Scheduler sched = sf.getScheduler( );
 
 			if ( sched.isStarted( ) == false ) {
-				sched.scheduleJob( createLoaderJob( ), createLoaderTrigger( ) );
+
+				sched.scheduleJob( createLoaderJob( ), createLoaderTrigger( InepLoaderJob.jobName ) );
+				sched.scheduleJob( createOralGradeLoaderJob( ), createLoaderTrigger( InepOralTestGradeLoader.jobName ) );
+
 				sched.start( );
 				logger.info( "Started scheduler" );
 			}
@@ -82,12 +86,23 @@ public class QuartzLoaderListener implements ServletContextListener
 
 	private JobDetail createLoaderJob( )
 	{
-		JobDetail job = JobBuilder.newJob( InepLoaderJob.class )
-				.withIdentity( "loaderJob", "mcampos" ).build( );
-		return job;
+		JobBuilder builder = JobBuilder.newJob( InepLoaderJob.class );
+		builder.withIdentity( InepLoaderJob.jobName, InepLoaderJob.jobGroup );
+		builder.withDescription( "InepOralTestGradeLoader" );
+		builder.storeDurably( );
+		return builder.build( );
 	}
 
-	private Trigger createLoaderTrigger( )
+	private JobDetail createOralGradeLoaderJob( )
+	{
+		JobBuilder builder = JobBuilder.newJob( InepOralTestGradeLoader.class );
+		builder.withIdentity( InepOralTestGradeLoader.jobName, InepLoaderJob.jobGroup );
+		builder.withDescription( "InepOralTestGradeLoader" );
+		builder.storeDurably( );
+		return builder.build( );
+	}
+
+	private Trigger createLoaderTrigger( String jobName )
 	{
 
 		SimpleScheduleBuilder s = SimpleScheduleBuilder.simpleSchedule( );
@@ -95,7 +110,7 @@ public class QuartzLoaderListener implements ServletContextListener
 		s.withIntervalInSeconds( 60 );
 
 		TriggerBuilder<Trigger> b = TriggerBuilder.newTrigger( );
-		b.withIdentity( "loaderTrigger", "mcampos" );
+		b.withIdentity( jobName, InepLoaderJob.jobGroup );
 		b.withSchedule( s );
 		b.startNow( );
 		return b.build( );

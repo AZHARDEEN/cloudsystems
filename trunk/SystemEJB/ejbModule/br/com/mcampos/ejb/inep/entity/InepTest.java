@@ -1,7 +1,9 @@
 package br.com.mcampos.ejb.inep.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,6 +27,9 @@ import br.com.mcampos.ejb.media.Media;
 				name = InepTest.getAllEventTests,
 				query = "select o from InepTest o where o.subscription.event = ?1 order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
 		@NamedQuery(
+				name = InepTest.getAllSubscription,
+				query = "select o from InepTest o where o.subscription = ?1 order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
+		@NamedQuery(
 				name = InepTest.getAllEventTasks,
 				query = "select o from InepTest o where o.task = ?1 order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
 		@NamedQuery(
@@ -41,6 +46,7 @@ public class InepTest implements Serializable
 	public static final String getAllEventTests = "InepTest.getAllEventTests";
 	public static final String getAllEventTasks = "InepTest.getAllEventTask";
 	public static final String getAllTestsWithVariance = "InepTest.getAllTestsWithVariance";
+	public static final String getAllSubscription = "InepTest.getAllSubscription";
 
 	@EmbeddedId
 	private InepTestPK id;
@@ -69,6 +75,9 @@ public class InepTest implements Serializable
 					name = "isc_id_ch", referencedColumnName = "isc_id_ch", updatable = false, insertable = false, nullable = false ) } )
 	private InepSubscription subscription;
 
+	@Column( name = "itt_grade_nm" )
+	private BigDecimal grade;
+
 	public InepTest( )
 	{
 	}
@@ -80,10 +89,10 @@ public class InepTest implements Serializable
 
 	public InepTestPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new InepTestPK( );
+		if ( id == null ) {
+			id = new InepTestPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( InepTestPK id )
@@ -93,7 +102,7 @@ public class InepTest implements Serializable
 
 	public Media getMedia( )
 	{
-		return this.media;
+		return media;
 	}
 
 	public void setMedia( Media media )
@@ -103,7 +112,7 @@ public class InepTest implements Serializable
 
 	public InepTask getTask( )
 	{
-		return this.task;
+		return task;
 	}
 
 	public void setTask( InepTask task )
@@ -116,7 +125,7 @@ public class InepTest implements Serializable
 
 	public InepSubscription getSubscription( )
 	{
-		return this.subscription;
+		return subscription;
 	}
 
 	public void setSubscription( InepSubscription subscription )
@@ -126,4 +135,17 @@ public class InepTest implements Serializable
 			getId( ).set( subscription );
 		}
 	}
+
+	public BigDecimal getGrade( )
+	{
+		if ( grade == null )
+			grade = new BigDecimal( 0 );
+		return grade;
+	}
+
+	public void setGrade( BigDecimal grade )
+	{
+		this.grade = grade;
+	}
+
 }

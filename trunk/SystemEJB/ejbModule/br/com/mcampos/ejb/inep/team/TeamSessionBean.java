@@ -177,10 +177,14 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			if ( hasVariance( dist ) ) {
 				variance( dist, getStatus( DistributionStatus.statusVariance ) );
 			}
+			double dValor = dist.getNota( ).doubleValue( ) / 2.0;
+			dValor += dist.getTest( ).getGrade( ).doubleValue( );
+			testSession.setGrade( dist.getTest( ), dValor );
 		}
 		else {
 			dist.setStatus( getStatus( DistributionStatus.statusFinalRevised ) );
 			variance( dist, getStatus( DistributionStatus.statusFinalRevised ) );
+			testSession.setGrade( dist.getTest( ), dist.getNota( ) );
 		}
 		return dist;
 	}

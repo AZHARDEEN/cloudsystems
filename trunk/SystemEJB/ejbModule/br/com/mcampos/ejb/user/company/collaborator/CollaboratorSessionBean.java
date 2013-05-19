@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.user.company.collaborator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -15,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import br.com.mcampos.dto.AuthorizedPageOptions;
 import br.com.mcampos.ejb.core.SimpleDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.inep.InepSessionBean;
 import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.menu.Menu;
 import br.com.mcampos.ejb.security.menu.MenuFacadeLocal;
@@ -23,6 +23,7 @@ import br.com.mcampos.ejb.user.company.Company;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
+import br.com.mcampos.ejb.user.company.collaborator.type.CollaboratorType;
 import br.com.mcampos.sysutils.SysUtils;
 
 /**
@@ -34,7 +35,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 {
 
 	private static final Logger logger = LoggerFactory.getLogger( CollaboratorSessionBean.class.getSimpleName( ) );
-	
+
 	@EJB
 	private CompanySessionLocal companySession;
 
@@ -56,7 +57,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 		if ( login == null || companyId == null || login.getPerson( ) == null ) {
 			return null;
 		}
-		Company company = this.companySession.get( companyId );
+		Company company = companySession.get( companyId );
 		if ( company == null ) {
 			return null;
 		}
@@ -108,19 +109,19 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public LoginProperty getProperty( Collaborator collaborator, String propertyName )
 	{
-		return this.propertySession.getProperty( collaborator, propertyName );
+		return propertySession.getProperty( collaborator, propertyName );
 	}
 
 	@Override
 	public void setProperty( Collaborator collaborator, String propertyName, String Value )
 	{
-		this.propertySession.setProperty( collaborator, propertyName, Value );
+		propertySession.setProperty( collaborator, propertyName, Value );
 	}
 
 	@Override
 	public LoginProperty remove( Collaborator collaborator, String propertyName )
 	{
-		return this.propertySession.remove( collaborator, propertyName );
+		return propertySession.remove( collaborator, propertyName );
 	}
 
 	/*
@@ -135,7 +136,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	public AuthorizedPageOptions verifyAccess( Collaborator c, String mnuUrl )
 	{
 
-		Menu menu = this.menuSession.get( mnuUrl );
+		Menu menu = menuSession.get( mnuUrl );
 		AuthorizedPageOptions auth = new AuthorizedPageOptions( );
 		if ( menu == null ) {
 			/*
@@ -176,7 +177,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public List<Menu> getMenus( Collaborator collaborator ) throws ApplicationException
 	{
-		return this.menuSession.getMenus( collaborator );
+		return menuSession.getMenus( collaborator );
 	}
 
 	@Override
@@ -186,5 +187,17 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 			newEntity.getId( ).setSequence( getNextId( Collaborator.maxSequence, newEntity.getCompany( ) ) );
 		}
 		return super.merge( newEntity );
+	}
+
+	@Override
+	public Collaborator add( Login login, Integer companyId )
+	{
+		Collaborator c = new Collaborator( );
+		c.setPerson( login.getPerson( ) );
+		c.setCompany( companySession.get( companyId ) );
+		c.setCollaboratorType( getEntityManager( ).find( CollaboratorType.class, 2 ) );
+		c.setCpsIdIn( 5 );
+		c.setFromDate( new Date( ) );
+		return merge( c );
 	}
 }

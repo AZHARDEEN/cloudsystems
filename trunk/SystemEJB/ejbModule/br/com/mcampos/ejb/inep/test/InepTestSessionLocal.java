@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepTask;
@@ -20,5 +21,9 @@ public interface InepTestSessionLocal extends BaseSessionInterface<InepTest>
 	List<InepTest> getTests( InepRevisor revisor );
 
 	List<InepTest> getTestsWithVariance( InepPackage event );
+
+	boolean insert( InepOralTest entity, boolean createSubscription );
+
+	void setGrade( InepTest test, double grade );
 
 }

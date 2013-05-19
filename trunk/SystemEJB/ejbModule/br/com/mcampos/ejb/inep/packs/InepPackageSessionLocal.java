@@ -12,4 +12,6 @@ import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 public interface InepPackageSessionLocal extends BaseSessionInterface<InepPackage>
 {
 	List<InepPackage> getAll( Collaborator auth );
+
+	List<InepPackage> getAvailable( );
 }

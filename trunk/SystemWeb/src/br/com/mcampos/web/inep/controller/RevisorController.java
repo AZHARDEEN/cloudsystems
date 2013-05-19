@@ -11,6 +11,7 @@ import javax.naming.NamingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -19,6 +20,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.ListitemRenderer;
+import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.dto.inep.CorretorDTO;
@@ -29,11 +31,13 @@ import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSession;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.web.core.BaseDialogWindow;
+import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
 import br.com.mcampos.web.inep.controller.renderer.RevisorListRenderer;
 import br.com.mcampos.web.locator.ServiceLocator;
 
-public class RevisorController extends BaseDBListController<InepRevisorSession, InepRevisor>
+public class RevisorController extends BaseDBListController<InepRevisorSession, InepRevisor> implements IDialogEvent
 {
 	public static final String path = "T:\\temp\\201212_carga_inep.csv";
 	private static final Logger logger = LoggerFactory.getLogger( RevisorController.class );
@@ -56,25 +60,27 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	Label infoTask;
 	@Wire
 	Label infoTeamMaster;
+	@Wire
+	Toolbarbutton addRevisor;
 
 	@Override
 	protected void showFields( InepRevisor field )
 	{
-		this.revNome.setValue( field.getCollaborator( ).getPerson( ).getName( ) );
-		this.infoCPF.setValue( "" );
-		this.infoEmail.setValue( "" );
+		revNome.setValue( field.getCollaborator( ).getPerson( ).getName( ) );
+		infoCPF.setValue( "" );
+		infoEmail.setValue( "" );
 		for ( UserDocument doc : field.getCollaborator( ).getPerson( ).getDocuments( ) ) {
 			switch ( doc.getType( ).getId( ) ) {
 			case 1:
-				this.infoCPF.setValue( doc.getCode( ) );
+				infoCPF.setValue( doc.getCode( ) );
 				break;
 			case 6:
-				this.infoEmail.setValue( doc.getCode( ) );
+				infoEmail.setValue( doc.getCode( ) );
 				break;
 			}
 		}
-		this.infoTask.setValue( field.getTask( ).getDescription( ) );
-		this.infoTeamMaster.setValue( field.isCoordenador( ) ? "SIM" : "" );
+		infoTask.setValue( field.getTask( ).getDescription( ) );
+		infoTeamMaster.setValue( field.isCoordenador( ) ? "SIM" : "" );
 	}
 
 	@Override
@@ -103,12 +109,12 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 
 	private Combobox getComboTask( )
 	{
-		return this.comboTask;
+		return comboTask;
 	}
 
 	private Combobox getComboEvent( )
 	{
-		return this.comboEvent;
+		return comboEvent;
 	}
 
 	@Listen( "onSelect = #comboEvent" )
@@ -151,6 +157,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
+		addRevisor.setVisible( false );
 		loadCombobox( );
 	}
 
@@ -179,6 +186,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 		List<InepRevisor> list = Collections.emptyList( );
 
 		comboItem = getComboTask( ).getSelectedItem( );
+		addRevisor.setVisible( comboItem != null && comboItem.getValue( ) != null );
 		if ( comboItem != null && comboItem.getValue( ) != null ) {
 			list = getSession( ).getAll( (InepTask) comboItem.getValue( ) );
 		}
@@ -187,6 +195,23 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 			list = getSession( ).getAll( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ) );
 		}
 		getListbox( ).setModel( new ListModelList<InepRevisor>( list ) );
+	}
+
+	@Listen( "onClick = #addRevisor" )
+	public void loadRevisor( Event event )
+	{
+		Component c = createComponents( "/private/inep/utils/new_revisor.zul", getMainWindow( ), null );
+
+		if ( c != null && c instanceof BaseDialogWindow ) {
+			BaseDialogWindow dlg = (BaseDialogWindow) c;
+			doModal( dlg, this );
+		}
+		else {
+			if ( c != null )
+				c.detach( );
+		}
+		if ( event != null )
+			event.stopPropagation( );
 	}
 
 	@Listen( "onClick = #loadRevisor" )
@@ -207,14 +232,17 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	}
 
 	@Listen( "onClick = #distribute" )
-	public void distribute( )
+	public void distribute( Event evt )
 	{
-		List<InepTask> tasks = getInepSession( ).getTasks( );
+
+		List<InepTask> tasks = getInepSession( ).getTasks( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ) );
 
 		for ( InepTask task : tasks ) {
 			logger.info( "Distributing task: " + task.getDescription( ) );
 			getInepSession( ).distribute( task );
 		}
+		if ( evt != null )
+			evt.stopPropagation( );
 	}
 
 	public void load( File file ) throws IOException
@@ -242,7 +270,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 					}
 				}
 				catch ( Exception e ) {
-					logger.error ( "load", e );
+					logger.error( "load", e );
 					break;
 				}
 			}
@@ -253,14 +281,40 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	private InepSession getInepSession( )
 	{
 		try {
-			if ( this.inepSession == null ) {
-				this.inepSession = (InepSession) ServiceLocator.getInstance( ).getRemoteSession( InepSession.class );
+			if ( inepSession == null ) {
+				inepSession = (InepSession) ServiceLocator.getInstance( ).getRemoteSession( InepSession.class );
 			}
 		}
 		catch ( NamingException e ) {
-			logger.error ( "getInepSession", e );
+			logger.error( "getInepSession", e );
 		}
-		return this.inepSession;
+		return inepSession;
 	}
 
+	@SuppressWarnings( "unchecked" )
+	@Override
+	public void onOK( Window wnd )
+	{
+		if ( !( wnd instanceof NewRevisorWindow ) )
+			return;
+		NewRevisorWindow w = (NewRevisorWindow) wnd;
+
+		InepTask task = getComboTask( ).getSelectedItem( ).getValue( );
+
+		InepRevisor rev = getInepSession( ).add( task, w.getName( ).getValue( ), w.getEmail( ).getValue( ), w.getCpf( ).getValue( ),
+				w.getCoordinator( ).isChecked( ) );
+		if ( rev != null ) {
+			ListModelList<InepRevisor> model = null;
+			Object objModel = getListbox( ).getModel( );
+			if ( objModel != null ) {
+				model = (ListModelList<InepRevisor>) objModel;
+			}
+			if ( model == null ) {
+				model = new ListModelList<InepRevisor>( );
+				getListbox( ).setModel( model );
+			}
+			model.add( rev );
+		}
+
+	}
 }

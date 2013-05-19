@@ -114,6 +114,8 @@
     <class>br.com.mcampos.ejb.system.fileupload.RejectedRecord</class>
     <class>br.com.mcampos.ejb.system.fileupload.RejectedRecordPK</class>
     <class>br.com.mcampos.ejb.user.client.entry.ClientEntry</class>
+    <class>br.com.mcampos.ejb.inep.entity.InepOralTest</class>
+    <class>br.com.mcampos.ejb.inep.entity.InepOralTestPK</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
