@@ -176,6 +176,18 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		item.setParams( configReportParams( ) );
 		list.add( item );
 
+		/*Relatorio 7*/
+		item = new ReportItem( "Concentração de Notas por Corretor" );
+		item.setReportUrl( "/reports/inep/inep_7" );
+		item.setParams( configReportParams( ) );
+		list.add( item );
+
+		/*Relatorio 7*/
+		item = new ReportItem( "Media de Notas por Tarefa/Corretor" );
+		item.setReportUrl( "/reports/inep/inep_8" );
+		item.setParams( configReportParams( ) );
+		list.add( item );
+
 		if ( getRevisor( ) == null ) {
 			/*Relatorio 4*/
 			item = new ReportItem( "Situação da Correção - Corretores" );
