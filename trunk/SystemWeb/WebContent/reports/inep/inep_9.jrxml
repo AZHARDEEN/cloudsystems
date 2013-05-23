@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Zebra" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E5E5E5"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T:\\Workspaces\\indigo\\cloudsystems\\SystemWeb\\WebContent\\img"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	usr_name_ch,
+	tsk_id_in tarefa,
+	corretor,
+	count ( dis_grade_in ) total,
+	count( igual ) igual,
+	count( maior ) maior,
+	count( menor ) menor
+FROM (
+	SELECT
+		usr_name_ch,
+		tsk_id_in,
+		corretor,
+		dis_grade_in,
+		CASE WHEN dis_grade_in = dis_grade_cd THEN 1 else null end igual,
+		CASE WHEN dis_grade_in > dis_grade_cd THEN 1 else null end maior,
+		CASE WHEN dis_grade_in < dis_grade_cd THEN 1 else null end menor
+	FROM (
+		select
+			d.usr_id_in usr_id_in,
+			pj.usr_name_ch usr_name_ch,
+			d.pct_id_in pct_id_in,
+			d.tsk_id_in tsk_id_in,
+			u.usr_name_ch corretor,
+			d.isc_id_ch isc_id_ch,
+			d.dis_grade_in dis_grade_in,
+			( select dis_grade_in
+			from inep.inep_distribution dis, inep.inep_revisor disv
+			where
+				dis.usr_id_in = d.usr_id_in
+			and dis.pct_id_in = d.pct_id_in
+			and dis.tsk_id_in = d.tsk_id_in
+			and dis.isc_id_ch = d.isc_id_ch
+			and dis.usr_id_in = disv.usr_id_in
+			and dis.pct_id_in = disv.pct_id_in
+			and dis.tsk_id_in = disv.tsk_id_in
+			and dis.col_seq_in = disv.col_seq_in
+			and disv.rvs_coordinator_bt = true ) as dis_grade_cd
+		FROM
+			inep.inep_distribution d,
+			inep.inep_revisor r,
+			public.collaborator c,
+			public.users u,
+			public.company j,
+			public.users pj
+		where
+			d.usr_id_in = r.usr_id_in
+		and d.col_seq_in = r.col_seq_in
+		and d.tsk_id_in = r.tsk_id_in
+		and d.pct_id_in = r.pct_id_in
+		and r.usr_id_in = c.usr_id_in
+		and r.col_seq_in = c.col_seq_in
+		and u.usr_id_in = c.col_id_in
+		and j.usr_id_in = d.usr_id_in
+		and j.usr_id_in = pj.usr_id_in
+		and d.dis_grade_in is not null
+		and r.rvs_coordinator_bt = false
+		and exists (
+			select isc_id_ch from inep.inep_distribution dis, inep.inep_revisor disv
+			where
+				dis.usr_id_in = d.usr_id_in
+			and dis.pct_id_in = d.pct_id_in
+			and dis.tsk_id_in = d.tsk_id_in
+			and dis.isc_id_ch = d.isc_id_ch
+			and dis.usr_id_in = disv.usr_id_in
+			and dis.pct_id_in = disv.pct_id_in
+			and dis.tsk_id_in = disv.tsk_id_in
+			and dis.col_seq_in = disv.col_seq_in
+			and disv.rvs_coordinator_bt = true
+		)
+		order by
+			pj.usr_name_ch,
+			d.pct_id_in,
+			d.tsk_id_in,
+			u.usr_name_ch
+	) as step1
+) AS setp2
+group by
+	usr_name_ch,
+	tsk_id_in,
+	corretor
+order by
+	usr_name_ch,
+	tsk_id_in,
+	corretor]]>
+	</queryString>
+	<field name="usr_name_ch" class="java.lang.String"/>
+	<field name="tarefa" class="java.lang.Integer"/>
+	<field name="corretor" class="java.lang.String"/>
+	<field name="total" class="java.lang.Long"/>
+	<field name="igual" class="java.lang.Long"/>
+	<field name="maior" class="java.lang.Long"/>
+	<field name="menor" class="java.lang.Long"/>
+	<variable name="equalPercentage" class="java.lang.Number">
+		<variableExpression><![CDATA[($F{igual}/$F{total})*100]]></variableExpression>
+	</variable>
+	<variable name="lessPercentage" class="java.lang.Number">
+		<variableExpression><![CDATA[($F{menor}/$F{total})*100]]></variableExpression>
+	</variable>
+	<variable name="greaterPercentage" class="java.lang.Number">
+		<variableExpression><![CDATA[($F{maior}/$F{total})*100]]></variableExpression>
+	</variable>
+	<group name="Tarefa" keepTogether="true">
+		<groupExpression><![CDATA[$F{tarefa}]]></groupExpression>
+		<groupHeader>
+			<band height="51">
+				<staticText>
+					<reportElement uuid="40e52cce-aaa6-4023-8834-4dac33530cc7" x="4" y="36" width="234" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Corretor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="cd127a48-2cf4-4031-a0c7-4eb4c8289187" x="250" y="20" width="70" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Corretor = Coord]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="57675918-c01e-48ac-b9e5-e5db3c28c72c" x="4" y="16" width="50" height="20"/>
+					<textElement verticalAlignment="Top">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tarefa:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="1d49b26a-84e1-4b8c-9af2-8f4e3d916f15" x="54" y="16" width="100" height="20"/>
+					<textElement verticalAlignment="Top">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tarefa}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="434eb686-ceb7-489a-a1de-50fd8a64e4fe" x="0" y="49" width="555" height="1"/>
+				</line>
+				<staticText>
+					<reportElement uuid="b1e116b1-b428-4da6-a7a0-be77185963c7" x="520" y="35" width="35" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="cce2f5e1-4a01-42f3-85e9-4c4c02602742" x="337" y="20" width="70" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Corretor > Coord]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="b91bb9e8-656a-401a-aef1-a2ae7830fd48" x="427" y="20" width="70" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Corretor < Coord]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="a57ea86e-6823-4cdc-b8ce-81fc1bfb9811" x="250" y="1" width="247" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Análise das Discrepâncias]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="3228ace2-f74e-4b83-ab30-9c26f1b57ed0" x="250" y="36" width="35" height="13"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Qtde]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="45a52ccf-d8cd-4cde-8132-42a2d27867e5" x="285" y="36" width="35" height="13"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="b6c6459d-9863-42e9-b813-f0eed6fa8993" x="372" y="36" width="35" height="13"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="47c76b16-32bc-42d2-a955-b8a89143c5c9" x="337" y="36" width="35" height="13"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Qtde]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="becf5376-1dd3-418e-a93b-3d2f444a03b1" x="462" y="35" width="35" height="13"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[%]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ee9bd2a2-c1c5-465f-a8a2-da6b479d811c" x="427" y="35" width="35" height="13"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Qtde]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="19">
+				<line>
+					<reportElement uuid="2d2b8a06-b5b3-43bc-8547-bb7d5a4640f2" x="0" y="1" width="555" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="0" y="0" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Discrepâncias por Corretor]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="58" splitType="Stretch">
+			<image>
+				<reportElement uuid="b8f3d208-d5c0-4eec-a205-6241c030a737" x="3" y="1" width="117" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "\\inep\\logo_celpe_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="4312c333-ca76-4c9c-bb9f-42a166d16665" x="144" y="2" width="231" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "\\inep\\logo_inep_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="54632e40-5f44-4f64-9069-37b26efbf901" x="388" y="3" width="165" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "\\inep\\logo_br_60.png"]]></imageExpression>
+			</image>
+			<elementGroup/>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<frame>
+				<reportElement uuid="bfee00be-642f-4346-8bfe-a36693652557" style="Zebra" mode="Opaque" x="0" y="0" width="555" height="14"/>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement uuid="b6f478bd-e8c3-4c9c-b87c-287ec8fcef8b" x="3" y="0" width="235" height="13"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{corretor}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="47b03443-b546-4fe9-ab22-9e4ad866ed94" x="250" y="0" width="35" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{igual}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="766b25bf-f837-43f0-9f32-c3c45b485323" x="337" y="0" width="35" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{maior}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="a60750e2-24d8-42b1-a9d6-04e9f68225bb" x="427" y="0" width="35" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{menor}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="3e2fe269-30b5-4808-976f-dcf9d71a0251" x="520" y="0" width="35" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.0">
+					<reportElement uuid="da729d94-8970-4a1f-a838-336c3556658e" x="285" y="0" width="35" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{equalPercentage}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.0">
+					<reportElement uuid="679a4d90-71b3-46a7-b6df-d5f3ae705678" x="372" y="0" width="35" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{greaterPercentage}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.0">
+					<reportElement uuid="ee170421-2475-4442-9114-202b5a8f70a1" x="462" y="0" width="35" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{lessPercentage}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7" x="455" y="0" width="100" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6" x="0" y="0" width="199" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd" x="0" y="0" width="555" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="14" splitType="Stretch"/>
+	</summary>
+</jasperReport>

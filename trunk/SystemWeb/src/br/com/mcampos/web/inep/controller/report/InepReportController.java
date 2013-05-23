@@ -182,9 +182,15 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		item.setParams( configReportParams( ) );
 		list.add( item );
 
-		/*Relatorio 7*/
+		/*Relatorio 8*/
 		item = new ReportItem( "Media de Notas por Tarefa/Corretor" );
 		item.setReportUrl( "/reports/inep/inep_8" );
+		item.setParams( configReportParams( ) );
+		list.add( item );
+
+		/*Relatorio 9*/
+		item = new ReportItem( "Discrepâncias por Corretor" );
+		item.setReportUrl( "/reports/inep/inep_9" );
 		item.setParams( configReportParams( ) );
 		list.add( item );
 
