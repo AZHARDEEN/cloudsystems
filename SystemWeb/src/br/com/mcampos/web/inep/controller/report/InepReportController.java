@@ -194,6 +194,12 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		item.setParams( configReportParams( ) );
 		list.add( item );
 
+		/*Relatorio 9*/
+		item = new ReportItem( "Discrepâncias por Corretor - Notas Individuais" );
+		item.setReportUrl( "/reports/inep/inep_9_1" );
+		item.setParams( configReportParams( ) );
+		list.add( item );
+
 		if ( getRevisor( ) == null ) {
 			/*Relatorio 4*/
 			item = new ReportItem( "Situação da Correção - Corretores" );
