@@ -34,18 +34,37 @@
 	u.usr_name_ch corretor,
 	d.isc_id_ch isc_id_ch,
 	d.dis_grade_in dis_grade_in,
-	( select dis_grade_in
-	from inep.inep_distribution dis, inep.inep_revisor disv
-	where
-		dis.usr_id_in = d.usr_id_in
-	and dis.pct_id_in = d.pct_id_in
-	and dis.tsk_id_in = d.tsk_id_in
-	and dis.isc_id_ch = d.isc_id_ch
-	and dis.usr_id_in = disv.usr_id_in
-	and dis.pct_id_in = disv.pct_id_in
-	and dis.tsk_id_in = disv.tsk_id_in
-	and dis.col_seq_in = disv.col_seq_in
-	and disv.rvs_coordinator_bt = true ) as dis_grade_cd
+	d.col_seq_in,
+	(
+		select dis_grade_in
+		from inep.inep_distribution dis, inep.inep_revisor disv
+		where
+			dis.usr_id_in = d.usr_id_in
+		and dis.pct_id_in = d.pct_id_in
+		and dis.tsk_id_in = d.tsk_id_in
+		and dis.isc_id_ch = d.isc_id_ch
+		and dis.usr_id_in = disv.usr_id_in
+		and dis.pct_id_in = disv.pct_id_in
+		and dis.tsk_id_in = disv.tsk_id_in
+		and dis.col_seq_in = disv.col_seq_in
+		and disv.rvs_coordinator_bt = true
+	) as dis_grade_cd,
+	(
+		select dis_grade_in
+		from inep.inep_distribution dis, inep.inep_revisor disv
+		where
+			dis.usr_id_in = d.usr_id_in
+		and dis.pct_id_in = d.pct_id_in
+		and dis.tsk_id_in = d.tsk_id_in
+		and dis.isc_id_ch = d.isc_id_ch
+		and dis.usr_id_in = disv.usr_id_in
+		and dis.pct_id_in = disv.pct_id_in
+		and dis.tsk_id_in = disv.tsk_id_in
+		and dis.col_seq_in = disv.col_seq_in
+		and disv.rvs_coordinator_bt = false
+		and dis.col_seq_in <> d.col_seq_in
+		and dis_grade_in is not null
+	) as dis_grade_other
 FROM
 	inep.inep_distribution d,
 	inep.inep_revisor r,
@@ -82,8 +101,7 @@ order by
 	pj.usr_name_ch,
 	d.pct_id_in,
 	d.tsk_id_in,
-	u.usr_name_ch
-]]>
+	u.usr_name_ch]]>
 	</queryString>
 	<field name="usr_id_in" class="java.lang.Integer"/>
 	<field name="usr_name_ch" class="java.lang.String"/>
@@ -92,100 +110,34 @@ order by
 	<field name="corretor" class="java.lang.String"/>
 	<field name="isc_id_ch" class="java.lang.String"/>
 	<field name="dis_grade_in" class="java.lang.Integer"/>
+	<field name="col_seq_in" class="java.lang.Integer"/>
 	<field name="dis_grade_cd" class="java.lang.Integer"/>
-	<group name="Tarefa" keepTogether="true">
+	<field name="dis_grade_other" class="java.lang.Integer"/>
+	<variable name="Diff" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{dis_grade_in} - $F{dis_grade_cd}]]></variableExpression>
+	</variable>
+	<variable name="DiscCount" class="java.lang.Integer" resetType="Group" resetGroup="Corretor" incrementType="Group" incrementGroup="Corretor" calculation="Count"/>
+	<variable name="Diff2" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{dis_grade_in} - $F{dis_grade_other}]]></variableExpression>
+	</variable>
+	<group name="Tarefa" isStartNewPage="true" isReprintHeaderOnEachPage="true" keepTogether="true">
 		<groupExpression><![CDATA[$F{tarefa}]]></groupExpression>
 		<groupHeader>
-			<band height="51">
+			<band height="21">
 				<staticText>
-					<reportElement uuid="40e52cce-aaa6-4023-8834-4dac33530cc7" x="4" y="36" width="234" height="15"/>
-					<textElement verticalAlignment="Middle">
-						<font isBold="true"/>
-					</textElement>
-					<text><![CDATA[Corretor]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="cd127a48-2cf4-4031-a0c7-4eb4c8289187" x="250" y="20" width="70" height="15"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Corretor = Coord]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="57675918-c01e-48ac-b9e5-e5db3c28c72c" x="4" y="16" width="50" height="20"/>
+					<reportElement uuid="57675918-c01e-48ac-b9e5-e5db3c28c72c" x="4" y="0" width="50" height="20"/>
 					<textElement verticalAlignment="Top">
 						<font size="14" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Tarefa:]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="1d49b26a-84e1-4b8c-9af2-8f4e3d916f15" x="54" y="16" width="100" height="20"/>
+					<reportElement uuid="1d49b26a-84e1-4b8c-9af2-8f4e3d916f15" x="54" y="0" width="100" height="20"/>
 					<textElement verticalAlignment="Top">
 						<font size="14" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{tarefa}]]></textFieldExpression>
 				</textField>
-				<line>
-					<reportElement uuid="434eb686-ceb7-489a-a1de-50fd8a64e4fe" x="0" y="49" width="555" height="1"/>
-				</line>
-				<staticText>
-					<reportElement uuid="b1e116b1-b428-4da6-a7a0-be77185963c7" x="520" y="35" width="35" height="15"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
-					</textElement>
-					<text><![CDATA[Total]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="cce2f5e1-4a01-42f3-85e9-4c4c02602742" x="337" y="20" width="70" height="15"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Corretor > Coord]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="b91bb9e8-656a-401a-aef1-a2ae7830fd48" x="427" y="20" width="70" height="15"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Corretor < Coord]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="a57ea86e-6823-4cdc-b8ce-81fc1bfb9811" x="250" y="1" width="247" height="20"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
-					</textElement>
-					<text><![CDATA[Análise das Discrepâncias]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="3228ace2-f74e-4b83-ab30-9c26f1b57ed0" x="250" y="36" width="35" height="13"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[Qtde]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="45a52ccf-d8cd-4cde-8132-42a2d27867e5" x="285" y="36" width="35" height="13"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[%]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="b6c6459d-9863-42e9-b813-f0eed6fa8993" x="372" y="36" width="35" height="13"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[%]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="47c76b16-32bc-42d2-a955-b8a89143c5c9" x="337" y="36" width="35" height="13"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[Qtde]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="becf5376-1dd3-418e-a93b-3d2f444a03b1" x="462" y="35" width="35" height="13"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[%]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="ee9bd2a2-c1c5-465f-a8a2-da6b479d811c" x="427" y="35" width="35" height="13"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[Qtde]]></text>
-				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -196,34 +148,95 @@ order by
 			</band>
 		</groupFooter>
 	</group>
-	<group name="Corretor">
+	<group name="Corretor" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{corretor}]]></groupExpression>
 		<groupHeader>
-			<band height="29">
+			<band height="46">
 				<textField pattern="" isBlankWhenNull="true">
-					<reportElement uuid="b6f478bd-e8c3-4c9c-b87c-287ec8fcef8b" x="4" y="0" width="235" height="13"/>
-					<textElement/>
+					<reportElement uuid="b6f478bd-e8c3-4c9c-b87c-287ec8fcef8b" x="54" y="0" width="235" height="13"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$F{corretor}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="1e59aea4-3f9e-44e6-bc83-add2418d03b6" x="44" y="13" width="100" height="16"/>
-					<textElement/>
+					<reportElement uuid="1e59aea4-3f9e-44e6-bc83-add2418d03b6" x="44" y="30" width="100" height="16"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
 					<text><![CDATA[Inscrição]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="b70c1902-7577-4fb3-b02f-669b41b6f3ec" x="175" y="13" width="100" height="16"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[Nota do Corretor]]></text>
+					<reportElement uuid="d8025776-27ba-42c4-979a-b673d23e2b99" x="466" y="29" width="87" height="16"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Corretor - Coord.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="471ea731-89ac-472c-bd07-d8df0c13ec41" x="337" y="13" width="100" height="16"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[Nota do Coordenador]]></text>
+					<reportElement uuid="5323dd83-29c0-42df-b493-9dde71bf8522" x="375" y="13" width="178" height="16"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Diferença]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="40e52cce-aaa6-4023-8834-4dac33530cc7" x="4" y="0" width="50" height="13"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Corretor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="b70c1902-7577-4fb3-b02f-669b41b6f3ec" x="175" y="13" width="195" height="16"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Notas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="471ea731-89ac-472c-bd07-d8df0c13ec41" x="305" y="30" width="65" height="16"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Coordenador]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="88162ff2-67e2-40bb-9f39-ae920bf56120" x="240" y="30" width="65" height="16"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Par]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="179630d8-5a2e-4b17-a3bf-b36755d19c28" x="175" y="30" width="65" height="16"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Corretor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="907045ed-f764-4b52-b784-ae793755e6be" x="379" y="30" width="87" height="16"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Corretor - Par]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="18"/>
+			<band height="17">
+				<textField>
+					<reportElement uuid="1f04fc31-b906-44b3-8d18-d0d1e3907c70" x="110" y="0" width="63" height="14"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$V{Corretor_COUNT}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="71beecca-e176-43b2-8a3b-8aebefc6785e" x="4" y="0" width="106" height="14"/>
+					<textElement/>
+					<text><![CDATA[Total de Discrepâncias]]></text>
+				</staticText>
+			</band>
 		</groupFooter>
 	</group>
 	<background>
@@ -263,18 +276,33 @@ order by
 				<reportElement uuid="bfee00be-642f-4346-8bfe-a36693652557" style="Zebra" mode="Opaque" x="0" y="0" width="555" height="14"/>
 				<textField>
 					<reportElement uuid="712539ec-c909-477a-b8ba-9ce16d3af4c2" x="44" y="0" width="100" height="14"/>
-					<textElement/>
+					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="50e3bc60-957e-425f-b634-be8f63a1c40b" x="175" y="0" width="100" height="14"/>
-					<textElement textAlignment="Center"/>
+					<reportElement uuid="50e3bc60-957e-425f-b634-be8f63a1c40b" x="175" y="0" width="65" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{dis_grade_in}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="5cde1e44-04fb-4845-ae39-5763d71ddbe2" x="337" y="0" width="100" height="14"/>
-					<textElement textAlignment="Center"/>
+					<reportElement uuid="5cde1e44-04fb-4845-ae39-5763d71ddbe2" x="305" y="0" width="65" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{dis_grade_cd}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="f259b406-cd7d-4d4e-bd9e-8e6f8cc1f9ad" x="466" y="0" width="87" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{Diff}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="1b54d9f0-1f7f-40d1-be14-5c641b869bb8" x="240" y="0" width="65" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{dis_grade_other}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="30c4f7e1-85b7-46ac-b6d2-b24bad37c1a5" x="379" y="1" width="87" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{Diff2}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
