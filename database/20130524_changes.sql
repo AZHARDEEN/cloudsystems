@@ -23,6 +23,8 @@ GRANT SELECT,INSERT,UPDATE,DELETE
 
 INSERT INTO INEP.REVISOR_TYPE ( irt_id_in, irt_description_ch ) VALUES ( 1, 'Corretor da prova escrita' );
 INSERT INTO INEP.REVISOR_TYPE ( irt_id_in, irt_description_ch ) VALUES ( 2, 'Corretor da prova oral' );
+INSERT INTO INEP.REVISOR_TYPE ( irt_id_in, irt_description_ch ) VALUES ( 3, 'Coordenador da prova escrita' );
+INSERT INTO INEP.REVISOR_TYPE ( irt_id_in, irt_description_ch ) VALUES ( 4, 'Coordenador da prova oral' );
 
 ALTER TABLE inep.inep_revisor
    ADD COLUMN irt_id_in integer NOT NULL DEFAULT 1;

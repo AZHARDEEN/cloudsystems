@@ -300,7 +300,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		if ( merged == null ) {
 			return null;
 		}
-		Media media = merged.getMedia( );
+		Media media = merged.getSubscription( ).getMedias( ).get( 0 ).getMedia( );
 		if ( media != null ) {
 			obj = media.getObject( );
 		}
@@ -676,7 +676,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		if ( merged == null ) {
 			return null;
 		}
-		Media media = merged.getMedia( );
+		Media media = merged.getSubscription( ).getMedias( ).get( 0 ).getMedia( );
 		if ( media != null ) {
 			obj = media.getObject( );
 		}

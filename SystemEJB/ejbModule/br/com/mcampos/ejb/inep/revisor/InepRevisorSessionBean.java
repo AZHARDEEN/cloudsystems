@@ -12,6 +12,7 @@ import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepRevisorPK;
 import br.com.mcampos.ejb.inep.entity.InepTask;
+import br.com.mcampos.ejb.inep.revisortype.RevisorTypeSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
@@ -24,6 +25,9 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 {
 	@EJB
 	private InepTaskSessionLocal taskSession;
+
+	@EJB
+	private RevisorTypeSessionLocal typeSession;
 
 	@Override
 	protected Class<InepRevisor> getEntityClass( )
@@ -45,7 +49,7 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 
 	private InepTaskSessionLocal getTaskSession( )
 	{
-		return this.taskSession;
+		return taskSession;
 	}
 
 	@Override
@@ -78,6 +82,16 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 			return null;
 		}
 		return get( new InepRevisorPK( c, event ) );
+	}
+
+	@Override
+	public InepRevisor merge( InepRevisor newEntity )
+	{
+		if ( newEntity.isCoordenador( ) && newEntity.getType( ).getId( ) < 3 )
+			newEntity.setType( typeSession.get( newEntity.getType( ).getId( ) + 2 ) );
+		if ( newEntity.getType( ).getId( ) > 2 && newEntity.isCoordenador( ).equals( false ) )
+			newEntity.setCoordenador( true );
+		return super.merge( newEntity );
 	}
 
 }

@@ -6,15 +6,12 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
-import br.com.mcampos.ejb.media.Media;
 
 /**
  * The persistent class for the inep_test database table.
@@ -50,10 +47,6 @@ public class InepTest implements Serializable
 
 	@EmbeddedId
 	private InepTestPK id;
-
-	@ManyToOne( fetch = FetchType.LAZY, optional = true )
-	@JoinColumn( name = "med_id_in", referencedColumnName = "med_id_in", updatable = true, insertable = true, nullable = true )
-	private Media media;
 
 	@ManyToOne
 	@JoinColumns( {
@@ -98,16 +91,6 @@ public class InepTest implements Serializable
 	public void setId( InepTestPK id )
 	{
 		this.id = id;
-	}
-
-	public Media getMedia( )
-	{
-		return media;
-	}
-
-	public void setMedia( Media media )
-	{
-		this.media = media;
 	}
 
 	public InepTask getTask( )

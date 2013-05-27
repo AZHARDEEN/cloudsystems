@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import br.com.mcampos.ejb.media.Media;
@@ -20,9 +22,16 @@ import br.com.mcampos.ejb.media.Media;
  */
 @Entity
 @Table( name = "inep_oral_test", schema = "inep" )
+@NamedQueries( {
+		@NamedQuery( name = InepOralTest.getVarianceOralOnly, query = "from InepOralTest o WHERE o.subscription.event = ?1 " +
+				"and ( ( abs (o.interviewGrade - o.observerGrade) >= 1.5 ) " +
+				"or ( o.interviewGrade >= 2 and o.observerGrade < 2 )" +
+				"or ( o.observerGrade >= 2 and o.interviewGrade < 2 ) )" )
+} )
 public class InepOralTest implements Serializable
 {
 	private static final long serialVersionUID = 1L;
+	public static final String getVarianceOralOnly = "InepOralTest.getVarianceOralOnly";
 
 	@EmbeddedId
 	private InepOralTestPK id;
@@ -39,6 +48,10 @@ public class InepOralTest implements Serializable
 	@Column( name = "iot_station_ch" )
 	private String station;
 
+	@ManyToOne( fetch = FetchType.EAGER, optional = false )
+	@JoinColumn( name = "ids_id_in", referencedColumnName = "ids_id_in", updatable = true, insertable = true, nullable = false )
+	private DistributionStatus status;
+
 	@ManyToOne
 	@JoinColumns( {
 			@JoinColumn(
@@ -48,10 +61,6 @@ public class InepOralTest implements Serializable
 			@JoinColumn(
 					name = "isc_id_ch", referencedColumnName = "isc_id_ch", updatable = false, insertable = false, nullable = false ) } )
 	private InepSubscription subscription;
-
-	@ManyToOne( fetch = FetchType.LAZY, optional = true )
-	@JoinColumn( name = "med_id_in", referencedColumnName = "med_id_in", updatable = true, insertable = true, nullable = true )
-	private Media media;
 
 	public InepOralTest( )
 	{
@@ -138,5 +147,15 @@ public class InepOralTest implements Serializable
 	public void setMedia( Media media )
 	{
 		this.media = media;
+	}
+
+	public DistributionStatus getStatus( )
+	{
+		return status;
+	}
+
+	public void setStatus( DistributionStatus status )
+	{
+		this.status = status;
 	}
 }

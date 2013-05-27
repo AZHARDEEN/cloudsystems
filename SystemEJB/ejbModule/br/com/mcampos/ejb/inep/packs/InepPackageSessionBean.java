@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -11,6 +12,8 @@ import javax.persistence.Query;
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionBean;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepTask;
+import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
 /**
@@ -21,6 +24,9 @@ import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepPackage> implements InepPackageSession,
 		InepPackageSessionLocal
 {
+	@EJB
+	InepTaskSessionLocal taskSession;
+
 	@Override
 	protected Class<InepPackage> getEntityClass( )
 	{
@@ -78,6 +84,19 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepPack
 	public List<InepPackage> getAvailable( )
 	{
 		return findByNamedQuery( InepPackage.getAllAvailable );
+	}
+
+	@Override
+	public InepPackage merge( InepPackage newEntity )
+	{
+		newEntity = super.merge( newEntity );
+		for ( int i = 1; i <= 4; i++ ) {
+			InepTask task = new InepTask( newEntity );
+			task.getId( ).setId( i );
+			task.setDescription( "Tarefa " + i );
+			taskSession.merge( task );
+		}
+		return newEntity;
 	}
 
 }

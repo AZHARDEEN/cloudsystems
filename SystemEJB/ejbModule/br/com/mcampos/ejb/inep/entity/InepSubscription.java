@@ -2,6 +2,8 @@ package br.com.mcampos.ejb.inep.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -11,6 +13,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -50,6 +53,10 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 
 	@Column( name = "isc_final_grade_nm" )
 	private BigDecimal finalGrade;
+
+	// bi-directional many-to-one association to InepMedia
+	@OneToMany( mappedBy = "inepSubscription" )
+	private List<InepMedia> medias;
 
 	public InepSubscription( )
 	{
@@ -161,4 +168,25 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 		this.finalGrade = finalGrade;
 	}
 
+	public List<InepMedia> getMedias( )
+	{
+		if ( medias == null )
+			medias = new ArrayList<InepMedia>( );
+		return medias;
+	}
+
+	public void setMedias( List<InepMedia> inepMedias )
+	{
+		medias = inepMedias;
+	}
+
+	public void add( InepMedia media )
+	{
+		if ( media != null ) {
+			if ( getMedias( ).contains( media ) == false ) {
+				getMedias( ).add( media );
+				media.setInepSubscription( this );
+			}
+		}
+	}
 }

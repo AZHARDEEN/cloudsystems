@@ -45,7 +45,7 @@ public class MediaSessionBean extends SimpleSessionBean<Media> implements MediaS
 		target.setName( source.getName( ) );
 		target.setObject( source.getObject( ) );
 		target.setFormat( source.getFormat( ) );
-		target.setMedInsetDt( new Date( ) );
+		target.setInsertDate( new Date( ) );
 		return target;
 
 	}
@@ -55,5 +55,13 @@ public class MediaSessionBean extends SimpleSessionBean<Media> implements MediaS
 	{
 		Media media = getByNamedQuery( Media.getByName, name );
 		return media;
+	}
+
+	@Override
+	public Media merge( Media newEntity )
+	{
+		if ( newEntity.getInsertDate( ) == null )
+			newEntity.setInsertDate( new Date( ) );
+		return super.merge( newEntity );
 	}
 }
