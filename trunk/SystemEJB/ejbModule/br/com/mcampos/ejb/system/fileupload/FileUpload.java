@@ -181,7 +181,7 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 	public String getDate( )
 	{
 		if ( getMedia( ) != null ) {
-			return SysUtils.formatDate( getMedia( ).getMedInsetDt( ), "dd/MM/yyyy" );
+			return SysUtils.formatDate( getMedia( ).getInsertDate( ), "dd/MM/yyyy" );
 		}
 		else {
 			return null;
@@ -193,7 +193,7 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 	public String getTime( )
 	{
 		if ( getMedia( ) != null ) {
-			return SysUtils.formatDate( getMedia( ).getMedInsetDt( ), "HH:mm:ss" );
+			return SysUtils.formatDate( getMedia( ).getInsertDate( ), "HH:mm:ss" );
 		}
 		else {
 			return null;

@@ -547,7 +547,7 @@ SPItemBegin [keep format] = Alter Key_Group
 		FE::EndOfStatement
 	]
 
-	/* Was any property other than the name, constraint name, db owner,   group member order list modified? */
+	/* Was any property other than the name, constraint name, db owner, key group member order list modified? */
 	[ FE::IsModified( "Physical_Name","Name","Constraint_Name","Schema_Name", "Key_Group_Members_Order_Ref" )
 		/* Recreate the view. */
 		Execute( "Generate Key_Group" )
@@ -808,7 +808,7 @@ SPItemBegin [keep format] = Clause: AK Constraint
 			QuotedName
 		}
 	>
-	") USING INDEX TABLESPACE TB_CLOUD_INDEX "
+	")"
 
 	/* Constraint state. */
 	[ FE::Option( "ConstraintState" )
@@ -983,9 +983,9 @@ SPItemBegin [keep format] = Clause: Constraint State
 							OnceForObject( "Create Key_Group" )
 							FE::RecordCreate
 							"CREATE" 
-							[ "##" IsPropertyTrue( "Oracle_Bitmap" ) "BITMAP" ]
+							[ "   " IsPropertyTrue( "Oracle_Bitmap" ) "BITMAP" ]
 							" INDEX "
-							QuotedName 
+							[ FE::OwnerOverride( "true" ) "." ] QuotedName 
 							" ON " [ FE::OwnerOverride( "true", "1" ) "." ] OwnerQuotedName
 							"\n("
 							<
@@ -1580,7 +1580,7 @@ SPItemBegin [keep format] = Clause: PK Constraint
 			QuotedName
 		}
 	>
-	") USING INDEX TABLESPACE TB_CLOUD_INDEX "
+	")"
 	/* Constraint state */
 	[ FE::Option( "ConstraintState" )
 		[
@@ -1841,7 +1841,7 @@ SPItemBegin [keep format] = Clause: Physical Properties
 [ Equal( Property( "Oracle_Data_Storage_Type" ), "Organized" )
 	/* Index organized tables. */
 	[ Equal( Property( "Data_Organization_Type" ), "Index" )
-		"\n\t"  "USING INDEX "
+		"\n\t"  "ORGANIZATION INDEX "
 		[ PushReference( "Oracle_Index_Storage_Ref" ) Execute( "Clause: Segment Attributes" ) Pop ]
 		[ "\n\t" LookupProperty( "Table_Mapping_Mode", "915", "MAPPING TABLE", "916", "NOMAPPING" ) ]
 		[ "\n\t" "PCTTHRESHOLD " Property( "Percent_Threshold" ) ]
@@ -3658,9 +3658,9 @@ SPItemBegin [keep format] = Create Index
 				ClearLocalFlag( "Constraint Deferred" )
 			}
 		]
-		[ " " IsPropertyTrue( "Oracle_Bitmap" ) "BITMAP" ]
+		[ "   " IsPropertyTrue( "Oracle_Bitmap" ) "BITMAP" ]
 		" INDEX "
-		QuotedName 
+		[ FE::OwnerOverride( "true" ) "." ] QuotedName 
 		" ON " [ FE::OwnerOverride( "true", "1" ) "." ] OwnerQuotedName
 		"\n("
 		<
@@ -5147,10 +5147,10 @@ SPItemBegin [keep format] = Drop Entity
 
 		/* Now we are ready drop the table. */
 		FE::Bucket("40")
-		"DROP TABLE IF EXISTS " 
+		"DROP TABLE " 
 		[ < Execute( "Previous Owner" ) > "." ] 
 		< Execute( "Previous Physical Name" ) >
-		" CASCADE " 
+		" CASCADE CONSTRAINTS" 
 		[ DBMSVersion( "10" ) " PURGE" ] 
 		FE::EndOfStatement
 	]
@@ -5565,7 +5565,7 @@ SPItemBegin [keep format] = Drop Sequence
 	OnceForObject( "Drop Sequence" )
 	FE::Option( "DropSequence" ) 
 	FE::Bucket( "35" )  
-	"DROP SEQUENCE IF EXISTS " [ < Execute( "Previous Owner" ) > "." ] Execute( "Previous Physical Name" )
+	"DROP SEQUENCE " [ < Execute( "Previous Owner" ) > "." ] Execute( "Previous Physical Name" )
 	FE::EndOfStatement
 ]
 SPItemEnd

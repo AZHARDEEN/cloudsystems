@@ -67,6 +67,10 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 	@Column( name = "tsk_id_in", nullable = false, updatable = true, insertable = true )
 	private Integer taskId;
 
+	@ManyToOne( optional = false )
+	@JoinColumn( name = "irt_id_in", referencedColumnName = "irt_id_in", updatable = true, insertable = true, nullable = false )
+	private RevisorType type;
+
 	public InepRevisor( )
 	{
 	}
@@ -79,10 +83,10 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 
 	public InepRevisorPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new InepRevisorPK( );
+		if ( id == null ) {
+			id = new InepRevisorPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( InepRevisorPK id )
@@ -92,17 +96,17 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 
 	public Boolean isCoordenador( )
 	{
-		return this.coordenador;
+		return coordenador;
 	}
 
 	public void setCoordenador( Boolean rvsCoordinatorBt )
 	{
-		this.coordenador = rvsCoordinatorBt;
+		coordenador = rvsCoordinatorBt;
 	}
 
 	public Collaborator getCollaborator( )
 	{
-		return this.collaborator;
+		return collaborator;
 	}
 
 	public void setCollaborator( Collaborator collaborator )
@@ -161,7 +165,7 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 
 	public InepTask getTask( )
 	{
-		return this.task;
+		return task;
 	}
 
 	public void setTask( InepTask task )
@@ -181,12 +185,22 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 
 	public Integer getTaskId( )
 	{
-		return this.taskId;
+		return taskId;
 	}
 
 	public void setTaskId( Integer taskId )
 	{
 		this.taskId = taskId;
+	}
+
+	public RevisorType getType( )
+	{
+		return type;
+	}
+
+	public void setType( RevisorType type )
+	{
+		this.type = type;
 	}
 
 }

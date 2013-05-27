@@ -5,6 +5,8 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
+import br.com.mcampos.ejb.inep.entity.DistributionStatus;
 import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.entity.InepSubscriptionPK;
@@ -20,6 +22,9 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	@EJB
 	private InepSubscriptionSessionLocal subscriptionSession;
 
+	@EJB
+	private DistributionStatusSessionLocal statusSession;
+
 	@Override
 	protected Class<InepOralTest> getEntityClass( )
 	{
@@ -31,6 +36,7 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	{
 		InepSubscription s = getSubscription( entity, createSubscription );
 		entity.setSubscription( s );
+		entity.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
 		entity = merge( entity );
 		if ( entity.getFinalGrade( ) != null ) {
 			s.setOralGrade( entity.getFinalGrade( ) );
@@ -52,4 +58,24 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 		return entity;
 	}
 
+	@Override
+	public InepOralTest merge( InepOralTest newEntity )
+	{
+		newEntity = setStatus( super.merge( newEntity ) );
+		return newEntity;
+	}
+
+	private InepOralTest setStatus( InepOralTest newEntity )
+	{
+		if ( newEntity == null )
+			return null;
+		if ( newEntity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) ) {
+			double variance = newEntity.getInterviewGrade( ) != null ? newEntity.getInterviewGrade( ).doubleValue( ) : 0.0;
+			variance -= newEntity.getObserverGrade( ) != null ? newEntity.getObserverGrade( ).doubleValue( ) : 0.0;
+			variance = Math.abs( variance );
+			if ( variance >= 1.5 )
+				newEntity.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+		}
+		return newEntity;
+	}
 }

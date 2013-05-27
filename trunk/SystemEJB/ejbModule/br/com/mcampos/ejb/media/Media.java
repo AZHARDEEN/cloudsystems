@@ -42,7 +42,7 @@ public class Media implements Serializable
 
 	@Column( name = "med_inset_dt" )
 	@Temporal( TemporalType.TIMESTAMP )
-	private Date medInsetDt;
+	private Date insertDate;
 
 	@Column( name = "med_mime_ch", length = 128 )
 	private String mimeType;
@@ -86,14 +86,14 @@ public class Media implements Serializable
 		this.format = medFormatCh;
 	}
 
-	public Date getMedInsetDt( )
+	public Date getInsertDate( )
 	{
-		return this.medInsetDt;
+		return this.insertDate;
 	}
 
-	public void setMedInsetDt( Date medInsetDt )
+	public void setInsertDate( Date medInsetDt )
 	{
-		this.medInsetDt = medInsetDt;
+		this.insertDate = medInsetDt;
 	}
 
 	public String getMimeType( )

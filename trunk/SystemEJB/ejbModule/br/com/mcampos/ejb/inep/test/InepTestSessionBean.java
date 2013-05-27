@@ -2,6 +2,7 @@ package br.com.mcampos.ejb.inep.test;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -9,6 +10,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.ejb.inep.entity.InepMedia;
 import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
@@ -18,11 +20,13 @@ import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.entity.InepTaskPK;
 import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.inep.entity.InepTestPK;
+import br.com.mcampos.ejb.inep.media.InepMediaSessionLocal;
 import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.media.Media;
+import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
 
 /**
  * Session Bean implementation class InepTestSessionBean
@@ -43,6 +47,12 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 	@EJB
 	InepOralTestSessionLocal oralSession;
 
+	@EJB
+	MediaSessionBeanLocal mediaSession;
+
+	@EJB
+	InepMediaSessionLocal inepMediaSession;
+
 	@Override
 	protected Class<InepTest> getEntityClass( )
 	{
@@ -54,30 +64,35 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 	{
 		InepTest entity = get( key );
 
-		if ( entity != null ) {
-			return false;
-		}
 		InepSubscription subscription = getSubscription( key );
 		if ( subscription == null ) {
 			subscription = new InepSubscription( );
 			subscription.setId( getSubscriptionPK( key ) );
-			subscriptionSession.merge( subscription );
+			subscription = subscriptionSession.merge( subscription );
 		}
 		InepTask task = getTask( key );
 		if ( task == null ) {
 			return false;
 		}
-		entity = new InepTest( );
-		entity.setSubscription( subscription );
-		entity.setTask( task );
+		if ( entity == null ) {
+			entity = new InepTest( );
+			entity.setSubscription( subscription );
+			entity.setTask( task );
+			entity = merge( entity );
+		}
 		Media media = new Media( );
 		media.setName( key.getSubscriptionId( ) + "-" + key.getTaskId( ).toString( ) + ".pdf" );
 		media.setFormat( "pdf" );
 		media.setMimeType( "text/pdf" );
 		media.setObject( object );
-		getEntityManager( ).persist( media );
-		entity.setMedia( media );
-		merge( entity );
+		media.setInsertDate( new Date( ) );
+		media = mediaSession.persist( media );
+		InepMedia inepMedia = new InepMedia( entity.getSubscription( ) );
+		inepMedia.setMedia( media );
+		inepMedia.setTask( task.getId( ).getId( ) );
+		entity.getSubscription( ).add( inepMedia );
+		inepMediaSession.merge( inepMedia );
+		subscriptionSession.merge( subscription );
 		return true;
 	}
 
