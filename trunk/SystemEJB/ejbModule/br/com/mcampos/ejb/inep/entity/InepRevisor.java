@@ -96,6 +96,8 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 
 	public Boolean isCoordenador( )
 	{
+		if ( coordenador == null )
+			return false;
 		return coordenador;
 	}
 

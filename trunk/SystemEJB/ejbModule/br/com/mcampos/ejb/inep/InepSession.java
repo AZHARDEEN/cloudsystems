@@ -20,4 +20,6 @@ public interface InepSession extends BaseSessionInterface<InepTask>
 	List<InepTask> getTasks( InepPackage event );
 
 	InepRevisor add( InepTask task, String name, String email, String cpf, boolean coordenador );
+
+	public InepRevisor add( InepPackage event, Integer task, String name, String email, String cpf, Integer type );
 }

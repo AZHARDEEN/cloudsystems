@@ -9,7 +9,6 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
-import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -17,15 +16,16 @@ import br.com.mcampos.dto.MailDTO;
 
 /**
  * Message-Driven Bean implementation class for: EmailMessageBean
- *
+ * 
  */
 @MessageDriven( name = "EmailMessage",
-activationConfig = {
-		@ActivationConfigProperty( propertyName = "destinationType", propertyValue = "javax.jms.Queue" ),
-		@ActivationConfigProperty( propertyName = "destination", propertyValue = EmailMessageBean.destinationName ),
-		@ActivationConfigProperty( propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge" )
-} )
-public class EmailMessageBean implements MessageListener {
+		activationConfig = {
+				@ActivationConfigProperty( propertyName = "destinationType", propertyValue = "javax.jms.Queue" ),
+				@ActivationConfigProperty( propertyName = "destination", propertyValue = EmailMessageBean.destinationName ),
+				@ActivationConfigProperty( propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge" )
+		} )
+public class EmailMessageBean implements MessageListener
+{
 
 	public static final String destinationName = "java:/cloudq";
 	private static final String SMTP_SERVER_ADDRESS = "smtps.uol.com.br";
@@ -37,7 +37,8 @@ public class EmailMessageBean implements MessageListener {
 
 	private Session mailSession = null;
 
-	public EmailMessageBean() {
+	public EmailMessageBean( )
+	{
 	}
 
 	@Override
@@ -46,7 +47,6 @@ public class EmailMessageBean implements MessageListener {
 		if ( message instanceof ObjectMessage ) {
 			ObjectMessage objMessage = (ObjectMessage) message;
 			try {
-
 
 				Object object = objMessage.getObject( );
 				if ( object != null && object instanceof MailDTO ) {
@@ -59,7 +59,7 @@ public class EmailMessageBean implements MessageListener {
 					}
 					mailMessage.setFrom( new InternetAddress( SMTP_FROM ) );
 					mailMessage.setContent( dto.getBody( ), "text/plain" );
-					Transport.send( mailMessage );
+					// Transport.send( mailMessage );
 				}
 			}
 			catch ( Exception e ) {
@@ -106,13 +106,13 @@ public class EmailMessageBean implements MessageListener {
 
 	private Session getMailSession( )
 	{
-		if ( this.mailSession == null ) {
+		if ( mailSession == null ) {
 			Properties props = new Properties( );
 			SMTPAuthenticator auth = new SMTPAuthenticator( );
 			props = configureProperties( props );
-			this.mailSession = Session.getDefaultInstance( props, auth );
+			mailSession = Session.getDefaultInstance( props, auth );
 		}
-		return this.mailSession;
+		return mailSession;
 	}
 
 }

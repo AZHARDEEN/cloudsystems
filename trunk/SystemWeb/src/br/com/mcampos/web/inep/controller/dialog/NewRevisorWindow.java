@@ -1,7 +1,8 @@
-package br.com.mcampos.web.inep.controller;
+package br.com.mcampos.web.inep.controller.dialog;
 
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
 import br.com.mcampos.ejb.inep.entity.RevisorType;
@@ -17,6 +18,7 @@ public class NewRevisorWindow extends BaseDialogWindow
 	private Textbox email;
 	private Textbox cpf;
 	private RevisorTypeCombobox revisorType;
+	private Row rowTasks;
 
 	@Override
 	protected boolean validate( )
@@ -69,4 +71,10 @@ public class NewRevisorWindow extends BaseDialogWindow
 			return null;
 	}
 
+	public Row getRowTasks( )
+	{
+		if ( rowTasks == null )
+			rowTasks = (Row) getFellow( "rowTasks" );
+		return rowTasks;
+	}
 }

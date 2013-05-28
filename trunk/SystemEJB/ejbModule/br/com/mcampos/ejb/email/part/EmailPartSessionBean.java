@@ -69,7 +69,7 @@ public class EmailPartSessionBean extends SimpleSessionBean<EMailPart> implement
 	@Override
 	public MailDTO getTemplate( Integer templateId )
 	{
-		EMail email = this.emailSession.get( templateId );
+		EMail email = emailSession.get( templateId );
 		if ( email == null ) {
 			return null;
 		}
@@ -79,27 +79,30 @@ public class EmailPartSessionBean extends SimpleSessionBean<EMailPart> implement
 	@Override
 	public Boolean sendMail( MailDTO dto )
 	{
-		Connection connection;
-		Session session;
-		try {
-			connection = this.cf.createConnection( );
-			if ( connection != null ) {
-				session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
-				if ( session != null ) {
-					MessageProducer mp = session.createProducer( this.queue );
-					ObjectMessage objmsg = session.createObjectMessage( dto );
-					mp.send( objmsg );
-					mp.close( );
-					return true;
+		if ( false ) {
+			Connection connection;
+			Session session;
+			try {
+				connection = cf.createConnection( );
+				if ( connection != null ) {
+					session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
+					if ( session != null ) {
+						MessageProducer mp = session.createProducer( queue );
+						ObjectMessage objmsg = session.createObjectMessage( dto );
+						mp.send( objmsg );
+						mp.close( );
+						return true;
+					}
+					return false;
 				}
 				return false;
 			}
-			return false;
+			catch ( JMSException e ) {
+				e.printStackTrace( );
+				return false;
+			}
 		}
-		catch ( JMSException e ) {
-			e.printStackTrace( );
-			return false;
-		}
+		return true;
 	}
 
 }
