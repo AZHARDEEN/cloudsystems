@@ -5151,7 +5151,6 @@ SPItemBegin [keep format] = Drop Entity
 		[ < Execute( "Previous Owner" ) > "." ] 
 		< Execute( "Previous Physical Name" ) >
 		" CASCADE " 
-		[ DBMSVersion( "10" ) " PURGE" ] 
 		FE::EndOfStatement
 	]
 

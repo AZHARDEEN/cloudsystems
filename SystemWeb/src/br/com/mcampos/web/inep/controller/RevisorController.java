@@ -302,7 +302,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 		InepTask task = getComboTask( ).getSelectedItem( ).getValue( );
 
 		InepRevisor rev = getInepSession( ).add( task, w.getName( ).getValue( ), w.getEmail( ).getValue( ), w.getCpf( ).getValue( ),
-				w.getCoordinator( ).isChecked( ) );
+				false );
 		if ( rev != null ) {
 			ListModelList<InepRevisor> model = null;
 			Object objModel = getListbox( ).getModel( );

@@ -2,6 +2,7 @@ package br.com.mcampos.web.inep.controller;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -10,6 +11,7 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.InepOralFacade;
@@ -106,6 +108,25 @@ public class OralVarianceCoordinatorController extends BaseDBLoggedController<In
 
 		model.setMultiple( true );
 		getListbox( ).setModel( model );
+	}
+
+	@Listen( "onClick = #assign" )
+	public void onAssign( Event evt )
+	{
+		if ( evt != null )
+			evt.stopPropagation( );
+		@SuppressWarnings( "unchecked" )
+		ListModelList<InepOralTest> model = (ListModelList<InepOralTest>) ( (Object) getListbox( ).getModel( ) );
+		Set<InepOralTest> items = model.getSelection( );
+		if ( items == null || items.size( ) == 0 )
+		{
+			Messagebox.show( "Por favor, selecione uma ou mais inscrições em discrepância para distribuir aos corretores",
+					"Distribuir Prova Oral em Discrepância",
+					Messagebox.OK,
+					Messagebox.INFORMATION );
+			return;
+		}
+		model.removeAll( items );
 	}
 
 }
