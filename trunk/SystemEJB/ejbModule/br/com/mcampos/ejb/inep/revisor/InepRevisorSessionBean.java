@@ -87,6 +87,8 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 	@Override
 	public InepRevisor merge( InepRevisor newEntity )
 	{
+		if ( newEntity.getType( ) == null )
+			newEntity.setType( typeSession.get( 1 ) );
 		if ( newEntity.isCoordenador( ) && newEntity.getType( ).getId( ) < 3 )
 			newEntity.setType( typeSession.get( newEntity.getType( ).getId( ) + 2 ) );
 		if ( newEntity.getType( ).getId( ) > 2 && newEntity.isCoordenador( ).equals( false ) )

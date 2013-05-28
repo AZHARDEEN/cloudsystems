@@ -202,5 +202,4 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 	{
 		this.type = type;
 	}
-
 }

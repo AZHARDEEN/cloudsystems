@@ -24,8 +24,8 @@
 		                <textbox id="cpf" width="150px" maxlength="16" />
 		            </row>
 			        <row>
-		                <label value="Coordenador"/>
-		                <checkbox id="coordinator" checked="false" />
+		                <label value="Tipo"/>
+		                <combobox id="revisorType" width="98%" use="br.com.mcampos.web.inep.controller.combobox.RevisorTypeCombobox"/>
 		            </row>
 			    </rows>
 			</grid>

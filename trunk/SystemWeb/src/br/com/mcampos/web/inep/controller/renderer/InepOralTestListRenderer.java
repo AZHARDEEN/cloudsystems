@@ -11,8 +11,8 @@ public class InepOralTestListRenderer extends BaseListRenderer<InepOralTest>
 	@Override
 	public void render( Listitem item, InepOralTest data, int index ) throws Exception
 	{
-		item.setHeight( "20px" );
 		super.render( item, data, index );
+		item.setContext( "listPopupOralTest" );
 		addCell( item, data.getSubscription( ).getId( ).getId( ) );
 		addCell( item, data.getStation( ) );
 		addCell( item, data.getInterviewGrade( ).toString( ) );

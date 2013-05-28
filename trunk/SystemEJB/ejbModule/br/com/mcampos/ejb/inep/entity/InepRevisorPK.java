@@ -56,22 +56,22 @@ public class InepRevisorPK implements Serializable, Comparable<InepRevisorPK>
 
 	public Integer getCompanyId( )
 	{
-		return this.companyId;
+		return companyId;
 	}
 
 	public void setCompanyId( Integer usrIdIn )
 	{
-		this.companyId = usrIdIn;
+		companyId = usrIdIn;
 	}
 
 	public Integer getSequence( )
 	{
-		return this.sequence;
+		return sequence;
 	}
 
 	public void setSequence( Integer colSeqIn )
 	{
-		this.sequence = colSeqIn;
+		sequence = colSeqIn;
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class InepRevisorPK implements Serializable, Comparable<InepRevisorPK>
 
 	public Integer getEventId( )
 	{
-		return this.eventId;
+		return eventId;
 	}
 
 	public void setEventId( Integer eventId )

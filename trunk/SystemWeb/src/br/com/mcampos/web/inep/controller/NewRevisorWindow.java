@@ -1,11 +1,13 @@
 package br.com.mcampos.web.inep.controller;
 
-import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 
+import br.com.mcampos.ejb.inep.entity.RevisorType;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDialogWindow;
+import br.com.mcampos.web.inep.controller.combobox.RevisorTypeCombobox;
 
 public class NewRevisorWindow extends BaseDialogWindow
 {
@@ -14,7 +16,7 @@ public class NewRevisorWindow extends BaseDialogWindow
 	private Textbox name;
 	private Textbox email;
 	private Textbox cpf;
-	private Checkbox coordinator;
+	private RevisorTypeCombobox revisorType;
 
 	@Override
 	protected boolean validate( )
@@ -53,11 +55,18 @@ public class NewRevisorWindow extends BaseDialogWindow
 		return cpf;
 	}
 
-	public Checkbox getCoordinator( )
+	public RevisorTypeCombobox getRevisorType( )
 	{
-		if ( coordinator == null )
-			coordinator = (Checkbox) getFellow( "coordinator" );
-		return coordinator;
+		return revisorType;
+	}
+
+	public RevisorType getType( )
+	{
+		Comboitem item = getRevisorType( ).getSelectedItem( );
+		if ( item != null && item.getValue( ) != null )
+			return (RevisorType) item.getValue( );
+		else
+			return null;
 	}
 
 }
