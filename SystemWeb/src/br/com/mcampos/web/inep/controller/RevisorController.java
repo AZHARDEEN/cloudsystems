@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,8 +12,8 @@ import javax.naming.NamingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Combobox;
@@ -20,9 +21,11 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.ListitemRenderer;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.inep.CorretorDTO;
 import br.com.mcampos.ejb.inep.InepSession;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
@@ -31,15 +34,15 @@ import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSession;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.web.core.BaseDialogWindow;
+import br.com.mcampos.web.core.UploadMedia;
 import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
+import br.com.mcampos.web.inep.controller.dialog.NewRevisorWindow;
 import br.com.mcampos.web.inep.controller.renderer.RevisorListRenderer;
 import br.com.mcampos.web.locator.ServiceLocator;
 
 public class RevisorController extends BaseDBListController<InepRevisorSession, InepRevisor> implements IDialogEvent
 {
-	public static final String path = "T:\\temp\\201212_carga_inep.csv";
 	private static final Logger logger = LoggerFactory.getLogger( RevisorController.class );
 
 	private static final long serialVersionUID = -1355230877237131653L;
@@ -157,7 +160,6 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		addRevisor.setVisible( false );
 		loadCombobox( );
 	}
 
@@ -186,7 +188,6 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 		List<InepRevisor> list = Collections.emptyList( );
 
 		comboItem = getComboTask( ).getSelectedItem( );
-		addRevisor.setVisible( comboItem != null && comboItem.getValue( ) != null );
 		if ( comboItem != null && comboItem.getValue( ) != null ) {
 			list = getSession( ).getAll( (InepTask) comboItem.getValue( ) );
 		}
@@ -197,37 +198,55 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 		getListbox( ).setModel( new ListModelList<InepRevisor>( list ) );
 	}
 
-	@Listen( "onClick = #addRevisor" )
-	public void loadRevisor( Event event )
+	@Listen( "onUpload = #loadRevisor" )
+	public void loadRevisor( UploadEvent evt )
 	{
-		Component c = createComponents( "/private/inep/utils/new_revisor.zul", getMainWindow( ), null );
 
-		if ( c != null && c instanceof BaseDialogWindow ) {
-			BaseDialogWindow dlg = (BaseDialogWindow) c;
-			doModal( dlg, this );
+		if ( evt != null ) {
+			try {
+				MediaDTO m = UploadMedia.getMedia( evt.getMedia( ) );
+				loadRevisor( m );
+			}
+			catch ( IOException e ) {
+				e.printStackTrace( );
+			}
+			evt.stopPropagation( );
 		}
-		else {
-			if ( c != null )
-				c.detach( );
-		}
-		if ( event != null )
-			event.stopPropagation( );
 	}
 
-	@Listen( "onClick = #loadRevisor" )
-	public void loadRevisor( )
+	private void loadRevisor( MediaDTO media )
 	{
-		File sourcefile = new File( path );
-		if ( !sourcefile.exists( ) ) {
-			logger.info( "Arquivo " + path + " nao existe" );
+		if ( !media.getMimeType( ).equals( "application/vnd.ms-excel" ) || !media.getName( ).contains( ".csv" ) ) {
+			Messagebox.show( "Tipo de Arquivo inválido. Use somente csv!!!" );
 			return;
 		}
+		Comboitem item = getComboEvent( ).getSelectedItem( );
+		InepPackage event = ( (InepPackage) item.getValue( ) );
+
 		try {
-			logger.debug( "Loading records" );
-			load( sourcefile );
+
+			String cvs = new String( media.getObject( ), "UTF-8" );
+			BufferedReader br = new BufferedReader( new StringReader( cvs ) );
+			String line;
+			int lineNumber = 0;
+			Integer task;
+
+			while ( SysUtils.isEmpty( ( line = br.readLine( ) ) ) == false ) {
+				lineNumber++;
+				if ( lineNumber == 1 )
+					continue;
+				String[ ] parts = line.split( ";" );
+				Integer type = Integer.parseInt( parts[ 4 ] );
+				if ( !SysUtils.isEmpty( parts[ 3 ] ) )
+					task = Integer.parseInt( parts[ 3 ] );
+				else
+					task = null;
+				getInepSession( ).add( event, task, parts[ 0 ], parts[ 1 ], parts[ 2 ], type );
+			}
+			br.close( );
 		}
 		catch ( IOException e ) {
-			e.printStackTrace( );
+			logger.error( "ProcessFile ", e );
 		}
 	}
 

@@ -26,6 +26,7 @@ import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.entity.InepTaskPK;
 import br.com.mcampos.ejb.inep.entity.InepTest;
+import br.com.mcampos.ejb.inep.entity.RevisorType;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
@@ -335,4 +336,47 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		rev.setCoordenador( coordenador );
 		return revisorSession.merge( rev );
 	}
+
+	@Override
+	public InepRevisor add( InepPackage event, Integer task, String name, String email, String cpf, Integer type )
+	{
+		Person person = null;
+
+		if ( SysUtils.isEmpty( email ) == false ) {
+			person = personSession.getByDocument( email );
+		}
+		if ( person == null && SysUtils.isEmpty( cpf ) == false ) {
+			person = personSession.getByDocument( cpf );
+		}
+		if ( person == null ) {
+			person = new Person( );
+			if ( SysUtils.isEmpty( email ) == false ) {
+				person.add( new UserDocument( email, documentTypeSession.get( UserDocument.typeEmail ) ) );
+			}
+			if ( SysUtils.isEmpty( cpf ) == false ) {
+				person.add( new UserDocument( cpf, documentTypeSession.get( UserDocument.typeCPF ) ) );
+			}
+			person.setName( name );
+			person = personSession.merge( person );
+		}
+		Login login = loginSession.get( person.getId( ) );
+		if ( login == null ) {
+			loginSession.add( person, "987654" );
+			login = loginSession.get( person.getId( ) );
+		}
+		Collaborator collaborator = collaboratorSession.find( login, event.getId( ).getCompanyId( ) );
+		if ( collaborator == null ) {
+			collaborator = collaboratorSession.add( login, event.getId( ).getCompanyId( ) );
+			collaborator.add( roleSession.get( 4 ) );
+			collaborator.add( type.equals( 3 ) || type.equals( 4 ) ? roleSession.get( 20 ) : roleSession.get( 18 ) );
+		}
+		InepRevisor rev = new InepRevisor( collaborator, event );
+		if ( task != null ) {
+			rev.setTask( taskSession.get( new InepTaskPK( event, task ) ) );
+		}
+		rev.setType( getEntityManager( ).find( RevisorType.class, type ) );
+		rev.setCoordenador( false );
+		return revisorSession.merge( rev );
+	}
+
 }
