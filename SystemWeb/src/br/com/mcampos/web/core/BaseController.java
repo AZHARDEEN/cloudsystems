@@ -30,6 +30,7 @@ import org.zkoss.zul.Panel;
 import org.zkoss.zul.Window;
 import org.zkoss.zul.impl.LabelElement;
 import org.zkoss.zul.impl.XulElement;
+import org.zkoss.zul.theme.Themes;
 
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.event.IDialogEvent;
@@ -340,6 +341,10 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	@Override
 	public void doAfterCompose( T comp ) throws Exception
 	{
+		String[ ] themes = Themes.getThemes( );
+		if ( Themes.getCurrentTheme( ).equals( themes[ 2 ] ) == false ) {
+			Themes.setTheme( Executions.getCurrent( ), themes[ 2 ] );
+		}
 		super.doAfterCompose( comp );
 		if ( SysUtils.isEmpty( this.labels ) == false ) {
 			for ( XulElement item : this.labels ) {
