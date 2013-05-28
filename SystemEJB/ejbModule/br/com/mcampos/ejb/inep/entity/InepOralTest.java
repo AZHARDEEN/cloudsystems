@@ -14,8 +14,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import br.com.mcampos.ejb.media.Media;
-
 /**
  * The persistent class for the inep_oral_test database table.
  * 
@@ -25,8 +23,8 @@ import br.com.mcampos.ejb.media.Media;
 @NamedQueries( {
 		@NamedQuery( name = InepOralTest.getVarianceOralOnly, query = "from InepOralTest o WHERE o.subscription.event = ?1 " +
 				"and ( ( abs (o.interviewGrade - o.observerGrade) >= 1.5 ) " +
-				"or ( o.interviewGrade >= 2 and o.observerGrade < 2 )" +
-				"or ( o.observerGrade >= 2 and o.interviewGrade < 2 ) )" )
+				"or ( o.interviewGrade >= 2 and o.observerGrade < 2 ) " +
+				"or ( o.observerGrade >= 2 and o.interviewGrade < 2 ) ) order by o.station" )
 } )
 public class InepOralTest implements Serializable
 {
@@ -137,16 +135,6 @@ public class InepOralTest implements Serializable
 	public void setSubscription( InepSubscription subscription )
 	{
 		this.subscription = subscription;
-	}
-
-	public Media getMedia( )
-	{
-		return media;
-	}
-
-	public void setMedia( Media media )
-	{
-		this.media = media;
 	}
 
 	public DistributionStatus getStatus( )
