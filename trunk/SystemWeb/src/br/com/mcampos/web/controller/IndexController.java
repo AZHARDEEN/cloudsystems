@@ -36,5 +36,4 @@ public class IndexController extends BaseMDIController
 		super.doAfterCompose( comp );
 		loadPage( "/public/login.zul", true );
 	}
-
 }
