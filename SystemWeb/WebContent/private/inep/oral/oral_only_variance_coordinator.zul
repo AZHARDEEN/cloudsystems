@@ -9,7 +9,7 @@
 	</style>
     <borderlayout id="mainCpomponent" >
     	<north fulfill="=/private/inep/north_task.zul" flex = "true" />
-        <center >
+        <center flex="true">
         	<div vflex="true">
 	        	<div id="divListbox" width="100%" height="100%">
 		            <listbox  vflex="true" pagingPosition="top" autopaging="true" id="listTable" mold="paging"
