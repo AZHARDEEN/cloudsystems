@@ -69,21 +69,30 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	@Override
 	protected void showFields( InepRevisor field )
 	{
-		revNome.setValue( field.getCollaborator( ).getPerson( ).getName( ) );
-		infoCPF.setValue( "" );
-		infoEmail.setValue( "" );
-		for ( UserDocument doc : field.getCollaborator( ).getPerson( ).getDocuments( ) ) {
-			switch ( doc.getType( ).getId( ) ) {
-			case 1:
-				infoCPF.setValue( doc.getCode( ) );
-				break;
-			case 6:
-				infoEmail.setValue( doc.getCode( ) );
-				break;
+		if ( field != null ) {
+			revNome.setValue( field.getCollaborator( ).getPerson( ).getName( ) );
+			infoCPF.setValue( "" );
+			infoEmail.setValue( "" );
+			for ( UserDocument doc : field.getCollaborator( ).getPerson( ).getDocuments( ) ) {
+				switch ( doc.getType( ).getId( ) ) {
+				case 1:
+					infoCPF.setValue( doc.getCode( ) );
+					break;
+				case 6:
+					infoEmail.setValue( doc.getCode( ) );
+					break;
+				}
 			}
+			infoTask.setValue( field.getTask( ).getDescription( ) );
+			infoTeamMaster.setValue( field.isCoordenador( ) ? "SIM" : "" );
 		}
-		infoTask.setValue( field.getTask( ).getDescription( ) );
-		infoTeamMaster.setValue( field.isCoordenador( ) ? "SIM" : "" );
+		else {
+			revNome.setValue( "" );
+			infoCPF.setValue( "" );
+			infoEmail.setValue( "" );
+			infoTask.setValue( "" );
+			infoTeamMaster.setValue( "" );
+		}
 	}
 
 	@Override
