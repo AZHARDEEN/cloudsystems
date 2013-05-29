@@ -1,0 +1,78 @@
+<?page title="Fichamento" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Fichamento" border="normal" width="100%" height="100%" apply="br.com.mcampos.web.Fichamento">
+        <borderlayout>
+            <center flex="true">
+                <div id="divListbox">
+                    <paging id="pagingListboxTop"/>
+                    <listbox vflex="true" id="listTable" multiple="true">
+                        <listhead>
+                            <listheader align="left" label="Assunto" id="lblId" width="30%" value="id"/>
+                            <listheader align="left" label="Autor" id="lblIp" width="50%" sort="auto" value="ip"/>
+                            <listheader align="left" label="Número" id="lblType" width="20%" sort="auto" value="type"/>
+                        </listhead>
+                        <listitem>
+                        	<listcell>
+                        		<label>Inovação Técnológica</label>
+                        	</listcell>
+                        	<listcell>
+                        		<label>Ivan Rocha Neto</label>
+                        	</listcell>
+                        	<listcell>
+                        		<label>1</label>
+                        	</listcell>
+                        </listitem>
+                    </listbox>
+                    <paging id="pagingListboxBotton"/>
+                	<div>
+            		</div>
+            	</div>
+            </center>
+	        <east autoscroll="true" splittable="true" width="75%">
+	            <div id="divEast">
+	                <div id="divInfo">
+	                    <grid fixedLayout="true">
+	                        <columns>
+	                            <column label="Campo" width="150px"/>
+	                            <column label="Valor"/>
+	                        </columns>
+	                        <rows>
+	                            <row>
+		                            <label value="Assunto"/>
+		                            <label id="assunto" width="100%"/>
+		                        </row>
+	                            <row>
+		                            <label value="Autor"/>
+		                            <label id = "autor" width="100%"/>
+		                        </row>
+	                            <row>
+		                            <label value="Referência Bibliogáfica Completa"/>
+		                            <textbox width="100%" multiline="true" readonly="true" rows="2" id="referencia"/>
+		                            
+		                        </row>
+	                            <row>
+		                            <label value="Texto da Ficha"/>
+		                            <textbox width="100%" multiline="true" readonly="true" rows="10" id="ficha"/>
+		                        </row>
+	                            <row>
+		                            <label value="Fonte"/>
+		                            <textbox width="100%" multiline="true" readonly="true" rows="2" id="fonte"/>
+		                        </row>
+	                            <row>
+		                            <label value="Tipo de Fichamento" />
+		                            <combobox width="100%" readonly="true" value="Citação" id="tipo">
+		                            	<comboitem label="Citação" />
+		                            	<comboitem label="Bibliogáfico" />
+		                            	<comboitem label="Resumo" />
+		                            	<comboitem label="Crítico" />
+		                            </combobox>
+		                        </row>
+	                        </rows>
+	                    </grid>
+	                </div>
+	                <div fulfill="=/templates/crud_buttons.zul"></div>
+	            </div>
+	        </east>
+        </borderlayout>
+	</window>
+</zk>
