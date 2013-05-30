@@ -28,7 +28,13 @@ public class InepOralTestGradeLoader extends InepBaseJob
 			return;
 
 		List<InepPackage> currentEvents;
-		currentEvents = getSession( ).getAvailableEvents( );
+
+		try {
+			currentEvents = getSession( ).getAvailableEvents( );
+		}
+		catch ( Exception e ) {
+			return;
+		}
 
 		for ( InepPackage item : currentEvents ) {
 			String eventPath = getBasePath( item );

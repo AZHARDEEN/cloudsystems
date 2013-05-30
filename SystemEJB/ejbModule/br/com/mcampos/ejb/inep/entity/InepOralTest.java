@@ -21,10 +21,9 @@ import javax.persistence.Table;
 @Entity
 @Table( name = "inep_oral_test", schema = "inep" )
 @NamedQueries( {
-		@NamedQuery( name = InepOralTest.getVarianceOralOnly, query = "from InepOralTest o WHERE o.subscription.event = ?1 " +
-				"and ( ( abs (o.interviewGrade - o.observerGrade) >= 1.5 ) " +
-				"or ( o.interviewGrade >= 2 and o.observerGrade < 2 ) " +
-				"or ( o.observerGrade >= 2 and o.interviewGrade < 2 ) ) order by o.station" )
+		@NamedQuery(
+				name = InepOralTest.getVarianceOralOnly,
+				query = "from InepOralTest o WHERE o.subscription.event = ?1 and o.status.id = 3 order by station " )
 } )
 public class InepOralTest implements Serializable
 {

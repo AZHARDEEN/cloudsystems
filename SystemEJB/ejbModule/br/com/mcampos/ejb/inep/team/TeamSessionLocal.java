@@ -33,4 +33,6 @@ public interface TeamSessionLocal extends BaseSessionInterface<InepRevisor>
 
 	List<InepDistribution> getOtherDistributions( InepTest test );
 
+	List<InepRevisor> getOralTeam( InepPackage event );
+
 }

@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table( name = "inep_oral_distribution" )
+@Table( name = "inep_oral_distribution", schema = "inep" )
 public class InepOralDistribution implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -21,6 +21,27 @@ public class InepOralDistribution implements Serializable
 
 	public InepOralDistribution( )
 	{
+	}
+
+	public InepOralDistribution( InepOralTest test, InepRevisor revisor )
+	{
+		set( test );
+		set( revisor );
+	}
+
+	public void set( InepOralTest test )
+	{
+		getId( ).setCompanyId( test.getId( ).getUserId( ) );
+		getId( ).setEventId( test.getId( ).getEventId( ) );
+		getId( ).setSubscriptionId( test.getId( ).getSubscriptionId( ) );
+	}
+
+	public void set( InepRevisor revisor )
+	{
+		getId( ).setCompanyId( revisor.getId( ).getCompanyId( ) );
+		getId( ).setEventId( revisor.getId( ).getEventId( ) );
+		getId( ).setCollaboratorId( revisor.getId( ).getSequence( ) );
+
 	}
 
 	public InepOralDistributionPK getId( )
