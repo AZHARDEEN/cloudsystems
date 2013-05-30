@@ -39,28 +39,28 @@
 	                        <rows>
 	                            <row>
 		                            <label value="Assunto"/>
-		                            <label id="assunto" width="100%"/>
+		                            <textbox id="assunto" hflex="1"/>
 		                        </row>
 	                            <row>
 		                            <label value="Autor"/>
-		                            <label id = "autor" width="100%"/>
+		                            <textbox id = "autor" hflex="1"/>
 		                        </row>
 	                            <row>
 		                            <label value="Referência Bibliogáfica Completa"/>
-		                            <textbox width="100%" multiline="true" readonly="true" rows="2" id="referencia"/>
+		                            <textbox hflex="1" multiline="true" readonly="true" rows="2" id="referencia"/>
 		                            
 		                        </row>
 	                            <row>
 		                            <label value="Texto da Ficha"/>
-		                            <textbox width="100%" multiline="true" readonly="true" rows="10" id="ficha"/>
+		                            <textbox hflex="1" multiline="true" readonly="true" rows="20" id="ficha"/>
 		                        </row>
 	                            <row>
 		                            <label value="Fonte"/>
-		                            <textbox width="100%" multiline="true" readonly="true" rows="2" id="fonte"/>
+		                            <textbox hflex="1" multiline="true" readonly="true" rows="2" id="fonte"/>
 		                        </row>
 	                            <row>
 		                            <label value="Tipo de Fichamento" />
-		                            <combobox width="100%" readonly="true" value="Citação" id="tipo">
+		                            <combobox hflex="1" readonly="true" value="Citação" id="tipo">
 		                            	<comboitem label="Citação" />
 		                            	<comboitem label="Bibliogáfico" />
 		                            	<comboitem label="Resumo" />

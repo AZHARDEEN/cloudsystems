@@ -12,9 +12,6 @@ import javax.naming.NamingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.mcampos.ejb.fdigital.services.SamaBSBClient;
-
-
 public class ServiceLocator
 {
 	private static ServiceLocator myServiceLocator;
@@ -22,14 +19,13 @@ public class ServiceLocator
 	private final Map<String, Object> cache;
 
 	private static final Logger logger = LoggerFactory.getLogger( ServiceLocator.class.getSimpleName( ) );
-	
 
-	private ServiceLocator() throws NamingException
+	private ServiceLocator( ) throws NamingException
 	{
-		Hashtable<String, String> env = new Hashtable<String, String>();
+		Hashtable<String, Object> env = new Hashtable<String, Object>( );
 		// WebLogic Server 10.x connection details
-		//env.put( Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory" );
-		//env.put( Context.PROVIDER_URL, "t3://127.0.0.1:7101" );
+		// env.put( Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory" );
+		// env.put( Context.PROVIDER_URL, "t3://127.0.0.1:7101" );
 		// env.put( Context.INITIAL_CONTEXT_FACTORY,
 		// "org.jboss.ejb.client.naming" );
 		// env.put( Context.PROVIDER_URL, "127.0.0.1:4999" );
@@ -39,15 +35,16 @@ public class ServiceLocator
 		env.put( Context.INITIAL_CONTEXT_FACTORY, "org.jboss.as.naming.InitialContextFactory" );
 		env.put( Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming:org.jboss.naming:org.jnp.interfaces" );
 		env.put( Context.PROVIDER_URL, "127.0.0.1:4447" );
+		env.put( "jboss.naming.client.ejb.context", true );
 
-		this.context = new InitialContext( env );
-		this.cache = Collections.synchronizedMap( new HashMap<String, Object>() );
+		context = new InitialContext( env );
+		cache = Collections.synchronizedMap( new HashMap<String, Object>( ) );
 	}
 
-	public static ServiceLocator getInstance() throws NamingException
+	public static ServiceLocator getInstance( ) throws NamingException
 	{
 		if ( myServiceLocator == null ) {
-			myServiceLocator = new ServiceLocator();
+			myServiceLocator = new ServiceLocator( );
 		}
 		return myServiceLocator;
 	}
@@ -56,18 +53,18 @@ public class ServiceLocator
 	{
 		Object home = null;
 
-		if ( this.cache.containsKey( name ) ) {
-			home = this.cache.get( name );
+		if ( cache.containsKey( name ) ) {
+			home = cache.get( name );
 		}
 		else {
-			logger.info( "Looking up for ejb: " + name ); 
-			home = this.context.lookup( name );
-			this.cache.put( name, home );
+			logger.info( "Looking up for ejb: " + name );
+			home = context.lookup( name );
+			cache.put( name, home );
 		}
 		return home;
 	}
 
-	public String getServiceLocatorInfo()
+	public String getServiceLocatorInfo( )
 	{
 		return "CloudSystemsServiceLocator";
 	}

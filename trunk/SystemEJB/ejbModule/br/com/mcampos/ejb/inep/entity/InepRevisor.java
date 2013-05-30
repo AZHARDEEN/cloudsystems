@@ -27,6 +27,7 @@ import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 		@NamedQuery( name = InepRevisor.getAllTeamByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 " ),
 		@NamedQuery( name = InepRevisor.getAllRevisorByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = false " ),
 		@NamedQuery( name = InepRevisor.getAllTeamByEvent, query = "select o from InepRevisor o where o.task.event = ?1" ),
+		@NamedQuery( name = InepRevisor.getAllOralTeamByEvent, query = "select o from InepRevisor o where o.id.companyId = ?1 and o.id.eventId = ?2" ),
 		@NamedQuery( name = InepRevisor.getAllCoordinatorsToTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = true" ),
 		@NamedQuery( name = InepRevisor.getAllTeam, query = "select o from InepRevisor o where o.coordenador = false" ), } )
 public class InepRevisor implements Serializable, Comparable<InepRevisor>, BasicEntityRenderer<InepRevisor>
@@ -39,6 +40,8 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 	public static final String getAllTeamByEventAndTask = "InepRevisor.getAllTeamByEventAndTask";
 	public static final String getAllRevisorByEventAndTask = "InepRevisor.getAllRevisorByEventAndTask";
 	public static final String getAllCoordinatorsToTask = "InepRevisor.getAllCoordinatorsToTask";
+
+	public static final String getAllOralTeamByEvent = "InepRevisor.getAllOralTeamByEvent";
 
 	@EmbeddedId
 	private InepRevisorPK id;

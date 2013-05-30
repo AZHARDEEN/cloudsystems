@@ -1,9 +1,11 @@
 package br.com.mcampos.ejb.inep;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Remote;
 
+import br.com.mcampos.dto.inep.InepOralTeamDTO;
 import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
@@ -18,5 +20,9 @@ public interface InepOralFacade
 	List<InepPackage> getEvents( Collaborator auth );
 
 	InepRevisor getRevisor( InepPackage event, Collaborator auth );
+
+	List<InepOralTeamDTO> getOralTeamToChoice( InepPackage event, Collaborator auth );
+
+	void distribute( InepPackage event, Collaborator auth, InepRevisor r1, InepRevisor r2, Set<InepOralTest> tests );
 
 }

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -14,15 +15,19 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.dto.inep.InepOralTeamDTO;
 import br.com.mcampos.ejb.inep.InepOralFacade;
 import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
+import br.com.mcampos.web.core.BaseDialogWindow;
+import br.com.mcampos.web.core.event.IDialogEvent;
+import br.com.mcampos.web.inep.controller.dialog.DlgOralTeamChoice;
 import br.com.mcampos.web.inep.controller.renderer.InepOralTestListRenderer;
 
-public class OralVarianceCoordinatorController extends BaseDBLoggedController<InepOralFacade>
+public class OralVarianceCoordinatorController extends BaseDBLoggedController<InepOralFacade> implements IDialogEvent
 {
 	private static final long serialVersionUID = -2775088765815980017L;
 
@@ -75,16 +80,26 @@ public class OralVarianceCoordinatorController extends BaseDBLoggedController<In
 	public void onSelectPackage( Event evt )
 	{
 		List<InepOralTest> list = Collections.emptyList( );
-		Comboitem item = comboEvent.getSelectedItem( );
+		InepPackage item = getCurrentEvent( );
 		if ( item != null ) {
 			if ( getRevisor( ) == null || getRevisor( ).isCoordenador( ) ) {
-				list = getSession( ).getVarianceOralOnly( getCurrentCollaborator( ), (InepPackage) item.getValue( ) );
+				list = getSession( ).getVarianceOralOnly( getCurrentCollaborator( ), item );
 			}
 		}
 		setModel( list );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
+	}
+
+	private InepPackage getCurrentEvent( )
+	{
+		Comboitem item = comboEvent.getSelectedItem( );
+		if ( item != null && item.getValue( ) != null ) {
+			return (InepPackage) item.getValue( );
+		}
+		else
+			return null;
 	}
 
 	public InepRevisor getRevisor( )
@@ -118,15 +133,48 @@ public class OralVarianceCoordinatorController extends BaseDBLoggedController<In
 		@SuppressWarnings( "unchecked" )
 		ListModelList<InepOralTest> model = (ListModelList<InepOralTest>) ( (Object) getListbox( ).getModel( ) );
 		Set<InepOralTest> items = model.getSelection( );
-		if ( items == null || items.size( ) == 0 )
-		{
+		if ( items == null || items.size( ) == 0 ) {
 			Messagebox.show( "Por favor, selecione uma ou mais inscrições em discrepância para distribuir aos corretores",
 					"Distribuir Prova Oral em Discrepância",
 					Messagebox.OK,
 					Messagebox.INFORMATION );
 			return;
 		}
-		model.removeAll( items );
+		Component c = createDialog( "/private/inep/oral/dlg_oral_team_choice.zul" );
+		if ( c != null && c instanceof DlgOralTeamChoice ) {
+			DlgOralTeamChoice dlg = (DlgOralTeamChoice) c;
+			dlg.setCallEvent( this );
+			dlg.loadList( getSession( ).getOralTeamToChoice( getCurrentEvent( ), getCurrentCollaborator( ) ) );
+			dlg.doModal( );
+		}
 	}
 
+	private BaseDialogWindow createDialog( String uri )
+	{
+		Component c = getMainWindow( ).getFellowIfAny( "dlgMainWnd" );
+		if ( c != null ) {
+			c.detach( );
+			c = null;
+		}
+		BaseDialogWindow dlg = (BaseDialogWindow) createComponents( uri, getMainWindow( ), null );
+		return dlg;
+	}
+
+	@Override
+	public void onOK( Window wnd )
+	{
+		if ( !( wnd instanceof DlgOralTeamChoice ) )
+			return;
+		InepOralTeamDTO first, second;
+		DlgOralTeamChoice dlg = (DlgOralTeamChoice) wnd;
+		first = (InepOralTeamDTO) dlg.getFirst( ).getSelectedItem( ).getValue( );
+		second = (InepOralTeamDTO) dlg.getSecond( ).getSelectedItem( ).getValue( );
+
+		@SuppressWarnings( "unchecked" )
+		ListModelList<InepOralTest> model = (ListModelList<InepOralTest>) ( (Object) getListbox( ).getModel( ) );
+		Set<InepOralTest> items = model.getSelection( );
+
+		getSession( ).distribute( getCurrentEvent( ), getCurrentCollaborator( ), first.getRevisor( ), second.getRevisor( ), items );
+		model.removeAll( items );
+	}
 }

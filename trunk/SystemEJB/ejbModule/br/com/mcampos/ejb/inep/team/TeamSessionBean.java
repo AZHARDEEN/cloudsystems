@@ -683,4 +683,10 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		return obj;
 	}
 
+	@Override
+	public List<InepRevisor> getOralTeam( InepPackage event )
+	{
+		return findByNamedQuery( InepRevisor.getAllOralTeamByEvent, event.getId( ).getCompanyId( ), event.getId( ).getId( ) );
+	}
+
 }
