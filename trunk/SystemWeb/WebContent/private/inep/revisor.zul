@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
-    <window width="100%" height="100%" closable="true" border="none" title="Tipos de Tarefas"
+    <window width="100%" height="100%" closable="true" border="none" title="Lista de Revisores"
             apply="br.com.mcampos.web.inep.controller.RevisorController" >
 		<div width="100%" height="62px" align="Center" fulfill="=/private/inep/inep_logo.zul" />
 	    <borderlayout>
@@ -22,7 +22,7 @@
 	                        </row>
                         </rows>
                     </grid>
-		            <listbox vflex="true" autopaging="true" id="listTable" multiple="true" mold="paging">
+		            <listbox vflex="true" autopaging="true" id="listTable" mold="paging" pagingPosition="bottom">
 		                <listhead>
 		                    <listheader align="center" label="Código" width="70px" value="id"/>
 		                    <listheader align="left" label="Nome do Corretor" sort="auto" value="description"/>

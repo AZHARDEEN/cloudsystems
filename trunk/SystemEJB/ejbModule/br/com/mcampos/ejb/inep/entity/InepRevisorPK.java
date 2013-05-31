@@ -119,9 +119,9 @@ public class InepRevisorPK implements Serializable, Comparable<InepRevisorPK>
 		nRet = getCompanyId( ).compareTo( o.getCompanyId( ) );
 		if ( nRet == 0 ) {
 			nRet = getEventId( ).compareTo( o.getEventId( ) );
-		}
-		if ( nRet == 0 ) {
-			nRet = getSequence( ).compareTo( o.getSequence( ) );
+			if ( nRet == 0 ) {
+				nRet = getSequence( ).compareTo( o.getSequence( ) );
+			}
 		}
 		return nRet;
 	}

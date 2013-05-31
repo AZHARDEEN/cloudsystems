@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.web.quartz.InepLoaderJob;
 import br.com.mcampos.web.quartz.InepOralTestGradeLoader;
+import br.com.mcampos.web.quartz.InepOralTestLoader;
 
 /**
  * Application Lifecycle Listener implementation class QuartzLoaderListener.
@@ -51,6 +52,7 @@ public class QuartzLoaderListener implements ServletContextListener
 
 				sched.scheduleJob( createLoaderJob( ), createLoaderTrigger( InepLoaderJob.jobName ) );
 				sched.scheduleJob( createOralGradeLoaderJob( ), createLoaderTrigger( InepOralTestGradeLoader.jobName ) );
+				sched.scheduleJob( createOralLoaderJob( ), createLoaderTrigger( InepOralTestLoader.jobName ) );
 
 				sched.start( );
 				logger.info( "Started scheduler" );
@@ -102,6 +104,15 @@ public class QuartzLoaderListener implements ServletContextListener
 		return builder.build( );
 	}
 
+	private JobDetail createOralLoaderJob( )
+	{
+		JobBuilder builder = JobBuilder.newJob( InepOralTestLoader.class );
+		builder.withIdentity( InepOralTestLoader.jobName, InepLoaderJob.jobGroup );
+		builder.withDescription( "InepOralTestGradeLoader" );
+		builder.storeDurably( );
+		return builder.build( );
+	}
+
 	private Trigger createLoaderTrigger( String jobName )
 	{
 
@@ -115,4 +126,5 @@ public class QuartzLoaderListener implements ServletContextListener
 		b.startNow( );
 		return b.build( );
 	}
+
 }

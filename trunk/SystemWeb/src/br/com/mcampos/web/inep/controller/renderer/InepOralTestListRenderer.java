@@ -17,6 +17,6 @@ public class InepOralTestListRenderer extends BaseListRenderer<InepOralTest>
 		addCell( item, data.getStation( ) );
 		addCell( item, data.getInterviewGrade( ).toString( ) );
 		addCell( item, data.getObserverGrade( ).toString( ) );
-		addCell( item, "Em discrepância*" );
+		addCell( item, "Discrepância Oral" );
 	}
 }

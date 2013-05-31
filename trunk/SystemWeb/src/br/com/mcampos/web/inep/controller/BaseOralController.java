@@ -1,67 +1,52 @@
 package br.com.mcampos.web.inep.controller;
 
-import java.util.Collections;
 import java.util.List;
 
-import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
-import org.zkoss.zul.Grid;
-import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.dto.inep.InepAnaliticoCorrecao;
+import br.com.mcampos.ejb.inep.InepOralFacade;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.team.TeamSession;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
+import br.com.mcampos.web.core.BaseDialogWindow;
 
-public abstract class BaseExtractController extends BaseDBLoggedController<TeamSession>
+public abstract class BaseOralController extends BaseDBLoggedController<InepOralFacade>
 {
-	private static final long serialVersionUID = -5369756609865945929L;
+	private static final long serialVersionUID = -706579969846036677L;
+	private InepRevisor revisor;
 
-	@Wire
-	private Grid dataGrid;
 	@Wire
 	private Combobox comboEvent;
 
-	private InepRevisor revisor;
-
-	protected abstract List<InepAnaliticoCorrecao> getList( InepPackage item );
-
-	protected Grid getDataGrid( )
-	{
-		return dataGrid;
-	}
+	public abstract void onSelectPackage( Event evt );
 
 	protected Combobox getComboEvent( )
 	{
 		return comboEvent;
 	}
 
-	@Listen( "onSelect = #comboEvent" )
-	public void onSelectPackage( )
+	protected void setComboEvent( Combobox comboEvent )
 	{
-		Comboitem item = getComboEvent( ).getSelectedItem( );
-		if ( item != null ) {
-			revisor = null;
-			loadGrid( );
-		}
+		this.comboEvent = comboEvent;
 	}
 
-	private void loadGrid( )
+	protected InepPackage getCurrentEvent( )
 	{
-		List<InepAnaliticoCorrecao> list = Collections.emptyList( );
-		Comboitem item = getComboEvent( ).getSelectedItem( );
-		if ( item != null ) {
-			list = getList( (InepPackage) item.getValue( ) );
+		Comboitem item = comboEvent.getSelectedItem( );
+		if ( item != null && item.getValue( ) != null ) {
+			return (InepPackage) item.getValue( );
 		}
-		getComboEvent( ).setModel( new ListModelList<InepAnaliticoCorrecao>( list ) );
+		else
+			return null;
 	}
 
-	public InepRevisor getRevisor( )
+	protected InepRevisor getRevisor( )
 	{
 		if ( revisor == null ) {
 			revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
@@ -70,7 +55,18 @@ public abstract class BaseExtractController extends BaseDBLoggedController<TeamS
 		return revisor;
 	}
 
-	private void loadCombobox( )
+	protected BaseDialogWindow createDialog( String uri )
+	{
+		Component c = getMainWindow( ).getFellowIfAny( "dlgMainWnd" );
+		if ( c != null ) {
+			c.detach( );
+			c = null;
+		}
+		BaseDialogWindow dlg = (BaseDialogWindow) createComponents( uri, getMainWindow( ), null );
+		return dlg;
+	}
+
+	private void loadEvents( )
 	{
 		List<InepPackage> events = getSession( ).getEvents( getCurrentCollaborator( ) );
 
@@ -83,21 +79,27 @@ public abstract class BaseExtractController extends BaseDBLoggedController<TeamS
 		}
 		if ( getComboEvent( ).getItemCount( ) > 0 ) {
 			getComboEvent( ).setSelectedIndex( 0 );
-			onSelectPackage( );
+			onSelectPackage( null );
 		}
+		getComboEvent( ).setDisabled( events.size( ) <= 1 );
+	}
+
+	@Override
+	protected Class<InepOralFacade> getSessionClass( )
+	{
+		return InepOralFacade.class;
 	}
 
 	@Override
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		loadCombobox( );
+		loadEvents( );
 	}
 
-	@Override
-	protected Class<TeamSession> getSessionClass( )
+	protected void resetRevisor( )
 	{
-		return TeamSession.class;
+		revisor = null;
 	}
 
 }

@@ -45,9 +45,24 @@ public class InepOralTest implements Serializable
 	@Column( name = "iot_station_ch" )
 	private String station;
 
+	@Column( name = "iot_status_ch" )
+	private String descStatus;
+
 	@ManyToOne( fetch = FetchType.EAGER, optional = false )
 	@JoinColumn( name = "ids_id_in", referencedColumnName = "ids_id_in", updatable = true, insertable = true, nullable = false )
 	private DistributionStatus status;
+
+	@Column( name = "iot_agreement_grade_in", nullable = true )
+	private Integer agreementGrade;
+
+	@Column( name = "iot_written_grade_nm", nullable = true )
+	private BigDecimal writtenGrade;
+
+	@Column( name = "iot_agreement2_grade_nm", nullable = true )
+	private BigDecimal agreement2Grade;
+
+	@Column( name = "iot_grade_nm", nullable = true )
+	private BigDecimal realGrade;
 
 	@ManyToOne
 	@JoinColumns( {
@@ -144,5 +159,55 @@ public class InepOralTest implements Serializable
 	public void setStatus( DistributionStatus status )
 	{
 		this.status = status;
+	}
+
+	public Integer getAgreementGrade( )
+	{
+		return agreementGrade;
+	}
+
+	public void setAgreementGrade( Integer agreementGrade )
+	{
+		this.agreementGrade = agreementGrade;
+	}
+
+	public BigDecimal getWrittenGrade( )
+	{
+		return writtenGrade;
+	}
+
+	public void setWrittenGrade( BigDecimal writtenGrade )
+	{
+		this.writtenGrade = writtenGrade;
+	}
+
+	public BigDecimal getAgreement2Grade( )
+	{
+		return agreement2Grade;
+	}
+
+	public void setAgreement2Grade( BigDecimal agreement2Grade )
+	{
+		this.agreement2Grade = agreement2Grade;
+	}
+
+	public BigDecimal getRealGrade( )
+	{
+		return realGrade;
+	}
+
+	public void setRealGrade( BigDecimal realGrade )
+	{
+		this.realGrade = realGrade;
+	}
+
+	public String getDescStatus( )
+	{
+		return descStatus;
+	}
+
+	public void setDescStatus( String descStatus )
+	{
+		this.descStatus = descStatus;
 	}
 }

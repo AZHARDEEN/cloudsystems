@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-
 /**
  * The primary key class for the inep_subscription database table.
  * 
@@ -13,19 +12,28 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class InepSubscriptionPK implements Serializable, Comparable<InepSubscriptionPK>
 {
-	//default serial version id, required for serializable classes.
+	// default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="usr_id_in")
+	@Column( name = "usr_id_in" )
 	private Integer companyId;
 
-	@Column(name="pct_id_in")
+	@Column( name = "pct_id_in" )
 	private Integer eventId;
 
-	@Column(name="isc_id_ch")
+	@Column( name = "isc_id_ch" )
 	private String id;
 
-	public InepSubscriptionPK() {
+	public InepSubscriptionPK( )
+	{
+	}
+
+	public InepSubscriptionPK( Integer companyId, Integer eventId, String id )
+	{
+		super( );
+		this.companyId = companyId;
+		this.eventId = eventId;
+		this.id = id;
 	}
 
 	public void set( InepPackage t )
@@ -33,48 +41,61 @@ public class InepSubscriptionPK implements Serializable, Comparable<InepSubscrip
 		setCompanyId( t.getId( ).getCompanyId( ) );
 		setEventId( t.getId( ).getId( ) );
 	}
-	public Integer getCompanyId() {
-		return this.companyId;
+
+	public Integer getCompanyId( )
+	{
+		return companyId;
 	}
-	public void setCompanyId(Integer usrIdIn) {
-		this.companyId = usrIdIn;
+
+	public void setCompanyId( Integer usrIdIn )
+	{
+		companyId = usrIdIn;
 	}
-	public Integer getEventId() {
-		return this.eventId;
+
+	public Integer getEventId( )
+	{
+		return eventId;
 	}
-	public void setEventId(Integer pctIdIn) {
-		this.eventId = pctIdIn;
+
+	public void setEventId( Integer pctIdIn )
+	{
+		eventId = pctIdIn;
 	}
-	public String getId() {
-		return this.id;
+
+	public String getId( )
+	{
+		return id;
 	}
-	public void setId(String iscIdCh) {
-		this.id = iscIdCh;
+
+	public void setId( String iscIdCh )
+	{
+		id = iscIdCh;
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		if (this == other) {
+	public boolean equals( Object other )
+	{
+		if ( this == other ) {
 			return true;
 		}
-		if (!(other instanceof InepSubscriptionPK)) {
+		if ( !( other instanceof InepSubscriptionPK ) ) {
 			return false;
 		}
-		InepSubscriptionPK castOther = (InepSubscriptionPK)other;
-		return
-				this.companyId.equals(castOther.companyId)
-				&& this.eventId.equals(castOther.eventId)
-				&& this.id.equals(castOther.id);
+		InepSubscriptionPK castOther = (InepSubscriptionPK) other;
+		return companyId.equals( castOther.companyId )
+				&& eventId.equals( castOther.eventId )
+				&& id.equals( castOther.id );
 
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode( )
+	{
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.companyId.hashCode();
-		hash = hash * prime + this.eventId.hashCode();
-		hash = hash * prime + this.id.hashCode();
+		hash = hash * prime + companyId.hashCode( );
+		hash = hash * prime + eventId.hashCode( );
+		hash = hash * prime + id.hashCode( );
 
 		return hash;
 	}

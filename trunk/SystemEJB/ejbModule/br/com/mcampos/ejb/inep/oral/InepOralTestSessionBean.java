@@ -39,7 +39,7 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	{
 		InepSubscription s = getSubscription( entity, createSubscription );
 		entity.setSubscription( s );
-		entity.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+		entity.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
 		entity = merge( entity );
 		if ( entity.getFinalGrade( ) != null ) {
 			s.setOralGrade( entity.getFinalGrade( ) );
@@ -73,10 +73,16 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 		if ( newEntity == null )
 			return null;
 		if ( newEntity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) ) {
-			double variance = newEntity.getInterviewGrade( ) != null ? newEntity.getInterviewGrade( ).doubleValue( ) : 0.0;
-			variance -= newEntity.getObserverGrade( ) != null ? newEntity.getObserverGrade( ).doubleValue( ) : 0.0;
-			variance = Math.abs( variance );
+			double grade1, grade2;
+
+			grade1 = newEntity.getInterviewGrade( ) != null ? newEntity.getInterviewGrade( ).doubleValue( ) : 0.0;
+			grade2 = newEntity.getObserverGrade( ) != null ? newEntity.getObserverGrade( ).doubleValue( ) : 0.0;
+			double variance = Math.abs( grade1 - grade2 );
 			if ( variance >= 1.5 )
+				newEntity.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+			if ( grade1 >= 2.0 && grade2 < 2.0 )
+				newEntity.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+			if ( grade2 >= 2.0 && grade1 < 2.0 )
 				newEntity.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
 		}
 		return newEntity;

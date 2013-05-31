@@ -105,12 +105,12 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 
 	protected Listbox getListbox( )
 	{
-		return this.listbox;
+		return listbox;
 	}
 
 	protected List<Paging> getPaging( )
 	{
-		return this.pagings;
+		return pagings;
 	}
 
 	@Listen( "onSelect = listbox#listTable" )
@@ -134,8 +134,9 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	public void onSelectPackage( Event evt )
 	{
 		List<InepDistribution> list = Collections.emptyList( );
-		Comboitem item = this.comboEvent.getSelectedItem( );
+		Comboitem item = comboEvent.getSelectedItem( );
 		if ( item != null && getRevisor( ) != null ) {
+			revisor = null;
 			if ( getRevisor( ).isCoordenador( ) ) {
 				setTestStatus( DistributionStatus.statusVariance );
 			}
@@ -151,24 +152,24 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	protected void showFields( InepDistribution rev )
 	{
 		if ( rev != null ) {
-			this.notas.setSelectedItem( null );
+			notas.setSelectedItem( null );
 			showFrame( );
 			if ( rev.getNota( ) != null ) {
-				this.notas.setSelectedIndex( rev.getNota( ) );
+				notas.setSelectedIndex( rev.getNota( ) );
 			}
 		}
 		else {
 			hideTasks( );
 		}
 		if ( isBlocked( rev ) ) {
-			this.cmdInepSave.setVisible( false );
-			for ( Radio r : this.options ) {
+			cmdInepSave.setVisible( false );
+			for ( Radio r : options ) {
 				r.setDisabled( true );
 			}
 		}
 		else {
-			this.cmdInepSave.setVisible( true );
-			for ( Radio r : this.options ) {
+			cmdInepSave.setVisible( true );
+			for ( Radio r : options ) {
 				r.setDisabled( false );
 			}
 		}
@@ -196,14 +197,14 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	@Listen( "onClick = #cmdInepSave" )
 	public void onClickSubmit( Event evt )
 	{
-		int nIndex = this.notas.getSelectedIndex( );
+		int nIndex = notas.getSelectedIndex( );
 		if ( nIndex >= 0 ) {
 			Listitem item = getListbox( ).getSelectedItem( );
 			if ( item != null ) {
 				InepDistribution rev = (InepDistribution) getListbox( ).getSelectedItem( ).getValue( );
 				if ( isBlocked( rev ) == false )
 				{
-					rev.setNota( this.notas.getSelectedIndex( ) );
+					rev.setNota( notas.getSelectedIndex( ) );
 					try {
 						getSession( ).updateRevision( rev );
 					}
@@ -212,15 +213,15 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 								Messagebox.ERROR );
 					}
 					showTasks( );
-					this.listbox.removeItemAt( this.listbox.getSelectedIndex( ) );
+					listbox.removeItemAt( listbox.getSelectedIndex( ) );
 					getListbox( ).clearSelection( );
 				}
 			}
 			updateCounters( );
 		}
-		this.cmdInepSave.setDisabled( false );
-		this.cmdObs.setDisabled( false );
-		this.cmdCancel.setDisabled( false );
+		cmdInepSave.setDisabled( false );
+		cmdObs.setDisabled( false );
+		cmdCancel.setDisabled( false );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -255,31 +256,31 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	private void showTasks( )
 	{
 		showFields( null );
-		this.divFrame.setVisible( false );
-		this.divListbox.setVisible( true );
-		if ( this.inepGrade != null ) {
-			this.inepGrade.setVisible( false );
+		divFrame.setVisible( false );
+		divListbox.setVisible( true );
+		if ( inepGrade != null ) {
+			inepGrade.setVisible( false );
 		}
 		getListbox( ).setVisible( true );
 	}
 
 	private void hideTasks( )
 	{
-		this.divFrame.setVisible( true );
-		this.divListbox.setVisible( false );
-		if ( this.inepGrade != null ) {
-			this.inepGrade.setVisible( true );
+		divFrame.setVisible( true );
+		divListbox.setVisible( false );
+		if ( inepGrade != null ) {
+			inepGrade.setVisible( true );
 		}
 	}
 
 	private void showFrame( )
 	{
-		InepDistribution item = (InepDistribution) this.listbox.getSelectedItem( ).getValue( );
+		InepDistribution item = (InepDistribution) listbox.getSelectedItem( ).getValue( );
 		hideTasks( );
 		// String.format( "/img/pdf/%s-%d-4.pdf", item.getId(
 		// ).getSubscriptionId( ), item.getId( ).getTaskId( ) );
 		AMedia media = new AMedia( null, null, null, getSession( ).getMedia( item.getTest( ) ) );
-		this.framePdf.setContent( media );
+		framePdf.setContent( media );
 	}
 
 	private void loadCombobox( )
@@ -301,16 +302,16 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 
 	public Combobox getComboEvent( )
 	{
-		return this.comboEvent;
+		return comboEvent;
 	}
 
 	public InepRevisor getRevisor( )
 	{
-		if ( this.revisor == null ) {
-			this.revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
+		if ( revisor == null ) {
+			revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
 					getCurrentCollaborator( ) );
 		}
-		return this.revisor;
+		return revisor;
 	}
 
 	private void updateCounters( )
@@ -322,25 +323,25 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 
 			if ( total == 0 )
 			{
-				this.countAll.setLabel( "" + dto.getTasks( ) );
-				this.countRevised.setLabel( "" + dto.getRevised( ) );
-				this.countVariance.setLabel( "" + dto.getVariance( ) );
+				countAll.setLabel( "" + dto.getTasks( ) );
+				countRevised.setLabel( "" + dto.getRevised( ) );
+				countVariance.setLabel( "" + dto.getVariance( ) );
 			}
 			else
 			{
 				percent = ( ( (double) dto.getTasks( ) ) / ( (double) total ) * 100 );
-				this.countAll.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getTasks( ), total, percent ) );
+				countAll.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getTasks( ), total, percent ) );
 				percent = ( ( (double) dto.getRevised( ) ) / ( (double) total ) * 100 );
-				this.countRevised.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getRevised( ), total, percent ) );
+				countRevised.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getRevised( ), total, percent ) );
 				percent = ( ( (double) dto.getVariance( ) ) / ( (double) total ) * 100 );
-				this.countVariance.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getVariance( ), total, percent ) );
+				countVariance.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getVariance( ), total, percent ) );
 			}
 		}
 		else
 		{
-			this.countAll.setLabel( "" );
-			this.countRevised.setLabel( "" );
-			this.countVariance.setLabel( "" );
+			countAll.setLabel( "" );
+			countRevised.setLabel( "" );
+			countVariance.setLabel( "" );
 		}
 	}
 
@@ -348,10 +349,10 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	public void onCountersClick( MouseEvent evt )
 	{
 		if ( evt != null ) {
-			if ( evt.getTarget( ).equals( this.countAll ) ) {
+			if ( evt.getTarget( ).equals( countAll ) ) {
 				setTestStatus( DistributionStatus.statusDistributed );
 			}
-			else if ( evt.getTarget( ).equals( this.countRevised ) ) {
+			else if ( evt.getTarget( ).equals( countRevised ) ) {
 				setTestStatus( DistributionStatus.statusRevised );
 			}
 			else {
@@ -364,7 +365,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 
 	private Integer getTestStatus( )
 	{
-		return this.testStatus;
+		return testStatus;
 	}
 
 	private void setTestStatus( Integer testStatus )
