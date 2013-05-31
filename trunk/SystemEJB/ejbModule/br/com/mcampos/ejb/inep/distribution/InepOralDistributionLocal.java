@@ -12,4 +12,6 @@ import br.com.mcampos.ejb.inep.entity.InepRevisor;
 public interface InepOralDistributionLocal extends BaseSessionInterface<InepOralDistribution>
 {
 	List<InepOralDistribution> getOralTests( InepRevisor revisor );
+
+	InepOralDistribution findOther( InepOralDistribution item );
 }

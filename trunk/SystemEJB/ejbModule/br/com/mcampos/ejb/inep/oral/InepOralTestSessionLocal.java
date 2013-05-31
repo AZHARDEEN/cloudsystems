@@ -15,4 +15,6 @@ public interface InepOralTestSessionLocal extends BaseSessionInterface<InepOralT
 
 	List<InepOralTest> getVarianceOralOnly( InepPackage pack );
 
+	void setAgreementGrade( InepOralTest test, Integer grade );
+
 }

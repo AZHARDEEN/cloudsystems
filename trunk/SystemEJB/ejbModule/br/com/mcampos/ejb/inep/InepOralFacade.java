@@ -35,4 +35,6 @@ public interface InepOralFacade
 
 	boolean uploadAudio( Integer companyId, Integer eventId, String isc, MediaDTO obj );
 
+	void updateGrade( InepOralDistribution item, int grade );
+
 }

@@ -250,7 +250,12 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 					task = Integer.parseInt( parts[ 3 ] );
 				else
 					task = null;
-				getInepSession( ).add( event, task, parts[ 0 ], parts[ 1 ], parts[ 2 ], type );
+				String cpf = parts[ 2 ];
+				if ( !SysUtils.isEmpty( cpf ) ) {
+					cpf = cpf.replaceAll( "\\.", "" );
+					cpf = cpf.replaceAll( "-", "" );
+				}
+				getInepSession( ).add( event, task, parts[ 0 ], parts[ 1 ], cpf, type );
 			}
 			br.close( );
 		}

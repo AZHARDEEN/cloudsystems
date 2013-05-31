@@ -93,4 +93,16 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	{
 		return findByNamedQuery( InepOralTest.getVarianceOralOnly, pack );
 	}
+
+	@Override
+	public void setAgreementGrade( InepOralTest test, Integer grade )
+	{
+		test.setAgreementGrade( grade );
+		double variance = test.getFinalGrade( ).doubleValue( );
+		variance = Math.abs( variance - ( (double) grade ) );
+		if ( variance > 1.5 )
+			test.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+		else
+			test.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
+	}
 }

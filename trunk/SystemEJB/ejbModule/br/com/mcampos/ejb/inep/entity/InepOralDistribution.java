@@ -22,13 +22,17 @@ import javax.persistence.Table;
 @NamedQueries( {
 		@NamedQuery(
 				name = InepOralDistribution.getRevisorOralTests,
-				query = "from InepOralDistribution o WHERE o.status.id = 1 and o.id.companyId = ? and o.id.eventId = ?2 and o.id.collaboratorId = ?3 order by o.id.subscriptionId " )
+				query = "from InepOralDistribution o WHERE o.status.id = 1 and o.id.companyId = ?1 and o.id.eventId = ?2 and o.id.collaboratorId = ?3 order by o.id.subscriptionId " ),
+		@NamedQuery(
+				name = InepOralDistribution.getOther,
+				query = "from InepOralDistribution o WHERE o.test = ?1 and o.id.collaboratorId <> ?2 " )
 } )
 public class InepOralDistribution implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
 	public static final String getRevisorOralTests = "InepOralDistribution.getRevisorOralTests";
+	public static final String getOther = "InepOralDistribution.getOther";
 
 	@ManyToOne( fetch = FetchType.EAGER, optional = false )
 	@JoinColumn( name = "ids_id_in", referencedColumnName = "ids_id_in", updatable = true, insertable = true, nullable = false )
