@@ -83,7 +83,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 					break;
 				}
 			}
-			infoTask.setValue( field.getTask( ).getDescription( ) );
+			infoTask.setValue( field.getTask( ) != null ? field.getTask( ).getDescription( ) : "Oral" );
 			infoTeamMaster.setValue( field.isCoordenador( ) ? "SIM" : "" );
 		}
 		else {

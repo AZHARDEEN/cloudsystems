@@ -70,8 +70,10 @@ public class InepOralTestGradeLoader extends InepBaseJob
 
 			while ( SysUtils.isEmpty( ( line = br.readLine( ) ) ) == false ) {
 				lineNumber++;
-				String[ ] parts = line.split( ";" );
 				if ( lineNumber == 1 )
+					continue;
+				String[ ] parts = line.split( ";" );
+				if ( parts.length < 8 )
 					continue;
 				entity = new InepOralTest( item );
 				entity.setStation( parts[ 1 ] );
@@ -79,6 +81,7 @@ public class InepOralTestGradeLoader extends InepBaseJob
 				entity.setInterviewGrade( SysUtils.parseBigDecimal( parts[ 3 ] ) );
 				entity.setObserverGrade( SysUtils.parseBigDecimal( parts[ 4 ] ) );
 				entity.setFinalGrade( SysUtils.parseBigDecimal( parts[ 5 ] ) );
+				entity.setDescStatus( parts[ 7 ] );
 				getSession( ).insert( entity, true );
 			}
 			br.close( );

@@ -6,17 +6,37 @@ import java.util.ArrayList;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InepOralTestLoader extends InepBaseJob
 {
 	private static final long serialVersionUID = 4850828799710714212L;
-	private static String INITAL_PATH = "D:/Publico/Prova Oral - Celpe Bras 2013-1/";
+	private static String INITAL_PATH = "T:/loader/inep/audio";
 	private ArrayList<String> fileToProcess = new ArrayList<String>( );
 	private int nIndex = 0;
+	private static final Logger logger = LoggerFactory.getLogger( InepLoaderJob.class );
+	public static final String jobName = "oralLoaderJob";
+	public static final String jobGroup = "mcampos";
 
 	@Override
 	public void execute( JobExecutionContext arg0 ) throws JobExecutionException
 	{
+		InepOralTestLoader loader = new InepOralTestLoader( );
+
+		if ( amIRunning( arg0 ) ) {
+			logger.info( "Already running!!!!" );
+			return;
+		}
+
+		try {
+			loader.processDirectory( INITAL_PATH );
+			System.out.println( "We have about " + loader.getFilesToProcess( ).size( ) + " files to process " );
+			loader.processFiles( );
+		}
+		catch ( Exception e ) {
+			e.printStackTrace( );
+		}
 
 	}
 
@@ -88,7 +108,7 @@ public class InepOralTestLoader extends InepBaseJob
 
 	private void processFiles( )
 	{
-		Thread[ ] threads = new Thread[ 10 ];
+		Thread[ ] threads = new Thread[ 4 ];
 
 		for ( int i = 0; i < threads.length; i++ ) {
 			threads[ i ] = new Thread( new OralTestWorkerThread( this ) );

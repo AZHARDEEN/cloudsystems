@@ -7,13 +7,35 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.naming.NamingException;
+import javax.rmi.PortableRemoteObject;
+
+import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.ejb.inep.InepOralFacade;
+import br.com.mcampos.web.locator.ServiceLocator;
+
 public class OralTestWorkerThread implements Runnable
 {
 	private InepOralTestLoader job;
+	private InepOralFacade session;
 
 	public OralTestWorkerThread( InepOralTestLoader info )
 	{
 		job = info;
+	}
+
+	public InepOralFacade getSession( )
+	{
+		try {
+			if ( session == null ) {
+				Object obj = ServiceLocator.getInstance( ).getRemoteSession( InepOralFacade.class );
+				session = (InepOralFacade) PortableRemoteObject.narrow( obj, InepOralFacade.class );
+			}
+		}
+		catch ( NamingException e ) {
+			e.printStackTrace( );
+		}
+		return session;
 	}
 
 	@Override
@@ -36,7 +58,33 @@ public class OralTestWorkerThread implements Runnable
 	{
 		byte[ ] obj = readFile( file );
 		System.out.println( "Processing File: " + file.getCanonicalPath( ) + " with " + obj.length + " bytes " );
+		String isc = file.getName( );
+		String[ ] parts = isc.split( "\\." );
+		boolean bRet = getSession( ).uploadAudio( 13623, 1, parts[ 0 ], createMedia( file, obj ) );
+		String a1, a2;
+
+		a1 = file.getCanonicalPath( );
+		a2 = file.getParent( ) + ( bRet ? "\\PRO" : "\\ERR" );
+		moveFile( a1, a2 );
 		obj = null;
+	}
+
+	private MediaDTO createMedia( File file, byte[ ] obj )
+	{
+		MediaDTO media = new MediaDTO( );
+		media.setObject( obj );
+		String name = file.getName( ).toLowerCase( );
+		media.setName( file.getName( ) );
+
+		if ( name.endsWith( ".mp3" ) )
+			media.setMimeType( "audio/mpeg3" );
+		else if ( name.endsWith( ".wav" ) )
+			media.setMimeType( "audio/wav" );
+		else if ( name.endsWith( ".wma" ) )
+			media.setMimeType( "Audio/x-ms-wma" );
+		else
+			media.setMimeType( "undefined" );
+		return media;
 	}
 
 	private byte[ ] readFile( File file )
@@ -73,6 +121,27 @@ public class OralTestWorkerThread implements Runnable
 			ex = null;
 		}
 		return result;
+	}
+
+	protected void moveFile( String filename, String directory )
+	{
+		try {
+			File file = new File( filename );
+			if ( file.exists( ) == false ) {
+				return;
+			}
+			File dest = new File( directory );
+			if ( dest.exists( ) == false ) {
+				if ( dest.mkdirs( ) == false ) {
+					return;
+				}
+			}
+			file.renameTo( new File( dest, file.getName( ) ) );
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace( );
+		}
 	}
 
 }

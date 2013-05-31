@@ -14,7 +14,7 @@ public class RevisorListRenderer extends BaseListRenderer<InepRevisor>
 		super.render( item, data, index );
 		addCell( item, data.getCollaborator( ).getId( ).getSequence( ) );
 		addCell( item, data.getCollaborator( ).getPerson( ).getName( ) );
-		addCell( item, data.getTask( ).getDescription( ) );
+		addCell( item, data.getTask( ) != null ? data.getTask( ).getDescription( ) : "Oral" );
 		addCell( item, data.isCoordenador( ) ? "SIM" : "" );
 	}
 }

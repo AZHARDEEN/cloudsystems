@@ -9,9 +9,10 @@
 			<radio label="3" radiogroup="sv6" />
 			<radio label="4" radiogroup="sv6" />
 			<radio label="5" radiogroup="sv6" />
-			<radio label="Anulado" radiogroup="sv6" />
-			<radio label="Branco" radiogroup="sv6" />
-            <button label="Comentários" id="cmdObs" image="/img/icontexto-webdev-file-016x016.png" autodisable="cmdObs,cmdInepSave,cmdCancel"/>
+			<separator orient="vertical" width="30px" />
+			<radio label="Anulado" radiogroup="sv6" id="rdVoid"/>
+			<radio label="Branco" radiogroup="sv6" id="rdBlank"/>
+			<separator orient="vertical" width="50px" />
             <button label="Salvar" id="cmdInepSave" image="/img/icontexto-webdev-ok-016x016.png" autodisable="cmdObs,cmdInepSave,cmdCancel"/>
             <button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-016x016.png" autodisable="cmdObs,cmdInepSave,cmdCancel"/>
 		</hlayout>

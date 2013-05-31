@@ -14,4 +14,5 @@ public interface InepOralTestSessionLocal extends BaseSessionInterface<InepOralT
 	void add( InepOralTest entity, boolean createSubscription );
 
 	List<InepOralTest> getVarianceOralOnly( InepPackage pack );
+
 }

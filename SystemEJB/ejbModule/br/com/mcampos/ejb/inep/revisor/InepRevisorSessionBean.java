@@ -60,7 +60,7 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 		if ( pm == null ) {
 			return list;
 		}
-		list = findByNamedQuery( InepRevisor.getAllTeamByEvent, p );
+		list = findByNamedQuery( InepRevisor.getAllTeamByEvent, p.getId( ).getCompanyId( ), p.getId( ).getId( ) );
 		return list;
 	}
 

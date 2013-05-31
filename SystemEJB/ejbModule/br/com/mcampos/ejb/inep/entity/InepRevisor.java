@@ -26,8 +26,10 @@ import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 		@NamedQuery( name = InepRevisor.getTeamByTask, query = "select o from InepRevisor o " ),
 		@NamedQuery( name = InepRevisor.getAllTeamByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 " ),
 		@NamedQuery( name = InepRevisor.getAllRevisorByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = false " ),
-		@NamedQuery( name = InepRevisor.getAllTeamByEvent, query = "select o from InepRevisor o where o.task.event = ?1" ),
-		@NamedQuery( name = InepRevisor.getAllOralTeamByEvent, query = "select o from InepRevisor o where o.id.companyId = ?1 and o.id.eventId = ?2" ),
+		@NamedQuery( name = InepRevisor.getAllTeamByEvent, query = "select o from InepRevisor o where o.id.companyId = ?1 and o.id.eventId = ?2" ),
+		@NamedQuery(
+				name = InepRevisor.getAllOralTeamByEvent,
+				query = "select o from InepRevisor o where o.id.companyId = ?1 and o.id.eventId = ?2 and o.coordenador = false and o.taskId is null order by o.collaborator.person.name" ),
 		@NamedQuery( name = InepRevisor.getAllCoordinatorsToTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = true" ),
 		@NamedQuery( name = InepRevisor.getAllTeam, query = "select o from InepRevisor o where o.coordenador = false" ), } )
 public class InepRevisor implements Serializable, Comparable<InepRevisor>, BasicEntityRenderer<InepRevisor>
@@ -57,17 +59,17 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 					name = "col_seq_in", referencedColumnName = "col_seq_in", updatable = false, insertable = false, nullable = false ) } )
 	private Collaborator collaborator;
 
-	@ManyToOne( fetch = FetchType.EAGER, optional = false )
+	@ManyToOne( fetch = FetchType.EAGER, optional = true )
 	@JoinColumns( {
 			@JoinColumn(
-					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
+					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = true ),
 			@JoinColumn(
-					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ),
+					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = true ),
 			@JoinColumn(
-					name = "tsk_id_in", referencedColumnName = "tsk_id_in", updatable = false, insertable = false, nullable = false ) } )
+					name = "tsk_id_in", referencedColumnName = "tsk_id_in", updatable = false, insertable = false, nullable = true ) } )
 	private InepTask task;
 
-	@Column( name = "tsk_id_in", nullable = false, updatable = true, insertable = true )
+	@Column( name = "tsk_id_in", nullable = true, updatable = true, insertable = true )
 	private Integer taskId;
 
 	@ManyToOne( optional = false )

@@ -43,8 +43,8 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 
 		sqlQuery = "select count(t) as registros from " + getPersistentClass( ).getSimpleName( ) + " as t ";
 		if ( whereClause != null && whereClause.isEmpty( ) == false ) {
-			whereClause = whereClause.trim( ).toLowerCase( );
-			if ( whereClause.startsWith( "where" ) ) {
+			String aux = whereClause.trim( ).toLowerCase( );
+			if ( aux.startsWith( "where" ) ) {
 				sqlQuery += " " + whereClause;
 			}
 			else {
