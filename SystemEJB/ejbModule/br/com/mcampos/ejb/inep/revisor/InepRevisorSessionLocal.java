@@ -22,4 +22,6 @@ public interface InepRevisorSessionLocal extends BaseSessionInterface<InepReviso
 	public List<InepRevisor> getAll( InepTask p );
 
 	public InepRevisor get( InepPackage event, Collaborator auth );
+
+	public List<InepRevisor> getOralCoordinator( InepPackage event );
 }

@@ -27,11 +27,16 @@ import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 		@NamedQuery( name = InepRevisor.getAllTeamByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 " ),
 		@NamedQuery( name = InepRevisor.getAllRevisorByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = false " ),
 		@NamedQuery( name = InepRevisor.getAllTeamByEvent, query = "select o from InepRevisor o where o.id.companyId = ?1 and o.id.eventId = ?2" ),
+		@NamedQuery( name = InepRevisor.getAllCoordinatorsToTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = true" ),
+		@NamedQuery( name = InepRevisor.getAllTeam, query = "select o from InepRevisor o where o.coordenador = false" ),
 		@NamedQuery(
 				name = InepRevisor.getAllOralTeamByEvent,
 				query = "select o from InepRevisor o where o.id.companyId = ?1 and o.id.eventId = ?2 and o.coordenador = false and o.taskId is null order by o.collaborator.person.name" ),
-		@NamedQuery( name = InepRevisor.getAllCoordinatorsToTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = true" ),
-		@NamedQuery( name = InepRevisor.getAllTeam, query = "select o from InepRevisor o where o.coordenador = false" ), } )
+		@NamedQuery(
+				name = InepRevisor.getOralCoordinatorByEvent,
+				query = "select o from InepRevisor o where o.event = ?1 and o.coordenador = true and o.taskId is null order by o.collaborator.person.name" )
+
+} )
 public class InepRevisor implements Serializable, Comparable<InepRevisor>, BasicEntityRenderer<InepRevisor>
 {
 	private static final long serialVersionUID = 1L;
@@ -44,12 +49,21 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 	public static final String getAllCoordinatorsToTask = "InepRevisor.getAllCoordinatorsToTask";
 
 	public static final String getAllOralTeamByEvent = "InepRevisor.getAllOralTeamByEvent";
+	public static final String getOralCoordinatorByEvent = "InepRevisor.getOralCoordinatorByEvent";
 
 	@EmbeddedId
 	private InepRevisorPK id;
 
 	@Column( name = "rvs_coordinator_bt" )
 	private Boolean coordenador;
+
+	@ManyToOne( fetch = FetchType.EAGER, optional = false )
+	@JoinColumns( {
+			@JoinColumn(
+					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ) } )
+	private InepPackage event;
 
 	@ManyToOne( fetch = FetchType.EAGER, optional = false )
 	@JoinColumns( {
@@ -208,5 +222,15 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 	public void setType( RevisorType type )
 	{
 		this.type = type;
+	}
+
+	public InepPackage getEvent( )
+	{
+		return event;
+	}
+
+	public void setEvent( InepPackage event )
+	{
+		this.event = event;
 	}
 }

@@ -96,4 +96,10 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 		return super.merge( newEntity );
 	}
 
+	@Override
+	public List<InepRevisor> getOralCoordinator( InepPackage event )
+	{
+		return findByNamedQuery( InepRevisor.getOralCoordinatorByEvent, event );
+	}
+
 }

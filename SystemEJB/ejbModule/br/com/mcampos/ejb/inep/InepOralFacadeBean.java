@@ -24,6 +24,7 @@ import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.entity.InepSubscriptionPK;
 import br.com.mcampos.ejb.inep.media.InepMediaSessionLocal;
 import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
+import br.com.mcampos.ejb.inep.revisor.InepRevisorSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.team.TeamSessionLocal;
 import br.com.mcampos.ejb.media.Media;
@@ -52,6 +53,8 @@ public class InepOralFacadeBean implements InepOralFacade
 	MediaSessionBeanLocal mediaSession;
 	@EJB
 	InepMediaSessionLocal inepMediaSession;
+	@EJB
+	InepRevisorSessionLocal revisorSession;
 
 	@Override
 	public List<InepOralTest> getVarianceOralOnly( Collaborator c, InepPackage pack )
@@ -140,5 +143,27 @@ public class InepOralFacadeBean implements InepOralFacade
 		InepMedia inepMedia = inepMediaSession.addAudio( merged, media );
 		merged.add( inepMedia );
 		return true;
+	}
+
+	@Override
+	public void updateGrade( InepOralDistribution item, int grade )
+	{
+		InepOralDistribution merged = oralDistributionSession.get( item.getId( ) );
+		if ( merged == null )
+			throw new InvalidParameterException( "Item não existe (InepOralDistribution)" );
+		merged.setNota( grade );
+		merged.setStatus( statusSession.get( DistributionStatus.statusRevised ) );
+		InepOralDistribution other = oralDistributionSession.findOther( merged );
+		if ( other != null && !merged.getNota( ).equals( other.getNota( ) ) ) {
+			throw new RuntimeException( "As notas da prova oral não poder ser diferentes entre os corretores" );
+		}
+		if ( merged.getTest( ).getAgreementGrade( ) == null ) {
+			oralTestSession.setAgreementGrade( merged.getTest( ), grade );
+			List<InepRevisor> coordinators = revisorSession.getOralCoordinator( item.getTest( ).getSubscription( ).getEvent( ) );
+			for ( InepRevisor c : coordinators ) {
+				oralDistributionSession.merge( new InepOralDistribution( merged.getTest( ), c,
+						statusSession.get( DistributionStatus.statusDistributed ) ) );
+			}
+		}
 	}
 }

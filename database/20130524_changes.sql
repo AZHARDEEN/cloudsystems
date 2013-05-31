@@ -6,7 +6,7 @@ CREATE TABLE inep.revisor_type(
 	WITH (FILLFACTOR = 10)
 	USING INDEX TABLESPACE tb_cloud_index
 )
-WITH (OIDS=TRUE)
+WITH (OIDS=FALSE)
 TABLESPACE tb_cloud_data;
 -- ddl-end --
 

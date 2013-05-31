@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.entity.InepOralDistribution;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.sysutils.SysUtils;
 
 /**
  * Session Bean implementation class InepOralDistributionBean
@@ -16,7 +17,6 @@ import br.com.mcampos.ejb.inep.entity.InepRevisor;
 @LocalBean
 public class InepOralDistributionSessionBean extends SimpleSessionBean<InepOralDistribution> implements InepOralDistributionSession, InepOralDistributionLocal
 {
-
 	@Override
 	protected Class<InepOralDistribution> getEntityClass( )
 	{
@@ -30,5 +30,18 @@ public class InepOralDistributionSessionBean extends SimpleSessionBean<InepOralD
 				revisor.getId( ).getCompanyId( ),
 				revisor.getId( ).getEventId( ),
 				revisor.getId( ).getSequence( ) );
+	}
+
+	@Override
+	public InepOralDistribution findOther( InepOralDistribution item )
+	{
+		List<InepOralDistribution> others = findByNamedQuery( InepOralDistribution.getOther, item.getTest( ), item.getId( ).getCollaboratorId( ) );
+		if ( SysUtils.isEmpty( others ) )
+			return null;
+		for ( InepOralDistribution other : others ) {
+			if ( other.getNota( ) != null )
+				return other;
+		}
+		return null;
 	}
 }
