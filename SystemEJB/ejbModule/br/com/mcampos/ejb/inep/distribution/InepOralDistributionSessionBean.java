@@ -26,10 +26,7 @@ public class InepOralDistributionSessionBean extends SimpleSessionBean<InepOralD
 	@Override
 	public List<InepOralDistribution> getOralTests( InepRevisor revisor )
 	{
-		return findByNamedQuery( InepOralDistribution.getRevisorOralTests,
-				revisor.getId( ).getCompanyId( ),
-				revisor.getId( ).getEventId( ),
-				revisor.getId( ).getSequence( ) );
+		return findByNamedQuery( InepOralDistribution.getRevisorOralTests, revisor );
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.inep.subscription;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 
 	private InepPackageSessionLocal getEventSession( )
 	{
-		return this.eventSession;
+		return eventSession;
 	}
 
 	@Override
@@ -70,6 +71,18 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 		}
 		list = findByNamedQuery( InepSubscription.getAllEventSubsById, event, subs );
 		return list;
+	}
+
+	@Override
+	public void setOralGrade( InepSubscription s, BigDecimal grade )
+	{
+		s.setOralGrade( grade );
+	}
+
+	@Override
+	public void setWrittenGrade( InepSubscription s, BigDecimal grade )
+	{
+		s.setWrittenGrade( grade );
 	}
 
 }

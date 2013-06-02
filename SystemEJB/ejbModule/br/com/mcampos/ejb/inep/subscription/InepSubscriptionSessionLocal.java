@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.inep.subscription;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -17,5 +18,9 @@ public interface InepSubscriptionSessionLocal extends BaseSessionInterface<InepS
 	public List<InepSubscription> getAll( InepPackage event );
 
 	public List<InepSubscription> getAll( InepPackage event, String subs );
+
+	public void setOralGrade( InepSubscription s, BigDecimal grade );
+
+	public void setWrittenGrade( InepSubscription s, BigDecimal grade );
 
 }

@@ -164,6 +164,18 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		item.setParams( configReportParams( ) );
 		list.add( item );
 
+		/*Relatorio 3*/
+		item = new ReportItem( "Relação de Discrepância das Provas Orais" );
+		item.setReportUrl( "/reports/inep/revisor_3_2" );
+		item.setParams( configReportParams( ) );
+		list.add( item );
+
+		/*Relatorio 3*/
+		item = new ReportItem( "Audios por Corretor" );
+		item.setReportUrl( "/reports/inep/revisor_3_3" );
+		item.setParams( configReportParams( ) );
+		list.add( item );
+
 		/*Relatorio 5*/
 		item = new ReportItem( "Notas da Parte Oral" );
 		item.setReportUrl( "/reports/inep/inep_5" );

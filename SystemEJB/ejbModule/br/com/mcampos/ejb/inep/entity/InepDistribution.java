@@ -35,6 +35,9 @@ import br.com.mcampos.ejb.core.BasicEntityRenderer;
 				name = InepDistribution.getAllFromTest,
 				query = "select o from InepDistribution o where o.test = ?1" ),
 		@NamedQuery(
+				name = InepDistribution.hasPendingDistribution,
+				query = "select count(o) from InepDistribution o where o.test.subscription = ?1 and o.status.id not in ( 2, 4 ) " ),
+		@NamedQuery(
 				name = InepDistribution.getRevisorCounter,
 				query = "select o.status.id, count(o) from InepDistribution o where o.revisor = ?1 " +
 						"and ( ( o.status.id in ( 1, 2 ) ) or ( o.status.id in ( 3, 4 ) and o.nota is not null ) )" +
@@ -80,6 +83,8 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 	public static final String getAllVariance = "InepDistribution.getAllVariance";
 	public static final String getAllVarianceFromTest = "InepDistribution.getAllVarianceFromTest";
 	public static final String getWorkStatus = "InepDistribution.getWorkStatus";
+
+	public static final String hasPendingDistribution = "InepDistribution.hasPendingDistribution";
 
 	@EmbeddedId
 	private InepDistributionPK id;
@@ -140,10 +145,10 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public InepDistributionPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new InepDistributionPK( );
+		if ( id == null ) {
+			id = new InepDistributionPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( InepDistributionPK id )
@@ -153,7 +158,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public DistributionStatus getStatus( )
 	{
-		return this.status;
+		return status;
 	}
 
 	public void setStatus( DistributionStatus status )
@@ -163,7 +168,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public Integer getNota( )
 	{
-		return this.nota;
+		return nota;
 	}
 
 	public void setNota( Integer nota )
@@ -173,7 +178,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public InepRevisor getRevisor( )
 	{
-		return this.revisor;
+		return revisor;
 	}
 
 	public void setRevisor( InepRevisor revisor )
@@ -186,7 +191,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public InepTest getTest( )
 	{
-		return this.test;
+		return test;
 	}
 
 	public void setTest( InepTest test )
@@ -199,7 +204,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public String getObs( )
 	{
-		return this.obs;
+		return obs;
 	}
 
 	public void setObs( String obs )
@@ -209,10 +214,10 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public Date getInsertDate( )
 	{
-		if ( this.insertDate == null ) {
-			this.insertDate = new Date( );
+		if ( insertDate == null ) {
+			insertDate = new Date( );
 		}
-		return this.insertDate;
+		return insertDate;
 	}
 
 	public void setInsertDate( Date insertDate )
@@ -222,7 +227,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public Date getUpdateDate( )
 	{
-		return this.updateDate;
+		return updateDate;
 	}
 
 	public void setUpdateDate( Date updateDate )
@@ -254,7 +259,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public Integer getPriority( )
 	{
-		return this.priority;
+		return priority;
 	}
 
 	public void setPriority( Integer priority )

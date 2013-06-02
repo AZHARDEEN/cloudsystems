@@ -19,6 +19,7 @@ import br.com.mcampos.ejb.inep.InepOralFacade;
 import br.com.mcampos.ejb.inep.entity.InepOralDistribution;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.web.inep.controller.renderer.InepOralDistributionCoordinatoListRenderer;
 import br.com.mcampos.web.inep.controller.renderer.InepOralDistributionListRenderer;
 
 public class OralRevisorController extends BaseOralController
@@ -46,7 +47,12 @@ public class OralRevisorController extends BaseOralController
 	{
 		super.doAfterCompose( comp );
 		setRadio( );
-		getListbox( ).setItemRenderer( new InepOralDistributionListRenderer( ) );
+		if ( getRevisor( ) != null ) {
+			if ( getRevisor( ).isCoordenador( ) )
+				getListbox( ).setItemRenderer( new InepOralDistributionCoordinatoListRenderer( ) );
+			else
+				getListbox( ).setItemRenderer( new InepOralDistributionListRenderer( ) );
+		}
 	}
 
 	private void setRadio( )

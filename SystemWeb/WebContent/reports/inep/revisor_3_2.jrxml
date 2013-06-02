@@ -26,10 +26,13 @@
   inep_oral_test.iot_interviewer_grade_nm,
   inep_oral_test.iot_observer_grade_nm,
   inep_oral_test.iot_final_grade_nm,
-  inep_oral_test.iot_variance_in
+  inep_oral_test.iot_variance_in,
+  inep_oral_test.iot_agreement_grade_in,
+  inep_oral_test.iot_agreement2_grade_nm
 FROM
   inep.inep_oral_test
 WHERE
+  inep_oral_test.iot_variance_in > 0 AND
   inep_oral_test.usr_id_in = $P{COMPANY_ID} AND
   inep_oral_test.pct_id_in = $P{EVENT_ID}
 ORDER BY
@@ -42,9 +45,10 @@ ORDER BY
 	<field name="iot_observer_grade_nm" class="java.math.BigDecimal"/>
 	<field name="iot_final_grade_nm" class="java.math.BigDecimal"/>
 	<field name="iot_variance_in" class="java.lang.Integer"/>
+	<field name="iot_agreement_grade_in" class="java.lang.Integer"/>
+	<field name="iot_agreement2_grade_nm" class="java.math.BigDecimal"/>
 	<variable name="variance" class="java.lang.Number">
-		<variableExpression><![CDATA[new BigDecimal ($F{iot_interviewer_grade_nm}.doubleValue() - $F{iot_observer_grade_nm}.doubleValue()).abs()
-]]></variableExpression>
+		<variableExpression><![CDATA[new BigDecimal ($F{iot_interviewer_grade_nm}.doubleValue() - $F{iot_observer_grade_nm}.doubleValue()).abs()]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -56,7 +60,7 @@ ORDER BY
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[Relação das Provas Orais e Notas]]></text>
+				<text><![CDATA[Relação de Discrepância das Provas Orais]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -85,17 +89,17 @@ ORDER BY
 				<text><![CDATA[Posto Aplicador]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e8003ff0-07d8-48f9-b9c8-d40fef04971a" x="353" y="76" width="54" height="20"/>
+				<reportElement uuid="e8003ff0-07d8-48f9-b9c8-d40fef04971a" x="425" y="76" width="53" height="20"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Intrervist.]]></text>
+				<text><![CDATA[Reavaliac.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="091cba2f-913a-44d9-a374-1395e81daccc" x="409" y="76" width="48" height="20"/>
+				<reportElement uuid="091cba2f-913a-44d9-a374-1395e81daccc" x="499" y="76" width="54" height="20"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Observ.]]></text>
+				<text><![CDATA[Consenso]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="6c93f171-1c0f-4598-b918-c6055096b42e" x="459" y="76" width="49" height="20"/>
+				<reportElement uuid="6c93f171-1c0f-4598-b918-c6055096b42e" x="363" y="76" width="35" height="20"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Posto]]></text>
 			</staticText>
@@ -103,11 +107,6 @@ ORDER BY
 				<reportElement uuid="d98cf23f-cc0f-490d-b821-b39f07654955" x="353" y="53" width="155" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
 				<text><![CDATA[Notas]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="75b00272-ba17-48c5-ac8a-b86f7216ef6c" x="508" y="76" width="47" height="20"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[Varianc.]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -123,27 +122,20 @@ ORDER BY
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{iot_station_ch}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="847edf09-1bee-444e-96ca-8673084b93b1" x="353" y="0" width="54" height="16"/>
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement uuid="847edf09-1bee-444e-96ca-8673084b93b1" x="425" y="0" width="53" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{iot_interviewer_grade_nm}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{iot_agreement_grade_in}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="d3989579-092f-4bb5-9a21-301b14d8f248" x="409" y="0" width="48" height="16"/>
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement uuid="d3989579-092f-4bb5-9a21-301b14d8f248" x="499" y="0" width="54" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{iot_observer_grade_nm}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="6d6ef5cd-9dff-47d0-bc3c-b2619dc7adb2" x="459" y="0" width="49" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{iot_final_grade_nm}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{iot_agreement2_grade_nm}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.000">
-				<reportElement uuid="830d234f-6e6a-4ea5-9d0a-ff0b6fa82f5b" x="508" y="1" width="47" height="15">
-					<printWhenExpression><![CDATA[$F{iot_variance_in} > 0]]></printWhenExpression>
-				</reportElement>
+				<reportElement uuid="6d6ef5cd-9dff-47d0-bc3c-b2619dc7adb2" x="363" y="0" width="35" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{variance}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{iot_final_grade_nm}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

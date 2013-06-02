@@ -139,10 +139,15 @@ public class InepOralFacadeBean implements InepOralFacade
 		InepSubscription merged = subscriptionSession.get( key );
 		if ( merged == null )
 			return false;
-		Media media = mediaSession.add( obj );
-		InepMedia inepMedia = inepMediaSession.addAudio( merged, media );
-		merged.add( inepMedia );
-		return true;
+		List<Media> audios = getAudios( merged );
+		if ( SysUtils.isEmpty( audios ) ) {
+			Media media = mediaSession.add( obj );
+			InepMedia inepMedia = inepMediaSession.addAudio( merged, media );
+			merged.add( inepMedia );
+			return true;
+		}
+		else
+			return false;
 	}
 
 	@Override
@@ -153,16 +158,21 @@ public class InepOralFacadeBean implements InepOralFacade
 			throw new InvalidParameterException( "Item não existe (InepOralDistribution)" );
 		merged.setNota( grade );
 		merged.setStatus( statusSession.get( DistributionStatus.statusRevised ) );
-		InepOralDistribution other = oralDistributionSession.findOther( merged );
-		if ( other != null && !merged.getNota( ).equals( other.getNota( ) ) ) {
-			throw new RuntimeException( "As notas da prova oral não poder ser diferentes entre os corretores" );
-		}
-		if ( merged.getTest( ).getAgreementGrade( ) == null ) {
-			oralTestSession.setAgreementGrade( merged.getTest( ), grade );
-			List<InepRevisor> coordinators = revisorSession.getOralCoordinator( item.getTest( ).getSubscription( ).getEvent( ) );
-			for ( InepRevisor c : coordinators ) {
-				oralDistributionSession.merge( new InepOralDistribution( merged.getTest( ), c,
-						statusSession.get( DistributionStatus.statusDistributed ) ) );
+		/*
+		 * Cuidado, a posicao da linha abaixo e importante!!!!
+		 */
+		oralTestSession.setAgreementGrade( merged.getTest( ), grade, item.getRevisor( ).isCoordenador( ) );
+		if ( item.getRevisor( ).isCoordenador( ) == false ) {
+			InepOralDistribution other = oralDistributionSession.findOther( merged );
+			if ( other != null && !merged.getNota( ).equals( other.getNota( ) ) ) {
+				throw new RuntimeException( "As notas da prova oral não poder ser diferentes entre os corretores" );
+			}
+			if ( !merged.getTest( ).getStatus( ).getId( ).equals( DistributionStatus.statusRevised ) ) {
+				List<InepRevisor> coordinators = revisorSession.getOralCoordinator( item.getTest( ).getSubscription( ).getEvent( ) );
+				for ( InepRevisor c : coordinators ) {
+					oralDistributionSession.merge( new InepOralDistribution( merged.getTest( ), c,
+							statusSession.get( DistributionStatus.statusDistributed ) ) );
+				}
 			}
 		}
 	}

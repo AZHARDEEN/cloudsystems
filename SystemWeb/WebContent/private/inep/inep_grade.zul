@@ -13,8 +13,8 @@
 			<radio label="Anulado" radiogroup="sv6" id="rdVoid"/>
 			<radio label="Branco" radiogroup="sv6" id="rdBlank"/>
 			<separator orient="vertical" width="50px" />
-            <button label="Salvar" id="cmdInepSave" image="/img/icontexto-webdev-ok-016x016.png" autodisable="cmdObs,cmdInepSave,cmdCancel"/>
-            <button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-016x016.png" autodisable="cmdObs,cmdInepSave,cmdCancel"/>
+            <button label="Salvar" id="cmdInepSave" image="/img/icontexto-webdev-ok-016x016.png" autodisable="cmdInepSave,cmdCancel"/>
+            <button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-016x016.png" autodisable="cmdInepSave,cmdCancel"/>
 		</hlayout>
 	</div>
 </zk>

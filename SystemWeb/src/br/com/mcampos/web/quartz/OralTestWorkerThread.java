@@ -64,7 +64,7 @@ public class OralTestWorkerThread implements Runnable
 		String a1, a2;
 
 		a1 = file.getCanonicalPath( );
-		a2 = file.getParent( ) + ( bRet ? "\\PRO" : "\\ERR" );
+		a2 = file.getParentFile( ).getParent( ) + ( bRet ? "\\AUDIO_PROCESSED\\PRO" : "\\AUDIO_PROCESSED\\ERR" );
 		moveFile( a1, a2 );
 		obj = null;
 	}

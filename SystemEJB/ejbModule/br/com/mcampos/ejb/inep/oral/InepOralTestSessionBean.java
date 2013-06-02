@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.inep.oral;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -41,9 +42,13 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 		entity.setSubscription( s );
 		entity.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
 		entity = merge( entity );
-		if ( entity.getFinalGrade( ) != null ) {
-			s.setOralGrade( entity.getFinalGrade( ) );
+		if ( entity.getFinalGrade( ) != null && entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) ) {
+			subscriptionSession.setOralGrade( s, entity.getFinalGrade( ) );
 		}
+		if ( entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) )
+			entity.setVarianceStatus( 0 );
+		else
+			entity.setVarianceStatus( 1 );
 	}
 
 	private InepSubscription getSubscription( InepOralTest test, boolean create )
@@ -95,14 +100,33 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	}
 
 	@Override
-	public void setAgreementGrade( InepOralTest test, Integer grade )
+	public void setAgreementGrade( InepOralTest test, Integer grade, boolean isCoordinator )
 	{
-		test.setAgreementGrade( grade );
-		double variance = test.getFinalGrade( ).doubleValue( );
-		variance = Math.abs( variance - ( (double) grade ) );
-		if ( variance > 1.5 )
-			test.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
-		else
-			test.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
+		if ( isCoordinator ) {
+			test.setAgreementGrade( grade );
+			double variance = test.getFinalGrade( ).doubleValue( );
+			variance = Math.abs( variance - ( (double) grade ) );
+			if ( variance > 1.5 ) {
+				test.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+				test.setVarianceStatus( 3 );
+			}
+			else {
+				test.setStatus( statusSession.get( DistributionStatus.statusRevised ) );
+				subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
+				test.setVarianceStatus( 2 );
+			}
+		}
+		else {
+			test.setStatus( statusSession.get( DistributionStatus.statusRevised ) );
+			test.setAgreement2Grade( new BigDecimal( grade ) );
+			subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
+			test.setVarianceStatus( 4 );
+		}
+	}
+
+	@Override
+	public InepOralTest get( InepSubscription s )
+	{
+		return getByNamedQuery( InepOralTest.getBySubscription, s );
 	}
 }

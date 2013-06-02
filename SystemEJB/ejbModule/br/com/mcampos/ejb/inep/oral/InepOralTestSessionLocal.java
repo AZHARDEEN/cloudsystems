@@ -7,6 +7,7 @@ import javax.ejb.Local;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.ejb.inep.entity.InepSubscription;
 
 @Local
 public interface InepOralTestSessionLocal extends BaseSessionInterface<InepOralTest>
@@ -15,6 +16,8 @@ public interface InepOralTestSessionLocal extends BaseSessionInterface<InepOralT
 
 	List<InepOralTest> getVarianceOralOnly( InepPackage pack );
 
-	void setAgreementGrade( InepOralTest test, Integer grade );
+	void setAgreementGrade( InepOralTest test, Integer grade, boolean isCoordinator );
+
+	InepOralTest get( InepSubscription s );
 
 }
