@@ -9,8 +9,12 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
+import br.com.mcampos.ejb.inep.entity.DistributionStatus;
+import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepSubscription;
+import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 
@@ -24,6 +28,10 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 {
 	@EJB
 	InepPackageSessionLocal eventSession;
+	@EJB
+	InepOralTestSessionLocal oralTestSession;
+	@EJB
+	DistributionStatusSessionLocal statusSession;
 
 	@Override
 	protected Class<InepSubscription> getEntityClass( )
@@ -77,12 +85,53 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 	public void setOralGrade( InepSubscription s, BigDecimal grade )
 	{
 		s.setOralGrade( grade );
+		if ( s.getWrittenGrade( ) == null )
+			return;
+		verifyVariance( s );
 	}
 
 	@Override
 	public void setWrittenGrade( InepSubscription s, BigDecimal grade )
 	{
 		s.setWrittenGrade( grade );
+		if ( s.getOralGrade( ) == null )
+			return;
+		verifyVariance( s );
+
 	}
 
+	private void verifyVariance( InepSubscription s )
+	{
+		double oral, written;
+		boolean bVariance = false;
+
+		if ( s.getOralGrade( ) == null || s.getWrittenGrade( ) == null )
+			return;
+		oral = s.getOralGrade( ).doubleValue( );
+		written = s.getWrittenGrade( ).doubleValue( );
+		if ( oral >= written )
+			return;
+		if ( oral < 2.0 && written >= 2.0 ) {
+			bVariance = true;
+		}
+		else if ( oral < 2.76 && written >= 2.76 ) {
+			bVariance = true;
+		}
+		else if ( oral < 3.51 && written >= 3.51 ) {
+			bVariance = true;
+		}
+		else if ( oral < 4.26 && written >= 4.26 ) {
+			bVariance = true;
+		}
+		if ( bVariance ) {
+			InepOralTest oralTest = oralTestSession.get( s );
+			if ( oralTest != null ) {
+				oralTest.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+				if ( oralTest.getVarianceStatus( ).equals( 0 ) )
+					oralTest.setVarianceStatus( 11 );
+				else
+					oralTest.setVarianceStatus( oralTest.getVarianceStatus( ) + 10 );
+			}
+		}
+	}
 }
