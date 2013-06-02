@@ -13,16 +13,19 @@ import org.zkoss.zul.Bandbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Iframe;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
+import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.entity.InepTask;
+import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.inep.team.TeamSession;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
@@ -52,6 +55,27 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	private Iframe framePdf;
 
 	@Wire
+	Label task1;
+	@Wire
+	Label task2;
+	@Wire
+	Label task3;
+	@Wire
+	Label task4;
+	@Wire
+	Label station;
+	@Wire
+	Label interviewerGrade;
+	@Wire
+	Label observerGrade;
+	@Wire
+	Label stationGrade;
+	@Wire
+	Label agreementGrade;
+	@Wire
+	Label agreement2Grade;
+
+	@Wire
 	private Combobox cmbTask;
 
 	@Override
@@ -64,12 +88,12 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		this.listBox.setItemRenderer( new SubscriptionItemRenderer( ) );
-		this.listDetail.setItemRenderer( new DistributionInfoListRenderer( ) );
+		listBox.setItemRenderer( new SubscriptionItemRenderer( ) );
+		listDetail.setItemRenderer( new DistributionInfoListRenderer( ) );
 		loadCombobox( );
 
 		if ( getRevisor( ) == null ) {
-			this.cmbTask.setVisible( true );
+			cmbTask.setVisible( true );
 		}
 	}
 
@@ -94,32 +118,32 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	{
 		List<InepTask> events = getSession( ).getTasks( event );
 
-		this.cmbTask.getItems( ).clear( );
+		cmbTask.getItems( ).clear( );
 		for ( InepTask e : events ) {
 			if ( getRevisor( ) == null || getRevisor( ).getTask( ).equals( e ) ) {
-				Comboitem item = this.cmbTask.appendItem( e.getDescription( ) );
+				Comboitem item = cmbTask.appendItem( e.getDescription( ) );
 				item.setValue( e );
 			}
 		}
-		if ( this.cmbTask.getItemCount( ) > 0 ) {
-			this.cmbTask.setSelectedIndex( 0 );
+		if ( cmbTask.getItemCount( ) > 0 ) {
+			cmbTask.setSelectedIndex( 0 );
 		}
 	}
 
 	private Combobox getComboEvent( )
 	{
-		return this.comboEvent;
+		return comboEvent;
 	}
 
 	private void search( String value )
 	{
 		if ( SysUtils.isEmpty( value ) == false && value.length( ) >= 3 ) {
 			if ( showSubscriptions( value ) == false ) {
-				this.subscription.close( );
+				subscription.close( );
 			}
 		}
 		else {
-			this.subscription.close( );
+			subscription.close( );
 		}
 	}
 
@@ -137,9 +161,9 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	public void onOkBandbox( Event evt )
 	{
 		if ( evt != null ) {
-			this.subscription.open( );
-			logger.info( "onOK[bandbox]: " + this.subscription.getValue( ) );
-			search( this.subscription.getValue( ) );
+			subscription.open( );
+			logger.info( "onOK[bandbox]: " + subscription.getValue( ) );
+			search( subscription.getValue( ) );
 			evt.stopPropagation( );
 		}
 	}
@@ -158,24 +182,30 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		if ( SysUtils.isEmpty( list ) ) {
 			return false;
 		}
-		this.listBox.setModel( new ListModelList<InepSubscription>( list ) );
+		listBox.setModel( new ListModelList<InepSubscription>( list ) );
 		return true;
 	}
 
 	@Listen( "onSelect = #list" )
 	public void onSelect( Event evt )
 	{
-		Listitem item = this.listBox.getSelectedItem( );
+		Listitem item = listBox.getSelectedItem( );
 		if ( item == null || item.getValue( ) == null ) {
 			return;
 		}
 		InepSubscription s = item.getValue( );
-		this.subscription.setValue( s.getId( ).getId( ) );
-		this.subscription.close( );
+		subscription.setValue( s.getId( ).getId( ) );
+		subscription.close( );
 		showInfo( s );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
+	}
+
+	@Listen( "onSelect = #cmbTask" )
+	public void onSelectTask( Event evt )
+	{
+		onSelect( evt );
 	}
 
 	private void showInfo( InepSubscription s )
@@ -184,27 +214,74 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 			return;
 		}
 		List<InepDistribution> list = getSession( ).getDistribution( s );
-		this.listDetail.setModel( new ListModelList<InepDistribution>( list ) );
-
+		listDetail.setModel( new ListModelList<InepDistribution>( list ) );
 		showFrame( s );
+		showOralGrade( s );
+		showTasks( s );
+
+	}
+
+	private void showOralGrade( InepSubscription s )
+	{
+		InepOralTest test = getSession( ).getOralTest( s );
+		station.setValue( "" );
+		interviewerGrade.setValue( "" );
+		observerGrade.setValue( "" );
+		stationGrade.setValue( "" );
+		agreementGrade.setValue( "" );
+		agreement2Grade.setValue( "" );
+		if ( test != null ) {
+			station.setValue( test.getStation( ) );
+			interviewerGrade.setValue( test.getInterviewGrade( ).toString( ) );
+			observerGrade.setValue( test.getObserverGrade( ).toString( ) );
+			stationGrade.setValue( test.getFinalGrade( ).toString( ) );
+			if ( test.getAgreementGrade( ) != null )
+				agreementGrade.setValue( test.getAgreementGrade( ).toString( ) );
+			if ( test.getAgreement2Grade( ) != null )
+				agreement2Grade.setValue( test.getAgreement2Grade( ).toString( ) );
+		}
+	}
+
+	private void showTasks( InepSubscription s )
+	{
+		List<InepTest> tests = getSession( ).getTests( s );
+		if ( !SysUtils.isEmpty( tests ) ) {
+			for ( InepTest test : tests ) {
+				switch ( test.getId( ).getTaskId( ) ) {
+				case 1:
+					task1.setValue( test.getGrade( ).toString( ) );
+					break;
+				case 2:
+					task2.setValue( test.getGrade( ).toString( ) );
+					break;
+				case 3:
+					task3.setValue( test.getGrade( ).toString( ) );
+					break;
+				case 4:
+					task4.setValue( test.getGrade( ).toString( ) );
+					break;
+				}
+			}
+		}
 	}
 
 	private void showFrame( InepSubscription s )
 	{
-		byte[ ] obj = getSession( ).getMedia( s, (InepTask) this.cmbTask.getSelectedItem( ).getValue( ) );
+		InepTask task = (InepTask) cmbTask.getSelectedItem( ).getValue( );
+		byte[ ] obj = getSession( ).getMedia( s, task );
 		AMedia media = new AMedia( null, null, null, obj );
-		this.framePdf.setContent( media );
+		framePdf.setContent( media );
 	}
 
 	public InepRevisor getRevisor( )
 	{
-		if ( this.revisor == null ) {
+		if ( revisor == null ) {
 			if ( getComboEvent( ).getSelectedItem( ) != null ) {
-				this.revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
+				revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
 						getCurrentCollaborator( ) );
 			}
 		}
-		return this.revisor;
+		return revisor;
 	}
 
 }

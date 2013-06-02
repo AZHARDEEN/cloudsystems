@@ -3,15 +3,11 @@ package br.com.mcampos.web.inep.controller;
 import java.util.List;
 
 import org.omg.CORBA.portable.ApplicationException;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.EventQueues;
-import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Button;
-import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Window;
@@ -46,8 +42,8 @@ public abstract class CoordinatorGradeController extends BaseController<Window>
 		super.doAfterCompose( comp );
 		getCmdInepSave( ).setVisible( false );
 		getCmdCancel( ).setVisible( false );
-		this.sv6.setSelectedItem( null );
-		for ( Radio r : this.options ) {
+		sv6.setSelectedItem( null );
+		for ( Radio r : options ) {
 			r.setDisabled( true );
 		}
 		EventQueues.lookup( TasksController.coordinatorEvent ).subscribe( new EventListener<Event>( )
@@ -71,12 +67,12 @@ public abstract class CoordinatorGradeController extends BaseController<Window>
 
 	private Button getCmdInepSave( )
 	{
-		return this.cmdInepSave;
+		return cmdInepSave;
 	}
 
 	private Button getCmdCancel( )
 	{
-		return this.cmdCancel;
+		return cmdCancel;
 	}
 
 	public void onNotify( CoordinatorEventChange evt ) throws ApplicationException
@@ -97,44 +93,24 @@ public abstract class CoordinatorGradeController extends BaseController<Window>
 		if ( d == null || d.getNota( ) == null ) {
 			return;
 		}
-		this.sv6.setSelectedIndex( d.getNota( ) );
-		for ( Radio r : this.options ) {
+		sv6.setSelectedIndex( d.getNota( ) );
+		for ( Radio r : options ) {
 			r.setDisabled( true );
 			r.setSclass( "" );
 		}
 		if ( d.getNota( ) != null ) {
-			this.options[ d.getNota( ) ].setSclass( "strongRadio" );
+			options[ d.getNota( ) ].setSclass( "strongRadio" );
 		}
 		setCurrent( d );
 	}
 
 	protected InepDistribution getCurrent( )
 	{
-		return this.current;
+		return current;
 	}
 
 	protected void setCurrent( InepDistribution current )
 	{
 		this.current = current;
 	}
-
-	@Listen( "onClick = #cmdObs" )
-	public void onClickComments( )
-	{
-		if ( getCurrent( ) != null ) {
-			Component comp = Executions.createComponents( "/private/inep/dlg_comment.zul", null, null );
-			if ( comp instanceof DlgComment ) {
-				DlgComment dlg = ( (DlgComment) comp );
-
-				dlg.getCmdSaveComment( ).setVisible( false );
-				dlg.setDistribution( getCurrent( ) );
-				dlg.doModal( );
-			}
-		}
-		else {
-			Messagebox.show( "Antes de visualizar um comentário sobre a correção, uma tarefa deve ser selecionada primeiro",
-					"Correção", Messagebox.OK, Messagebox.INFORMATION );
-		}
-	}
-
 }

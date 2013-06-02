@@ -6,8 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.util.media.AMedia;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.event.MouseEvent;
@@ -64,9 +62,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 
 	@Wire
 	private Button cmdCancel;
-
-	@Wire
-	private Button cmdObs;
 
 	@Wire
 	private Combobox comboEvent;
@@ -175,25 +170,6 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		}
 	}
 
-	@Listen( "onClick = #cmdObs" )
-	public void onClickComments( Event evt )
-	{
-		Listitem item = getListbox( ).getSelectedItem( );
-		if ( item != null ) {
-			InepDistribution rev = (InepDistribution) getListbox( ).getSelectedItem( ).getValue( );
-			Component comp = Executions.createComponents( "/private/inep/dlg_comment.zul", getMainWindow( ), null );
-			if ( comp instanceof DlgComment ) {
-				DlgComment dlg = ( (DlgComment) comp );
-
-				dlg.setDistribution( rev );
-				dlg.doModal( );
-			}
-		}
-		if ( evt != null ) {
-			evt.stopPropagation( );
-		}
-	}
-
 	@Listen( "onClick = #cmdInepSave" )
 	public void onClickSubmit( Event evt )
 	{
@@ -213,14 +189,15 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 								Messagebox.ERROR );
 					}
 					showTasks( );
-					listbox.removeItemAt( listbox.getSelectedIndex( ) );
-					getListbox( ).clearSelection( );
 				}
 			}
 			updateCounters( );
 		}
+		ListModelList<InepDistribution> model = ( (ListModelList<InepDistribution>) (Object) getListbox( ).getModel( ) );
+		if ( model != null ) {
+			model.removeAll( model.getSelection( ) );
+		}
 		cmdInepSave.setDisabled( false );
-		cmdObs.setDisabled( false );
 		cmdCancel.setDisabled( false );
 		if ( evt != null ) {
 			evt.stopPropagation( );

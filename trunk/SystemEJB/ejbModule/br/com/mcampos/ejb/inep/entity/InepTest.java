@@ -31,10 +31,8 @@ import javax.persistence.Table;
 				query = "select o from InepTest o where o.task = ?1 order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
 		@NamedQuery(
 				name = InepTest.getAllTestsWithVariance,
-				query = "select o from InepTest o where o.subscription.event = ?1 "
-						+
-						"and o.subscription in ( select t.test.subscription from InepDistribution t where t.status.id in ( 3, 4 ) ) "
-						+
+				query = "select o from InepTest o where o.subscription.event = ?1 " +
+						"and o.subscription in ( select t.test.subscription from InepDistribution t where t.status.id in ( 3, 4 ) ) " +
 						"order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" )
 } )
 public class InepTest implements Serializable

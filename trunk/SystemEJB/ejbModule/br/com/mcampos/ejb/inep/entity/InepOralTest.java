@@ -23,12 +23,16 @@ import javax.persistence.Table;
 @NamedQueries( {
 		@NamedQuery(
 				name = InepOralTest.getVarianceOralOnly,
-				query = "from InepOralTest o WHERE o.subscription.event = ?1 and o.status.id = 3 order by station " )
+				query = "from InepOralTest o WHERE o.subscription.event = ?1 and o.status.id = 3 order by station " ),
+		@NamedQuery(
+				name = InepOralTest.getBySubscription,
+				query = "from InepOralTest o WHERE o.subscription = ?1 " )
 } )
 public class InepOralTest implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	public static final String getVarianceOralOnly = "InepOralTest.getVarianceOralOnly";
+	public static final String getBySubscription = "InepOralTest.getBySubscription";
 
 	@EmbeddedId
 	private InepOralTestPK id;
@@ -54,6 +58,9 @@ public class InepOralTest implements Serializable
 
 	@Column( name = "iot_agreement_grade_in", nullable = true )
 	private Integer agreementGrade;
+
+	@Column( name = "iot_variance_in", nullable = true )
+	private Integer varianceStatus;
 
 	@Column( name = "iot_written_grade_nm", nullable = true )
 	private BigDecimal writtenGrade;
@@ -209,5 +216,15 @@ public class InepOralTest implements Serializable
 	public void setDescStatus( String descStatus )
 	{
 		this.descStatus = descStatus;
+	}
+
+	public Integer getVarianceStatus( )
+	{
+		return varianceStatus;
+	}
+
+	public void setVarianceStatus( Integer varianceStatus )
+	{
+		this.varianceStatus = varianceStatus;
 	}
 }

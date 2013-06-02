@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @NamedQueries( {
 		@NamedQuery(
 				name = InepOralDistribution.getRevisorOralTests,
-				query = "from InepOralDistribution o WHERE o.status.id = 1 and o.id.companyId = ?1 and o.id.eventId = ?2 and o.id.collaboratorId = ?3 order by o.id.subscriptionId " ),
+				query = "from InepOralDistribution o WHERE o.revisor = ?1 order by o.id.subscriptionId " ),
 		@NamedQuery(
 				name = InepOralDistribution.getOther,
 				query = "from InepOralDistribution o WHERE o.test = ?1 and o.id.collaboratorId <> ?2 " )
@@ -50,6 +50,17 @@ public class InepOralDistribution implements Serializable
 			@JoinColumn(
 					name = "isc_id_ch", referencedColumnName = "isc_id_ch", updatable = false, insertable = false, nullable = false ) } )
 	private InepOralTest test;
+
+	@ManyToOne( fetch = FetchType.EAGER, optional = false )
+	@JoinColumns( {
+			@JoinColumn(
+					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ),
+			@JoinColumn(
+					name = "col_seq_in", referencedColumnName = "col_seq_in", updatable = false, insertable = false, nullable = false )
+	} )
+	private InepRevisor revisor;
 
 	@EmbeddedId
 	private InepOralDistributionPK id;
@@ -126,6 +137,16 @@ public class InepOralDistribution implements Serializable
 	public void setTest( InepOralTest test )
 	{
 		this.test = test;
+	}
+
+	public InepRevisor getRevisor( )
+	{
+		return revisor;
+	}
+
+	public void setRevisor( InepRevisor revisor )
+	{
+		this.revisor = revisor;
 	}
 
 }

@@ -25,6 +25,8 @@ import br.com.mcampos.ejb.inep.distribution.DistributionSessionLocal;
 import br.com.mcampos.ejb.inep.entity.DistributionStatus;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.entity.InepDistributionPK;
+import br.com.mcampos.ejb.inep.entity.InepMedia;
+import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepSubscription;
@@ -32,11 +34,11 @@ import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.inep.entity.InepTestPK;
 import br.com.mcampos.ejb.inep.entity.SubscriptionGradeView;
+import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.inep.test.InepTestSessionLocal;
-import br.com.mcampos.ejb.media.Media;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
@@ -73,6 +75,8 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 	@EJB
 	private InepSubscriptionSessionLocal subscriptionSession;
+	@EJB
+	private InepOralTestSessionLocal oralTestSession;
 
 	public TeamSessionBean( )
 	{
@@ -177,14 +181,11 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			if ( hasVariance( dist ) ) {
 				variance( dist, getStatus( DistributionStatus.statusVariance ) );
 			}
-			double dValor = dist.getNota( ).doubleValue( ) / 2.0;
-			dValor += dist.getTest( ).getGrade( ).doubleValue( );
-			testSession.setGrade( dist.getTest( ), dValor );
 		}
 		else {
 			dist.setStatus( getStatus( DistributionStatus.statusFinalRevised ) );
 			variance( dist, getStatus( DistributionStatus.statusFinalRevised ) );
-			testSession.setGrade( dist.getTest( ), dist.getNota( ) );
+			testSession.setGrade( dist.getTest( ), dist.getNota( ) <= 5 ? dist.getNota( ) : 0 );
 		}
 		return dist;
 	}
@@ -236,6 +237,19 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			if ( variance > threshold || ( other.getNota( ) > 5 && entity.getNota( ).equals( other.getNota( ) ) == false ) ) {
 				bRet = true;
 				other.setStatus( getStatus( DistributionStatus.statusVariance ) );
+			}
+			else {
+				double grade = 0.0;
+				int n = other.getNota( );
+				if ( n > 5 )
+					n = 0;
+				grade += n;
+				n = entity.getNota( );
+				if ( n > 5 )
+					n = 0;
+				grade += n;
+				grade /= 2.0;
+				testSession.setGrade( other.getTest( ), grade );
 			}
 		}
 		if ( bRet == true ) {
@@ -300,9 +314,11 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		if ( merged == null ) {
 			return null;
 		}
-		Media media = merged.getSubscription( ).getMedias( ).get( 0 ).getMedia( );
-		if ( media != null ) {
-			obj = media.getObject( );
+		for ( InepMedia inepMedia : merged.getSubscription( ).getMedias( ) ) {
+			if ( inepMedia.getTask( ).equals( merged.getTask( ).getId( ).getId( ) ) ) {
+				obj = inepMedia.getMedia( ).getObject( );
+				break;
+			}
 		}
 		return obj;
 	}
@@ -676,9 +692,11 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		if ( merged == null ) {
 			return null;
 		}
-		Media media = merged.getSubscription( ).getMedias( ).get( 0 ).getMedia( );
-		if ( media != null ) {
-			obj = media.getObject( );
+		for ( InepMedia inepMedia : merged.getSubscription( ).getMedias( ) ) {
+			if ( inepMedia.getTask( ).equals( t.getId( ).getId( ) ) ) {
+				obj = inepMedia.getMedia( ).getObject( );
+				break;
+			}
 		}
 		return obj;
 	}
@@ -687,6 +705,19 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	public List<InepRevisor> getOralTeam( InepPackage event )
 	{
 		return findByNamedQuery( InepRevisor.getAllOralTeamByEvent, event.getId( ).getCompanyId( ), event.getId( ).getId( ) );
+	}
+
+	@Override
+	public List<InepTest> getTests( InepSubscription s )
+	{
+		List<InepTest> tests = (List<InepTest>) testSession.getAll( " t.subscription = ?1", null, s );
+		return tests;
+	}
+
+	@Override
+	public InepOralTest getOralTest( InepSubscription s )
+	{
+		return oralTestSession.get( s );
 	}
 
 }

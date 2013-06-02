@@ -11,7 +11,6 @@
 						<label value="Evento: " />
 						<hlayout>
 							<combobox id="comboEvent" readonly="true" width="400px"/>
-							<combobox id="cmbTask" width="150px" visible = "false" />
 						</hlayout>
 					</row>
 					<row>
@@ -42,18 +41,15 @@
 		</style>
 		<tabbox>
 			<tabs>
-				<tab label="Prova" />
-				<tab label="Notas" />
+				<tab label="Distribuição da Parte Escrita" />
+				<tab label="Provas da Parte Escrita" />
+				<tab label="Notas da Parte Oral" />
+				<tab label="Tarefas" />
 			</tabs>
 			<tabpanels>
-				<tabpanel>
-		            <div id="divFrame" height="100%" width="100%">
-						<iframe width="100%" height="100%" id="framePdf">
-						</iframe>
-			        </div>
-				</tabpanel>
-				<tabpanel>
-					<listbox width="100%" emptyMessage="Não existem informações da inscrição" id="listDetail" oddRowSclass="" rows="10">
+				<tabpanel >
+					<listbox vflex="true" pagingPosition="top" autopaging="true" mold="paging" 
+						emptyMessage="Não existem informações da inscrição" id="listDetail" >
 						<listhead>
 							<listheader label="Tarefa" 		width="50px" 	align="Center"/>
 							<listheader label="Corretor" 	width="250px" 	align="Left"/>
@@ -64,6 +60,73 @@
 							<listheader label="Última Atual." width="150px" align="Left"/>
 						</listhead>
 					</listbox>
+				</tabpanel>
+				<tabpanel vflex="true" height="100%">
+		            <div id="divFrame" height="100%" width="100%">
+						<combobox id="cmbTask" width="1" visible = "false" />
+						<iframe width="100%" height="100%" id="framePdf">
+						</iframe>
+			        </div>
+				</tabpanel>
+				<tabpanel>
+					<grid hflex="true" vflex="true">
+						<columns>
+							<column width="25%"/>
+							<column width="75%"/>
+						</columns>
+						<rows>
+							<row>
+								<label value="Posto: " />
+								<label id="station" />
+							</row>
+							<row>
+								<label value="Nota do Entrevistador: " />
+								<label id="interviewerGrade" />
+							</row>
+							<row>
+								<label value="Nota do Observador: " />
+								<label id="observerGrade" />
+							</row>
+							<row>
+								<label value="Nota do Posto: " />
+								<label id="stationGrade" />
+							</row>
+							<row>
+								<label value="Nota de Reavaliação: " />
+								<label id="agreementGrade" />
+							</row>
+							<row>
+								<label value="Nota de Consenso: " />
+								<label id="agreement2Grade" />
+							</row>
+						</rows>
+					</grid>
+				</tabpanel>
+				<tabpanel>
+					<grid hflex="true" vflex="true">
+						<columns>
+							<column width="25%"/>
+							<column width="75%"/>
+						</columns>
+						<rows>
+							<row>
+								<label value="Tarefa 1:" />
+								<label id="task1" />
+							</row>
+							<row>
+								<label value="Tarefa 2:" />
+								<label id="task2" />
+							</row>
+							<row>
+								<label value="Tarefa 3:" />
+								<label id="task3" />
+							</row>
+							<row>
+								<label value="Tarefa 4:" />
+								<label id="task4" />
+							</row>
+						</rows>
+					</grid>
 				</tabpanel>
 			</tabpanels>
 		</tabbox>

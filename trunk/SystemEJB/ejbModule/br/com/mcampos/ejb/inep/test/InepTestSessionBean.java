@@ -8,8 +8,10 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.entity.InepMedia;
 import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
@@ -180,13 +182,23 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 	{
 		test.setGrade( new BigDecimal( grade ) );
 
-		List<InepTest> tests = findByNamedQuery( InepTest.getAllSubscription, test.getSubscription( ) );
-		double dSubscriptionGrade = 0D;
-		for ( InepTest item : tests ) {
-			dSubscriptionGrade += item.getGrade( ).doubleValue( );
+		if ( !hasPendingTask( test.getSubscription( ) ) ) {
+			List<InepTest> tests = findByNamedQuery( InepTest.getAllSubscription, test.getSubscription( ) );
+			double dSubscriptionGrade = 0D;
+			for ( InepTest item : tests ) {
+				dSubscriptionGrade += item.getGrade( ).doubleValue( );
+			}
+			dSubscriptionGrade /= 4;
+			subscriptionSession.setWrittenGrade( test.getSubscription( ), new BigDecimal( dSubscriptionGrade ) );
 		}
-		dSubscriptionGrade /= 4;
-		test.getSubscription( ).setWrittenGrade( new BigDecimal( dSubscriptionGrade ) );
+	}
+
+	public boolean hasPendingTask( InepSubscription s )
+	{
+		Query query = getEntityManager( ).createNamedQuery( InepDistribution.hasPendingDistribution );
+		query.setParameter( 1, s );
+		Long result = (Long) query.getSingleResult( );
+		return result.longValue( ) > 0;
 	}
 
 }

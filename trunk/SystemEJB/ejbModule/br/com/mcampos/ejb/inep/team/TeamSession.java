@@ -9,6 +9,7 @@ import br.com.mcampos.dto.inep.InepTaskCounters;
 import br.com.mcampos.dto.inep.reporting.BaseSubscriptionDTO;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
+import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepSubscription;
@@ -64,4 +65,7 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserProp
 
 	public List<InepDistribution> getDistribution( InepSubscription e );
 
+	List<InepTest> getTests( InepSubscription s );
+
+	InepOralTest getOralTest( InepSubscription s );
 }
