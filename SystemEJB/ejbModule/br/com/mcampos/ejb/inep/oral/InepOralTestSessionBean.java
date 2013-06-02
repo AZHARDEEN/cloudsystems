@@ -102,25 +102,34 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	@Override
 	public void setAgreementGrade( InepOralTest test, Integer grade, boolean isCoordinator )
 	{
-		if ( isCoordinator ) {
+		test.setStatus( statusSession.get( DistributionStatus.statusRevised ) );
+		if ( isCoordinator == false ) {
 			test.setAgreementGrade( grade );
-			double variance = test.getFinalGrade( ).doubleValue( );
-			variance = Math.abs( variance - ( (double) grade ) );
-			if ( variance > 1.5 ) {
-				test.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
-				test.setVarianceStatus( 3 );
+			if ( test.getVarianceStatus( ).intValue( ) < 10 ) {
+				double variance = test.getFinalGrade( ).doubleValue( );
+				variance = Math.abs( variance - ( (double) grade ) );
+				if ( variance > 1.5 ) {
+					test.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+					test.setVarianceStatus( 3 );
+				}
+				else {
+					subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
+					test.setVarianceStatus( 2 );
+				}
 			}
 			else {
-				test.setStatus( statusSession.get( DistributionStatus.statusRevised ) );
-				subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
-				test.setVarianceStatus( 2 );
+				test.getSubscription( ).setOralGrade( new BigDecimal( grade ) );
 			}
 		}
 		else {
-			test.setStatus( statusSession.get( DistributionStatus.statusRevised ) );
-			test.setAgreement2Grade( new BigDecimal( grade ) );
-			subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
-			test.setVarianceStatus( 4 );
+			if ( test.getVarianceStatus( ).intValue( ) < 10 ) {
+				test.setAgreement2Grade( new BigDecimal( grade ) );
+				subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
+				test.setVarianceStatus( 4 );
+			}
+			else {
+				test.getSubscription( ).setOralGrade( new BigDecimal( grade ) );
+			}
 		}
 	}
 
