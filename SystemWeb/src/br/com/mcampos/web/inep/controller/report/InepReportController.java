@@ -170,49 +170,50 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		item.setParams( configReportParams( ) );
 		list.add( item );
 
-		/*Relatorio 3*/
-		item = new ReportItem( "Audios por Corretor" );
-		item.setReportUrl( "/reports/inep/revisor_3_3" );
-		item.setParams( configReportParams( ) );
-		list.add( item );
-
-		/*Relatorio 5*/
-		item = new ReportItem( "Notas da Parte Oral" );
-		item.setReportUrl( "/reports/inep/inep_5" );
-		item.setParams( configReportParams( ) );
-		list.add( item );
-
-		/*Relatorio 6*/
-		item = new ReportItem( "Notas Finais (Escrita + Oral)" );
-		item.setReportUrl( "/reports/inep/inep_6" );
-		item.setParams( configReportParams( ) );
-		list.add( item );
-
-		/*Relatorio 7*/
-		item = new ReportItem( "Concentração de Notas por Corretor" );
-		item.setReportUrl( "/reports/inep/inep_7" );
-		item.setParams( configReportParams( ) );
-		list.add( item );
-
-		/*Relatorio 8*/
-		item = new ReportItem( "Media de Notas por Tarefa/Corretor" );
-		item.setReportUrl( "/reports/inep/inep_8" );
-		item.setParams( configReportParams( ) );
-		list.add( item );
-
-		/*Relatorio 9*/
-		item = new ReportItem( "Discrepâncias por Corretor" );
-		item.setReportUrl( "/reports/inep/inep_9" );
-		item.setParams( configReportParams( ) );
-		list.add( item );
-
-		/*Relatorio 9*/
-		item = new ReportItem( "Discrepâncias por Corretor - Notas Individuais" );
-		item.setReportUrl( "/reports/inep/inep_9_1" );
-		item.setParams( configReportParams( ) );
-		list.add( item );
-
 		if ( getRevisor( ) == null ) {
+
+			/*Relatorio 3*/
+			item = new ReportItem( "Audios por Corretor" );
+			item.setReportUrl( "/reports/inep/revisor_3_3" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 5*/
+			item = new ReportItem( "Notas da Parte Oral" );
+			item.setReportUrl( "/reports/inep/inep_5" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 6*/
+			item = new ReportItem( "Notas Finais (Escrita + Oral)" );
+			item.setReportUrl( "/reports/inep/inep_6" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 7*/
+			item = new ReportItem( "Concentração de Notas por Corretor" );
+			item.setReportUrl( "/reports/inep/inep_7" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 8*/
+			item = new ReportItem( "Media de Notas por Tarefa/Corretor" );
+			item.setReportUrl( "/reports/inep/inep_8" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 9*/
+			item = new ReportItem( "Discrepâncias por Corretor - Notas Individuais" );
+			item.setReportUrl( "/reports/inep/inep_9_1" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 9*/
+			item = new ReportItem( "Discrepâncias por Corretor - Comparação com o Coordenador" );
+			item.setReportUrl( "/reports/inep/inep_9" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
 			/*Relatorio 4*/
 			item = new ReportItem( "Situação da Correção - Corretores" );
 			item.setReportUrl( "/reports/inep/inep_1" );
@@ -239,9 +240,34 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		else {
 
 			if ( getRevisor( ).isCoordenador( ) ) {
+
+				/*Relatorio 3*/
+				item = new ReportItem( "Audios por Corretor" );
+				item.setReportUrl( "/reports/inep/revisor_3_3" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
+				/*Relatorio 5*/
+				item = new ReportItem( "Notas da Parte Oral" );
+				item.setReportUrl( "/reports/inep/inep_5" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
+				/*Relatorio 6*/
+				item = new ReportItem( "Notas Finais (Escrita + Oral)" );
+				item.setReportUrl( "/reports/inep/inep_6" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
 				/*Relatorio 4*/
 				item = new ReportItem( "Situação da Correção - Corretores" );
 				item.setReportUrl( "/reports/inep/inep_2" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
+				/*Relatorio 9*/
+				item = new ReportItem( "Discrepâncias por Corretor" );
+				item.setReportUrl( "/reports/inep/inep_9_2" );
 				item.setParams( configReportParams( ) );
 				list.add( item );
 

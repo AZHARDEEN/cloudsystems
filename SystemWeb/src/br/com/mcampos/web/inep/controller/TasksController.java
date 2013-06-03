@@ -193,6 +193,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 			}
 			updateCounters( );
 		}
+		@SuppressWarnings( "unchecked" )
 		ListModelList<InepDistribution> model = ( (ListModelList<InepDistribution>) (Object) getListbox( ).getModel( ) );
 		if ( model != null ) {
 			model.removeAll( model.getSelection( ) );
