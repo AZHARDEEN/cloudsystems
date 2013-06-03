@@ -31,7 +31,6 @@ public class InepOralTestLoader extends InepBaseJob
 
 		try {
 			loader.processDirectory( INITAL_PATH );
-			System.out.println( "We have about " + loader.getFilesToProcess( ).size( ) + " files to process " );
 			loader.processFiles( );
 		}
 		catch ( Exception e ) {
@@ -57,11 +56,9 @@ public class InepOralTestLoader extends InepBaseJob
 
 	private void processDirectory( String initialPath ) throws IOException
 	{
-		System.out.println( "Processing: " + initialPath );
 		File file = new File( initialPath );
 		if ( file.exists( ) == false ) {
 			// logger.error( "Directory " + initialPath + " does not exists!" );
-			System.err.println( "Directory " + initialPath + " does not exists!" );
 			return;
 		}
 		if ( file.isDirectory( ) == false ) {

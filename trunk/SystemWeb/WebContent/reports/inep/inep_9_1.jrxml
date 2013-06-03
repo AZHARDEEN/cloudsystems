@@ -279,27 +279,27 @@ order by
 					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement uuid="50e3bc60-957e-425f-b634-be8f63a1c40b" x="175" y="0" width="65" height="14"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{dis_grade_in}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement uuid="5cde1e44-04fb-4845-ae39-5763d71ddbe2" x="305" y="0" width="65" height="14"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{dis_grade_cd}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement uuid="f259b406-cd7d-4d4e-bd9e-8e6f8cc1f9ad" x="466" y="0" width="87" height="14"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{Diff}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement uuid="1b54d9f0-1f7f-40d1-be14-5c641b869bb8" x="240" y="0" width="65" height="14"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{dis_grade_other}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement uuid="30c4f7e1-85b7-46ac-b6d2-b24bad37c1a5" x="379" y="1" width="87" height="13"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{Diff2}]]></textFieldExpression>
