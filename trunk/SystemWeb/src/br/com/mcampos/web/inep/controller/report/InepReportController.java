@@ -158,19 +158,19 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		item.setParams( configReportParams( ) );
 		list.add( item );
 
-		/*Relatorio 3*/
-		item = new ReportItem( "Inscrições com Pendências" );
-		item.setReportUrl( "/reports/inep/revisor_3_1" );
-		item.setParams( configReportParams( ) );
-		list.add( item );
-
-		/*Relatorio 3*/
-		item = new ReportItem( "Relação de Discrepância das Provas Orais" );
-		item.setReportUrl( "/reports/inep/revisor_3_2" );
-		item.setParams( configReportParams( ) );
-		list.add( item );
-
 		if ( getRevisor( ) == null ) {
+
+			/*Relatorio 3*/
+			item = new ReportItem( "Extrato de Correção da Parte Oral" );
+			item.setReportUrl( "/reports/inep/revisor_3_1" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 3*/
+			item = new ReportItem( "Discrepâncias por Posto Aplicador" );
+			item.setReportUrl( "/reports/inep/revisor_3_2" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
 
 			/*Relatorio 3*/
 			item = new ReportItem( "Audios por Corretor" );
@@ -240,6 +240,18 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		else {
 
 			if ( getRevisor( ).isCoordenador( ) ) {
+
+				/*Relatorio 3*/
+				item = new ReportItem( "Extrato de Correção da Parte Oral" );
+				item.setReportUrl( "/reports/inep/revisor_3_1" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
+				/*Relatorio 3*/
+				item = new ReportItem( "Discrepâncias por Posto Aplicador" );
+				item.setReportUrl( "/reports/inep/revisor_3_2" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
 
 				/*Relatorio 3*/
 				item = new ReportItem( "Audios por Corretor" );

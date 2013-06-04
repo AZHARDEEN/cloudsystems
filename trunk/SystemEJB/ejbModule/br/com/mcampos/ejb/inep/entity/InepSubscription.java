@@ -54,6 +54,9 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 	@Column( name = "isc_final_grade_nm" )
 	private BigDecimal finalGrade;
 
+	@Column( name = "isc_agreement_grade_nm" )
+	private BigDecimal agreementGrade;
+
 	// bi-directional many-to-one association to InepMedia
 	@OneToMany( mappedBy = "inepSubscription" )
 	private List<InepMedia> medias;
@@ -188,5 +191,15 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 				media.setInepSubscription( this );
 			}
 		}
+	}
+
+	public BigDecimal getAgreementGrade( )
+	{
+		return agreementGrade;
+	}
+
+	public void setAgreementGrade( BigDecimal agreementGrade )
+	{
+		this.agreementGrade = agreementGrade;
 	}
 }
