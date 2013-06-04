@@ -7,6 +7,7 @@ import javax.rmi.PortableRemoteObject;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Messagebox;
 
 import br.com.mcampos.ejb.inep.InepOralFacade;
@@ -31,7 +32,8 @@ public class InepOralTestEventListener implements EventListener<Event>
 						"Download de Audio", Messagebox.OK, Messagebox.ERROR );
 				return;
 			}
-
+			Filedownload.save( medias.get( 0 ).getObject( ),
+					medias.get( 0 ).getMimeType( ), medias.get( 0 ).getName( ) );
 		}
 	}
 

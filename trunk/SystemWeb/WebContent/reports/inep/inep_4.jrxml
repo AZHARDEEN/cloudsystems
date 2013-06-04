@@ -45,7 +45,8 @@ WHERE
   collaborator.col_id_in = users.usr_id_iN AND
   ( inep_distribution.ids_id_in = 2 or  ( inep_distribution.ids_id_in = 4 and dis_grade_in is not null ) ) AND
   inep_distribution.usr_id_in = $P{COMPANY_ID} AND
-  inep_distribution.pct_id_in = $P{EVENT_ID}]]>
+  inep_distribution.pct_id_in = $P{EVENT_ID} AND
+  inep_distribution.pct_id_in = $P{TASK_ID}]]>
 	</queryString>
 	<field name="isc_id_ch" class="java.lang.String"/>
 	<field name="tsk_id_in" class="java.lang.Integer"/>

@@ -11,16 +11,23 @@
                     </columns>
                     <rows>
                         <row spans="2" align="center">
-                                <label id="loginLabelMsg" value="Entre com seu login(email) e senha"/>
-                            </row>
+                        	<hlayout>
+								<image src="/img/inep/logo_celpe_60.jpg"/>
+								<separator width="5px"/>
+								<image src="/img/inep/logo_mec_60.png"/>
+							</hlayout>
+                        </row>
+                        <row spans="2" align="center">
+							<label id="loginLabelMsg" value="Entre com seu login(email) e senha"/>
+                        </row>
                         <row>
-                                <label id="labelIdentification" value="Identificação"/>
-                                <textbox id="identification" width="98%" maxlength="128" constraint="no empty"/>
-                            </row>
+							<label id="labelIdentification" value="Identificação"/>
+							<textbox id="identification" width="98%" maxlength="128" constraint="no empty"/>
+                        </row>
                         <row>
-                                <label id="labelPassword" value="Senha"/>
-                                <textbox id="password" type="password" width="98%" maxlength="16" constraint="no empty"/>
-                            </row>
+							<label id="labelPassword" value="Senha"/>
+							<textbox id="password" type="password" width="98%" maxlength="16" constraint="no empty"/>
+                        </row>
                     </rows>
                 </grid>
                 <separator/>
