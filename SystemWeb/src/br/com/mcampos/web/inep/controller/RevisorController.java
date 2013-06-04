@@ -21,7 +21,6 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.ListitemRenderer;
-import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
@@ -225,10 +224,6 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 
 	private void loadRevisor( MediaDTO media )
 	{
-		if ( !media.getMimeType( ).equals( "application/vnd.ms-excel" ) || !media.getName( ).contains( ".csv" ) ) {
-			Messagebox.show( "Tipo de Arquivo inválido. Use somente csv!!!" );
-			return;
-		}
 		Comboitem item = getComboEvent( ).getSelectedItem( );
 		InepPackage event = ( (InepPackage) item.getValue( ) );
 

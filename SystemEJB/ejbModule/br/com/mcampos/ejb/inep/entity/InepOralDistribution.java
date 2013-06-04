@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @NamedQueries( {
 		@NamedQuery(
 				name = InepOralDistribution.getRevisorOralTests,
-				query = "from InepOralDistribution o WHERE o.revisor = ?1 order by o.id.subscriptionId " ),
+				query = "from InepOralDistribution o WHERE o.revisor = ?1 and o.status = 1 order by o.id.subscriptionId " ),
 		@NamedQuery(
 				name = InepOralDistribution.getOther,
 				query = "from InepOralDistribution o WHERE o.test = ?1 and o.id.collaboratorId <> ?2 " )

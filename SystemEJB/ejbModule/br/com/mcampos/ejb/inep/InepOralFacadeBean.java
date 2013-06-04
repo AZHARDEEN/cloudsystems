@@ -127,7 +127,9 @@ public class InepOralFacadeBean implements InepOralFacade
 		medias = new ArrayList<Media>( );
 		for ( InepMedia media : merged.getMedias( ) ) {
 			if ( media.getTask( ) == null )
-				medias.add( media.getMedia( ) );
+				if ( media.getMedia( ).getObject( ).length > 0 ) {
+					medias.add( media.getMedia( ) );
+				}
 		}
 		return medias;
 	}

@@ -315,6 +315,8 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			return null;
 		}
 		for ( InepMedia inepMedia : merged.getSubscription( ).getMedias( ) ) {
+			if ( inepMedia.getTask( ) == null )
+				continue;
 			if ( inepMedia.getTask( ).equals( merged.getTask( ).getId( ).getId( ) ) ) {
 				obj = inepMedia.getMedia( ).getObject( );
 				break;

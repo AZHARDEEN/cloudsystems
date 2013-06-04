@@ -146,19 +146,19 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 	{
 		List<ReportItem> list = new ArrayList<ReportItem>( );
 		ReportItem item;
-		/*Relatorio 1*/
-		item = new ReportItem( "Extrato de Correção - Corretor" );
-		item.setReportUrl( "/reports/inep/revisor_1" );
-		item.setParams( configReportParams( ) );
-		list.add( item );
-
-		/*Relatorio 3*/
-		item = new ReportItem( "Extrato de Correção Geral" );
-		item.setReportUrl( "/reports/inep/revisor_3" );
-		item.setParams( configReportParams( ) );
-		list.add( item );
 
 		if ( getRevisor( ) == null ) {
+			/*Relatorio 1*/
+			item = new ReportItem( "Extrato de Correção - Corretor" );
+			item.setReportUrl( "/reports/inep/revisor_1" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 3*/
+			item = new ReportItem( "Extrato de Correção Geral" );
+			item.setReportUrl( "/reports/inep/revisor_3" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
 
 			/*Relatorio 3*/
 			item = new ReportItem( "Extrato de Correção da Parte Oral" );
@@ -240,6 +240,17 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		else {
 
 			if ( getRevisor( ).isCoordenador( ) ) {
+				/*Relatorio 1*/
+				item = new ReportItem( "Extrato de Correção - Corretor" );
+				item.setReportUrl( "/reports/inep/revisor_1" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
+				/*Relatorio 3*/
+				item = new ReportItem( "Extrato de Correção Geral" );
+				item.setReportUrl( "/reports/inep/revisor_3" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
 
 				/*Relatorio 3*/
 				item = new ReportItem( "Extrato de Correção da Parte Oral" );
