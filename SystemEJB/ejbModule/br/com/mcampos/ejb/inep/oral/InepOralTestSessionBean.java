@@ -118,7 +118,7 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 				}
 			}
 			else {
-				test.getSubscription( ).setOralGrade( new BigDecimal( grade ) );
+				test.getSubscription( ).setAgreementGrade( new BigDecimal( grade ) );
 			}
 		}
 		else {
@@ -128,7 +128,7 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 				test.setVarianceStatus( 4 );
 			}
 			else {
-				test.getSubscription( ).setOralGrade( new BigDecimal( grade ) );
+				test.getSubscription( ).setAgreementGrade( new BigDecimal( grade ) );
 			}
 		}
 	}

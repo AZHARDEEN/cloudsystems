@@ -1,5 +1,6 @@
 package br.com.mcampos.web.inep.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -111,12 +112,20 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	@Listen( "onSelect = listbox#listTable" )
 	public void onSelect( Event evt )
 	{
+		@SuppressWarnings( "unchecked" )
+		ListModelList<InepDistribution> model = ( (ListModelList<InepDistribution>) (Object) getListbox( ).getModel( ) );
 		if ( getListbox( ) != null && getListbox( ).getSelectedItem( ) != null ) {
-			InepDistribution d = (InepDistribution) getListbox( ).getSelectedItem( ).getValue( );
-			showFields( d );
-			if ( d.getRevisor( ).isCoordenador( ) ) {
-				EventQueues.lookup( coordinatorEvent, true ).publish(
-						new CoordinatorEventChange( getSession( ).getOtherDistributions( d.getTest( ) ) ) );
+			InepDistribution d = null;
+			for ( InepDistribution item : model.getSelection( ) ) {
+				d = item;
+				break;
+			}
+			if ( d != null ) {
+				showFields( d );
+				if ( d.getRevisor( ).isCoordenador( ) ) {
+					EventQueues.lookup( coordinatorEvent, true ).publish(
+							new CoordinatorEventChange( getSession( ).getOtherDistributions( d.getTest( ) ) ) );
+				}
 			}
 		}
 		updateCounters( );
@@ -148,7 +157,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	{
 		if ( rev != null ) {
 			notas.setSelectedItem( null );
-			showFrame( );
+			showFrame( rev );
 			if ( rev.getNota( ) != null ) {
 				notas.setSelectedIndex( rev.getNota( ) );
 			}
@@ -200,6 +209,12 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		}
 		cmdInepSave.setDisabled( false );
 		cmdCancel.setDisabled( false );
+		if ( model.getSize( ) > 0 ) {
+			ArrayList<InepDistribution> sel = new ArrayList<InepDistribution>( 1 );
+			sel.add( model.get( 0 ) );
+			model.setSelection( sel );
+			onSelect( null );
+		}
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -251,14 +266,21 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		}
 	}
 
-	private void showFrame( )
+	private void showFrame( InepDistribution item )
 	{
-		InepDistribution item = (InepDistribution) listbox.getSelectedItem( ).getValue( );
+		if ( item == null )
+			return;
 		hideTasks( );
 		// String.format( "/img/pdf/%s-%d-4.pdf", item.getId(
 		// ).getSubscriptionId( ), item.getId( ).getTaskId( ) );
-		AMedia media = new AMedia( null, null, null, getSession( ).getMedia( item.getTest( ) ) );
-		framePdf.setContent( media );
+		byte[ ] obj = getSession( ).getMedia( item.getTest( ) );
+		if ( obj != null && obj.length > 0 ) {
+			AMedia media = new AMedia( null, null, null, obj );
+			framePdf.setContent( media );
+		}
+		else
+			framePdf.setContent( null );
+
 	}
 
 	private void loadCombobox( )

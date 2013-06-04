@@ -1,0 +1,1 @@
+ALTER TABLE inep.inep_subscription ADD COLUMN isc_agreement_grade_nm numeric(6,3);
