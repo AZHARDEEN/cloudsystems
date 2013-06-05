@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @NamedQueries( {
 		@NamedQuery(
 				name = InepOralTest.getVarianceOralOnly,
-				query = "from InepOralTest o WHERE o.subscription.event = ?1 and o.status.id = 3 order by station " ),
+				query = "from InepOralTest o WHERE o.subscription.event = ?1 and o.status.id = 3 and o.varianceStatus < 10 order by station " ),
 		@NamedQuery(
 				name = InepOralTest.getBySubscription,
 				query = "from InepOralTest o WHERE o.subscription = ?1 " )
