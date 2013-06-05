@@ -45,6 +45,7 @@
 				<tab label="Provas da Parte Escrita" />
 				<tab label="Notas da Parte Oral" />
 				<tab label="Tarefas" />
+				<tab label="Operações" />
 			</tabs>
 			<tabpanels>
 				<tabpanel >
@@ -127,6 +128,19 @@
 							</row>
 						</rows>
 					</grid>
+				</tabpanel>
+				<tabpanel>
+					<groupbox width="200px">
+						<caption>
+							Trocar Provas entre Tarefas
+						</caption>
+						<vlayout>
+							<listbox rows="4" id="swapTaskListbox" multiple="true" checkmark="true" >
+							</listbox>
+							<checkbox id="resetDistribution" label="Reiniciar Correção" />
+							<button id="swapTask" label="Trocar as Provas" autodisable="self"/>
+						</vlayout>
+					</groupbox>
 				</tabpanel>
 			</tabpanels>
 		</tabbox>

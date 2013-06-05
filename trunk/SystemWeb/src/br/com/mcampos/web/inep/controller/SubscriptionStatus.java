@@ -6,10 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.event.OpenEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Bandbox;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Iframe;
@@ -17,6 +19,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
@@ -29,6 +32,7 @@ import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.inep.team.TeamSession;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
+import br.com.mcampos.web.inep.controller.renderer.InepTaskListRenderer;
 import br.com.mcampos.web.inep.utils.DistributionInfoListRenderer;
 import br.com.mcampos.web.inep.utils.SubscriptionItemRenderer;
 
@@ -78,6 +82,12 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	@Wire
 	private Combobox cmbTask;
 
+	@Wire
+	private Listbox swapTaskListbox;
+
+	@Wire
+	private Checkbox resetDistribution;
+
 	@Override
 	protected Class<TeamSession> getSessionClass( )
 	{
@@ -90,6 +100,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		super.doAfterCompose( comp );
 		listBox.setItemRenderer( new SubscriptionItemRenderer( ) );
 		listDetail.setItemRenderer( new DistributionInfoListRenderer( ) );
+		swapTaskListbox.setItemRenderer( new InepTaskListRenderer( ) );
 		loadCombobox( );
 
 		if ( getRevisor( ) == null ) {
@@ -110,7 +121,11 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		}
 		if ( getComboEvent( ).getItemCount( ) > 0 ) {
 			getComboEvent( ).setSelectedIndex( 0 );
-			loadComboboxTask( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ) );
+			InepPackage event = getComboEvent( ).getSelectedItem( ).getValue( );
+			loadComboboxTask( event );
+			ListModelList<InepTask> tasks = new ListModelList<InepTask>( getSession( ).getTasks( event ) );
+			tasks.setMultiple( true );
+			swapTaskListbox.setModel( tasks );
 		}
 	}
 
@@ -284,6 +299,20 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 			}
 		}
 		return revisor;
+	}
+
+	@Listen( "onClick=#swapTask" )
+	public void onSwapTask( MouseEvent evt )
+	{
+		ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
+		if ( model == null )
+			return;
+		if ( model.getSelection( ).size( ) != 2 ) {
+			Messagebox.show( "Por favor selecione 2(duas) tarefas apenas", "Trocar Tarefas", Messagebox.OK, Messagebox.EXCLAMATION );
+			return;
+		}
+		if ( evt != null )
+			evt.stopPropagation( );
 	}
 
 }
