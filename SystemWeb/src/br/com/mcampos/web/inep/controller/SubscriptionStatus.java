@@ -269,7 +269,9 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	{
 		InepTask task = (InepTask) cmbTask.getSelectedItem( ).getValue( );
 		byte[ ] obj = getSession( ).getMedia( s, task );
-		AMedia media = new AMedia( null, null, null, obj );
+		AMedia media = null;
+		if ( obj != null )
+			media = new AMedia( s.getId( ).getId( ) + "-" + task.getId( ).getId( ) + ".pdf", "pdf", "application/pdf", obj );
 		framePdf.setContent( media );
 	}
 

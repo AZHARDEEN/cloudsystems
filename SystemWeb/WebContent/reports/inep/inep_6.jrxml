@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="336"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Zebra" mode="Transparent">
 		<conditionalStyle>
@@ -14,7 +14,7 @@
 		<defaultValueExpression><![CDATA["T:\\Workspaces\\indigo\\cloudsystems\\SystemWeb\\WebContent\\img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
@@ -31,16 +31,20 @@
 	isc_written_grade_nm written,
 	isc_oral_grade_nm oral,
 	CAST (
-		CASE WHEN
-			isc_final_grade_nm is not null THEN isc_final_grade_nm
-			ELSE (( coalesce ( isc_written_grade_nm, 0 ) + coalesce ( isc_oral_grade_nm, 0 ) )/2)
+		CASE
+			WHEN isc_final_grade_nm is not null THEN isc_final_grade_nm
+			ELSE
+				CASE WHEN coalesce ( isc_written_grade_nm, 0 ) <= coalesce ( isc_oral_grade_nm, 0 ) THEN isc_written_grade_nm
+				ELSE isc_oral_grade_nm END
 		END AS NUMERIC(6,3)
 	) as final
 FROM
 	INEP.INEP_SUBSCRIPTION
+
 WHERE
   INEP_SUBSCRIPTION.usr_id_in = $P{COMPANY_ID} AND
-  INEP_SUBSCRIPTION.pct_id_in = $P{EVENT_ID}]]>
+  INEP_SUBSCRIPTION.pct_id_in = $P{EVENT_ID}
+ORDER BY isc_id_ch]]>
 	</queryString>
 	<field name="subscription" class="java.lang.String"/>
 	<field name="written" class="java.math.BigDecimal"/>
@@ -105,17 +109,17 @@ WHERE
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{subscription}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField pattern="###0.000" isBlankWhenNull="true">
 					<reportElement uuid="c5f5b62e-04cb-40f5-9b3b-ed43c2210c21" x="187" y="0" width="100" height="16"/>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$F{written}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField pattern="###0.000" isBlankWhenNull="true">
 					<reportElement uuid="cf416393-89f7-42cc-a573-196ee75057e3" x="336" y="0" width="100" height="16"/>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$F{oral}]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
+				<textField pattern="###0.000" isBlankWhenNull="true">
 					<reportElement uuid="2d51bd40-36e4-490c-b9d6-6c44ac598389" x="455" y="0" width="100" height="16"/>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$F{final}]]></textFieldExpression>

@@ -135,6 +135,7 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		loadCombobox( );
 		if ( getRevisor( ) == null ) {
 			generalView.setVisible( true );
+			generalDiv.setVisible( true );
 		}
 		else if ( getRevisor( ).isCoordenador( ) ) {
 			generalView.setVisible( true );
@@ -193,6 +194,12 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 			/*Relatorio 7*/
 			item = new ReportItem( "Concentração de Notas por Corretor" );
 			item.setReportUrl( "/reports/inep/inep_7" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 7*/
+			item = new ReportItem( "Concentração de Notas por Corretor - Percentual" );
+			item.setReportUrl( "/reports/inep/inep_7_1" );
 			item.setParams( configReportParams( ) );
 			list.add( item );
 
@@ -282,6 +289,18 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 				item.setParams( configReportParams( ) );
 				list.add( item );
 
+				/*Relatorio 7*/
+				item = new ReportItem( "Concentração de Notas por Corretor" );
+				item.setReportUrl( "/reports/inep/inep_7_2" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
+				/*Relatorio 7*/
+				item = new ReportItem( "Concentração de Notas por Corretor - Percentual" );
+				item.setReportUrl( "/reports/inep/inep_7_3" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
+
 				/*Relatorio 4*/
 				item = new ReportItem( "Situação da Correção - Corretores" );
 				item.setReportUrl( "/reports/inep/inep_2" );
@@ -345,7 +364,8 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 		}
 		if ( getRevisor( ) != null ) {
 			params.put( "EVENT_ID", getRevisor( ).getId( ).getEventId( ) );
-			params.put( "TASK_ID", getRevisor( ).getTask( ).getId( ).getId( ) );
+			if ( getRevisor( ).getTask( ) != null )
+				params.put( "TASK_ID", getRevisor( ).getTask( ).getId( ).getId( ) );
 			params.put( "COLLABORATOR_ID", getRevisor( ).getId( ).getSequence( ) );
 			if ( getRevisor( ).isCoordenador( ) ) {
 				if ( getCmbRevisor( ).getSelectedItem( ) != null ) {
@@ -407,13 +427,28 @@ public class InepReportController extends BaseDBLoggedController<TeamSession>
 	private void loadTasks( InepPackage event )
 	{
 
-		ComboboxUtils.load( getCmbTask( ), getSession( ).getTasks( event ),
-				getRevisor( ) == null ? null : getRevisor( ).getTask( ), true );
+		if ( getRevisor( ) == null ) {
+			ComboboxUtils.load( getCmbTask( ), getSession( ).getTasks( event ), null, true );
+		}
+		else if ( getRevisor( ).getTask( ) != null ) {
+			ComboboxUtils.load( getCmbTask( ), getSession( ).getTasks( event ), getRevisor( ).getTask( ), true );
+		}
+		else {
+			loadRevisor( null );
+		}
 	}
 
 	private void loadRevisor( InepTask task )
 	{
-		ComboboxUtils.load( getCmbRevisor( ), getSession( ).getTeam( task ), getRevisor( ) == null ? null : getRevisor( ), true );
+		if ( getRevisor( ) == null ) {
+			ComboboxUtils.load( getCmbRevisor( ), getSession( ).getTeam( task ), null, true );
+		}
+		else {
+			if ( getRevisor( ).getTask( ) != null )
+				ComboboxUtils.load( getCmbRevisor( ), getSession( ).getTeam( task ), getRevisor( ), true );
+			else
+				ComboboxUtils.load( getCmbRevisor( ), getSession( ).getOralTeam( getRevisor( ).getEvent( ) ), getRevisor( ), true );
+		}
 		if ( getLoggedUser( ).getId( ).equals( 1 ) ) {
 			setReports( );
 		}

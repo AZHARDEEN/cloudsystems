@@ -48,7 +48,7 @@
 			</tabs>
 			<tabpanels>
 				<tabpanel >
-					<listbox vflex="true" pagingPosition="top" autopaging="true" mold="paging" 
+					<listbox pagingPosition="top" autopaging="true" mold="paging" rows="8"
 						emptyMessage="Não existem informações da inscrição" id="listDetail" >
 						<listhead>
 							<listheader label="Tarefa" 		width="50px" 	align="Center"/>
