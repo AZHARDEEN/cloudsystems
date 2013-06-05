@@ -146,28 +146,28 @@ order by
 				<staticText>
 					<reportElement uuid="40e52cce-aaa6-4023-8834-4dac33530cc7" x="4" y="36" width="234" height="15"/>
 					<textElement verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="false"/>
 					</textElement>
 					<text><![CDATA[Corretor]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="cd127a48-2cf4-4031-a0c7-4eb4c8289187" x="250" y="20" width="70" height="15"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
+						<font size="8" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Corretor = Coord]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="57675918-c01e-48ac-b9e5-e5db3c28c72c" x="4" y="16" width="50" height="20"/>
 					<textElement verticalAlignment="Top">
-						<font size="14" isBold="true"/>
+						<font size="14" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Tarefa:]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
 					<reportElement uuid="1d49b26a-84e1-4b8c-9af2-8f4e3d916f15" x="54" y="16" width="100" height="20"/>
 					<textElement verticalAlignment="Top">
-						<font size="14" isBold="true"/>
+						<font size="14" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{tarefa}]]></textFieldExpression>
 				</textField>
@@ -177,28 +177,28 @@ order by
 				<staticText>
 					<reportElement uuid="b1e116b1-b428-4da6-a7a0-be77185963c7" x="520" y="35" width="35" height="15"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="false"/>
 					</textElement>
 					<text><![CDATA[Total]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="cce2f5e1-4a01-42f3-85e9-4c4c02602742" x="337" y="20" width="70" height="15"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
+						<font size="8" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Corretor > Coord]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="b91bb9e8-656a-401a-aef1-a2ae7830fd48" x="427" y="20" width="70" height="15"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
+						<font size="8" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Corretor < Coord]]></text>
 				</staticText>
 				<staticText>
 					<reportElement uuid="a57ea86e-6823-4cdc-b8ce-81fc1bfb9811" x="250" y="1" width="247" height="20"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="false"/>
 					</textElement>
 					<text><![CDATA[Análise das Discrepâncias]]></text>
 				</staticText>

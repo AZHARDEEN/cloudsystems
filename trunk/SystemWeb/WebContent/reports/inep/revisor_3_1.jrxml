@@ -124,6 +124,13 @@ ORDER BY
 			</textField>
 			<textField>
 				<reportElement uuid="847edf09-1bee-444e-96ca-8673084b93b1" x="353" y="0" width="54" height="16"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{iot_interviewer_grade_nm}]]></textFieldExpression>
 			</textField>

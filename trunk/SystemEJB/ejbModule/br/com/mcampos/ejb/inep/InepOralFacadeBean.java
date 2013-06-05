@@ -159,7 +159,10 @@ public class InepOralFacadeBean implements InepOralFacade
 		if ( merged == null )
 			throw new InvalidParameterException( "Item não existe (InepOralDistribution)" );
 		merged.setNota( grade );
-		merged.setStatus( statusSession.get( DistributionStatus.statusRevised ) );
+		if ( item.getRevisor( ).isCoordenador( ) )
+			merged.setStatus( statusSession.get( DistributionStatus.statusRevised ) );
+		else
+			merged.setStatus( statusSession.get( DistributionStatus.statusFinalRevised ) );
 		/*
 		 * Cuidado, a posicao da linha abaixo e importante!!!!
 		 */

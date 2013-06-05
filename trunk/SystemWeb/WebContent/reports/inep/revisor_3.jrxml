@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="397"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
 		<conditionalStyle>
@@ -22,13 +22,21 @@
 	<queryString>
 		<![CDATA[select
 	*,
-	case when task1_grade3 is null then ( ( task1_grade1 + task1_grade2 ) / 2 ) else task1_grade3 end as finalgrade1,
-	case when task2_grade3 is null then ( ( task2_grade1 + task2_grade2 ) / 2 ) else task2_grade3 end as finalgrade2,
-	case when task3_grade3 is null then ( ( task3_grade1 + task3_grade2 ) / 2 ) else task3_grade3 end as finalgrade3,
-	case when task4_grade3 is null then ( ( task4_grade1 + task4_grade2 ) / 2 ) else task4_grade3 end as finalgrade4
+	case when task1_grade3 is null then case when abs (task1_grade1 - task1_grade2) >=2 then null else ( ( task1_grade1 + task1_grade2 ) / 2 ) end
+	else task1_grade3
+	end as finalgrade1,
+	case when task2_grade3 is null then case when abs (task2_grade1 - task2_grade2) >=2 then null else  ( ( task2_grade1 + task2_grade2 ) / 2 ) end
+	else task2_grade3
+	end as finalgrade2,
+	case when task3_grade3 is null then case when abs (task3_grade1 - task3_grade2) >=2 then null else  ( ( task3_grade1 + task3_grade2 ) / 2 ) end
+	else task3_grade3
+	end as finalgrade3,
+	case when task4_grade3 is null then case when abs (task4_grade1 - task4_grade2) >=2 then null else  ( ( task4_grade1 + task4_grade2 ) / 2 ) end
+	else task4_grade3
+	end as finalgrade4
 from
 	inep.gradeview2
-order by usr_id_in, pct_id_in, isc_id_ch	]]>
+order by usr_id_in, pct_id_in, isc_id_ch]]>
 	</queryString>
 	<field name="usr_id_in" class="java.lang.Integer"/>
 	<field name="pct_id_in" class="java.lang.Integer"/>
