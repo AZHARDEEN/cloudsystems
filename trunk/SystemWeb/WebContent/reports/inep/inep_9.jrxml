@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="280"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Zebra" mode="Transparent">
 		<conditionalStyle>
@@ -139,6 +139,9 @@ order by
 	<variable name="pcGreather" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{greather_grade}.doubleValue()/$V{Total}.doubleValue()]]></variableExpression>
 	</variable>
+	<variable name="variable1" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{greather_grade} + $F{less_grade}]]></variableExpression>
+	</variable>
 	<group name="Tarefa" keepTogether="true">
 		<groupExpression><![CDATA[$F{tarefa}]]></groupExpression>
 		<groupHeader>
@@ -151,7 +154,7 @@ order by
 					<text><![CDATA[Corretor]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="cd127a48-2cf4-4031-a0c7-4eb4c8289187" x="250" y="20" width="70" height="15"/>
+					<reportElement uuid="cd127a48-2cf4-4031-a0c7-4eb4c8289187" x="238" y="16" width="99" height="19"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 					</textElement>
@@ -176,20 +179,20 @@ order by
 				</line>
 				<staticText>
 					<reportElement uuid="b1e116b1-b428-4da6-a7a0-be77185963c7" x="520" y="35" width="35" height="15"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font isBold="false"/>
 					</textElement>
 					<text><![CDATA[Total]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="cce2f5e1-4a01-42f3-85e9-4c4c02602742" x="337" y="20" width="70" height="15"/>
+					<reportElement uuid="cce2f5e1-4a01-42f3-85e9-4c4c02602742" x="311" y="16" width="107" height="19"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Corretor > Coord]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="b91bb9e8-656a-401a-aef1-a2ae7830fd48" x="427" y="20" width="70" height="15"/>
+					<reportElement uuid="b91bb9e8-656a-401a-aef1-a2ae7830fd48" isPrintRepeatedValues="false" x="390" y="16" width="113" height="19"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 					</textElement>
@@ -213,24 +216,31 @@ order by
 					<text><![CDATA[%]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="b6c6459d-9863-42e9-b813-f0eed6fa8993" x="372" y="36" width="35" height="13"/>
+					<reportElement uuid="b6c6459d-9863-42e9-b813-f0eed6fa8993" x="364" y="36" width="35" height="13"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[%]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="47c76b16-32bc-42d2-a955-b8a89143c5c9" x="337" y="36" width="35" height="13"/>
+					<reportElement uuid="47c76b16-32bc-42d2-a955-b8a89143c5c9" x="329" y="36" width="35" height="13"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Qtde]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="becf5376-1dd3-418e-a93b-3d2f444a03b1" x="462" y="35" width="35" height="13"/>
+					<reportElement uuid="becf5376-1dd3-418e-a93b-3d2f444a03b1" x="445" y="35" width="35" height="13"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[%]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="ee9bd2a2-c1c5-465f-a8a2-da6b479d811c" x="427" y="35" width="35" height="13"/>
+					<reportElement uuid="ee9bd2a2-c1c5-465f-a8a2-da6b479d811c" x="410" y="35" width="35" height="13"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Qtde]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="bd4871ef-9ca0-4e32-829a-cdf4d4ecc2ef" x="485" y="34" width="35" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[Discr.]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
@@ -288,22 +298,22 @@ order by
 					<textFieldExpression><![CDATA[$F{equal_grade}]]></textFieldExpression>
 				</textField>
 				<textField pattern="000" isBlankWhenNull="true">
-					<reportElement uuid="51f11974-b3d7-498a-a64c-e01aea054954" x="337" y="1" width="35" height="13"/>
+					<reportElement uuid="51f11974-b3d7-498a-a64c-e01aea054954" x="329" y="1" width="35" height="13"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{greather_grade}]]></textFieldExpression>
 				</textField>
 				<textField pattern="000" isBlankWhenNull="true">
-					<reportElement uuid="89805a06-35b5-4696-8844-fe860f91fae3" x="427" y="1" width="35" height="13"/>
+					<reportElement uuid="89805a06-35b5-4696-8844-fe860f91fae3" x="410" y="1" width="35" height="13"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{less_grade}]]></textFieldExpression>
 				</textField>
 				<textField pattern="000" isBlankWhenNull="true">
-					<reportElement uuid="e4584c19-dd18-4530-84d5-a200f7312a65" x="520" y="1" width="33" height="13"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<reportElement uuid="e4584c19-dd18-4530-84d5-a200f7312a65" x="520" y="1" width="35" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{Total}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.0 %" isBlankWhenNull="true">
-					<reportElement uuid="247adf44-ee97-4c27-90f2-6f4e0a1ad04d" x="372" y="1" width="35" height="13"/>
+					<reportElement uuid="247adf44-ee97-4c27-90f2-6f4e0a1ad04d" x="364" y="1" width="35" height="13"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{pcGreather}]]></textFieldExpression>
 				</textField>
@@ -313,9 +323,14 @@ order by
 					<textFieldExpression><![CDATA[$V{pcEqual}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.0 %" isBlankWhenNull="true">
-					<reportElement uuid="a82d7d30-cb99-46d8-8e53-b90682868e10" x="462" y="1" width="35" height="13"/>
+					<reportElement uuid="a82d7d30-cb99-46d8-8e53-b90682868e10" x="445" y="1" width="35" height="13"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$V{pcLess}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="6bdce893-0038-429c-9eeb-db0107c24121" x="484" y="1" width="36" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

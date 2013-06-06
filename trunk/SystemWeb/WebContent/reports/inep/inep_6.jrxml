@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="232"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Zebra" mode="Transparent">
 		<conditionalStyle>
@@ -27,24 +27,19 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	isc_id_ch subscription,
-	isc_written_grade_nm written,
-	isc_oral_grade_nm oral,
-	CAST (
-		CASE
-			WHEN isc_final_grade_nm is not null THEN isc_final_grade_nm
-			ELSE
-				CASE WHEN coalesce ( isc_written_grade_nm, 0 ) <= coalesce ( isc_oral_grade_nm, 0 ) THEN isc_written_grade_nm
-				ELSE isc_oral_grade_nm END
-		END AS NUMERIC(6,3)
-	) as final
+	s.isc_id_ch subscription,
+	s.isc_written_grade_nm written,
+	coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) oral,
+	case when s.isc_written_grade_nm < coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm )
+	then s.isc_written_grade_nm else coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) end as final
 FROM
-	INEP.INEP_SUBSCRIPTION
-
+	INEP.INEP_SUBSCRIPTION s LEFT OUTER JOIN INEP.INEP_ORAL_test o on (
+		s.usr_id_in = o.usr_id_in and s.pct_id_in = o.pct_id_in
+		and s.isc_id_ch = o.isc_id_ch )
 WHERE
-  INEP_SUBSCRIPTION.usr_id_in = $P{COMPANY_ID} AND
-  INEP_SUBSCRIPTION.pct_id_in = $P{EVENT_ID}
-ORDER BY isc_id_ch]]>
+  s.usr_id_in = $P{COMPANY_ID} AND
+  s.pct_id_in = $P{EVENT_ID}
+ORDER BY s.isc_id_ch]]>
 	</queryString>
 	<field name="subscription" class="java.lang.String"/>
 	<field name="written" class="java.math.BigDecimal"/>
