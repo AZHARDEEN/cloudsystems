@@ -1,5 +1,6 @@
 package br.com.mcampos.web.inep.controller;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.zkoss.zk.ui.event.Event;
@@ -37,6 +38,9 @@ public class WorkStatusController extends BaseDBLoggedController<TeamSession>
 
 	@Wire
 	private Flashchart chartEvent;
+
+	@Wire
+	private Flashchart chartSubscriptions;
 
 	@Wire
 	@Override
@@ -120,16 +124,30 @@ public class WorkStatusController extends BaseDBLoggedController<TeamSession>
 				model.setValue( desc, n.longValue( ) + value );
 			}
 		}
-		this.chartTask1.setModel( model1 );
-		this.chartTask2.setModel( model2 );
-		this.chartTask3.setModel( model3 );
-		this.chartTask4.setModel( model4 );
-		this.chartEvent.setModel( model );
+		chartTask1.setModel( model1 );
+		chartTask2.setModel( model2 );
+		chartTask3.setModel( model3 );
+		chartTask4.setModel( model4 );
+		chartEvent.setModel( model );
+
+		list = getSession( ).getSubscriptionStatus( event );
+		if ( SysUtils.isEmpty( list ) == false ) {
+			Object[ ] item = list.get( 0 );
+			model = new SimplePieModel( );
+			model.setValue( "Total", (BigInteger) item[ 0 ] );
+			model.setValue( "Finalizadas", (BigInteger) item[ 1 ] );
+			chartSubscriptions.setModel( model );
+			chartSubscriptions.setVisible( true );
+		}
+		else {
+			chartSubscriptions.setVisible( false );
+		}
+
 	}
 
 	public Combobox getComboEvent( )
 	{
-		return this.comboEvent;
+		return comboEvent;
 	}
 
 	private String getStatusDescription( Integer status )

@@ -330,11 +330,12 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 					@Override
 					public void onEvent( Event e )
 					{
-						if ( Messagebox.ON_OK.equals( e.getName( ) ) ) {
+						if ( Messagebox.ON_YES.equals( e.getName( ) ) ) {
 							ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
 							ArrayList<InepTask> tasks = new ArrayList<InepTask>( model.getSelection( ) );
 							getSession( ).swapTasks( getCurrentSubscription( ), tasks.get( 0 ), tasks.get( 1 ) );
 							onSelect( null );
+							Messagebox.show( "As provas foram trocadas com suceso", "Trocar Provas", Messagebox.OK, Messagebox.INFORMATION );
 						}
 					}
 				} );
@@ -361,11 +362,12 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 					@Override
 					public void onEvent( Event e )
 					{
-						if ( Messagebox.ON_OK.equals( e.getName( ) ) ) {
+						if ( Messagebox.ON_YES.equals( e.getName( ) ) ) {
 							ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
 							ArrayList<InepTask> tasks = new ArrayList<InepTask>( model.getSelection( ) );
 							getSession( ).resetTasks( getCurrentSubscription( ), tasks );
 							onSelect( null );
+							Messagebox.show( "Reinicialização concluída com sucesso", "Reinicar Tarefa", Messagebox.OK, Messagebox.INFORMATION );
 						}
 					}
 				} );

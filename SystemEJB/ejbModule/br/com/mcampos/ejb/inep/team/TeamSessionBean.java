@@ -796,4 +796,19 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		m1.setTask( m2.getTask( ) );
 		m2.setTask( aux );
 	}
+
+	@Override
+	public List<Object[ ]> getSubscriptionStatus( InepPackage event )
+	{
+		String sql;
+
+		sql = "select count(*) total, count(s.isc_written_grade_nm) done from inep.inep_subscription s where s.usr_id_in = "
+				+ event.getId( ).getCompanyId( )
+				+ " and s.pct_id_in = " + event.getId( ).getId( ) + " and s.isc_id_ch in ( select distinct isc_id_ch from inep.inep_test t " +
+				"where t.usr_id_in = s.usr_id_in and t.pct_id_in = s.pct_id_in and t.isc_id_ch = s.isc_id_ch )";
+		Query query = getEntityManager( ).createNativeQuery( sql );
+		@SuppressWarnings( "unchecked" )
+		List<Object[ ]> result = query.getResultList( );
+		return result;
+	}
 }

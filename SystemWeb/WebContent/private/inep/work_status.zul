@@ -16,37 +16,71 @@
 			   		<hlayout>
 			   			<div align="center" >
 				   			<vlayout>
-					   			<label  value = "Tarefa 1"/>
-					   			<flashchart type="pie" id="chartTask1" width="250px" />
+				   				<groupbox>
+					   				<caption>
+							   			<label  value = "Tarefa 1"/>
+					   				</caption>
+				   					<flashchart type="pie" id="chartTask1" width="250px" />
+				   				</groupbox>
 				   			</vlayout>
 			   			</div>
 			   			<div align="center" >
 				   			<vlayout>
-					   			<label  value = "Tarefa 2"/>
-					   			<flashchart type="pie" id="chartTask2" width="250px" />
+				   				<groupbox>
+					   				<caption>
+							   			<label  value = "Tarefa 2"/>
+					   				</caption>
+						   			<flashchart type="pie" id="chartTask2" width="250px" />
+						   		</groupbox>
 				   			</vlayout>
 			   			</div>
 			   			<div align="center" >
 				   			<vlayout>
-					   			<label  value = "Tarefa 3"/>
-					   			<flashchart type="pie" id="chartTask3" width="250px" />
+				   				<groupbox>
+					   				<caption>
+							   			<label  value = "Tarefa 3"/>
+					   				</caption>
+						   			<flashchart type="pie" id="chartTask3" width="250px" />
+						   		</groupbox>
 				   			</vlayout>
 			   			</div>
 			   			<div align="center" >
 				   			<vlayout>
-					   			<label  value = "Tarefa 4"/>
-					   			<flashchart type="pie" id="chartTask4" width="250px" />
+				   				<groupbox>
+					   				<caption>
+							   			<label  value = "Tarefa 4"/>
+					   				</caption>
+					   				<flashchart type="pie" id="chartTask4" width="250px" />
+					   			</groupbox>
 				   			</vlayout>
 			   			</div>
 			   		</hlayout>
-			   		<div align="center" >
-			   			<div align="center" >
-				   			<vlayout>
-					   			<label  value = "Evento"/>
-								<flashchart type="pie" id="chartEvent" />
-				   			</vlayout>
-			   			</div>
-					</div>
+			   		<hlayout>
+				   		<div align="center" >
+				   			<div align="center" >
+					   			<vlayout>
+					   				<groupbox>
+						   				<caption>
+								   			<label  value = "Evento"/>
+						   				</caption>
+										<flashchart type="pie" id="chartEvent" />
+									</groupbox>
+					   			</vlayout>
+				   			</div>
+						</div>
+				   		<div align="center" >
+				   			<div align="center" >
+					   			<vlayout>
+					   				<groupbox>
+						   				<caption>
+								   			<label  value = "Inscrições Finalizadas"/>
+						   				</caption>
+										<flashchart type="pie" id="chartSubscriptions"  />
+									</groupbox>
+					   			</vlayout>
+				   			</div>
+						</div>
+					</hlayout>
 	            </div>
 	        </center>
 		</borderlayout>   		
