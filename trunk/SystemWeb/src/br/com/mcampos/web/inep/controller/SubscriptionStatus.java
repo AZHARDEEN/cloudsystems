@@ -1,5 +1,6 @@
 package br.com.mcampos.web.inep.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -204,17 +205,22 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	@Listen( "onSelect = #list" )
 	public void onSelect( Event evt )
 	{
-		Listitem item = listBox.getSelectedItem( );
-		if ( item == null || item.getValue( ) == null ) {
-			return;
-		}
-		InepSubscription s = item.getValue( );
+		InepSubscription s = getCurrentSubscription( );
 		subscription.setValue( s.getId( ).getId( ) );
 		subscription.close( );
 		showInfo( s );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
+	}
+
+	private InepSubscription getCurrentSubscription( )
+	{
+		Listitem item = listBox.getSelectedItem( );
+		if ( item == null || item.getValue( ) == null ) {
+			return null;
+		}
+		return item.getValue( );
 	}
 
 	@Listen( "onSelect = #cmbTask" )
@@ -301,18 +307,69 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		return revisor;
 	}
 
+	@SuppressWarnings( { "unchecked", "rawtypes" } )
 	@Listen( "onClick=#swapTask" )
 	public void onSwapTask( MouseEvent evt )
 	{
 		ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
-		if ( model == null )
+		if ( model == null || SysUtils.isEmpty( model.getSelection( ) ) ) {
+			Messagebox.show( "Por favor selecione ao menos 2(duas) tarefas", "Trocar Tarefa", Messagebox.OK, Messagebox.EXCLAMATION );
 			return;
+		}
+		if ( getCurrentSubscription( ) == null ) {
+			Messagebox.show( "Não existe uma inscrição selecionada", "Reinicar Tarefa", Messagebox.OK, Messagebox.ERROR );
+			return;
+		}
 		if ( model.getSelection( ).size( ) != 2 ) {
 			Messagebox.show( "Por favor selecione 2(duas) tarefas apenas", "Trocar Tarefas", Messagebox.OK, Messagebox.EXCLAMATION );
 			return;
 		}
+		Messagebox.show( "Confirma a ação para as tarefas selecionadas", "Reinicar Tarefa", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+				new org.zkoss.zk.ui.event.EventListener( )
+				{
+					@Override
+					public void onEvent( Event e )
+					{
+						if ( Messagebox.ON_OK.equals( e.getName( ) ) ) {
+							ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
+							ArrayList<InepTask> tasks = new ArrayList<InepTask>( model.getSelection( ) );
+							getSession( ).swapTasks( getCurrentSubscription( ), tasks.get( 0 ), tasks.get( 1 ) );
+							onSelect( null );
+						}
+					}
+				} );
 		if ( evt != null )
 			evt.stopPropagation( );
 	}
 
+	@SuppressWarnings( { "unchecked", "rawtypes" } )
+	@Listen( "onClick=#resetDistribution" )
+	public void onResetDistribution( MouseEvent evt )
+	{
+		ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
+		if ( model == null || SysUtils.isEmpty( model.getSelection( ) ) ) {
+			Messagebox.show( "Por favor selecione ao menos 1(uma) tarefa", "Reinicar Tarefa", Messagebox.OK, Messagebox.EXCLAMATION );
+			return;
+		}
+		if ( getCurrentSubscription( ) == null ) {
+			Messagebox.show( "Não existe uma inscrição selecionada", "Reinicar Tarefa", Messagebox.OK, Messagebox.ERROR );
+			return;
+		}
+		Messagebox.show( "Confirma a ação para as tarefas selecionadas", "Reinicar Tarefa", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION,
+				new org.zkoss.zk.ui.event.EventListener( )
+				{
+					@Override
+					public void onEvent( Event e )
+					{
+						if ( Messagebox.ON_OK.equals( e.getName( ) ) ) {
+							ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
+							ArrayList<InepTask> tasks = new ArrayList<InepTask>( model.getSelection( ) );
+							getSession( ).resetTasks( getCurrentSubscription( ), tasks );
+							onSelect( null );
+						}
+					}
+				} );
+		if ( evt != null )
+			evt.stopPropagation( );
+	}
 }

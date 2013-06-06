@@ -49,6 +49,12 @@ public class InepOralReportController extends BaseReportController
 			item.setParams( configReportParams( ) );
 			list.add( item );
 
+			/*Relatorio 10*/
+			item = new ReportItem( "Discrepância Oral/Escrita" );
+			item.setReportUrl( "/reports/inep/revisor_10" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
 		}
 		else {
 
@@ -84,6 +90,11 @@ public class InepOralReportController extends BaseReportController
 				item.setParams( configReportParams( ) );
 				list.add( item );
 
+				/*Relatorio 10*/
+				item = new ReportItem( "Discrepância Oral/Escrita" );
+				item.setReportUrl( "/reports/inep/revisor_10" );
+				item.setParams( configReportParams( ) );
+				list.add( item );
 			}
 			else {
 			}
