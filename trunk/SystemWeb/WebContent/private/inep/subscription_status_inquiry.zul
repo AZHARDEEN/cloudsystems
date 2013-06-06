@@ -129,8 +129,9 @@
 						</rows>
 					</grid>
 				</tabpanel>
-				<tabpanel>
-					<groupbox width="200px">
+				<tabpanel >
+					<div align="Center" width="350px">
+					<groupbox>
 						<caption>
 							Trocar Provas entre Tarefas
 						</caption>
@@ -144,6 +145,7 @@
 							</hlayout>
 						</vlayout>
 					</groupbox>
+					</div>
 				</tabpanel>
 			</tabpanels>
 		</tabbox>

@@ -63,6 +63,8 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserProp
 
 	public List<Object[ ]> getWorkStatus( InepPackage event );
 
+	public List<Object[ ]> getSubscriptionStatus( InepPackage event );
+
 	public List<InepSubscription> getSubscriptions( InepPackage event, String part );
 
 	public List<InepDistribution> getDistribution( InepSubscription e );

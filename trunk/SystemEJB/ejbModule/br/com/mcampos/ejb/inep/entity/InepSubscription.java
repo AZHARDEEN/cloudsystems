@@ -131,15 +131,6 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 	public void setWrittenGrade( BigDecimal writtenGrade )
 	{
 		this.writtenGrade = writtenGrade;
-		if ( getOralGrade( ) != null ) {
-			BigDecimal result = oralGrade.subtract( getWrittenGrade( ) );
-			result = result.abs( );
-			if ( result.doubleValue( ) < 2 ) {
-				double grade = oralGrade.doubleValue( ) + getWrittenGrade( ).doubleValue( );
-				grade /= 2.0;
-				setFinalGrade( new BigDecimal( grade ) );
-			}
-		}
 	}
 
 	public BigDecimal getOralGrade( )
@@ -150,15 +141,6 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 	public void setOralGrade( BigDecimal oralGrade )
 	{
 		this.oralGrade = oralGrade;
-		if ( getWrittenGrade( ) != null ) {
-			BigDecimal result = oralGrade.subtract( getWrittenGrade( ) );
-			result = result.abs( );
-			if ( result.doubleValue( ) < 2 ) {
-				double grade = oralGrade.doubleValue( ) + getWrittenGrade( ).doubleValue( );
-				grade /= 2.0;
-				setFinalGrade( new BigDecimal( grade ) );
-			}
-		}
 	}
 
 	public BigDecimal getFinalGrade( )
