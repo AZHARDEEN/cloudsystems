@@ -137,8 +137,11 @@
 						<vlayout>
 							<listbox rows="4" id="swapTaskListbox" multiple="true" checkmark="true" >
 							</listbox>
-							<checkbox id="resetDistribution" label="Reiniciar Correção" />
-							<button id="swapTask" label="Trocar as Provas" autodisable="self"/>
+							<hlayout>
+								<button id="swapTask" label="Trocar as Provas" />
+								<button id="resetDistribution" label="Reinicialiar Tarefa" 
+									tooltiptext="Permite uma nova correção" />
+							</hlayout>
 						</vlayout>
 					</groupbox>
 				</tabpanel>

@@ -70,4 +70,8 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserProp
 	List<InepTest> getTests( InepSubscription s );
 
 	InepOralTest getOralTest( InepSubscription s );
+
+	void resetTasks( InepSubscription s, List<InepTask> tasks );
+
+	void swapTasks( InepSubscription s, InepTask t1, InepTask t2 );
 }

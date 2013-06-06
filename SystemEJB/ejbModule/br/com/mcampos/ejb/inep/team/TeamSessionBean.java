@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.inep.team;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +23,7 @@ import br.com.mcampos.dto.inep.reporting.NotasFinaisDTO;
 import br.com.mcampos.dto.inep.reporting.NotasIndividuaisCorretorDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionSessionLocal;
+import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
 import br.com.mcampos.ejb.inep.entity.DistributionStatus;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.entity.InepDistributionPK;
@@ -45,6 +47,7 @@ import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.person.Person;
+import br.com.mcampos.sysutils.SysUtils;
 
 /**
  * Session Bean implementation class TeamSessionBean
@@ -77,6 +80,8 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	private InepSubscriptionSessionLocal subscriptionSession;
 	@EJB
 	private InepOralTestSessionLocal oralTestSession;
+	@EJB
+	private DistributionStatusSessionLocal statusSession;
 
 	public TeamSessionBean( )
 	{
@@ -722,4 +727,73 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		return oralTestSession.get( s );
 	}
 
+	@Override
+	public void resetTasks( InepSubscription s, List<InepTask> tasks )
+	{
+		InepSubscription merged = subscriptionSession.get( s.getId( ) );
+		if ( merged == null )
+			throw new InvalidParameterException( "Não existe a inscrição" );
+		for ( InepTask task : tasks ) {
+			InepTestPK key = new InepTestPK( task, merged );
+			InepTest test = testSession.get( key );
+			resetTest( test );
+		}
+		merged.setWrittenGrade( null );
+		merged.setAgreementGrade( null );
+		merged.setFinalGrade( null );
+	}
+
+	private void resetTest( InepTest test )
+	{
+		if ( test == null )
+			return;
+		List<InepDistribution> list = distributionSession.findByNamedQuery( InepDistribution.getAllFromTest, test );
+		if ( SysUtils.isEmpty( list ) )
+			return;
+		for ( InepDistribution item : list ) {
+			switch ( item.getStatus( ).getId( ) ) {
+			case 2:
+				item.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
+				item.setNota( null );
+				break;
+			case 3:
+				if ( item.getNota( ) == null ) {
+					distributionSession.remove( item );
+				}
+				else {
+					item.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
+					item.setNota( null );
+				}
+				break;
+			case 4:
+				if ( item.getRevisor( ).isCoordenador( ).equals( true ) )
+					distributionSession.remove( item );
+				else {
+					item.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
+					item.setNota( null );
+				}
+				break;
+			}
+		}
+		test.setGrade( null );
+	}
+
+	@Override
+	public void swapTasks( InepSubscription s, InepTask t1, InepTask t2 )
+	{
+		InepMedia m1 = null, m2 = null;
+		InepSubscription merged = subscriptionSession.get( s.getId( ) );
+		if ( merged == null )
+			throw new InvalidParameterException( "Não existe a inscrição" );
+		for ( InepMedia media : merged.getMedias( ) ) {
+			if ( t1.getId( ).getId( ).equals( media.getTask( ) ) )
+				m1 = media;
+			if ( t2.getId( ).getId( ).equals( media.getTask( ) ) )
+				m2 = media;
+		}
+		Integer aux;
+		aux = m1.getTask( );
+		m1.setTask( m2.getTask( ) );
+		m2.setTask( aux );
+	}
 }
