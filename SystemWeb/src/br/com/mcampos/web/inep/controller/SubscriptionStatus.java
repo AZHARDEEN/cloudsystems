@@ -148,7 +148,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 
 		cmbTask.getItems( ).clear( );
 		for ( InepTask e : events ) {
-			if ( getRevisor( ) == null || getRevisor( ).getTask( ).equals( e ) ) {
+			if ( getRevisor( ) == null || getRevisor( ).getTask( ) == null || getRevisor( ).getTask( ).equals( e ) ) {
 				Comboitem item = cmbTask.appendItem( e.getDescription( ) );
 				item.setValue( e );
 			}
@@ -302,12 +302,14 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 
 	private void showFrame( InepSubscription s )
 	{
-		InepTask task = (InepTask) cmbTask.getSelectedItem( ).getValue( );
-		byte[ ] obj = getSession( ).getMedia( s, task );
-		AMedia media = null;
-		if ( obj != null )
-			media = new AMedia( s.getId( ).getId( ) + "-" + task.getId( ).getId( ) + ".pdf", "pdf", "application/pdf", obj );
-		framePdf.setContent( media );
+		if ( cmbTask.getSelectedItem( ) != null ) {
+			InepTask task = (InepTask) cmbTask.getSelectedItem( ).getValue( );
+			byte[ ] obj = getSession( ).getMedia( s, task );
+			AMedia media = null;
+			if ( obj != null )
+				media = new AMedia( s.getId( ).getId( ) + "-" + task.getId( ).getId( ) + ".pdf", "pdf", "application/pdf", obj );
+			framePdf.setContent( media );
+		}
 	}
 
 	public InepRevisor getRevisor( )
