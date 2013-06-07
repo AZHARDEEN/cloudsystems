@@ -21,9 +21,11 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Tab;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
+import br.com.mcampos.ejb.inep.entity.InepOralDistribution;
 import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
@@ -35,6 +37,7 @@ import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
 import br.com.mcampos.web.inep.controller.renderer.InepTaskListRenderer;
 import br.com.mcampos.web.inep.utils.DistributionInfoListRenderer;
+import br.com.mcampos.web.inep.utils.InepStatusOralDistributionsListRenderer;
 import br.com.mcampos.web.inep.utils.SubscriptionItemRenderer;
 
 public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
@@ -79,6 +82,10 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	Label agreementGrade;
 	@Wire
 	Label agreement2Grade;
+	@Wire
+	Tab tabOper;
+	@Wire
+	Listbox lstOralRevisor;
 
 	@Wire
 	private Combobox cmbTask;
@@ -101,11 +108,16 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		super.doAfterCompose( comp );
 		listBox.setItemRenderer( new SubscriptionItemRenderer( ) );
 		listDetail.setItemRenderer( new DistributionInfoListRenderer( ) );
+		lstOralRevisor.setItemRenderer( new InepStatusOralDistributionsListRenderer( ) );
 		swapTaskListbox.setItemRenderer( new InepTaskListRenderer( ) );
 		loadCombobox( );
 
 		if ( getRevisor( ) == null ) {
 			cmbTask.setVisible( true );
+			tabOper.setVisible( true );
+		}
+		else {
+			tabOper.setVisible( false );
 		}
 	}
 
@@ -261,6 +273,8 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 			if ( test.getAgreement2Grade( ) != null )
 				agreement2Grade.setValue( test.getAgreement2Grade( ).toString( ) );
 		}
+		List<InepOralDistribution> list = getSession( ).getOralDistributions( test );
+		lstOralRevisor.setModel( new ListModelList<InepOralDistribution>( list ) );
 	}
 
 	private void showTasks( InepSubscription s )

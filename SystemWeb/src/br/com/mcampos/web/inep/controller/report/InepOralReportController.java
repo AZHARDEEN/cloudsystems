@@ -55,6 +55,30 @@ public class InepOralReportController extends BaseReportController
 			item.setParams( configReportParams( ) );
 			list.add( item );
 
+			/*Relatorio 10*/
+			item = new ReportItem( "Prova Oral/Escrita - Certificados" );
+			item.setReportUrl( "/reports/inep/inep_10_1" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 10*/
+			item = new ReportItem( "Prova Oral/Escrita - Não Certificados" );
+			item.setReportUrl( "/reports/inep/inep_10_2" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 10*/
+			item = new ReportItem( "Prova Oral/Escrita - Reavaliadas" );
+			item.setReportUrl( "/reports/inep/inep_10_3" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 10*/
+			item = new ReportItem( "Prova Oral/Escrita - Pendentes Reavaliação" );
+			item.setReportUrl( "/reports/inep/inep_10_4" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
 		}
 		else {
 

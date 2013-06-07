@@ -31,20 +31,22 @@
 	iot_final_grade_nm posto,
 	iot_agreement_grade_in revisao,
 	iot_agreement2_grade_nm consenso,
-	coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) PO,
-	isc_written_grade_nm PE,
-	abs ( Coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) - isc_written_grade_nm ) DISCREPANCIA,
-	case when isc_written_grade_nm <  coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm )
-	then isc_written_grade_nm else coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) end NF
+	coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 ) PO,
+	coalesce ( isc_written_grade_nm, 0 ) PE,
+	abs ( Coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 ) - coalesce ( isc_written_grade_nm, 0 ) ) DISCREPANCIA,
+	case when coalesce ( isc_written_grade_nm, 0 ) <  coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 )
+	then coalesce ( isc_written_grade_nm, 0 ) else coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 ) end NF
 from
 	inep.inep_oral_test t,
 	inep.inep_subscription s
-where iot_variance_in >= 10
-and s.isc_id_ch = t.isc_id_ch
+where
+    s.isc_id_ch = t.isc_id_ch
+and case when coalesce ( isc_written_grade_nm, 0 ) <  coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 )
+	then coalesce ( isc_written_grade_nm, 0.0 ) else coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 ) end < 2
 and t.usr_id_in = $P{COMPANY_ID}
 and t.pct_id_in = $P{EVENT_ID}
 order by
-	abs ( Coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) - isc_written_grade_nm ) desc]]>
+	s.isc_id_ch]]>
 	</queryString>
 	<field name="isc_id_ch" class="java.lang.String"/>
 	<field name="posto" class="java.math.BigDecimal"/>
@@ -64,7 +66,7 @@ order by
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Discrepância Oral/Escrita]]></text>
+				<text><![CDATA[Discrepância Oral/Escrita - Certificados]]></text>
 			</staticText>
 		</band>
 	</title>
