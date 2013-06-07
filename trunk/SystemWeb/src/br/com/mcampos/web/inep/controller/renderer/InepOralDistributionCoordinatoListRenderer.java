@@ -16,7 +16,11 @@ public class InepOralDistributionCoordinatoListRenderer extends BaseListRenderer
 	{
 		super.render( item, data, index );
 		item.setContext( "listPopupOralTest" );
-		addCell( item, data.getId( ).getSubscriptionId( ) );
+		if ( data.getTest( ).getVarianceStatus( ).intValue( ) > 10 )
+			addCell( item, data.getId( ).getSubscriptionId( ) + "***" );
+		else
+			addCell( item, data.getId( ).getSubscriptionId( ) );
+
 		addCell( item, data.getTest( ).getStation( ) );
 		addCell( item, data.getTest( ).getFinalGrade( ).toString( ) );
 		addCell( item, data.getTest( ).getAgreementGrade( ).toString( ) );
