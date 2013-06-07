@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.entity.InepOralDistribution;
+import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -40,5 +41,11 @@ public class InepOralDistributionSessionBean extends SimpleSessionBean<InepOralD
 				return other;
 		}
 		return null;
+	}
+
+	@Override
+	public List<InepOralDistribution> getOralDistributions( InepOralTest test )
+	{
+		return findByNamedQuery( InepOralDistribution.getAllByTest, test );
 	}
 }

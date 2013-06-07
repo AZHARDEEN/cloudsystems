@@ -24,6 +24,9 @@ import javax.persistence.Table;
 				name = InepOralDistribution.getRevisorOralTests,
 				query = "from InepOralDistribution o WHERE o.revisor = ?1 and o.status = 1 order by o.id.subscriptionId " ),
 		@NamedQuery(
+				name = InepOralDistribution.getAllByTest,
+				query = "from InepOralDistribution o WHERE o.test = ?1  " ),
+		@NamedQuery(
 				name = InepOralDistribution.getOther,
 				query = "from InepOralDistribution o WHERE o.test = ?1 and o.id.collaboratorId <> ?2 " )
 } )
@@ -33,6 +36,7 @@ public class InepOralDistribution implements Serializable
 
 	public static final String getRevisorOralTests = "InepOralDistribution.getRevisorOralTests";
 	public static final String getOther = "InepOralDistribution.getOther";
+	public static final String getAllByTest = "InepOralDistribution.getAllByTest";
 
 	@ManyToOne( fetch = FetchType.EAGER, optional = false )
 	@JoinColumn( name = "ids_id_in", referencedColumnName = "ids_id_in", updatable = true, insertable = true, nullable = false )

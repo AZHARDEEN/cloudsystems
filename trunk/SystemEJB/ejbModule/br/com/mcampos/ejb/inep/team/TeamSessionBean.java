@@ -24,10 +24,12 @@ import br.com.mcampos.dto.inep.reporting.NotasIndividuaisCorretorDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionSessionLocal;
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
+import br.com.mcampos.ejb.inep.distribution.InepOralDistributionLocal;
 import br.com.mcampos.ejb.inep.entity.DistributionStatus;
 import br.com.mcampos.ejb.inep.entity.InepDistribution;
 import br.com.mcampos.ejb.inep.entity.InepDistributionPK;
 import br.com.mcampos.ejb.inep.entity.InepMedia;
+import br.com.mcampos.ejb.inep.entity.InepOralDistribution;
 import br.com.mcampos.ejb.inep.entity.InepOralTest;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
@@ -82,6 +84,8 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	private InepOralTestSessionLocal oralTestSession;
 	@EJB
 	private DistributionStatusSessionLocal statusSession;
+	@EJB
+	private InepOralDistributionLocal oralDistributionSession;
 
 	public TeamSessionBean( )
 	{
@@ -700,6 +704,8 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			return null;
 		}
 		for ( InepMedia inepMedia : merged.getSubscription( ).getMedias( ) ) {
+			if ( inepMedia.getTask( ) == null )
+				continue;
 			if ( inepMedia.getTask( ).equals( t.getId( ).getId( ) ) ) {
 				obj = inepMedia.getMedia( ).getObject( );
 				break;
@@ -810,5 +816,11 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		@SuppressWarnings( "unchecked" )
 		List<Object[ ]> result = query.getResultList( );
 		return result;
+	}
+
+	@Override
+	public List<InepOralDistribution> getOralDistributions( InepOralTest s )
+	{
+		return oralDistributionSession.getOralDistributions( s );
 	}
 }

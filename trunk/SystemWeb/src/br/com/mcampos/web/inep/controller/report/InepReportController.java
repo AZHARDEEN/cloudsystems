@@ -93,6 +93,19 @@ public class InepReportController extends BaseReportController
 			item.setReportUrl( "/reports/inep/inep_10" );
 			item.setParams( configReportParams( ) );
 			list.add( item );
+
+			/*Relatorio 10*/
+			item = new ReportItem( "Prova Oral/Escrita - Certificados" );
+			item.setReportUrl( "/reports/inep/inep_10_1" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
+			/*Relatorio 10*/
+			item = new ReportItem( "Discrepância Oral/Escrita - Não Certificados" );
+			item.setReportUrl( "/reports/inep/inep_10_2" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
 		}
 		else {
 
