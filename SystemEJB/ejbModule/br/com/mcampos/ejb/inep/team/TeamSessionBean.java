@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.inep.team;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -315,22 +316,23 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public byte[ ] getMedia( InepTest test )
+	public byte[ ] getMedia( InepDistribution item )
 	{
 		byte[ ] obj = null;
 
-		InepTest merged = testSession.get( test.getId( ) );
-		if ( merged == null ) {
+		InepDistribution merged = distributionSession.get( item.getId( ) );
+		if ( merged == null || merged.getTest( ).getTask( ) == null ) {
 			return null;
 		}
-		for ( InepMedia inepMedia : merged.getSubscription( ).getMedias( ) ) {
+		for ( InepMedia inepMedia : merged.getTest( ).getSubscription( ).getMedias( ) ) {
 			if ( inepMedia.getTask( ) == null )
 				continue;
-			if ( inepMedia.getTask( ).equals( merged.getTask( ).getId( ).getId( ) ) ) {
+			if ( inepMedia.getTask( ).equals( merged.getTest( ).getTask( ).getId( ).getId( ) ) ) {
 				obj = inepMedia.getMedia( ).getObject( );
 				break;
 			}
 		}
+		merged.setStartDate( new Date( ) );
 		return obj;
 	}
 

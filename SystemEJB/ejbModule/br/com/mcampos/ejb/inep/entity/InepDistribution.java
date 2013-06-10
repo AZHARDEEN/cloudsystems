@@ -131,6 +131,10 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 	@Temporal( TemporalType.TIMESTAMP )
 	private Date updateDate;
 
+	@Column( name = "dis_start_dt" )
+	@Temporal( TemporalType.TIMESTAMP )
+	private Date startDate;
+
 	@Column( name = "dis_priority_in" )
 	private Integer priority;
 
@@ -265,6 +269,16 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 	public void setPriority( Integer priority )
 	{
 		this.priority = priority;
+	}
+
+	public Date getStartDate( )
+	{
+		return startDate;
+	}
+
+	public void setStartDate( Date startDate )
+	{
+		this.startDate = startDate;
 	}
 
 }
