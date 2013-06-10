@@ -41,10 +41,8 @@ from
 	inep.inep_subscription s
 where
     s.isc_id_ch = t.isc_id_ch
-and case when coalesce ( isc_written_grade_nm, 0 ) <  coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 )
-	then isc_written_grade_nm else coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) end >= 2
-and t.usr_id_in = $P{COMPANY_ID}
-and t.pct_id_in = $P{EVENT_ID}
+and isc_written_grade_nm < 2
+and coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) >= 2
 order by
 	s.isc_id_ch]]>
 	</queryString>
@@ -66,7 +64,7 @@ order by
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Oral/Escrita - Certificados]]></text>
+				<text><![CDATA[Oral/Escrita - Certifica/Não Certifica]]></text>
 			</staticText>
 		</band>
 	</title>

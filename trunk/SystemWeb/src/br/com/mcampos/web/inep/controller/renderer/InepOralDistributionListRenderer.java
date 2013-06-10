@@ -18,6 +18,8 @@ public class InepOralDistributionListRenderer extends BaseListRenderer<InepOralD
 		item.setContext( "listPopupOralTest" );
 		addCell( item, data.getId( ).getSubscriptionId( ) );
 		addCell( item, data.getTest( ).getStation( ) );
+		addCell( item, data.getTest( ).getSubscription( ).getOralGrade( ) );
+		addCell( item, data.getTest( ).getSubscription( ).getWrittenGrade( ) );
 		Listcell cell = new Listcell( );
 		Button btnDownload = new Button( "Audio" );
 		cell.appendChild( btnDownload );

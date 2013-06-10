@@ -24,6 +24,8 @@ public class InepOralDistributionCoordinatoListRenderer extends BaseListRenderer
 		addCell( item, data.getTest( ).getStation( ) );
 		addCell( item, data.getTest( ).getFinalGrade( ).toString( ) );
 		addCell( item, data.getTest( ).getAgreementGrade( ).toString( ) );
+		addCell( item, data.getTest( ).getSubscription( ).getOralGrade( ) );
+		addCell( item, data.getTest( ).getSubscription( ).getWrittenGrade( ) );
 		Listcell cell = new Listcell( );
 		Button btnDownload = new Button( "Audio" );
 		cell.appendChild( btnDownload );
