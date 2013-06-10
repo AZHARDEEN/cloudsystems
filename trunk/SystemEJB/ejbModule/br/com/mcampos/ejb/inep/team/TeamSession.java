@@ -42,7 +42,7 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserProp
 
 	InepRevisor getRevisor( InepPackage event, Collaborator auth );
 
-	byte[ ] getMedia( InepTest test );
+	byte[ ] getMedia( InepDistribution item );
 
 	byte[ ] getMedia( InepSubscription s, InepTask t );
 

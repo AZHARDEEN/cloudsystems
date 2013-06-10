@@ -273,7 +273,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		hideTasks( );
 		// String.format( "/img/pdf/%s-%d-4.pdf", item.getId(
 		// ).getSubscriptionId( ), item.getId( ).getTaskId( ) );
-		byte[ ] obj = getSession( ).getMedia( item.getTest( ) );
+		byte[ ] obj = getSession( ).getMedia( item );
 		if ( obj != null && obj.length > 0 ) {
 			AMedia media = new AMedia( null, null, null, obj );
 			framePdf.setContent( media );
