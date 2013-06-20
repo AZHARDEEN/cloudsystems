@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="final" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2bfd09e2-952d-424d-9c91-365558eb656b">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Zebra" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E5E5E5"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[select
+	s.isc_id_ch,
+	iot_interviewer_grade_nm,
+	iot_observer_grade_nm,
+	iot_final_grade_nm,
+	iot_agreement_grade_in,
+	iot_agreement2_grade_nm,
+	iot_status_ch,
+	coalesce ( isc_written_grade_nm, 0 ) isc_written_grade_nm,
+	isc_oral_grade_nm,
+	( select itt_grade_nm from inep.inep_test t where t.usr_id_in = s.usr_id_in and t.pct_id_in = s.pct_id_in and t.isc_id_ch = s.isc_id_ch and t.tsk_id_in = 1 ) task1,
+	( select itt_grade_nm from inep.inep_test t where t.usr_id_in = s.usr_id_in and t.pct_id_in = s.pct_id_in and t.isc_id_ch = s.isc_id_ch and t.tsk_id_in = 2 ) task2,
+	( select itt_grade_nm from inep.inep_test t where t.usr_id_in = s.usr_id_in and t.pct_id_in = s.pct_id_in and t.isc_id_ch = s.isc_id_ch and t.tsk_id_in = 3 ) task3,
+	( select itt_grade_nm from inep.inep_test t where t.usr_id_in = s.usr_id_in and t.pct_id_in = s.pct_id_in and t.isc_id_ch = s.isc_id_ch and t.tsk_id_in = 4 ) task4,
+	isc_final_grade_nm
+from
+	inep.inep_oral_test o left outer join inep.inep_subscription s
+	on o.usr_ID_IN = s.usr_id_in and o.pct_id_in = s.pct_id_in and o.isc_id_ch = s.isc_id_ch
+order by
+	s.isc_id_ch]]>
+	</queryString>
+	<field name="isc_id_ch" class="java.lang.String"/>
+	<field name="iot_interviewer_grade_nm" class="java.math.BigDecimal"/>
+	<field name="iot_observer_grade_nm" class="java.math.BigDecimal"/>
+	<field name="iot_final_grade_nm" class="java.math.BigDecimal"/>
+	<field name="iot_agreement_grade_in" class="java.lang.Integer"/>
+	<field name="iot_agreement2_grade_nm" class="java.math.BigDecimal"/>
+	<field name="iot_status_ch" class="java.lang.String"/>
+	<field name="isc_written_grade_nm" class="java.math.BigDecimal"/>
+	<field name="isc_oral_grade_nm" class="java.math.BigDecimal"/>
+	<field name="task1" class="java.math.BigDecimal"/>
+	<field name="task2" class="java.math.BigDecimal"/>
+	<field name="task3" class="java.math.BigDecimal"/>
+	<field name="task4" class="java.math.BigDecimal"/>
+	<field name="isc_final_grade_nm" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="f82b0026-084d-42a8-b088-725af601e977" x="2" y="41" width="119" height="20"/>
+				<textElement/>
+				<text><![CDATA[Inscrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="58a7aa83-d078-44dd-ace9-0d686bfb68ca" x="750" y="41" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b85f2d94-1c2b-4a57-9b7a-00a655d97da0" x="685" y="41" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[NPE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6174d5db-e3b0-4c33-b4d7-4ca823ad2b8d" x="417" y="41" width="49" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[NPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="63d9f4cb-9115-4a3e-8fdb-fff3fd1fbde9" x="159" y="41" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Entrevis.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d63189ba-9e26-4719-a8a5-50603d0dbbe3" x="209" y="41" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Observ.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3f4a3b7c-baa1-4098-98f7-bebb7c1593c1" x="259" y="41" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Posto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="74aec120-11f2-4d4e-a6e9-eee91980fa4b" x="316" y="41" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Reaval.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="88711634-3c85-4489-8af1-acd94a70944e" x="366" y="41" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Consenso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="22758baf-134d-4e03-96dc-4e2ed64a92ab" x="483" y="41" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Taref. 1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="32333659-a348-44df-ab34-a5183c78e26c" x="533" y="41" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Taref. 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="058a0dd9-d44d-4007-a461-0066d442221b" x="583" y="41" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Taref. 3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="821914be-9335-4bed-aeea-5f353d0c4000" x="635" y="41" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Taref. 4]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement uuid="7c6f523e-5444-4a93-952f-eb33a9119dc1" style="Zebra" mode="Opaque" x="0" y="0" width="800" height="15"/>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement uuid="ab977e8e-f9c0-446a-a4fd-215c3711c649" x="533" y="0" width="50" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement uuid="dd3154be-9629-4c94-92a6-2fa93f59f082" x="483" y="0" width="50" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement uuid="0142c1b9-dd26-429b-ad34-2eec3461ebcd" x="316" y="0" width="50" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{iot_agreement_grade_in}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement uuid="38d541f1-b94b-4c78-8d7e-d4bf4ca720bd" x="366" y="0" width="50" height="15"/>
+					<box>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{iot_agreement2_grade_nm}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="66137295-6f22-4b13-a523-a1136f411513" x="0" y="0" width="121" height="15"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement uuid="888d371f-8418-48b7-9fd1-e41e4ba6a76b" x="685" y="0" width="50" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{isc_written_grade_nm}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement uuid="839d25cc-1d59-42b9-b3d7-6c7bb982fcf9" x="416" y="0" width="50" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{isc_oral_grade_nm}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement uuid="82c9c4c3-b5b3-4b42-8254-d43c25b977e5" x="750" y="0" width="50" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{isc_final_grade_nm}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement uuid="ab53388c-71ec-478f-9ac3-d2e5d8f1725b" x="159" y="0" width="50" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{iot_interviewer_grade_nm}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement uuid="3f4c1dc8-3c21-40c9-8ed0-32e02bd9a6bc" x="259" y="0" width="50" height="15"/>
+					<box>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{iot_final_grade_nm}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement uuid="fb0a109c-c0b2-4db7-8dc0-2415562cfbe8" x="585" y="0" width="50" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement uuid="58d24cbf-0c6e-487c-b8fa-cae6e9dfd6e7" x="209" y="0" width="50" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{iot_observer_grade_nm}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement uuid="cafe3e85-63f1-4518-b4e0-d6d6b58a31a7" x="635" y="0" width="50" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{task4}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="f48f01b8-75b8-477c-b3ad-3e46b8b44237" x="121" y="0" width="38" height="15">
+						<printWhenExpression><![CDATA[$F{iot_status_ch}.equals ( "Ausente" )]]></printWhenExpression>
+					</reportElement>
+					<textElement/>
+					<text><![CDATA[*]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

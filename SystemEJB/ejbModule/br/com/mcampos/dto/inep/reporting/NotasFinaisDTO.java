@@ -13,10 +13,10 @@ public class NotasFinaisDTO extends BaseSubscriptionDTO
 
 	public Double getMediaTarefa1( )
 	{
-		if ( this.mediaTarefa1 == null ) {
-			this.mediaTarefa1 = (double) 0;
+		if ( mediaTarefa1 == null ) {
+			mediaTarefa1 = (double) 0;
 		}
-		return this.mediaTarefa1;
+		return mediaTarefa1;
 	}
 
 	public void setMediaTarefa1( Double mediaTarefa1 )
@@ -26,10 +26,10 @@ public class NotasFinaisDTO extends BaseSubscriptionDTO
 
 	public Double getMediaTarefa2( )
 	{
-		if ( this.mediaTarefa2 == null ) {
-			this.mediaTarefa2 = (double) 0;
+		if ( mediaTarefa2 == null ) {
+			mediaTarefa2 = (double) 0;
 		}
-		return this.mediaTarefa2;
+		return mediaTarefa2;
 	}
 
 	public void setMediaTarefa2( Double mediaTarefa2 )
@@ -39,10 +39,10 @@ public class NotasFinaisDTO extends BaseSubscriptionDTO
 
 	public Double getMediaTarefa3( )
 	{
-		if ( this.mediaTarefa3 == null ) {
-			this.mediaTarefa3 = (double) 0;
+		if ( mediaTarefa3 == null ) {
+			mediaTarefa3 = (double) 0;
 		}
-		return this.mediaTarefa3;
+		return mediaTarefa3;
 	}
 
 	public void setMediaTarefa3( Double mediaTarefa3 )
@@ -52,10 +52,10 @@ public class NotasFinaisDTO extends BaseSubscriptionDTO
 
 	public Double getMediaTarefa4( )
 	{
-		if ( this.mediaTarefa4 == null ) {
-			this.mediaTarefa4 = (double) 0;
+		if ( mediaTarefa4 == null ) {
+			mediaTarefa4 = (double) 0;
 		}
-		return this.mediaTarefa4;
+		return mediaTarefa4;
 	}
 
 	public void setMediaTarefa4( Double mediaTarefa4 )
@@ -96,10 +96,10 @@ public class NotasFinaisDTO extends BaseSubscriptionDTO
 			return v.toString( );
 		}
 		else if ( v == 6.0 ) {
-			return "A";
+			return "0";
 		}
 		else if ( v == 7.0 ) {
-			return "B";
+			return "0";
 		}
 		else {
 			return "";
