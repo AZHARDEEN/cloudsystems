@@ -16,15 +16,16 @@
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[33]]></defaultValueExpression>
 	</parameter>
-	<parameter name="TASK_ID" class="java.lang.Integer">
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT
+		<![CDATA[select * from (
+SELECT
      inep_revisor."usr_id_in" AS inep_revisor_usr_id_in,
      inep_revisor."col_seq_in" AS inep_revisor_col_seq_in,
      inep_revisor."pct_id_in" AS inep_revisor_pct_id_in,
-     inep_revisor."tsk_id_in" AS inep_revisor_tsk_id_in,
+     inep_revisor."tsk_id_in"::varchar AS inep_revisor_tsk_id_in,
      inep_revisor."rvs_coordinator_bt" AS inep_revisor_rvs_coordinator_bt,
      users."usr_name_ch" AS users_usr_name_ch,
      ( select count(*) from inep.inep_distribution d
@@ -43,16 +44,44 @@ where
 	inep_revisor.rvs_coordinator_bt = true
 and inep_revisor."usr_id_in" = $P{COMPANY_ID}
 and inep_revisor."pct_id_in" = $P{EVENT_ID}
+and inep_revisor.tsk_id_in is not null
+UNION  all
+ SELECT
+     inep_revisor."usr_id_in" AS inep_revisor_usr_id_in,
+     inep_revisor."col_seq_in" AS inep_revisor_col_seq_in,
+     inep_revisor."pct_id_in" AS inep_revisor_pct_id_in,
+     'Oral' AS inep_revisor_tsk_id_in,
+     inep_revisor."rvs_coordinator_bt" AS inep_revisor_rvs_coordinator_bt,
+     users."usr_name_ch" AS users_usr_name_ch,
+     ( select count(*) from inep.inep_oral_distribution d
+		where d.usr_id_in = inep_revisor.usr_id_in and d.pct_id_in = inep_revisor.pct_id_in and d.col_seq_in = inep_revisor.col_seq_in and
+			ids_id_in = 3 ) as distribuido,
+     ( select count(*) from inep.inep_oral_distribution d
+		where d.usr_id_in = inep_revisor.usr_id_in and d.pct_id_in = inep_revisor.pct_id_in and d.col_seq_in = inep_revisor.col_seq_in and
+			ids_id_in <> 1 ) as corrigido,
+     0 as variance
+FROM
+     "inep"."inep_revisor" inep_revisor INNER JOIN "public"."collaborator" collaborator
+		ON inep_revisor."usr_id_in" = collaborator."usr_id_in" AND collaborator."col_seq_in" = inep_revisor."col_seq_in"
+		INNER JOIN "public"."users" users
+			ON collaborator."col_id_in" = users."usr_id_in"
+where
+	inep_revisor.rvs_coordinator_bt = true
+and inep_revisor."usr_id_in" = $P{COMPANY_ID}
+and inep_revisor."pct_id_in" = $P{EVENT_ID}
+and inep_revisor.tsk_id_in is null
+) as t
 order by
-     inep_revisor."usr_id_in",
-     inep_revisor."tsk_id_in",
-     inep_revisor."pct_id_in",
-     users."usr_name_ch"]]>
+     inep_revisor_usr_id_in,
+     inep_revisor_col_seq_in,
+     inep_revisor_pct_id_in,
+     inep_revisor_tsk_id_in,
+     users_usr_name_ch]]>
 	</queryString>
 	<field name="inep_revisor_usr_id_in" class="java.lang.Integer"/>
 	<field name="inep_revisor_col_seq_in" class="java.lang.Integer"/>
 	<field name="inep_revisor_pct_id_in" class="java.lang.Integer"/>
-	<field name="inep_revisor_tsk_id_in" class="java.lang.Integer"/>
+	<field name="inep_revisor_tsk_id_in" class="java.lang.String"/>
 	<field name="inep_revisor_rvs_coordinator_bt" class="java.lang.Boolean"/>
 	<field name="users_usr_name_ch" class="java.lang.String"/>
 	<field name="distribuido" class="java.lang.Long"/>

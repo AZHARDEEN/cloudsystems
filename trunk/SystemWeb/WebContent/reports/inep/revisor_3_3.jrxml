@@ -36,6 +36,7 @@ and od.col_seq_in = r.col_seq_in
 and od.pct_id_in = r.pct_id_in
 and r.usr_id_in = c.usr_id_in
 and r.col_seq_in = c.col_seq_in
+and r.rvs_coordinator_bt is false
 and c.col_id_in = u.usr_id_in and
   od.usr_id_in = $P{COMPANY_ID} AND
   od.pct_id_in = $P{EVENT_ID}
