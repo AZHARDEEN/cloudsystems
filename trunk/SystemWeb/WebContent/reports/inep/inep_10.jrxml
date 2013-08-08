@@ -11,7 +11,7 @@
 	</style>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
-		<defaultValueExpression><![CDATA["T:\\Workspaces\\indigo\\cloudsystems\\SystemWeb\\WebContent\\img"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["T:/Workspaces/indigo/cloudsystems/SystemWeb/WebContent/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
@@ -122,15 +122,15 @@ order by
 			</staticText>
 			<image>
 				<reportElement uuid="6cd20d8c-8ef0-40ca-aee3-3eeb3b61a13c" x="3" y="0" width="117" height="50"/>
-				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "\\inep\\logo_celpe_60.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement uuid="75a50f28-1c27-4b0e-8f9b-8f4d91a39ddf" x="388" y="2" width="165" height="50"/>
-				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "\\inep\\logo_br_60.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement uuid="f643afe2-77e7-4361-a7e7-7b314f698f0b" x="144" y="1" width="231" height="50"/>
-				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "\\inep\\logo_inep_60.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</pageHeader>
