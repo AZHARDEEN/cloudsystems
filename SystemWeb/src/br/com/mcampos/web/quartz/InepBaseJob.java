@@ -28,7 +28,7 @@ public abstract class InepBaseJob implements Serializable, Job
 {
 	private static final long serialVersionUID = 9162031955846573614L;
 	private static final Logger logger = LoggerFactory.getLogger( InepBaseJob.class );
-	private static final String path = "/loader/inep/provas/";
+	private static final String path = "/var/local/jboss/loader/inep/written/";
 	private transient InepTestSession session = null;
 
 	protected static String getPath( )

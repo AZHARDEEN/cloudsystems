@@ -1,5 +1,7 @@
 package br.com.mcampos.web.controller.authentication;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.util.Locales;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -8,6 +10,7 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.ejb.fdigital.services.SamaBSBClient;
 import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.LoginSession;
 import br.com.mcampos.sysutils.SysUtils;
@@ -18,6 +21,7 @@ import br.com.mcampos.web.core.LoggedInterface;
 public class LoginController extends BaseCaptchaDialogController<LoginSession>
 {
 	private static final long serialVersionUID = -3608637091684592684L;
+	private static final Logger logger = LoggerFactory.getLogger( SamaBSBClient.class );
 
 	@Wire( "#identification" )
 	private Textbox identification;
@@ -52,15 +56,15 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 			return false;
 		}
 
-		value = this.identification.getValue( );
+		value = identification.getValue( );
 		if ( SysUtils.isEmpty( value ) ) {
-			this.identification.setFocus( true );
+			identification.setFocus( true );
 			return false;
 		}
 
-		value = this.password.getValue( );
+		value = password.getValue( );
 		if ( SysUtils.isEmpty( value ) ) {
-			this.password.setFocus( true );
+			password.setFocus( true );
 			return false;
 		}
 		LoginSession session = getSession( );
@@ -68,9 +72,10 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 		Login login = session.loginByDocument( getCredential( ) );
 		if ( login == null ) {
 			showErrorMessage( "Erro ao realizar login. Identificação inexistente no sistema", "Login" );
-			this.identification.setFocus( true );
+			identification.setFocus( true );
 			return false;
 		}
+		logger.info( "Login from " + login.getPerson( ).getName( ) );
 		setSessionParameter( LoggedInterface.userSessionParamName, login );
 		setCookie( LoggedInterface.lastLoggedUserId, getCredential( ).getIdentification( ) );
 		if ( isDebugMode( ) ) {
@@ -83,8 +88,8 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 	{
 		Credential c = new Credential( );
 
-		c.setIdentification( this.identification.getValue( ) );
-		c.setPassword( this.password.getValue( ) );
+		c.setIdentification( identification.getValue( ) );
+		c.setPassword( password.getValue( ) );
 
 		c.setLocale( Locales.getCurrent( ) );
 		c.setRemoteAddr( Executions.getCurrent( ).getRemoteAddr( ) );
@@ -100,7 +105,7 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 	{
 		super.doAfterCompose( comp );
 
-		setLastLoginInfo( this.identification, this.password );
+		setLastLoginInfo( identification, password );
 
 	}
 

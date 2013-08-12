@@ -9,6 +9,7 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -28,11 +29,11 @@ public class EmailMessageBean implements MessageListener
 {
 
 	public static final String destinationName = "java:/cloudq";
-	private static final String SMTP_SERVER_ADDRESS = "smtps.uol.com.br";
-	private static final Integer SMTP_SERVER_PORT = 465;
-	private static final String SMTP_USENAME = "cloudsystem@uol.com.br";
-	private static final String SMTP_FROM = "cloudsystem@uol.com.br";
-	private static final String SMTP_PASSWORD = "sekurl7y";
+	private static final String SMTP_SERVER_ADDRESS = "smtps.1and1.com";
+	private static final Integer SMTP_SERVER_PORT = 587;
+	private static final String SMTP_USENAME = "marcelo@meusistema.info";
+	private static final String SMTP_FROM = "sistema@meusistema.info";
+	private static final String SMTP_PASSWORD = "Cld09Xnl$";
 	private static final String SMTP_PROTOCOL = "smtp";
 
 	private Session mailSession = null;
@@ -59,7 +60,7 @@ public class EmailMessageBean implements MessageListener
 					}
 					mailMessage.setFrom( new InternetAddress( SMTP_FROM ) );
 					mailMessage.setContent( dto.getBody( ), "text/plain" );
-					// Transport.send( mailMessage );
+					Transport.send( mailMessage );
 				}
 			}
 			catch ( Exception e ) {

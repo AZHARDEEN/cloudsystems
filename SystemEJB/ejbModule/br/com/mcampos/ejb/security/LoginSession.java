@@ -22,4 +22,6 @@ public interface LoginSession extends BaseSessionInterface<Login>
 
 	Boolean isPasswordUsed( Integer id, String newPassword );
 
+	void logout( Login login, Credential crecential );
+
 }

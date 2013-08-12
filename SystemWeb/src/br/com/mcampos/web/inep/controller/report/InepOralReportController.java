@@ -79,6 +79,12 @@ public class InepOralReportController extends BaseReportController
 			item.setParams( configReportParams( ) );
 			list.add( item );
 
+			/*Relatorio 11*/
+			item = new ReportItem( "Reavaliações da Prova Oral por Posto Aplicador" );
+			item.setReportUrl( "/reports/inep/inep_11" );
+			item.setParams( configReportParams( ) );
+			list.add( item );
+
 		}
 		else {
 
@@ -128,5 +134,4 @@ public class InepOralReportController extends BaseReportController
 			getListbox( ).setModel( new ListModelList<ReportItem>( list ) );
 		}
 	}
-
 }

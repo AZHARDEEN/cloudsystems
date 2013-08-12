@@ -11,6 +11,13 @@
                     </columns>
                     <rows>
                         <row spans="2" align="center">
+                        	<hlayout>
+								<image src="/img/inep/logo_celpe_60.jpg"/>
+								<separator width="5px"/>
+								<image src="/img/inep/logo_mec_60.png"/>
+							</hlayout>
+                        </row>
+                        <row spans="2" align="center">
 							<label id="loginLabelMsg" value="Entre com seu login(email) e senha"/>
                         </row>
                         <row>

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 public class InepOralTestLoader extends InepBaseJob
 {
 	private static final long serialVersionUID = 4850828799710714212L;
-	private static String INITAL_PATH = "/loader/inep/audio";
+	private static String INITAL_PATH = "/var/local/jboss/loader/inep/audio";
 	private ArrayList<String> fileToProcess = new ArrayList<String>( );
 	private int nIndex = 0;
 	private static final Logger logger = LoggerFactory.getLogger( InepLoaderJob.class );
