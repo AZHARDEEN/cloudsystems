@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.security;
 
 import java.io.Serializable;
+import java.security.InvalidParameterException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collection;
@@ -147,7 +148,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 			login.incrementTryCount( );
 			tryCount = login.getTryCount( );
 			if ( tryCount > maxTryCount ) {
-				login.setStatus( this.statusSession.get( UserStatus.statusMaxLoginTryCount ) );
+				login.setStatus( statusSession.get( UserStatus.statusMaxLoginTryCount ) );
 			}
 			return false;
 		}
@@ -179,17 +180,17 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 
 	private SystemParameterSessionLocal getParamSession( )
 	{
-		return this.paramSession;
+		return paramSession;
 	}
 
 	private AccessLogTypeSessionLocal getLogTypeSession( )
 	{
-		return this.logTypeSession;
+		return logTypeSession;
 	}
 
 	private AccessLogSessionLocal getLogSession( )
 	{
-		return this.logSession;
+		return logSession;
 	}
 
 	@Override
@@ -248,7 +249,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		archivePassword( entity );
 		entity.setTryCount( 0 );
 		setPasswordExpirationDate( entity );
-		entity.setStatus( this.statusSession.get( UserStatus.statusOk ) );
+		entity.setStatus( statusSession.get( UserStatus.statusOk ) );
 		log( entity, getLogTypeSession( ).get( AccessLogType.accessLogTypeNormalLogin ), credential );
 		sendMail( EMail.templatePasswordChanged, entity );
 		return true;
@@ -312,7 +313,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 
 	public EmailPartSessionLocal getEmailPartSession( )
 	{
-		return this.emailPartSession;
+		return emailPartSession;
 	}
 
 	@Override
@@ -338,7 +339,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		login.setPassword( encryptPassword( password ) );
 		login.setToken( RandomString.randomstring( ) );
 		setPasswordExpirationDate( login );
-		login.setStatus( this.statusSession.get( UserStatus.statusEmailNotValidated ) );
+		login.setStatus( statusSession.get( UserStatus.statusEmailNotValidated ) );
 		login = merge( login );
 
 		sendMail( EMail.templateValidationEmail, login );
@@ -413,7 +414,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		 * Clear token
 		 */
 		login.setToken( null );
-		login.setStatus( this.statusSession.get( UserStatus.statusFullfillRecord ) );
+		login.setStatus( statusSession.get( UserStatus.statusFullfillRecord ) );
 		sendMail( EMail.templateValidationEmail, login );
 		return true;
 	}
@@ -425,7 +426,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		try {
 			List<LastUsedPassword> list;
 
-			list = this.lupSession.findByNamedQuery( LastUsedPassword.findAllByLogin, new DBPaging( 0, 50 ), login );
+			list = lupSession.findByNamedQuery( LastUsedPassword.findAllByLogin, new DBPaging( 0, 50 ), login );
 			passwordEncryptor = new BasicPasswordEncryptor( );
 			for ( LastUsedPassword password : list ) {
 				if ( passwordEncryptor.checkPassword( newPassword, password.getId( ).getPassword( ) ) ) {
@@ -450,16 +451,25 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	{
 		LastUsedPassword lastUsedPassword;
 
-		lastUsedPassword = this.lupSession.get( login );
+		lastUsedPassword = lupSession.get( login );
 		if ( lastUsedPassword == null ) {
-			this.lupSession.closeAllUsedPassword( login );
+			lupSession.closeAllUsedPassword( login );
 			lastUsedPassword = new LastUsedPassword( login );
 			lastUsedPassword.setFromDate( new Date( ) );
-			this.lupSession.persist( lastUsedPassword );
+			lupSession.persist( lastUsedPassword );
 		}
 		else {
 			lastUsedPassword.setToDate( new Date( ) );
-			this.lupSession.merge( lastUsedPassword );
+			lupSession.merge( lastUsedPassword );
 		}
+	}
+
+	@Override
+	public void logout( Login login, Credential credential )
+	{
+		if ( login == null )
+			throw new InvalidParameterException( this.getClass( ).getSimpleName( ) + " - Login could not be null" );
+		AccessLogType type = getLogTypeSession( ).get( AccessLogType.accessLogTypeLogout );
+		log( login, type, credential );
 	}
 }
