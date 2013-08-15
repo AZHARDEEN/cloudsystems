@@ -1,0 +1,26 @@
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<window title="Relatórios" border="normal" closable="true" width="480px" use="br.com.mcampos.web.core.report.BaseReportWindow" id="reportDlg">
+		<vlayout>
+			<hlayout sclass="z-valign-middle">
+				<label  value="Formato: "/>
+				<combobox id="exportFormat" width="1" readonly="true" >
+					<comboitem label="PDF" value="1" />
+					<comboitem label="Xml" value="2" />
+					<comboitem label="Html" value="3" />
+				</combobox>
+			</hlayout>
+			<listbox vflex="true" id="listReport" rows="5" >
+		        <listhead>
+					<listheader align="center" label="Nome do Relatório" id="headerReportName" hflex="1"/>
+		        </listhead>
+			</listbox>
+		</vlayout>
+	    <div align="center" xmlns="http://www.zkoss.org/2005/zul">
+	        <hbox>
+	            <button label="Ok" id="cmdSubmit" image="/img/icontexto-webdev-ok-032x032.png" width="150px" forward="reportDlg.onOK" disabled="true"/>
+	            <separator width="50px"/>
+	            <button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png" dir="reverse" width="150px" forward="reportDlg.onCancel"/>
+	        </hbox>
+	    </div>	
+    </window>
+</zk>

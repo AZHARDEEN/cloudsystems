@@ -1,0 +1,11 @@
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<window id="modalDialog" title="Comentários da Correção" border="normal" width="460px"
+	    closable="true" action="show: slideDown;hide: slideUp" position="center,center"
+	    use="br.com.mcampos.web.inep.controller.DlgComment">
+	    <ckeditor id="editCommend">
+	    </ckeditor>
+	    <div align="center"  width="100%">
+	    <button hflex="1" label="Salvar Comentário" onClick="modalDialog.onClose()" image="/img/icontexto-webdev-ok-032x032.png" id="cmdSaveComment" />
+	    </div>
+	</window>
+</zk>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="SystemEJB">
+        <wb-resource deploy-path="/" source-path="/ejbModule" tag="defaultRootSource"/>
+        <dependent-module archiveName="SystemLib.jar" deploy-path="/" handle="module:/resource/SystemLib/SystemLib">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/SystemEJB/build/classes"/>
+    </wb-module>
+</project-modules>

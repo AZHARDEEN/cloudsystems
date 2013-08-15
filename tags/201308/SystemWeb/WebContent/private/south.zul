@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+    <window width="100%" border="none" apply = "br.com.mcampos.web.controller.logged.SouthController" id="southWnd">
+        <span style="font-size:small">
+            <grid id="gridSouthToolbar">
+                <columns>
+                    <column width="40%"/>
+                    <column width="5%"/>
+                    <column width="20%"/>
+                    <column width="20%"/>
+                </columns>
+                <rows>
+                    <row>
+                        <label id="labelCopyright" value="##"/>
+                        <label id="labelVersion" value="##"/>
+                        <combobox id="companies" readonly="true" width="99%"/>
+                    </row>
+                </rows>
+            </grid>
+        </span>
+    </window>
+</zk>

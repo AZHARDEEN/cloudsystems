@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+<window width="100%" height="100%" closable="true" border="none" title="Coordenador - distribuir Provas Orais em Discrepância - Etapa 1" 
+		apply="br.com.mcampos.web.inep.controller.OralVarianceCoordinatorController">
+   	<style>
+		tr.z-row td.z-row-inner, tr.z-row .z-cell {
+			    line-height: 12px;
+			}   	
+	</style>
+    <borderlayout id="mainCpomponent" >
+    	<north fulfill="=/private/inep/north_task.zul" flex = "true" />
+        <center vflex="true" hflex="true">
+        	<div vflex="true">
+	        	<div id="divListbox" width="100%" height="100%">
+		            <listbox  vflex="true" pagingPosition="top" autopaging="true" id="listTable" mold="paging"
+		            		multiple="true" checkmark="true"  
+		            		emptyMessage="Não existem provas orais em discrepância disponíveis">
+		                <listhead>
+		                    <listheader align="left" label="Inscrição" width="120px"/>
+		                    <listheader align="Left" label="Posto Aplicador"  />
+		                    <listheader align="center" label="PO" width="70px" />
+		                    <listheader align="center" label="PE"  width="70px" />
+		                    <listheader align="left" label="Motivo"  width="200px" />
+		                </listhead>
+		            </listbox>
+	            </div>
+            </div>
+        </center>
+    </borderlayout>
+    <menupopup id="listPopupOralTest">
+    	<menuitem label="Distribuir Tarefas Selecionadas" id="assign" image="/img/user.png" />
+    </menupopup>
+</window>
+</zk>

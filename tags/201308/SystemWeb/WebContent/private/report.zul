@@ -1,0 +1,6 @@
+<?page title="Relatório" contentType="text/html;charset=UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+<window  border="none" width="1024" height="768" apply="br.com.mcampos.web.core.report.JasperReportController">
+	<iframe  width="100%" height="100%" />
+</window>
+</zk>

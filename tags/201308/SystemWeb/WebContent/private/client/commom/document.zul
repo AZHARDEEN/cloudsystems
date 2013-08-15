@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<div id = "divDocumentList" apply="br.com.mcampos.web.controller.client.commom.DocumentController" >
+		<listbox fixedLayout="true" id="documentList" rows= "4">
+			<listhead sizable="true" >
+				<listheader label="Espécie" sort="auto" align="left" width="20%" />
+				<listheader label="Descrição" sort="auto" align="left" width="40%" />
+				<listheader label="Observação" width= "40%" />
+			</listhead>
+		</listbox>
+		<separator bar="true"/>
+		<grid >
+			<columns>
+				<column width="25%" />
+				<column />
+			</columns>
+			<rows>
+				<row>
+					<label value="Tipo do Documento" />
+					<combobox id="documentType" width="150px"  use="br.com.mcampos.web.core.combobox.DocumentTypeCombobox" >
+					</combobox>
+				</row>
+				<row>
+					<label value="Código/Id" />
+					<textbox id="documentId" maxlength="32" width="300px" />
+				</row>
+				<row>
+					<label value="Observação" />
+					<textbox id="documentComent" width="99%" maxlength="255" multiline="true" rows="2" />
+				</row>
+			</rows>
+		</grid>
+		<separator bar="true"/>
+		<div align="center" >
+			<hbox align="center" >
+				<button label="Novo" id="addDocument" 
+					tooltiptext="Adiciona um novo documento ao cadastro desta pessoa" 
+					image="/img/icontexto-webdev-add-032x032.png" />
+				<button label="Editar" id="updateDocument" disabled="true"
+					tooltiptext="Atualiza o documento selecionado deste cadastro" 
+					image="/img/icontexto-webdev-alert-032x032.png" />
+				<button label="Remover" id="removeDocument" disabled="true"
+					tooltiptext="Remove o documento selecionado na lista" 
+					image="/img/icontexto-webdev-remove-032x032.png" />
+			</hbox>
+		</div>
+	</div>
+</zk>
