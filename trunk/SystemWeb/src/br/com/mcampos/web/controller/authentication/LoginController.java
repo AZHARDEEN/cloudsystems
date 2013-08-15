@@ -10,7 +10,7 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.fdigital.services.SamaBSBClient;
+
 import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.LoginSession;
 import br.com.mcampos.sysutils.SysUtils;
@@ -21,7 +21,7 @@ import br.com.mcampos.web.core.LoggedInterface;
 public class LoginController extends BaseCaptchaDialogController<LoginSession>
 {
 	private static final long serialVersionUID = -3608637091684592684L;
-	private static final Logger logger = LoggerFactory.getLogger( SamaBSBClient.class );
+	private static final Logger logger = LoggerFactory.getLogger( LoginController.class );
 
 	@Wire( "#identification" )
 	private Textbox identification;

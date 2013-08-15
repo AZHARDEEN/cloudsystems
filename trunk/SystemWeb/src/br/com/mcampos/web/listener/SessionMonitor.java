@@ -10,7 +10,6 @@ import org.zkoss.util.Locales;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.http.HttpSessionListener;
 
-import br.com.mcampos.ejb.fdigital.services.SamaBSBClient;
 import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.LoginSession;
 import br.com.mcampos.utils.dto.Credential;
@@ -21,7 +20,7 @@ import br.com.mcampos.web.locator.ServiceLocator;
 public class SessionMonitor extends HttpSessionListener
 {
 	private LoginSession session;
-	private static final Logger logger = LoggerFactory.getLogger( SamaBSBClient.class );
+	private static final Logger logger = LoggerFactory.getLogger( SessionMonitor.class );
 
 	@Override
 	public void sessionDestroyed( HttpSessionEvent httpSessionEvent )
