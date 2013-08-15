@@ -4,11 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.datatools.connectivity.jdt.DRIVERLIBRARY/PostgreSQL JDBC Driver"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SystemLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/axis">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jasypt">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
@@ -17,7 +12,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/slf4j"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.jboss.ide.eclipse.as.core.server.runtime.runtimeTarget/JBoss 7.1 Runtime">
 		<attributes>
-			<attribute name="owner.project.facets" value="#system#;jpt.jpa"/>
+			<attribute name="owner.project.facets" value="jpt.jpa;#system#"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
