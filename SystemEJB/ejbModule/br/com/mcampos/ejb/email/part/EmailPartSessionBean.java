@@ -79,30 +79,27 @@ public class EmailPartSessionBean extends SimpleSessionBean<EMailPart> implement
 	@Override
 	public Boolean sendMail( MailDTO dto )
 	{
-		if ( false ) {
-			Connection connection;
-			Session session;
-			try {
-				connection = cf.createConnection( );
-				if ( connection != null ) {
-					session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
-					if ( session != null ) {
-						MessageProducer mp = session.createProducer( queue );
-						ObjectMessage objmsg = session.createObjectMessage( dto );
-						mp.send( objmsg );
-						mp.close( );
-						return true;
-					}
-					return false;
+		Connection connection;
+		Session session;
+		try {
+			connection = cf.createConnection( );
+			if ( connection != null ) {
+				session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
+				if ( session != null ) {
+					MessageProducer mp = session.createProducer( queue );
+					ObjectMessage objmsg = session.createObjectMessage( dto );
+					mp.send( objmsg );
+					mp.close( );
+					return true;
 				}
 				return false;
 			}
-			catch ( JMSException e ) {
-				e.printStackTrace( );
-				return false;
-			}
+			return false;
 		}
-		return true;
+		catch ( JMSException e ) {
+			e.printStackTrace( );
+			return false;
+		}
 	}
 
 }

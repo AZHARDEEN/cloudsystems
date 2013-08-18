@@ -21,11 +21,11 @@ import br.com.mcampos.sysutils.SysUtils;
 public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface<T>
 {
 	@Resource
-	SessionContext			sessionContext;
+	SessionContext sessionContext;
 	@PersistenceContext( unitName = "SystemEJB" )
-	private EntityManager	em;
+	private EntityManager em;
 
-	private Class<T>		persistentClass;
+	private Class<T> persistentClass;
 
 	protected abstract Class<T> getEntityClass( );
 
@@ -59,7 +59,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		try {
 			entity = getEntityManager( ).find( getPersistentClass( ), key );
 		}
-		catch( Exception e ) {
+		catch ( Exception e ) {
 			storeException( e );
 			entity = null;
 		}
@@ -76,10 +76,10 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		String sqlQuery;
 
 		sqlQuery = "select t from " + getPersistentClass( ).getSimpleName( ) + " as t ";
-		if( whereClause != null && whereClause.isEmpty( ) == false ) {
+		if ( whereClause != null && whereClause.isEmpty( ) == false ) {
 			whereClause = whereClause.trim( );
 			String where = whereClause.substring( 0, 5 );
-			if( where.compareToIgnoreCase( "where" ) == 0 ) {
+			if ( where.compareToIgnoreCase( "where" ) == 0 ) {
 				sqlQuery += " " + whereClause;
 			}
 			else {
@@ -87,9 +87,9 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			}
 		}
 		String orderBy = allQueryOrderByClause( "t" );
-		if( SysUtils.isEmpty( orderBy ) == false ) {
+		if ( SysUtils.isEmpty( orderBy ) == false ) {
 			orderBy = orderBy.toLowerCase( );
-			if( orderBy.indexOf( "order by" ) >= 0 ) {
+			if ( orderBy.indexOf( "order by" ) >= 0 ) {
 				sqlQuery += orderBy;
 			}
 			else {
@@ -112,7 +112,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		try {
 			return query.getResultList( );
 		}
-		catch( Exception e ) {
+		catch ( Exception e ) {
 			storeException( e );
 			return Collections.emptyList( );
 		}
@@ -124,12 +124,12 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		try {
 			Object obj;
 			obj = query.getSingleResult( );
-			if( obj == null ) {
+			if ( obj == null ) {
 				return null;
 			}
 			return (T) obj;
 		}
-		catch( Exception e ) {
+		catch ( Exception e ) {
 			return null;
 		}
 	}
@@ -138,7 +138,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	public Collection<T> getAll( String whereClause, DBPaging page )
 	{
 		Query query = getAllQuery( whereClause );
-		if( page != null ) {
+		if ( page != null ) {
 			query.setMaxResults( page.getRows( ) );
 			query.setFirstResult( page.getRows( ) * page.getPage( ) );
 		}
@@ -150,7 +150,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	public Collection<T> getAll( String whereClause, DBPaging page, Object... params )
 	{
 		Query query = getAllQuery( whereClause );
-		if( page != null ) {
+		if ( page != null ) {
 			query.setMaxResults( page.getRows( ) );
 			query.setFirstResult( page.getRows( ) * page.getPage( ) );
 		}
@@ -160,16 +160,16 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	protected void setQueryParams( Query query, Object... params )
 	{
-		if( params != null && params.length > 0 ) {
-			for( int i = 0; i < params.length; i++ ) {
-				query.setParameter( i + 1, params[i] );
+		if ( params != null && params.length > 0 ) {
+			for ( int i = 0; i < params.length; i++ ) {
+				query.setParameter( i + 1, params[ i ] );
 			}
 		}
 	}
 
 	protected void setQueryParams( Query query, Map<String, Object> params )
 	{
-		for( Entry<String, Object> entry : params.entrySet( ) ) {
+		for ( Entry<String, Object> entry : params.entrySet( ) ) {
 			query.setParameter( entry.getKey( ), entry.getValue( ) );
 		}
 	}
@@ -221,7 +221,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	private void page( DBPaging paging, Query query )
 	{
-		if( paging != null ) {
+		if ( paging != null ) {
 			query.setFirstResult( paging.getPage( ) * paging.getRows( ) );
 			query.setMaxResults( paging.getRows( ) );
 		}
@@ -280,11 +280,11 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		Integer id;
 		try {
 			id = (Integer) query.getSingleResult( );
-			if( id == null || id.equals( 0 ) ) {
+			if ( id == null || id.equals( 0 ) ) {
 				id = 1;
 			}
 		}
-		catch( Exception e ) {
+		catch ( Exception e ) {
 			storeException( e );
 			id = 1;
 		}
@@ -299,11 +299,11 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		try {
 			setQueryParams( query, params );
 			id = (Integer) query.getSingleResult( );
-			if( id == null || id.equals( 0 ) ) {
+			if ( id == null || id.equals( 0 ) ) {
 				id = 1;
 			}
 		}
-		catch( Exception e ) {
+		catch ( Exception e ) {
 			storeException( e );
 			id = 1;
 		}
@@ -313,7 +313,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	@Override
 	public void storeException( Exception e )
 	{
-		if( e == null ) {
+		if ( e == null ) {
 			return;
 		}
 		e.printStackTrace( );
@@ -330,4 +330,35 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		 * ex ) { ex = null; // just it doesn't matter here }
 		 */
 	}
+
+	@Override
+	public List<T> findByQuery( String sql, Object... params )
+	{
+		return findByQuery( sql, null, params );
+	}
+
+	@Override
+	public List<T> findByQuery( String sql, DBPaging paging, Object... params )
+	{
+		Query query = getEntityManager( ).createQuery( sql );
+		setQueryParams( query, params );
+		page( paging, query );
+		return (List<T>) getResultList( query );
+	}
+
+	@Override
+	public List<T> findByQuery( String sql, Map<String, Object> params )
+	{
+		return findByQuery( sql, null, params );
+	}
+
+	@Override
+	public List<T> findByQuery( String sql, DBPaging paging, Map<String, Object> params )
+	{
+		Query query = getEntityManager( ).createQuery( sql );
+		setQueryParams( query, params );
+		page( paging, query );
+		return (List<T>) getResultList( query );
+	}
+
 }

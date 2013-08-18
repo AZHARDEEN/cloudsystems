@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.zkoss.util.Locales;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -25,6 +26,8 @@ import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Panel;
 import org.zkoss.zul.Window;
@@ -33,6 +36,7 @@ import org.zkoss.zul.impl.XulElement;
 import org.zkoss.zul.theme.Themes;
 
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.Credential;
 import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.locator.ServiceLocator;
 
@@ -120,6 +124,23 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		else {
 			return null;
 		}
+	}
+
+	protected Credential getCredential( )
+	{
+		Credential c = new Credential( );
+
+		c.setLocale( Locales.getCurrent( ) );
+		if ( Executions.getCurrent( ) != null ) {
+			c.setRemoteAddr( Executions.getCurrent( ).getRemoteAddr( ) );
+			c.setRemoteHost( Executions.getCurrent( ).getRemoteHost( ) );
+			c.setProgram( Executions.getCurrent( ).getBrowser( ) );
+		}
+		else {
+			c.setRemoteAddr( "n/a" );
+		}
+		c.setSessionId( getSessionID( ) );
+		return c;
 	}
 
 	@Override
@@ -411,5 +432,16 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		logger.info( pd.getRequestPath( ) );
 		setRequestPath( pd.getRequestPath( ) );
 		return super.doBeforeCompose( page, parent, compInfo );
+	}
+
+	protected ListModelList<?> getModel( Listbox c )
+	{
+		if ( c == null || c.getModel( ) == null )
+			return null;
+		Object obj = c.getModel( );
+		if ( obj instanceof ListModelList )
+			return (ListModelList<?>) obj;
+		else
+			return null;
 	}
 }

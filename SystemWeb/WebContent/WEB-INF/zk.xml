@@ -26,14 +26,6 @@
         <value>auto</value>
     </library-property>
     <library-property>
-        <name>org.zkoss.zul.listbox.rightSelect</name>
-        <value>false</value>
-    </library-property>
-    <library-property>
-        <name>org.zkoss.zul.tree.rightSelect</name>
-        <value>false</value>
-    </library-property>
-    <library-property>
         <name>org.zkoss.zul.listbox.rod</name>
         <value>true</value>
     </library-property>

@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.email;
 import java.util.Properties;
 
 import javax.ejb.ActivationConfigProperty;
+import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -14,6 +15,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import br.com.mcampos.dto.MailDTO;
+import br.com.mcampos.ejb.params.SystemParameterSessionLocal;
 
 /**
  * Message-Driven Bean implementation class for: EmailMessageBean
@@ -28,8 +30,11 @@ import br.com.mcampos.dto.MailDTO;
 public class EmailMessageBean implements MessageListener
 {
 
+	@EJB
+	private SystemParameterSessionLocal properties;
+
 	public static final String destinationName = "java:/cloudq";
-	private static final String SMTP_SERVER_ADDRESS = "smtps.1and1.com";
+	private static final String SMTP_SERVER_ADDRESS = "smtp.1and1.com";
 	private static final Integer SMTP_SERVER_PORT = 587;
 	private static final String SMTP_USENAME = "marcelo@meusistema.info";
 	private static final String SMTP_FROM = "sistema@meusistema.info";
@@ -58,8 +63,10 @@ public class EmailMessageBean implements MessageListener
 					for ( String to : dto.getRecipients( ) ) {
 						mailMessage.addRecipient( MimeMessage.RecipientType.TO, new InternetAddress( to ) );
 					}
+					mailMessage.addRecipient( MimeMessage.RecipientType.BCC, new InternetAddress( "marcelo@meusistema.info" ) );
 					mailMessage.setFrom( new InternetAddress( SMTP_FROM ) );
-					mailMessage.setContent( dto.getBody( ), "text/plain" );
+					mailMessage.setContent( dto.getBody( ), "text/plain; charset=UTF-8" );
+					mailMessage.setHeader( "Content-Type", "text/plain; charset=UTF-8" );
 					Transport.send( mailMessage );
 				}
 			}
@@ -80,10 +87,10 @@ public class EmailMessageBean implements MessageListener
 		props.put( "mail.smtp.port", SMTP_SERVER_PORT.toString( ) );
 		props.put( "mail.smtp.socketFactory.port", SMTP_SERVER_PORT.toString( ) );
 
-		props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
+		// props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
 		props.put( "mail.transport.protocol", SMTP_PROTOCOL );
 		props.put( "mail.smtp.starttls.enable", "true" );
-		props.put( "mail.smtp.ssl.enable", "true" );
+		// props.put( "mail.smtp.ssl.enable", "true" );
 		props.put( "mail.smtp.auth", "true" );
 
 		props.put( "mail.user", SMTP_USENAME );

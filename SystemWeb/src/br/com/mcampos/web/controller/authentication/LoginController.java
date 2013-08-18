@@ -2,14 +2,11 @@ package br.com.mcampos.web.controller.authentication;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.zkoss.util.Locales;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
-
 
 import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.LoginSession;
@@ -84,22 +81,6 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 		return true;
 	}
 
-	private Credential getCredential( )
-	{
-		Credential c = new Credential( );
-
-		c.setIdentification( identification.getValue( ) );
-		c.setPassword( password.getValue( ) );
-
-		c.setLocale( Locales.getCurrent( ) );
-		c.setRemoteAddr( Executions.getCurrent( ).getRemoteAddr( ) );
-		c.setRemoteHost( Executions.getCurrent( ).getRemoteHost( ) );
-		c.setProgram( Executions.getCurrent( ).getBrowser( ) );
-		c.setSessionId( getSessionID( ) );
-
-		return c;
-	}
-
 	@Override
 	public void doAfterCompose( Window comp ) throws Exception
 	{
@@ -115,4 +96,12 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 		gotoPage( "/public/forgot_password.zul", true );
 	}
 
+	@Override
+	protected Credential getCredential( )
+	{
+		Credential c = super.getCredential( );
+		c.setIdentification( identification.getValue( ) );
+		c.setPassword( password.getValue( ) );
+		return c;
+	}
 }

@@ -1,8 +1,6 @@
 package br.com.mcampos.web.controller;
 
-import org.zkoss.util.Locales;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -11,7 +9,6 @@ import org.zkoss.zul.Textbox;
 import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.LoginSession;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
-import br.com.mcampos.utils.dto.Credential;
 import br.com.mcampos.web.core.BaseCaptchaDialogController;
 import br.com.mcampos.web.core.LoggedInterface;
 
@@ -50,17 +47,17 @@ public class ChangePasswordController extends BaseCaptchaDialogController<LoginS
 
 	public Textbox getOld_password( )
 	{
-		return this.old_password;
+		return old_password;
 	}
 
 	public Textbox getPassword( )
 	{
-		return this.password;
+		return password;
 	}
 
 	public Textbox getRe_password( )
 	{
-		return this.re_password;
+		return re_password;
 	}
 
 	@Override
@@ -117,20 +114,6 @@ public class ChangePasswordController extends BaseCaptchaDialogController<LoginS
 		if ( c.getPerson( ).equals( l.getPerson( ) ) == false ) {
 			return null;
 		}
-		return c;
-	}
-
-	private Credential getCredential( )
-	{
-		Credential c = new Credential( );
-
-		c.setPassword( this.password.getValue( ) );
-		c.setLocale( Locales.getCurrent( ) );
-		c.setRemoteAddr( Executions.getCurrent( ).getRemoteAddr( ) );
-		c.setRemoteHost( Executions.getCurrent( ).getRemoteHost( ) );
-		c.setProgram( Executions.getCurrent( ).getBrowser( ) );
-		c.setSessionId( getSessionID( ) );
-
 		return c;
 	}
 
