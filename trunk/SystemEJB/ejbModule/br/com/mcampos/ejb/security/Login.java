@@ -51,10 +51,10 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 	@JoinColumn( name = "uts_id_in", referencedColumnName = "uts_id_in", insertable = true, updatable = true, nullable = false )
 	private UserStatus status;
 
-	@OneToOne( fetch = FetchType.EAGER )
+	@OneToOne( fetch = FetchType.EAGER, optional = false )
 	@JoinColumn(
 			name = "usr_id_in", nullable = false, referencedColumnName = "usr_id_in", columnDefinition = "Integer",
-			insertable = true, updatable = true )
+			insertable = true, updatable = true, unique = true )
 	protected Person person;
 
 	@Transient
@@ -66,27 +66,27 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 
 	public Date getExpDate( )
 	{
-		return this.expDate;
+		return expDate;
 	}
 
 	public void setExpDate( Date date )
 	{
-		this.expDate = date;
+		expDate = date;
 	}
 
 	public String getPassword( )
 	{
-		return this.password;
+		return password;
 	}
 
 	public void setPassword( String passwd )
 	{
-		this.password = passwd;
+		password = passwd;
 	}
 
 	public String getToken( )
 	{
-		return this.token;
+		return token;
 	}
 
 	public void setToken( String token )
@@ -96,20 +96,20 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 
 	public Integer getTryCount( )
 	{
-		if ( this.tryCount == null ) {
-			this.tryCount = 0;
+		if ( tryCount == null ) {
+			tryCount = 0;
 		}
-		return this.tryCount;
+		return tryCount;
 	}
 
 	public void setTryCount( Integer count )
 	{
-		this.tryCount = count;
+		tryCount = count;
 	}
 
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( Integer id )
@@ -119,12 +119,12 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 
 	public UserStatus getStatus( )
 	{
-		return this.status;
+		return status;
 	}
 
 	public void setStatus( UserStatus id )
 	{
-		this.status = id;
+		status = id;
 	}
 
 	public void setPerson( Person person )
@@ -135,12 +135,12 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 
 	public Person getPerson( )
 	{
-		return this.person;
+		return person;
 	}
 
 	public void incrementTryCount( )
 	{
-		this.tryCount++;
+		tryCount++;
 	}
 
 	@Override
@@ -194,7 +194,7 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 
 	public AccessLog getLastLogin( )
 	{
-		return this.lastLogin;
+		return lastLogin;
 	}
 
 	@Override

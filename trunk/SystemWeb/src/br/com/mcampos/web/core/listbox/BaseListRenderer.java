@@ -7,7 +7,7 @@ import org.zkoss.zul.ListitemRenderer;
 public abstract class BaseListRenderer<T> implements ListitemRenderer<T>
 {
 
-	protected void addCell( Listitem item, Object value )
+	protected Listcell addCell( Listitem item, Object value )
 	{
 		String str = "";
 
@@ -19,7 +19,9 @@ public abstract class BaseListRenderer<T> implements ListitemRenderer<T>
 				str = value.toString( );
 			}
 		}
-		item.appendChild( new Listcell( str ) );
+		Listcell cell = new Listcell( str );
+		item.appendChild( cell );
+		return cell;
 	}
 
 	protected void clear( Listitem item )

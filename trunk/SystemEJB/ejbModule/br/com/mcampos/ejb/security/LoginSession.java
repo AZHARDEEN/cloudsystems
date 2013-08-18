@@ -1,5 +1,7 @@
 package br.com.mcampos.ejb.security;
 
+import java.util.List;
+
 import javax.ejb.Remote;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
@@ -23,5 +25,13 @@ public interface LoginSession extends BaseSessionInterface<Login>
 	Boolean isPasswordUsed( Integer id, String newPassword );
 
 	void logout( Login login, Credential crecential );
+
+	/*
+	 * Administrative Tasks
+	 */
+
+	List<Login> search( String searchField, String lookFor );
+
+	Login resetLogin( Login admin, Login toReset, Credential credential );
 
 }

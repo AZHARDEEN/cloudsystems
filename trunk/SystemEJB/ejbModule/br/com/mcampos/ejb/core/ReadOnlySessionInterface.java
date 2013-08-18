@@ -27,6 +27,14 @@ public interface ReadOnlySessionInterface<T>
 
 	List<T> findByNativeQuery( String sql, DBPaging paging, Object... params );
 
+	List<T> findByQuery( String sql, Object... params );
+
+	List<T> findByQuery( String sql, DBPaging paging, Object... params );
+
+	List<T> findByQuery( String sql, Map<String, Object> params );
+
+	List<T> findByQuery( String sql, DBPaging paging, Map<String, Object> params );
+
 	T getByNamedQuery( String namedQuery, Object... params );
 
 	T getByNamedQuery( String namedQuery, DBPaging paging, Object... params );

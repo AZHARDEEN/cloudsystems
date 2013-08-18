@@ -9,6 +9,9 @@
         <archive path="T:/Library/apache/http_client/4.2.4/lib/httpcore-4.2.4.jar"/>
         <archive path="T:/Library/apache/http_client/4.2.4/lib/httpmime-4.2.4.jar"/>
     </library>
+    <library name="ApacheCommons" systemlibrary="false">
+        <archive javadoc="jar:file:/T:/Library/apache/commons-lang3-3.1/commons-lang3-3.1-javadoc.jar!/" path="T:/Library/apache/commons-lang3-3.1/commons-lang3-3.1.jar" source="T:/Library/apache/commons-lang3-3.1/commons-lang3-3.1-sources.jar"/>
+    </library>
     <library name="axis" systemlibrary="false">
         <archive path="T:/Library/apache/axis/1.4/lib/axis.jar"/>
         <archive path="T:/Library/apache/axis/1.4/lib/commons-discovery-0.2.jar"/>
@@ -48,11 +51,6 @@
     <library name="fckeditor" systemlibrary="false">
         <archive path="T:/Library/zkoss/zk-FCKeditor-2.6.5_50/dist/lib/fckez.jar" source="T:/Library/zkoss/zk-FCKeditor-2.6.5_50/dist/src/fckez-sources.jar"/>
     </library>
-    <library name="itext" systemlibrary="false">
-        <archive javadoc="jar:file:/T:/Library/iText/itextpdf-5.4.1-javadoc.jar!/" path="T:/Library/iText/itextpdf-5.4.1.jar" source="T:/Library/iText/itextpdf-5.4.1-sources.jar"/>
-        <archive javadoc="jar:file:/T:/Library/iText/itext-pdfa-5.4.1-javadoc.jar!/" path="T:/Library/iText/itext-pdfa-5.4.1.jar" source="T:/Library/iText/itext-pdfa-5.4.1-sources.jar"/>
-        <archive javadoc="jar:file:/T:/Library/iText/itext-xtra-5.4.1-javadoc.jar!/" path="T:/Library/iText/itext-xtra-5.4.1.jar" source="T:/Library/iText/itext-xtra-5.4.1-sources.jar"/>
-    </library>
     <library name="jasperreports" systemlibrary="false">
         <archive path="T:/Library/jasperreports/5.0.0/lib/jasperreports-5.0.0.jar"/>
         <archive path="T:/Library/jasperreports/5.0.0/lib/jasperreports-fonts-5.0.0.jar"/>
@@ -64,6 +62,7 @@
         <archive path="T:/Library/jasperreports/5.0.0/lib/groovy-all-2.0.1.jar"/>
         <archive path="T:/Library/jasperreports/5.0.0/lib/jxl-2.6.10.jar"/>
         <archive path="T:/Library/jasperreports/5.0.0/lib/poi-3.7-20101029.jar"/>
+        <archive path="T:/Library/jasperreports/jasperreports-5.0.0-project/jasperreports-5.0.0/lib/iText-2.1.7.js1.jar"/>
     </library>
     <library name="jasypt" systemlibrary="false">
         <archive path="T:/Library/jasypt/1.9.0/lib/icu4j-3.4.4.jar"/>
@@ -81,6 +80,9 @@
     <library name="slf4j" systemlibrary="false">
         <archive path="T:/Library/quartz/2.1.7/lib/slf4j-api-1.6.1.jar"/>
         <archive path="T:/Library/quartz/2.1.7/lib/slf4j-log4j12-1.6.1.jar"/>
+    </library>
+    <library name="zk_jmeter_plugin" systemlibrary="false">
+        <archive path="T:/Library/zkoss/zk-jmeter-plugin-0.8.0.jar"/>
     </library>
     <library name="zkoss" systemlibrary="false">
         <archive path="T:/Library/zkoss/6.5.2/dist/lib/zcommon.jar" source="/ZKs/ZKReleases/zk-bin-6.5.2/libsrc/zcommon-sources.jar"/>

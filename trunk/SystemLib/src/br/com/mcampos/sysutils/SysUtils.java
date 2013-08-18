@@ -338,4 +338,15 @@ public final class SysUtils
 
 		return new BigDecimal( number.doubleValue( ) );
 	}
+
+	public static Integer parseInteger( String value )
+	{
+		try {
+			return Integer.parseInt( value );
+		}
+		catch ( Exception e )
+		{
+			return new Integer( 0 );
+		}
+	}
 }
