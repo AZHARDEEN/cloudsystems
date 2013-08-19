@@ -589,4 +589,10 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		return targetLogin;
 	}
 
+	@Override
+	public String randomPassword( int count )
+	{
+		return RandomStringUtils.randomAscii( count );
+	}
+
 }

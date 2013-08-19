@@ -34,4 +34,6 @@ public interface LoginSession extends BaseSessionInterface<Login>
 
 	Login resetLogin( Login admin, Login toReset, Credential credential );
 
+	String randomPassword( int count );
+
 }
