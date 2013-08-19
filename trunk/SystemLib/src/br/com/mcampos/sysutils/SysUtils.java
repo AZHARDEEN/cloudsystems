@@ -50,6 +50,20 @@ public final class SysUtils
 		return false;
 	}
 
+	public static boolean isEmptyAfterTrim( String s )
+	{
+		if ( isNull( s ) ) {
+			return true;
+		}
+		if ( s.isEmpty( ) == true ) {
+			return true;
+		}
+		s = s.trim( );
+		if ( s.isEmpty( ) == true )
+			return true;
+		return false;
+	}
+
 	public static boolean isZero( Integer i )
 	{
 		if ( isNull( i ) ) {
