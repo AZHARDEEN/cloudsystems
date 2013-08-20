@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<zk xmlns="http://www.zkoss.org/2005/zul">
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
     <borderlayout>
         <center flex="true">
-            <listbox vflex="true" autopaging="true" id="listTable" multiple="true" mold="paging">
-                <listhead>
-                    <listheader align="center" label="Código" width="80px" value="id"/>
-                    <listheader align="left" label="Descrição" sort="auto" value="description"/>
-                </listhead>
-            </listbox>
+        	<div>
+        		<paging id="pgTop" autohide="false" detailed="true"/>
+	            <listbox id="listTable" vflex="true" multiple="true">
+	                <listhead>
+	                    <listheader align="center" label="Código" width="80px" value="id"/>
+	                    <listheader align="left" label="Descrição" sort="auto" value="description"/>
+	                </listhead>
+	            </listbox>
+        		<paging id="pgBotton" autohide="false" detailed="true"/>
+        	 </div>
         </center>
         <east autoscroll="true" splittable="true" width="50%">
             <div id="divEast">
