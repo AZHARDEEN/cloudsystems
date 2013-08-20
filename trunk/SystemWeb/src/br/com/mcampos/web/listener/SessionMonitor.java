@@ -29,8 +29,10 @@ public class SessionMonitor extends HttpSessionListener
 			Object obj = httpSessionEvent.getSession( ).getAttribute( LoggedInterface.userSessionParamName );
 			if ( obj != null && obj instanceof Login ) {
 				logger.info( "Logout from " + ( (Login) obj ).getPerson( ).getName( ) );
-				getSession( ).logout( (Login) obj, getCredential( httpSessionEvent ) );
-				httpSessionEvent.getSession( ).setAttribute( LoggedInterface.userSessionParamName, null );
+				if ( getSession( ) != null ) {
+					getSession( ).logout( (Login) obj, getCredential( httpSessionEvent ) );
+					httpSessionEvent.getSession( ).setAttribute( LoggedInterface.userSessionParamName, null );
+				}
 			}
 		}
 		super.sessionDestroyed( httpSessionEvent );

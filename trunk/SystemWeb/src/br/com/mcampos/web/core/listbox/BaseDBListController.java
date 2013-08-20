@@ -291,8 +291,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 
 	protected void loadPage( int activePage )
 	{
-		getListbox( ).setModel(
-				new ListModelList<ENTITY>( getAll( activePage ) ) );
+		getListbox( ).setModel( new ListModelList<ENTITY>( getAll( activePage ) ) );
 	}
 
 	protected Collection<ENTITY> getAll( int activePage )
