@@ -236,7 +236,7 @@ iot_station_ch]]>
 				<textField pattern="000" isBlankWhenNull="true">
 					<reportElement uuid="d2942436-3a80-4550-8874-8939180035f2" x="466" y="44" width="43" height="15"/>
 					<textElement textAlignment="Center"/>
-					<textFieldExpression><![CDATA[$F{sdiff2}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{sdiff3}]]></textFieldExpression>
 				</textField>
 				<textField pattern="000" isBlankWhenNull="true">
 					<reportElement uuid="d274c209-e7f3-4cec-b57b-76a70012e0cc" x="200" y="44" width="43" height="15"/>
