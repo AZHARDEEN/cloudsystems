@@ -90,6 +90,8 @@ from (
 	) t1
 ) t3
 group by
+iot_station_ch
+order by
 iot_station_ch]]>
 	</queryString>
 	<field name="iot_station_ch" class="java.lang.String"/>
@@ -124,7 +126,11 @@ iot_station_ch]]>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="14"/>
+			<band height="14">
+				<break>
+					<reportElement uuid="671a9c68-d7c6-4ce4-bc4e-0ccbb26a43a1" x="0" y="0" width="555" height="1"/>
+				</break>
+			</band>
 		</groupFooter>
 	</group>
 	<background>
