@@ -20,7 +20,6 @@ public class TitleCombobox extends ComboboxExt<TitleSession, Title> implements D
 
 	public void load( Gender gender )
 	{
-		logger.info( String.format( "load(%s)", gender.getDescription( ) ) );
 		load( getSession( ).getAll( gender ), null, true );
 	}
 
@@ -29,7 +28,6 @@ public class TitleCombobox extends ComboboxExt<TitleSession, Title> implements D
 	{
 		if ( master instanceof Gender )
 		{
-			logger.info( "onChangeMaster" );
 			load( (Gender) master );
 		}
 	}
@@ -37,7 +35,6 @@ public class TitleCombobox extends ComboboxExt<TitleSession, Title> implements D
 	@Override
 	protected void load( )
 	{
-		logger.info( "load - filler" );
 	}
 
 }

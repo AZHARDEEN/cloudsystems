@@ -123,6 +123,8 @@
     <class>br.com.mcampos.ejb.inep.entity.InepOralDistributionPK</class>
     <class>br.com.mcampos.ejb.garage.entities.FuelType</class>
     <class>br.com.mcampos.ejb.garage.entities.CarManufacturer</class>
+    <class>br.com.mcampos.ejb.product.entity.PriceType</class>
+    <class>br.com.mcampos.ejb.product.entity.ProductType</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

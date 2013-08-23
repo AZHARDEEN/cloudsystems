@@ -45,14 +45,12 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox
 	@Override
 	public void setSelectedItem( Comboitem item )
 	{
-		logger.info( "setSelectedItem: " + item.getValue( ).toString( ) );
 		super.setSelectedItem( item );
 		processOnSelect( );
 	}
 
 	private void processOnSelect( )
 	{
-		logger.info( "processOnSelect: " + this.getClass( ).getSimpleName( ) );
 		Events.sendEvent( this, new Event( Events.ON_SELECT, this ) );
 	}
 
@@ -118,7 +116,6 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox
 		if ( getItemCount( ) <= 0 || item == null ) {
 			return;
 		}
-		logger.info( "Looking for: " + item.toString( ) );
 		for ( Component child : getChildren( ) ) {
 			if ( child instanceof Comboitem ) {
 				Comboitem cbItem = (Comboitem) child;
@@ -145,7 +142,6 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox
 
 	public void onSelect( Event evt )
 	{
-		logger.info( "onSelect: " + evt.getTarget( ).getId( ) );
 		for ( DetailInterface item : getDetails( ) ) {
 			item.onChangeMaster( getSelectedValue( ) );
 		}
@@ -156,7 +152,6 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox
 	{
 		if ( ( this instanceof DetailInterface ) == false && this.getItemCount( ) == 0 )
 		{
-			logger.info( "onCreate calling load: " + evt.getTarget( ).getId( ) );
 			load( );
 		}
 	}
