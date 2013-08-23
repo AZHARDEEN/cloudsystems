@@ -15,13 +15,11 @@ public class CityCombobox extends ComboboxExt<CitySession, City> implements Deta
 	@Override
 	public void onChangeMaster( Object master )
 	{
-		logger.info( "onChangeMaster" );
 		load( ( (State) master ) );
 	}
 
 	public void load( State state )
 	{
-		logger.info( String.format( "load(%s)", state.getDescription( ) ) );
 		load( getSession( ).getAll( state ), null, true );
 	}
 

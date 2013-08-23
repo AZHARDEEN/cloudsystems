@@ -365,11 +365,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 			}
 		}
 		if ( evt != null ) {
-			logger.info( evt.getName( ) + ": " + evt.getTarget( ).getId( ) );
 			evt.stopPropagation( );
-		}
-		else {
-			logger.warn( "onDoubleClick/OnSelect with evt null " );
 		}
 	}
 
@@ -380,11 +376,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 		getPaging( ).setPage( page );
 		loadListbox( );
 		if ( evt != null ) {
-			logger.info( "onPaging: " + evt.getActivePage( ) );
 			evt.stopPropagation( );
-		}
-		else {
-			logger.warn( "onPaging with evt null " );
 		}
 	}
 
@@ -402,11 +394,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 			getDivData( ).setVisible( true );
 		}
 		if ( evt != null ) {
-			logger.info( "onNewPerson: " + evt.getTarget( ).getId( ) );
 			evt.stopPropagation( );
-		}
-		else {
-			logger.warn( "onNewPerson with evt null " );
 		}
 	}
 
@@ -415,11 +403,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 	{
 		loadListbox( );
 		if ( evt != null ) {
-			logger.info( "onRefresh: " + evt.getTarget( ).getId( ) );
 			evt.stopPropagation( );
-		}
-		else {
-			logger.warn( "onRefresh with evt null " );
 		}
 	}
 
@@ -436,11 +420,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 			}
 		}
 		if ( evt != null ) {
-			logger.info( "onDelete: " + evt.getTarget( ).getId( ) );
 			evt.stopPropagation( );
-		}
-		else {
-			logger.warn( "onDelete with evt null " );
 		}
 	}
 
@@ -457,11 +437,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 			onCancel( );
 		}
 		if ( evt != null ) {
-			logger.info( "onClickSubmitCancel: " + evt.getTarget( ).getId( ) );
 			evt.stopPropagation( );
-		}
-		else {
-			logger.warn( "onClickSubmitCancel with evt null " );
 		}
 	}
 
