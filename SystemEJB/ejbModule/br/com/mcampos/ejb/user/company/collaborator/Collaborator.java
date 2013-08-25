@@ -40,7 +40,7 @@ import br.com.mcampos.sysutils.SysUtils;
 		@NamedQuery( name = Collaborator.findCompanies,
 				query = "from Collaborator o where o.person = ?1 and o.toDate is null" ),
 		@NamedQuery( name = Collaborator.maxSequence,
-				query = "select max ( id.sequence ) + 1 from Collaborator o where o.company = ?1 " ),
+				query = "select max ( o.id.sequence ) + 1 from Collaborator o where o.company = ?1 " ),
 } )
 public class Collaborator implements Serializable, Comparable<Collaborator>
 {
@@ -79,8 +79,8 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	@ManyToMany
 	@JoinTable( name = "collaborator_role", joinColumns = {
-			@JoinColumn( name = "usr_id_in", nullable = false ),
-			@JoinColumn( name = "col_seq_in", nullable = false )
+			@JoinColumn( name = "usr_id_in", nullable = false, referencedColumnName = "usr_id_in" ),
+			@JoinColumn( name = "col_seq_in", nullable = false, referencedColumnName = "col_seq_in" )
 	},
 			inverseJoinColumns = { @JoinColumn( name = "rol_id_in", nullable = false ) } )
 	private List<Role> roles;
@@ -91,10 +91,10 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	public CollaboratorPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new CollaboratorPK( );
+		if ( id == null ) {
+			id = new CollaboratorPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( CollaboratorPK id )
@@ -104,27 +104,27 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	public Date getFromDate( )
 	{
-		return this.fromDate;
+		return fromDate;
 	}
 
 	public void setFromDate( Date colFromDt )
 	{
-		this.fromDate = colFromDt;
+		fromDate = colFromDt;
 	}
 
 	public Date getToDate( )
 	{
-		return this.toDate;
+		return toDate;
 	}
 
 	public void setToDate( Date colToDt )
 	{
-		this.toDate = colToDt;
+		toDate = colToDt;
 	}
 
 	public Integer getCpsIdIn( )
 	{
-		return this.cpsIdIn;
+		return cpsIdIn;
 	}
 
 	public void setCpsIdIn( Integer cpsIdIn )
@@ -134,7 +134,7 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	public CollaboratorType getCollaboratorType( )
 	{
-		return this.collaboratorType;
+		return collaboratorType;
 	}
 
 	public void setCollaboratorType( CollaboratorType collaboratorType )
@@ -144,7 +144,7 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	public Person getPerson( )
 	{
-		return this.person;
+		return person;
 	}
 
 	public void setPerson( Person person )
@@ -154,7 +154,7 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	public Company getCompany( )
 	{
-		return this.company;
+		return company;
 	}
 
 	public void setCompany( Company company )
@@ -167,7 +167,7 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	public List<Role> getRoles( )
 	{
-		return this.roles;
+		return roles;
 	}
 
 	public void setRoles( List<Role> roles )

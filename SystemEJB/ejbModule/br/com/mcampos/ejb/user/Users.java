@@ -45,7 +45,7 @@ public abstract class Users implements Serializable, Comparable<Users>
 	private Integer id;
 
 	@Column( name = "usr_insert_dt", nullable = false )
-	@Temporal( value = TemporalType.DATE )
+	@Temporal( value = TemporalType.TIMESTAMP )
 	private Date insertDate;
 
 	@Column( name = "usr_name_ch", nullable = false )

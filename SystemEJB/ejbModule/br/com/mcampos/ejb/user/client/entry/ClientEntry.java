@@ -55,8 +55,8 @@ public class ClientEntry implements Serializable
 	// bi-directional many-to-one association to UploadStatus
 	@ManyToOne( optional = false )
 	@JoinColumns( {
-			@JoinColumn( name = "usr_id_in" ),
-			@JoinColumn( name = "cli_seq_in" )
+			@JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in" ),
+			@JoinColumn( name = "cli_seq_in", referencedColumnName = "cli_seq_in" )
 	} )
 	private Client client;
 
@@ -66,47 +66,47 @@ public class ClientEntry implements Serializable
 
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( Integer etrIdIn )
 	{
-		this.id = etrIdIn;
+		id = etrIdIn;
 	}
 
 	public BigDecimal getValue( )
 	{
-		return this.value;
+		return value;
 	}
 
 	public void setValue( BigDecimal etfValueMn )
 	{
-		this.value = etfValueMn;
+		value = etfValueMn;
 	}
 
 	public Integer getCycle( )
 	{
-		return this.cycle;
+		return cycle;
 	}
 
 	public void setCycle( Integer etrCycleIn )
 	{
-		this.cycle = etrCycleIn;
+		cycle = etrCycleIn;
 	}
 
 	public Date getInsertDate( )
 	{
-		return this.insertDate;
+		return insertDate;
 	}
 
 	public void setInsertDate( Date etrInsertDt )
 	{
-		this.insertDate = etrInsertDt;
+		insertDate = etrInsertDt;
 	}
 
 	public Client getClient( )
 	{
-		return this.client;
+		return client;
 	}
 
 	public void setClient( Client client )
@@ -116,7 +116,7 @@ public class ClientEntry implements Serializable
 
 	public Integer getCollaboratorId( )
 	{
-		return this.collaboratorId;
+		return collaboratorId;
 	}
 
 	public void setCollaboratorId( Integer collaboratorId )
@@ -126,7 +126,7 @@ public class ClientEntry implements Serializable
 
 	public Integer getMediaId( )
 	{
-		return this.mediaId;
+		return mediaId;
 	}
 
 	public void setMediaId( Integer mediaId )
@@ -136,7 +136,7 @@ public class ClientEntry implements Serializable
 
 	public Integer getLineNumber( )
 	{
-		return this.lineNumber;
+		return lineNumber;
 	}
 
 	public void setLineNumber( Integer lineNumber )

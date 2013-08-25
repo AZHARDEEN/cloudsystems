@@ -7,7 +7,7 @@ import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
 
-public abstract class CollaboratorBaseSessionBean<Y> extends SimpleSessionBean<Y>
+public abstract class CollaboratorBaseSessionBean<Y> extends SimpleSessionBean<Y> implements CollaboratorBaseSessionInterface<Y>
 {
 	@EJB
 	private LoginPropertySessionLocal propertySession;
@@ -15,6 +15,7 @@ public abstract class CollaboratorBaseSessionBean<Y> extends SimpleSessionBean<Y
 	@EJB
 	private CollaboratorSessionLocal collaboratorSession;
 
+	@Override
 	public String getProperty( Collaborator auth, String name )
 	{
 		if ( auth == null || name == null ) {
@@ -24,11 +25,13 @@ public abstract class CollaboratorBaseSessionBean<Y> extends SimpleSessionBean<Y
 		return p != null ? p.getValue( ) : "";
 	}
 
+	@Override
 	public void setProperty( Collaborator auth, String name, String value )
 	{
 		getPropertySession( ).setProperty( auth, name, value );
 	}
 
+	@Override
 	public void remove( Collaborator auth, String name )
 	{
 		getPropertySession( ).remove( auth, name );
