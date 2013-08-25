@@ -46,8 +46,8 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 	// bi-directional many-to-one association to UploadStatus
 	@ManyToOne( optional = false )
 	@JoinColumns( {
-			@JoinColumn( name = "usr_id_in", insertable = false, updatable = false, nullable = false ),
-			@JoinColumn( name = "col_seq_in", insertable = false, updatable = false, nullable = false )
+			@JoinColumn( name = "usr_id_in", insertable = false, updatable = false, nullable = false, referencedColumnName = "usr_id_in" ),
+			@JoinColumn( name = "col_seq_in", insertable = false, updatable = false, nullable = false, referencedColumnName = "col_seq_in" )
 	} )
 	private Collaborator collaborator;
 
@@ -63,10 +63,10 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 
 	public FileUploadPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new FileUploadPK( );
+		if ( id == null ) {
+			id = new FileUploadPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( FileUploadPK id )
@@ -76,17 +76,17 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 
 	public UploadStatus getStatus( )
 	{
-		return this.status;
+		return status;
 	}
 
 	public void setStatus( UploadStatus uploadStatus )
 	{
-		this.status = uploadStatus;
+		status = uploadStatus;
 	}
 
 	public Media getMedia( )
 	{
-		return this.media;
+		return media;
 	}
 
 	public void setMedia( Media media )
@@ -97,7 +97,7 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 
 	public Collaborator getCollaborator( )
 	{
-		return this.collaborator;
+		return collaborator;
 	}
 
 	public void setCollaborator( Collaborator collaborator )
@@ -220,7 +220,7 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 
 	public Integer getRecords( )
 	{
-		return this.records;
+		return records;
 	}
 
 	public void setRecords( Integer records )
@@ -230,7 +230,7 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 
 	public Integer getRejecteds( )
 	{
-		return this.rejecteds;
+		return rejecteds;
 	}
 
 	public void setRejecteds( Integer rejecteds )

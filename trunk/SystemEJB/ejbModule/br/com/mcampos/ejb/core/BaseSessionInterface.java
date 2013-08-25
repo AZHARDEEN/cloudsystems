@@ -22,4 +22,8 @@ public interface BaseSessionInterface<T> extends PagingSessionInterface<T>
 
 	public T add( T newEntity );
 
+	public T updateAndRefresh( T newEntity );
+
+	public T addAndRefresh( T newEntity );
+
 }

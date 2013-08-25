@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPage;
 import br.com.mcampos.ejb.fdigital.pen.AnotoPen;
@@ -40,9 +42,11 @@ public class AnotoPenPage implements Serializable
 	private AnotoPenPagePK id;
 
 	@Column( name = "pdp_insert_dt" )
+	@Temporal( TemporalType.TIMESTAMP )
 	private Date insertDate;
 
 	@Column( name = "pdp_to_dt" )
+	@Temporal( TemporalType.TIMESTAMP )
 	private Date toDate;
 
 	// bi-directional many-to-one association to AnotoPage
@@ -69,7 +73,7 @@ public class AnotoPenPage implements Serializable
 
 	public AnotoPenPagePK getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( AnotoPenPagePK id )
@@ -79,41 +83,41 @@ public class AnotoPenPage implements Serializable
 
 	public Date getInsertDate( )
 	{
-		return this.insertDate;
+		return insertDate;
 	}
 
 	public void setInsertDate( Date pdpInsertDt )
 	{
-		this.insertDate = pdpInsertDt;
+		insertDate = pdpInsertDt;
 	}
 
 	public Date getToDate( )
 	{
-		return this.toDate;
+		return toDate;
 	}
 
 	public void setToDate( Date pdpToDt )
 	{
-		this.toDate = pdpToDt;
+		toDate = pdpToDt;
 	}
 
 	public AnotoPage getPage( )
 	{
-		return this.page;
+		return page;
 	}
 
 	public void setPage( AnotoPage anotoPage )
 	{
-		this.page = anotoPage;
+		page = anotoPage;
 	}
 
 	public AnotoPen getPen( )
 	{
-		return this.pen;
+		return pen;
 	}
 
 	public void setPen( AnotoPen anotoPen )
 	{
-		this.pen = anotoPen;
+		pen = anotoPen;
 	}
 }

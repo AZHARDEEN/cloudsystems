@@ -32,9 +32,9 @@ public class RejectedRecord implements Serializable
 	// bi-directional many-to-one association to UploadStatus
 	@ManyToOne( optional = false )
 	@JoinColumns( {
-			@JoinColumn( name = "usr_id_in", insertable = false, updatable = false, nullable = false ),
-			@JoinColumn( name = "col_seq_in", insertable = false, updatable = false, nullable = false ),
-			@JoinColumn( name = "med_id_in", insertable = false, updatable = false, nullable = false )
+			@JoinColumn( name = "usr_id_in", insertable = false, updatable = false, nullable = false, referencedColumnName = "usr_id_in" ),
+			@JoinColumn( name = "col_seq_in", insertable = false, updatable = false, nullable = false, referencedColumnName = "col_seq_in" ),
+			@JoinColumn( name = "med_id_in", insertable = false, updatable = false, nullable = false, referencedColumnName = "med_id_in" )
 	} )
 	private FileUpload fileUpload;
 
@@ -44,10 +44,10 @@ public class RejectedRecord implements Serializable
 
 	public RejectedRecordPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new RejectedRecordPK( );
+		if ( id == null ) {
+			id = new RejectedRecordPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( RejectedRecordPK id )
@@ -57,27 +57,27 @@ public class RejectedRecord implements Serializable
 
 	public String getCause( )
 	{
-		return this.cause;
+		return cause;
 	}
 
 	public void setCause( String rrdCauseCh )
 	{
-		this.cause = rrdCauseCh;
+		cause = rrdCauseCh;
 	}
 
 	public String getValue( )
 	{
-		return this.value;
+		return value;
 	}
 
 	public void setValue( String rrdValueCh )
 	{
-		this.value = rrdValueCh;
+		value = rrdValueCh;
 	}
 
 	public FileUpload getFileUpload( )
 	{
-		return this.fileUpload;
+		return fileUpload;
 	}
 
 	public void setFileUpload( FileUpload fileUpload )

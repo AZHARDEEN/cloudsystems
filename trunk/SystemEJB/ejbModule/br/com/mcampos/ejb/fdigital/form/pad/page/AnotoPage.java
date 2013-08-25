@@ -48,10 +48,8 @@ public class AnotoPage implements Serializable, BasicEntityRenderer<AnotoPage>, 
 	// bi-directional many-to-one association to Pad
 	@ManyToOne
 	@JoinColumns( {
-			@JoinColumn(
-					name = "frm_id_in", referencedColumnName = "frm_id_in", nullable = false, insertable = false, updatable = false ),
-			@JoinColumn(
-					name = "pad_id_in", referencedColumnName = "pad_id_in", nullable = false, insertable = false, updatable = false )
+			@JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in", nullable = false, insertable = false, updatable = false ),
+			@JoinColumn( name = "pad_id_in", referencedColumnName = "pad_id_in", nullable = false, insertable = false, updatable = false )
 	} )
 	private Pad pad;
 
@@ -74,10 +72,10 @@ public class AnotoPage implements Serializable, BasicEntityRenderer<AnotoPage>, 
 
 	public AnotoPagePK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new AnotoPagePK( );
+		if ( id == null ) {
+			id = new AnotoPagePK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( AnotoPagePK id )
@@ -87,27 +85,27 @@ public class AnotoPage implements Serializable, BasicEntityRenderer<AnotoPage>, 
 
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	public void setDescription( String apgDescriptionCh )
 	{
-		this.description = apgDescriptionCh;
+		description = apgDescriptionCh;
 	}
 
 	public String getTemplateIcr( )
 	{
-		return this.templateIcr;
+		return templateIcr;
 	}
 
 	public void setTemplateIcr( String apgIcrTemplateCh )
 	{
-		this.templateIcr = apgIcrTemplateCh;
+		templateIcr = apgIcrTemplateCh;
 	}
 
 	public Pad getPad( )
 	{
-		return this.pad;
+		return pad;
 	}
 
 	public void setPad( Pad pad )
@@ -131,28 +129,28 @@ public class AnotoPage implements Serializable, BasicEntityRenderer<AnotoPage>, 
 
 	public List<AnotoPageField> getFields( )
 	{
-		if ( this.fields == null ) {
-			this.fields = new ArrayList<AnotoPageField>( );
+		if ( fields == null ) {
+			fields = new ArrayList<AnotoPageField>( );
 		}
-		return this.fields;
+		return fields;
 	}
 
 	public void setFields( List<AnotoPageField> anotoPageFields )
 	{
-		this.fields = anotoPageFields;
+		fields = anotoPageFields;
 	}
 
 	public List<AnotoPenPage> getPens( )
 	{
-		if ( this.pens == null ) {
-			this.pens = new ArrayList<AnotoPenPage>( );
+		if ( pens == null ) {
+			pens = new ArrayList<AnotoPenPage>( );
 		}
-		return this.pens;
+		return pens;
 	}
 
 	public void setPens( List<AnotoPenPage> anotoPenPages )
 	{
-		this.pens = anotoPenPages;
+		pens = anotoPenPages;
 	}
 
 	public AnotoPageField remove( AnotoPageField item )

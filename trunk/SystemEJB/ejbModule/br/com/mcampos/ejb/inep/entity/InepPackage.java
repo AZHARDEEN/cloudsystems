@@ -28,7 +28,7 @@ import br.com.mcampos.ejb.user.company.Company;
 {
 		@NamedQuery(
 				name = InepPackage.getAll, query = "from InepPackage o where o.company = ?1 " ),
-		@NamedQuery( name = InepPackage.getAllAvailable, query = "from InepPackage o where ( o.endDate is null or o.endDate >= current_timestamp() )" )
+		@NamedQuery( name = InepPackage.getAllAvailable, query = "from InepPackage o where ( o.endDate is null or o.endDate >= CURRENT_TIMESTAMP )" )
 } )
 public class InepPackage implements Serializable, Comparable<InepPackage>, BasicEntityRenderer<InepPackage>
 {

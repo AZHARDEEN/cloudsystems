@@ -3,9 +3,8 @@ package br.com.mcampos.ejb.user;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -16,26 +15,20 @@ import br.com.mcampos.ejb.user.contact.type.ContactType;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "UserContact.findAll", query = "select o from UserContact o" ) } )
-@Table( name = "\"user_contact\"" )
-@IdClass( UserContactPK.class )
+@Table( name = "user_contact" )
 public class UserContact implements Serializable, Comparable<UserContact>
 {
 	private static final long serialVersionUID = -8452887413412919630L;
+
+	@EmbeddedId
+	private UserContactPK id;
 
 	@ManyToOne
 	@JoinColumn( name = "cct_id_in", nullable = false, insertable = true, updatable = true )
 	private ContactType type;
 
-	@Id
-	@Column( name = "uct_description_ch", nullable = false )
-	private String description;
-
 	@Column( name = "uct_observation_tx" )
 	private String obs;
-
-	@Id
-	@Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
-	private Integer userId;
 
 	@ManyToOne( optional = false )
 	@JoinColumn( name = "usr_id_in", insertable = false, updatable = false )
@@ -52,37 +45,37 @@ public class UserContact implements Serializable, Comparable<UserContact>
 
 	public String getDescription( )
 	{
-		return this.description;
+		return getId( ).getDescription( );
 	}
 
 	public void setDescription( String uct_description_ch )
 	{
-		this.description = uct_description_ch;
+		getId( ).setDescription( uct_description_ch );
 	}
 
 	public String getObs( )
 	{
-		return this.obs;
+		return obs;
 	}
 
 	public void setObs( String uct_observation_tx )
 	{
-		this.obs = uct_observation_tx;
+		obs = uct_observation_tx;
 	}
 
 	public Integer getUserId( )
 	{
-		return this.userId;
+		return getId( ).getUserId( );
 	}
 
 	public void setUserId( Integer usr_id_in )
 	{
-		this.userId = usr_id_in;
+		getId( ).setUserId( usr_id_in );
 	}
 
 	public Users getUser( )
 	{
-		return this.user;
+		return user;
 	}
 
 	public void setUser( Users user )
@@ -95,7 +88,7 @@ public class UserContact implements Serializable, Comparable<UserContact>
 
 	public ContactType getType( )
 	{
-		return this.type;
+		return type;
 	}
 
 	public void setType( ContactType type )
@@ -137,5 +130,17 @@ public class UserContact implements Serializable, Comparable<UserContact>
 		else {
 			return false;
 		}
+	}
+
+	public UserContactPK getId( )
+	{
+		if ( id == null )
+			id = new UserContactPK( );
+		return id;
+	}
+
+	public void setId( UserContactPK id )
+	{
+		this.id = id;
 	}
 }

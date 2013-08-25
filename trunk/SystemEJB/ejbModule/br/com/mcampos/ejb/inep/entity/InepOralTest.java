@@ -23,11 +23,11 @@ import javax.persistence.Table;
 @NamedQueries( {
 		@NamedQuery(
 				name = InepOralTest.getVarianceOralOnly,
-				query = "from InepOralTest o WHERE o.subscription.event = ?1 and o.status.id = 3 and o.agreementGrade is null " +
-						"and subscription.oralGrade < 2 and subscription.writtenGrade >= 2 order by station " ),
+				query = "select o from InepOralTest o WHERE o.subscription.event = ?1 and o.status.id = 3 and o.agreementGrade is null " +
+						"and o.subscription.oralGrade < 2 and o.subscription.writtenGrade >= 2 order by o.station " ),
 		@NamedQuery(
 				name = InepOralTest.getBySubscription,
-				query = "from InepOralTest o WHERE o.subscription = ?1 " )
+				query = "select o from InepOralTest o WHERE o.subscription = ?1 " )
 } )
 public class InepOralTest implements Serializable
 {
