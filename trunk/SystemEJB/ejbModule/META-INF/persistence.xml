@@ -125,6 +125,8 @@
     <class>br.com.mcampos.ejb.garage.entities.CarManufacturer</class>
     <class>br.com.mcampos.ejb.product.entity.PriceType</class>
     <class>br.com.mcampos.ejb.product.entity.ProductType</class>
+    <class>br.com.mcampos.ejb.product.entity.Category</class>
+    <class>br.com.mcampos.ejb.product.entity.CategoryPK</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
