@@ -34,7 +34,6 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	public ReadOnlySessionBean( )
 	{
 		super( );
-		setClass( );
 	}
 
 	protected EntityManager getEntityManager( )
@@ -49,6 +48,8 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	public Class<T> getPersistentClass( )
 	{
+		if ( this.persistentClass == null )
+			setClass( );
 		return this.persistentClass;
 	}
 
