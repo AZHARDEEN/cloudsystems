@@ -17,4 +17,9 @@ public interface BaseSessionInterface<T> extends PagingSessionInterface<T>
 	public Collection<T> remove( Collection<T> entities );
 
 	public Class<T> getPersistentClass( );
+
+	public T update( T newEntity );
+
+	public T add( T newEntity );
+
 }

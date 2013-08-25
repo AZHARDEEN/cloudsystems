@@ -23,9 +23,25 @@ public abstract class BaseSessionBean<T> extends PagingSessionBean<T> implements
 			return null;
 		}
 		T merged = getEntityManager( ).merge( newEntity );
-		getEntityManager( ).flush( );
 		getEntityManager( ).refresh( merged );
 		return merged;
+	}
+
+	@Override
+	public T update( T newEntity )
+	{
+		return merge( newEntity );
+	}
+
+	@Override
+	public T add( T newEntity )
+	{
+		if ( newEntity == null ) {
+			return null;
+		}
+		getEntityManager( ).persist( newEntity );
+		getEntityManager( ).refresh( newEntity );
+		return newEntity;
 	}
 
 	@Override
@@ -88,5 +104,4 @@ public abstract class BaseSessionBean<T> extends PagingSessionBean<T> implements
 	{
 		return this.property;
 	}
-
 }
