@@ -13,7 +13,7 @@ import br.com.mcampos.ejb.security.role.Role;
 @Remote
 public interface TaskSession extends BaseSessionInterface<Task>
 {
-	List<Task> getRootTasks( );
+	Task getRootTask( );
 
 	public List<Role> getRoles( Integer id );
 

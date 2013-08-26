@@ -15,14 +15,14 @@ public interface RoleSession extends BaseSessionInterface<Role>
 {
 	Role getRootRole( );
 
+	Task getRootTask( );
+
 	@Override
 	Integer getNextId( );
 
 	void changeParent( Role entity, Role newParent );
 
 	List<Task> getTaks( Role entity );
-
-	public List<Task> getRootTask( );
 
 	public Role add( Role role, List<Task> tasks );
 

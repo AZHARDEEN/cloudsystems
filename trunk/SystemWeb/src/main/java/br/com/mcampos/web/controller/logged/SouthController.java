@@ -31,10 +31,13 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 	@Wire( "#labelVersion" )
 	Label version;
 
+	@Wire( "#labelWho" )
+	Label who;
+
 	@Listen( "onSelect = #companies" )
 	public void onSelectCompanies( )
 	{
-		Comboitem comboItem = this.companies.getSelectedItem( );
+		Comboitem comboItem = companies.getSelectedItem( );
 		if ( comboItem != null && comboItem.getValue( ) instanceof SimpleDTO ) {
 			SimpleDTO dto = (SimpleDTO) comboItem.getValue( );
 			if ( dto != null && dto.getId( ) != null ) {
@@ -42,11 +45,12 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 			}
 		}
 		setCurrentCompany( );
+
 	}
 
 	private void setCurrentCompany( )
 	{
-		Comboitem comboItem = this.companies.getSelectedItem( );
+		Comboitem comboItem = companies.getSelectedItem( );
 		if ( comboItem != null && comboItem.getValue( ) instanceof SimpleDTO ) {
 			SimpleDTO dto = (SimpleDTO) comboItem.getValue( );
 			Collaborator c = getSession( ).find( getLoggedUser( ), dto.getId( ) );
@@ -62,12 +66,18 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 	{
 		super.doAfterCompose( comp );
 		List<SimpleDTO> list = getSession( ).getCompanies( getLoggedUser( ) );
-		load( this.companies, list, false );
+		load( companies, list, false );
 		locateLastUsedCompany( );
-		if ( this.companies.getSelectedIndex( ) != -1 ) {
+		if ( companies.getSelectedIndex( ) != -1 ) {
 			setCurrentCompany( );
 		}
-		this.version.setValue( Executions.getCurrent( ).getDesktop( ).getWebApp( ).getVersion( ) );
+		version.setValue( Executions.getCurrent( ).getDesktop( ).getWebApp( ).getVersion( ) );
+		if ( who != null ) {
+			String strWho = getLoggedUser( ).getPerson( ).getFirstName( );
+			if ( SysUtils.isEmpty( strWho ) )
+				strWho = getLoggedUser( ).getPerson( ).getName( );
+			who.setValue( "Usuário: " + strWho );
+		}
 	}
 
 	@Override
@@ -83,24 +93,24 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 		{
 			try {
 				Integer id = Integer.parseInt( value );
-				for ( Comboitem item : this.companies.getItems( ) ) {
+				for ( Comboitem item : companies.getItems( ) ) {
 					SimpleDTO dto = (SimpleDTO) item.getValue( );
 					if ( dto != null && dto.getId( ).equals( id ) ) {
-						this.companies.setSelectedItem( item );
+						companies.setSelectedItem( item );
 						break;
 					}
 				}
 			}
 			catch ( Exception e )
 			{
-				if ( this.companies.getItemCount( ) > 0 ) {
-					this.companies.setSelectedIndex( 0 );
+				if ( companies.getItemCount( ) > 0 ) {
+					companies.setSelectedIndex( 0 );
 				}
 			}
 		}
 		else {
-			if ( this.companies.getItemCount( ) > 0 ) {
-				this.companies.setSelectedIndex( 0 );
+			if ( companies.getItemCount( ) > 0 ) {
+				companies.setSelectedIndex( 0 );
 			}
 		}
 	}

@@ -23,6 +23,8 @@ import br.com.mcampos.ejb.security.task.TaskSessionLocal;
 public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSession, RoleSessionLocal
 {
 
+	private static final Integer rootId = 1;
+
 	@EJB
 	TaskSessionLocal taskSession;
 
@@ -38,13 +40,13 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	@Override
 	public Role getRootRole( )
 	{
-		return get( new Integer( 1 ) );
+		return get( rootId );
 	}
 
 	@Override
 	public Role merge( Role newEntity )
 	{
-		Role parent = newEntity.getParent( ) != null ? get( newEntity.getParent( ).getId( ) ) : get( 1 );
+		Role parent = newEntity.getParent( ) != null ? get( newEntity.getParent( ).getId( ) ) : getRootRole( );
 
 		newEntity.setParent( null );
 		Role e = super.merge( newEntity );
@@ -117,12 +119,6 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	}
 
 	@Override
-	public List<Task> getRootTask( )
-	{
-		return this.taskSession.getRootTasks( );
-	}
-
-	@Override
 	public Role add( Role item, List<Task> tasks )
 	{
 		for ( Task task : tasks ) {
@@ -137,7 +133,7 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 		Role merged = get( item.getId( ) );
 		if ( merged != null )
 		{
-			Task taskMerged = this.taskSession.get( task.getId( ) );
+			Task taskMerged = taskSession.get( task.getId( ) );
 			merged.add( taskMerged );
 		}
 		return merged;
@@ -149,7 +145,7 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 		Role merged = get( role.getId( ) );
 		if ( merged != null )
 		{
-			Task taskMerged = this.taskSession.get( task.getId( ) );
+			Task taskMerged = taskSession.get( task.getId( ) );
 			merged.remove( taskMerged );
 		}
 		return merged;
@@ -161,8 +157,23 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 		List<Menu> menus = new ArrayList<Menu>( );
 		Role m = get( role.getId( ) );
 		if ( m != null ) {
-			this.menuSession.addRoleToMenu( m, menus );
+			menuSession.addRoleToMenu( m, menus );
 		}
 		return menus;
+	}
+
+	@Override
+	public Task getRootTask( )
+	{
+		return taskSession.getRootTask( );
+	}
+
+	@Override
+	public Role add( Role newEntity )
+	{
+		Role parent = newEntity.getParent( ) != null ? get( newEntity.getParent( ).getId( ) ) : getRootRole( );
+		Role e = super.add( newEntity );
+		e.setParent( parent );
+		return e;
 	}
 }

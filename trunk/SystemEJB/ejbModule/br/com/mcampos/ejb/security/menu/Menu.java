@@ -89,97 +89,97 @@ public class Menu implements Serializable, TaskRelationInterface, SelfRelationIn
 
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( Integer mnuIdIn )
 	{
-		this.id = mnuIdIn;
+		id = mnuIdIn;
 	}
 
 	public Boolean getAutocheck( )
 	{
-		return this.autocheck;
+		return autocheck;
 	}
 
 	public void setAutocheck( Boolean mnuAutocheckBt )
 	{
-		this.autocheck = mnuAutocheckBt;
+		autocheck = mnuAutocheckBt;
 	}
 
 	public Boolean getChecked( )
 	{
-		return this.checked;
+		return checked;
 	}
 
 	public void setChecked( Boolean mnuCheckedBt )
 	{
-		this.checked = mnuCheckedBt;
+		checked = mnuCheckedBt;
 	}
 
 	public Boolean getCheckmark( )
 	{
-		return this.checkmark;
+		return checkmark;
 	}
 
 	public void setCheckmark( Boolean mnuCheckmarkBt )
 	{
-		this.checkmark = mnuCheckmarkBt;
+		checkmark = mnuCheckmarkBt;
 	}
 
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	public void setDescription( String mnuDescriptionCh )
 	{
-		this.description = mnuDescriptionCh;
+		description = mnuDescriptionCh;
 	}
 
 	public Boolean getDisabled( )
 	{
-		return this.disabled;
+		return disabled;
 	}
 
 	public void setDisabled( Boolean mnuDisabledBt )
 	{
-		this.disabled = mnuDisabledBt;
+		disabled = mnuDisabledBt;
 	}
 
 	public Boolean getSeparatorBefore( )
 	{
-		return this.separatorBefore;
+		return separatorBefore;
 	}
 
 	public void setSeparatorBefore( Boolean mnuSeparatorBeforeBt )
 	{
-		this.separatorBefore = mnuSeparatorBeforeBt;
+		separatorBefore = mnuSeparatorBeforeBt;
 	}
 
 	public Integer getSequence( )
 	{
-		return this.sequence;
+		return sequence;
 	}
 
 	public void setSequence( Integer mnuSequenceIn )
 	{
-		this.sequence = mnuSequenceIn;
+		sequence = mnuSequenceIn;
 	}
 
 	public String getUrl( )
 	{
-		return this.url;
+		return url;
 	}
 
 	public void setUrl( String mnuUrlCh )
 	{
-		this.url = mnuUrlCh;
+		url = mnuUrlCh;
 	}
 
 	public Menu getParent( )
 	{
-		return this.parent;
+		return parent;
 	}
 
 	@Override
@@ -201,15 +201,15 @@ public class Menu implements Serializable, TaskRelationInterface, SelfRelationIn
 
 	public List<Menu> getChilds( )
 	{
-		if ( this.childs == null ) {
-			this.childs = new ArrayList<Menu>( );
+		if ( childs == null ) {
+			childs = new ArrayList<Menu>( );
 		}
-		return this.childs;
+		return childs;
 	}
 
 	public void setChilds( List<Menu> menus )
 	{
-		this.childs = menus;
+		childs = menus;
 	}
 
 	public void setMedia( Media media )
@@ -219,13 +219,15 @@ public class Menu implements Serializable, TaskRelationInterface, SelfRelationIn
 
 	public Media getMedia( )
 	{
-		return this.media;
+		return media;
 	}
 
 	@Override
 	public List<Task> getTasks( )
 	{
-		return this.tasks;
+		if ( tasks == null )
+			tasks = new ArrayList<Task>( );
+		return tasks;
 	}
 
 	@Override
@@ -247,7 +249,7 @@ public class Menu implements Serializable, TaskRelationInterface, SelfRelationIn
 	public boolean equals( Object obj )
 	{
 		if ( obj instanceof Menu ) {
-			return getId( ).equals( ((Menu) obj).getId( ) );
+			return getId( ).equals( ( (Menu) obj ).getId( ) );
 		}
 		else if ( obj instanceof Integer ) {
 			return getId( ).equals( obj );
@@ -286,7 +288,7 @@ public class Menu implements Serializable, TaskRelationInterface, SelfRelationIn
 	public void add( Menu child )
 	{
 		if ( child != null && getChilds( ).contains( child ) == false ) {
-			assert (getChilds( ).add( child ));
+			assert ( getChilds( ).add( child ) );
 			child.setParent( this );
 		}
 	}
@@ -295,7 +297,7 @@ public class Menu implements Serializable, TaskRelationInterface, SelfRelationIn
 	public Menu remove( Menu child )
 	{
 		if ( child != null && getChilds( ).contains( child ) ) {
-			assert (getChilds( ).remove( child ));
+			assert ( getChilds( ).remove( child ) );
 			child.setParent( null );
 		}
 		return child;
@@ -309,7 +311,7 @@ public class Menu implements Serializable, TaskRelationInterface, SelfRelationIn
 
 	public String getImagePath( )
 	{
-		return this.imagePath;
+		return imagePath;
 	}
 
 	public void setImagePath( String imagePath )

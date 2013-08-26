@@ -1,6 +1,8 @@
 package br.com.mcampos.ejb.core;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +15,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import br.com.mcampos.ejb.core.search.Searchable;
+import br.com.mcampos.ejb.core.search.Searchables;
 import br.com.mcampos.sysutils.SysUtils;
 
 /*
@@ -362,4 +366,23 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		return (List<T>) getResultList( query );
 	}
 
+	public List<Searchable> getSearchables( )
+	{
+		List<Searchable> list = new ArrayList<Searchable>( );
+
+		Annotation annotation = getEntityClass( ).getAnnotation( Searchables.class );
+		if ( annotation != null ) {
+			Searchables s = (Searchables) annotation;
+			for ( Searchable item : s.value( ) ) {
+				list.add( item );
+			}
+		}
+		else {
+			annotation = getEntityClass( ).getAnnotation( Searchable.class );
+			if ( annotation != null ) {
+				list.add( (Searchable) annotation );
+			}
+		}
+		return list;
+	}
 }

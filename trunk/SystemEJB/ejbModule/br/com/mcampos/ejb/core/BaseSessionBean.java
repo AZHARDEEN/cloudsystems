@@ -59,10 +59,7 @@ public abstract class BaseSessionBean<T> extends PagingSessionBean<T> implements
 		if ( newEntity == null ) {
 			return null;
 		}
-		/*
-		 * Do not call this class persist, please!
-		 */
-		getEntityManager( ).persist( newEntity );
+		add( newEntity );
 		refresh( newEntity );
 		return newEntity;
 	}

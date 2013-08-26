@@ -53,9 +53,7 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 	@Override
 	protected TaskNode createRootTaskNode( )
 	{
-		Task rootTask = new Task( );
-		rootTask.setChilds( getSession( ).getRootTask( ) );
-		return ( TaskNode.createNode( rootTask ) );
+		return ( TaskNode.createNode( getSession( ).getRootTask( ) ) );
 	}
 
 	@Override
@@ -76,14 +74,14 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 		List<Task> tasks;
 
 		if ( data != null ) {
-			this.labelId.setValue( data.getId( ).toString( ) );
-			this.labelDescription.setValue( data.getDescription( ) );
+			labelId.setValue( data.getId( ).toString( ) );
+			labelDescription.setValue( data.getDescription( ) );
 			tasks = getSession( ).getTaks( data );
 		}
 		else {
 			tasks = Collections.emptyList( );
-			this.labelId.setValue( "" );
-			this.labelDescription.setValue( "" );
+			labelId.setValue( "" );
+			labelDescription.setValue( "" );
 		}
 		showMenus( data );
 		getListTasks( ).setModel( new ListModelList<Task>( tasks ) );
@@ -91,11 +89,11 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 
 	private void showMenus( Role data )
 	{
-		if ( this.mainMenu == null ) {
+		if ( mainMenu == null ) {
 			return;
 		}
-		if ( this.mainMenu.getChildren( ) != null ) {
-			this.mainMenu.getChildren( ).clear( );
+		if ( mainMenu.getChildren( ) != null ) {
+			mainMenu.getChildren( ).clear( );
 		}
 		List<br.com.mcampos.ejb.security.menu.Menu> menus;
 		try {
@@ -112,9 +110,9 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 	@Override
 	protected boolean validateRecord( )
 	{
-		if ( SysUtils.isEmpty( this.description.getValue( ) ) ) {
+		if ( SysUtils.isEmpty( description.getValue( ) ) ) {
 			Messagebox.show( "A descrição deve ser preenchida", "Descrição Inválida", Messagebox.OK, Messagebox.ERROR );
-			this.description.setFocus( true );
+			description.setFocus( true );
 			return false;
 		}
 		return true;
@@ -140,12 +138,12 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 
 	private Textbox getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	private Intbox getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
@@ -190,9 +188,9 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 
 	protected DynamicMenu getDynamicMenu( )
 	{
-		if ( this.dynamicMenu == null ) {
-			this.dynamicMenu = new DynamicMenu( this.mainMenu, null );
+		if ( dynamicMenu == null ) {
+			dynamicMenu = new DynamicMenu( mainMenu, null );
 		}
-		return this.dynamicMenu;
+		return dynamicMenu;
 	}
 }

@@ -19,8 +19,6 @@ public interface RoleSessionLocal extends BaseSessionInterface<Role>
 
 	List<Task> getTaks( Role entity );
 
-	public List<Task> getRootTask( );
-
 	public Role add( Role role, List<Task> tasks );
 
 	public Role add( Role role, Task task );

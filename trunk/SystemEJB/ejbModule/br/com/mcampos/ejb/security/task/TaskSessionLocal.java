@@ -13,8 +13,6 @@ import br.com.mcampos.ejb.security.role.Role;
 @Local
 public interface TaskSessionLocal extends BaseSessionInterface<Task>
 {
-	List<Task> getRootTasks( );
-
 	public List<Role> getRoles( Integer id );
 
 	public List<Menu> getMenus( Integer id );
@@ -32,5 +30,7 @@ public interface TaskSessionLocal extends BaseSessionInterface<Task>
 	public Task add( Task task, Menu menu );
 
 	public Task remove( Task task, Menu menu );
+
+	Task getRootTask( );
 
 }
