@@ -2,27 +2,47 @@ package br.com.mcampos.web.locator;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.mcampos.sysutils.SysUtils;
+
 public class ServiceLocator
 {
 	private static ServiceLocator myServiceLocator;
 	private InitialContext context = null;
 	private final Map<String, Object> cache;
+	// The app name is the application name of the deployed EJBs. This
+	// is typically the ear name
+	// without the .ear suffix. However, the application name could be
+	// overridden in the application.xml of the
+	// EJB deployment on the server.
+	// Since we haven't deployed the application as a .ear, the app name
+	// for us will be an empty string
+	private String appName;
+	// This is the module name of the deployed EJBs on the server. This
+	// is typically the jar name of the
+	// EJB deployment, without the .jar suffix, but can be overridden
+	// via the ejb-jar.xml
+	// In this example, we have deployed the EJBs in a
+	// jboss-as-ejb-remote-app.jar, so the module name is
+	// jboss-as-ejb-remote-app
+	private String moduleName;
+
+	private final String JNDI_MODULE_NAME = "java:module/ModuleName";
+	private final String JNDI_APP_NAME = "java:app/AppName";
 
 	private static final Logger logger = LoggerFactory.getLogger( ServiceLocator.class.getSimpleName( ) );
 
 	private ServiceLocator( ) throws NamingException
 	{
-		Hashtable<String, Object> env = new Hashtable<String, Object>( );
+		// Properties props = new Properties( );
+		// Hashtable<String, Object> props = new Hashtable<String, Object>( );
 		// WebLogic Server 10.x connection details
 		// env.put( Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory" );
 		// env.put( Context.PROVIDER_URL, "t3://127.0.0.1:7101" );
@@ -32,16 +52,31 @@ public class ServiceLocator
 		// env.put( Context.URL_PKG_PREFIXES,
 		// "org.jboss.ejb.client.naming:org.jboss.naming:org.jnp.interfaces" );
 
-		env.put( Context.INITIAL_CONTEXT_FACTORY, "org.jboss.as.naming.InitialContextFactory" );
-		env.put( Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming:org.jboss.naming:org.jnp.interfaces" );
-		env.put( Context.PROVIDER_URL, "127.0.0.1:4447" );
-		env.put( "jboss.naming.client.ejb.context", true );
+		// props.setProperty( Context.INITIAL_CONTEXT_FACTORY, "org.jboss.as.naming.InitialContextFactory" );
+		// props.setProperty( Context.URL_PKG_PREFIXES, "org.jnp.interfaces:org.jboss.naming:org.jboss.ejb.client.naming" );
+		// props.setProperty( Context.PROVIDER_URL, "127.0.0.1:4447" );
+		// props.setProperty( "jboss.naming.client.ejb.context", "true" );
+		// props.setProperty( Context.INITIAL_CONTEXT_FACTORY, "org.jboss.as.naming.InitialContextFactory" );
+		// props.setProperty( Context.URL_PKG_PREFIXES, "org.jboss.as.naming.interfaces" );
+		// props.setProperty( Context.PROVIDER_URL, "jnp://localhost:4447" );
+		// setCredential( props );
 
-		context = new InitialContext( env );
+		// context = new InitialContext( props );
+		context = new InitialContext( );
 		cache = Collections.synchronizedMap( new HashMap<String, Object>( ) );
 	}
 
-	public static ServiceLocator getInstance( ) throws NamingException
+	/*
+	private void setCredential( Properties jndiProps )
+	{
+		// username
+		jndiProps.setProperty( Context.SECURITY_PRINCIPAL, "user" );
+		// password
+		jndiProps.setProperty( Context.SECURITY_CREDENTIALS, "password" );
+	}
+	*/
+
+	public static synchronized ServiceLocator getInstance( ) throws NamingException
 	{
 		if ( myServiceLocator == null ) {
 			myServiceLocator = new ServiceLocator( );
@@ -53,13 +88,14 @@ public class ServiceLocator
 	{
 		Object home = null;
 
-		if ( cache.containsKey( name ) ) {
+		if ( cache != null && cache.containsKey( name ) ) {
 			home = cache.get( name );
 		}
 		else {
 			logger.info( "Looking up for ejb: " + name );
 			home = context.lookup( name );
-			cache.put( name, home );
+			if ( cache != null )
+				cache.put( name, home );
 		}
 		return home;
 	}
@@ -79,25 +115,10 @@ public class ServiceLocator
 		 * java:module/MenuFacade!br.com.mcampos.ejb.security.menu.MenuFacade
 		 */
 		if ( cls != null ) {
+			// WEBLOGIC
 			// String contextName = "java:app/SystemEJB/" + cls.getSimpleName( )
 			// + "!" + cls.getCanonicalName( );
 
-			// The app name is the application name of the deployed EJBs. This
-			// is typically the ear name
-			// without the .ear suffix. However, the application name could be
-			// overridden in the application.xml of the
-			// EJB deployment on the server.
-			// Since we haven't deployed the application as a .ear, the app name
-			// for us will be an empty string
-			final String appName = "System";
-			// This is the module name of the deployed EJBs on the server. This
-			// is typically the jar name of the
-			// EJB deployment, without the .jar suffix, but can be overridden
-			// via the ejb-jar.xml
-			// In this example, we have deployed the EJBs in a
-			// jboss-as-ejb-remote-app.jar, so the module name is
-			// jboss-as-ejb-remote-app
-			final String moduleName = "SystemEJB";
 			// AS7 allows each deployment to have an (optional) distinct name.
 			// We haven't specified a distinct name for
 			// our EJB deployment, so this is an empty string
@@ -107,10 +128,17 @@ public class ServiceLocator
 			final String beanName = cls.getSimpleName( );
 			// the remote view fully qualified class name
 			final String viewClassName = cls.getName( );
-			// let's do the lookup
-
-			String contextName = "ejb:" + appName + "/" + moduleName + "/" + distinctName + beanName + "!" + viewClassName;
+			// let's build the remote ejb name to lookup
+			String contextName = "ejb:" + getAppName( ) + "/" + getModuleName( ) + "/" + distinctName + beanName + "!" + viewClassName;
 			return contextName;
+
+			/*
+				For stateless beans:
+					ejb:<app-name>/<module-name>/<distinct-name>/<bean-name>!<fully-qualified-classname-of-the-remote-interface>
+			
+				For stateful beans:
+					ejb:<app-name>/<module-name>/<distinct-name>/<bean-name>!<fully-qualified-classname-of-the-remote-interface>?stateful
+			 */
 		}
 		else {
 			return null;
@@ -127,4 +155,31 @@ public class ServiceLocator
 		}
 	}
 
+	private String getAppName( )
+	{
+		if ( SysUtils.isEmpty( appName ) ) {
+			try {
+				appName = (String) getHome( JNDI_APP_NAME );
+			}
+			catch ( NamingException e ) {
+				logger.warn( "Failed to get module name: " + JNDI_APP_NAME, e );
+				appName = "System";
+			}
+		}
+		return appName;
+	}
+
+	private String getModuleName( )
+	{
+		if ( SysUtils.isEmpty( moduleName ) ) {
+			try {
+				moduleName = (String) getHome( JNDI_MODULE_NAME );
+			}
+			catch ( NamingException e ) {
+				logger.warn( "Failed to get module name: " + JNDI_MODULE_NAME, e );
+				moduleName = "SystemEJB";
+			}
+		}
+		return moduleName;
+	}
 }

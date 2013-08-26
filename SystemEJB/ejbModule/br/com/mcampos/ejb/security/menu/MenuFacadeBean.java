@@ -43,9 +43,9 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 		if ( collaborator == null ) {
 			return Collections.emptyList( );
 		}
-		collaborator = this.collaboratorSession.merge( collaborator );
+		collaborator = collaboratorSession.merge( collaborator );
 		availableMenus = new ArrayList<Menu>( );
-		for( Role role : collaborator.getRoles( ) )
+		for ( Role role : collaborator.getRoles( ) )
 		{
 			addRoleToMenu( role, availableMenus );
 		}
@@ -56,10 +56,10 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	public void addRoleToMenu( Role role, List<Menu> availableMenus )
 	{
 		if ( role != null ) {
-			for( Role sub : role.getChilds( ) ) {
+			for ( Role sub : role.getChilds( ) ) {
 				addRoleToMenu( sub, availableMenus );
 			}
-			for( Task task : role.getTasks( ) ) {
+			for ( Task task : role.getTasks( ) ) {
 				addTaskToMenu( task, availableMenus );
 			}
 		}
@@ -68,10 +68,10 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	private void addTaskToMenu( Task task, List<Menu> availableMenus )
 	{
 		if ( task != null ) {
-			for( Task child : task.getChilds( ) ) {
+			for ( Task child : task.getChilds( ) ) {
 				addTaskToMenu( child, availableMenus );
 			}
-			for( Menu menu : task.getMenus( ) ) {
+			for ( Menu menu : task.getMenus( ) ) {
 				addMenus( menu, availableMenus );
 			}
 		}
@@ -93,20 +93,14 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 		return findByNamedQuery( Menu.getTopMenu );
 	}
 
-	@Override
-	public List<Task> getRootTask( )
-	{
-		return getTaskSession( ).getRootTasks( );
-	}
-
 	protected CollaboratorSessionLocal getCollaboratorSession( )
 	{
-		return this.collaboratorSession;
+		return collaboratorSession;
 	}
 
 	protected TaskSessionLocal getTaskSession( )
 	{
-		return this.taskSession;
+		return taskSession;
 	}
 
 	@Override
@@ -120,11 +114,11 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 
 	private void addTask( List<Task> tasks, Menu entity )
 	{
-		for( Menu item : entity.getChilds( ) )
+		for ( Menu item : entity.getChilds( ) )
 		{
 			addTask( tasks, item );
 		}
-		for( Task task : entity.getTasks( ) )
+		for ( Task task : entity.getTasks( ) )
 		{
 			if ( tasks.contains( task ) == false ) {
 				tasks.add( task );
@@ -148,7 +142,7 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	@Override
 	public Menu add( Menu item, List<Task> tasks )
 	{
-		for( Task task : tasks ) {
+		for ( Task task : tasks ) {
 			add( item, task );
 		}
 		return item;
@@ -159,7 +153,7 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	{
 		Menu merged = get( item.getId( ) );
 		if ( merged != null ) {
-			Task taskMerged = this.taskSession.get( task.getId( ) );
+			Task taskMerged = taskSession.get( task.getId( ) );
 			merged.add( taskMerged );
 		}
 		return merged;
@@ -170,7 +164,7 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	{
 		Menu merged = get( item.getId( ) );
 		if ( merged != null ) {
-			Task taskMerged = this.taskSession.get( task.getId( ) );
+			Task taskMerged = taskSession.get( task.getId( ) );
 			merged.remove( taskMerged );
 		}
 		return merged;
@@ -188,4 +182,27 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 		Menu menu = getByNamedQuery( Menu.getByUrl, Url );
 		return menu;
 	}
+
+	@Override
+	public Task getRootTask( )
+	{
+		return taskSession.getRootTask( );
+	}
+
+	@Override
+	public Menu add( Menu newEntity )
+	{
+		Menu m = super.add( newEntity );
+		m.add( taskSession.getRootTask( ) );
+		return m;
+	}
+
+	@Override
+	public Menu merge( Menu newEntity )
+	{
+		Menu m = super.merge( newEntity );
+		m.add( taskSession.getRootTask( ) );
+		return m;
+	}
+
 }

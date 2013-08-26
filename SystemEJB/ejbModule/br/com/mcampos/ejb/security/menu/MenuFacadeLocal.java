@@ -18,8 +18,6 @@ public interface MenuFacadeLocal extends BaseSessionInterface<Menu>
 
 	public List<Menu> getTopContextMenu( ) throws ApplicationException;
 
-	public List<Task> getRootTask( );
-
 	public List<Task> getTaks( Menu entity );
 
 	public void changeParent( Menu entity, Menu newParent );

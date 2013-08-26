@@ -91,7 +91,8 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 		Menu rootMenu = new Menu( );
 		try {
 			rootMenu.setChilds( getSession( ).getTopContextMenu( ) );
-		} catch( ApplicationException e ) {
+		}
+		catch ( ApplicationException e ) {
 			e.printStackTrace( );
 		}
 		return MenuNode.createNode( rootMenu );
@@ -103,30 +104,30 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 		List<Task> tasks;
 		if ( node == null )
 		{
-			this.recordId.setValue( "" );
-			this.recordDescription.setValue( "" );
-			this.recordURL.setValue( "" );
-			this.recordSequence.setValue( "" );
-			this.recordSeparator.setChecked( false );
-			this.recordAutocheck.setChecked( false );
-			this.recordChecked.setChecked( false );
-			this.recordCheckmark.setChecked( false );
-			this.recordDisabled.setChecked( false );
-			this.recordImagePath.setValue( "" );
+			recordId.setValue( "" );
+			recordDescription.setValue( "" );
+			recordURL.setValue( "" );
+			recordSequence.setValue( "" );
+			recordSeparator.setChecked( false );
+			recordAutocheck.setChecked( false );
+			recordChecked.setChecked( false );
+			recordCheckmark.setChecked( false );
+			recordDisabled.setChecked( false );
+			recordImagePath.setValue( "" );
 			tasks = Collections.emptyList( );
 		}
 		else
 		{
-			this.recordId.setValue( node.getId( ).toString( ) );
-			this.recordDescription.setValue( node.getDescription( ) );
-			this.recordURL.setValue( node.getUrl( ) );
-			this.recordSequence.setValue( node.getSequence( ).toString( ) );
-			this.recordSeparator.setChecked( node.getSeparatorBefore( ) );
-			this.recordAutocheck.setChecked( node.getAutocheck( ) );
-			this.recordChecked.setChecked( node.getChecked( ) );
-			this.recordCheckmark.setChecked( node.getCheckmark( ) );
-			this.recordDisabled.setChecked( node.getDisabled( ) );
-			this.recordImagePath.setValue( node.getImagePath( ) );
+			recordId.setValue( node.getId( ).toString( ) );
+			recordDescription.setValue( node.getDescription( ) );
+			recordURL.setValue( node.getUrl( ) );
+			recordSequence.setValue( node.getSequence( ).toString( ) );
+			recordSeparator.setChecked( node.getSeparatorBefore( ) );
+			recordAutocheck.setChecked( node.getAutocheck( ) );
+			recordChecked.setChecked( node.getChecked( ) );
+			recordCheckmark.setChecked( node.getCheckmark( ) );
+			recordDisabled.setChecked( node.getDisabled( ) );
+			recordImagePath.setValue( node.getImagePath( ) );
 			tasks = getSession( ).getTaks( node );
 		}
 		getListTasks( ).setModel( new ListModelList<Task>( tasks ) );
@@ -135,35 +136,35 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 	@Override
 	protected void prepareForInsert( )
 	{
-		this.editId.setReadonly( false );
-		this.editId.setValue( getSession( ).getNextId( ) );
-		this.editDescription.setValue( "" );
-		this.editDescription.setFocus( true );
-		this.editURL.setValue( "" );
-		this.editImagePath.setValue( "" );
-		this.editSequence.setValue( 0 );
-		this.editSeparator.setChecked( false );
-		this.editAutocheck.setChecked( false );
-		this.editChecked.setChecked( false );
-		this.editCheckmark.setChecked( false );
-		this.editDisabled.setChecked( false );
+		editId.setReadonly( false );
+		editId.setValue( getSession( ).getNextId( ) );
+		editDescription.setValue( "" );
+		editDescription.setFocus( true );
+		editURL.setValue( "" );
+		editImagePath.setValue( "" );
+		editSequence.setValue( 0 );
+		editSeparator.setChecked( false );
+		editAutocheck.setChecked( false );
+		editChecked.setChecked( false );
+		editCheckmark.setChecked( false );
+		editDisabled.setChecked( false );
 	}
 
 	@Override
 	protected void prepareForUpdate( Menu data )
 	{
-		this.editId.setReadonly( true );
-		this.editId.setValue( data.getId( ) );
-		this.editDescription.setValue( data.getDescription( ) );
-		this.editDescription.setFocus( true );
-		this.editURL.setValue( data.getUrl( ) );
-		this.editSequence.setValue( data.getSequence( ) );
-		this.editSeparator.setChecked( data.getSeparatorBefore( ) );
-		this.editAutocheck.setChecked( data.getAutocheck( ) );
-		this.editChecked.setChecked( data.getChecked( ) );
-		this.editCheckmark.setChecked( data.getCheckmark( ) );
-		this.editDisabled.setChecked( data.getDisabled( ) );
-		this.editImagePath.setValue( data.getImagePath( ) );
+		editId.setReadonly( true );
+		editId.setValue( data.getId( ) );
+		editDescription.setValue( data.getDescription( ) );
+		editDescription.setFocus( true );
+		editURL.setValue( data.getUrl( ) );
+		editSequence.setValue( data.getSequence( ) );
+		editSeparator.setChecked( data.getSeparatorBefore( ) );
+		editAutocheck.setChecked( data.getAutocheck( ) );
+		editChecked.setChecked( data.getChecked( ) );
+		editCheckmark.setChecked( data.getCheckmark( ) );
+		editDisabled.setChecked( data.getDisabled( ) );
+		editImagePath.setValue( data.getImagePath( ) );
 	}
 
 	@Override
@@ -177,7 +178,7 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 	{
 		Menu menu = new Menu( );
 
-		menu.setId( this.editId.getValue( ) );
+		menu.setId( editId.getValue( ) );
 		update( getSession( ), menu );
 		return MenuNode.createNode( menu );
 	}
@@ -185,15 +186,15 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 	@Override
 	protected void update( MenuFacade session, Menu menu )
 	{
-		menu.setDescription( this.editDescription.getValue( ) );
-		menu.setUrl( this.editURL.getValue( ) );
-		menu.setSequence( this.editSequence.getValue( ) );
-		menu.setSeparatorBefore( this.editSeparator.isChecked( ) );
-		menu.setAutocheck( this.editAutocheck.isChecked( ) );
-		menu.setChecked( this.editChecked.isChecked( ) );
-		menu.setCheckmark( this.editCheckmark.isChecked( ) );
-		menu.setDisabled( this.editDisabled.isChecked( ) );
-		menu.setImagePath( this.editImagePath.getValue( ) );
+		menu.setDescription( editDescription.getValue( ) );
+		menu.setUrl( editURL.getValue( ) );
+		menu.setSequence( editSequence.getValue( ) );
+		menu.setSeparatorBefore( editSeparator.isChecked( ) );
+		menu.setAutocheck( editAutocheck.isChecked( ) );
+		menu.setChecked( editChecked.isChecked( ) );
+		menu.setCheckmark( editCheckmark.isChecked( ) );
+		menu.setDisabled( editDisabled.isChecked( ) );
+		menu.setImagePath( editImagePath.getValue( ) );
 
 		session.merge( menu );
 	}
@@ -201,9 +202,7 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 	@Override
 	protected TaskNode createRootTaskNode( )
 	{
-		Task rootTask = new Task( );
-		rootTask.setChilds( getSession( ).getRootTask( ) );
-		return (TaskNode.createNode( rootTask ));
+		return ( TaskNode.createNode( getSession( ).getRootTask( ) ) );
 	}
 
 	@Override
@@ -235,7 +234,7 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 	{
 		Component c = createComponents( "/templates/file_path_dialog.zul", getMainWindow( ), null );
 		if ( c != null && c instanceof Window ) {
-			((Window) c).doModal( );
+			( (Window) c ).doModal( );
 		}
 		if ( evt != null )
 			evt.stopPropagation( );

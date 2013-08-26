@@ -23,6 +23,8 @@ import br.com.mcampos.ejb.security.role.RoleSessionLocal;
 public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSession, TaskSessionLocal
 {
 
+	private static final Integer rootId = 1;
+
 	@EJB
 	RoleSessionLocal roleSession;
 
@@ -33,13 +35,6 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	protected Class<Task> getEntityClass( )
 	{
 		return Task.class;
-	}
-
-	@Override
-	public List<Task> getRootTasks( )
-	{
-		return findByNamedQuery( Task.getTop );
-
 	}
 
 	@Override
@@ -86,40 +81,40 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	@Override
 	public Role getRootRole( )
 	{
-		return this.roleSession.getRootRole( );
+		return roleSession.getRootRole( );
 	}
 
 	@Override
 	public List<Menu> getTopContextMenu( ) throws ApplicationException
 	{
-		return this.menuSession.getTopContextMenu( );
+		return menuSession.getTopContextMenu( );
 	}
 
 	@Override
 	public Task add( Task task, Role role )
 	{
-		this.roleSession.add( role, task );
+		roleSession.add( role, task );
 		return task;
 	}
 
 	@Override
 	public Task remove( Task task, Role role )
 	{
-		this.roleSession.remove( role, task );
+		roleSession.remove( role, task );
 		return task;
 	}
 
 	@Override
 	public Task add( Task task, Menu menu )
 	{
-		this.menuSession.add( menu, task );
+		menuSession.add( menu, task );
 		return task;
 	}
 
 	@Override
 	public Task remove( Task task, Menu menu )
 	{
-		this.menuSession.remove( menu, task );
+		menuSession.remove( menu, task );
 		return task;
 	}
 
@@ -167,5 +162,29 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 		{
 			item.remove( entity );
 		}
+	}
+
+	@Override
+	public Task getRootTask( )
+	{
+		return get( rootId );
+	}
+
+	@Override
+	public Task merge( Task newEntity )
+	{
+		Task parent = newEntity.getParent( ) != null ? get( newEntity.getParent( ).getId( ) ) : getRootTask( );
+		Task e = super.merge( newEntity );
+		e.setParent( parent );
+		return e;
+	}
+
+	@Override
+	public Task add( Task newEntity )
+	{
+		Task parent = newEntity.getParent( ) != null ? get( newEntity.getParent( ).getId( ) ) : getRootTask( );
+		Task e = super.add( newEntity );
+		e.setParent( parent );
+		return e;
 	}
 }

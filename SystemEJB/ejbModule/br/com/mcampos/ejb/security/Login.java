@@ -17,6 +17,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import br.com.mcampos.ejb.core.BasicEntityRenderer;
+import br.com.mcampos.ejb.core.search.Searchable;
+import br.com.mcampos.ejb.core.search.Searchables;
 import br.com.mcampos.ejb.security.log.AccessLog;
 import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.sysutils.SysUtils;
@@ -24,6 +26,9 @@ import br.com.mcampos.sysutils.SysUtils;
 @Entity
 @NamedQueries( { @NamedQuery( name = Login.getByToken, query = "select o from Login o where o.token = ?1" ) } )
 @Table( name = "\"login\"" )
+@Searchables( {
+		@Searchable( columnName = "person.name", displayName = "Nome" )
+} )
 public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 {
 	private static final long serialVersionUID = 5299774581302076248L;

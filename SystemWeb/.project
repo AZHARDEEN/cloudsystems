@@ -3,7 +3,6 @@
 	<name>SystemWeb</name>
 	<comment></comment>
 	<projects>
-		<project>SystemLib</project>
 		<project>JRExtension</project>
 	</projects>
 	<buildSpec>
