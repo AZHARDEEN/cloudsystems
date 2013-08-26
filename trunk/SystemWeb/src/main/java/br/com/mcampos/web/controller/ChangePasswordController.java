@@ -128,7 +128,16 @@ public class ChangePasswordController extends BaseDialogController<LoginSession>
 	@Override
 	public Login getLoggedUser( )
 	{
-		return (Login) getSessionParameter( userSessionParamName );
+		Object obj = getSessionParameter( userSessionParamName );
+
+		if ( obj instanceof Login ) {
+			Login login = (Login) obj;
+			if ( login != null && login.getPersonify( ) != null )
+				return login.getPersonify( );
+			return login;
+		}
+		else
+			return null;
 	}
 
 	@Override

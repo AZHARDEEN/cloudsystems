@@ -65,6 +65,9 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 	@Transient
 	private AccessLog lastLogin;
 
+	@Transient
+	private Login personify;
+
 	public Login( )
 	{
 	}
@@ -207,4 +210,15 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 	{
 		return getPerson( ).getName( );
 	}
+
+	public Login getPersonify( )
+	{
+		return personify;
+	}
+
+	public void setPersonify( Login personify )
+	{
+		this.personify = personify;
+	}
+
 }

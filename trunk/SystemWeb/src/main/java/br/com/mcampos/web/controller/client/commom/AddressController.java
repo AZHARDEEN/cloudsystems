@@ -35,7 +35,7 @@ public class AddressController extends BaseUserAttrListController<Address>
 	@Override
 	protected Listbox getListbox( )
 	{
-		return this.listbox;
+		return listbox;
 	}
 
 	@Override
@@ -82,37 +82,37 @@ public class AddressController extends BaseUserAttrListController<Address>
 
 	private AddressTypeCombobox getAddressType( )
 	{
-		return this.addressType;
+		return addressType;
 	}
 
 	private Textbox getZip( )
 	{
-		return this.zip;
+		return zip;
 	}
 
 	private Textbox getHood( )
 	{
-		return this.hood;
+		return hood;
 	}
 
 	private StateCombobox getState( )
 	{
-		return this.state;
+		return state;
 	}
 
 	private CityCombobox getCity( )
 	{
-		return this.city;
+		return city;
 	}
 
 	private Textbox getAddress( )
 	{
-		return this.address;
+		return address;
 	}
 
 	private Textbox getAddressComment( )
 	{
-		return this.addressComment;
+		return addressComment;
 	}
 
 	@Override
@@ -120,6 +120,7 @@ public class AddressController extends BaseUserAttrListController<Address>
 	{
 		super.doAfterCompose( comp );
 		getState( ).addDetail( getCity( ) );
+		setMask( zip, "cep" );
 	}
 
 }

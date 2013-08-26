@@ -42,6 +42,8 @@ public abstract class BasePersonController<T> extends UserController<T>
 	private Textbox fatherName;
 	@Wire
 	private Textbox motherName;
+	@Wire
+	private Textbox nickName;
 
 	protected abstract Person getPerson( String doc );
 
@@ -54,10 +56,15 @@ public abstract class BasePersonController<T> extends UserController<T>
 			getMaritalStatus( ).find( person.getCivilState( ) );
 			getFatherName( ).setValue( person.getFatherName( ) );
 			getMotherName( ).setValue( person.getMotherName( ) );
+			getNickName( ).setValue( person.getNickName( ) );
 			showCPF( person.getDocuments( ) );
 			if ( person.getBornCity( ) != null ) {
 				getBornState( ).find( person.getBornCity( ).getState( ) );
 				getBornCity( ).find( person.getBornCity( ) );
+			}
+			else {
+				getBornState( ).setSelectedIndex( 0 );
+				getBornCity( ).setSelectedIndex( 0 );
 			}
 		}
 		else {
@@ -67,6 +74,7 @@ public abstract class BasePersonController<T> extends UserController<T>
 			getBornState( ).setSelectedIndex( 0 );
 			getBornCity( ).setSelectedIndex( 0 );
 			getMaritalStatus( ).setSelectedIndex( 0 );
+			getNickName( ).setValue( "" );
 		}
 	}
 
@@ -160,6 +168,7 @@ public abstract class BasePersonController<T> extends UserController<T>
 		person.setFatherName( getFatherName( ).getValue( ) );
 		person.setMotherName( getMotherName( ).getValue( ) );
 		person.setBornCity( getBornCity( ).getSelectedValue( ) );
+		person.setNickName( getNickName( ).getValue( ) );
 	}
 
 	@Listen( "onBlur=#cpf" )
@@ -184,6 +193,11 @@ public abstract class BasePersonController<T> extends UserController<T>
 		else {
 			logger.warn( "onBlur with evt null " );
 		}
+	}
+
+	private Textbox getNickName( )
+	{
+		return nickName;
 	}
 
 }

@@ -38,6 +38,7 @@
 		</borderlayout>
 	    <menupopup id="popupOptions">
 	    	<menuitem label="Reinicializar Login" id="resetAll" image="/img/user.png" />
+	    	<menuitem label="Personificar" id="personify" image="/img/user-anonymous-icon.png" />
 	    </menupopup>
 	</window>
 </zk>

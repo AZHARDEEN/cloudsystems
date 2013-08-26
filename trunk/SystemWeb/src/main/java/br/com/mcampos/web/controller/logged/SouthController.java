@@ -4,16 +4,21 @@ import static br.com.mcampos.web.core.ComboboxUtils.load;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.EventQueues;
+import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.core.SimpleDTO;
+import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSession;
 import br.com.mcampos.sysutils.SysUtils;
@@ -24,15 +29,19 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 	private static final long serialVersionUID = 1292892431343759655L;
 
 	private static final String lastCompany = "Collaborator.lastCompany";
+	private static final Logger logger = LoggerFactory.getLogger( SouthController.class.getSimpleName( ) );
 
 	@Wire( "#companies" )
-	Combobox companies;
+	private Combobox companies;
 
 	@Wire( "#labelVersion" )
-	Label version;
+	private Label version;
 
 	@Wire( "#labelWho" )
-	Label who;
+	private Label who;
+
+	@Wire( "#btnUnpersonify" )
+	private Button btnUnpersonify;
 
 	@Listen( "onSelect = #companies" )
 	public void onSelectCompanies( )
@@ -73,10 +82,14 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 		}
 		version.setValue( Executions.getCurrent( ).getDesktop( ).getWebApp( ).getVersion( ) );
 		if ( who != null ) {
-			String strWho = getLoggedUser( ).getPerson( ).getFirstName( );
-			if ( SysUtils.isEmpty( strWho ) )
-				strWho = getLoggedUser( ).getPerson( ).getName( );
-			who.setValue( "Usuário: " + strWho );
+			who.setValue( "Usuário: " + getLoggedUser( ).getPerson( ).getFriendlyName( ) );
+		}
+		Login login = getRealLoggedUser( );
+		if ( btnUnpersonify != null && login != null && login.getPersonify( ) != null ) {
+			btnUnpersonify.setVisible( true );
+		}
+		else {
+			btnUnpersonify.setVisible( false );
 		}
 	}
 
@@ -120,4 +133,36 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 	{
 		return true;
 	}
+
+	@Listen( "onClick=#btnUnpersonify" )
+	public void unpersonify( MouseEvent evt )
+	{
+		Login login = getRealLoggedUser( );
+		if ( login != null ) {
+			login.setPersonify( null );
+		}
+		if ( btnUnpersonify != null )
+			btnUnpersonify.setVisible( false );
+		redirect( null );
+		if ( evt != null )
+			evt.stopPropagation( );
+	}
+
+	public Login getRealLoggedUser( )
+	{
+		Object obj = getSessionParameter( userSessionParamName );
+
+		if ( obj instanceof Login ) {
+			Login login = (Login) obj;
+			logger.warn( "GetRealLoggedUser has been called from " + login.getPerson( ).getName( ) + "Login id: " + login.getId( ) );
+			if ( login.getPersonify( ) != null ) {
+				logger.warn( login.getPerson( ).getName( ) + " is personifying " +
+						login.getPersonify( ).getPerson( ).getName( ) + "Login id: " + login.getPersonify( ).getId( ) );
+			}
+			return login;
+		}
+		else
+			return null;
+	}
+
 }

@@ -15,6 +15,10 @@
 	            <textbox id="name" hflex = "1" maxlength="128" />
 	        </row>
 	        <row>
+	            <label value="Apelido" />
+	            <textbox id="nickName" hflex = "1" maxlength="128" />
+	        </row>
+	        <row>
 	            <label value="Sexo" />
 	            <combobox id="gender" width="200px" readonly="true" use= "br.com.mcampos.web.core.combobox.GenderCombobox"/>
 	        </row>
