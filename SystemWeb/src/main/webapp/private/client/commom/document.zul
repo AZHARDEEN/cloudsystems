@@ -17,7 +17,7 @@
 			<rows>
 				<row>
 					<label value="Tipo do Documento" />
-					<combobox id="documentType" width="150px"  use="br.com.mcampos.web.core.combobox.DocumentTypeCombobox" >
+					<combobox id="documentType" width="400px"  use="br.com.mcampos.web.core.combobox.DocumentTypeCombobox"  readonly="true">
 					</combobox>
 				</row>
 				<row>

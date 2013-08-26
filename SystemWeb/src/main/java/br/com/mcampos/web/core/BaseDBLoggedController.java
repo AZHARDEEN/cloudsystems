@@ -69,7 +69,16 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	@Override
 	public Login getLoggedUser( )
 	{
-		return (Login) getSessionParameter( userSessionParamName );
+		Object obj = getSessionParameter( LoggedInterface.userSessionParamName );
+
+		if ( obj instanceof Login ) {
+			Login login = (Login) obj;
+			if ( login != null && login.getPersonify( ) != null )
+				return login.getPersonify( );
+			return login;
+		}
+		else
+			return null;
 	}
 
 	@Override

@@ -1,8 +1,6 @@
 package br.com.mcampos.ejb.user;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.ejb.EJB;
 
@@ -10,7 +8,6 @@ import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.user.address.Address;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
-import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.sysutils.SysUtils;
 
 public abstract class BaseUserSession<BEAN extends Users> extends SimpleSessionBean<BEAN>
@@ -56,8 +53,8 @@ public abstract class BaseUserSession<BEAN extends Users> extends SimpleSessionB
 			}
 		}
 		u.setName( SysUtils.unaccent( u.getName( ).toUpperCase( ) ) );
-		if ( SysUtils.isEmpty(u.getNickName()) == false ) {
-			u.setNickName(SysUtils.unaccent( u.getNickName().toUpperCase( ) ) );
+		if ( SysUtils.isEmpty( u.getNickName( ) ) == false ) {
+			u.setNickName( SysUtils.unaccent( u.getNickName( ).toUpperCase( ) ) );
 		}
 		if ( u.getInsertDate( ) == null ) {
 			u.setInsertDate( new Date( ) );
@@ -67,6 +64,7 @@ public abstract class BaseUserSession<BEAN extends Users> extends SimpleSessionB
 	@Override
 	public BEAN merge( BEAN newEntity )
 	{
+		/*
 		List<UserDocument> documents = new ArrayList<UserDocument>( );
 		List<Address> addresses = new ArrayList<Address>( );
 		List<UserContact> contacts = new ArrayList<UserContact>( );
@@ -84,7 +82,9 @@ public abstract class BaseUserSession<BEAN extends Users> extends SimpleSessionB
 			addresses.add( i );
 		}
 		newEntity.getAddresses( ).clear( );
+		*/
 		newEntity = super.merge( newEntity );
+		/*
 		for ( UserContact i : contacts ) {
 			newEntity.add( i );
 		}
@@ -94,9 +94,10 @@ public abstract class BaseUserSession<BEAN extends Users> extends SimpleSessionB
 		for ( Address i : addresses ) {
 			newEntity.add( i );
 		}
+		*/
 		return newEntity;
 	}
-	
+
 	protected void lazyLoad( Users item )
 	{
 		if ( item == null ) {
@@ -106,5 +107,5 @@ public abstract class BaseUserSession<BEAN extends Users> extends SimpleSessionB
 		item.getDocuments( ).size( );
 		item.getContacts( ).size( );
 	}
-	
+
 }

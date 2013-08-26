@@ -17,7 +17,7 @@
 			<rows>
 				<row>
 					<label value="Espécie" />
-					<combobox id="contactType" width="150px" use="br.com.mcampos.web.core.combobox.ContactTypeCombobox" >
+					<combobox id="contactType" width="400px" use="br.com.mcampos.web.core.combobox.ContactTypeCombobox" readonly="true" >
 					</combobox>
 				</row>
 				<row>

@@ -1,10 +1,13 @@
 package br.com.mcampos.web.controller.client.commom;
 
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
 
 import br.com.mcampos.ejb.user.UserContact;
+import br.com.mcampos.ejb.user.contact.type.ContactType;
 import br.com.mcampos.web.core.combobox.ContactTypeCombobox;
 
 public class ContactController extends BaseUserAttrListController<UserContact>
@@ -24,7 +27,7 @@ public class ContactController extends BaseUserAttrListController<UserContact>
 	@Override
 	protected Listbox getListbox( )
 	{
-		return this.listbox;
+		return listbox;
 	}
 
 	@Override
@@ -47,17 +50,17 @@ public class ContactController extends BaseUserAttrListController<UserContact>
 
 	protected ContactTypeCombobox getContactType( )
 	{
-		return this.contactType;
+		return contactType;
 	}
 
 	protected Textbox getContactId( )
 	{
-		return this.contactId;
+		return contactId;
 	}
 
 	protected Textbox getContactComent( )
 	{
-		return this.contactComent;
+		return contactComent;
 	}
 
 	@Override
@@ -66,5 +69,23 @@ public class ContactController extends BaseUserAttrListController<UserContact>
 		c.setType( getContactType( ).getSelectedValue( ) );
 		c.setDescription( getContactId( ).getValue( ) );
 		c.setObs( getContactComent( ).getValue( ) );
+	}
+
+	@Override
+	@Listen( "onSelect=#contactType" )
+	public void onSelect( Event evt )
+	{
+		Object obj = getContactType( ).getSelectedItem( ).getValue( );
+		if ( obj != null || obj instanceof ContactType ) {
+			ContactType c = (ContactType) obj;
+			if ( c.getId( ).compareTo( 3 ) < 0 ) {
+				setMask( contactType, "phone" );
+			}
+			else {
+				setMask( contactType, null );
+			}
+		}
+		if ( evt != null )
+			evt.stopPropagation( );
 	}
 }

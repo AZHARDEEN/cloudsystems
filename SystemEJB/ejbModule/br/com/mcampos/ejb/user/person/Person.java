@@ -9,12 +9,14 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import br.com.mcampos.ejb.locale.city.City;
 import br.com.mcampos.ejb.user.Users;
 import br.com.mcampos.ejb.user.person.civilstate.CivilState;
 import br.com.mcampos.ejb.user.person.gender.Gender;
 import br.com.mcampos.ejb.user.person.title.Title;
+import br.com.mcampos.sysutils.SysUtils;
 
 @Entity
 @Table( name = "\"person\"" )
@@ -60,17 +62,17 @@ public class Person extends Users implements Serializable
 
 	public CivilState getCivilState( )
 	{
-		return this.civilState;
+		return civilState;
 	}
 
 	public void setCivilState( CivilState state )
 	{
-		this.civilState = state;
+		civilState = state;
 	}
 
 	public Gender getGender( )
 	{
-		return this.gender;
+		return gender;
 	}
 
 	public void setGender( Gender gender )
@@ -80,7 +82,7 @@ public class Person extends Users implements Serializable
 
 	public Title getTitle( )
 	{
-		return this.title;
+		return title;
 	}
 
 	public void setTitle( Title title )
@@ -90,7 +92,7 @@ public class Person extends Users implements Serializable
 
 	public City getBornCity( )
 	{
-		return this.bornCity;
+		return bornCity;
 	}
 
 	public void setBornCity( City bornCity )
@@ -100,51 +102,64 @@ public class Person extends Users implements Serializable
 
 	public String getFatherName( )
 	{
-		return this.fatherName;
+		return fatherName;
 	}
 
 	public void setFatherName( String usr_father_name_ch )
 	{
-		this.fatherName = usr_father_name_ch;
+		fatherName = usr_father_name_ch;
 	}
 
 	public String getFirstName( )
 	{
-		return this.firstName;
+		return firstName;
 	}
 
 	public void setFirstName( String usr_first_name_ch )
 	{
-		this.firstName = usr_first_name_ch;
+		firstName = usr_first_name_ch;
 	}
 
 	public String getLastName( )
 	{
-		return this.lastName;
+		return lastName;
 	}
 
 	public void setLastName( String usr_last_name_ch )
 	{
-		this.lastName = usr_last_name_ch;
+		lastName = usr_last_name_ch;
 	}
 
 	public String getMiddleName( )
 	{
-		return this.middleName;
+		return middleName;
 	}
 
 	public void setMiddleName( String usr_middle_name_ch )
 	{
-		this.middleName = usr_middle_name_ch;
+		middleName = usr_middle_name_ch;
 	}
 
 	public String getMotherName( )
 	{
-		return this.motherName;
+		return motherName;
 	}
 
 	public void setMotherName( String usr_mother_name_ch )
 	{
-		this.motherName = usr_mother_name_ch;
+		motherName = usr_mother_name_ch;
+	}
+
+	@Transient
+	public String getFriendlyName( )
+	{
+		String strWho;
+		strWho = getNickName( );
+		if ( SysUtils.isEmpty( strWho ) ) {
+			strWho = getFirstName( );
+			if ( SysUtils.isEmpty( strWho ) )
+				strWho = getName( );
+		}
+		return strWho;
 	}
 }

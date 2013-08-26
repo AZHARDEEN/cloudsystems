@@ -34,7 +34,7 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 	@Override
 	protected void onOk( )
 	{
-		redirect( "/private/index.zul" );
+		redirect( null );
 	}
 
 	@Override

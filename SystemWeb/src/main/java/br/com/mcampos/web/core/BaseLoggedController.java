@@ -30,6 +30,15 @@ public abstract class BaseLoggedController<T extends Component> extends BaseCont
 
 	protected Login getLoggedUser( )
 	{
-		return (Login) getSessionParameter( LoggedInterface.userSessionParamName );
+		Object obj = getSessionParameter( LoggedInterface.userSessionParamName );
+
+		if ( obj instanceof Login ) {
+			Login login = (Login) obj;
+			if ( login != null && login.getPersonify( ) != null )
+				return login.getPersonify( );
+			return login;
+		}
+		else
+			return null;
 	}
 }
