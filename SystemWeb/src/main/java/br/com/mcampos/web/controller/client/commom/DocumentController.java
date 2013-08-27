@@ -26,36 +26,36 @@ public class DocumentController extends BaseUserAttrListController<UserDocument>
 	@Override
 	protected Listbox getListbox( )
 	{
-		return this.listbox;
+		return listbox;
 	}
 
 	protected DocumentTypeCombobox getDocumentType( )
 	{
-		return this.documentType;
+		return documentType;
 	}
 
 	protected Textbox getDocumentId( )
 	{
-		return this.documentId;
+		return documentId;
 	}
 
 	protected Textbox getDocumentComent( )
 	{
-		return this.documentComent;
+		return documentComent;
 	}
 
 	@Override
 	protected void showRecord( UserDocument doc )
 	{
-		if ( doc != null ) {
-			if ( getDocumentType( ) != null ) {
+		if( doc != null ) {
+			if( getDocumentType( ) != null ) {
 				getDocumentType( ).find( doc.getType( ) );
 			}
 			getDocumentId( ).setValue( doc.getCode( ) );
 			getDocumentComent( ).setValue( doc.getAdditionalInfo( ) );
 		}
 		else {
-			if ( getDocumentType( ) != null ) {
+			if( getDocumentType( ) != null ) {
 				getDocumentType( ).setSelectedIndex( 0 );
 			}
 			getDocumentId( ).setRawValue( "" );
@@ -77,5 +77,12 @@ public class DocumentController extends BaseUserAttrListController<UserDocument>
 		c.setType( getDocumentType( ).getSelectedValue( ) );
 		c.setCode( getDocumentId( ).getValue( ) );
 		c.setAdditionalInfo( getDocumentComent( ).getValue( ) );
+	}
+
+	@Override
+	protected boolean validate( UserDocument data )
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

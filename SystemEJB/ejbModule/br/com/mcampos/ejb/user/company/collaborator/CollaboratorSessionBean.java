@@ -148,15 +148,14 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 		try {
 			List<Menu> menus = getMenus( c );
 			if ( SysUtils.isEmpty( menus ) ) {
-				logger.info( "Menu list is null - " + mnuUrl );
+				logger.error(  "User: " + c.getPerson( ).getName( ) + " is not - Authorized for " + mnuUrl );
 				auth.setAuthorized( false );
 			}
 			else if ( menus.contains( menu ) == false ) {
-				logger.info( "List does not contais menu for url - " + mnuUrl );
+				logger.error(  "User: " + c.getPerson( ).getName( ) + " is not - Authorized for " + mnuUrl );
 				auth.setAuthorized( false );
 			}
 			else {
-				logger.info( "Ok for - " + mnuUrl );
 				auth.setAuthorized( true );
 			}
 		}

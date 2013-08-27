@@ -33,7 +33,7 @@ public class ContactController extends BaseUserAttrListController<UserContact>
 	@Override
 	protected void showRecord( UserContact data )
 	{
-		if ( data != null ) {
+		if( data != null ) {
 			getContactType( ).find( data.getType( ) );
 			getContactId( ).setValue( data.getDescription( ) );
 			getContactComent( ).setValue( data.getObs( ) );
@@ -76,16 +76,23 @@ public class ContactController extends BaseUserAttrListController<UserContact>
 	public void onSelect( Event evt )
 	{
 		Object obj = getContactType( ).getSelectedItem( ).getValue( );
-		if ( obj != null || obj instanceof ContactType ) {
+		if( obj != null || obj instanceof ContactType ) {
 			ContactType c = (ContactType) obj;
-			if ( c.getId( ).compareTo( 3 ) < 0 ) {
+			if( c.getId( ).compareTo( 3 ) < 0 ) {
 				setMask( contactType, "phone" );
 			}
 			else {
 				setMask( contactType, null );
 			}
 		}
-		if ( evt != null )
+		if( evt != null )
 			evt.stopPropagation( );
+	}
+
+	@Override
+	protected boolean validate( UserContact data )
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

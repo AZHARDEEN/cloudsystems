@@ -1,59 +1,111 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
-<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
-	<div id = "divAddressList" apply="br.com.mcampos.web.controller.client.commom.AddressController">
-		<listbox fixedLayout="true" id="addressList" rows= "4">
-			<listhead sizable="true" >
-				<listheader label="Tipo" sort="auto" align="left" width="15%" />
-				<listheader label="Endereço" sort="auto" align="left" width="50%" />
-				<listheader label="Cidade" sort="auto" align="left" width="30%" />
-				<listheader label="UF" width= "5%" />
-			</listhead>
-		</listbox>
-		<separator bar="true"/>
-		<grid >
-			<columns>
-				<column width="25%" />
-				<column />
-			</columns>
-			<rows>
-               <row>
-                   <label value="##" id="labelAddressType"/>
-                   <combobox id="addressType" readonly="true" use="br.com.mcampos.web.core.combobox.AddressTypeCombobox">
-                   </combobox>
-               </row>
-               <row>
-                   <label value="##" id="labelAddressZipCode"/>
-                   <textbox id="zip" width="100px" maxlength="10" />
-               </row>
-               <row>
-                   <label value="##" id="labelAddress"/>
-                   <textbox id="address" width="99%" maxlength="255" multiline="true" rows="2" />
-               </row>
-               <row>
-                   <label value="##" id="labelAddressDistrict"/>
-                   <textbox id="hood" width="99%" maxlength="128" />
-               </row>
-               <row>
-                   <label value="##" id="labelAddressState"/>
-                   <vlayout>
-	                   <combobox id="state" width="300px" readonly="true" use="br.com.mcampos.web.core.combobox.StateCombobox"/>
-	                   <combobox id="city" width="500px" readonly="true" use="br.com.mcampos.web.core.combobox.CityCombobox"/>
-                   </vlayout>
-               </row>
-               <row>
-                   <label value="##" id="labelAddressObs"/>
-                   <textbox id="addressComment" width="99%" rows="2"></textbox>
-               </row>
-           </rows>
-       </grid>
- 		<separator bar="true"/>
-		<div align="center" >
-			<hbox align="center" >
-				<button label="Novo" id="addAddress" tooltiptext="Adiciona o novo endereço à lista" image="/img/icontexto-webdev-add-032x032.png" />
-				<button label="Editar" id="updateAddress" disabled="true" tooltiptext="Atualiza o endereço selecionado na lista" image="/img/icontexto-webdev-alert-032x032.png" />
-				<button label="Remover" id="removeAddress" disabled="true" tooltiptext="Remove o endereço selecionado na lista" image="/img/icontexto-webdev-remove-032x032.png" />
-			</hbox>
-		</div>
-	</div>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<window id="divAddressList" apply="br.com.mcampos.web.controller.client.commom.AddressController" vflex="true">
+		<borderlayout width="100%" height="700px">
+			<center>
+				<listbox fixedLayout="true" id="addressList" rows="5">
+					<listhead sizable="true">
+						<listheader label="Tipo" sort="auto" align="left" width="100px" />
+						<listheader label="CEP" sort="auto" align="left" width="50%" />
+						<listheader label="Cidade" sort="auto" align="left" width="30%" />
+						<listheader label="UF" width="30px" />
+					</listhead>
+				</listbox>
+			</center>
+			<east autoscroll="true" splittable="true" width="50%">
+				<div id="divEastAddress">
+					<div id="divInfoAddress">
+						<grid>
+							<columns>
+								<column width="25%" />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<label value="Tipo" />
+									<label id="lblType" />
+								</row>
+								<row>
+									<label value="CEP" />
+									<label id="lblCEP" />
+								</row>
+								<row>
+									<label value="Endereço" />
+									<label id="lblAddress" multiline="true" />
+								</row>
+								<row>
+									<label value="Bairro" />
+									<label id="lblHood" />
+								</row>
+								<row>
+									<label value="Cidade/UF" />
+									<label id="lblCity" />
+								</row>
+								<row>
+									<label value="Observação" />
+									<label id="lblComments" multiline="true" />
+								</row>
+							</rows>
+						</grid>
+						<div align="center" id="divOperationsAddress">
+							<hlayout>
+								<button id="cmdCreateAddress" label="Novo" image="/img/icontexto-webdev-add-016x016.png" tooltiptext="Adiciona um novo Endereço"
+									autodisable="true" />
+								<button id="cmdUpdateAddress" label="Editar" image="/img/icontexto-webdev-alert-016x016.png"
+									tooltiptext="Altera o Endereço Selecionado" disabled="true" autodisable="true" />
+								<button id="cmdDeleteAddress" label="Excluir" image="/img/icontexto-webdev-remove-016x016.png"
+									tooltiptext="Exclui o Endereço Selecionado" disabled="true" autodisable="true" />
+							</hlayout>
+						</div>
+					</div>
+					<div id="divEditAddress" visible="false">
+						<grid>
+							<columns>
+								<column width="25%" />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<label value="##" id="labelAddressType" />
+									<combobox id="addressType" readonly="true" use="br.com.mcampos.web.core.combobox.AddressTypeCombobox"></combobox>
+								</row>
+								<row>
+									<label value="##" id="labelAddressZipCode" />
+									<textbox id="zip" width="100px" maxlength="10" />
+								</row>
+								<row>
+									<label value="##" id="labelAddress" />
+									<textbox id="address" width="99%" maxlength="255" multiline="true" rows="2" />
+								</row>
+								<row>
+									<label value="##" id="labelAddressDistrict" />
+									<textbox id="hood" width="99%" maxlength="128" />
+								</row>
+								<row>
+									<label value="##" id="labelAddressState" />
+									<vlayout>
+										<combobox id="state" width="300px" readonly="true" use="br.com.mcampos.web.core.combobox.StateCombobox" />
+										<combobox id="city" width="500px" readonly="true" use="br.com.mcampos.web.core.combobox.CityCombobox" />
+									</vlayout>
+								</row>
+								<row>
+									<label value="##" id="labelAddressObs" />
+									<textbox id="addressComment" width="99%" rows="2"></textbox>
+								</row>
+							</rows>
+						</grid>
+						<div align="center" id="divConfirmOperationsAddress" visible="false">
+							<hbox>
+								<button id="cmdSaveAddress" label="Salvar" image="/img/icontexto-webdev-ok-016x016.png" />
+								<separator />
+								<button id="cmdCancelAddress" label="Cancelar" image="/img/icontexto-webdev-cancel-016x016.png" />
+							</hbox>
+						</div>
+					</div>
+				</div>
+			</east>
+		</borderlayout>
+	</window>
 </zk>

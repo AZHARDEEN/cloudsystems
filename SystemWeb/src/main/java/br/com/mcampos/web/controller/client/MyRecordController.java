@@ -23,7 +23,7 @@ public class MyRecordController extends BasePersonController<PersonSession>
 	@Override
 	protected boolean onOk( )
 	{
-		if ( validate( getCurrentCollaborator( ).getPerson( ) ) ) {
+		if( validate( getCurrentCollaborator( ).getPerson( ) ) ) {
 			updatePerson( getCurrentCollaborator( ).getPerson( ) );
 			getSession( ).merge( getCurrentCollaborator( ).getPerson( ) );
 			return true;
