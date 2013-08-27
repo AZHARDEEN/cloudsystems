@@ -2,8 +2,8 @@
 <zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
 	<window width="100%" height="100%" closable="true" border="none" title="Meu Dados Pessoais" apply="br.com.mcampos.web.controller.client.MyRecordController">
 	    <script type="text/JavaScript" defer="true">jq(document).ready( function() { jq('$cpf').setMask ( 'cpf' ); } );</script>
-		<div id="divData">
-			<tabbox id="personTab" fulfill="=/private/client/commom/person_tab.zul" />
+		<div id="divData" >
+			<tabbox id="personTab" fulfill="=/private/client/commom/person_tab.zul"/>
 			<separator />
 			<div fulfill="=/templates/submit_cancel.zul" />
 		</div>

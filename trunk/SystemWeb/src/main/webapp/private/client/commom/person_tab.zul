@@ -8,8 +8,8 @@
 	</tabs>
 	<tabpanels>
 	    <tabpanel fulfill="=/private/client/commom/personal_data.zul" />
-	    <tabpanel fulfill="=/private/client/commom/address.zul"></tabpanel>
-	    <tabpanel fulfill="=/private/client/commom/document.zul"></tabpanel>
-	    <tabpanel fulfill="=/private/client/commom/contact.zul"></tabpanel>
+	    <tabpanel fulfill="=/private/client/commom/address.zul" />
+	    <tabpanel fulfill="=/private/client/commom/document.zul" />
+	    <tabpanel fulfill="=/private/client/commom/contact.zul" />
 	</tabpanels>
 </zk>

@@ -1,14 +1,18 @@
 package br.com.mcampos.web.controller.client.commom;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zul.Div;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 
 import br.com.mcampos.ejb.user.address.Address;
+import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.combobox.AddressTypeCombobox;
 import br.com.mcampos.web.core.combobox.CityCombobox;
 import br.com.mcampos.web.core.combobox.StateCombobox;
+import br.com.mcampos.web.renderer.AddressListRenderer;
 
 public class AddressController extends BaseUserAttrListController<Address>
 {
@@ -32,6 +36,19 @@ public class AddressController extends BaseUserAttrListController<Address>
 	@Wire
 	private Textbox addressComment;
 
+	@Wire
+	private Label lblType;
+	@Wire
+	private Label lblCEP;
+	@Wire
+	private Label lblAddress;
+	@Wire
+	private Label lblHood;
+	@Wire
+	private Label lblCity;
+	@Wire
+	private Label lblComments;
+
 	@Override
 	protected Listbox getListbox( )
 	{
@@ -41,7 +58,7 @@ public class AddressController extends BaseUserAttrListController<Address>
 	@Override
 	protected void showRecord( Address data )
 	{
-		if ( data != null ) {
+		if( data != null ) {
 			getZip( ).setValue( data.getZip( ) );
 			getAddress( ).setValue( data.getAddress( ) );
 			getHood( ).setValue( data.getDistrict( ) );
@@ -49,16 +66,32 @@ public class AddressController extends BaseUserAttrListController<Address>
 			getAddressType( ).find( data.getType( ) );
 			getState( ).find( data.getCity( ).getState( ) );
 			getCity( ).find( data.getCity( ) );
+
+			lblType.setValue( data.getType( ).toString( ) );
+			lblCEP.setValue( SysUtils.formatCEP( data.getZip( ) ) );
+			lblAddress.setValue( data.getAddress( ) );
+			lblCity.setValue( data.getCity( ).toString( ) + " - " + data.getCity( ).getState( ).toString( ) );
+			lblHood.setValue( data.getDistrict( ) );
+			lblComments.setValue( data.getObs( ) );
 		}
 		else {
-			getZip( ).setRawValue( "" );
-			getAddress( ).setRawValue( "" );
-			getHood( ).setRawValue( "" );
-			getAddressComment( ).setRawValue( "" );
-			getState( ).setSelectedIndex( 0 );
-			getCity( ).setSelectedIndex( 0 );
+			getZip( ).setValue( "" );
+			getAddress( ).setValue( "" );
+			getHood( ).setValue( "" );
+			getAddressComment( ).setValue( "" );
+			// getState( ).setSelectedIndex( 0 );
+			// getCity( ).setSelectedIndex( 0 );
 			getAddressType( ).setSelectedIndex( 0 );
+			getAddressType( ).setFocus( true );
+
+			lblType.setValue( "" );
+			lblCEP.setValue( "" );
+			lblAddress.setValue( "" );
+			lblCity.setValue( "" );
+			lblHood.setValue( "" );
+			lblComments.setValue( "" );
 		}
+		setMask( zip, "cep" );
 	}
 
 	@Override
@@ -72,10 +105,20 @@ public class AddressController extends BaseUserAttrListController<Address>
 	@Override
 	protected void update( Address data )
 	{
-		data.setAddress( getAddress( ).getValue( ) );
+		String aux;
+
+		aux = getAddress( ).getValue( );
+		if( aux != null ) {
+			aux = SysUtils.unaccent( aux.trim( ).toUpperCase( ) );
+		}
+		data.setAddress( aux );
 		data.setType( getAddressType( ).getSelectedValue( ) );
 		data.setCity( getCity( ).getSelectedValue( ) );
-		data.setDistrict( getHood( ).getValue( ) );
+		aux = getHood( ).getValue( );
+		if( aux != null ) {
+			aux = SysUtils.unaccent( aux.trim( ).toUpperCase( ) );
+		}
+		data.setDistrict( aux );
 		data.setObs( getAddressComment( ).getValue( ) );
 		data.setZip( getZip( ).getValue( ) );
 	}
@@ -116,11 +159,28 @@ public class AddressController extends BaseUserAttrListController<Address>
 	}
 
 	@Override
-	public void doAfterCompose( Div comp ) throws Exception
+	public void doAfterCompose( Component comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
 		getState( ).addDetail( getCity( ) );
-		setMask( zip, "cep" );
+		listbox.setItemRenderer( new AddressListRenderer( ) );
 	}
 
+	@Override
+	protected boolean validate( Address data )
+	{
+		if( SysUtils.isEmpty( data.getZip( ) ) ) {
+			Messagebox.show( "O campo CEP está vazio. Por favor, informe um CEP válido", "Endereço", Messagebox.OK, Messagebox.ERROR );
+			return false;
+		}
+		if( SysUtils.isEmpty( data.getAddress( ) ) ) {
+			Messagebox.show( "O campo logradouro está vazio. Por favor, informe um logradouro válido", "Endereço", Messagebox.OK, Messagebox.ERROR );
+			return false;
+		}
+		if( SysUtils.isEmpty( data.getDistrict( ) ) ) {
+			Messagebox.show( "O campo bairro está vazio. Por favor, informe um bairro válido", "Endereço", Messagebox.OK, Messagebox.ERROR );
+			return false;
+		}
+		return true;
+	}
 }
