@@ -46,22 +46,22 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 		Listitem selectedItem;
 
 		selectedItem = getListbox( ).getSelectedItem( );
-		if( selectedItem != null && selectedItem.getValue( ) != null ) {
+		if ( selectedItem != null && selectedItem.getValue( ) != null ) {
 			DATA value = selectedItem.getValue( );
 			showRecord( value );
 			enableItemButtons( true );
-			if( value instanceof UserDocument ) {
+			if ( value instanceof UserDocument ) {
 				UserDocument d = (UserDocument) value;
-				if( d.getType( ).getId( ).equals( UserDocument.typeCPF ) || d.getType( ).getId( ).equals( UserDocument.typeEmail ) ) {
-					for( Button b : this.itemButtons ) {
-						if( b.getId( ).equals( "removeDocument" ) ) {
+				if ( d.getType( ).getId( ).equals( UserDocument.typeCPF ) || d.getType( ).getId( ).equals( UserDocument.typeEmail ) ) {
+					for ( Button b : this.itemButtons ) {
+						if ( b.getId( ).equals( "removeDocument" ) ) {
 							b.setDisabled( true );
 						}
 					}
 				}
 			}
 		}
-		if( evt != null ) {
+		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
@@ -69,10 +69,10 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 	@Listen( "onAfterRender=listbox" )
 	public void afterRender( Event evt )
 	{
-		if( evt != null ) {
-			if( evt.getTarget( ) instanceof Listbox ) {
+		if ( evt != null ) {
+			if ( evt.getTarget( ) instanceof Listbox ) {
 				Listbox l = (Listbox) evt.getTarget( );
-				if( l.getItemCount( ) > 0 ) {
+				if ( l.getItemCount( ) > 0 ) {
 					l.setSelectedIndex( 0 );
 					onSelect( null );
 				}
@@ -81,10 +81,10 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 		}
 	}
 
-	private DATA getSelected( )
+	protected DATA getSelected( )
 	{
 		Listitem item = getListbox( ).getSelectedItem( );
-		if( item != null ) {
+		if ( item != null ) {
 			return item.getValue( );
 		}
 		else {
@@ -96,7 +96,7 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 	public void onRemove( Event evt )
 	{
 		DATA item = getSelected( );
-		if( item != null ) {
+		if ( item != null ) {
 			ListModelList<DATA> model = getModel( );
 			model.remove( item );
 			setSelectedIndex( 0 );
@@ -105,7 +105,7 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 			showRecord( null );
 			enableItemButtons( false );
 		}
-		if( evt != null ) {
+		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
@@ -114,10 +114,10 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 	public void onNew( Event evt )
 	{
 		DATA newItem = createNew( );
-		if( newItem != null ) {
+		if ( newItem != null ) {
 			getModel( ).add( newItem );
 		}
-		if( evt != null ) {
+		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
@@ -126,21 +126,21 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 	public void onUpdate( Event evt )
 	{
 		DATA newItem = getSelected( );
-		if( newItem != null ) {
+		if ( newItem != null ) {
 			update( newItem );
 			getModel( ).set( getListbox( ).getSelectedIndex( ), newItem );
 		}
-		if( evt != null ) {
+		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
 
 	private ListModelList<DATA> getModel( )
 	{
-		Object objModel = (getListbox( ).getModel( ));
+		Object objModel = ( getListbox( ).getModel( ) );
 		@SuppressWarnings( "unchecked" )
 		ListModelList<DATA> model = (ListModelList<DATA>) objModel;
-		if( model == null ) {
+		if ( model == null ) {
 			model = new ListModelList<DATA>( );
 			getListbox( ).setModel( model );
 		}
@@ -149,7 +149,7 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 
 	private void setSelectedIndex( int nIndex )
 	{
-		if( getListbox( ).getItemCount( ) > nIndex ) {
+		if ( getListbox( ).getItemCount( ) > nIndex ) {
 			getListbox( ).setSelectedIndex( nIndex );
 			Events.sendEvent( getListbox( ), new Event( Events.ON_SELECT, getListbox( ) ) );
 		}
@@ -169,33 +169,13 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 
 	private void enableItemButtons( boolean bEnable )
 	{
-		if( this.itemButtons != null )
+		if ( this.itemButtons != null )
 		{
-			for( Button b : this.itemButtons )
+			for ( Button b : this.itemButtons )
 			{
 				b.setDisabled( !bEnable );
 			}
 		}
-	}
-
-	@Listen( "onClick=#cmdCreateAddress" )
-	public void onAddNew( MouseEvent evt )
-	{
-		bUpdate = false;
-		enableOperations( false );
-		showRecord( null );
-		if( evt != null )
-			evt.stopPropagation( );
-	}
-
-	@Listen( "onClick=#cmdUpdateAddress" )
-	public void onUpdate( MouseEvent evt )
-	{
-		bUpdate = true;
-		enableOperations( false );
-		showRecord( getSelected( ) );
-		if( evt != null )
-			evt.stopPropagation( );
 	}
 
 	@Listen( "onClick=#cmdCancelAddress" )
@@ -203,7 +183,7 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 	{
 		enableOperations( true );
 		showRecord( getSelected( ) );
-		if( evt != null )
+		if ( evt != null )
 			evt.stopPropagation( );
 	}
 
@@ -212,18 +192,18 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 	{
 		DATA newItem;
 
-		if( !bUpdate ) {
+		if ( !bUpdate ) {
 			newItem = createNew( );
 		}
 		else {
 			newItem = getSelected( );
 			update( newItem );
 		}
-		if( newItem == null )
+		if ( newItem == null )
 			return;
-		if( validate( newItem ) ) {
+		if ( validate( newItem ) ) {
 			enableOperations( true );
-			if( !bUpdate ) {
+			if ( !bUpdate ) {
 				getModel( ).add( newItem );
 			}
 			else {
@@ -231,19 +211,19 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 			}
 			showRecord( newItem );
 		}
-		if( evt != null )
+		if ( evt != null )
 			evt.stopPropagation( );
 	}
 
 	private void enableOperations( boolean bEnable )
 	{
-		if( divOperations != null ) {
-			for( Div item : divOperations ) {
+		if ( divOperations != null ) {
+			for ( Div item : divOperations ) {
 				item.setVisible( bEnable );
 			}
 		}
-		if( divConfirmations != null ) {
-			for( Div item : divConfirmations ) {
+		if ( divConfirmations != null ) {
+			for ( Div item : divConfirmations ) {
 				item.setVisible( !bEnable );
 			}
 		}
