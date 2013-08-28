@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingException;
+import javax.servlet.http.Cookie;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,14 +16,17 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.web.core.CookieImpl;
+import br.com.mcampos.web.core.CookieInterface;
 import br.com.mcampos.web.locator.ServiceLocator;
 
-public abstract class ComboboxExt<BEAN, DATA> extends Combobox
+public abstract class ComboboxExt<BEAN, DATA> extends Combobox implements CookieInterface
 {
 	private static final Logger logger = LoggerFactory.getLogger( ComboboxExt.class );
 	private static final long serialVersionUID = 5803878398952556887L;
 	private Class<BEAN> persistentClass;
 	private transient BEAN session = null;
+	private CookieImpl cookieManager;
 
 	private List<DetailInterface> details;
 
@@ -58,7 +62,7 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox
 	{
 		Comboitem item = getSelectedItem( );
 
-		if ( item != null && item.getValue( ) != null ) {
+		if( item != null && item.getValue( ) != null ) {
 			return item.getValue( );
 		}
 		else {
@@ -69,23 +73,23 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox
 	public void load( List<DATA> list, DATA itemToSelect, boolean bSelectFirst )
 	{
 		getChildren( ).clear( );
-		if ( SysUtils.isEmpty( list ) == false ) {
+		if( SysUtils.isEmpty( list ) == false ) {
 			Comboitem selectedItem = null;
 
-			for ( DATA dto : list ) {
+			for( DATA dto : list ) {
 				Comboitem item = appendItem( dto.toString( ) );
-				if ( item != null ) {
+				if( item != null ) {
 					item.setValue( dto );
-					if ( itemToSelect != null && item.equals( itemToSelect ) ) {
+					if( itemToSelect != null && item.equals( itemToSelect ) ) {
 						selectedItem = item;
 					}
 				}
 			}
-			if ( selectedItem != null ) {
+			if( selectedItem != null ) {
 				setSelectedItem( selectedItem );
 			}
 			else {
-				if ( bSelectFirst ) {
+				if( bSelectFirst ) {
 					setSelectedIndex( 0 );
 				}
 			}
@@ -101,11 +105,11 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox
 	public BEAN getSession( )
 	{
 		try {
-			if ( this.session == null ) {
-				this.session = ( (BEAN) ServiceLocator.getInstance( ).getRemoteSession( this.persistentClass ) );
+			if( this.session == null ) {
+				this.session = ((BEAN) ServiceLocator.getInstance( ).getRemoteSession( this.persistentClass ));
 			}
 		}
-		catch ( NamingException e ) {
+		catch( NamingException e ) {
 			e.printStackTrace( );
 		}
 		return this.session;
@@ -113,13 +117,13 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox
 
 	public void find( DATA item )
 	{
-		if ( getItemCount( ) <= 0 || item == null ) {
+		if( getItemCount( ) <= 0 || item == null ) {
 			return;
 		}
-		for ( Component child : getChildren( ) ) {
-			if ( child instanceof Comboitem ) {
+		for( Component child : getChildren( ) ) {
+			if( child instanceof Comboitem ) {
 				Comboitem cbItem = (Comboitem) child;
-				if ( cbItem.getValue( ).equals( item ) ) {
+				if( cbItem.getValue( ).equals( item ) ) {
 					setSelectedItem( cbItem );
 					break;
 				}
@@ -129,7 +133,7 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox
 
 	private List<DetailInterface> getDetails( )
 	{
-		if ( this.details == null ) {
+		if( this.details == null ) {
 			this.details = new ArrayList<DetailInterface>( );
 		}
 		return this.details;
@@ -142,17 +146,81 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox
 
 	public void onSelect( Event evt )
 	{
-		for ( DetailInterface item : getDetails( ) ) {
+		for( DetailInterface item : getDetails( ) ) {
 			item.onChangeMaster( getSelectedValue( ) );
 		}
-		evt.stopPropagation( );
+		if( evt != null )
+			evt.stopPropagation( );
+	}
+
+	public void storeLastUsedSelection( )
+	{
+		int nIndex = getSelectedIndex( );
+		setCookie( this.getClass( ).getName( ), "" + nIndex );
+	}
+
+	public void loadLastUsedSelection( )
+	{
+		if( getItemCount( ) > 0 ) {
+			String last = getCookie( this.getClass( ).getName( ) );
+			if( SysUtils.isEmpty( last ) == false ) {
+				try {
+					setSelectedIndex( Integer.parseInt( last ) );
+				}
+				catch( NumberFormatException e ) {
+					logger.error( "Number Format Exception", e );
+				}
+			}
+			else {
+				setSelectedIndex( 0 );
+			}
+		}
 	}
 
 	public void onCreate( Event evt )
 	{
-		if ( ( this instanceof DetailInterface ) == false && this.getItemCount( ) == 0 )
+		if( (this instanceof DetailInterface) == false && getItemCount( ) == 0 )
 		{
 			load( );
 		}
 	}
+
+	private CookieImpl getCookieManager( )
+	{
+		if( cookieManager == null ) {
+			cookieManager = new CookieImpl( );
+		}
+		return cookieManager;
+	}
+
+	@Override
+	public Cookie findCookie( String name )
+	{
+		return getCookieManager( ).findCookie( name );
+	}
+
+	@Override
+	public String getCookie( String name )
+	{
+		return getCookieManager( ).getCookie( name );
+	}
+
+	@Override
+	public void deleteCookie( String name )
+	{
+		getCookieManager( ).deleteCookie( name );
+	}
+
+	@Override
+	public void setCookie( String name, String value )
+	{
+		getCookieManager( ).setCookie( name, value );
+	}
+
+	@Override
+	public void setCookie( String name, String value, int days )
+	{
+		getCookieManager( ).setCookie( name, value, days );
+	}
+
 }

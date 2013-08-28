@@ -379,8 +379,45 @@ public final class SysUtils
 
 	}
 
+	public static String format( String source, String meioMaskPattern )
+	{
+		if( isEmpty( meioMaskPattern ) || isEmpty( source ) )
+			return source;
+		if( meioMaskPattern.equalsIgnoreCase( "phone" ) ) {
+			return formatPhone( source );
+		}
+		else if( meioMaskPattern.equalsIgnoreCase( "cep" ) ) {
+			return formatCEP( source );
+		}
+		else if( meioMaskPattern.equalsIgnoreCase( "cpf" ) ) {
+			return formatCPF( source );
+		}
+		else if( meioMaskPattern.equalsIgnoreCase( "cnpj" ) ) {
+			return formatCPF( source );
+		}
+		return source;
+	}
+
 	public static String formatCEP( String source )
 	{
 		return format( source, "^\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d).*$", "$1$2\\.$3$4$5-$6$7$8" );
+	}
+
+	public static String formatPhone( String source )
+	{
+		return format( source, "^\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d).*$", "($1$2) $3$4$5$6-$7$8$9$10" );
+	}
+
+	public static String formatCPF( String source )
+	{
+		return format( source, "^\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d).*$",
+				"$1$2$3\\.$4$5$6\\.$7$8$9-$10$11" );
+	}
+
+	public static String formatCNPJ( String source )
+	{
+		return format( source,
+				"^\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d).*$",
+				"$1$2\\.$3$4$5\\.$6$7$8$9/$10$11$12$13-$14$15" );
 	}
 }
