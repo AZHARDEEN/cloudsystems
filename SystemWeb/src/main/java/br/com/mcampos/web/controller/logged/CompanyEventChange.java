@@ -18,7 +18,7 @@ public class CompanyEventChange extends Event
 
 	public Collaborator getCollaborator( )
 	{
-		return this.collaborator;
+		return collaborator;
 	}
 
 	private void setCollaborator( Collaborator collaborator )

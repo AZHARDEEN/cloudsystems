@@ -1,22 +1,37 @@
 package br.com.mcampos.web.controller.client.commom;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.EventQueues;
+import org.zkoss.zk.ui.event.MouseEvent;
+import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.user.address.Address;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.combobox.AddressTypeCombobox;
 import br.com.mcampos.web.core.combobox.CityCombobox;
 import br.com.mcampos.web.core.combobox.StateCombobox;
+import br.com.mcampos.web.core.event.DialogEvent;
 import br.com.mcampos.web.renderer.AddressListRenderer;
 
 public class AddressController extends BaseUserAttrListController<Address>
 {
 	private static final long serialVersionUID = -3981301497156139554L;
+	private static final Logger logger = LoggerFactory.getLogger( AddressController.class );
+
+	private static final String dialogPath = "/private/client/commom/address_dlg.zul";
 
 	@Wire( "#addressList" )
 	private Listbox listbox;
@@ -58,39 +73,6 @@ public class AddressController extends BaseUserAttrListController<Address>
 	@Override
 	protected void showRecord( Address data )
 	{
-		if( data != null ) {
-			getZip( ).setValue( data.getZip( ) );
-			getAddress( ).setValue( data.getAddress( ) );
-			getHood( ).setValue( data.getDistrict( ) );
-			getAddressComment( ).setValue( data.getObs( ) );
-			getAddressType( ).find( data.getType( ) );
-			getState( ).find( data.getCity( ).getState( ) );
-			getCity( ).find( data.getCity( ) );
-
-			lblType.setValue( data.getType( ).toString( ) );
-			lblCEP.setValue( SysUtils.formatCEP( data.getZip( ) ) );
-			lblAddress.setValue( data.getAddress( ) );
-			lblCity.setValue( data.getCity( ).toString( ) + " - " + data.getCity( ).getState( ).toString( ) );
-			lblHood.setValue( data.getDistrict( ) );
-			lblComments.setValue( data.getObs( ) );
-		}
-		else {
-			getZip( ).setValue( "" );
-			getAddress( ).setValue( "" );
-			getHood( ).setValue( "" );
-			getAddressComment( ).setValue( "" );
-			// getState( ).setSelectedIndex( 0 );
-			// getCity( ).setSelectedIndex( 0 );
-			getAddressType( ).setSelectedIndex( 0 );
-			getAddressType( ).setFocus( true );
-
-			lblType.setValue( "" );
-			lblCEP.setValue( "" );
-			lblAddress.setValue( "" );
-			lblCity.setValue( "" );
-			lblHood.setValue( "" );
-			lblComments.setValue( "" );
-		}
 		setMask( zip, "cep" );
 	}
 
@@ -108,14 +90,14 @@ public class AddressController extends BaseUserAttrListController<Address>
 		String aux;
 
 		aux = getAddress( ).getValue( );
-		if( aux != null ) {
+		if ( aux != null ) {
 			aux = SysUtils.unaccent( aux.trim( ).toUpperCase( ) );
 		}
 		data.setAddress( aux );
 		data.setType( getAddressType( ).getSelectedValue( ) );
 		data.setCity( getCity( ).getSelectedValue( ) );
 		aux = getHood( ).getValue( );
-		if( aux != null ) {
+		if ( aux != null ) {
 			aux = SysUtils.unaccent( aux.trim( ).toUpperCase( ) );
 		}
 		data.setDistrict( aux );
@@ -162,25 +144,87 @@ public class AddressController extends BaseUserAttrListController<Address>
 	public void doAfterCompose( Component comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		getState( ).addDetail( getCity( ) );
+		// getState( ).addDetail( getCity( ) );
+		subscribe( );
 		listbox.setItemRenderer( new AddressListRenderer( ) );
 	}
 
 	@Override
 	protected boolean validate( Address data )
 	{
-		if( SysUtils.isEmpty( data.getZip( ) ) ) {
+		if ( SysUtils.isEmpty( data.getZip( ) ) ) {
 			Messagebox.show( "O campo CEP está vazio. Por favor, informe um CEP válido", "Endereço", Messagebox.OK, Messagebox.ERROR );
 			return false;
 		}
-		if( SysUtils.isEmpty( data.getAddress( ) ) ) {
+		if ( SysUtils.isEmpty( data.getAddress( ) ) ) {
 			Messagebox.show( "O campo logradouro está vazio. Por favor, informe um logradouro válido", "Endereço", Messagebox.OK, Messagebox.ERROR );
 			return false;
 		}
-		if( SysUtils.isEmpty( data.getDistrict( ) ) ) {
+		if ( SysUtils.isEmpty( data.getDistrict( ) ) ) {
 			Messagebox.show( "O campo bairro está vazio. Por favor, informe um bairro válido", "Endereço", Messagebox.OK, Messagebox.ERROR );
 			return false;
 		}
 		return true;
+	}
+
+	@Listen( "onClick=#cmdCreateAddress" )
+	public void onAddNew( MouseEvent evt )
+	{
+		showDialog( null, false );
+		if ( evt != null )
+			evt.stopPropagation( );
+	}
+
+	@Listen( "onClick=#cmdUpdateAddress" )
+	public void onUpdate( MouseEvent evt )
+	{
+		showDialog( getSelected( ), true );
+		if ( evt != null )
+			evt.stopPropagation( );
+	}
+
+	private void showDialog( Address data, boolean bUpdate )
+	{
+		Map<String, Object> param = new HashMap<String, Object>( );
+		Window main = getMainWindow( );
+
+		param.put( "targetWindow", main );
+		param.put( "entity", data );
+		param.put( "isUpdate", bUpdate );
+		Component c = createComponents( dialogPath, main, param );
+		if ( c instanceof Window ) {
+			Window w = (Window) c;
+			w.doModal( );
+		}
+	}
+
+	public void onDialog( DialogEvent<Window> evt )
+	{
+		if ( evt != null ) {
+			if ( evt.getTarget( ) == getMainWindow( ) ) {
+				evt.stopPropagation( );
+			}
+		}
+	}
+
+	private void subscribe( )
+	{
+		EventQueues.lookup( DialogEvent.eventName, EventQueues.DESKTOP, true ).subscribe( new EventListener<Event>( )
+		{
+			@SuppressWarnings( "unchecked" )
+			@Override
+			public void onEvent( Event evt )
+			{
+				if ( evt instanceof DialogEvent ) {
+					DialogEvent<Window> dlgEvent = (DialogEvent<Window>) evt;
+					try {
+						onDialog( dlgEvent );
+					}
+					catch ( Exception e ) {
+						logger.error( "Subscribe error", e );
+					}
+				}
+			}
+		} );
 	}
 }

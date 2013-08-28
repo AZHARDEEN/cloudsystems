@@ -16,14 +16,12 @@ public class StateCombobox extends ComboboxExt<StateSession, State>
 	@Override
 	protected Class<StateSession> getSessionClass( )
 	{
-		// TODO Auto-generated method stub
 		return StateSession.class;
 	}
 
 	@Override
 	public void load( )
 	{
-		logger.info( "load" );
 		load( (List<State>) getSession( ).getAll( ), null, true );
 	}
 }
