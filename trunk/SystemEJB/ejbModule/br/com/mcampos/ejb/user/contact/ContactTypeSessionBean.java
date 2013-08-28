@@ -20,4 +20,10 @@ public class ContactTypeSessionBean extends SimpleSessionBean<ContactType> imple
 		return ContactType.class;
 	}
 
+	@Override
+	protected String allQueryOrderByClause( String entityAlias )
+	{
+		return entityAlias + ".id";
+	}
+
 }

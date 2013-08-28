@@ -10,8 +10,35 @@ public class DialogEvent<OBJECT> extends Event
 	public static final String eventName = "onCloseDialog";
 	public static final String eventQueueName = "Dialog Queue";
 
-	public DialogEvent( Component target, OBJECT data )
+	private int listIndex;
+
+	private boolean isUpdate;
+
+	public DialogEvent( Component target, OBJECT data, int listIndex, boolean isUpdate )
 	{
 		super( eventName, target, data );
+		setListIndex( listIndex );
+		setUpdate( isUpdate );
+
+	}
+
+	public int getListIndex( )
+	{
+		return listIndex;
+	}
+
+	private void setListIndex( int listIndex )
+	{
+		this.listIndex = listIndex;
+	}
+
+	public boolean isUpdate( )
+	{
+		return isUpdate;
+	}
+
+	private void setUpdate( boolean isUpdate )
+	{
+		this.isUpdate = isUpdate;
 	}
 }

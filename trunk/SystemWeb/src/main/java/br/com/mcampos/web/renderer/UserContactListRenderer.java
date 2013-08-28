@@ -3,6 +3,7 @@ package br.com.mcampos.web.renderer;
 import org.zkoss.zul.Listitem;
 
 import br.com.mcampos.ejb.user.UserContact;
+import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.listbox.BaseListRenderer;
 
 public class UserContactListRenderer extends BaseListRenderer<UserContact>
@@ -13,7 +14,7 @@ public class UserContactListRenderer extends BaseListRenderer<UserContact>
 	{
 		super.render( item, data, index );
 		addCell( item, data.getType( ).getDescription( ) );
-		addCell( item, data.getDescription( ) );
+		addCell( item, SysUtils.format( data.getDescription( ), data.getType( ).getMask( ) ) );
 		addCell( item, data.getObs( ) );
 	}
 }

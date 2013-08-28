@@ -36,8 +36,8 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	@Override
 	public ComponentInfo doBeforeCompose( Page page, Component parent, ComponentInfo compInfo )
 	{
-		if ( isLogged( ) && isValidAccess( compInfo.getPageDefinition( ).getRequestPath( ) ) ) {
-			logger.error( "Access is ok for url " + compInfo.getPageDefinition( ).getRequestPath( ) );
+		if( isLogged( ) && isValidAccess( compInfo.getPageDefinition( ).getRequestPath( ) ) ) {
+			logger.info( "Access is ok for url " + compInfo.getPageDefinition( ).getRequestPath( ) );
 			return super.doBeforeCompose( page, parent, compInfo );
 		}
 		else {
@@ -50,17 +50,16 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	protected boolean isValidAccess( String path )
 	{
 		Collaborator c = getCurrentCollaborator( );
-		if ( c == null ) {
+		if( c == null ) {
 			logger.error( "Collaborator is null" );
 			return true;
 		}
-		if ( SysUtils.isEmpty( path ) ) {
+		if( SysUtils.isEmpty( path ) ) {
 			logger.error( "Access is not valid" );
 			return false;
 		}
-		logger.error( "verifing access" );
 		setAuthorizedPageOptions( getCollaboratorSession( ).verifyAccess( c, path ) );
-		if ( getAuthorizedPageOptions( ).isAuthorized( ) == false ) {
+		if( getAuthorizedPageOptions( ).isAuthorized( ) == false ) {
 			logger.error( "Invalid Access  violations" );
 		}
 		return getAuthorizedPageOptions( ).isAuthorized( );
@@ -71,9 +70,9 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	{
 		Object obj = getSessionParameter( LoggedInterface.userSessionParamName );
 
-		if ( obj instanceof Login ) {
+		if( obj instanceof Login ) {
 			Login login = (Login) obj;
-			if ( login != null && login.getPersonify( ) != null )
+			if( login != null && login.getPersonify( ) != null )
 				return login.getPersonify( );
 			return login;
 		}
@@ -86,7 +85,7 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	{
 		Collaborator c = (Collaborator) getSessionParameter( currentCollaborator );
 		Login l = getLoggedUser( );
-		if ( c == null || c.getPerson( ).equals( l.getPerson( ) ) == false ) {
+		if( c == null || c.getPerson( ).equals( l.getPerson( ) ) == false ) {
 			return null;
 		}
 		return c;
@@ -100,11 +99,11 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	public CollaboratorSession getCollaboratorSession( )
 	{
 		try {
-			if ( this.collaboratorSession == null ) {
+			if( this.collaboratorSession == null ) {
 				this.collaboratorSession = (CollaboratorSession) ServiceLocator.getInstance( ).getRemoteSession( CollaboratorSession.class );
 			}
 		}
-		catch ( NamingException e ) {
+		catch( NamingException e ) {
 			e.printStackTrace( );
 		}
 		return this.collaboratorSession;

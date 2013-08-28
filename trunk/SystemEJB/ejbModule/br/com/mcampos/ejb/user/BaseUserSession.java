@@ -14,7 +14,7 @@ public abstract class BaseUserSession<BEAN extends Users> extends
 		SimpleSessionBean<BEAN>
 {
 	@EJB
-	UserDocumentSessionLocal	documentSession;
+	UserDocumentSessionLocal documentSession;
 
 	protected void configAttributes( Users u )
 	{
@@ -24,8 +24,11 @@ public abstract class BaseUserSession<BEAN extends Users> extends
 				item.setCode( item.getCode( ).toLowerCase( ).trim( ) );
 				break;
 			default:
-				item.setCode( item.getCode( ).replaceAll( "\\.", "" ) );
 				item.setCode( item.getCode( ).replaceAll( "-", "" ).trim( ) );
+				item.setCode( item.getCode( ).replaceAll( "\\.", "" ) );
+				item.setCode( item.getCode( ).replaceAll( "\\(", "" ) );
+				item.setCode( item.getCode( ).replaceAll( "\\)", "" ) );
+				item.setCode( item.getCode( ).replaceAll( "/", "" ) );
 				break;
 			}
 			if( item.getUser( ) == null || item.getUser( ).equals( u ) == false ) {
@@ -37,8 +40,12 @@ public abstract class BaseUserSession<BEAN extends Users> extends
 			case 1:
 			case 2:
 			case 3:
-				item.setDescription( item.getDescription( ).replaceAll( "\\.", "" ) );
-				item.setDescription( item.getDescription( ).replaceAll( "-", "" ).trim( ) );
+				item.setDescription( item.getDescription( ).replaceAll( "\\.", "" ).trim( ) );
+				item.setDescription( item.getDescription( ).replaceAll( "-", "" ) );
+				item.setDescription( item.getDescription( ).replaceAll( "\\(", "" ) );
+				item.setDescription( item.getDescription( ).replaceAll( "\\)", "" ) );
+				item.setDescription( item.getDescription( ).replaceAll( "/", "" ) );
+				item.setDescription( item.getDescription( ).replaceAll( " ", "" ) );
 				break;
 			default:
 				item.setDescription( item.getDescription( ).trim( ) );

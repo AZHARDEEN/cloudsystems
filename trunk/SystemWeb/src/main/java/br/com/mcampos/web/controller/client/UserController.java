@@ -32,8 +32,6 @@ import br.com.mcampos.web.core.BaseDBLoggedController;
 import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.core.report.BaseReportWindow;
 import br.com.mcampos.web.core.report.ReportItem;
-import br.com.mcampos.web.renderer.UserContactListRenderer;
-import br.com.mcampos.web.renderer.UserDocumentListRenderer;
 
 public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> implements IDialogEvent
 {
@@ -41,13 +39,13 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 	private static final int defaultRows = 30;
 	private static final Logger logger = LoggerFactory.getLogger( UserController.class );
 
-	@Wire
+	@Wire( "#wndContact #lstItem" )
 	private Listbox contactList;
 
-	@Wire
+	@Wire( "#wndDocument #lstItem" )
 	private Listbox documentList;
 
-	@Wire( "#divAddressList #addressList" )
+	@Wire( "#wndAddress #lstItem" )
 	private Listbox addressList;
 
 	@Wire
@@ -111,14 +109,6 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 		return this.addressList;
 	}
 
-	@Override
-	public void doAfterCompose( Window comp ) throws Exception
-	{
-		super.doAfterCompose( comp );
-		getContactList( ).setItemRenderer( new UserContactListRenderer( ) );
-		getDocumentList( ).setItemRenderer( new UserDocumentListRenderer( ) );
-	}
-
 	protected void show( Users u )
 	{
 		if( u != null )
@@ -136,6 +126,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 		{
 			getDocumentList( ).setModel( new ListModelList<UserDocument>( ) );
 			getContactList( ).setModel( new ListModelList<UserContact>( ) );
+			getAddressList( ).setModel( new ListModelList<Address>( ) );
 			this.name.setRawValue( "" );
 			if( this.birthdate != null ) {
 				this.birthdate.setValue( null );
