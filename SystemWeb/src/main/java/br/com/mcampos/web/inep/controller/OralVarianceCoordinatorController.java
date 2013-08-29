@@ -50,7 +50,7 @@ public class OralVarianceCoordinatorController extends BaseOralController implem
 		if ( item != null ) {
 			resetRevisor( );
 			if ( getRevisor( ) == null || getRevisor( ).isCoordenador( ) ) {
-				list = getSession( ).getVarianceOralOnly( getCurrentCollaborator( ), item );
+				list = getSession( ).getVarianceOralOnly( getPrincipal( ), item );
 			}
 		}
 		setModel( list );
@@ -92,7 +92,7 @@ public class OralVarianceCoordinatorController extends BaseOralController implem
 		if ( c != null && c instanceof DlgOralTeamChoice ) {
 			DlgOralTeamChoice dlg = (DlgOralTeamChoice) c;
 			dlg.setCallEvent( this );
-			dlg.loadList( getSession( ).getOralTeamToChoice( getCurrentEvent( ), getCurrentCollaborator( ) ) );
+			dlg.loadList( getSession( ).getOralTeamToChoice( getCurrentEvent( ), getPrincipal( ) ) );
 			dlg.doModal( );
 		}
 	}
@@ -111,7 +111,7 @@ public class OralVarianceCoordinatorController extends BaseOralController implem
 		ListModelList<InepOralTest> model = (ListModelList<InepOralTest>) ( (Object) getListbox( ).getModel( ) );
 		Set<InepOralTest> items = model.getSelection( );
 
-		getSession( ).distribute( getCurrentEvent( ), getCurrentCollaborator( ), first.getRevisor( ), second.getRevisor( ), items );
+		getSession( ).distribute( getCurrentEvent( ), getPrincipal( ), first.getRevisor( ), second.getRevisor( ), items );
 		model.removeAll( items );
 	}
 }

@@ -123,7 +123,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getCurrentCollaborator( ) );
+		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );
@@ -317,7 +317,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		if ( revisor == null ) {
 			if ( getComboEvent( ).getSelectedItem( ) != null ) {
 				revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
-						getCurrentCollaborator( ) );
+						getPrincipal( ) );
 			}
 		}
 		return revisor;

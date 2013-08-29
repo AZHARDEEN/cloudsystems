@@ -149,7 +149,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getCurrentCollaborator( ) );
+		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );

@@ -68,7 +68,7 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 			if ( getCmbFormat( ) != null && getCmbFormat( ).getSelectedItem( ) != null ) {
 				String value = (String) getCmbFormat( ).getSelectedItem( ).getValue( );
 				r.setReportFormat( Integer.parseInt( value ) );
-				getSession( ).setProperty( getCurrentCollaborator( ), defaultReportFormat, value );
+				getSession( ).setProperty( getPrincipal( ), defaultReportFormat, value );
 				try {
 					getListbox( ).setSelectedItem( null );
 					doReport( r );
@@ -123,7 +123,7 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 			listbox.setItemRenderer( new ReportListRenderer( ) );
 		}
 		if ( getCmbFormat( ) != null && getCmbFormat( ).getItemCount( ) > 0 ) {
-			LoginProperty p = getSession( ).getProperty( getCurrentCollaborator( ), defaultReportFormat );
+			LoginProperty p = getSession( ).getProperty( getPrincipal( ), defaultReportFormat );
 			if ( p != null && SysUtils.isEmpty( p.getValue( ) ) == false ) {
 				ComboboxUtils.find( getCmbFormat( ), p.getValue( ) );
 			}
@@ -180,7 +180,7 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 	{
 		if ( revisor == null ) {
 			revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
-					getCurrentCollaborator( ) );
+					getPrincipal( ) );
 		}
 		return revisor;
 	}
@@ -198,7 +198,7 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getCurrentCollaborator( ) );
+		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );
@@ -238,7 +238,7 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 			else
 				ComboboxUtils.load( getCmbRevisor( ), getSession( ).getOralTeam( getRevisor( ).getEvent( ) ), getRevisor( ), true );
 		}
-		if ( getLoggedUser( ).getId( ).equals( 1 ) ) {
+		if ( getPrincipal( ).getId( ).equals( 1 ) ) {
 			setReports( );
 		}
 	}

@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -25,7 +27,8 @@ import br.com.mcampos.sysutils.SysUtils;
 public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface<T>
 {
 	@Resource
-	SessionContext sessionContext;
+	private SessionContext sessionContext;
+
 	@PersistenceContext( unitName = "SystemEJB" )
 	private EntityManager em;
 
@@ -52,19 +55,20 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	public Class<T> getPersistentClass( )
 	{
-		if ( this.persistentClass == null )
+		if( this.persistentClass == null )
 			setClass( );
 		return this.persistentClass;
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public T get( Serializable key )
 	{
 		T entity;
 		try {
 			entity = getEntityManager( ).find( getPersistentClass( ), key );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			storeException( e );
 			entity = null;
 		}
@@ -81,10 +85,10 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		String sqlQuery;
 
 		sqlQuery = "select t from " + getPersistentClass( ).getSimpleName( ) + " as t ";
-		if ( whereClause != null && whereClause.isEmpty( ) == false ) {
+		if( whereClause != null && whereClause.isEmpty( ) == false ) {
 			whereClause = whereClause.trim( );
 			String where = whereClause.substring( 0, 5 );
-			if ( where.compareToIgnoreCase( "where" ) == 0 ) {
+			if( where.compareToIgnoreCase( "where" ) == 0 ) {
 				sqlQuery += " " + whereClause;
 			}
 			else {
@@ -92,9 +96,9 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			}
 		}
 		String orderBy = allQueryOrderByClause( "t" );
-		if ( SysUtils.isEmpty( orderBy ) == false ) {
+		if( SysUtils.isEmpty( orderBy ) == false ) {
 			orderBy = orderBy.toLowerCase( );
-			if ( orderBy.indexOf( "order by" ) >= 0 ) {
+			if( orderBy.indexOf( "order by" ) >= 0 ) {
 				sqlQuery += orderBy;
 			}
 			else {
@@ -106,6 +110,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public Collection<T> getAll( )
 	{
 		return getResultList( getAllQuery( null ) );
@@ -117,7 +122,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		try {
 			return query.getResultList( );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			storeException( e );
 			return Collections.emptyList( );
 		}
@@ -129,21 +134,22 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		try {
 			Object obj;
 			obj = query.getSingleResult( );
-			if ( obj == null ) {
+			if( obj == null ) {
 				return null;
 			}
 			return (T) obj;
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			return null;
 		}
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public Collection<T> getAll( String whereClause, DBPaging page )
 	{
 		Query query = getAllQuery( whereClause );
-		if ( page != null ) {
+		if( page != null ) {
 			query.setMaxResults( page.getRows( ) );
 			query.setFirstResult( page.getRows( ) * page.getPage( ) );
 		}
@@ -152,10 +158,11 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public Collection<T> getAll( String whereClause, DBPaging page, Object... params )
 	{
 		Query query = getAllQuery( whereClause );
-		if ( page != null ) {
+		if( page != null ) {
 			query.setMaxResults( page.getRows( ) );
 			query.setFirstResult( page.getRows( ) * page.getPage( ) );
 		}
@@ -165,27 +172,29 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	protected void setQueryParams( Query query, Object... params )
 	{
-		if ( params != null && params.length > 0 ) {
-			for ( int i = 0; i < params.length; i++ ) {
-				query.setParameter( i + 1, params[ i ] );
+		if( params != null && params.length > 0 ) {
+			for( int i = 0; i < params.length; i++ ) {
+				query.setParameter( i + 1, params[i] );
 			}
 		}
 	}
 
 	protected void setQueryParams( Query query, Map<String, Object> params )
 	{
-		for ( Entry<String, Object> entry : params.entrySet( ) ) {
+		for( Entry<String, Object> entry : params.entrySet( ) ) {
 			query.setParameter( entry.getKey( ), entry.getValue( ) );
 		}
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByNamedQuery( String namedQuery, Object... params )
 	{
 		return findByNamedQuery( namedQuery, null, params );
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByNamedQuery( String namedQuery, DBPaging paging, Object... params )
 	{
 		Query query = getEntityManager( ).createNamedQuery( namedQuery );
@@ -195,12 +204,14 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByNamedParams( String queryname, Map<String, Object> params )
 	{
 		return findByNamedParams( queryname, null, params );
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByNamedParams( String queryname, DBPaging paging, Map<String, Object> params )
 	{
 		Query query = getEntityManager( ).createNamedQuery( queryname );
@@ -210,12 +221,14 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByNativeQuery( String sql, Object... params )
 	{
 		return findByNativeQuery( sql, null, params );
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByNativeQuery( String sql, DBPaging paging, Object... params )
 	{
 		Query query = getEntityManager( ).createNativeQuery( sql );
@@ -226,19 +239,21 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	private void page( DBPaging paging, Query query )
 	{
-		if ( paging != null ) {
+		if( paging != null ) {
 			query.setFirstResult( paging.getPage( ) * paging.getRows( ) );
 			query.setMaxResults( paging.getRows( ) );
 		}
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public T getByNamedQuery( String namedQuery, Object... params )
 	{
 		return getByNamedQuery( namedQuery, null, params );
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public T getByNamedQuery( String namedQuery, DBPaging paging, Object... params )
 	{
 		Query query = getEntityManager( ).createNamedQuery( namedQuery );
@@ -248,12 +263,14 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public T getByNamedParams( String queryname, Map<String, Object> params )
 	{
 		return getByNamedParams( queryname, null, params );
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public T getByNamedParams( String queryname, DBPaging paging, Map<String, Object> params )
 	{
 		Query query = getEntityManager( ).createNamedQuery( queryname );
@@ -263,12 +280,14 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public T getByNativeQuery( String sql, Object... params )
 	{
 		return getByNativeQuery( sql, null, params );
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public T getByNativeQuery( String sql, DBPaging paging, Object... params )
 	{
 		Query query = getEntityManager( ).createNativeQuery( sql );
@@ -278,6 +297,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public Integer getNextId( )
 	{
 		Query query = getEntityManager( ).createQuery(
@@ -285,11 +305,11 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		Integer id;
 		try {
 			id = (Integer) query.getSingleResult( );
-			if ( id == null || id.equals( 0 ) ) {
+			if( id == null || id.equals( 0 ) ) {
 				id = 1;
 			}
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			storeException( e );
 			id = 1;
 		}
@@ -297,6 +317,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public Integer getNextId( String namedQuery, Object... params )
 	{
 		Query query = getEntityManager( ).createNamedQuery( namedQuery );
@@ -304,11 +325,11 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		try {
 			setQueryParams( query, params );
 			id = (Integer) query.getSingleResult( );
-			if ( id == null || id.equals( 0 ) ) {
+			if( id == null || id.equals( 0 ) ) {
 				id = 1;
 			}
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			storeException( e );
 			id = 1;
 		}
@@ -318,7 +339,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	@Override
 	public void storeException( Exception e )
 	{
-		if ( e == null ) {
+		if( e == null ) {
 			return;
 		}
 		e.printStackTrace( );
@@ -337,12 +358,14 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByQuery( String sql, Object... params )
 	{
 		return findByQuery( sql, null, params );
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByQuery( String sql, DBPaging paging, Object... params )
 	{
 		Query query = getEntityManager( ).createQuery( sql );
@@ -352,12 +375,14 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByQuery( String sql, Map<String, Object> params )
 	{
 		return findByQuery( sql, null, params );
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByQuery( String sql, DBPaging paging, Map<String, Object> params )
 	{
 		Query query = getEntityManager( ).createQuery( sql );
@@ -371,18 +396,23 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		List<Searchable> list = new ArrayList<Searchable>( );
 
 		Annotation annotation = getEntityClass( ).getAnnotation( Searchables.class );
-		if ( annotation != null ) {
+		if( annotation != null ) {
 			Searchables s = (Searchables) annotation;
-			for ( Searchable item : s.value( ) ) {
+			for( Searchable item : s.value( ) ) {
 				list.add( item );
 			}
 		}
 		else {
 			annotation = getEntityClass( ).getAnnotation( Searchable.class );
-			if ( annotation != null ) {
+			if( annotation != null ) {
 				list.add( (Searchable) annotation );
 			}
 		}
 		return list;
+	}
+
+	public SessionContext getSessionContext( )
+	{
+		return sessionContext;
 	}
 }

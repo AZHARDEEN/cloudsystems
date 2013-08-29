@@ -275,7 +275,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 	protected Client getCurrentClient( )
 	{
 		if( this.currentClient == null ) {
-			this.currentClient = new Client( getCurrentCollaborator( ).getCompany( ), createEmptyEntity( ) );
+			this.currentClient = new Client( getPrincipal( ), createEmptyEntity( ) );
 		}
 		return this.currentClient;
 	}

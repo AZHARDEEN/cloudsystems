@@ -42,14 +42,14 @@ public class TaskController extends BaseDBListController<InepTaskSession, InepTa
 	@Override
 	protected void showFields( InepTask entity )
 	{
-		for ( int nIndex = 0; nIndex < this.infoLabels.size( ); nIndex++ ) {
-			this.infoLabels.get( nIndex ).setValue( entity != null ? entity.getField( nIndex ) : "" );
+		for( int nIndex = 0; nIndex < infoLabels.size( ); nIndex++ ) {
+			infoLabels.get( nIndex ).setValue( entity != null ? entity.getField( nIndex ) : "" );
 		}
-		for ( int nIndex = 0; nIndex < this.inputs.size( ); nIndex++ ) {
-			DBWidget input = this.inputs.get( nIndex );
+		for( int nIndex = 0; nIndex < inputs.size( ); nIndex++ ) {
+			DBWidget input = inputs.get( nIndex );
 			input.setText( entity != null ? entity.getField( nIndex ) : "" );
-			if ( getStatus( ).equals( statusUpdate ) ) {
-				if ( input.isPrimaryKey( ) ) {
+			if( getStatus( ).equals( statusUpdate ) ) {
+				if( input.isPrimaryKey( ) ) {
 					input.setDisabled( entity != null );
 				}
 			}
@@ -59,10 +59,10 @@ public class TaskController extends BaseDBListController<InepTaskSession, InepTa
 	@Override
 	protected void updateTargetEntity( InepTask entity )
 	{
-		for ( DBWidget input : this.inputs ) {
-			if ( input.getId( ).equals( "id" ) ) {
+		for( DBWidget input : inputs ) {
+			if( input.getId( ).equals( "id" ) ) {
 				entity.getId( ).setId( Integer.parseInt( input.getText( ) ) );
-				entity.getId( ).setCompanyId( getCurrentCollaborator( ).getCompany( ).getId( ) );
+				entity.getId( ).setCompanyId( getPrincipal( ).getCompanyID( ) );
 			}
 			else {
 				entity.setDescription( input.getText( ) );
@@ -87,21 +87,21 @@ public class TaskController extends BaseDBListController<InepTaskSession, InepTa
 
 	public Combobox getComboEvent( )
 	{
-		return this.comboEvent;
+		return comboEvent;
 	}
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getCurrentCollaborator( ) );
+		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
 
-		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) ) {
+		if( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) ) {
 			getComboEvent( ).getItems( ).clear( );
 		}
-		for ( InepPackage e : events ) {
+		for( InepPackage e : events ) {
 			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
-		if ( getComboEvent( ).getItemCount( ) > 0 ) {
+		if( getComboEvent( ).getItemCount( ) > 0 ) {
 			getComboEvent( ).setSelectedIndex( 0 );
 			onSelectEvent( null );
 		}
@@ -113,7 +113,7 @@ public class TaskController extends BaseDBListController<InepTaskSession, InepTa
 		Comboitem item = getComboEvent( ).getSelectedItem( );
 		List<InepTask> list = getSession( ).getAll( (InepPackage) item.getValue( ) );
 		getListbox( ).setModel( new ListModelList<InepTask>( list ) );
-		if ( evt != null ) {
+		if( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}

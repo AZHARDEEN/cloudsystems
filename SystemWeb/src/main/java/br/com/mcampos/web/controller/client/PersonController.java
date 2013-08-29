@@ -55,7 +55,7 @@ public class PersonController extends BasePersonController<ClientSession>
 		}
 		if ( validate( client.getClient( ) ) ) {
 			updatePerson( (Person) client.getClient( ) );
-			client = getSession( ).addNewPerson( getCurrentCollaborator( ), client );
+			client = getSession( ).addNewPerson( getPrincipal( ), client );
 			int nIndex = getModel( ).indexOf( client );
 			if ( nIndex >= 0 ) {
 				getModel( ).set( nIndex, client );
@@ -72,7 +72,7 @@ public class PersonController extends BasePersonController<ClientSession>
 	{
 		Client client = getListBox( ).getSelectedItem( ).getValue( );
 		setCurrentClient( client );
-		Person person = (Person) getSession( ).getUser( getCurrentCollaborator( ), client.getClient( ).getId( ) );
+		Person person = (Person) getSession( ).getUser( getPrincipal( ), client.getClient( ).getId( ) );
 		show( person );
 		if ( SysUtils.isEmpty( getCpf( ).getValue( ) ) ) {
 			getCpf( ).setFocus( true );
@@ -92,7 +92,7 @@ public class PersonController extends BasePersonController<ClientSession>
 	@Override
 	protected Person getPerson( String doc )
 	{
-		Person person = (Person) getSession( ).getUser( getCurrentCollaborator( ), doc );
+		Person person = (Person) getSession( ).getUser( getPrincipal( ), doc );
 		return person;
 	}
 
@@ -117,13 +117,13 @@ public class PersonController extends BasePersonController<ClientSession>
 	@Override
 	protected List<Client> getClients( )
 	{
-		return getSession( ).getAllPerson( getCurrentCollaborator( ), getPaging( ) );
+		return getSession( ).getAllPerson( getPrincipal( ), getPaging( ) );
 	}
 
 	@Override
 	protected Long getCount( )
 	{
-		return getSession( ).countPerson( getCurrentCollaborator( ) );
+		return getSession( ).countPerson( getPrincipal( ) );
 	}
 
 	@Override

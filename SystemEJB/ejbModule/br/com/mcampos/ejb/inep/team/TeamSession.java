@@ -16,8 +16,8 @@ import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.entity.InepTest;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.UserPropertyInterface;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
 public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserPropertyInterface
@@ -38,9 +38,9 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserProp
 
 	InepDistribution updateRevision( InepDistribution rev );
 
-	List<InepPackage> getEvents( Collaborator auth );
+	List<InepPackage> getEvents( PrincipalDTO auth );
 
-	InepRevisor getRevisor( InepPackage event, Collaborator auth );
+	InepRevisor getRevisor( InepPackage event, PrincipalDTO auth );
 
 	byte[ ] getMedia( InepDistribution item );
 

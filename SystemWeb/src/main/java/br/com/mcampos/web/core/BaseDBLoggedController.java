@@ -13,10 +13,10 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 
 import br.com.mcampos.dto.AuthorizedPageOptions;
-import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSession;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 import br.com.mcampos.web.locator.ServiceLocator;
 
 public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN> implements LoggedInterface
@@ -29,8 +29,8 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	@Override
 	public boolean isLogged( )
 	{
-		Login login = getLoggedUser( );
-		return login != null;
+		PrincipalDTO p = getPrincipal( );
+		return p != null;
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 
 	protected boolean isValidAccess( String path )
 	{
-		Collaborator c = getCurrentCollaborator( );
+		PrincipalDTO c = getPrincipal( );
 		if( c == null ) {
 			logger.error( "Collaborator is null" );
 			return true;
@@ -66,34 +66,20 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	}
 
 	@Override
-	public Login getLoggedUser( )
+	public PrincipalDTO getPrincipal( )
 	{
-		Object obj = getSessionParameter( LoggedInterface.userSessionParamName );
-
-		if( obj instanceof Login ) {
-			Login login = (Login) obj;
-			if( login != null && login.getPersonify( ) != null )
-				return login.getPersonify( );
-			return login;
-		}
-		else
-			return null;
-	}
-
-	@Override
-	public Collaborator getCurrentCollaborator( )
-	{
-		Collaborator c = (Collaborator) getSessionParameter( currentCollaborator );
-		Login l = getLoggedUser( );
-		if( c == null || c.getPerson( ).equals( l.getPerson( ) ) == false ) {
-			return null;
-		}
+		PrincipalDTO c = (PrincipalDTO) getSessionParameter( currentPrincipal );
 		return c;
 	}
 
 	protected void setCollaborator( Collaborator c )
 	{
-		setSessionParameter( currentCollaborator, c );
+		if( c != null ) {
+			PrincipalDTO dto = new PrincipalDTO( c.getCompany( ).getId( ), c.getPerson( ).getId( ) );
+			setSessionParameter( currentPrincipal, dto );
+		}
+		else
+			clearSessionParameter( currentPrincipal );
 	}
 
 	public CollaboratorSession getCollaboratorSession( )
@@ -130,8 +116,9 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	{
 		Map<String, Object> params = new HashMap<String, Object>( );
 
-		params.put( "COMPANY_ID", getCurrentCollaborator( ).getId( ).getCompanyId( ) );
-		params.put( "COLLABORATOR_ID", getCurrentCollaborator( ).getId( ).getSequence( ) );
+		PrincipalDTO dto = getPrincipal( );
+		params.put( "COMPANY_ID", dto.getCompanyID( ) );
+		params.put( "COLLABORATOR_ID", dto.getUserId( ) );
 		return params;
 	}
 

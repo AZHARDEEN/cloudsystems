@@ -8,12 +8,12 @@ import org.omg.CORBA.portable.ApplicationException;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.security.task.Task;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
 public interface MenuFacade extends BaseSessionInterface<Menu>
 {
-	public List<Menu> getMenus( Collaborator auth ) throws ApplicationException;
+	public List<Menu> getMenus( PrincipalDTO auth ) throws ApplicationException;
 
 	public List<Menu> getTopContextMenu( ) throws ApplicationException;
 

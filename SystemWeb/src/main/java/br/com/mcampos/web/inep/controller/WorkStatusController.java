@@ -58,7 +58,7 @@ public class WorkStatusController extends BaseDBLoggedController<TeamSession>
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getCurrentCollaborator( ) );
+		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) ) {
 			getComboEvent( ).getItems( ).clear( );

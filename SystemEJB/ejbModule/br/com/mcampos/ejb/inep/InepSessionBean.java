@@ -48,6 +48,7 @@ import br.com.mcampos.ejb.user.document.type.DocumentTypeSessionLocal;
 import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.ejb.user.person.PersonSessionLocal;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class InepSessionBean
@@ -100,17 +101,17 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 	@Override
 	public boolean loadCorretore( CorretorDTO dto )
 	{
-		if ( dto == null || dto.getEvento( ) <= 0 || dto.getUser( ) <= 0 ) {
+		if( dto == null || dto.getEvento( ) <= 0 || dto.getUser( ) <= 0 ) {
 			logger.warn( "Dto is null" );
 			return false;
 		}
 		Company company = companySession.get( dto.getUser( ) );
-		if ( company == null ) {
+		if( company == null ) {
 			logger.warn( "Company is null" );
 			return false;
 		}
 		InepPackage event = packageSession.get( new InepPackagePK( company, dto.getEvento( ) ) );
-		if ( event == null ) {
+		if( event == null ) {
 			logger.warn( "Event is null" );
 			return false;
 		}
@@ -128,16 +129,16 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 	{
 		InepPackagePK key = new InepPackagePK( col.getCompany( ), dto.getEvento( ) );
 		InepPackage event = eventSession.get( key );
-		if ( event == null ) {
+		if( event == null ) {
 			return null;
 		}
 		InepRevisor rev = revisorSession.get( event, col );
-		if ( rev == null ) {
+		if( rev == null ) {
 			rev = new InepRevisor( );
 			rev.setCollaborator( col );
 			rev.setCoordenador( dto.getCoordenador( ) );
 			InepTask task = taskSession.get( new InepTaskPK( event, dto.getTarefa( ) ) );
-			if ( task == null ) {
+			if( task == null ) {
 				return null;
 			}
 			rev.setTask( task );
@@ -148,8 +149,8 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 
 	private Collaborator getCollaborator( Login login, Company company, CorretorDTO dto )
 	{
-		Collaborator collaborator = collaboratorSession.find( login, company.getId( ) );
-		if ( collaborator == null ) {
+		Collaborator collaborator = collaboratorSession.find( new PrincipalDTO( company.getId( ), login.getId( ) ) );
+		if( collaborator == null ) {
 			logger.debug( "Collaborator does not exists: " + login.getPerson( ).getName( ) );
 			collaborator = new Collaborator( );
 			collaborator.setCollaboratorType( collaboratorTypeSession.get( CollaboratorType.typeEmployee ) );
@@ -161,7 +162,7 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		}
 		logger.debug( "Adding roles for collaborator: " + collaborator.getId( ).getSequence( ) );
 		collaborator.add( roleSession.get( 4 ) );
-		if ( dto.getCoordenador( ) ) {
+		if( dto.getCoordenador( ) ) {
 			collaborator.add( roleSession.get( 20 ) );
 		}
 		else {
@@ -173,7 +174,7 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 	private Login getLogin( Person person )
 	{
 		Login login = loginSession.get( person.getId( ) );
-		if ( login == null ) {
+		if( login == null ) {
 			logger.debug( "Creating Login for person: " + person.getName( ) );
 			loginSession.add( person, "987654" );
 			login = loginSession.get( person.getId( ) );
@@ -190,10 +191,10 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 	private Person getPerson( CorretorDTO dto )
 	{
 		Person person = personSession.getByDocument( dto.getCpf( ) );
-		if ( person == null ) {
+		if( person == null ) {
 			logger.debug( "There is no person for document" + dto.getCpf( ) );
 			person = personSession.getByDocument( dto.getEmail( ) );
-			if ( person == null ) {
+			if( person == null ) {
 				logger.debug( "There is no person for document" + dto.getEmail( ) );
 				person = insertPerson( dto );
 				logger.debug( dto.getNome( ) + " is created" );
@@ -236,18 +237,18 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		InepRevisor current;
 		Boolean mustAdd = false;
 
-		for ( InepTest test : tests ) {
-			if ( x >= team.size( ) ) {
+		for( InepTest test : tests ) {
+			if( x >= team.size( ) ) {
 				x = 0;
 			}
 			current = team.get( x );
-			if ( pairs.contains( current ) ) {
+			if( pairs.contains( current ) ) {
 				pairs.remove( current );
 				mustAdd = true;
-				if ( pairs.size( ) == 0 ) {
+				if( pairs.size( ) == 0 ) {
 					pairs.addAll( assigneds );
 					assigneds.clear( );
-					if ( pairs.contains( current ) ) {
+					if( pairs.contains( current ) ) {
 						pairs.remove( current );
 					}
 				}
@@ -266,12 +267,12 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 			entity.setTest( test );
 			distributionSession.merge( entity );
 
-			if ( mustAdd ) {
+			if( mustAdd ) {
 				pairs.add( current );
 				mustAdd = false;
 			}
 			x++;
-			if ( ( nIndex % 100 ) == 0 ) {
+			if( (nIndex % 100) == 0 ) {
 				logger.info( "Working..." + nIndex );
 			}
 			nIndex++;
@@ -280,12 +281,12 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 
 	private InepRevisor getPair( ArrayList<InepRevisor> pairs, ArrayList<InepRevisor> assigneds )
 	{
-		int nIndex = ( (int) ( 0 + ( Math.random( ) * pairs.size( ) ) ) );
+		int nIndex = ((int) (0 + (Math.random( ) * pairs.size( ))));
 
 		InepRevisor pair = pairs.get( nIndex );
 		pairs.remove( pair );
 		assigneds.add( pair );
-		if ( pairs.size( ) == 0 ) {
+		if( pairs.size( ) == 0 ) {
 			pairs.addAll( assigneds );
 			assigneds.clear( );
 		}
@@ -303,30 +304,30 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 	{
 		Person person = null;
 
-		if ( SysUtils.isEmpty( email ) == false ) {
+		if( SysUtils.isEmpty( email ) == false ) {
 			person = personSession.getByDocument( email );
 		}
-		if ( person == null && SysUtils.isEmpty( cpf ) == false ) {
+		if( person == null && SysUtils.isEmpty( cpf ) == false ) {
 			person = personSession.getByDocument( cpf );
 		}
-		if ( person == null ) {
+		if( person == null ) {
 			person = new Person( );
-			if ( SysUtils.isEmpty( email ) == false ) {
+			if( SysUtils.isEmpty( email ) == false ) {
 				person.add( new UserDocument( email, documentTypeSession.get( UserDocument.typeEmail ) ) );
 			}
-			if ( SysUtils.isEmpty( cpf ) == false ) {
+			if( SysUtils.isEmpty( cpf ) == false ) {
 				person.add( new UserDocument( cpf, documentTypeSession.get( UserDocument.typeCPF ) ) );
 			}
 			person.setName( name );
 			person = personSession.merge( person );
 		}
 		Login login = loginSession.get( person.getId( ) );
-		if ( login == null ) {
+		if( login == null ) {
 			loginSession.add( person, "987654" );
 			login = loginSession.get( person.getId( ) );
 		}
-		Collaborator collaborator = collaboratorSession.find( login, task.getId( ).getCompanyId( ) );
-		if ( collaborator == null ) {
+		Collaborator collaborator = collaboratorSession.find( new PrincipalDTO( task.getId( ).getCompanyId( ), login.getId( ) ) );
+		if( collaborator == null ) {
 			collaborator = collaboratorSession.add( login, task.getId( ).getCompanyId( ) );
 			collaborator.add( roleSession.get( 4 ) );
 			collaborator.add( coordenador ? roleSession.get( 20 ) : roleSession.get( 18 ) );
@@ -342,41 +343,40 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 	{
 		Person person = null;
 
-		if ( SysUtils.isEmpty( email ) == false ) {
+		if( SysUtils.isEmpty( email ) == false ) {
 			person = personSession.getByDocument( email );
 		}
-		if ( person == null && SysUtils.isEmpty( cpf ) == false ) {
+		if( person == null && SysUtils.isEmpty( cpf ) == false ) {
 			person = personSession.getByDocument( cpf );
 		}
-		if ( person == null ) {
+		if( person == null ) {
 			person = new Person( );
-			if ( SysUtils.isEmpty( email ) == false ) {
+			if( SysUtils.isEmpty( email ) == false ) {
 				person.add( new UserDocument( email, documentTypeSession.get( UserDocument.typeEmail ) ) );
 			}
-			if ( SysUtils.isEmpty( cpf ) == false ) {
+			if( SysUtils.isEmpty( cpf ) == false ) {
 				person.add( new UserDocument( cpf, documentTypeSession.get( UserDocument.typeCPF ) ) );
 			}
 			person.setName( name );
 			person = personSession.merge( person );
 		}
 		Login login = loginSession.get( person.getId( ) );
-		if ( login == null ) {
+		if( login == null ) {
 			loginSession.add( person, "987654" );
 			login = loginSession.get( person.getId( ) );
 		}
-		Collaborator collaborator = collaboratorSession.find( login, event.getId( ).getCompanyId( ) );
-		if ( collaborator == null ) {
+		Collaborator collaborator = collaboratorSession.find( new PrincipalDTO( event.getId( ).getCompanyId( ), login.getId( ) ) );
+		if( collaborator == null ) {
 			collaborator = collaboratorSession.add( login, event.getId( ).getCompanyId( ) );
 			collaborator.add( roleSession.get( 4 ) );
 			collaborator.add( type.equals( 3 ) || type.equals( 4 ) ? roleSession.get( 20 ) : roleSession.get( 18 ) );
 		}
 		InepRevisor rev = new InepRevisor( collaborator, event );
-		if ( task != null ) {
+		if( task != null ) {
 			rev.setTask( taskSession.get( new InepTaskPK( event, task ) ) );
 		}
 		rev.setType( getEntityManager( ).find( RevisorType.class, type ) );
 		rev.setCoordenador( false );
 		return revisorSession.merge( rev );
 	}
-
 }

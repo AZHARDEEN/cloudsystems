@@ -86,7 +86,7 @@ public class SubscriptionController extends BaseDBListController<InepSubscriptio
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getCurrentCollaborator( ) );
+		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) ) {
 			getComboEvent( ).getItems( ).clear( );
