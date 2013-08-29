@@ -17,6 +17,7 @@ import br.com.mcampos.dto.AuthorizedPageOptions;
 import br.com.mcampos.ejb.core.SimpleDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.security.Login;
+import br.com.mcampos.ejb.security.LoginSessionLocal;
 import br.com.mcampos.ejb.security.menu.Menu;
 import br.com.mcampos.ejb.security.menu.MenuFacadeLocal;
 import br.com.mcampos.ejb.user.company.Company;
@@ -25,6 +26,7 @@ import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.type.CollaboratorType;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class CollaboratorSessionBean
@@ -43,6 +45,9 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	private LoginPropertySessionLocal propertySession;
 
 	@EJB
+	private LoginSessionLocal loginSession;
+
+	@EJB
 	private MenuFacadeLocal menuSession;
 
 	@Override
@@ -52,17 +57,21 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	}
 
 	@Override
-	public Collaborator find( Login login, Integer companyId )
+	public Collaborator find( PrincipalDTO auth )
 	{
-		if ( login == null || companyId == null || login.getPerson( ) == null ) {
+		if( auth == null )
+			return null;
+		Login login = loginSession.get( auth.getUserId( ) );
+
+		if( login == null ) {
 			return null;
 		}
-		Company company = companySession.get( companyId );
-		if ( company == null ) {
+		Company company = companySession.get( auth.getCompanyID( ) );
+		if( company == null ) {
 			return null;
 		}
 		Collaborator c = getByNamedQuery( Collaborator.hasCollaborator, company, login.getPerson( ) );
-		if ( c != null ) {
+		if( c != null ) {
 			c.getPerson( ).getAddresses( ).size( );
 			c.getPerson( ).getDocuments( ).size( );
 			c.getPerson( ).getContacts( ).size( );
@@ -71,20 +80,23 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	}
 
 	@Override
-	public List<SimpleDTO> getCompanies( Login auth ) throws ApplicationException
+	public List<SimpleDTO> getCompanies( PrincipalDTO auth ) throws ApplicationException
 	{
 		List<Collaborator> list;
-		if ( auth == null || auth.getPerson( ) == null ) {
+		if( auth == null || auth.getUserId( ) == null ) {
 			return Collections.emptyList( );
 		}
 		try {
-			list = findByNamedQuery( Collaborator.findCompanies, auth.getPerson( ) );
-			if ( SysUtils.isEmpty( list ) ) {
+			Login login = loginSession.get( auth.getUserId( ) );
+			if( login == null )
+				return null;
+			list = findByNamedQuery( Collaborator.findCompanies, login.getPerson( ) );
+			if( SysUtils.isEmpty( list ) ) {
 				return Collections.emptyList( );
 			}
 			return toSimpleDTOList( list );
 		}
-		catch ( Exception e )
+		catch( Exception e )
 		{
 			e.printStackTrace( );
 			return Collections.emptyList( );
@@ -93,11 +105,11 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 
 	private List<SimpleDTO> toSimpleDTOList( List<Collaborator> list )
 	{
-		if ( SysUtils.isEmpty( list ) ) {
+		if( SysUtils.isEmpty( list ) ) {
 			return Collections.emptyList( );
 		}
 		List<SimpleDTO> dtos = new ArrayList<SimpleDTO>( list.size( ) );
-		for ( Collaborator item : list )
+		for( Collaborator item : list )
 		{
 			String name = SysUtils.isEmpty( item.getCompany( ).getNickName( ) ) ? item.getCompany( ).getName( ) : item.getCompany( )
 					.getNickName( );
@@ -133,12 +145,12 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	 * java.lang.String)
 	 */
 	@Override
-	public AuthorizedPageOptions verifyAccess( Collaborator c, String mnuUrl )
+	public AuthorizedPageOptions verifyAccess( PrincipalDTO c, String mnuUrl )
 	{
-
+		Login login = loginSession.get( c.getUserId( ) );
 		Menu menu = menuSession.get( mnuUrl );
 		AuthorizedPageOptions auth = new AuthorizedPageOptions( );
-		if ( menu == null ) {
+		if( menu == null ) {
 			/*
 			 * this is, maybe, some kind of resource or template.
 			 */
@@ -147,19 +159,19 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 		}
 		try {
 			List<Menu> menus = getMenus( c );
-			if ( SysUtils.isEmpty( menus ) ) {
-				logger.error(  "User: " + c.getPerson( ).getName( ) + " is not - Authorized for " + mnuUrl );
+			if( SysUtils.isEmpty( menus ) ) {
+				logger.error( "User: " + login.getPerson( ).getName( ) + " is not - Authorized for " + mnuUrl );
 				auth.setAuthorized( false );
 			}
-			else if ( menus.contains( menu ) == false ) {
-				logger.error(  "User: " + c.getPerson( ).getName( ) + " is not - Authorized for " + mnuUrl );
+			else if( menus.contains( menu ) == false ) {
+				logger.error( "User: " + login.getPerson( ).getName( ) + " is not - Authorized for " + mnuUrl );
 				auth.setAuthorized( false );
 			}
 			else {
 				auth.setAuthorized( true );
 			}
 		}
-		catch ( ApplicationException e ) {
+		catch( ApplicationException e ) {
 			e.printStackTrace( );
 			auth.setAuthorized( false );
 		}
@@ -174,21 +186,23 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	 * (br.com.mcampos.ejb.user.company.collaborator.Collaborator)
 	 */
 	@Override
-	public List<Menu> getMenus( Collaborator collaborator ) throws ApplicationException
+	public List<Menu> getMenus( PrincipalDTO c ) throws ApplicationException
 	{
+		if( c == null )
+			return Collections.emptyList( );
+		Collaborator collaborator = find( c );
 		return menuSession.getMenus( collaborator );
 	}
 
 	@Override
 	public Collaborator merge( Collaborator newEntity )
 	{
-		if ( newEntity.getId( ).getSequence( ) == null || newEntity.getId( ).getSequence( ).equals( 0 ) ) {
+		if( newEntity.getId( ).getSequence( ) == null || newEntity.getId( ).getSequence( ).equals( 0 ) ) {
 			newEntity.getId( ).setSequence( getNextId( Collaborator.maxSequence, newEntity.getCompany( ) ) );
 		}
 		return super.merge( newEntity );
 	}
 
-	@Override
 	public Collaborator add( Login login, Integer companyId )
 	{
 		Collaborator c = new Collaborator( );

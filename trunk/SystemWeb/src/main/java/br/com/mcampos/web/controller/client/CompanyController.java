@@ -53,13 +53,13 @@ public class CompanyController extends UserController<ClientSession>
 	@Override
 	protected List<Client> getClients( )
 	{
-		return getSession( ).getAllCompany( getCurrentCollaborator( ), getPaging( ) );
+		return getSession( ).getAllCompany( getPrincipal( ), getPaging( ) );
 	}
 
 	@Override
 	protected Long getCount( )
 	{
-		return getSession( ).countCompany( getCurrentCollaborator( ) );
+		return getSession( ).countCompany( getPrincipal( ) );
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class CompanyController extends UserController<ClientSession>
 	{
 		Client client = getListBox( ).getSelectedItem( ).getValue( );
 		setCurrentClient( client );
-		Company person = (Company) getSession( ).getUser( getCurrentCollaborator( ), client.getClient( ).getId( ) );
+		Company person = (Company) getSession( ).getUser( getPrincipal( ), client.getClient( ).getId( ) );
 		show( person );
 		/*
 		if ( SysUtils.isEmpty( getCpf( ).getValue( ) ) ) {
@@ -132,7 +132,7 @@ public class CompanyController extends UserController<ClientSession>
 		}
 		if ( validate( client.getClient( ) ) ) {
 			updateCompany( (Company) client.getClient( ) );
-			client = getSession( ).addNewCompany( getCurrentCollaborator( ), client );
+			client = getSession( ).addNewCompany( getPrincipal( ), client );
 			int nIndex = getModel( ).indexOf( client );
 			if ( nIndex >= 0 ) {
 				getModel( ).set( nIndex, client );
@@ -183,7 +183,7 @@ public class CompanyController extends UserController<ClientSession>
 
 	protected Company getCompany( String doc )
 	{
-		Company c = (Company) getSession( ).getUser( getCurrentCollaborator( ), doc );
+		Company c = (Company) getSession( ).getUser( getPrincipal( ), doc );
 		return c;
 	}
 

@@ -1,11 +1,14 @@
 package br.com.mcampos.ejb.core;
 
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.Query;
 
 public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implements PagingSessionInterface<T>
 {
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public int count( )
 	{
 		Long result;
@@ -16,6 +19,7 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public int count( String filter )
 	{
 		Long result;
@@ -27,6 +31,7 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public int count( String filter, Object... params )
 	{
 		Long result;
@@ -42,9 +47,9 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 		String sqlQuery;
 
 		sqlQuery = "select count(t) as registros from " + getPersistentClass( ).getSimpleName( ) + " as t ";
-		if ( whereClause != null && whereClause.isEmpty( ) == false ) {
+		if( whereClause != null && whereClause.isEmpty( ) == false ) {
 			String aux = whereClause.trim( ).toLowerCase( );
-			if ( aux.startsWith( "where" ) ) {
+			if( aux.startsWith( "where" ) ) {
 				sqlQuery += " " + whereClause;
 			}
 			else {

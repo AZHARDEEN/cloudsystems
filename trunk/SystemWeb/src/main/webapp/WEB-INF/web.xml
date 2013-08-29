@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 	<description>Cloudsystems</description>
 	<session-config>
@@ -82,4 +81,35 @@
 		<url-pattern>/image</url-pattern>
 		<url-pattern>/servlets/image</url-pattern>
 	</servlet-mapping>
+
+
+
+
+	<listener>
+		<listener-class>sessionmon.SessionListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>sessionmon.SessionAttributeListener</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>SessionMonServlet</servlet-name>
+		<servlet-class>sessionmon.SessionMonServlet</servlet-class>
+		<init-param>
+			<param-name>enabled</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<!-- needed only if you're running a clustered environment -->
+		<init-param>
+			<param-name>server_node_addresses</param-name>
+			<param-value>http://localhost:8080,http://localhost:8081</param-value>
+		</init-param>
+		<!-- optional configuration -->
+		<!--init-param> <param-name>override_path</param-name> <param-value>/foo/blah</param-value> </init-param -->
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>SessionMonServlet</servlet-name>
+		<url-pattern>/sessionmon/*</url-pattern>
+	</servlet-mapping>
+
 </web-app>

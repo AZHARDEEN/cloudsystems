@@ -29,7 +29,7 @@ public class FileUploadController extends BaseDBLoggedController<FileUploadSessi
 		if ( evt != null ) {
 			try {
 				MediaDTO m = UploadMedia.getMedia( evt.getMedia( ) );
-				FileUpload entity = getSession( ).addNewFile( getCurrentCollaborator( ), m );
+				FileUpload entity = getSession( ).addNewFile( getPrincipal( ), m );
 				if ( entity.getStatus( ).getId( ).equals( UploadStatus.sucess ) ) {
 					processFile( entity, m );
 				}

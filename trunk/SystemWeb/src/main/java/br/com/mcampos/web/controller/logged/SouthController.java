@@ -18,10 +18,10 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.core.SimpleDTO;
-import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSession;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.BaseDBLoggedController;
 
 public class SouthController extends BaseDBLoggedController<CollaboratorSession>
@@ -47,9 +47,9 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 	public void onSelectCompanies( )
 	{
 		Comboitem comboItem = companies.getSelectedItem( );
-		if ( comboItem != null && comboItem.getValue( ) instanceof SimpleDTO ) {
+		if( comboItem != null && comboItem.getValue( ) instanceof SimpleDTO ) {
 			SimpleDTO dto = (SimpleDTO) comboItem.getValue( );
-			if ( dto != null && dto.getId( ) != null ) {
+			if( dto != null && dto.getId( ) != null ) {
 				setCookie( lastCompany, dto.getId( ).toString( ) );
 			}
 		}
@@ -60,10 +60,12 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 	private void setCurrentCompany( )
 	{
 		Comboitem comboItem = companies.getSelectedItem( );
-		if ( comboItem != null && comboItem.getValue( ) instanceof SimpleDTO ) {
+		if( comboItem != null && comboItem.getValue( ) instanceof SimpleDTO ) {
 			SimpleDTO dto = (SimpleDTO) comboItem.getValue( );
-			Collaborator c = getSession( ).find( getLoggedUser( ), dto.getId( ) );
-			if ( c != null ) {
+			PrincipalDTO auth = getPrincipal( );
+			auth.setCompanyID( dto.getId( ) );
+			Collaborator c = getSession( ).find( auth );
+			if( c != null ) {
 				setCollaborator( c );
 				EventQueues.lookup( IndexController.queueName, true ).publish( new CompanyEventChange( c ) );
 			}
@@ -74,18 +76,18 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		List<SimpleDTO> list = getSession( ).getCompanies( getLoggedUser( ) );
+		List<SimpleDTO> list = getSession( ).getCompanies( getPrincipal( ) );
 		load( companies, list, false );
 		locateLastUsedCompany( );
-		if ( companies.getSelectedIndex( ) != -1 ) {
+		if( companies.getSelectedIndex( ) != -1 ) {
 			setCurrentCompany( );
 		}
 		version.setValue( Executions.getCurrent( ).getDesktop( ).getWebApp( ).getVersion( ) );
-		if ( who != null ) {
-			who.setValue( "Usuário: " + getLoggedUser( ).getPerson( ).getFriendlyName( ) );
+		if( who != null ) {
+			who.setValue( "Usuário: " + getPrincipal( ) );
 		}
-		Login login = getRealLoggedUser( );
-		if ( btnUnpersonify != null && login != null && login.getPersonify( ) != null ) {
+		PrincipalDTO login = getRealLoggedUser( );
+		if( btnUnpersonify != null && login != null && login.getPersonify( ) != null ) {
 			btnUnpersonify.setVisible( true );
 		}
 		else {
@@ -102,27 +104,27 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 	private void locateLastUsedCompany( )
 	{
 		String value = getCookie( lastCompany );
-		if ( SysUtils.isEmpty( value ) == false )
+		if( SysUtils.isEmpty( value ) == false )
 		{
 			try {
 				Integer id = Integer.parseInt( value );
-				for ( Comboitem item : companies.getItems( ) ) {
+				for( Comboitem item : companies.getItems( ) ) {
 					SimpleDTO dto = (SimpleDTO) item.getValue( );
-					if ( dto != null && dto.getId( ).equals( id ) ) {
+					if( dto != null && dto.getId( ).equals( id ) ) {
 						companies.setSelectedItem( item );
 						break;
 					}
 				}
 			}
-			catch ( Exception e )
+			catch( Exception e )
 			{
-				if ( companies.getItemCount( ) > 0 ) {
+				if( companies.getItemCount( ) > 0 ) {
 					companies.setSelectedIndex( 0 );
 				}
 			}
 		}
 		else {
-			if ( companies.getItemCount( ) > 0 ) {
+			if( companies.getItemCount( ) > 0 ) {
 				companies.setSelectedIndex( 0 );
 			}
 		}
@@ -137,28 +139,24 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 	@Listen( "onClick=#btnUnpersonify" )
 	public void unpersonify( MouseEvent evt )
 	{
-		Login login = getRealLoggedUser( );
-		if ( login != null ) {
+		PrincipalDTO login = getRealLoggedUser( );
+		if( login != null ) {
 			login.setPersonify( null );
 		}
-		if ( btnUnpersonify != null )
+		if( btnUnpersonify != null )
 			btnUnpersonify.setVisible( false );
 		redirect( null );
-		if ( evt != null )
+		if( evt != null )
 			evt.stopPropagation( );
 	}
 
-	public Login getRealLoggedUser( )
+	private PrincipalDTO getRealLoggedUser( )
 	{
-		Object obj = getSessionParameter( userSessionParamName );
+		Object obj = getPrincipal( );
 
-		if ( obj instanceof Login ) {
-			Login login = (Login) obj;
-			logger.warn( "GetRealLoggedUser has been called from " + login.getPerson( ).getName( ) + "Login id: " + login.getId( ) );
-			if ( login.getPersonify( ) != null ) {
-				logger.warn( login.getPerson( ).getName( ) + " is personifying " +
-						login.getPersonify( ).getPerson( ).getName( ) + "Login id: " + login.getPersonify( ).getId( ) );
-			}
+		if( obj instanceof PrincipalDTO ) {
+			PrincipalDTO login = (PrincipalDTO) obj;
+			logger.warn( "GetRealLoggedUser has been called from " + login.getUserId( ) );
 			return login;
 		}
 		else

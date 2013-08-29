@@ -23,9 +23,9 @@ public class MyRecordController extends BasePersonController<PersonSession>
 	@Override
 	protected boolean onOk( )
 	{
-		if( validate( getCurrentCollaborator( ).getPerson( ) ) ) {
-			updatePerson( getCurrentCollaborator( ).getPerson( ) );
-			getSession( ).merge( getCurrentCollaborator( ).getPerson( ) );
+		if( validate( getPrincipal( ).getPerson( ) ) ) {
+			updatePerson( getPrincipal( ).getPerson( ) );
+			getSession( ).merge( getPrincipal( ).getPerson( ) );
 			return true;
 		}
 		else {
@@ -42,7 +42,7 @@ public class MyRecordController extends BasePersonController<PersonSession>
 	@Override
 	protected Person getPerson( String doc )
 	{
-		return getCurrentCollaborator( ).getPerson( );
+		return getPrincipal( ).getPerson( );
 	}
 
 	@Override
@@ -56,11 +56,11 @@ public class MyRecordController extends BasePersonController<PersonSession>
 	{
 		// TODO Auto-generated method stub
 		super.doAfterCompose( comp );
-		getCurrentCollaborator( ).setPerson( getSession( ).get( getCurrentCollaborator( ).getPerson( ).getId( ) ) );
+		getPrincipal( ).setPerson( getSession( ).get( getPrincipal( ).getPerson( ).getId( ) ) );
 		getBornState( ).load( );
 		getMaritalStatus( ).load( );
 		getGender( ).load( );
-		show( getCurrentCollaborator( ).getPerson( ) );
+		show( getPrincipal( ).getPerson( ) );
 		getName( ).setFocus( true );
 	}
 

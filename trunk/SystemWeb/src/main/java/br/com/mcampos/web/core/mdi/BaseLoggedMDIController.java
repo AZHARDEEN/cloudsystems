@@ -5,8 +5,7 @@ import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.security.Login;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.LoggedInterface;
 
 public class BaseLoggedMDIController extends BaseMDIController implements LoggedInterface
@@ -22,7 +21,7 @@ public class BaseLoggedMDIController extends BaseMDIController implements Logged
 	@Override
 	public ComponentInfo doBeforeCompose( Page page, Component parent, ComponentInfo compInfo )
 	{
-		if ( isLogged( ) ) {
+		if( isLogged( ) ) {
 			return super.doBeforeCompose( page, parent, compInfo );
 		}
 		else {
@@ -34,33 +33,15 @@ public class BaseLoggedMDIController extends BaseMDIController implements Logged
 	@Override
 	public boolean isLogged( )
 	{
-		return getLoggedUser( ) != null;
+		return getPrincipal( ) != null;
 	}
 
 	@Override
-	public Login getLoggedUser( )
+	public PrincipalDTO getPrincipal( )
 	{
-		Object obj = getSessionParameter( userSessionParamName );
-
-		if ( obj instanceof Login ) {
-			Login login = (Login) obj;
-			if ( login != null && login.getPersonify( ) != null )
-				return login.getPersonify( );
-			return login;
-		}
-		else
-			return null;
+		PrincipalDTO login = getPrincipal( );
+		if( login != null && login.getPersonify( ) != null )
+			return login.getPersonify( );
+		return login;
 	}
-
-	@Override
-	public Collaborator getCurrentCollaborator( )
-	{
-		Collaborator c = (Collaborator) getSessionParameter( currentCollaborator );
-		Login l = getLoggedUser( );
-		if ( c.getPerson( ).equals( l.getPerson( ) ) == false ) {
-			return null;
-		}
-		return c;
-	}
-
 }

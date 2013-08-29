@@ -25,13 +25,12 @@ public class SessionMonitor extends HttpSessionListener
 	@Override
 	public void sessionDestroyed( HttpSessionEvent httpSessionEvent )
 	{
-		if ( getSession( ) != null ) {
-			Object obj = httpSessionEvent.getSession( ).getAttribute( LoggedInterface.userSessionParamName );
-			if ( obj != null && obj instanceof Login ) {
-				logger.info( "Logout from " + ( (Login) obj ).getPerson( ).getName( ) );
-				if ( getSession( ) != null ) {
+		if( getSession( ) != null ) {
+			Object obj = httpSessionEvent.getSession( ).getAttribute( LoggedInterface.currentPrincipal );
+			if( obj != null ) {
+				if( getSession( ) != null ) {
 					getSession( ).logout( (Login) obj, getCredential( httpSessionEvent ) );
-					httpSessionEvent.getSession( ).setAttribute( LoggedInterface.userSessionParamName, null );
+					httpSessionEvent.getSession( ).setAttribute( LoggedInterface.currentPrincipal, null );
 				}
 			}
 		}
@@ -41,11 +40,11 @@ public class SessionMonitor extends HttpSessionListener
 	protected LoginSession getSession( )
 	{
 		try {
-			if ( session == null ) {
+			if( session == null ) {
 				session = (LoginSession) ServiceLocator.getInstance( ).getRemoteSession( LoginSession.class );
 			}
 		}
-		catch ( NamingException e ) {
+		catch( NamingException e ) {
 			e.printStackTrace( );
 		}
 		return session;
@@ -56,7 +55,7 @@ public class SessionMonitor extends HttpSessionListener
 		Credential c = new Credential( );
 
 		c.setLocale( Locales.getCurrent( ) );
-		if ( Executions.getCurrent( ) != null ) {
+		if( Executions.getCurrent( ) != null ) {
 			c.setRemoteAddr( Executions.getCurrent( ).getRemoteAddr( ) );
 			c.setRemoteHost( Executions.getCurrent( ).getRemoteHost( ) );
 			c.setProgram( Executions.getCurrent( ).getBrowser( ) );

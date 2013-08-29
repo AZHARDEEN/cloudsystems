@@ -45,7 +45,7 @@ public abstract class BaseExtractController extends BaseDBLoggedController<TeamS
 	public void onSelectPackage( )
 	{
 		Comboitem item = getComboEvent( ).getSelectedItem( );
-		if ( item != null ) {
+		if( item != null ) {
 			revisor = null;
 			loadGrid( );
 		}
@@ -55,7 +55,7 @@ public abstract class BaseExtractController extends BaseDBLoggedController<TeamS
 	{
 		List<InepAnaliticoCorrecao> list = Collections.emptyList( );
 		Comboitem item = getComboEvent( ).getSelectedItem( );
-		if ( item != null ) {
+		if( item != null ) {
 			list = getList( (InepPackage) item.getValue( ) );
 		}
 		getComboEvent( ).setModel( new ListModelList<InepAnaliticoCorrecao>( list ) );
@@ -63,25 +63,25 @@ public abstract class BaseExtractController extends BaseDBLoggedController<TeamS
 
 	public InepRevisor getRevisor( )
 	{
-		if ( revisor == null ) {
-			revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
-					getCurrentCollaborator( ) );
+		if( revisor == null ) {
+			InepPackage item = (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( );
+			revisor = getSession( ).getRevisor( item, getPrincipal( ) );
 		}
 		return revisor;
 	}
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getCurrentCollaborator( ) );
+		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
 
-		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
+		if( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );
 		}
-		for ( InepPackage e : events ) {
+		for( InepPackage e : events ) {
 			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
-		if ( getComboEvent( ).getItemCount( ) > 0 ) {
+		if( getComboEvent( ).getItemCount( ) > 0 ) {
 			getComboEvent( ).setSelectedIndex( 0 );
 			onSelectPackage( );
 		}

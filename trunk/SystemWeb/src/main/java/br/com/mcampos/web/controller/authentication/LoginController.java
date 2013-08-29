@@ -12,6 +12,7 @@ import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.LoginSession;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.utils.dto.Credential;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.BaseCaptchaDialogController;
 import br.com.mcampos.web.core.LoggedInterface;
 
@@ -49,33 +50,33 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 		String value;
 
 		boolean bRet = super.validate( );
-		if ( bRet == false ) {
+		if( bRet == false ) {
 			return false;
 		}
 
 		value = identification.getValue( );
-		if ( SysUtils.isEmpty( value ) ) {
+		if( SysUtils.isEmpty( value ) ) {
 			identification.setFocus( true );
 			return false;
 		}
 
 		value = password.getValue( );
-		if ( SysUtils.isEmpty( value ) ) {
+		if( SysUtils.isEmpty( value ) ) {
 			password.setFocus( true );
 			return false;
 		}
 		LoginSession session = getSession( );
 
 		Login login = session.loginByDocument( getCredential( ) );
-		if ( login == null ) {
+		if( login == null ) {
 			showErrorMessage( "Erro ao realizar login. Identificação inexistente no sistema", "Login" );
 			identification.setFocus( true );
 			return false;
 		}
 		logger.info( "Login from " + login.getPerson( ).getName( ) );
-		setSessionParameter( LoggedInterface.userSessionParamName, login );
+		setSessionParameter( LoggedInterface.currentPrincipal, new PrincipalDTO( login.getId( ) ) );
 		setCookie( LoggedInterface.lastLoggedUserId, getCredential( ).getIdentification( ) );
-		if ( isDebugMode( ) ) {
+		if( isDebugMode( ) ) {
 			setCookie( LoggedInterface.lastLoggedUserPassword, getCredential( ).getPassword( ) );
 		}
 		return true;

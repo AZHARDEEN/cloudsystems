@@ -9,17 +9,17 @@ import org.omg.CORBA.portable.ApplicationException;
 import br.com.mcampos.dto.AuthorizedPageOptions;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.core.SimpleDTO;
-import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.menu.Menu;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
 public interface CollaboratorSession extends BaseSessionInterface<Collaborator>, UserPropertyInterface
 {
-	Collaborator find( Login login, Integer companyId );
+	Collaborator find( PrincipalDTO login );
 
-	List<SimpleDTO> getCompanies( Login c ) throws ApplicationException;
+	List<SimpleDTO> getCompanies( PrincipalDTO c ) throws ApplicationException;
 
-	AuthorizedPageOptions verifyAccess( Collaborator c, String mnuUrl );
+	AuthorizedPageOptions verifyAccess( PrincipalDTO c, String mnuUrl );
 
-	public List<Menu> getMenus( Collaborator collaborator ) throws ApplicationException;
+	public List<Menu> getMenus( PrincipalDTO collaborator ) throws ApplicationException;
 }
