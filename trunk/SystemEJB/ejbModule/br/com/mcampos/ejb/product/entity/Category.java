@@ -13,7 +13,7 @@ import br.com.mcampos.ejb.core.entity.BaseCompanyEntity;
  * 
  */
 @Entity
-public class Category extends BaseCompanyEntity implements Serializable
+public class Category extends BaseCompanyEntity implements Serializable, Comparable<Category>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -66,6 +66,34 @@ public class Category extends BaseCompanyEntity implements Serializable
 	public void setCompanyId( Integer id )
 	{
 		getId( ).setCompanyId( id );
+	}
+
+	@Override
+	public int compareTo( Category o )
+	{
+		if ( o == null )
+			return -1;
+		return this.getId( ).compareTo( o.getId( ) );
+	}
+
+	@Override
+	public boolean equals( Object obj )
+	{
+		if ( obj == null )
+			return false;
+		if ( obj instanceof Category ) {
+			Category other = (Category) obj;
+
+			return this.getId( ).equals( other.getId( ) );
+		}
+		else
+			return false;
+	}
+
+	@Override
+	public String toString( )
+	{
+		return getId( ).getId( ).toString( ) + "- " + getName( );
 	}
 
 }

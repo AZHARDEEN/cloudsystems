@@ -80,4 +80,10 @@ public class CategoryPK implements Serializable, Comparable<CategoryPK>
 			nRet = getId( ).compareTo( c.getId( ) );
 		return nRet;
 	}
+
+	@Override
+	public String toString( )
+	{
+		return getCompanyId( ).toString( ) + " - " + getId( ).toString( );
+	}
 }
