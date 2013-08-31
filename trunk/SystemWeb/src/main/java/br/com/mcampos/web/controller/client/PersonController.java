@@ -7,14 +7,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.user.Users;
-import br.com.mcampos.ejb.user.client.Client;
 import br.com.mcampos.ejb.user.client.ClientSession;
-import br.com.mcampos.ejb.user.document.UserDocument;
-import br.com.mcampos.ejb.user.document.type.DocumentType;
-import br.com.mcampos.ejb.user.person.Person;
+import br.com.mcampos.entity.user.Client;
+import br.com.mcampos.entity.user.DocumentType;
+import br.com.mcampos.entity.user.Person;
+import br.com.mcampos.entity.user.UserDocument;
+import br.com.mcampos.entity.user.Users;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.report.ReportItem;
+import br.com.mcampos.web.renderer.ClientPersonRenderer;
 
 public class PersonController extends BasePersonController<ClientSession>
 {

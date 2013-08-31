@@ -3,7 +3,8 @@ package br.com.mcampos.ejb.security;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.user.person.Person;
+import br.com.mcampos.entity.security.Login;
+import br.com.mcampos.entity.user.Person;
 import br.com.mcampos.utils.dto.Credential;
 
 @Local

@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.user.Users;
-import br.com.mcampos.ejb.user.client.Client;
-import br.com.mcampos.ejb.user.document.type.DocumentType;
-import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.ejb.user.person.PersonSession;
+import br.com.mcampos.entity.user.Client;
+import br.com.mcampos.entity.user.DocumentType;
+import br.com.mcampos.entity.user.Person;
+import br.com.mcampos.entity.user.Users;
 
 public class MyRecordController extends BasePersonController<PersonSession>
 {

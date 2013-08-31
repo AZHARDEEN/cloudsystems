@@ -10,8 +10,8 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.InepOralFacade;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
 import br.com.mcampos.web.core.BaseDialogWindow;

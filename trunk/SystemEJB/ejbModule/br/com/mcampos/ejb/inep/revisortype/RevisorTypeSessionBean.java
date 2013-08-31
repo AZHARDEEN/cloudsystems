@@ -4,7 +4,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.inep.entity.RevisorType;
+import br.com.mcampos.entity.inep.RevisorType;
 
 /**
  * Session Bean implementation class RevisorTypeSessionBean

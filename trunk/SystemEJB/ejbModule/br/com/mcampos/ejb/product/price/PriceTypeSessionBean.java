@@ -4,7 +4,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.product.entity.PriceType;
+import br.com.mcampos.entity.product.PriceType;
 
 /**
  * Session Bean implementation class PriceTypeSessionBean

@@ -16,10 +16,11 @@ import javax.jms.Session;
 
 import br.com.mcampos.dto.MailDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.email.EMail;
 import br.com.mcampos.ejb.email.EmailMessageBean;
 import br.com.mcampos.ejb.email.EmailSessionLocal;
-import br.com.mcampos.ejb.email.parttype.EMailPartType;
+import br.com.mcampos.entity.system.EMail;
+import br.com.mcampos.entity.system.EMailPart;
+import br.com.mcampos.entity.system.EMailPartType;
 import br.com.mcampos.sysutils.SysUtils;
 
 /**

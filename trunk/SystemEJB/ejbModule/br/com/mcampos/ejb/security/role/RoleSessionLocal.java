@@ -5,7 +5,8 @@ import java.util.List;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.security.task.Task;
+import br.com.mcampos.entity.security.Role;
+import br.com.mcampos.entity.security.Task;
 
 @Local
 public interface RoleSessionLocal extends BaseSessionInterface<Role>

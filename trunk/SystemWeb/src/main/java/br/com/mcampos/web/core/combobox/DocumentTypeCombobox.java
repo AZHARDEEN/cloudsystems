@@ -2,8 +2,8 @@ package br.com.mcampos.web.core.combobox;
 
 import java.util.List;
 
-import br.com.mcampos.ejb.user.document.type.DocumentType;
 import br.com.mcampos.ejb.user.document.type.DocumentTypeSession;
+import br.com.mcampos.entity.user.DocumentType;
 
 public class DocumentTypeCombobox extends ComboboxExt<DocumentTypeSession, DocumentType>
 {

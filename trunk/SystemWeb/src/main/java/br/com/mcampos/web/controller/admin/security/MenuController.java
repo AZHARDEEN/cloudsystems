@@ -16,14 +16,14 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.security.menu.Menu;
 import br.com.mcampos.ejb.security.menu.MenuFacade;
-import br.com.mcampos.ejb.security.task.Task;
-import br.com.mcampos.web.controller.admin.security.renderer.MenuTreeItemRenderer;
+import br.com.mcampos.entity.security.Menu;
+import br.com.mcampos.entity.security.Task;
 import br.com.mcampos.web.controller.admin.security.treenode.BaseTreeNode;
 import br.com.mcampos.web.controller.admin.security.treenode.MenuNode;
 import br.com.mcampos.web.controller.admin.security.treenode.TaskNode;
 import br.com.mcampos.web.core.event.IDropEvent;
+import br.com.mcampos.web.renderer.MenuTreeItemRenderer;
 
 public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade, Menu> implements IDropEvent
 {

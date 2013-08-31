@@ -6,7 +6,8 @@ import javax.ejb.Remote;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
-import br.com.mcampos.ejb.fdigital.form.AnotoForm;
+import br.com.mcampos.entity.fdigital.AnotoForm;
+import br.com.mcampos.entity.fdigital.AnotoPage;
 
 @Remote
 public interface AnotoPageSession extends BaseSessionInterface<AnotoPage>

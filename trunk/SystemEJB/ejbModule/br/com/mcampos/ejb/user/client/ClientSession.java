@@ -6,9 +6,10 @@ import javax.ejb.Remote;
 
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
-import br.com.mcampos.ejb.user.Users;
-import br.com.mcampos.ejb.user.document.type.DocumentType;
-import br.com.mcampos.ejb.user.person.Person;
+import br.com.mcampos.entity.user.Client;
+import br.com.mcampos.entity.user.DocumentType;
+import br.com.mcampos.entity.user.Person;
+import br.com.mcampos.entity.user.Users;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote

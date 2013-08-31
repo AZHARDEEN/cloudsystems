@@ -5,8 +5,8 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepTask;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepTask;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote

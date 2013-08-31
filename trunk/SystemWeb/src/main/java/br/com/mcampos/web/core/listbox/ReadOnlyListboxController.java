@@ -16,7 +16,7 @@ import org.zkoss.zul.event.PagingEvent;
 
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.core.PagingSessionInterface;
-import br.com.mcampos.ejb.security.log.AccessLog;
+import br.com.mcampos.entity.security.AccessLog;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBController;
 

@@ -2,8 +2,8 @@ package br.com.mcampos.web.core.combobox;
 
 import java.util.List;
 
-import br.com.mcampos.ejb.user.address.AddressType;
 import br.com.mcampos.ejb.user.address.AddressTypeSession;
+import br.com.mcampos.entity.user.AddressType;
 
 public class AddressTypeCombobox extends ComboboxExt<AddressTypeSession, AddressType>
 {

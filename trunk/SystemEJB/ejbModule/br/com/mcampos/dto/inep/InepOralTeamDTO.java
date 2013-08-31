@@ -2,7 +2,7 @@ package br.com.mcampos.dto.inep;
 
 import java.io.Serializable;
 
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.entity.inep.InepRevisor;
 
 public class InepOralTeamDTO implements Serializable, Comparable<InepOralTeamDTO>
 {

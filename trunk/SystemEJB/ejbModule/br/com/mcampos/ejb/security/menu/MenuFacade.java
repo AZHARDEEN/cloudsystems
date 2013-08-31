@@ -7,7 +7,8 @@ import javax.ejb.Remote;
 import org.omg.CORBA.portable.ApplicationException;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.security.task.Task;
+import br.com.mcampos.entity.security.Menu;
+import br.com.mcampos.entity.security.Task;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote

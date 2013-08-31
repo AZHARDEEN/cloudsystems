@@ -7,7 +7,8 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.user.BaseUserSession;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
-import br.com.mcampos.ejb.user.usertype.UserType;
+import br.com.mcampos.entity.user.Person;
+import br.com.mcampos.entity.user.UserType;
 import br.com.mcampos.sysutils.SysUtils;
 
 @Stateless( name = "PersonSession", mappedName = "PersonSession" )

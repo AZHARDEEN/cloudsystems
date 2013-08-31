@@ -14,11 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.dto.MediaDTO;
-import br.com.mcampos.ejb.fdigital.PgcProperty;
-import br.com.mcampos.ejb.fdigital.pen.AnotoPen;
-import br.com.mcampos.ejb.fdigital.penpage.AnotoPenPage;
-import br.com.mcampos.ejb.fdigital.pgc.Pgc;
 import br.com.mcampos.ejb.fdigital.upload.UploadSession;
+import br.com.mcampos.entity.fdigital.AnotoPen;
+import br.com.mcampos.entity.fdigital.AnotoPenPage;
+import br.com.mcampos.entity.fdigital.Pgc;
+import br.com.mcampos.entity.fdigital.PgcProperty;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.locator.ServiceLocator;
 
@@ -28,18 +28,20 @@ import com.anoto.api.PenHome;
 
 public class PgcFile implements Serializable, Runnable
 {
-	private static final short KEY_LOCATION_COORDINATES = 16386;
+	private static final long serialVersionUID = -4000145716459202136L;
+
+	// private static final short KEY_LOCATION_COORDINATES = 16386;
 	private static final Logger logger = LoggerFactory.getLogger( PgcFile.class );
 
-	private final String imageFileTypeExtension = "jpg";
+	// private final String imageFileTypeExtension = "jpg";
 
-	private List<MediaDTO> pgcs;
-	private String penId;
+	// private List<MediaDTO> pgcs;
+	// private String penId;
 	private UploadSession session;
 	private Pgc currentPgc;
 	private Pen currentPen;
-	private PadFile pad;
-	private byte[ ] bytePgc;
+	// private PadFile pad;
+	// private byte[ ] bytePgc;
 
 	private MediaDTO pgc;
 	private List<MediaDTO> medias;
@@ -70,7 +72,7 @@ public class PgcFile implements Serializable, Runnable
 
 	public MediaDTO getPgc( )
 	{
-		return this.pgc;
+		return pgc;
 	}
 
 	private void setPgc( MediaDTO pgc )
@@ -80,7 +82,7 @@ public class PgcFile implements Serializable, Runnable
 
 	public List<MediaDTO> getMedias( )
 	{
-		return this.medias;
+		return medias;
 	}
 
 	private void setMedias( List<MediaDTO> medias )
@@ -91,14 +93,14 @@ public class PgcFile implements Serializable, Runnable
 	public UploadSession getSession( )
 	{
 		try {
-			if ( this.session == null ) {
-				this.session = (UploadSession) ServiceLocator.getInstance( ).getRemoteSession( UploadSession.class );
+			if ( session == null ) {
+				session = (UploadSession) ServiceLocator.getInstance( ).getRemoteSession( UploadSession.class );
 			}
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );
 		}
-		return this.session;
+		return session;
 	}
 
 	private boolean processPgcFile( )
@@ -126,7 +128,7 @@ public class PgcFile implements Serializable, Runnable
 
 	public Pgc getCurrentPgc( )
 	{
-		return this.currentPgc;
+		return currentPgc;
 	}
 
 	private void setCurrentPgc( Pgc currentPgc )
@@ -171,7 +173,7 @@ public class PgcFile implements Serializable, Runnable
 
 	public Pen getCurrentPen( )
 	{
-		return this.currentPen;
+		return currentPen;
 	}
 
 	private void setCurrentPen( Pen currentPen )

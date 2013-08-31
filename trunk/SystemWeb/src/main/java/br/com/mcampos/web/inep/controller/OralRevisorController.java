@@ -16,11 +16,11 @@ import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.InepOralFacade;
-import br.com.mcampos.ejb.inep.entity.InepOralDistribution;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
+import br.com.mcampos.entity.inep.InepOralDistribution;
+import br.com.mcampos.entity.inep.InepPackage;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.web.inep.controller.renderer.InepOralDistributionCoordinatoListRenderer;
-import br.com.mcampos.web.inep.controller.renderer.InepOralDistributionListRenderer;
+import br.com.mcampos.web.renderer.inep.InepOralDistributionCoordinatoListRenderer;
+import br.com.mcampos.web.renderer.inep.InepOralDistributionListRenderer;
 
 public class OralRevisorController extends BaseOralController
 {

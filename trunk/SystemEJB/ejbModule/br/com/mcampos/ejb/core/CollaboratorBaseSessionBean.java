@@ -3,8 +3,8 @@ package br.com.mcampos.ejb.core;
 import javax.ejb.EJB;
 
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
-import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
+import br.com.mcampos.entity.security.LoginProperty;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 public abstract class CollaboratorBaseSessionBean<Y> extends SimpleSessionBean<Y> implements CollaboratorBaseSessionInterface<Y>

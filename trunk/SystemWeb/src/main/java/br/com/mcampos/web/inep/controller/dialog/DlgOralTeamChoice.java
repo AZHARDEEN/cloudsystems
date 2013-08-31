@@ -9,7 +9,7 @@ import org.zkoss.zul.Messagebox;
 import br.com.mcampos.dto.inep.InepOralTeamDTO;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDialogWindow;
-import br.com.mcampos.web.inep.controller.renderer.InepOralTeamDTOListRenderer;
+import br.com.mcampos.web.renderer.inep.InepOralTeamDTOListRenderer;
 
 public class DlgOralTeamChoice extends BaseDialogWindow
 {

@@ -3,9 +3,13 @@ package br.com.mcampos.ejb.user.company;
 import javax.ejb.Stateless;
 
 
+
+
+
 import br.com.mcampos.ejb.user.BaseUserSession;
-import br.com.mcampos.ejb.user.company.type.CompanyType;
-import br.com.mcampos.ejb.user.usertype.UserType;
+import br.com.mcampos.entity.user.Company;
+import br.com.mcampos.entity.user.CompanyType;
+import br.com.mcampos.entity.user.UserType;
 
 /**
  * Session Bean implementation class CompanySessionBean

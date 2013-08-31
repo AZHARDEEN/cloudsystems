@@ -34,7 +34,7 @@ public final class DynamicMenu implements Serializable
 		setClickEvent( evt );
 	}
 
-	public Component createMenu( br.com.mcampos.ejb.security.menu.Menu item )
+	public Component createMenu( br.com.mcampos.entity.security.Menu item )
 	{
 		Component ret;
 
@@ -98,7 +98,7 @@ public final class DynamicMenu implements Serializable
 		this.mainMenu = mainMenu;
 	}
 
-	public Component getParentComponent( br.com.mcampos.ejb.security.menu.Menu item )
+	public Component getParentComponent( br.com.mcampos.entity.security.Menu item )
 	{
 		Component base = null;
 		Component target = null;

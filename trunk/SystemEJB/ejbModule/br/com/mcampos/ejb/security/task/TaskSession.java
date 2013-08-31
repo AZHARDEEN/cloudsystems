@@ -7,8 +7,9 @@ import javax.ejb.Remote;
 import org.omg.CORBA.portable.ApplicationException;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.security.menu.Menu;
-import br.com.mcampos.ejb.security.role.Role;
+import br.com.mcampos.entity.security.Menu;
+import br.com.mcampos.entity.security.Role;
+import br.com.mcampos.entity.security.Task;
 
 @Remote
 public interface TaskSession extends BaseSessionInterface<Task>

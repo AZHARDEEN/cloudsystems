@@ -18,8 +18,8 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.core.SimpleDTO;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSession;
+import br.com.mcampos.entity.user.Collaborator;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.BaseDBLoggedController;

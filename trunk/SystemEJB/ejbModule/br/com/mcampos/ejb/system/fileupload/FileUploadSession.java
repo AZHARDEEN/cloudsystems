@@ -8,6 +8,7 @@ import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.upload.AssefazDTO;
 import br.com.mcampos.dto.upload.RejectedDTO;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.entity.system.FileUpload;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote

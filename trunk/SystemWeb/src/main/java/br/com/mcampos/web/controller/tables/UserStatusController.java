@@ -1,7 +1,7 @@
 package br.com.mcampos.web.controller.tables;
 
-import br.com.mcampos.ejb.security.UserStatus;
 import br.com.mcampos.ejb.security.UserStatusSession;
+import br.com.mcampos.entity.security.UserStatus;
 import br.com.mcampos.web.core.SimpleTableController;
 
 public class UserStatusController extends SimpleTableController<UserStatusSession, UserStatus>

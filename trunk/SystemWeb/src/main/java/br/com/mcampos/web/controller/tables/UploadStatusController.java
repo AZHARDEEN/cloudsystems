@@ -1,7 +1,7 @@
 package br.com.mcampos.web.controller.tables;
 
-import br.com.mcampos.ejb.system.fileupload.UploadStatus;
 import br.com.mcampos.ejb.system.fileupload.UploadStatusSession;
+import br.com.mcampos.entity.system.UploadStatus;
 import br.com.mcampos.web.core.SimpleTableController;
 
 public class UploadStatusController extends SimpleTableController<UploadStatusSession, UploadStatus>

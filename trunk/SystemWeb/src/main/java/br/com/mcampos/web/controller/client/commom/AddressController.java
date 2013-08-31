@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.zk.ui.Component;
 
-import br.com.mcampos.ejb.user.address.Address;
+import br.com.mcampos.entity.user.Address;
 import br.com.mcampos.web.renderer.AddressListRenderer;
 
 public class AddressController extends BaseUserAttrListController<Address>

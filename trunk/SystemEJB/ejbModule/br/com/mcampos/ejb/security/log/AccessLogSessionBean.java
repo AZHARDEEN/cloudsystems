@@ -8,8 +8,9 @@ import org.jasypt.util.text.BasicTextEncryptor;
 
 import br.com.mcampos.ejb.core.BaseSessionBean;
 import br.com.mcampos.ejb.params.SystemParameterSessionLocal;
-import br.com.mcampos.ejb.params.SystemParameters;
-import br.com.mcampos.ejb.security.Login;
+import br.com.mcampos.entity.security.AccessLog;
+import br.com.mcampos.entity.security.Login;
+import br.com.mcampos.entity.system.SystemParameters;
 import br.com.mcampos.sysutils.SysUtils;
 
 @Stateless( name = "AccessLogSession", mappedName = "AccessLogSession" )

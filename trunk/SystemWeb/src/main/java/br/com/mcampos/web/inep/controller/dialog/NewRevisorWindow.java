@@ -5,7 +5,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Textbox;
 
-import br.com.mcampos.ejb.inep.entity.RevisorType;
+import br.com.mcampos.entity.inep.RevisorType;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDialogWindow;
 import br.com.mcampos.web.inep.controller.combobox.RevisorTypeCombobox;

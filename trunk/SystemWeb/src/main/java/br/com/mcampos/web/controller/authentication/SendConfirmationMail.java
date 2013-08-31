@@ -3,9 +3,9 @@ package br.com.mcampos.web.controller.authentication;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Textbox;
 
-import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.LoginSession;
-import br.com.mcampos.ejb.security.UserStatus;
+import br.com.mcampos.entity.security.Login;
+import br.com.mcampos.entity.security.UserStatus;
 import br.com.mcampos.web.core.BaseCaptchaDialogController;
 
 public class SendConfirmationMail extends BaseCaptchaDialogController<LoginSession>

@@ -4,6 +4,7 @@ package br.com.mcampos.ejb.user.usertype;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.entity.user.UserType;
 
 
 @Stateless( name = "UserTypeSession", mappedName = "UserTypeSession" )

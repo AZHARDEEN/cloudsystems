@@ -16,11 +16,11 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.team.TeamSession;
-import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.entity.inep.InepTask;
+import br.com.mcampos.entity.security.LoginProperty;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
 import br.com.mcampos.web.core.ComboboxUtils;

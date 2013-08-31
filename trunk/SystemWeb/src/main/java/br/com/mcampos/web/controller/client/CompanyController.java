@@ -10,15 +10,16 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.user.Users;
-import br.com.mcampos.ejb.user.client.Client;
 import br.com.mcampos.ejb.user.client.ClientSession;
-import br.com.mcampos.ejb.user.company.Company;
-import br.com.mcampos.ejb.user.document.UserDocument;
-import br.com.mcampos.ejb.user.document.type.DocumentType;
+import br.com.mcampos.entity.user.Client;
+import br.com.mcampos.entity.user.Company;
+import br.com.mcampos.entity.user.DocumentType;
+import br.com.mcampos.entity.user.UserDocument;
+import br.com.mcampos.entity.user.Users;
 import br.com.mcampos.sysutils.CNPJ;
 import br.com.mcampos.sysutils.CPF;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.web.renderer.ClientCompanyRenderer;
 
 public class CompanyController extends UserController<ClientSession>
 {

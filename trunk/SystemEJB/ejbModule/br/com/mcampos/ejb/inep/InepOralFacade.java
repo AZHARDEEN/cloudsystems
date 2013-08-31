@@ -7,12 +7,12 @@ import javax.ejb.Remote;
 
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.inep.InepOralTeamDTO;
-import br.com.mcampos.ejb.inep.entity.InepOralDistribution;
-import br.com.mcampos.ejb.inep.entity.InepOralTest;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.entity.InepSubscription;
-import br.com.mcampos.ejb.media.Media;
+import br.com.mcampos.entity.inep.InepOralDistribution;
+import br.com.mcampos.entity.inep.InepOralTest;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.entity.inep.InepSubscription;
+import br.com.mcampos.entity.system.Media;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote

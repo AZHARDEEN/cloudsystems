@@ -24,21 +24,21 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.inep.entity.InepDistribution;
-import br.com.mcampos.ejb.inep.entity.InepOralDistribution;
-import br.com.mcampos.ejb.inep.entity.InepOralTest;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.entity.InepSubscription;
-import br.com.mcampos.ejb.inep.entity.InepTask;
-import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.inep.team.TeamSession;
+import br.com.mcampos.entity.inep.InepDistribution;
+import br.com.mcampos.entity.inep.InepOralDistribution;
+import br.com.mcampos.entity.inep.InepOralTest;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.entity.inep.InepSubscription;
+import br.com.mcampos.entity.inep.InepTask;
+import br.com.mcampos.entity.inep.InepTest;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
-import br.com.mcampos.web.inep.controller.renderer.InepTaskListRenderer;
 import br.com.mcampos.web.inep.utils.DistributionInfoListRenderer;
-import br.com.mcampos.web.inep.utils.InepStatusOralDistributionsListRenderer;
-import br.com.mcampos.web.inep.utils.SubscriptionItemRenderer;
+import br.com.mcampos.web.renderer.inep.InepStatusOralDistributionsListRenderer;
+import br.com.mcampos.web.renderer.inep.InepTaskListRenderer;
+import br.com.mcampos.web.renderer.inep.SubscriptionItemRenderer;
 
 public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 {

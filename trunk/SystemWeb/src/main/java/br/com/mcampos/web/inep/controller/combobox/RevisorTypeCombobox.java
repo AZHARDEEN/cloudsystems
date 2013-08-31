@@ -2,8 +2,8 @@ package br.com.mcampos.web.inep.controller.combobox;
 
 import java.util.List;
 
-import br.com.mcampos.ejb.inep.entity.RevisorType;
 import br.com.mcampos.ejb.inep.revisortype.RevisorTypeSession;
+import br.com.mcampos.entity.inep.RevisorType;
 import br.com.mcampos.web.core.combobox.ComboboxExt;
 
 public class RevisorTypeCombobox extends ComboboxExt<RevisorTypeSession, RevisorType>

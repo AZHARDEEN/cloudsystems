@@ -6,9 +6,9 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.inep.entity.InepOralDistribution;
-import br.com.mcampos.ejb.inep.entity.InepOralTest;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.entity.inep.InepOralDistribution;
+import br.com.mcampos.entity.inep.InepOralTest;
+import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.sysutils.SysUtils;
 
 /**

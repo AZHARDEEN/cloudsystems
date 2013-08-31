@@ -5,12 +5,11 @@ import java.util.List;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.inep.entity.InepDistribution;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.entity.InepTask;
-import br.com.mcampos.ejb.inep.entity.InepTest;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.entity.inep.InepDistribution;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.entity.inep.InepTask;
+import br.com.mcampos.entity.inep.InepTest;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Local

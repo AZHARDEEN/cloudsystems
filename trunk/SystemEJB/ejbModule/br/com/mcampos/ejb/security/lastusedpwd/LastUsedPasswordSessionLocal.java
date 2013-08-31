@@ -3,7 +3,8 @@ package br.com.mcampos.ejb.security.lastusedpwd;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.security.Login;
+import br.com.mcampos.entity.security.LastUsedPassword;
+import br.com.mcampos.entity.security.Login;
 
 @Local
 public interface LastUsedPasswordSessionLocal extends BaseSessionInterface<LastUsedPassword>

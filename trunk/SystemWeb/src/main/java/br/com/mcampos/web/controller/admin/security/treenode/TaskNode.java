@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.zkoss.zul.TreeNode;
 
-import br.com.mcampos.ejb.security.task.Task;
+import br.com.mcampos.entity.security.Task;
 
 public class TaskNode extends BaseTreeNode<Task>
 {

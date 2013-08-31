@@ -6,8 +6,8 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.user.UserContact;
-import br.com.mcampos.ejb.user.contact.type.ContactType;
+import br.com.mcampos.entity.user.ContactType;
+import br.com.mcampos.entity.user.UserContact;
 import br.com.mcampos.web.core.combobox.ContactTypeCombobox;
 
 public class ContactDialogController extends BaseUserItemDlgController<UserContact>

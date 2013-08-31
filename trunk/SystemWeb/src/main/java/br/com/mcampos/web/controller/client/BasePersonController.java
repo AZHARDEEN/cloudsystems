@@ -10,8 +10,8 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.user.document.UserDocument;
-import br.com.mcampos.ejb.user.person.Person;
+import br.com.mcampos.entity.user.Person;
+import br.com.mcampos.entity.user.UserDocument;
 import br.com.mcampos.sysutils.CPF;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.combobox.CityCombobox;

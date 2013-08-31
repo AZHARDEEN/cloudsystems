@@ -13,13 +13,14 @@ import javax.persistence.Query;
 
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionBean;
 import br.com.mcampos.ejb.core.DBPaging;
-import br.com.mcampos.ejb.user.Users;
-import br.com.mcampos.ejb.user.company.Company;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
-import br.com.mcampos.ejb.user.document.type.DocumentType;
-import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.ejb.user.person.PersonSessionLocal;
+import br.com.mcampos.entity.user.Client;
+import br.com.mcampos.entity.user.Company;
+import br.com.mcampos.entity.user.DocumentType;
+import br.com.mcampos.entity.user.Person;
+import br.com.mcampos.entity.user.Users;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**

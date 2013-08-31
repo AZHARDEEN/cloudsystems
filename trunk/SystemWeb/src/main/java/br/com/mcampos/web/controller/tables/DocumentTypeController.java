@@ -5,8 +5,8 @@ import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 
-import br.com.mcampos.ejb.user.document.type.DocumentType;
 import br.com.mcampos.ejb.user.document.type.DocumentTypeSession;
+import br.com.mcampos.entity.user.DocumentType;
 import br.com.mcampos.web.core.SimpleTableController;
 
 public class DocumentTypeController extends SimpleTableController<DocumentTypeSession, DocumentType>

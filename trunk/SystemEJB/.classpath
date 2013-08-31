@@ -2,14 +2,22 @@
 <classpath>
 	<classpathentry kind="src" path="ejbModule"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="con" path="org.eclipse.datatools.connectivity.jdt.DRIVERLIBRARY/PostgreSQL JDBC Driver"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/SystemLib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jasypt">
+	<classpathentry exported="true" kind="con" path="org.eclipse.datatools.connectivity.jdt.DRIVERLIBRARY/PostgreSQL JDBC Driver">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/slf4j">
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/SystemLib">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/jasypt">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/slf4j">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
 		</attributes>
@@ -20,7 +28,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ApacheCommons">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/ApacheCommons">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="../lib"/>
 		</attributes>

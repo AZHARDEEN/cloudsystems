@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.entity.system.SystemParameters;
 import br.com.mcampos.sysutils.SysUtils;
 
 @Stateless( name = "SystemParameterSession", mappedName = "SystemParameterSession" )

@@ -9,7 +9,8 @@ import org.omg.CORBA.portable.ApplicationException;
 import br.com.mcampos.dto.AuthorizedPageOptions;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.core.SimpleDTO;
-import br.com.mcampos.ejb.security.menu.Menu;
+import br.com.mcampos.entity.security.Menu;
+import br.com.mcampos.entity.user.Collaborator;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote

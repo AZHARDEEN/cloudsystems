@@ -10,17 +10,17 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.dto.MediaDTO;
-import br.com.mcampos.ejb.fdigital.pen.AnotoPen;
 import br.com.mcampos.ejb.fdigital.pen.AnotoPenSessionLocal;
-import br.com.mcampos.ejb.fdigital.penpage.AnotoPenPage;
 import br.com.mcampos.ejb.fdigital.penpage.AnotoPenPageSessionLocal;
-import br.com.mcampos.ejb.fdigital.pgc.Pgc;
 import br.com.mcampos.ejb.fdigital.pgc.PgcSessionLocal;
-import br.com.mcampos.ejb.fdigital.pgcstatus.PgcStatus;
 import br.com.mcampos.ejb.fdigital.pgcstatus.PgcStatusSessionLocal;
-import br.com.mcampos.ejb.media.Media;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
 import br.com.mcampos.ejb.system.revisionstatus.RevisionStatusSessionLocal;
+import br.com.mcampos.entity.fdigital.AnotoPen;
+import br.com.mcampos.entity.fdigital.AnotoPenPage;
+import br.com.mcampos.entity.fdigital.Pgc;
+import br.com.mcampos.entity.fdigital.PgcStatus;
+import br.com.mcampos.entity.system.Media;
 
 /**
  * Session Bean implementation class UploadSessionBean

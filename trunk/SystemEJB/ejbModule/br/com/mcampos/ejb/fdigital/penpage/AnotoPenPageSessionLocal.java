@@ -3,7 +3,8 @@ package br.com.mcampos.ejb.fdigital.penpage;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.fdigital.pen.AnotoPen;
+import br.com.mcampos.entity.fdigital.AnotoPen;
+import br.com.mcampos.entity.fdigital.AnotoPenPage;
 
 @Local
 public interface AnotoPenPageSessionLocal extends BaseSessionInterface<AnotoPenPage>

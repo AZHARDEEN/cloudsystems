@@ -1,8 +1,8 @@
 package br.com.mcampos.web.controller.tables;
 
 
-import br.com.mcampos.ejb.security.log.AccessLog;
 import br.com.mcampos.ejb.security.log.AccessLogSession;
+import br.com.mcampos.entity.security.AccessLog;
 import br.com.mcampos.web.core.listbox.ReadOnlyListboxController;
 
 

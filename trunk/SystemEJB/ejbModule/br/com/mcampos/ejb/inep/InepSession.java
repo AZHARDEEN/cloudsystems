@@ -6,9 +6,9 @@ import javax.ejb.Remote;
 
 import br.com.mcampos.dto.inep.CorretorDTO;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.entity.InepTask;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.entity.inep.InepTask;
 
 @Remote
 public interface InepSession extends BaseSessionInterface<InepTask>

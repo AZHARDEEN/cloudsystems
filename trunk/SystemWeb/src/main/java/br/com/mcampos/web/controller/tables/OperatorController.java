@@ -4,8 +4,8 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 
-import br.com.mcampos.ejb.system.operators.Operator;
 import br.com.mcampos.ejb.system.operators.OperatorSession;
+import br.com.mcampos.entity.system.Operator;
 import br.com.mcampos.web.core.SimpleTableController;
 
 public class OperatorController extends SimpleTableController<OperatorSession, Operator>
