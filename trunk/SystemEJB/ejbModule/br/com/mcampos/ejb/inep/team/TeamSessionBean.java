@@ -44,13 +44,13 @@ import br.com.mcampos.ejb.inep.revisor.InepRevisorSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.inep.test.InepTestSessionLocal;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class TeamSessionBean
@@ -130,9 +130,13 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public InepRevisor getRevisor( InepPackage event, Collaborator auth )
+	public InepRevisor getRevisor( InepPackage event, PrincipalDTO auth )
 	{
-		return getRevisorSession( ).get( event, auth );
+		if ( auth != null && event != null ) {
+			return getRevisorSession( ).get( event, auth );
+		}
+		else
+			return null;
 	}
 
 	@Override
@@ -310,9 +314,13 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepPackage> getEvents( Collaborator auth )
+	public List<InepPackage> getEvents( PrincipalDTO auth )
 	{
-		return taskSession.getEvents( auth );
+		if ( auth != null ) {
+			return taskSession.getEvents( auth );
+		}
+		else
+			return null;
 	}
 
 	@Override
@@ -664,19 +672,19 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public LoginProperty getProperty( Collaborator collaborator, String propertyName )
+	public LoginProperty getProperty( PrincipalDTO collaborator, String propertyName )
 	{
 		return propertySession.getProperty( collaborator, propertyName );
 	}
 
 	@Override
-	public void setProperty( Collaborator collaborator, String propertyName, String Value )
+	public void setProperty( PrincipalDTO collaborator, String propertyName, String Value )
 	{
 		propertySession.setProperty( collaborator, propertyName, Value );
 	}
 
 	@Override
-	public LoginProperty remove( Collaborator collaborator, String propertyName )
+	public LoginProperty remove( PrincipalDTO collaborator, String propertyName )
 	{
 		return propertySession.remove( collaborator, propertyName );
 	}

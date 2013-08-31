@@ -2,10 +2,10 @@ package br.com.mcampos.ejb.core;
 
 import javax.ejb.EJB;
 
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 public abstract class CollaboratorBaseSessionBean<Y> extends SimpleSessionBean<Y> implements CollaboratorBaseSessionInterface<Y>
 {
@@ -16,7 +16,7 @@ public abstract class CollaboratorBaseSessionBean<Y> extends SimpleSessionBean<Y
 	private CollaboratorSessionLocal collaboratorSession;
 
 	@Override
-	public String getProperty( Collaborator auth, String name )
+	public String getProperty( PrincipalDTO auth, String name )
 	{
 		if ( auth == null || name == null ) {
 			return null;
@@ -26,13 +26,13 @@ public abstract class CollaboratorBaseSessionBean<Y> extends SimpleSessionBean<Y
 	}
 
 	@Override
-	public void setProperty( Collaborator auth, String name, String value )
+	public void setProperty( PrincipalDTO auth, String name, String value )
 	{
 		getPropertySession( ).setProperty( auth, name, value );
 	}
 
 	@Override
-	public void remove( Collaborator auth, String name )
+	public void remove( PrincipalDTO auth, String name )
 	{
 		getPropertySession( ).remove( auth, name );
 	}

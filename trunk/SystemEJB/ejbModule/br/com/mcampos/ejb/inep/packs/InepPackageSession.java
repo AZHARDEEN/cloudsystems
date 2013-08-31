@@ -7,14 +7,14 @@ import javax.ejb.Remote;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
 public interface InepPackageSession extends BaseSessionInterface<InepPackage>
 {
-	List<InepPackage> getAll( Collaborator auth );
+	List<InepPackage> getAll( PrincipalDTO auth );
 
-	List<InepPackage> getAll( Collaborator auth, DBPaging page );
+	List<InepPackage> getAll( PrincipalDTO auth, DBPaging page );
 
-	Integer getNextId( Collaborator auth );
+	Integer getNextId( PrincipalDTO auth );
 }

@@ -15,6 +15,8 @@ import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.revisortype.RevisorTypeSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class InepRevisorSessionBean
@@ -29,6 +31,9 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 	@EJB
 	private RevisorTypeSessionLocal typeSession;
 
+	@EJB
+	private CollaboratorSessionLocal collaboratorSession;
+
 	@Override
 	protected Class<InepRevisor> getEntityClass( )
 	{
@@ -36,7 +41,7 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 	}
 
 	@Override
-	public List<InepPackage> getEvents( Collaborator auth )
+	public List<InepPackage> getEvents( PrincipalDTO auth )
 	{
 		return getTaskSession( ).getEvents( auth );
 	}
@@ -76,12 +81,21 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 	}
 
 	@Override
-	public InepRevisor get( InepPackage event, Collaborator c )
+	public InepRevisor get( InepPackage event, PrincipalDTO c )
 	{
 		if ( c == null ) {
 			return null;
 		}
-		return get( new InepRevisorPK( c, event ) );
+		return get( collaboratorSession.find( c ) );
+	}
+
+	@Override
+	public InepRevisor get( InepPackage event, Collaborator collaborator )
+	{
+		if ( collaborator != null )
+			return get( new InepRevisorPK( collaborator, event ) );
+		else
+			return null;
 	}
 
 	@Override

@@ -7,34 +7,34 @@ import javax.ejb.Remote;
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.user.Users;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.document.type.DocumentType;
 import br.com.mcampos.ejb.user.person.Person;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
 public interface ClientSession extends CollaboratorBaseSessionInterface<Client>
 {
-	List<Client> getAllPerson( Collaborator auth, DBPaging paging );
+	List<Client> getAllPerson( PrincipalDTO auth, DBPaging paging );
 
-	Long countPerson( Collaborator auth );
+	Long countPerson( PrincipalDTO auth );
 
-	List<Client> getAllCompany( Collaborator auth, DBPaging paging );
+	List<Client> getAllCompany( PrincipalDTO auth, DBPaging paging );
 
-	Long countCompany( Collaborator auth );
+	Long countCompany( PrincipalDTO auth );
 
-	public Users getUser( Collaborator auth, String document );
+	public Users getUser( PrincipalDTO auth, String document );
 
-	public Users getUser( Collaborator auth, Integer id );
+	public Users getUser( PrincipalDTO auth, Integer id );
 
-	Client addNewPerson( Collaborator auth, Client newEntity );
+	Client addNewPerson( PrincipalDTO auth, Client newEntity );
 
-	Client updatePerson( Collaborator auth, Client newEntity );
+	Client updatePerson( PrincipalDTO auth, Client newEntity );
 
-	Client addNewCompany( Collaborator auth, Client newEntity );
+	Client addNewCompany( PrincipalDTO auth, Client newEntity );
 
-	Client updateCompany( Collaborator auth, Client newEntity );
+	Client updateCompany( PrincipalDTO auth, Client newEntity );
 
 	DocumentType getDocumentType( Integer type );
 
-	List<Person> reportClientList( Collaborator auth );
+	List<Person> reportClientList( PrincipalDTO auth );
 }

@@ -238,7 +238,7 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 			else
 				ComboboxUtils.load( getCmbRevisor( ), getSession( ).getOralTeam( getRevisor( ).getEvent( ) ), getRevisor( ), true );
 		}
-		if ( getPrincipal( ).getId( ).equals( 1 ) ) {
+		if ( getPrincipal( ).getUserId( ).equals( 1 ) ) {
 			setReports( );
 		}
 	}

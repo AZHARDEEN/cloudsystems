@@ -14,6 +14,8 @@ public class MyRecordController extends BasePersonController<PersonSession>
 {
 	private static final long serialVersionUID = 8899739187504552446L;
 
+	private Person person;
+
 	@Override
 	protected Class<PersonSession> getSessionClass( )
 	{
@@ -23,9 +25,10 @@ public class MyRecordController extends BasePersonController<PersonSession>
 	@Override
 	protected boolean onOk( )
 	{
-		if( validate( getPrincipal( ).getPerson( ) ) ) {
-			updatePerson( getPrincipal( ).getPerson( ) );
-			getSession( ).merge( getPrincipal( ).getPerson( ) );
+
+		updatePerson( getPerson( null ) );
+		if ( validate( getPerson( null ) ) ) {
+			getSession( ).merge( getPerson( null ) );
 			return true;
 		}
 		else {
@@ -42,7 +45,10 @@ public class MyRecordController extends BasePersonController<PersonSession>
 	@Override
 	protected Person getPerson( String doc )
 	{
-		return getPrincipal( ).getPerson( );
+		if ( person == null ) {
+			person = getSession( ).get( getPrincipal( ).getUserId( ) );
+		}
+		return person;
 	}
 
 	@Override
@@ -56,11 +62,10 @@ public class MyRecordController extends BasePersonController<PersonSession>
 	{
 		// TODO Auto-generated method stub
 		super.doAfterCompose( comp );
-		getPrincipal( ).setPerson( getSession( ).get( getPrincipal( ).getPerson( ).getId( ) ) );
 		getBornState( ).load( );
 		getMaritalStatus( ).load( );
 		getGender( ).load( );
-		show( getPrincipal( ).getPerson( ) );
+		show( getPerson( null ) );
 		getName( ).setFocus( true );
 	}
 

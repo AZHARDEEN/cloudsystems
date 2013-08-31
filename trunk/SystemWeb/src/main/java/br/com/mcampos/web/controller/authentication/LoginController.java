@@ -50,33 +50,33 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 		String value;
 
 		boolean bRet = super.validate( );
-		if( bRet == false ) {
+		if ( bRet == false ) {
 			return false;
 		}
 
 		value = identification.getValue( );
-		if( SysUtils.isEmpty( value ) ) {
+		if ( SysUtils.isEmpty( value ) ) {
 			identification.setFocus( true );
 			return false;
 		}
 
 		value = password.getValue( );
-		if( SysUtils.isEmpty( value ) ) {
+		if ( SysUtils.isEmpty( value ) ) {
 			password.setFocus( true );
 			return false;
 		}
 		LoginSession session = getSession( );
 
 		Login login = session.loginByDocument( getCredential( ) );
-		if( login == null ) {
+		if ( login == null ) {
 			showErrorMessage( "Erro ao realizar login. Identificação inexistente no sistema", "Login" );
 			identification.setFocus( true );
 			return false;
 		}
 		logger.info( "Login from " + login.getPerson( ).getName( ) );
-		setSessionParameter( LoggedInterface.currentPrincipal, new PrincipalDTO( login.getId( ) ) );
+		setSessionParameter( LoggedInterface.currentPrincipal, new PrincipalDTO( login.getId( ), login.getPerson( ).getFriendlyName( ) ) );
 		setCookie( LoggedInterface.lastLoggedUserId, getCredential( ).getIdentification( ) );
-		if( isDebugMode( ) ) {
+		if ( isDebugMode( ) ) {
 			setCookie( LoggedInterface.lastLoggedUserPassword, getCredential( ).getPassword( ) );
 		}
 		return true;

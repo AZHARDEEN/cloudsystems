@@ -16,7 +16,7 @@ import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class InepSubscriptionSessionBean
@@ -57,7 +57,7 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 	}
 
 	@Override
-	public List<InepPackage> getEvents( Collaborator auth )
+	public List<InepPackage> getEvents( PrincipalDTO auth )
 	{
 		return getEventSession( ).getAll( auth );
 	}

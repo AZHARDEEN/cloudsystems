@@ -4,7 +4,6 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 
-import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 public abstract class BaseLoggedController<T extends Component> extends BaseController<T>
@@ -20,7 +19,7 @@ public abstract class BaseLoggedController<T extends Component> extends BaseCont
 	@Override
 	public ComponentInfo doBeforeCompose( Page page, Component parent, ComponentInfo compInfo )
 	{
-		if( isLogged( ) ) {
+		if ( isLogged( ) ) {
 			return super.doBeforeCompose( page, parent, compInfo );
 		}
 		else {
@@ -33,9 +32,9 @@ public abstract class BaseLoggedController<T extends Component> extends BaseCont
 	{
 		Object obj = getSessionParameter( LoggedInterface.currentPrincipal );
 
-		if( obj instanceof Login ) {
+		if ( obj instanceof PrincipalDTO ) {
 			PrincipalDTO login = (PrincipalDTO) obj;
-			if( login != null && login.getPersonify( ) != null )
+			if ( login != null && login.getPersonify( ) != null )
 				return login.getPersonify( );
 			return login;
 		}

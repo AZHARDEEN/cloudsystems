@@ -8,12 +8,12 @@ import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepTask;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
 public interface InepRevisorSession extends BaseSessionInterface<InepRevisor>
 {
-	public List<InepPackage> getEvents( Collaborator auth );
+	public List<InepPackage> getEvents( PrincipalDTO auth );
 
 	public List<InepTask> getTasks( InepPackage event );
 
@@ -21,6 +21,6 @@ public interface InepRevisorSession extends BaseSessionInterface<InepRevisor>
 
 	public List<InepRevisor> getAll( InepTask p );
 
-	public InepRevisor get( InepPackage event, Collaborator auth );
+	public InepRevisor get( InepPackage event, PrincipalDTO auth );
 
 }

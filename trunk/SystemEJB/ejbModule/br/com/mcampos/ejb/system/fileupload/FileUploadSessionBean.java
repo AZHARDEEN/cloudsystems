@@ -20,11 +20,13 @@ import br.com.mcampos.ejb.user.client.ClientSessionLocal;
 import br.com.mcampos.ejb.user.client.entry.ClientEntry;
 import br.com.mcampos.ejb.user.client.entry.ClientEntrySessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.document.type.DocumentTypeSessionLocal;
 import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.ejb.user.person.PersonSessionLocal;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class FileUploadSessionBean
@@ -34,40 +36,43 @@ import br.com.mcampos.sysutils.SysUtils;
 public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> implements FileUploadSession
 {
 	@EJB
-	MediaSessionBeanLocal mediaSession;
+	private MediaSessionBeanLocal mediaSession;
 
 	@EJB
-	UploadStatusSessionLocal statusSession;
+	private UploadStatusSessionLocal statusSession;
 
 	@EJB
-	PersonSessionLocal personSession;
+	private PersonSessionLocal personSession;
 
 	@EJB
-	ClientSessionLocal clientSession;
+	private ClientSessionLocal clientSession;
 
 	@EJB
-	ClientEntrySessionLocal entrySession;
+	private ClientEntrySessionLocal entrySession;
 
 	@EJB
-	DocumentTypeSessionLocal documentTypeSession;
+	private CollaboratorSessionLocal collaboratorSession;
+
+	@EJB
+	private DocumentTypeSessionLocal documentTypeSession;
 
 	@Override
-	public FileUpload addNewFile( Collaborator c, MediaDTO media )
+	public FileUpload addNewFile( PrincipalDTO auth, MediaDTO media )
 	{
-		if ( c == null || media == null || SysUtils.isEmpty( media.getName( ) ) ) {
+		if ( auth == null || media == null || SysUtils.isEmpty( media.getName( ) ) ) {
 			throw new InvalidParameterException( );
 		}
 		FileUpload entity = new FileUpload( );
-		Media mediaEntity = this.mediaSession.findByName( media.getName( ) );
+		Media mediaEntity = mediaSession.findByName( media.getName( ) );
 		if ( mediaEntity == null ) {
-			mediaEntity = this.mediaSession.add( media );
-			entity.setStatus( this.statusSession.get( UploadStatus.sucess ) );
+			mediaEntity = mediaSession.add( media );
+			entity.setStatus( statusSession.get( UploadStatus.sucess ) );
 		}
 		else {
-			entity.setStatus( this.statusSession.get( UploadStatus.duplicated ) );
+			entity.setStatus( statusSession.get( UploadStatus.duplicated ) );
 		}
 		entity.setMedia( mediaEntity );
-		entity.setCollaborator( c );
+		entity.setCollaborator( collaboratorSession.find( auth ) );
 		return persist( entity );
 	}
 
@@ -107,7 +112,7 @@ public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> impleme
 	}
 
 	@Override
-	public AssefazDTO add( FileUpload entity, AssefazDTO dto, boolean bCreateIfNotExists )
+	public AssefazDTO add( PrincipalDTO auth, FileUpload entity, AssefazDTO dto, boolean bCreateIfNotExists )
 	{
 		Person p = findPerson( entity.getCollaborator( ), dto );
 		if ( p == null ) {
@@ -123,7 +128,7 @@ public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> impleme
 				return dto;
 			}
 		}
-		Client c = this.clientSession.getClient( entity.getCollaborator( ), p );
+		Client c = clientSession.getClient( auth, p );
 		if ( c == null ) {
 			/*
 			 * TODO: Shoulda Create a client????
@@ -131,7 +136,7 @@ public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> impleme
 			c = new Client( );
 			c.setClient( p );
 			c.setCompany( entity.getCollaborator( ).getCompany( ) );
-			c = this.clientSession.addNewPerson( entity.getCollaborator( ), c );
+			c = clientSession.addNewPerson( auth, c );
 		}
 		ClientEntry entry = new ClientEntry( );
 
@@ -141,34 +146,34 @@ public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> impleme
 		entry.setMediaId( entity.getId( ).getMedia( ) );
 		entry.setValue( new BigDecimal( dto.getPayment( ) ) );
 		entry.setLineNumber( dto.getLineNumber( ) );
-		this.entrySession.merge( entry );
+		entrySession.merge( entry );
 		return dto;
 	}
 
 	private Person findPerson( Collaborator c, AssefazDTO dto )
 	{
-		Person p = this.personSession.getByDocument( dto.getId( ).getId( ) );
+		Person p = personSession.getByDocument( dto.getId( ).getId( ) );
 		if ( p == null ) {
-			p = this.personSession.getByDocument( dto.getCpf( ) );
+			p = personSession.getByDocument( dto.getCpf( ) );
 			/*
 			 * Found by cpf. Put Assefaz code???
 			 */
 			if ( p == null ) {
 				if ( SysUtils.isEmpty( dto.getEmail( ) ) == false ) {
-					p = this.personSession.getByDocument( dto.getEmail( ) );
+					p = personSession.getByDocument( dto.getEmail( ) );
 					if ( p != null ) {
 						/*
 						 * Found by email. Put Assefaz code and cpf???
 						 */
-						p.add( new UserDocument( dto.getId( ).getId( ), this.documentTypeSession.get( UserDocument.typeAssefaz ) ) );
-						p.add( new UserDocument( dto.getCpf( ), this.documentTypeSession.get( UserDocument.typeCPF ) ) );
-						p = this.personSession.merge( p );
+						p.add( new UserDocument( dto.getId( ).getId( ), documentTypeSession.get( UserDocument.typeAssefaz ) ) );
+						p.add( new UserDocument( dto.getCpf( ), documentTypeSession.get( UserDocument.typeCPF ) ) );
+						p = personSession.merge( p );
 					}
 				}
 			}
 			else {
-				p.add( new UserDocument( dto.getId( ).getId( ), this.documentTypeSession.get( UserDocument.typeAssefaz ) ) );
-				p = this.personSession.merge( p );
+				p.add( new UserDocument( dto.getId( ).getId( ), documentTypeSession.get( UserDocument.typeAssefaz ) ) );
+				p = personSession.merge( p );
 			}
 		}
 		return p;
@@ -180,13 +185,13 @@ public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> impleme
 
 		p.setBirthDate( dto.getBirthDate( ) );
 		p.setName( dto.getName( ) );
-		p.add( new UserDocument( dto.getId( ).getId( ), this.documentTypeSession.get( UserDocument.typeAssefaz ) ) );
+		p.add( new UserDocument( dto.getId( ).getId( ), documentTypeSession.get( UserDocument.typeAssefaz ) ) );
 		if ( !SysUtils.isEmpty( dto.getCpf( ) ) ) {
-			p.add( new UserDocument( dto.getCpf( ), this.documentTypeSession.get( UserDocument.typeCPF ) ) );
+			p.add( new UserDocument( dto.getCpf( ), documentTypeSession.get( UserDocument.typeCPF ) ) );
 		}
 		if ( !SysUtils.isEmpty( dto.getEmail( ) ) ) {
-			p.add( new UserDocument( dto.getEmail( ), this.documentTypeSession.get( UserDocument.typeEmail ) ) );
+			p.add( new UserDocument( dto.getEmail( ), documentTypeSession.get( UserDocument.typeEmail ) ) );
 		}
-		return this.personSession.merge( p );
+		return personSession.merge( p );
 	}
 }

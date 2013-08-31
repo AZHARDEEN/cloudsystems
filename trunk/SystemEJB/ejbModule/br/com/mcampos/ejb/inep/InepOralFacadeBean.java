@@ -29,8 +29,8 @@ import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.team.TeamSessionLocal;
 import br.com.mcampos.ejb.media.Media;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class InepOralFacadeBean
@@ -57,25 +57,25 @@ public class InepOralFacadeBean implements InepOralFacade
 	InepRevisorSessionLocal revisorSession;
 
 	@Override
-	public List<InepOralTest> getVarianceOralOnly( Collaborator c, InepPackage pack )
+	public List<InepOralTest> getVarianceOralOnly( PrincipalDTO c, InepPackage pack )
 	{
 		return oralTestSession.getVarianceOralOnly( pack );
 	}
 
 	@Override
-	public List<InepPackage> getEvents( Collaborator auth )
+	public List<InepPackage> getEvents( PrincipalDTO auth )
 	{
 		return teamSession.getEvents( auth );
 	}
 
 	@Override
-	public InepRevisor getRevisor( InepPackage event, Collaborator auth )
+	public InepRevisor getRevisor( InepPackage event, PrincipalDTO auth )
 	{
 		return teamSession.getRevisor( event, auth );
 	}
 
 	@Override
-	public List<InepOralTeamDTO> getOralTeamToChoice( InepPackage event, Collaborator auth )
+	public List<InepOralTeamDTO> getOralTeamToChoice( InepPackage event, PrincipalDTO auth )
 	{
 		List<InepRevisor> list = teamSession.getOralTeam( event );
 		ArrayList<InepOralTeamDTO> retList = null;
@@ -94,7 +94,7 @@ public class InepOralFacadeBean implements InepOralFacade
 	}
 
 	@Override
-	public void distribute( InepPackage event, Collaborator auth, InepRevisor r1, InepRevisor r2, Set<InepOralTest> tests )
+	public void distribute( InepPackage event, PrincipalDTO auth, InepRevisor r1, InepRevisor r2, Set<InepOralTest> tests )
 	{
 		if ( event == null || auth == null || r1 == null || r2 == null || SysUtils.isEmpty( tests ) )
 			throw new InvalidParameterException( );

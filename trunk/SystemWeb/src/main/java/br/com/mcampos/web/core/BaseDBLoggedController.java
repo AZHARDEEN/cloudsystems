@@ -36,7 +36,7 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	@Override
 	public ComponentInfo doBeforeCompose( Page page, Component parent, ComponentInfo compInfo )
 	{
-		if( isLogged( ) && isValidAccess( compInfo.getPageDefinition( ).getRequestPath( ) ) ) {
+		if ( isLogged( ) && isValidAccess( compInfo.getPageDefinition( ).getRequestPath( ) ) ) {
 			logger.info( "Access is ok for url " + compInfo.getPageDefinition( ).getRequestPath( ) );
 			return super.doBeforeCompose( page, parent, compInfo );
 		}
@@ -50,16 +50,16 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	protected boolean isValidAccess( String path )
 	{
 		PrincipalDTO c = getPrincipal( );
-		if( c == null ) {
+		if ( c == null ) {
 			logger.error( "Collaborator is null" );
 			return true;
 		}
-		if( SysUtils.isEmpty( path ) ) {
+		if ( SysUtils.isEmpty( path ) ) {
 			logger.error( "Access is not valid" );
 			return false;
 		}
 		setAuthorizedPageOptions( getCollaboratorSession( ).verifyAccess( c, path ) );
-		if( getAuthorizedPageOptions( ).isAuthorized( ) == false ) {
+		if ( getAuthorizedPageOptions( ).isAuthorized( ) == false ) {
 			logger.error( "Invalid Access  violations" );
 		}
 		return getAuthorizedPageOptions( ).isAuthorized( );
@@ -74,9 +74,20 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 
 	protected void setCollaborator( Collaborator c )
 	{
-		if( c != null ) {
-			PrincipalDTO dto = new PrincipalDTO( c.getCompany( ).getId( ), c.getPerson( ).getId( ) );
-			setSessionParameter( currentPrincipal, dto );
+		if ( c != null ) {
+			PrincipalDTO dto;
+
+			dto = getPrincipal( );
+			if ( dto == null ) {
+				dto = new PrincipalDTO( c.getCompany( ).getId( ), c.getPerson( ).getId( ), c.getPerson( ).getFriendlyName( ) );
+				setSessionParameter( currentPrincipal, dto );
+			}
+			else {
+				dto.setCompanyID( c.getCompany( ).getId( ) );
+				dto.setName( c.getPerson( ).getFriendlyName( ) );
+				dto.setUserId( c.getPerson( ).getId( ) );
+				dto.setSequence( c.getId( ).getSequence( ) );
+			}
 		}
 		else
 			clearSessionParameter( currentPrincipal );
@@ -85,11 +96,11 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 	public CollaboratorSession getCollaboratorSession( )
 	{
 		try {
-			if( this.collaboratorSession == null ) {
+			if ( this.collaboratorSession == null ) {
 				this.collaboratorSession = (CollaboratorSession) ServiceLocator.getInstance( ).getRemoteSession( CollaboratorSession.class );
 			}
 		}
-		catch( NamingException e ) {
+		catch ( NamingException e ) {
 			e.printStackTrace( );
 		}
 		return this.collaboratorSession;

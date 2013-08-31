@@ -10,9 +10,9 @@ import org.zkoss.util.Locales;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.http.HttpSessionListener;
 
-import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.LoginSession;
 import br.com.mcampos.utils.dto.Credential;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.LoggedInterface;
 import br.com.mcampos.web.locator.ServiceLocator;
 
@@ -25,13 +25,12 @@ public class SessionMonitor extends HttpSessionListener
 	@Override
 	public void sessionDestroyed( HttpSessionEvent httpSessionEvent )
 	{
-		if( getSession( ) != null ) {
+		if ( getSession( ) != null ) {
 			Object obj = httpSessionEvent.getSession( ).getAttribute( LoggedInterface.currentPrincipal );
-			if( obj != null ) {
-				if( getSession( ) != null ) {
-					getSession( ).logout( (Login) obj, getCredential( httpSessionEvent ) );
-					httpSessionEvent.getSession( ).setAttribute( LoggedInterface.currentPrincipal, null );
-				}
+			if ( obj != null ) {
+				PrincipalDTO dto = (PrincipalDTO) obj;
+				getSession( ).logout( dto.getUserId( ), getCredential( httpSessionEvent ) );
+				httpSessionEvent.getSession( ).setAttribute( LoggedInterface.currentPrincipal, null );
 			}
 		}
 		super.sessionDestroyed( httpSessionEvent );
@@ -40,11 +39,11 @@ public class SessionMonitor extends HttpSessionListener
 	protected LoginSession getSession( )
 	{
 		try {
-			if( session == null ) {
+			if ( session == null ) {
 				session = (LoginSession) ServiceLocator.getInstance( ).getRemoteSession( LoginSession.class );
 			}
 		}
-		catch( NamingException e ) {
+		catch ( NamingException e ) {
 			e.printStackTrace( );
 		}
 		return session;
@@ -55,7 +54,7 @@ public class SessionMonitor extends HttpSessionListener
 		Credential c = new Credential( );
 
 		c.setLocale( Locales.getCurrent( ) );
-		if( Executions.getCurrent( ) != null ) {
+		if ( Executions.getCurrent( ) != null ) {
 			c.setRemoteAddr( Executions.getCurrent( ).getRemoteAddr( ) );
 			c.setRemoteHost( Executions.getCurrent( ).getRemoteHost( ) );
 			c.setProgram( Executions.getCurrent( ).getBrowser( ) );

@@ -38,6 +38,7 @@ import br.com.mcampos.ejb.user.person.Person;
 import br.com.mcampos.sysutils.RandomString;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.utils.dto.Credential;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Stateless( name = "LoginSession", mappedName = "LoginSession" )
 public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginSession, LoginSessionLocal
@@ -239,12 +240,12 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	}
 
 	@Override
-	public Boolean changePassword( Login login, Credential credential, String oldPasswor, String newPassword )
+	public Boolean changePassword( Integer id, Credential credential, String oldPasswor, String newPassword )
 	{
-		if ( login == null ) {
+		if ( id == null ) {
 			return false;
 		}
-		Login entity = get( login.getId( ) );
+		Login entity = get( id );
 		if ( entity == null ) {
 			return false;
 		}
@@ -479,12 +480,12 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	}
 
 	@Override
-	public void logout( Login login, Credential credential )
+	public void logout( Integer id, Credential credential )
 	{
-		if ( login == null )
+		if ( id == null )
 			throw new InvalidParameterException( this.getClass( ).getSimpleName( ) + " - Login could not be null" );
 		AccessLogType type = getLogTypeSession( ).get( AccessLogType.accessLogTypeLogout );
-		log( login, type, credential );
+		log( get( id ), type, credential );
 	}
 
 	@Override
@@ -574,7 +575,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	}
 
 	@Override
-	public Login resetLogin( Login admin, Login toReset, Credential credential )
+	public Login resetLogin( PrincipalDTO admin, Login toReset, Credential credential )
 	{
 		if ( admin == null || toReset == null )
 			return toReset;
