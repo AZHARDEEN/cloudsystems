@@ -6,7 +6,8 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.locale.state.State;
+import br.com.mcampos.entity.locale.City;
+import br.com.mcampos.entity.locale.State;
 
 /**
  * Session Bean implementation class CitySessionBean

@@ -10,6 +10,7 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Window;
 
+@SuppressWarnings( { "rawtypes", "unchecked" } )
 public class LifeCtrl extends GenericForwardComposer<Window>
 {
 	private static final long serialVersionUID = 304060492970301897L;

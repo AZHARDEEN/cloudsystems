@@ -5,9 +5,9 @@ import java.util.List;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.inep.entity.InepOralDistribution;
-import br.com.mcampos.ejb.inep.entity.InepOralTest;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
+import br.com.mcampos.entity.inep.InepOralDistribution;
+import br.com.mcampos.entity.inep.InepOralTest;
+import br.com.mcampos.entity.inep.InepRevisor;
 
 @Local
 public interface InepOralDistributionLocal extends BaseSessionInterface<InepOralDistribution>

@@ -1,7 +1,7 @@
 package br.com.mcampos.web.controller.tables.product;
 
-import br.com.mcampos.ejb.product.entity.ProductType;
 import br.com.mcampos.ejb.product.type.ProductTypeSession;
+import br.com.mcampos.entity.product.ProductType;
 import br.com.mcampos.web.core.SimpleTableController;
 
 public class ProductTypeController extends SimpleTableController<ProductTypeSession, ProductType>

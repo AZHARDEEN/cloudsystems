@@ -1,6 +1,6 @@
 package br.com.mcampos.web.inep.controller;
 
-import br.com.mcampos.ejb.inep.entity.InepDistribution;
+import br.com.mcampos.entity.inep.InepDistribution;
 
 public class FirstGradeController extends CoordinatorGradeController
 {

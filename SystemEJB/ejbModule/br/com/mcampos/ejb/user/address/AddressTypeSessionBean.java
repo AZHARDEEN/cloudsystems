@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.user.address;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.entity.user.AddressType;
 
 /**
  * Session Bean implementation class AddressTypeSessionBean

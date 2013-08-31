@@ -7,11 +7,11 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.inep.entity.InepDistribution;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.entity.InepSubscription;
-import br.com.mcampos.ejb.inep.entity.InepTest;
+import br.com.mcampos.entity.inep.InepDistribution;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.entity.inep.InepSubscription;
+import br.com.mcampos.entity.inep.InepTest;
 
 /**
  * Session Bean implementation class DistributionSessionBean

@@ -2,7 +2,7 @@ package br.com.mcampos.web.inep.utils;
 
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.ejb.inep.entity.InepDistribution;
+import br.com.mcampos.entity.inep.InepDistribution;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.listbox.BaseListRenderer;
 

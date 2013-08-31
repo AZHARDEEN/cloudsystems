@@ -8,8 +8,8 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.LoginSession;
+import br.com.mcampos.entity.security.Login;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.utils.dto.Credential;
 import br.com.mcampos.utils.dto.PrincipalDTO;

@@ -10,11 +10,12 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.dto.MediaDTO;
-import br.com.mcampos.ejb.system.fileupload.FileUpload;
 import br.com.mcampos.ejb.system.fileupload.FileUploadSession;
-import br.com.mcampos.ejb.system.fileupload.UploadStatus;
+import br.com.mcampos.entity.system.FileUpload;
+import br.com.mcampos.entity.system.UploadStatus;
 import br.com.mcampos.web.core.BaseDBLoggedController;
 import br.com.mcampos.web.core.UploadMedia;
+import br.com.mcampos.web.renderer.FileUploadRenderer;
 
 public class FileUploadController extends BaseDBLoggedController<FileUploadSession>
 {

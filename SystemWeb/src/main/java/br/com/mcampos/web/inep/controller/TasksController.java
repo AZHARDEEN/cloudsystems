@@ -29,15 +29,15 @@ import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.dto.inep.InepTaskCounters;
-import br.com.mcampos.ejb.inep.entity.DistributionStatus;
-import br.com.mcampos.ejb.inep.entity.InepDistribution;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.team.TeamSession;
+import br.com.mcampos.entity.inep.DistributionStatus;
+import br.com.mcampos.entity.inep.InepDistribution;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
 import br.com.mcampos.web.inep.controller.event.CoordinatorEventChange;
-import br.com.mcampos.web.inep.controller.renderer.InepDistributionRenderer;
+import br.com.mcampos.web.renderer.inep.InepDistributionRenderer;
 
 public class TasksController extends BaseDBLoggedController<TeamSession>
 {

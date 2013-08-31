@@ -2,7 +2,7 @@ package br.com.mcampos.web.controller.logged;
 
 import org.zkoss.zk.ui.event.Event;
 
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.entity.user.Collaborator;
 
 public class CompanyEventChange extends Event
 {

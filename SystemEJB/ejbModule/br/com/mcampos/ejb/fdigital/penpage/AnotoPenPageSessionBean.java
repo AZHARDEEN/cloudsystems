@@ -4,7 +4,8 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.fdigital.pen.AnotoPen;
+import br.com.mcampos.entity.fdigital.AnotoPen;
+import br.com.mcampos.entity.fdigital.AnotoPenPage;
 
 /**
  * Session Bean implementation class AnotoPenPageSessionBean

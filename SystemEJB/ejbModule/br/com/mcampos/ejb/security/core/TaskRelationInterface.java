@@ -3,7 +3,7 @@ package br.com.mcampos.ejb.security.core;
 import java.io.Serializable;
 import java.util.List;
 
-import br.com.mcampos.ejb.security.task.Task;
+import br.com.mcampos.entity.security.Task;
 
 public interface TaskRelationInterface extends Serializable
 {

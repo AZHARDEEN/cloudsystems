@@ -2,7 +2,7 @@ package br.com.mcampos.web.controller.client.commom;
 
 import org.zkoss.zk.ui.Component;
 
-import br.com.mcampos.ejb.user.document.UserDocument;
+import br.com.mcampos.entity.user.UserDocument;
 import br.com.mcampos.web.renderer.UserDocumentListRenderer;
 
 public class DocumentController extends BaseUserAttrListController<UserDocument>

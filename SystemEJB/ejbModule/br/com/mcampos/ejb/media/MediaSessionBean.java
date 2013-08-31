@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.entity.system.Media;
 
 /**
  * Session Bean implementation class MediaSessionBean

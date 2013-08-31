@@ -5,6 +5,7 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.entity.user.CivilState;
 
 @Stateless( name = "CivilStateSession", mappedName = "CivilStateSession" )
 public class CivilStateSessionBean extends SimpleSessionBean<CivilState> implements CivilStateSession, CivilStateSessionLocal

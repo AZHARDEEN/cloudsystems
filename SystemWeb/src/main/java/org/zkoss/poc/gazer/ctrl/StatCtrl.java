@@ -1,32 +1,29 @@
 package org.zkoss.poc.gazer.ctrl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import org.zkoss.poc.gazer.data.Analytics;
 import org.zkoss.poc.gazer.data.EventInfo;
 import org.zkoss.poc.gazer.ui.StatsRenderer;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
-import org.zkoss.zul.Button;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Panelchildren;
 import org.zkoss.zul.Window;
 
 public class StatCtrl extends GenericForwardComposer<Window>
 {
-
-	private Panelchildren statsPanel;
+	private static final long serialVersionUID = -5501323867604254783L;
+	// private Panelchildren statsPanel;
 	private Grid statsGrid;
-	private Grid anylGrid;
-	private Button sortByTarget;
-	private ListModelList statListModel;
-	private ListModelList analyticsModel;
-	private ArrayList<Analytics> analyticsList;
+	// private Grid anylGrid;
+	// private Button sortByTarget;
+	private ListModelList<EventInfo> statListModel;
+
+	// private ListModelList<?> analyticsModel;
+	// private ArrayList<Analytics> analyticsList;
 
 	@Override
 	public void doAfterCompose( Window comp ) throws Exception
@@ -35,10 +32,10 @@ public class StatCtrl extends GenericForwardComposer<Window>
 
 	}
 
-	public ListModelList sortByEventTime( )
+	public ListModelList<EventInfo> sortByEventTime( )
 	{
 		String reqPath = PfmMonitor.getMonitoredReqPath( );
-		statListModel = new ListModelList( DataList.getEventList( reqPath ) );
+		statListModel = new ListModelList<EventInfo>( DataList.getEventList( reqPath ) );
 		statListModel.sort( new Comparator<EventInfo>( )
 		{
 			@Override
@@ -50,10 +47,10 @@ public class StatCtrl extends GenericForwardComposer<Window>
 		return statListModel;
 	}
 
-	public ListModelList sortByReqID( )
+	public ListModelList<EventInfo> sortByReqID( )
 	{
 		String reqPath = PfmMonitor.getMonitoredReqPath( );
-		statListModel = new ListModelList( DataList.getEventList( reqPath ) );
+		statListModel = new ListModelList<EventInfo>( DataList.getEventList( reqPath ) );
 		statListModel.sort( new Comparator<EventInfo>( )
 		{
 			@Override
@@ -65,10 +62,10 @@ public class StatCtrl extends GenericForwardComposer<Window>
 		return statListModel;
 	}
 
-	public ListModelList sortByTarget( )
+	public ListModelList<EventInfo> sortByTarget( )
 	{
 		String reqPath = PfmMonitor.getMonitoredReqPath( );
-		statListModel = new ListModelList( DataList.getEventList( reqPath ) );
+		statListModel = new ListModelList<EventInfo>( DataList.getEventList( reqPath ) );
 		statListModel.sort( new Comparator<EventInfo>( )
 		{
 			@Override

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.zkoss.zk.ui.event.Event;
 
-import br.com.mcampos.ejb.inep.entity.InepDistribution;
+import br.com.mcampos.entity.inep.InepDistribution;
 
 public class CoordinatorEventChange extends Event
 {

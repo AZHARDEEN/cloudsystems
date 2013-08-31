@@ -8,8 +8,9 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPage;
 import br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPageSessionLocal;
+import br.com.mcampos.entity.fdigital.AnotoPage;
+import br.com.mcampos.entity.fdigital.Pad;
 
 /**
  * Session Bean implementation class PadSessionBean

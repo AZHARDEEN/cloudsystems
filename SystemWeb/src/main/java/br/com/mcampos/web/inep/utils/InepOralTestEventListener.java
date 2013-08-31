@@ -11,8 +11,8 @@ import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Messagebox;
 
 import br.com.mcampos.ejb.inep.InepOralFacade;
-import br.com.mcampos.ejb.inep.entity.InepOralDistribution;
-import br.com.mcampos.ejb.media.Media;
+import br.com.mcampos.entity.inep.InepOralDistribution;
+import br.com.mcampos.entity.system.Media;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.locator.ServiceLocator;
 

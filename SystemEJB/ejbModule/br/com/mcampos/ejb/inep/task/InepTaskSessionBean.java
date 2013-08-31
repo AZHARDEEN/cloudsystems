@@ -8,9 +8,9 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepTask;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**

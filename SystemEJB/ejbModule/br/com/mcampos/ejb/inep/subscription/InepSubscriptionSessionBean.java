@@ -10,12 +10,12 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
-import br.com.mcampos.ejb.inep.entity.DistributionStatus;
-import br.com.mcampos.ejb.inep.entity.InepOralTest;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepSubscription;
 import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
+import br.com.mcampos.entity.inep.DistributionStatus;
+import br.com.mcampos.entity.inep.InepOralTest;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepSubscription;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**

@@ -11,24 +11,24 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.inep.entity.InepDistribution;
-import br.com.mcampos.ejb.inep.entity.InepMedia;
-import br.com.mcampos.ejb.inep.entity.InepOralTest;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.entity.InepSubscription;
-import br.com.mcampos.ejb.inep.entity.InepSubscriptionPK;
-import br.com.mcampos.ejb.inep.entity.InepTask;
-import br.com.mcampos.ejb.inep.entity.InepTaskPK;
-import br.com.mcampos.ejb.inep.entity.InepTest;
-import br.com.mcampos.ejb.inep.entity.InepTestPK;
 import br.com.mcampos.ejb.inep.media.InepMediaSessionLocal;
 import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
-import br.com.mcampos.ejb.media.Media;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
+import br.com.mcampos.entity.inep.InepDistribution;
+import br.com.mcampos.entity.inep.InepMedia;
+import br.com.mcampos.entity.inep.InepOralTest;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.entity.inep.InepSubscription;
+import br.com.mcampos.entity.inep.InepSubscriptionPK;
+import br.com.mcampos.entity.inep.InepTask;
+import br.com.mcampos.entity.inep.InepTaskPK;
+import br.com.mcampos.entity.inep.InepTest;
+import br.com.mcampos.entity.inep.InepTestPK;
+import br.com.mcampos.entity.system.Media;
 
 /**
  * Session Bean implementation class InepTestSessionBean

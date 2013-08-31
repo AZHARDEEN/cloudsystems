@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.entity.security.Login;
 import br.com.mcampos.utils.dto.Credential;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 

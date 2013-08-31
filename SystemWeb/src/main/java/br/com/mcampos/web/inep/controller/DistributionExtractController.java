@@ -5,8 +5,8 @@ import java.util.List;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.dto.inep.InepAnaliticoCorrecao;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.web.inep.controller.renderer.DistributionExtractRowRenderer;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.web.renderer.inep.DistributionExtractRowRenderer;
 
 public class DistributionExtractController extends BaseExtractController
 {

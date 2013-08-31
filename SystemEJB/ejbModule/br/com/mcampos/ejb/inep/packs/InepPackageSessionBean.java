@@ -11,11 +11,11 @@ import javax.persistence.Query;
 
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionBean;
 import br.com.mcampos.ejb.core.DBPaging;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
-import br.com.mcampos.ejb.user.company.Company;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepTask;
+import br.com.mcampos.entity.user.Company;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**

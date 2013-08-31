@@ -2,7 +2,7 @@ package br.com.mcampos.web.renderer;
 
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.ejb.user.UserContact;
+import br.com.mcampos.entity.user.UserContact;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.listbox.BaseListRenderer;
 

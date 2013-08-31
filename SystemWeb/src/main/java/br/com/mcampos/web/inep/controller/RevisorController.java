@@ -27,18 +27,18 @@ import org.zkoss.zul.Window;
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.inep.CorretorDTO;
 import br.com.mcampos.ejb.inep.InepSession;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSession;
-import br.com.mcampos.ejb.user.document.UserDocument;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.entity.inep.InepTask;
+import br.com.mcampos.entity.user.UserDocument;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.UploadMedia;
 import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
 import br.com.mcampos.web.inep.controller.dialog.NewRevisorWindow;
-import br.com.mcampos.web.inep.controller.renderer.RevisorListRenderer;
 import br.com.mcampos.web.locator.ServiceLocator;
+import br.com.mcampos.web.renderer.inep.RevisorListRenderer;
 
 public class RevisorController extends BaseDBListController<InepRevisorSession, InepRevisor> implements IDialogEvent
 {

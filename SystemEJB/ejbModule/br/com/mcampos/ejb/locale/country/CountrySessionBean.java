@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.locale.country;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.entity.locale.Country;
 
 /**
  * Session Bean implementation class CountrySessionBean

@@ -4,7 +4,7 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.user.document.UserDocument;
+import br.com.mcampos.entity.user.UserDocument;
 import br.com.mcampos.web.core.combobox.DocumentTypeCombobox;
 
 public class DocumentDialogController extends BaseUserItemDlgController<UserDocument>

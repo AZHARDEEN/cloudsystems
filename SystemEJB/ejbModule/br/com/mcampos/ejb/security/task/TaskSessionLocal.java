@@ -7,8 +7,9 @@ import javax.ejb.Local;
 import org.omg.CORBA.portable.ApplicationException;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.security.menu.Menu;
-import br.com.mcampos.ejb.security.role.Role;
+import br.com.mcampos.entity.security.Menu;
+import br.com.mcampos.entity.security.Role;
+import br.com.mcampos.entity.security.Task;
 
 @Local
 public interface TaskSessionLocal extends BaseSessionInterface<Task>

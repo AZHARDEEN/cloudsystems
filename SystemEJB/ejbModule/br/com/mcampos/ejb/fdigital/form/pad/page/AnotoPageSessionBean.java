@@ -9,9 +9,10 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.fdigital.form.AnotoForm;
-import br.com.mcampos.ejb.fdigital.page.AnotoPageField;
 import br.com.mcampos.ejb.system.fieldtype.FieldTypeSessionLocal;
+import br.com.mcampos.entity.fdigital.AnotoForm;
+import br.com.mcampos.entity.fdigital.AnotoPage;
+import br.com.mcampos.entity.fdigital.AnotoPageField;
 
 /**
  * Session Bean implementation class AnotoPageSessionBean

@@ -21,13 +21,13 @@ import org.zkoss.zul.Window;
 import org.zkoss.zul.event.PagingEvent;
 
 import br.com.mcampos.ejb.core.DBPaging;
-import br.com.mcampos.ejb.user.UserContact;
-import br.com.mcampos.ejb.user.Users;
-import br.com.mcampos.ejb.user.address.Address;
-import br.com.mcampos.ejb.user.client.Client;
-import br.com.mcampos.ejb.user.document.UserDocument;
-import br.com.mcampos.ejb.user.document.type.DocumentType;
-import br.com.mcampos.ejb.user.person.Person;
+import br.com.mcampos.entity.user.Address;
+import br.com.mcampos.entity.user.Client;
+import br.com.mcampos.entity.user.DocumentType;
+import br.com.mcampos.entity.user.Person;
+import br.com.mcampos.entity.user.UserContact;
+import br.com.mcampos.entity.user.UserDocument;
+import br.com.mcampos.entity.user.Users;
 import br.com.mcampos.web.core.BaseDBLoggedController;
 import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.core.report.BaseReportWindow;
@@ -37,6 +37,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 {
 	private static final long serialVersionUID = 4025873645295022522L;
 	private static final int defaultRows = 30;
+	@SuppressWarnings( "unused" )
 	private static final Logger logger = LoggerFactory.getLogger( UserController.class );
 
 	@Wire( "#wndContact #lstItem" )

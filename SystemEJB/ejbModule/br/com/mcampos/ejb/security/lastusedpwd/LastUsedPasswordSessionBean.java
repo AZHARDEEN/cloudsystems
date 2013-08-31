@@ -5,7 +5,9 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.security.Login;
+import br.com.mcampos.entity.security.LastUsedPassword;
+import br.com.mcampos.entity.security.LastUsedPasswordPK;
+import br.com.mcampos.entity.security.Login;
 
 /**
  * Session Bean implementation class LastUsedPasswordSessionBean

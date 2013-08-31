@@ -2,7 +2,7 @@ package br.com.mcampos.web.renderer;
 
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.ejb.user.address.Address;
+import br.com.mcampos.entity.user.Address;
 import br.com.mcampos.web.core.listbox.BaseListRenderer;
 
 public class AddressListRenderer extends BaseListRenderer<Address>

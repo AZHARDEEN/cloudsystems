@@ -3,12 +3,13 @@ package br.com.mcampos.web.core.combobox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.mcampos.ejb.locale.city.City;
 import br.com.mcampos.ejb.locale.city.CitySession;
-import br.com.mcampos.ejb.locale.state.State;
+import br.com.mcampos.entity.locale.City;
+import br.com.mcampos.entity.locale.State;
 
 public class CityCombobox extends ComboboxExt<CitySession, City> implements DetailInterface
 {
+	@SuppressWarnings( "unused" )
 	private static final Logger logger = LoggerFactory.getLogger( CityCombobox.class );
 	private static final long serialVersionUID = 1180477829375738059L;
 

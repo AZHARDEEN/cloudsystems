@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.zkoss.zul.TreeNode;
 
-import br.com.mcampos.ejb.security.menu.Menu;
+import br.com.mcampos.entity.security.Menu;
 
 public class MenuNode extends BaseTreeNode<Menu>
 {

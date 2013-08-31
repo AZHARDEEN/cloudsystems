@@ -19,7 +19,6 @@ import org.zkoss.zul.Flashchart;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Iframe;
 import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Panelchildren;
 import org.zkoss.zul.PieModel;
 import org.zkoss.zul.SimplePieModel;
 import org.zkoss.zul.Textbox;
@@ -29,16 +28,20 @@ import org.zkoss.zul.Treechildren;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
-public class DataCtrl extends GenericForwardComposer
+@SuppressWarnings( { "rawtypes", "unchecked" } )
+public class DataCtrl extends GenericForwardComposer<Component>
 {
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7681950173804358991L;
 	private long current = System.currentTimeMillis( );
 	public String currentReqPath;
 	private Grid reqDataGrid;
 	private Grid eventDataGrid;
 	private Timer reqUpdateTimer;
 	private Textbox urlBox;
-	private Panelchildren browserParent;
+	// private Panelchildren browserParent;
 	public Iframe browser;
 	private Treechildren treeStem;
 	private Grid statsGrid;
@@ -56,7 +59,7 @@ public class DataCtrl extends GenericForwardComposer
 
 	public void clearModel( )
 	{
-		ListModelList voidModel = new ListModelList( );
+		ListModelList<Object> voidModel = new ListModelList<Object>( );
 		eventDataGrid.setModel( voidModel );
 		reqDataGrid.setModel( voidModel );
 		statsGrid.setModel( voidModel );

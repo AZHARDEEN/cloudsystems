@@ -10,10 +10,11 @@ import javax.ejb.Stateless;
 import org.omg.CORBA.portable.ApplicationException;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.security.menu.Menu;
 import br.com.mcampos.ejb.security.menu.MenuFacadeLocal;
-import br.com.mcampos.ejb.security.role.Role;
 import br.com.mcampos.ejb.security.role.RoleSessionLocal;
+import br.com.mcampos.entity.security.Menu;
+import br.com.mcampos.entity.security.Role;
+import br.com.mcampos.entity.security.Task;
 
 /**
  * Session Bean implementation class TaskSessionBean

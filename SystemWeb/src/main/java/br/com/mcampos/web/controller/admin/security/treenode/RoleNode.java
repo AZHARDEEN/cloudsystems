@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.zkoss.zul.TreeNode;
 
-import br.com.mcampos.ejb.security.role.Role;
+import br.com.mcampos.entity.security.Role;
 
 public class RoleNode extends BaseTreeNode<Role>
 {

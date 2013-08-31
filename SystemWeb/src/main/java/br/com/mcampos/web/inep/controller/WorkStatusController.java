@@ -12,8 +12,8 @@ import org.zkoss.zul.Flashchart;
 import org.zkoss.zul.SimplePieModel;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.team.TeamSession;
+import br.com.mcampos.entity.inep.InepPackage;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
 

@@ -1,7 +1,7 @@
 package br.com.mcampos.web.inep.controller;
 
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSession;
-import br.com.mcampos.ejb.inep.entity.DistributionStatus;
+import br.com.mcampos.entity.inep.DistributionStatus;
 import br.com.mcampos.web.core.SimpleTableController;
 
 public class DistributionStatusController extends SimpleTableController<DistributionStatusSession, DistributionStatus>

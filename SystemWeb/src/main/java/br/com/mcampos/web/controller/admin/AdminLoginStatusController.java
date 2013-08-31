@@ -15,12 +15,12 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.security.Login;
 import br.com.mcampos.ejb.security.LoginSession;
+import br.com.mcampos.entity.security.Login;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.utils.dto.PrincipalDTO;
-import br.com.mcampos.web.controller.admin.security.renderer.LoginItemRenderer;
 import br.com.mcampos.web.core.BaseDBLoggedController;
+import br.com.mcampos.web.renderer.LoginItemRenderer;
 
 public class AdminLoginStatusController extends BaseDBLoggedController<LoginSession>
 {

@@ -5,8 +5,9 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.media.Media;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
+import br.com.mcampos.entity.fdigital.FormMedia;
+import br.com.mcampos.entity.system.Media;
 
 /**
  * Session Bean implementation class FormMediaSessionBean

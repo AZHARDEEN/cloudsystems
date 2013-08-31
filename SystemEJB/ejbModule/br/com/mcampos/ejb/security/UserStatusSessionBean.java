@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.security;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.entity.security.UserStatus;
 
 @Stateless( name = "UserStatusSession", mappedName = "UserStatusSession" )
 public class UserStatusSessionBean extends SimpleSessionBean<UserStatus> implements UserStatusSession, UserStatusSessionLocal

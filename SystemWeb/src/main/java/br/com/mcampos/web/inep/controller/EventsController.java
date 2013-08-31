@@ -11,12 +11,12 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
 
 import br.com.mcampos.ejb.core.DBPaging;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.packs.InepPackageSession;
+import br.com.mcampos.entity.inep.InepPackage;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
 import br.com.mcampos.web.core.listbox.ListboxParams;
-import br.com.mcampos.web.inep.controller.renderer.EventListRenderer;
+import br.com.mcampos.web.renderer.inep.EventListRenderer;
 
 public class EventsController extends BaseDBListController<InepPackageSession, InepPackage>
 {

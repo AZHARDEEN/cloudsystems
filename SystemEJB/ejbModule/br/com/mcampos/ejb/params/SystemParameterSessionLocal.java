@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.entity.system.SystemParameters;
 
 @Local
 public interface SystemParameterSessionLocal extends BaseSessionInterface<SystemParameters>

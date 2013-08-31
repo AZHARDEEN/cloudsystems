@@ -15,13 +15,13 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.security.task.Task;
-import br.com.mcampos.web.controller.admin.security.renderer.TaskListItemRenderer;
-import br.com.mcampos.web.controller.admin.security.renderer.TaskTreeItemRenderer;
+import br.com.mcampos.entity.security.Task;
 import br.com.mcampos.web.controller.admin.security.treenode.BaseTreeNode;
 import br.com.mcampos.web.controller.admin.security.treenode.TaskNode;
 import br.com.mcampos.web.core.tree.AdvancedTreeModel;
 import br.com.mcampos.web.core.tree.BaseTreeController;
+import br.com.mcampos.web.renderer.TaskListItemRenderer;
+import br.com.mcampos.web.renderer.TaskTreeItemRenderer;
 
 public abstract class BasicTaskAssociatedTreeController<SESSION, ENTITY> extends BaseTreeController<SESSION, ENTITY>
 {

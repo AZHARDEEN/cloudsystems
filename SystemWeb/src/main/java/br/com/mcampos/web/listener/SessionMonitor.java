@@ -20,6 +20,7 @@ import br.com.mcampos.web.locator.ServiceLocator;
 public class SessionMonitor extends HttpSessionListener
 {
 	private LoginSession session;
+	@SuppressWarnings( "unused" )
 	private static final Logger logger = LoggerFactory.getLogger( SessionMonitor.class );
 
 	@Override

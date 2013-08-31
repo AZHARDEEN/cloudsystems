@@ -8,14 +8,14 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.entity.InepRevisorPK;
-import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.revisortype.RevisorTypeSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.entity.inep.InepRevisorPK;
+import br.com.mcampos.entity.inep.InepTask;
+import br.com.mcampos.entity.user.Collaborator;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**

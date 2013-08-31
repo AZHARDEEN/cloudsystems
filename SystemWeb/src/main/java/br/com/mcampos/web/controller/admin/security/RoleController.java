@@ -13,15 +13,15 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.TreeitemRenderer;
 
-import br.com.mcampos.ejb.security.role.Role;
 import br.com.mcampos.ejb.security.role.RoleSession;
-import br.com.mcampos.ejb.security.task.Task;
+import br.com.mcampos.entity.security.Role;
+import br.com.mcampos.entity.security.Task;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.web.controller.admin.security.renderer.RoleTreeItemRenderer;
 import br.com.mcampos.web.controller.admin.security.treenode.RoleNode;
 import br.com.mcampos.web.controller.admin.security.treenode.TaskNode;
 import br.com.mcampos.web.controller.logged.DynamicMenu;
 import br.com.mcampos.web.core.event.IDropEvent;
+import br.com.mcampos.web.renderer.RoleTreeItemRenderer;
 
 public class RoleController extends BasicTaskAssociatedTreeController<RoleSession, Role> implements IDropEvent
 {
@@ -95,10 +95,10 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 		if ( mainMenu.getChildren( ) != null ) {
 			mainMenu.getChildren( ).clear( );
 		}
-		List<br.com.mcampos.ejb.security.menu.Menu> menus;
+		List<br.com.mcampos.entity.security.Menu> menus;
 		try {
 			menus = getSession( ).getMenus( data );
-			for ( br.com.mcampos.ejb.security.menu.Menu item : menus ) {
+			for ( br.com.mcampos.entity.security.Menu item : menus ) {
 				getDynamicMenu( ).getParentComponent( item );
 			}
 		}

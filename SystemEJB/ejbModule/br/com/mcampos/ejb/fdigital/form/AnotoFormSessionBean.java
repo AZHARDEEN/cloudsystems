@@ -9,13 +9,14 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.fdigital.form.media.FormMedia;
 import br.com.mcampos.ejb.fdigital.form.media.FormMediaSessionLocal;
-import br.com.mcampos.ejb.fdigital.form.pad.Pad;
 import br.com.mcampos.ejb.fdigital.form.pad.PadSessionLocal;
-import br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPage;
-import br.com.mcampos.ejb.media.Media;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
+import br.com.mcampos.entity.fdigital.AnotoForm;
+import br.com.mcampos.entity.fdigital.AnotoPage;
+import br.com.mcampos.entity.fdigital.FormMedia;
+import br.com.mcampos.entity.fdigital.Pad;
+import br.com.mcampos.entity.system.Media;
 
 /**
  * Session Bean implementation class AnotoFormSessionBean

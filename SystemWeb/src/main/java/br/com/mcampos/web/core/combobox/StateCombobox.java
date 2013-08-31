@@ -5,11 +5,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.mcampos.ejb.locale.state.State;
 import br.com.mcampos.ejb.locale.state.StateSession;
+import br.com.mcampos.entity.locale.State;
 
 public class StateCombobox extends ComboboxExt<StateSession, State>
 {
+	@SuppressWarnings( "unused" )
 	private static final Logger logger = LoggerFactory.getLogger( StateCombobox.class );
 	private static final long serialVersionUID = 1L;
 

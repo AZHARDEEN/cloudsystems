@@ -5,9 +5,11 @@ import java.util.Date;
 import javax.ejb.EJB;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.user.address.Address;
-import br.com.mcampos.ejb.user.document.UserDocument;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
+import br.com.mcampos.entity.user.Address;
+import br.com.mcampos.entity.user.UserContact;
+import br.com.mcampos.entity.user.UserDocument;
+import br.com.mcampos.entity.user.Users;
 import br.com.mcampos.sysutils.SysUtils;
 
 public abstract class BaseUserSession<BEAN extends Users> extends

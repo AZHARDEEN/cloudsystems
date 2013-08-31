@@ -5,11 +5,11 @@ import java.util.List;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.inep.entity.InepDistribution;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.entity.InepSubscription;
-import br.com.mcampos.ejb.inep.entity.InepTest;
+import br.com.mcampos.entity.inep.InepDistribution;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.entity.inep.InepSubscription;
+import br.com.mcampos.entity.inep.InepTest;
 
 @Local
 public interface DistributionSessionLocal extends BaseSessionInterface<InepDistribution>

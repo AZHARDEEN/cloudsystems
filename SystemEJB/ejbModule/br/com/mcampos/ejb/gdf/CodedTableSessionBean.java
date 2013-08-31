@@ -5,6 +5,7 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleCodedTable;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.entity.gdf.AdministrativeRegion;
 
 /**
  * Session Bean implementation class CodedTableSessionBean
@@ -14,6 +15,7 @@ import br.com.mcampos.ejb.core.SimpleSessionBean;
 public class CodedTableSessionBean extends SimpleSessionBean<SimpleCodedTable<?>> implements CodedTableSession, CodedTableSessionLocal
 {
 
+	@SuppressWarnings( { "unchecked", "rawtypes" } )
 	@Override
 	protected Class getEntityClass( )
 	{

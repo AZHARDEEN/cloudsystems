@@ -17,15 +17,10 @@ import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.security.menu.Menu;
-import br.com.mcampos.ejb.security.role.Role;
-import br.com.mcampos.ejb.security.task.Task;
 import br.com.mcampos.ejb.security.task.TaskSession;
-import br.com.mcampos.web.controller.admin.security.renderer.MenuListItemRenderer;
-import br.com.mcampos.web.controller.admin.security.renderer.MenuTreeItemRenderer;
-import br.com.mcampos.web.controller.admin.security.renderer.RoleListItemRenderer;
-import br.com.mcampos.web.controller.admin.security.renderer.RoleTreeItemRenderer;
-import br.com.mcampos.web.controller.admin.security.renderer.TaskTreeItemRenderer;
+import br.com.mcampos.entity.security.Menu;
+import br.com.mcampos.entity.security.Role;
+import br.com.mcampos.entity.security.Task;
 import br.com.mcampos.web.controller.admin.security.treenode.BaseTreeNode;
 import br.com.mcampos.web.controller.admin.security.treenode.MenuNode;
 import br.com.mcampos.web.controller.admin.security.treenode.RoleNode;
@@ -33,6 +28,11 @@ import br.com.mcampos.web.controller.admin.security.treenode.TaskNode;
 import br.com.mcampos.web.core.event.IDropEvent;
 import br.com.mcampos.web.core.tree.AdvancedTreeModel;
 import br.com.mcampos.web.core.tree.BaseTreeController;
+import br.com.mcampos.web.renderer.MenuListItemRenderer;
+import br.com.mcampos.web.renderer.MenuTreeItemRenderer;
+import br.com.mcampos.web.renderer.RoleListItemRenderer;
+import br.com.mcampos.web.renderer.RoleTreeItemRenderer;
+import br.com.mcampos.web.renderer.TaskTreeItemRenderer;
 
 public class TaskController extends BaseTreeController<TaskSession, Task> implements IDropEvent
 {

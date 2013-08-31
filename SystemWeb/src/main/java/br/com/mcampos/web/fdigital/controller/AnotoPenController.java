@@ -5,8 +5,8 @@ import org.zkoss.zul.Intbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 
-import br.com.mcampos.ejb.fdigital.pen.AnotoPen;
 import br.com.mcampos.ejb.fdigital.pen.AnotoPenSession;
+import br.com.mcampos.entity.fdigital.AnotoPen;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
 
 public class AnotoPenController extends BaseDBListController<AnotoPenSession, AnotoPen>

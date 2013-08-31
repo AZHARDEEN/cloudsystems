@@ -13,11 +13,11 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.team.TeamSession;
+import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.entity.inep.InepTask;
 import br.com.mcampos.web.core.BaseController;
-import br.com.mcampos.web.inep.controller.renderer.RevisorListRenderer;
+import br.com.mcampos.web.renderer.inep.RevisorListRenderer;
 
 public class TeamController extends BaseController<Window>
 {

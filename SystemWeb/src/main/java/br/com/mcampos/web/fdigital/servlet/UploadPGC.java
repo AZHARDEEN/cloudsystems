@@ -39,7 +39,7 @@ import com.anoto.api.NoSuchPermissionException;
 public class UploadPGC extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
-	private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
+	// private static final String CONTENT_TYPE = "text/html; charset=UTF-8";
 	private static final Logger logger = LoggerFactory.getLogger( UploadPGC.class );
 
 	/**

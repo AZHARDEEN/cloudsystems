@@ -8,15 +8,15 @@ import br.com.mcampos.dto.inep.InepAnaliticoCorrecao;
 import br.com.mcampos.dto.inep.InepTaskCounters;
 import br.com.mcampos.dto.inep.reporting.BaseSubscriptionDTO;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.ejb.inep.entity.InepDistribution;
-import br.com.mcampos.ejb.inep.entity.InepOralDistribution;
-import br.com.mcampos.ejb.inep.entity.InepOralTest;
-import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.inep.entity.InepRevisor;
-import br.com.mcampos.ejb.inep.entity.InepSubscription;
-import br.com.mcampos.ejb.inep.entity.InepTask;
-import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.user.company.collaborator.UserPropertyInterface;
+import br.com.mcampos.entity.inep.InepDistribution;
+import br.com.mcampos.entity.inep.InepOralDistribution;
+import br.com.mcampos.entity.inep.InepOralTest;
+import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.entity.inep.InepSubscription;
+import br.com.mcampos.entity.inep.InepTask;
+import br.com.mcampos.entity.inep.InepTest;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote

@@ -5,8 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.mcampos.ejb.user.person.gender.Gender;
 import br.com.mcampos.ejb.user.person.gender.GenderSession;
+import br.com.mcampos.entity.user.Gender;
 
 public class GenderCombobox extends ComboboxExt<GenderSession, Gender>
 {
