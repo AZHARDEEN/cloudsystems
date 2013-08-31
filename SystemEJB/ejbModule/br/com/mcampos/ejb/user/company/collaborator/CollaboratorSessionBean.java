@@ -59,19 +59,19 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public Collaborator find( PrincipalDTO auth )
 	{
-		if( auth == null )
+		if ( auth == null )
 			return null;
 		Login login = loginSession.get( auth.getUserId( ) );
 
-		if( login == null ) {
+		if ( login == null ) {
 			return null;
 		}
 		Company company = companySession.get( auth.getCompanyID( ) );
-		if( company == null ) {
+		if ( company == null ) {
 			return null;
 		}
 		Collaborator c = getByNamedQuery( Collaborator.hasCollaborator, company, login.getPerson( ) );
-		if( c != null ) {
+		if ( c != null ) {
 			c.getPerson( ).getAddresses( ).size( );
 			c.getPerson( ).getDocuments( ).size( );
 			c.getPerson( ).getContacts( ).size( );
@@ -83,20 +83,20 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	public List<SimpleDTO> getCompanies( PrincipalDTO auth ) throws ApplicationException
 	{
 		List<Collaborator> list;
-		if( auth == null || auth.getUserId( ) == null ) {
+		if ( auth == null || auth.getUserId( ) == null ) {
 			return Collections.emptyList( );
 		}
 		try {
 			Login login = loginSession.get( auth.getUserId( ) );
-			if( login == null )
+			if ( login == null )
 				return null;
 			list = findByNamedQuery( Collaborator.findCompanies, login.getPerson( ) );
-			if( SysUtils.isEmpty( list ) ) {
+			if ( SysUtils.isEmpty( list ) ) {
 				return Collections.emptyList( );
 			}
 			return toSimpleDTOList( list );
 		}
-		catch( Exception e )
+		catch ( Exception e )
 		{
 			e.printStackTrace( );
 			return Collections.emptyList( );
@@ -105,11 +105,11 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 
 	private List<SimpleDTO> toSimpleDTOList( List<Collaborator> list )
 	{
-		if( SysUtils.isEmpty( list ) ) {
+		if ( SysUtils.isEmpty( list ) ) {
 			return Collections.emptyList( );
 		}
 		List<SimpleDTO> dtos = new ArrayList<SimpleDTO>( list.size( ) );
-		for( Collaborator item : list )
+		for ( Collaborator item : list )
 		{
 			String name = SysUtils.isEmpty( item.getCompany( ).getNickName( ) ) ? item.getCompany( ).getName( ) : item.getCompany( )
 					.getNickName( );
@@ -119,19 +119,19 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	}
 
 	@Override
-	public LoginProperty getProperty( Collaborator collaborator, String propertyName )
+	public LoginProperty getProperty( PrincipalDTO collaborator, String propertyName )
 	{
 		return propertySession.getProperty( collaborator, propertyName );
 	}
 
 	@Override
-	public void setProperty( Collaborator collaborator, String propertyName, String Value )
+	public void setProperty( PrincipalDTO collaborator, String propertyName, String Value )
 	{
 		propertySession.setProperty( collaborator, propertyName, Value );
 	}
 
 	@Override
-	public LoginProperty remove( Collaborator collaborator, String propertyName )
+	public LoginProperty remove( PrincipalDTO collaborator, String propertyName )
 	{
 		return propertySession.remove( collaborator, propertyName );
 	}
@@ -150,7 +150,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 		Login login = loginSession.get( c.getUserId( ) );
 		Menu menu = menuSession.get( mnuUrl );
 		AuthorizedPageOptions auth = new AuthorizedPageOptions( );
-		if( menu == null ) {
+		if ( menu == null ) {
 			/*
 			 * this is, maybe, some kind of resource or template.
 			 */
@@ -159,11 +159,11 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 		}
 		try {
 			List<Menu> menus = getMenus( c );
-			if( SysUtils.isEmpty( menus ) ) {
+			if ( SysUtils.isEmpty( menus ) ) {
 				logger.error( "User: " + login.getPerson( ).getName( ) + " is not - Authorized for " + mnuUrl );
 				auth.setAuthorized( false );
 			}
-			else if( menus.contains( menu ) == false ) {
+			else if ( menus.contains( menu ) == false ) {
 				logger.error( "User: " + login.getPerson( ).getName( ) + " is not - Authorized for " + mnuUrl );
 				auth.setAuthorized( false );
 			}
@@ -171,7 +171,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 				auth.setAuthorized( true );
 			}
 		}
-		catch( ApplicationException e ) {
+		catch ( ApplicationException e ) {
 			e.printStackTrace( );
 			auth.setAuthorized( false );
 		}
@@ -188,7 +188,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public List<Menu> getMenus( PrincipalDTO c ) throws ApplicationException
 	{
-		if( c == null )
+		if ( c == null )
 			return Collections.emptyList( );
 		Collaborator collaborator = find( c );
 		return menuSession.getMenus( collaborator );
@@ -197,12 +197,13 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public Collaborator merge( Collaborator newEntity )
 	{
-		if( newEntity.getId( ).getSequence( ) == null || newEntity.getId( ).getSequence( ).equals( 0 ) ) {
+		if ( newEntity.getId( ).getSequence( ) == null || newEntity.getId( ).getSequence( ).equals( 0 ) ) {
 			newEntity.getId( ).setSequence( getNextId( Collaborator.maxSequence, newEntity.getCompany( ) ) );
 		}
 		return super.merge( newEntity );
 	}
 
+	@Override
 	public Collaborator add( Login login, Integer companyId )
 	{
 		Collaborator c = new Collaborator( );

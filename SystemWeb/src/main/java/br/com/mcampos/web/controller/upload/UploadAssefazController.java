@@ -14,13 +14,11 @@ import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.upload.AssefazDTO;
 import br.com.mcampos.dto.upload.RejectedDTO;
 import br.com.mcampos.ejb.system.fileupload.FileUpload;
-import br.com.mcampos.web.locator.ServiceLocator;
 
 public class UploadAssefazController extends FileUploadController
 {
 	private static final long serialVersionUID = -85915790781570020L;
 	private static final Logger logger = LoggerFactory.getLogger( UploadAssefazController.class.getSimpleName( ) );
-	
 
 	@Override
 	protected boolean processFile( FileUpload fileUpload, MediaDTO media )
@@ -70,7 +68,7 @@ public class UploadAssefazController extends FileUploadController
 			return false;
 		}
 
-		dto = getSession( ).add( fileUpload, dto, true );
+		dto = getSession( ).add( getPrincipal( ), fileUpload, dto, true );
 		if ( dto.isValid( ) == false ) {
 			rejecteds.add( createRejected( dto ) );
 		}

@@ -14,7 +14,9 @@ import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.ejb.user.company.Company;
+import br.com.mcampos.ejb.user.company.CompanySessionLocal;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class InepPackageSessionBean
@@ -25,7 +27,10 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepPack
 		InepPackageSessionLocal
 {
 	@EJB
-	InepTaskSessionLocal taskSession;
+	private InepTaskSessionLocal taskSession;
+
+	@EJB
+	private CompanySessionLocal companySession;
 
 	@Override
 	protected Class<InepPackage> getEntityClass( )
@@ -44,29 +49,30 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepPack
 	}
 
 	@Override
-	public List<InepPackage> getAll( Collaborator auth )
+	public List<InepPackage> getAll( PrincipalDTO auth )
 	{
 		return getAll( auth, null );
 	}
 
 	@Override
-	public List<InepPackage> getAll( Collaborator c, DBPaging page )
+	public List<InepPackage> getAll( PrincipalDTO c, DBPaging page )
 	{
 		if ( c == null ) {
 			return Collections.emptyList( );
 		}
-		return findByNamedQuery( InepPackage.getAll, page, c.getCompany( ) );
+		Company company = companySession.get( c.getCompanyID( ) );
+		return findByNamedQuery( InepPackage.getAll, page, company );
 	}
 
 	@Override
-	public Integer getNextId( Collaborator c )
+	public Integer getNextId( PrincipalDTO c )
 	{
 		if ( c == null ) {
 			return 0;
 		}
 		Query query = getEntityManager( ).createQuery(
 				"select max( o.id.id ) + 1 from InepPackage o where o.company = ?1" );
-		query.setParameter( 1, c.getCompany( ) );
+		query.setParameter( 1, companySession.get( c.getCompanyID( ) ) );
 		Integer id;
 		try {
 			id = (Integer) query.getSingleResult( );

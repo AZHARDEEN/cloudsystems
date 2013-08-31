@@ -6,13 +6,14 @@ import javax.ejb.Remote;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.utils.dto.Credential;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
 public interface LoginSession extends BaseSessionInterface<Login>
 {
 	Login loginByDocument( Credential credential );
 
-	Boolean changePassword( Login login, Credential credential, String oldPasswor, String newPassword );
+	Boolean changePassword( Integer loginId, Credential credential, String oldPasswor, String newPassword );
 
 	String getProperty( String id );
 
@@ -24,7 +25,7 @@ public interface LoginSession extends BaseSessionInterface<Login>
 
 	Boolean isPasswordUsed( Integer id, String newPassword );
 
-	void logout( Login login, Credential crecential );
+	void logout( Integer id, Credential crecential );
 
 	/*
 	 * Administrative Tasks
@@ -32,7 +33,7 @@ public interface LoginSession extends BaseSessionInterface<Login>
 
 	List<Login> search( String searchField, String lookFor );
 
-	Login resetLogin( Login admin, Login toReset, Credential credential );
+	Login resetLogin( PrincipalDTO admin, Login toReset, Credential credential );
 
 	String randomPassword( int count );
 

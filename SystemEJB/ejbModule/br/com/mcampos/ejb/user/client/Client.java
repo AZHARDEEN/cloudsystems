@@ -79,18 +79,18 @@ public class Client implements Serializable, Comparable<Client>
 
 	}
 
-	public Client( Company c, Users u )
+	public Client( Integer companyId, Users u )
 	{
-		setCompany( c );
+		getId( ).setCompanyId( companyId );
 		setClient( u );
 	}
 
 	public ClientPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new ClientPK( );
+		if ( id == null ) {
+			id = new ClientPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( ClientPK id )
@@ -100,27 +100,27 @@ public class Client implements Serializable, Comparable<Client>
 
 	public Date getFromDate( )
 	{
-		return this.fromDate;
+		return fromDate;
 	}
 
 	public void setFromDate( Date cliFromDt )
 	{
-		this.fromDate = cliFromDt;
+		fromDate = cliFromDt;
 	}
 
 	public Date getToDate( )
 	{
-		return this.toDate;
+		return toDate;
 	}
 
 	public void setToDate( Date cliToDt )
 	{
-		this.toDate = cliToDt;
+		toDate = cliToDt;
 	}
 
 	public Users getClient( )
 	{
-		return this.client;
+		return client;
 	}
 
 	public void setClient( Users client )
@@ -130,7 +130,7 @@ public class Client implements Serializable, Comparable<Client>
 
 	public Company getCompany( )
 	{
-		return this.company;
+		return company;
 	}
 
 	public void setCompany( Company company )

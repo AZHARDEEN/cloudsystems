@@ -7,12 +7,12 @@ import javax.ejb.Local;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
 import br.com.mcampos.ejb.inep.entity.InepTask;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Local
 public interface InepTaskSessionLocal extends BaseSessionInterface<InepTask>
 {
-	List<InepPackage> getEvents( Collaborator auth );
+	List<InepPackage> getEvents( PrincipalDTO auth );
 
 	List<InepTask> getAll( InepPackage event );
 }

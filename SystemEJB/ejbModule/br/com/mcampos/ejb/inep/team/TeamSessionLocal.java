@@ -11,6 +11,7 @@ import br.com.mcampos.ejb.inep.entity.InepRevisor;
 import br.com.mcampos.ejb.inep.entity.InepTask;
 import br.com.mcampos.ejb.inep.entity.InepTest;
 import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Local
 public interface TeamSessionLocal extends BaseSessionInterface<InepRevisor>
@@ -27,9 +28,9 @@ public interface TeamSessionLocal extends BaseSessionInterface<InepRevisor>
 
 	InepDistribution updateRevision( InepDistribution rev );
 
-	List<InepPackage> getEvents( Collaborator auth );
+	List<InepPackage> getEvents( PrincipalDTO auth );
 
-	InepRevisor getRevisor( InepPackage event, Collaborator auth );
+	InepRevisor getRevisor( InepPackage event, PrincipalDTO auth );
 
 	List<InepDistribution> getOtherDistributions( InepTest test );
 

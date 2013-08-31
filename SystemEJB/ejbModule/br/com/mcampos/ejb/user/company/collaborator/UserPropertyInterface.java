@@ -1,13 +1,14 @@
 package br.com.mcampos.ejb.user.company.collaborator;
 
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginProperty;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 public interface UserPropertyInterface
 {
-	LoginProperty getProperty( Collaborator collaborator, String propertyName );
+	LoginProperty getProperty( PrincipalDTO collaborator, String propertyName );
 
-	void setProperty( Collaborator collaborator, String propertyName, String Value );
+	void setProperty( PrincipalDTO collaborator, String propertyName, String Value );
 
-	LoginProperty remove( Collaborator collaborator, String propertyName );
+	LoginProperty remove( PrincipalDTO collaborator, String propertyName );
 
 }

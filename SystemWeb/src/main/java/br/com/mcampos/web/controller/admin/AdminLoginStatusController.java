@@ -37,7 +37,7 @@ public class AdminLoginStatusController extends BaseDBLoggedController<LoginSess
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		if( getCombobox( ).getItemCount( ) > 0 ) {
+		if ( getCombobox( ).getItemCount( ) > 0 ) {
 			getCombobox( ).setSelectedIndex( 0 ); // Name is default
 			getTextbox( ).setFocus( true );
 		}
@@ -64,7 +64,7 @@ public class AdminLoginStatusController extends BaseDBLoggedController<LoginSess
 	public void onSelect( Event evt )
 	{
 		getTextbox( ).setFocus( true );
-		if( evt != null )
+		if ( evt != null )
 			evt.stopPropagation( );
 	}
 
@@ -72,7 +72,7 @@ public class AdminLoginStatusController extends BaseDBLoggedController<LoginSess
 	public void onOk( Event evt )
 	{
 		doSearch( );
-		if( evt != null )
+		if ( evt != null )
 			evt.stopPropagation( );
 	}
 
@@ -80,7 +80,7 @@ public class AdminLoginStatusController extends BaseDBLoggedController<LoginSess
 	public void onSearch( Event evt )
 	{
 		doSearch( );
-		if( evt != null )
+		if ( evt != null )
 			evt.stopPropagation( );
 	}
 
@@ -88,16 +88,16 @@ public class AdminLoginStatusController extends BaseDBLoggedController<LoginSess
 	{
 		@SuppressWarnings( "unchecked" )
 		ListModelList<Login> model = (ListModelList<Login>) getModel( getListbox( ) );
-		if( model != null ) {
+		if ( model != null ) {
 			model.clear( );
 		}
 		else {
 			getListbox( ).getItems( ).clear( );
 		}
-		if( cmbField.getSelectedItem( ) == null || SysUtils.isEmpty( txtValue.getValue( ) ) == true )
+		if ( cmbField.getSelectedItem( ) == null || SysUtils.isEmpty( txtValue.getValue( ) ) == true )
 			return;
 		List<Login> login = getSession( ).search( (String) cmbField.getSelectedItem( ).getValue( ), txtValue.getValue( ) );
-		if( SysUtils.isEmpty( login ) ) {
+		if ( SysUtils.isEmpty( login ) ) {
 			Messagebox.show( "Nenhum login encontrado", "Localizar Login", Messagebox.OK, Messagebox.INFORMATION );
 			return;
 		}
@@ -114,15 +114,15 @@ public class AdminLoginStatusController extends BaseDBLoggedController<LoginSess
 	public void onResetAll( Event evt )
 	{
 		Listitem item = getListbox( ).getSelectedItem( );
-		if( item == null ) {
+		if ( item == null ) {
 			Messagebox.show( "Por favor, selecione um item da lista primeiro", "Reset de Login", Messagebox.OK, Messagebox.INFORMATION );
 			return;
 		}
 		Login login = (Login) item.getValue( );
-		if( login == null )
+		if ( login == null )
 			return;
 		getSession( ).resetLogin( getPrincipal( ), login, getCredential( ) );
-		if( evt != null )
+		if ( evt != null )
 			evt.stopPropagation( );
 	}
 
@@ -130,15 +130,15 @@ public class AdminLoginStatusController extends BaseDBLoggedController<LoginSess
 	public void onPersonify( Event evt )
 	{
 		Listitem item = getListbox( ).getSelectedItem( );
-		if( item == null ) {
+		if ( item == null ) {
 			Messagebox.show( "Por favor, selecione um item da lista primeiro", "Reset de Login", Messagebox.OK, Messagebox.INFORMATION );
 			return;
 		}
 		logger.warn( "Personify has been called from Login id: " + getPrincipal( ).getUserId( ) );
 		Login login = (Login) item.getValue( );
-		if( login == null )
+		if ( login == null )
 			return;
-		getPrincipal( ).setPersonify( new PrincipalDTO( login.getId( ) ) );
+		getPrincipal( ).setPersonify( new PrincipalDTO( login.getId( ), login.getPerson( ).getFriendlyName( ) ) );
 		logger.warn( "Impersonating " + login.getPerson( ).getName( ) + "Login id: " + login.getId( ) );
 		redirect( null );
 	}

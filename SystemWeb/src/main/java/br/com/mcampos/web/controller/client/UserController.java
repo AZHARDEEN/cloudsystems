@@ -111,13 +111,13 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 
 	protected void show( Users u )
 	{
-		if( u != null )
+		if ( u != null )
 		{
 			getDocumentList( ).setModel( new ListModelList<UserDocument>( u.getDocuments( ) ) );
 			getContactList( ).setModel( new ListModelList<UserContact>( u.getContacts( ) ) );
 			getAddressList( ).setModel( new ListModelList<Address>( u.getAddresses( ) ) );
 			this.name.setValue( u.getName( ) );
-			if( this.birthdate != null ) {
+			if ( this.birthdate != null ) {
 				this.birthdate.setValue( u.getBirthDate( ) );
 			}
 			setCurrentUser( u );
@@ -128,7 +128,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 			getContactList( ).setModel( new ListModelList<UserContact>( ) );
 			getAddressList( ).setModel( new ListModelList<Address>( ) );
 			this.name.setRawValue( "" );
-			if( this.birthdate != null ) {
+			if ( this.birthdate != null ) {
 				this.birthdate.setValue( null );
 			}
 			setCurrentUser( null );
@@ -147,7 +147,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 
 	private List<UserDocument> getDocuments( )
 	{
-		if( this.documentList != null && this.documentList.getModel( ) != null ) {
+		if ( this.documentList != null && this.documentList.getModel( ) != null ) {
 			Object objList = this.documentList.getModel( );
 			@SuppressWarnings( "unchecked" )
 			ListModelList<UserDocument> l = (ListModelList<UserDocument>) objList;
@@ -160,7 +160,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 
 	private List<UserContact> getContacts( )
 	{
-		if( getContactList( ) != null && getContactList( ).getModel( ) != null ) {
+		if ( getContactList( ) != null && getContactList( ).getModel( ) != null ) {
 			Object objList = this.contactList.getModel( );
 			@SuppressWarnings( "unchecked" )
 			ListModelList<UserContact> l = (ListModelList<UserContact>) objList;
@@ -173,7 +173,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 
 	private List<Address> getAddresses( )
 	{
-		if( getAddressList( ) != null && getAddressList( ).getModel( ) != null ) {
+		if ( getAddressList( ) != null && getAddressList( ).getModel( ) != null ) {
 			Object objList = getAddressList( ).getModel( );
 			@SuppressWarnings( "unchecked" )
 			ListModelList<Address> l = (ListModelList<Address>) objList;
@@ -206,8 +206,8 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 	protected void addDocument( String document, DocumentType type )
 	{
 		@SuppressWarnings( "unchecked" )
-		ListModelList<UserDocument> model = ((ListModelList<UserDocument>) ((Object) getDocumentList( ).getModel( )));
-		if( model == null ) {
+		ListModelList<UserDocument> model = ( (ListModelList<UserDocument>) ( (Object) getDocumentList( ).getModel( ) ) );
+		if ( model == null ) {
 			model = new ListModelList<UserDocument>( );
 			getDocumentList( ).setModel( model );
 		}
@@ -226,13 +226,13 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 	public void onReport( Event evt )
 	{
 		Component c = createComponents( BaseReportWindow.reportTemplateName, getMainWindow( ), null );
-		if( c != null && c instanceof BaseReportWindow ) {
+		if ( c != null && c instanceof BaseReportWindow ) {
 			BaseReportWindow w = (BaseReportWindow) c;
 
 			w.setReports( getReports( ) );
 			doModal( w, this );
 		}
-		if( evt != null ) {
+		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
@@ -274,8 +274,8 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 
 	protected Client getCurrentClient( )
 	{
-		if( this.currentClient == null ) {
-			this.currentClient = new Client( getPrincipal( ), createEmptyEntity( ) );
+		if ( this.currentClient == null ) {
+			this.currentClient = new Client( getPrincipal( ).getCompanyID( ), createEmptyEntity( ) );
 		}
 		return this.currentClient;
 	}
@@ -294,8 +294,8 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 
 	protected void enableItemButtons( boolean enable )
 	{
-		if( this.itemButtons != null ) {
-			for( Button b : this.itemButtons ) {
+		if ( this.itemButtons != null ) {
+			for ( Button b : this.itemButtons ) {
 				b.setDisabled( !enable );
 			}
 		}
@@ -303,9 +303,9 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 
 	protected DBPaging getPaging( )
 	{
-		if( this.paging == null ) {
+		if ( this.paging == null ) {
 			int rows = this.getListBox( ).getRows( );
-			if( rows == 0 ) {
+			if ( rows == 0 ) {
 				rows = defaultRows;
 				getListBox( ).setRows( rows );
 			}
@@ -341,10 +341,10 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 	@Listen( "onDoubleClick = #listTable; onSelect = #listTable" )
 	public void onDoubleClick( Event evt )
 	{
-		if( evt != null ) {
+		if ( evt != null ) {
 			evt.stopPropagation( );
 
-			if( evt.getName( ).equals( "onDoubleClick" ) ) {
+			if ( evt.getName( ).equals( "onDoubleClick" ) ) {
 				getDivList( ).setVisible( false );
 				getDivData( ).setVisible( true );
 				onUpdate( );
@@ -353,7 +353,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 				enableItemButtons( true );
 			}
 		}
-		if( evt != null ) {
+		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
@@ -364,7 +364,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 		int page = getListobxPaging( ).getActivePage( );
 		getPaging( ).setPage( page );
 		loadListbox( );
-		if( evt != null ) {
+		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
@@ -372,8 +372,8 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 	@Listen( "onClick=#cmdCreate, #cmdUpdate" )
 	public void onNewPerson( Event evt )
 	{
-		if( evt != null ) {
-			if( evt.getTarget( ).getId( ).equals( "cmdCreate" ) ) {
+		if ( evt != null ) {
+			if ( evt.getTarget( ).getId( ).equals( "cmdCreate" ) ) {
 				onNew( );
 			}
 			else {
@@ -382,7 +382,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 			getDivList( ).setVisible( false );
 			getDivData( ).setVisible( true );
 		}
-		if( evt != null ) {
+		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
@@ -391,7 +391,7 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 	public void onRefresh( Event evt )
 	{
 		loadListbox( );
-		if( evt != null ) {
+		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
@@ -399,16 +399,16 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 	@Listen( "onClick=#cmdDelete" )
 	public void onDelete( Event evt )
 	{
-		if( getListBox( ) != null && getListBox( ).getSelectedItem( ) != null ) {
+		if ( getListBox( ) != null && getListBox( ).getSelectedItem( ) != null ) {
 			Client client = getListBox( ).getSelectedItem( ).getValue( );
-			if( client != null ) {
-				if( remove( client ) ) {
+			if ( client != null ) {
+				if ( remove( client ) ) {
 					getModel( ).remove( client );
 					enableItemButtons( false );
 				}
 			}
 		}
-		if( evt != null ) {
+		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
@@ -416,16 +416,16 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 	@Listen( "onClick = #cmdSubmit, #cmdCancel " )
 	public void onClickSubmitCancel( Event evt )
 	{
-		if( evt != null ) {
-			if( evt.getTarget( ).getId( ).equals( "cmdSubmit" ) ) {
-				if( !onOk( ) ) {
+		if ( evt != null ) {
+			if ( evt.getTarget( ).getId( ).equals( "cmdSubmit" ) ) {
+				if ( !onOk( ) ) {
 					return;
 				}
 			}
 			evt.stopPropagation( );
 			onCancel( );
 		}
-		if( evt != null ) {
+		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
@@ -433,8 +433,8 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 	protected boolean onOk( )
 	{
 		Client client = getCurrentClient( );
-		if( validate( client.getClient( ) ) ) {
-			if( client.getClient( ) == null ) {
+		if ( validate( client.getClient( ) ) ) {
+			if ( client.getClient( ) == null ) {
 				client.setClient( new Person( ) );
 			}
 			update( client );

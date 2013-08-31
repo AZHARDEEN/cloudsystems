@@ -6,12 +6,12 @@ import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.inep.entity.InepPackage;
-import br.com.mcampos.ejb.user.company.collaborator.Collaborator;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Local
 public interface InepPackageSessionLocal extends BaseSessionInterface<InepPackage>
 {
-	List<InepPackage> getAll( Collaborator auth );
+	List<InepPackage> getAll( PrincipalDTO auth );
 
 	List<InepPackage> getAvailable( );
 }

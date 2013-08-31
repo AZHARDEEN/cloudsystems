@@ -21,7 +21,7 @@ public class BaseLoggedMDIController extends BaseMDIController implements Logged
 	@Override
 	public ComponentInfo doBeforeCompose( Page page, Component parent, ComponentInfo compInfo )
 	{
-		if( isLogged( ) ) {
+		if ( isLogged( ) ) {
 			return super.doBeforeCompose( page, parent, compInfo );
 		}
 		else {
@@ -39,8 +39,8 @@ public class BaseLoggedMDIController extends BaseMDIController implements Logged
 	@Override
 	public PrincipalDTO getPrincipal( )
 	{
-		PrincipalDTO login = getPrincipal( );
-		if( login != null && login.getPersonify( ) != null )
+		PrincipalDTO login = (PrincipalDTO) getSessionParameter( LoggedInterface.currentPrincipal );
+		if ( login != null && login.getPersonify( ) != null )
 			return login.getPersonify( );
 		return login;
 	}
