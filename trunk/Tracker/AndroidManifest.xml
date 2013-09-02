@@ -24,8 +24,10 @@
         </activity>
 
         <provider
-            android:name=".ActionProvider"
-            android:authorities="br.com.mcampos.android.tracker.providers.ActionProvider" />
+            android:name="br.com.mcampos.android.tracker.providers.ActionProvider"
+            android:authorities="br.com.mcampos.android.tracker.providers.ActionProvider"
+            android:exported="false" >
+        </provider>
     </application>
 
 </manifest>
