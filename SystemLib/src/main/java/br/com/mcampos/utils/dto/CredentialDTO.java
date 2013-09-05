@@ -3,7 +3,7 @@ package br.com.mcampos.utils.dto;
 import java.io.Serializable;
 import java.util.Locale;
 
-public class Credential implements Serializable
+public class CredentialDTO implements Serializable
 {
 	private static final long serialVersionUID = -7831902621075757599L;
 	private String sessionId;
