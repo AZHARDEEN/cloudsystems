@@ -35,7 +35,7 @@ import org.zkoss.zul.impl.XulElement;
 import org.zkoss.zul.theme.Themes;
 
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.Credential;
+import br.com.mcampos.utils.dto.CredentialDTO;
 import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.locator.ServiceLocator;
 
@@ -118,9 +118,9 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		}
 	}
 
-	protected Credential getCredential( )
+	protected CredentialDTO getCredential( )
 	{
-		Credential c = new Credential( );
+		CredentialDTO c = new CredentialDTO( );
 
 		c.setLocale( Locales.getCurrent( ) );
 		if( Executions.getCurrent( ) != null ) {

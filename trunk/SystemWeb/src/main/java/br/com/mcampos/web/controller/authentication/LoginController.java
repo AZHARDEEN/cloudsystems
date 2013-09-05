@@ -11,7 +11,7 @@ import org.zkoss.zul.Window;
 import br.com.mcampos.ejb.security.LoginSession;
 import br.com.mcampos.entity.security.Login;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.Credential;
+import br.com.mcampos.utils.dto.CredentialDTO;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.BaseCaptchaDialogController;
 import br.com.mcampos.web.core.LoggedInterface;
@@ -98,9 +98,9 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 	}
 
 	@Override
-	protected Credential getCredential( )
+	protected CredentialDTO getCredential( )
 	{
-		Credential c = super.getCredential( );
+		CredentialDTO c = super.getCredential( );
 		c.setIdentification( identification.getValue( ) );
 		c.setPassword( password.getValue( ) );
 		return c;

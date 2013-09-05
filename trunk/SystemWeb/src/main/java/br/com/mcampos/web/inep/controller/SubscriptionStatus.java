@@ -112,7 +112,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		swapTaskListbox.setItemRenderer( new InepTaskListRenderer( ) );
 		loadCombobox( );
 
-		if ( getRevisor( ) == null ) {
+		if( getRevisor( ) == null ) {
 			cmbTask.setVisible( true );
 			tabOper.setVisible( true );
 		}
@@ -125,14 +125,14 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	{
 		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
 
-		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
+		if( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );
 		}
-		for ( InepPackage e : events ) {
+		for( InepPackage e : events ) {
 			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
-		if ( getComboEvent( ).getItemCount( ) > 0 ) {
+		if( getComboEvent( ).getItemCount( ) > 0 ) {
 			getComboEvent( ).setSelectedIndex( 0 );
 			InepPackage event = getComboEvent( ).getSelectedItem( ).getValue( );
 			loadComboboxTask( event );
@@ -147,13 +147,13 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		List<InepTask> events = getSession( ).getTasks( event );
 
 		cmbTask.getItems( ).clear( );
-		for ( InepTask e : events ) {
-			if ( getRevisor( ) == null || getRevisor( ).getTask( ) == null || getRevisor( ).getTask( ).equals( e ) ) {
+		for( InepTask e : events ) {
+			if( getRevisor( ) == null || getRevisor( ).getTask( ) == null || getRevisor( ).getTask( ).equals( e ) ) {
 				Comboitem item = cmbTask.appendItem( e.getDescription( ) );
 				item.setValue( e );
 			}
 		}
-		if ( cmbTask.getItemCount( ) > 0 ) {
+		if( cmbTask.getItemCount( ) > 0 ) {
 			cmbTask.setSelectedIndex( 0 );
 		}
 	}
@@ -165,8 +165,8 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 
 	private void search( String value )
 	{
-		if ( SysUtils.isEmpty( value ) == false && value.length( ) >= 3 ) {
-			if ( showSubscriptions( value ) == false ) {
+		if( SysUtils.isEmpty( value ) == false && value.length( ) >= 3 ) {
+			if( showSubscriptions( value ) == false ) {
 				subscription.close( );
 			}
 		}
@@ -178,7 +178,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	@Listen( "onOpen=bandbox" )
 	public void onOpenBandbox( OpenEvent evt )
 	{
-		if ( evt != null ) {
+		if( evt != null ) {
 			logger.info( "onOpen[bandbox]: " + evt.getValue( ) );
 			search( evt.getValue( ).toString( ) );
 			evt.stopPropagation( );
@@ -188,7 +188,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	@Listen( "onOK=bandbox" )
 	public void onOkBandbox( Event evt )
 	{
-		if ( evt != null ) {
+		if( evt != null ) {
 			subscription.open( );
 			logger.info( "onOK[bandbox]: " + subscription.getValue( ) );
 			search( subscription.getValue( ) );
@@ -198,16 +198,16 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 
 	private boolean showSubscriptions( String part )
 	{
-		if ( getComboEvent( ).getSelectedItem( ) == null ) {
+		if( getComboEvent( ).getSelectedItem( ) == null ) {
 			return false;
 		}
 		InepPackage event = getComboEvent( ).getSelectedItem( ).getValue( );
-		if ( event == null ) {
+		if( event == null ) {
 			return false;
 		}
 		logger.info( "Searching for: " + part );
 		List<InepSubscription> list = getSession( ).getSubscriptions( event, part );
-		if ( SysUtils.isEmpty( list ) ) {
+		if( SysUtils.isEmpty( list ) ) {
 			return false;
 		}
 		listBox.setModel( new ListModelList<InepSubscription>( list ) );
@@ -221,7 +221,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		subscription.setValue( s.getId( ).getId( ) );
 		subscription.close( );
 		showInfo( s );
-		if ( evt != null ) {
+		if( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
@@ -229,7 +229,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	private InepSubscription getCurrentSubscription( )
 	{
 		Listitem item = listBox.getSelectedItem( );
-		if ( item == null || item.getValue( ) == null ) {
+		if( item == null || item.getValue( ) == null ) {
 			return null;
 		}
 		return item.getValue( );
@@ -243,7 +243,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 
 	private void showInfo( InepSubscription s )
 	{
-		if ( s == null ) {
+		if( s == null ) {
 			return;
 		}
 		List<InepDistribution> list = getSession( ).getDistribution( s );
@@ -263,14 +263,14 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		stationGrade.setValue( "" );
 		agreementGrade.setValue( "" );
 		agreement2Grade.setValue( "" );
-		if ( test != null ) {
+		if( test != null ) {
 			station.setValue( test.getStation( ) );
 			interviewerGrade.setValue( test.getInterviewGrade( ).toString( ) );
 			observerGrade.setValue( test.getObserverGrade( ).toString( ) );
 			stationGrade.setValue( test.getFinalGrade( ).toString( ) );
-			if ( test.getAgreementGrade( ) != null )
+			if( test.getAgreementGrade( ) != null )
 				agreementGrade.setValue( test.getAgreementGrade( ).toString( ) );
-			if ( test.getAgreement2Grade( ) != null )
+			if( test.getAgreement2Grade( ) != null )
 				agreement2Grade.setValue( test.getAgreement2Grade( ).toString( ) );
 		}
 		List<InepOralDistribution> list = getSession( ).getOralDistributions( test );
@@ -280,9 +280,9 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	private void showTasks( InepSubscription s )
 	{
 		List<InepTest> tests = getSession( ).getTests( s );
-		if ( !SysUtils.isEmpty( tests ) ) {
-			for ( InepTest test : tests ) {
-				switch ( test.getId( ).getTaskId( ) ) {
+		if( !SysUtils.isEmpty( tests ) ) {
+			for( InepTest test : tests ) {
+				switch( test.getId( ).getTaskId( ) ) {
 				case 1:
 					task1.setValue( test.getGrade( ).toString( ) );
 					break;
@@ -302,11 +302,11 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 
 	private void showFrame( InepSubscription s )
 	{
-		if ( cmbTask.getSelectedItem( ) != null ) {
+		if( cmbTask.getSelectedItem( ) != null ) {
 			InepTask task = (InepTask) cmbTask.getSelectedItem( ).getValue( );
 			byte[ ] obj = getSession( ).getMedia( s, task );
 			AMedia media = null;
-			if ( obj != null )
+			if( obj != null )
 				media = new AMedia( s.getId( ).getId( ) + "-" + task.getId( ).getId( ) + ".pdf", "pdf", "application/pdf", obj );
 			framePdf.setContent( media );
 		}
@@ -314,8 +314,8 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 
 	public InepRevisor getRevisor( )
 	{
-		if ( revisor == null ) {
-			if ( getComboEvent( ).getSelectedItem( ) != null ) {
+		if( revisor == null ) {
+			if( getComboEvent( ).getSelectedItem( ) != null ) {
 				revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
 						getPrincipal( ) );
 			}
@@ -328,15 +328,15 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	public void onSwapTask( MouseEvent evt )
 	{
 		ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
-		if ( model == null || SysUtils.isEmpty( model.getSelection( ) ) ) {
+		if( model == null || SysUtils.isEmpty( model.getSelection( ) ) ) {
 			Messagebox.show( "Por favor selecione ao menos 2(duas) tarefas", "Trocar Tarefa", Messagebox.OK, Messagebox.EXCLAMATION );
 			return;
 		}
-		if ( getCurrentSubscription( ) == null ) {
+		if( getCurrentSubscription( ) == null ) {
 			Messagebox.show( "Não existe uma inscrição selecionada", "Reinicar Tarefa", Messagebox.OK, Messagebox.ERROR );
 			return;
 		}
-		if ( model.getSelection( ).size( ) != 2 ) {
+		if( model.getSelection( ).size( ) != 2 ) {
 			Messagebox.show( "Por favor selecione 2(duas) tarefas apenas", "Trocar Tarefas", Messagebox.OK, Messagebox.EXCLAMATION );
 			return;
 		}
@@ -346,7 +346,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 					@Override
 					public void onEvent( Event e )
 					{
-						if ( Messagebox.ON_YES.equals( e.getName( ) ) ) {
+						if( Messagebox.ON_YES.equals( e.getName( ) ) ) {
 							ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
 							ArrayList<InepTask> tasks = new ArrayList<InepTask>( model.getSelection( ) );
 							getSession( ).swapTasks( getCurrentSubscription( ), tasks.get( 0 ), tasks.get( 1 ) );
@@ -355,7 +355,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 						}
 					}
 				} );
-		if ( evt != null )
+		if( evt != null )
 			evt.stopPropagation( );
 	}
 
@@ -364,11 +364,11 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	public void onResetDistribution( MouseEvent evt )
 	{
 		ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
-		if ( model == null || SysUtils.isEmpty( model.getSelection( ) ) ) {
+		if( model == null || SysUtils.isEmpty( model.getSelection( ) ) ) {
 			Messagebox.show( "Por favor selecione ao menos 1(uma) tarefa", "Reinicar Tarefa", Messagebox.OK, Messagebox.EXCLAMATION );
 			return;
 		}
-		if ( getCurrentSubscription( ) == null ) {
+		if( getCurrentSubscription( ) == null ) {
 			Messagebox.show( "Não existe uma inscrição selecionada", "Reinicar Tarefa", Messagebox.OK, Messagebox.ERROR );
 			return;
 		}
@@ -378,16 +378,16 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 					@Override
 					public void onEvent( Event e )
 					{
-						if ( Messagebox.ON_YES.equals( e.getName( ) ) ) {
+						if( Messagebox.ON_YES.equals( e.getName( ) ) ) {
 							ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
 							ArrayList<InepTask> tasks = new ArrayList<InepTask>( model.getSelection( ) );
-							getSession( ).resetTasks( getCurrentSubscription( ), tasks );
+							getSession( ).resetTasks( getPrincipal( ), getCurrentSubscription( ), tasks );
 							onSelect( null );
 							Messagebox.show( "Reinicialização concluída com sucesso", "Reinicar Tarefa", Messagebox.OK, Messagebox.INFORMATION );
 						}
 					}
 				} );
-		if ( evt != null )
+		if( evt != null )
 			evt.stopPropagation( );
 	}
 }

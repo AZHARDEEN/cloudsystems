@@ -88,7 +88,7 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 	@Override
 	protected void showFields( AnotoForm entity )
 	{
-		if ( entity != null ) {
+		if( entity != null ) {
 			entity = lazyInitForm( entity );
 			recordIP.setValue( entity.getApplication( ) );
 			recordImagePath.setValue( entity.getImagePath( ) );
@@ -129,7 +129,7 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 	protected void updateTargetEntity( AnotoForm target )
 	{
 		super.updateTargetEntity( target );
-		if ( target != null ) {
+		if( target != null ) {
 			target.setApplication( application.getText( ) );
 			target.setConcatenate( editConcatPgc.isChecked( ) );
 			target.setIcr( editIcrImage.isChecked( ) );
@@ -170,12 +170,12 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 	@Listen( "onUpload=#btnAddAttach" )
 	public void onUpload( UploadEvent evt )
 	{
-		if ( evt != null && getListbox( ).getSelectedItem( ) != null ) {
+		if( evt != null && getListbox( ).getSelectedItem( ) != null ) {
 			try {
 				MediaDTO m = UploadMedia.getMedia( evt.getMedia( ) );
 				uploadPADFile( m );
 			}
-			catch ( IOException e ) {
+			catch( IOException e ) {
 				e.printStackTrace( );
 			}
 			evt.stopPropagation( );
@@ -183,37 +183,28 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 	}
 
 	/*
-	private void processUpload( MediaDTO m )
-	{
-		if ( m == null ) {
-			return;
-		}
-		if ( m.getFormat( ).equalsIgnoreCase( "PAD" ) ) {
-			uploadPADFile( m );
-		}
-		else {
-			uploadOtherFile( m );
-		}
-	}
-	*/
+	 * private void processUpload( MediaDTO m ) { if ( m == null ) { return; }
+	 * if ( m.getFormat( ).equalsIgnoreCase( "PAD" ) ) { uploadPADFile( m ); }
+	 * else { uploadOtherFile( m ); } }
+	 */
 
 	private AnotoForm lazyInitForm( AnotoForm form )
 	{
-		if ( form == null ) {
+		if( form == null ) {
 			return null;
 		}
 		try {
-			if ( form.getPads( ).size( ) > 0 ) {
+			if( form.getPads( ).size( ) > 0 ) {
 				form.getPads( ).get( 0 );
 			}
-			if ( form.getMedias( ).size( ) > 0 ) {
+			if( form.getMedias( ).size( ) > 0 ) {
 				form.getMedias( ).get( 0 );
 			}
-			if ( form.getClients( ).size( ) > 0 ) {
+			if( form.getClients( ).size( ) > 0 ) {
 				form.getClients( ).get( 0 );
 			}
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			form = getSession( ).getRelationships( form );
 		}
 		return form;
@@ -225,16 +216,16 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 		form = lazyInitForm( form );
 		getListbox( ).getSelectedItem( ).setValue( form );
 		PadFile file = new PadFile( getSession( ), (AnotoForm) getListbox( ).getSelectedItem( ).getValue( ) );
-		if ( file.isPadFile( m ) ) {
+		if( file.isPadFile( m ) ) {
 			List<AnotoPage> pages = new ArrayList<AnotoPage>( file.getPages( ).size( ) );
-			for ( Element e : file.getPages( ) ) {
+			for( Element e : file.getPages( ) ) {
 				AnotoPage page = new AnotoPage( );
 				page.getId( ).setId( file.getPageAddress( e ) );
 				page.setDescription( file.getPageName( e ) );
 				pages.add( page );
 				getFields( file, e, page );
 			}
-			form = getSession( ).add( form, m, pages );
+			form = getSession( ).add( getPrincipal( ), form, m, pages );
 			listAttachs.setModel( new ListModelList<Pad>( form.getPads( ) ) );
 		}
 		else {
@@ -244,7 +235,7 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 
 	private void getFields( PadFile file, Element e, AnotoPage page )
 	{
-		for ( Element item : file.getFields( e ) )
+		for( Element item : file.getFields( e ) )
 		{
 			AnotoPageField field = new AnotoPageField( );
 			field.getId( ).setId( file.getProperty( item, "name" ) );
@@ -260,10 +251,7 @@ public class AnotoFormController extends SimpleTableController<AnotoFormSession,
 	}
 
 	/*
-	private void uploadOtherFile( MediaDTO m )
-	{
-		AnotoForm form = getListbox( ).getSelectedItem( ).getValue( );
-		getSession( ).add( form, m );
-	}
-	*/
+	 * private void uploadOtherFile( MediaDTO m ) { AnotoForm form = getListbox(
+	 * ).getSelectedItem( ).getValue( ); getSession( ).add( form, m ); }
+	 */
 }

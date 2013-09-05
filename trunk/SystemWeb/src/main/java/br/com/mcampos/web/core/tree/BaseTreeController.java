@@ -67,7 +67,7 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBLoggedCo
 		Object obj;
 
 		obj = (getTree( ).getModel( ));
-		if ( obj == null ) {
+		if( obj == null ) {
 			obj = new AdvancedTreeModel<ENTITY>( getRoot( ) );
 		}
 		return (AdvancedTreeModel<ENTITY>) obj;
@@ -115,7 +115,7 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBLoggedCo
 	public void onSelect( Event evt )
 	{
 		BaseTreeNode<ENTITY> baseNode = getSelectedNode( );
-		if ( baseNode == null ) {
+		if( baseNode == null ) {
 			getBtnDelete( ).setDisabled( true );
 			getBtnUpdate( ).setDisabled( true );
 			showRecord( null );
@@ -130,7 +130,10 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBLoggedCo
 
 	protected BaseTreeNode<ENTITY> getSelectedNode( )
 	{
-		return getTree( ).getSelectedItem( ).getValue( );
+		if( getTree( ) != null && getTree( ).getSelectedItem( ) != null )
+			return getTree( ).getSelectedItem( ).getValue( );
+		else
+			return null;
 	}
 
 	@Listen( "onClick = #cmdRefresh" )
@@ -164,7 +167,7 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBLoggedCo
 
 	private Boolean isUpdating( )
 	{
-		if ( this.updating == null ) {
+		if( this.updating == null ) {
 			this.updating = false;
 		}
 		return this.updating;
@@ -184,13 +187,13 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBLoggedCo
 	@Listen( "onClick = #cmdSave, #cmdCancel; onOK = textbox" )
 	public void onSave( Event evt )
 	{
-		if ( (evt.getTarget( ).getId( ).equalsIgnoreCase( "cmdSave" ) || evt.getName( ).equalsIgnoreCase( "onOK" )) ) {
-			if ( validateRecord( ) == false ) {
+		if( (evt.getTarget( ).getId( ).equalsIgnoreCase( "cmdSave" ) || evt.getName( ).equalsIgnoreCase( "onOK" )) ) {
+			if( validateRecord( ) == false ) {
 				return;
 			}
 			BaseTreeNode<ENTITY> node;
 			try {
-				if ( isUpdating( ) )
+				if( isUpdating( ) )
 				{
 					node = getSelectedNode( );
 					update( getSession( ), node.getData( ) );
@@ -200,9 +203,10 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBLoggedCo
 					node = insert( );
 					getModel( ).add( getRoot( ), node );
 				}
-			} catch( Exception e )
+			}
+			catch( Exception e )
 			{
-				if ( isUpdating( ) ) {
+				if( isUpdating( ) ) {
 					showErrorMessage( "Erro ao tentar atualizar o item selecionado", "Atualização" );
 				}
 				else {
@@ -216,7 +220,7 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBLoggedCo
 
 	private BaseTreeNode<ENTITY> getRoot( )
 	{
-		if ( this.root == null ) {
+		if( this.root == null ) {
 			this.root = getRootNode( );
 		}
 		return this.root;
@@ -224,13 +228,14 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBLoggedCo
 
 	protected void onDeleteEntity( Event evt )
 	{
-		if ( evt != null && evt.getName( ).equalsIgnoreCase( "onYes" ) )
+		if( evt != null && evt.getName( ).equalsIgnoreCase( "onYes" ) )
 		{
 			BaseTreeNode<ENTITY> nodeToDelete = getSelectedNode( );
 			getModel( ).remove( nodeToDelete );
 			try {
 				remove( getSession( ), nodeToDelete.getData( ) );
-			} catch( Exception e )
+			}
+			catch( Exception e )
 			{
 				showErrorMessage( "Erro ao excluir item", "Exclusao" );
 			}
@@ -243,7 +248,7 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBLoggedCo
 	public void onDelete( Event evt )
 	{
 		Treeitem item = getTree( ).getSelectedItem( );
-		if ( item == null )
+		if( item == null )
 		{
 			Messagebox.show( "Por favor, selecione um item antes de excluí-lo", "Exclusão", Messagebox.OK,
 					Messagebox.INFORMATION );
@@ -271,14 +276,15 @@ public abstract class BaseTreeController<SESSION, ENTITY> extends BaseDBLoggedCo
 		Treerow target = (Treerow) evt.getTarget( );
 		Object vSource = ((Treeitem) source.getParent( )).getValue( );
 		BaseTreeNode<ENTITY> vTarget = ((Treeitem) target.getParent( )).getValue( );
-		if ( vSource instanceof BaseTreeNode ) {
+		if( vSource instanceof BaseTreeNode ) {
 			BaseTreeNode<ENTITY> r = (BaseTreeNode<ENTITY>) vSource;
 
 			try {
 				changeParent( getSession( ), r.getData( ), vTarget.getData( ) );
 				getModel( ).remove( r );
 				getModel( ).add( vTarget, r );
-			} catch( Exception e )
+			}
+			catch( Exception e )
 			{
 				showErrorMessage( "Erro ao mover item", "Mover" );
 			}

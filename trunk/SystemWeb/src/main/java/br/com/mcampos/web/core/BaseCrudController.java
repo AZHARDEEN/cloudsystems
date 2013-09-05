@@ -73,10 +73,10 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 	{
 		super.doAfterCompose( comp );
 		setStatus( statusNone );
-		if ( this.updateButton != null ) {
+		if( this.updateButton != null ) {
 			this.updateButton.setDisabled( true );
 		}
-		if ( this.deleteButton != null ) {
+		if( this.deleteButton != null ) {
 			this.deleteButton.setDisabled( true );
 		}
 	}
@@ -102,13 +102,13 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 	public void onClickDelete( )
 	{
 		Collection<ENTITY> toDelete = getEntitiesToDelete( );
-		if ( SysUtils.isEmpty( toDelete ) ) {
+		if( SysUtils.isEmpty( toDelete ) ) {
 			return;
 		}
 		String deleteMsg;
 		String deleteTitle;
 
-		if ( toDelete.size( ) == 1 ) {
+		if( toDelete.size( ) == 1 ) {
 			deleteMsg = "Confirma a exclusão do registro selecionado";
 			deleteTitle = "Exclusão";
 		}
@@ -126,7 +126,7 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 	{
 		Collection<ENTITY> toDelete = getEntitiesToDelete( );
 		BaseSessionInterface<ENTITY> bean = (BaseSessionInterface<ENTITY>) getSession( );
-		setTargetEntity( (ENTITY) bean.remove( toDelete ) );
+		bean.remove( getPrincipal( ), toDelete );
 		afterDelete( toDelete );
 		setTargetEntity( null );
 
@@ -139,7 +139,7 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 			@Override
 			public void onEvent( Event event )
 			{
-				if ( Messagebox.ON_YES.equals( event.getName( ) ) ) {
+				if( Messagebox.ON_YES.equals( event.getName( ) ) ) {
 					delete( );
 				}
 			}
@@ -166,7 +166,7 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 	@Listen( "onClick = #cmdSave, #cmdCancel" )
 	public void onClickConfirmCancel( Event evt )
 	{
-		if ( evt.getTarget( ).getId( ).equals( this.cmdSave.getId( ) ) ) {
+		if( evt.getTarget( ).getId( ).equals( this.cmdSave.getId( ) ) ) {
 			onSave( );
 		}
 		onCancel( );
@@ -176,10 +176,10 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 
 	private void changeButtons( boolean enableOperations )
 	{
-		if ( this.divInfo != null ) {
+		if( this.divInfo != null ) {
 			this.divInfo.setVisible( enableOperations );
 		}
-		if ( this.divEdit != null ) {
+		if( this.divEdit != null ) {
 			this.divEdit.setVisible( !enableOperations );
 		}
 	}
@@ -192,14 +192,14 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 
 	protected void allowUpdate( boolean bAllow )
 	{
-		if ( this.updateButton != null ) {
+		if( this.updateButton != null ) {
 			this.updateButton.setDisabled( !bAllow );
 		}
 	}
 
 	protected void allowDelete( boolean bAllow )
 	{
-		if ( this.deleteButton != null ) {
+		if( this.deleteButton != null ) {
 			this.deleteButton.setDisabled( !bAllow );
 		}
 	}
@@ -209,7 +209,7 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 		@SuppressWarnings( "unchecked" )
 		BaseSessionInterface<ENTITY> bean = (BaseSessionInterface<ENTITY>) getSession( );
 		updateTargetEntity( getTargetEntity( ) );
-		if ( validateEntity( getTargetEntity( ), getStatus( ) ) ) {
+		if( validateEntity( getTargetEntity( ), getStatus( ) ) ) {
 			setTargetEntity( bean.merge( getTargetEntity( ) ) );
 			afterUpdate( getTargetEntity( ), getStatus( ) );
 		}

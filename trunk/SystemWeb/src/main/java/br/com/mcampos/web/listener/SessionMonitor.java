@@ -11,7 +11,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.http.HttpSessionListener;
 
 import br.com.mcampos.ejb.security.LoginSession;
-import br.com.mcampos.utils.dto.Credential;
+import br.com.mcampos.utils.dto.CredentialDTO;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.LoggedInterface;
 import br.com.mcampos.web.locator.ServiceLocator;
@@ -50,9 +50,9 @@ public class SessionMonitor extends HttpSessionListener
 		return session;
 	}
 
-	private Credential getCredential( HttpSessionEvent sessionEvent )
+	private CredentialDTO getCredential( HttpSessionEvent sessionEvent )
 	{
-		Credential c = new Credential( );
+		CredentialDTO c = new CredentialDTO( );
 
 		c.setLocale( Locales.getCurrent( ) );
 		if ( Executions.getCurrent( ) != null ) {

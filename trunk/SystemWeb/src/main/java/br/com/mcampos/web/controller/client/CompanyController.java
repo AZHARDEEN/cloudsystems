@@ -71,13 +71,9 @@ public class CompanyController extends UserController<ClientSession>
 		Company person = (Company) getSession( ).getUser( getPrincipal( ), client.getClient( ).getId( ) );
 		show( person );
 		/*
-		if ( SysUtils.isEmpty( getCpf( ).getValue( ) ) ) {
-			getCpf( ).setFocus( true );
-		}
-		else {
-			getName( ).setFocus( true );
-		}
-		*/
+		 * if ( SysUtils.isEmpty( getCpf( ).getValue( ) ) ) { getCpf(
+		 * ).setFocus( true ); } else { getName( ).setFocus( true ); }
+		 */
 
 	}
 
@@ -92,10 +88,10 @@ public class CompanyController extends UserController<ClientSession>
 	protected boolean remove( Client client )
 	{
 		try {
-			getSession( ).remove( client );
+			getSession( ).remove( getPrincipal( ), client.getId( ) );
 			return true;
 		}
-		catch ( Exception e )
+		catch( Exception e )
 		{
 			e.printStackTrace( );
 			return false;
@@ -105,7 +101,7 @@ public class CompanyController extends UserController<ClientSession>
 	protected void show( Company c )
 	{
 		super.show( c );
-		if ( c != null ) {
+		if( c != null ) {
 			getCurrentClient( ).setClient( c );
 			showCNPJ( c.getDocuments( ) );
 		}
@@ -117,8 +113,8 @@ public class CompanyController extends UserController<ClientSession>
 	protected void showCNPJ( List<UserDocument> docs )
 	{
 		getDocument( ).setValue( "" );
-		for ( UserDocument doc : docs ) {
-			if ( doc.getType( ).getId( ).equals( UserDocument.typeCNPJ ) ) {
+		for( UserDocument doc : docs ) {
+			if( doc.getType( ).getId( ).equals( UserDocument.typeCNPJ ) ) {
 				getDocument( ).setValue( doc.getCode( ) );
 				break;
 			}
@@ -128,14 +124,14 @@ public class CompanyController extends UserController<ClientSession>
 	@Override
 	protected Client update( Client client )
 	{
-		if ( client == null ) {
+		if( client == null ) {
 			return null;
 		}
-		if ( validate( client.getClient( ) ) ) {
+		if( validate( client.getClient( ) ) ) {
 			updateCompany( (Company) client.getClient( ) );
 			client = getSession( ).addNewCompany( getPrincipal( ), client );
 			int nIndex = getModel( ).indexOf( client );
-			if ( nIndex >= 0 ) {
+			if( nIndex >= 0 ) {
 				getModel( ).set( nIndex, client );
 			}
 			else {
@@ -147,7 +143,7 @@ public class CompanyController extends UserController<ClientSession>
 
 	protected void updateCompany( Company c )
 	{
-		if ( c == null ) {
+		if( c == null ) {
 			return;
 		}
 		super.update( c );
@@ -157,18 +153,18 @@ public class CompanyController extends UserController<ClientSession>
 	public void onBlur( Event evt )
 	{
 		String doc = getDocument( ).getValue( );
-		if ( SysUtils.isEmpty( doc ) ) {
+		if( SysUtils.isEmpty( doc ) ) {
 			return;
 		}
 		Company c = getCompany( CNPJ.removeMask( doc ) );
-		if ( c == null ) {
+		if( c == null ) {
 			getDocument( ).setValue( doc );
 			addDocument( CPF.removeMask( doc ), getDocumentType( UserDocument.typeCNPJ ) );
 		}
 		else {
 			show( c );
 		}
-		if ( evt != null ) {
+		if( evt != null ) {
 			logger.info( "onBlur: " + evt.getTarget( ).getId( ) );
 			evt.stopPropagation( );
 		}
@@ -179,7 +175,7 @@ public class CompanyController extends UserController<ClientSession>
 
 	private Textbox getDocument( )
 	{
-		return this.cnpj;
+		return cnpj;
 	}
 
 	protected Company getCompany( String doc )

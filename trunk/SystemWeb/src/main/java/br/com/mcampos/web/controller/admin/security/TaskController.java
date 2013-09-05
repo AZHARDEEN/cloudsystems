@@ -86,7 +86,7 @@ public class TaskController extends BaseTreeController<TaskSession, Task> implem
 		List<Role> roles;
 		List<Menu> menus;
 
-		if ( node != null ) {
+		if( node != null ) {
 			recordId.setValue( node.getId( ).toString( ) );
 			recordDescription.setValue( node.getDescription( ) );
 			roles = getSession( ).getRoles( node.getId( ) );
@@ -124,7 +124,7 @@ public class TaskController extends BaseTreeController<TaskSession, Task> implem
 	@Override
 	protected boolean validateRecord( )
 	{
-		if ( editDescription.isValid( ) == false ) {
+		if( editDescription.isValid( ) == false ) {
 			return false;
 		}
 		return true;
@@ -150,7 +150,7 @@ public class TaskController extends BaseTreeController<TaskSession, Task> implem
 	@Override
 	protected void remove( TaskSession session, Task data )
 	{
-		session.remove( data );
+		session.remove( getPrincipal( ), data.getId( ) );
 	}
 
 	@Override
@@ -176,7 +176,7 @@ public class TaskController extends BaseTreeController<TaskSession, Task> implem
 		try {
 			rootMenu.setChilds( getSession( ).getTopContextMenu( ) );
 		}
-		catch ( ApplicationException e ) {
+		catch( ApplicationException e ) {
 			e.printStackTrace( );
 		}
 		return MenuNode.createNode( rootMenu );
@@ -186,36 +186,36 @@ public class TaskController extends BaseTreeController<TaskSession, Task> implem
 	@SuppressWarnings( "unchecked" )
 	public void onDrop( DropEvent evt )
 	{
-		if ( evt != null )
+		if( evt != null )
 		{
 			Treerow source = (Treerow) evt.getDragged( );
 			Treerow target = (Treerow) evt.getTarget( );
-			Object vSource = ( (Treeitem) source.getParent( ) ).getValue( );
-			TaskNode vTarget = ( (Treeitem) target.getParent( ) ).getValue( );
-			if ( vSource instanceof MenuNode || vSource instanceof RoleNode )
+			Object vSource = ((Treeitem) source.getParent( )).getValue( );
+			TaskNode vTarget = ((Treeitem) target.getParent( )).getValue( );
+			if( vSource instanceof MenuNode || vSource instanceof RoleNode )
 			{
 				BaseTreeNode<?> t;
 				t = (BaseTreeNode<?>) vSource;
-				if ( t != null ) {
+				if( t != null ) {
 					try {
-						if ( t instanceof MenuNode )
+						if( t instanceof MenuNode )
 						{
-							getSession( ).add( vTarget.getData( ), (Menu) t.getData( ) );
+							getSession( ).add( getPrincipal( ), vTarget.getData( ), (Menu) t.getData( ) );
 							ListModelList<Menu> model = (ListModelList<Menu>) (Object) listMenu.getModel( );
-							if ( model.contains( t.getData( ) ) == false ) {
+							if( model.contains( t.getData( ) ) == false ) {
 								model.add( (Menu) t.getData( ) );
 							}
 						}
 						else
 						{
-							getSession( ).add( vTarget.getData( ), (Role) t.getData( ) );
+							getSession( ).add( getPrincipal( ), vTarget.getData( ), (Role) t.getData( ) );
 							ListModelList<Role> model = (ListModelList<Role>) (Object) listRole.getModel( );
-							if ( model.contains( t.getData( ) ) == false ) {
+							if( model.contains( t.getData( ) ) == false ) {
 								model.add( (Role) t.getData( ) );
 							}
 						}
 					}
-					catch ( Exception e )
+					catch( Exception e )
 					{
 						showErrorMessage( "Erro ao adicionar item à tarefa", "Adicionar" );
 					}
@@ -231,6 +231,6 @@ public class TaskController extends BaseTreeController<TaskSession, Task> implem
 	@Override
 	protected void changeParent( TaskSession session, Task source, Task target )
 	{
-		session.changeParent( source, target );
+		session.changeParent( getPrincipal( ), source, target );
 	}
 }
