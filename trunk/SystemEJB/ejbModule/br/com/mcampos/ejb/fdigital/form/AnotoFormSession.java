@@ -10,17 +10,18 @@ import br.com.mcampos.entity.fdigital.AnotoForm;
 import br.com.mcampos.entity.fdigital.AnotoPage;
 import br.com.mcampos.entity.fdigital.FormMedia;
 import br.com.mcampos.entity.system.Media;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
 public interface AnotoFormSession extends BaseSessionInterface<AnotoForm>
 {
 	AnotoForm getRelationships( AnotoForm f );
 
-	AnotoForm add( AnotoForm f, MediaDTO m );
+	AnotoForm add( PrincipalDTO auth, AnotoForm f, MediaDTO m );
 
-	AnotoForm add( AnotoForm f, MediaDTO m, List<AnotoPage> pages );
+	AnotoForm add( PrincipalDTO auth, AnotoForm f, MediaDTO m, List<AnotoPage> pages );
 
-	AnotoForm remove( AnotoForm f, FormMedia fm );
+	AnotoForm remove( PrincipalDTO auth, AnotoForm f, FormMedia fm );
 
 	byte[ ] getObject( Media media );
 

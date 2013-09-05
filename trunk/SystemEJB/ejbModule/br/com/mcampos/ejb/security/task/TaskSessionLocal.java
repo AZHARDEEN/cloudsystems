@@ -10,6 +10,7 @@ import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.entity.security.Menu;
 import br.com.mcampos.entity.security.Role;
 import br.com.mcampos.entity.security.Task;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Local
 public interface TaskSessionLocal extends BaseSessionInterface<Task>
@@ -18,19 +19,19 @@ public interface TaskSessionLocal extends BaseSessionInterface<Task>
 
 	public List<Menu> getMenus( Integer id );
 
-	public void changeParent( Task entity, Task newParent );
+	public void changeParent( PrincipalDTO auth, Task entity, Task newParent );
 
 	public Role getRootRole( );
 
 	public List<Menu> getTopContextMenu( ) throws ApplicationException;
 
-	public Task add( Task task, Role role );
+	public Task add( PrincipalDTO auth, Task task, Role role );
 
-	public Task remove( Task task, Role role );
+	public Task remove( PrincipalDTO auth, Task task, Role role );
 
-	public Task add( Task task, Menu menu );
+	public Task add( PrincipalDTO auth, Task task, Menu menu );
 
-	public Task remove( Task task, Menu menu );
+	public Task remove( PrincipalDTO auth, Task task, Menu menu );
 
 	Task getRootTask( );
 

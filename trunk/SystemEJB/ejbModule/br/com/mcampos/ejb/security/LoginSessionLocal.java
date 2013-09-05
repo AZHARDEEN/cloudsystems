@@ -5,12 +5,12 @@ import javax.ejb.Local;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.entity.security.Login;
 import br.com.mcampos.entity.user.Person;
-import br.com.mcampos.utils.dto.Credential;
+import br.com.mcampos.utils.dto.CredentialDTO;
 
 @Local
 public interface LoginSessionLocal extends BaseSessionInterface<Login>
 {
-	Login loginByDocument( Credential credential );
+	Login loginByDocument( CredentialDTO credential );
 
 	Login getByDocument( String document );
 

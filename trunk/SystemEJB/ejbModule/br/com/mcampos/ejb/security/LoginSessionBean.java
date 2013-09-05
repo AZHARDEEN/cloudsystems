@@ -39,7 +39,7 @@ import br.com.mcampos.entity.user.UserDocument;
 import br.com.mcampos.entity.user.Users;
 import br.com.mcampos.sysutils.RandomString;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.Credential;
+import br.com.mcampos.utils.dto.CredentialDTO;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Stateless( name = "LoginSession", mappedName = "LoginSession" )
@@ -99,7 +99,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	}
 
 	@Override
-	public Login loginByDocument( Credential credential )
+	public Login loginByDocument( CredentialDTO credential )
 	{
 		if ( credential == null ) {
 			return null;
@@ -122,7 +122,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		}
 	}
 
-	private boolean verifyPassword( Login login, Credential credential )
+	private boolean verifyPassword( Login login, CredentialDTO credential )
 	{
 		if ( login == null || SysUtils.isEmpty( credential.getPassword( ) ) ) {
 			return false;
@@ -173,7 +173,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		return verifyPassword( login, password );
 	}
 
-	private boolean log( Login login, AccessLogType type, Credential credential )
+	private boolean log( Login login, AccessLogType type, CredentialDTO credential )
 	{
 		if ( login == null || type == null ) {
 			return false;
@@ -242,7 +242,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	}
 
 	@Override
-	public Boolean changePassword( Integer id, Credential credential, String oldPasswor, String newPassword )
+	public Boolean changePassword( Integer id, CredentialDTO credential, String oldPasswor, String newPassword )
 	{
 		if ( id == null ) {
 			return false;
@@ -258,7 +258,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		return true;
 	}
 
-	private void changePassword( Login entity, Credential credential, String newPassword )
+	private void changePassword( Login entity, CredentialDTO credential, String newPassword )
 	{
 		archivePassword( entity );
 		entity.setPassword( encryptPassword( newPassword ) );
@@ -482,7 +482,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	}
 
 	@Override
-	public void logout( Integer id, Credential credential )
+	public void logout( Integer id, CredentialDTO credential )
 	{
 		if ( id == null )
 			throw new InvalidParameterException( this.getClass( ).getSimpleName( ) + " - Login could not be null" );
@@ -577,7 +577,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	}
 
 	@Override
-	public Login resetLogin( PrincipalDTO admin, Login toReset, Credential credential )
+	public Login resetLogin( PrincipalDTO admin, Login toReset, CredentialDTO credential )
 	{
 		if ( admin == null || toReset == null )
 			return toReset;

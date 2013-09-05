@@ -1,6 +1,8 @@
 package br.com.mcampos.ejb.security.role;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -15,6 +17,7 @@ import br.com.mcampos.ejb.security.task.TaskSessionLocal;
 import br.com.mcampos.entity.security.Menu;
 import br.com.mcampos.entity.security.Role;
 import br.com.mcampos.entity.security.Task;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class RoleSessionBean
@@ -56,7 +59,7 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	}
 
 	@Override
-	public void changeParent( Role entity, Role newParent )
+	public void changeParent( PrincipalDTO auth, Role entity, Role newParent )
 	{
 		Role targetEntity = get( entity.getId( ) );
 		Role targetParent = get( newParent.getId( ) );
@@ -76,13 +79,13 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 
 	private void addTask( List<Task> tasks, Role entity )
 	{
-		for ( Role item : entity.getChilds( ) )
+		for( Role item : entity.getChilds( ) )
 		{
 			addTask( tasks, item );
 		}
-		for ( Task task : entity.getTasks( ) )
+		for( Task task : entity.getTasks( ) )
 		{
-			if ( tasks.contains( task ) == false ) {
+			if( tasks.contains( task ) == false ) {
 				tasks.add( task );
 			}
 		}
@@ -90,49 +93,46 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	}
 
 	@Override
-	public Role remove( Role entity )
+	public Role remove( PrincipalDTO auth, Serializable key )
 	{
-		if ( entity == null ) {
-			return entity;
-		}
-		Role toDelete = get( entity.getId( ) );
-		if ( toDelete == null ) {
+		Role toDelete = get( key );
+		if( toDelete == null ) {
 			return toDelete;
 		}
-		removeChilds( toDelete );
-		super.remove( toDelete );
+		removeChilds( auth, toDelete );
+		super.remove( auth, toDelete.getId( ) );
 		return toDelete;
 	}
 
-	private void removeChilds( Role entity )
+	private void removeChilds( PrincipalDTO auth, Role entity )
 	{
-		for ( Role item : entity.getChilds( ) ) {
-			removeChilds( item );
+		for( Role item : entity.getChilds( ) ) {
+			removeChilds( auth, item );
 			item.setParent( null );
-			for ( Task task : getTaks( entity ) )
+			for( Task task : getTaks( entity ) )
 			{
 				task.remove( entity );
 			}
-			super.remove( item );
+			super.remove( auth, item.getId( ) );
 		}
 		entity.setChilds( null );
 		entity.setTasks( null );
 	}
 
 	@Override
-	public Role add( Role item, List<Task> tasks )
+	public Role add( PrincipalDTO auth, Role item, List<Task> tasks )
 	{
-		for ( Task task : tasks ) {
-			add( item, task );
+		for( Task task : tasks ) {
+			add( auth, item, task );
 		}
 		return item;
 	}
 
 	@Override
-	public Role add( Role item, Task task )
+	public Role add( PrincipalDTO auth, Role item, Task task )
 	{
 		Role merged = get( item.getId( ) );
-		if ( merged != null )
+		if( merged != null )
 		{
 			Task taskMerged = taskSession.get( task.getId( ) );
 			merged.add( taskMerged );
@@ -141,10 +141,10 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	}
 
 	@Override
-	public Role remove( Role role, Task task )
+	public Role remove( PrincipalDTO auth, Role role, Task task )
 	{
 		Role merged = get( role.getId( ) );
-		if ( merged != null )
+		if( merged != null )
 		{
 			Task taskMerged = taskSession.get( task.getId( ) );
 			merged.remove( taskMerged );
@@ -155,12 +155,16 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	@Override
 	public List<Menu> getMenus( Role role ) throws ApplicationException
 	{
-		List<Menu> menus = new ArrayList<Menu>( );
-		Role m = get( role.getId( ) );
-		if ( m != null ) {
-			menuSession.addRoleToMenu( m, menus );
+		if( role != null ) {
+			List<Menu> menus = new ArrayList<Menu>( );
+			Role m = get( role.getId( ) );
+			if( m != null ) {
+				menuSession.addRoleToMenu( m, menus );
+			}
+			return menus;
 		}
-		return menus;
+		else
+			return Collections.emptyList( );
 	}
 
 	@Override
@@ -170,10 +174,10 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	}
 
 	@Override
-	public Role add( Role newEntity )
+	public Role add( PrincipalDTO auth, Role newEntity )
 	{
 		Role parent = newEntity.getParent( ) != null ? get( newEntity.getParent( ).getId( ) ) : getRootRole( );
-		Role e = super.add( newEntity );
+		Role e = super.add( auth, newEntity );
 		e.setParent( parent );
 		return e;
 	}

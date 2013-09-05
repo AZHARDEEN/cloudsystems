@@ -1,5 +1,8 @@
 package br.com.mcampos.ejb.fdigital.form.media;
 
+import java.io.Serializable;
+import java.security.InvalidParameterException;
+
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -8,6 +11,7 @@ import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
 import br.com.mcampos.entity.fdigital.FormMedia;
 import br.com.mcampos.entity.system.Media;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class FormMediaSessionBean
@@ -31,14 +35,20 @@ public class FormMediaSessionBean extends SimpleSessionBean<FormMedia> implement
 	 * @see br.com.mcampos.ejb.core.BaseSessionBean#remove(java.lang.Object)
 	 */
 	@Override
-	public FormMedia remove( FormMedia entity )
+	public FormMedia remove( PrincipalDTO auth, Serializable key )
 	{
-		if ( entity == null )
+		if( key == null || auth == null )
+			throw new InvalidParameterException( "Form Media remove" );
+
+		FormMedia entity = get( key );
+		if( entity != null ) {
+			Media media = entity.getMedia( );
+			if( media != null )
+				mediaSession.remove( auth, media.getId( ) );
+			return super.remove( auth, entity.getId( ) );
+		}
+		else
 			return null;
-		Media media = entity.getMedia( );
-		if ( media != null )
-			mediaSession.remove( media );
-		return super.remove( entity );
 	}
 
 }

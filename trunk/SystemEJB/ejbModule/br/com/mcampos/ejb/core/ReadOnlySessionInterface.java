@@ -5,9 +5,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
 public interface ReadOnlySessionInterface<T>
 {
-	public T get( Serializable key );
+	public T get( @NotNull Serializable key );
 
 	public Collection<T> getAll( );
 

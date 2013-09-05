@@ -18,5 +18,4 @@ public class PriceTypeSessionBean extends SimpleSessionBean<PriceType> implement
 	{
 		return PriceType.class;
 	}
-
 }
