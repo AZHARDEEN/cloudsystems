@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.entity.system.SystemParameters;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Stateless( name = "SystemParameterSession", mappedName = "SystemParameterSession" )
 public class SystemParameterSessionBean extends SimpleSessionBean<SystemParameters> implements SystemParameterSession, SystemParameterSessionLocal
@@ -21,7 +22,7 @@ public class SystemParameterSessionBean extends SimpleSessionBean<SystemParamete
 	public Integer getMaxTryCount( )
 	{
 		Integer param = getInt( SystemParameters.maxLoginTryCount );
-		if ( param == null ) {
+		if( param == null ) {
 			return 5;
 		}
 		else {
@@ -39,7 +40,7 @@ public class SystemParameterSessionBean extends SimpleSessionBean<SystemParamete
 	public String getStringValue( Serializable key )
 	{
 		SystemParameters param = get( key );
-		if ( param != null ) {
+		if( param != null ) {
 			return param.getValue( );
 		}
 		else {
@@ -50,11 +51,11 @@ public class SystemParameterSessionBean extends SimpleSessionBean<SystemParamete
 	@Override
 	public String get( String id )
 	{
-		if ( SysUtils.isEmpty( id ) ) {
+		if( SysUtils.isEmpty( id ) ) {
 			return "";
 		}
 		SystemParameters p = super.get( id );
-		if ( p != null ) {
+		if( p != null ) {
 			return p.getValue( );
 		}
 		else {
@@ -65,11 +66,11 @@ public class SystemParameterSessionBean extends SimpleSessionBean<SystemParamete
 	@Override
 	public void set( String id, String description, String value )
 	{
-		if ( id == null || value == null ) {
+		if( id == null || value == null ) {
 			return;
 		}
 		SystemParameters p = super.get( id );
-		if ( p == null ) {
+		if( p == null ) {
 			p = new SystemParameters( );
 		}
 		p.setId( id );
@@ -79,14 +80,14 @@ public class SystemParameterSessionBean extends SimpleSessionBean<SystemParamete
 	}
 
 	@Override
-	public void remove( String id )
+	public void remove( PrincipalDTO auth, String id )
 	{
-		if ( SysUtils.isEmpty( id ) ) {
+		if( SysUtils.isEmpty( id ) ) {
 			return;
 		}
 		SystemParameters p = super.get( id );
-		if ( p != null ) {
-			super.remove( p );
+		if( p != null ) {
+			super.remove( auth, p );
 		}
 	}
 
@@ -94,13 +95,13 @@ public class SystemParameterSessionBean extends SimpleSessionBean<SystemParamete
 	public Integer getInt( String id )
 	{
 		String value = get( id );
-		if ( SysUtils.isEmpty( value ) ) {
+		if( SysUtils.isEmpty( value ) ) {
 			return null;
 		}
 		try {
 			return Integer.parseInt( value );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			return null;
 		}
 	}
@@ -108,7 +109,7 @@ public class SystemParameterSessionBean extends SimpleSessionBean<SystemParamete
 	@Override
 	public void setInt( String id, String description, Integer value )
 	{
-		if ( value != null ) {
+		if( value != null ) {
 			set( id, description, value.toString( ) );
 		}
 	}
@@ -117,13 +118,13 @@ public class SystemParameterSessionBean extends SimpleSessionBean<SystemParamete
 	public Double getDouble( String id )
 	{
 		String value = get( id );
-		if ( SysUtils.isEmpty( value ) ) {
+		if( SysUtils.isEmpty( value ) ) {
 			return null;
 		}
 		try {
 			return Double.parseDouble( value );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			return null;
 		}
 	}
@@ -131,7 +132,7 @@ public class SystemParameterSessionBean extends SimpleSessionBean<SystemParamete
 	@Override
 	public void setDouble( String id, String description, Double value )
 	{
-		if ( value != null ) {
+		if( value != null ) {
 			set( id, description, value.toString( ) );
 		}
 
@@ -141,13 +142,13 @@ public class SystemParameterSessionBean extends SimpleSessionBean<SystemParamete
 	public Boolean getBool( String id )
 	{
 		String value = get( id );
-		if ( SysUtils.isEmpty( value ) ) {
+		if( SysUtils.isEmpty( value ) ) {
 			return null;
 		}
 		try {
 			return Boolean.parseBoolean( value );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			return null;
 		}
 	}
@@ -155,7 +156,7 @@ public class SystemParameterSessionBean extends SimpleSessionBean<SystemParamete
 	@Override
 	public void setBool( String id, String description, Boolean value )
 	{
-		if ( value != null ) {
+		if( value != null ) {
 			set( id, description, value.toString( ) );
 		}
 	}

@@ -7,6 +7,7 @@ import javax.ejb.Local;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.entity.security.Role;
 import br.com.mcampos.entity.security.Task;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Local
 public interface RoleSessionLocal extends BaseSessionInterface<Role>
@@ -16,14 +17,14 @@ public interface RoleSessionLocal extends BaseSessionInterface<Role>
 	@Override
 	Integer getNextId( );
 
-	void changeParent( Role entity, Role newParent );
+	void changeParent( PrincipalDTO auth, Role entity, Role newParent );
 
 	List<Task> getTaks( Role entity );
 
-	public Role add( Role role, List<Task> tasks );
+	public Role add( PrincipalDTO auth, Role role, List<Task> tasks );
 
-	public Role add( Role role, Task task );
+	public Role add( PrincipalDTO auth, Role role, Task task );
 
-	public Role remove( Role role, Task task );
+	public Role remove( PrincipalDTO auth, Role role, Task task );
 
 }

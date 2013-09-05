@@ -5,6 +5,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Transient;
 
 import br.com.mcampos.entity.BaseCompanyEntity;
 
@@ -13,9 +16,14 @@ import br.com.mcampos.entity.BaseCompanyEntity;
  * 
  */
 @Entity
+@NamedQueries( {
+		@NamedQuery( name = Category.getNextId, query = "select max(o.id.id) from Category o where o.id.companyId = ?1" )
+} )
 public class Category extends BaseCompanyEntity implements Serializable, Comparable<Category>
 {
 	private static final long serialVersionUID = 1L;
+
+	public static final String getNextId = "Category.getNextId";
 
 	@EmbeddedId
 	private CategoryPK id;
@@ -32,7 +40,7 @@ public class Category extends BaseCompanyEntity implements Serializable, Compara
 
 	public CategoryPK getId( )
 	{
-		if ( id == null )
+		if( id == null )
 			id = new CategoryPK( );
 		return id;
 	}
@@ -49,7 +57,7 @@ public class Category extends BaseCompanyEntity implements Serializable, Compara
 
 	public void setDescription( String catDescriptionTx )
 	{
-		description = catDescriptionTx;
+		description = catDescriptionTx != null ? catDescriptionTx.trim( ) : null;
 	}
 
 	public String getName( )
@@ -59,7 +67,7 @@ public class Category extends BaseCompanyEntity implements Serializable, Compara
 
 	public void setName( String catNameCh )
 	{
-		name = catNameCh;
+		name = catNameCh != null ? name.trim( ) : null;
 	}
 
 	@Override
@@ -71,20 +79,20 @@ public class Category extends BaseCompanyEntity implements Serializable, Compara
 	@Override
 	public int compareTo( Category o )
 	{
-		if ( o == null )
+		if( o == null )
 			return -1;
-		return this.getId( ).compareTo( o.getId( ) );
+		return getId( ).compareTo( o.getId( ) );
 	}
 
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( obj == null )
+		if( obj == null )
 			return false;
-		if ( obj instanceof Category ) {
+		if( obj instanceof Category ) {
 			Category other = (Category) obj;
 
-			return this.getId( ).equals( other.getId( ) );
+			return getId( ).equals( other.getId( ) );
 		}
 		else
 			return false;
@@ -94,6 +102,21 @@ public class Category extends BaseCompanyEntity implements Serializable, Compara
 	public String toString( )
 	{
 		return getId( ).getId( ).toString( ) + "- " + getName( );
+	}
+
+	@Override
+	public Integer getCompanyId( )
+	{
+		return getId( ).getCompanyId( );
+	}
+
+	@Transient
+	/*
+	 * Esta funcao é usada na view (category.zul) par facilitar o renderer
+	 */
+	public Integer getCategoryId( )
+	{
+		return getId( ).getId( );
 	}
 
 }

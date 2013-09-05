@@ -17,6 +17,7 @@ import br.com.mcampos.entity.fdigital.AnotoPage;
 import br.com.mcampos.entity.fdigital.FormMedia;
 import br.com.mcampos.entity.fdigital.Pad;
 import br.com.mcampos.entity.system.Media;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class AnotoFormSessionBean
@@ -43,10 +44,10 @@ public class AnotoFormSessionBean extends SimpleSessionBean<AnotoForm> implement
 	@Override
 	public AnotoForm merge( AnotoForm newEntity )
 	{
-		if ( newEntity.getId( ) == null || newEntity.getId( ).equals( 0 ) ) {
+		if( newEntity.getId( ) == null || newEntity.getId( ).equals( 0 ) ) {
 			newEntity.setId( getNextId( ) );
 		}
-		if ( newEntity.getFrmInsertDt( ) == null ) {
+		if( newEntity.getFrmInsertDt( ) == null ) {
 			newEntity.setFrmInsertDt( new Date( ) );
 		}
 		return super.merge( newEntity );
@@ -55,11 +56,11 @@ public class AnotoFormSessionBean extends SimpleSessionBean<AnotoForm> implement
 	@Override
 	public AnotoForm getRelationships( AnotoForm f )
 	{
-		if ( f == null ) {
+		if( f == null ) {
 			return null;
 		}
 		f = get( f.getId( ) );
-		if ( f == null ) {
+		if( f == null ) {
 			return null;
 		}
 		f.getPads( ).size( );
@@ -76,17 +77,17 @@ public class AnotoFormSessionBean extends SimpleSessionBean<AnotoForm> implement
 	 * ejb.fdigital.form.AnotoForm, br.com.mcampos.dto.MediaDTO)
 	 */
 	@Override
-	public AnotoForm add( AnotoForm f, MediaDTO m )
+	public AnotoForm add( PrincipalDTO auth, AnotoForm f, MediaDTO m )
 	{
-		if ( f == null || m == null ) {
+		if( f == null || m == null ) {
 			return null;
 		}
 		f = merge( f );
-		Media media = this.mediaSession.add( m );
+		Media media = mediaSession.add( m );
 		FormMedia fm = new FormMedia( );
 		fm.setMedia( media );
 		f.add( fm );
-		this.formMediaSession.merge( fm );
+		formMediaSession.add( auth, fm );
 		return f;
 	}
 
@@ -99,22 +100,22 @@ public class AnotoFormSessionBean extends SimpleSessionBean<AnotoForm> implement
 	 * br.com.mcampos.ejb.fdigital.form.media.FormMedia)
 	 */
 	@Override
-	public AnotoForm remove( AnotoForm f, FormMedia fm )
+	public AnotoForm remove( PrincipalDTO auth, AnotoForm f, FormMedia fm )
 	{
-		if ( f == null || fm == null ) {
+		if( f == null || fm == null ) {
 			return null;
 		}
 		f = merge( f );
 		f.remove( fm );
-		this.formMediaSession.remove( fm );
+		formMediaSession.remove( auth, fm.getId( ) );
 		return f;
 	}
 
 	@Override
 	public byte[ ] getObject( Media media )
 	{
-		Media m = this.mediaSession.get( media.getId( ) );
-		if ( m != null ) {
+		Media m = mediaSession.get( media.getId( ) );
+		if( m != null ) {
 			return m.getObject( );
 		}
 		else {
@@ -123,23 +124,23 @@ public class AnotoFormSessionBean extends SimpleSessionBean<AnotoForm> implement
 	}
 
 	@Override
-	public AnotoForm add( AnotoForm f, MediaDTO m, List<AnotoPage> pages )
+	public AnotoForm add( PrincipalDTO auth, AnotoForm f, MediaDTO m, List<AnotoPage> pages )
 	{
-		if ( f == null || m == null || m.getObject( ) == null ) {
+		if( f == null || m == null || m.getObject( ) == null ) {
 			return null;
 		}
 		merge( f );
 		m.setFormat( "pad" );
 		m.setMimeType( "application/xml" );
-		Media media = this.mediaSession.add( m );
-		if ( media == null ) {
+		Media media = mediaSession.add( m );
+		if( media == null ) {
 			return null;
 		}
 		Pad pad = new Pad( );
 		pad.setMedia( media );
 		f.add( pad );
-		this.padSession.merge( pad );
-		this.padSession.add( pad, pages );
+		padSession.add( auth, pad );
+		padSession.add( pad, pages );
 		return f;
 	}
 }

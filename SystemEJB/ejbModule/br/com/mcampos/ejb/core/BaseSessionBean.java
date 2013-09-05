@@ -1,51 +1,58 @@
 package br.com.mcampos.ejb.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.ejb.params.SystemParameterSessionLocal;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 public abstract class BaseSessionBean<T> extends PagingSessionBean<T> implements BaseSessionInterface<T>
 {
 
 	@EJB
-	SystemParameterSessionLocal property;
+	private SystemParameterSessionLocal property;
 
 	@Override
+	@Deprecated
 	public T merge( T newEntity )
 	{
-		if ( newEntity == null ) {
+		if( newEntity == null ) {
 			return null;
 		}
 		T merged = getEntityManager( ).merge( newEntity );
 		return merged;
 	}
 
-	@Override
-	public T update( T newEntity )
+	public T merge( @NotNull PrincipalDTO auth, @NotNull T newEntity )
 	{
-		return merge( newEntity );
+		T merged = getEntityManager( ).merge( newEntity );
+		return merged;
 	}
 
 	@Override
-	public T updateAndRefresh( T newEntity )
+	public T update( @NotNull PrincipalDTO auth, @NotNull T newEntity )
 	{
-		T merged = merge( newEntity );
+		return merge( auth, newEntity );
+	}
+
+	@Override
+	public T updateAndRefresh( @NotNull PrincipalDTO auth, @NotNull T newEntity )
+	{
+		T merged = merge( auth, newEntity );
 		refresh( merged );
 		return merged;
 	}
 
 	@Override
-	public T add( T newEntity )
+	public T add( @NotNull PrincipalDTO auth, @NotNull T newEntity )
 	{
-		if ( newEntity == null ) {
-			return null;
-		}
 		/*
 		 * Do not call this class persist, please!
 		 */
@@ -54,20 +61,21 @@ public abstract class BaseSessionBean<T> extends PagingSessionBean<T> implements
 	}
 
 	@Override
-	public T addAndRefresh( T newEntity )
+	public T addAndRefresh( @NotNull PrincipalDTO auth, @NotNull T newEntity )
 	{
-		if ( newEntity == null ) {
+		if( newEntity == null ) {
 			return null;
 		}
-		add( newEntity );
+		add( auth, newEntity );
 		refresh( newEntity );
 		return newEntity;
 	}
 
 	@Override
+	@Deprecated
 	public T persist( T newEntity )
 	{
-		if ( newEntity == null ) {
+		if( newEntity == null ) {
 			return null;
 		}
 		return merge( newEntity );
@@ -77,9 +85,9 @@ public abstract class BaseSessionBean<T> extends PagingSessionBean<T> implements
 	public Collection<T> merge( Collection<T> entities )
 	{
 		List<T> merged = Collections.emptyList( );
-		if ( SysUtils.isEmpty( entities ) == false ) {
+		if( SysUtils.isEmpty( entities ) == false ) {
 			merged = new ArrayList<T>( entities.size( ) );
-			for ( T item : entities ) {
+			for( T item : entities ) {
 				merged.add( merge( item ) );
 			}
 		}
@@ -87,33 +95,21 @@ public abstract class BaseSessionBean<T> extends PagingSessionBean<T> implements
 	}
 
 	@Override
-	public Collection<T> remove( Collection<T> entities )
+	public T remove( @NotNull PrincipalDTO auth, @NotNull Serializable key )
 	{
-		if ( entities == null || entities.size( ) == 0 ) {
-			return Collections.emptyList( );
+		T removed = get( key );
+		if( removed != null ) {
+			getEntityManager( ).remove( removed );
+			return removed;
 		}
-		List<T> merged = new ArrayList<T>( entities.size( ) );
-		for ( T item : entities ) {
-			merged.add( remove( item ) );
-		}
-		return merged;
-	}
-
-	@Override
-	public T remove( T entity )
-	{
-		if ( entity == null ) {
+		else
 			return null;
-		}
-		T removed = merge( entity );
-		getEntityManager( ).remove( removed );
-		return removed;
 	}
 
 	@Override
 	public T refresh( T entity )
 	{
-		if ( entity == null ) {
+		if( entity == null ) {
 			return null;
 		}
 		getEntityManager( ).flush( );
@@ -124,5 +120,19 @@ public abstract class BaseSessionBean<T> extends PagingSessionBean<T> implements
 	protected SystemParameterSessionLocal getProperty( )
 	{
 		return this.property;
+	}
+
+	@Override
+	public void remove( @NotNull PrincipalDTO auth, @NotNull Collection<T> entities )
+	{
+		for( T item : entities ) {
+			if( item instanceof BaseEntity ) {
+				BaseEntity baseEntity = (BaseEntity) item;
+				remove( auth, baseEntity.getId( ) );
+			}
+			else {
+				throw new ClassCastException( item.getClass( ).getSimpleName( ) + " is not an instance of BaseEntity " );
+			}
+		}
 	}
 }

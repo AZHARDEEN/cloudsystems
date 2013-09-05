@@ -31,7 +31,7 @@ public class LoginPropertySessionBean extends SimpleSessionBean<LoginProperty> i
 	{
 		LoginProperty p = null;
 
-		if ( collaborator != null && propertyName != null ) {
+		if( collaborator != null && propertyName != null ) {
 			p = get( new LoginPropertyPK( collaboratorSession.find( collaborator ), propertyName ) );
 		}
 		return p;
@@ -42,24 +42,24 @@ public class LoginPropertySessionBean extends SimpleSessionBean<LoginProperty> i
 	{
 		LoginProperty p = null;
 
-		if ( collaborator != null && propertyName != null ) {
+		if( collaborator != null && propertyName != null ) {
 			p = get( new LoginPropertyPK( collaboratorSession.find( collaborator ), propertyName ) );
 		}
-		remove( p );
+		remove( collaborator, p );
 		return p;
 	}
 
 	@Override
 	public void setProperty( PrincipalDTO collaborator, String propertyName, String Value )
 	{
-		if ( collaborator != null && propertyName != null ) {
+		if( collaborator != null && propertyName != null ) {
 			LoginProperty p = new LoginProperty( );
 
 			p.setCollaborator( collaboratorSession.find( collaborator ) );
 			p.getId( ).setName( propertyName );
 			p.setValue( Value );
 			p.setFieldType( 1 );
-			merge( p );
+			add( collaborator, p );
 		}
 	}
 

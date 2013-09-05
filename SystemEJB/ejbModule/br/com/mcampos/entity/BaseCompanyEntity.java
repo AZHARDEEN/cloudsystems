@@ -20,6 +20,8 @@ public abstract class BaseCompanyEntity implements Serializable
 
 	public abstract void setCompanyId( Integer id );
 
+	public abstract Integer getCompanyId( );
+
 	public BaseCompanyEntity( )
 	{
 

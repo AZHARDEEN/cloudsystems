@@ -19,7 +19,7 @@ import javax.persistence.Table;
 
 import br.com.mcampos.ejb.core.BasicEntityRenderer;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.Credential;
+import br.com.mcampos.utils.dto.CredentialDTO;
 
 
 @Entity
@@ -71,7 +71,7 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 	{
 	}
 
-	public AccessLog( Credential credential )
+	public AccessLog( CredentialDTO credential )
 	{
 		if ( credential != null ) {
 			setComputer( credential.getRemoteHost( ) );

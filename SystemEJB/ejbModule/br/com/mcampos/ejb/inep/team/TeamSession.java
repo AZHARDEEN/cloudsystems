@@ -76,7 +76,7 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserProp
 
 	List<InepOralDistribution> getOralDistributions( InepOralTest s );
 
-	void resetTasks( InepSubscription s, List<InepTask> tasks );
+	void resetTasks( PrincipalDTO auth, InepSubscription s, List<InepTask> tasks );
 
 	void swapTasks( InepSubscription s, InepTask t1, InepTask t2 );
 }

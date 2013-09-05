@@ -1,29 +1,40 @@
 package br.com.mcampos.ejb.core;
 
+import java.io.Serializable;
 import java.util.Collection;
+
+import javax.validation.constraints.NotNull;
+
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 public interface BaseSessionInterface<T> extends PagingSessionInterface<T>
 {
+	@Deprecated
 	public T merge( T newEntity );
 
+	@Deprecated
 	public T persist( T newEntity );
 
+	@Deprecated
 	public Collection<T> merge( Collection<T> entities );
 
-	public T remove( T entity );
+	/*
+	 * Version 2 functions
+	 */
 
-	public T refresh( T entity );
+	public T update( @NotNull PrincipalDTO auth, @NotNull T newEntity );
 
-	public Collection<T> remove( Collection<T> entities );
+	public T add( @NotNull PrincipalDTO auth, @NotNull T newEntity );
+
+	public T updateAndRefresh( @NotNull PrincipalDTO auth, @NotNull T newEntity );
+
+	public T addAndRefresh( @NotNull PrincipalDTO auth, @NotNull T newEntity );
+
+	public T remove( @NotNull PrincipalDTO auth, @NotNull Serializable key );
+
+	public void remove( @NotNull PrincipalDTO auth, @NotNull Collection<T> entities );
+
+	public T refresh( @NotNull T entity );
 
 	public Class<T> getPersistentClass( );
-
-	public T update( T newEntity );
-
-	public T add( T newEntity );
-
-	public T updateAndRefresh( T newEntity );
-
-	public T addAndRefresh( T newEntity );
-
 }

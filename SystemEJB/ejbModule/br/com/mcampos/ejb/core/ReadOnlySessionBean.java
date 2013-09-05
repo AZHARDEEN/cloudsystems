@@ -1,6 +1,8 @@
 package br.com.mcampos.ejb.core;
 
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +18,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.ejb.core.search.Searchable;
 import br.com.mcampos.ejb.core.search.Searchables;
@@ -62,15 +65,20 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	@Override
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public T get( Serializable key )
+	public T get( @NotNull Serializable key )
 	{
 		T entity;
 		try {
 			entity = getEntityManager( ).find( getPersistentClass( ), key );
 		}
+		catch( IllegalArgumentException e )
+		{
+			storeException( e );
+			throw e;
+		}
 		catch( Exception e ) {
 			storeException( e );
-			entity = null;
+			throw e;
 		}
 		return entity;
 	}
@@ -117,7 +125,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@SuppressWarnings( "unchecked" )
-	private Collection<T> getResultList( Query query )
+	private Collection<T> getResultList( @NotNull Query query )
 	{
 		try {
 			return query.getResultList( );
@@ -129,7 +137,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@SuppressWarnings( "unchecked" )
-	private T getSingleResult( Query query )
+	private T getSingleResult( @NotNull Query query )
 	{
 		try {
 			Object obj;
@@ -140,6 +148,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			return (T) obj;
 		}
 		catch( Exception e ) {
+			storeException( e );
 			return null;
 		}
 	}
@@ -342,19 +351,15 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		if( e == null ) {
 			return;
 		}
+		String trace = getStackTrace( e );
 		e.printStackTrace( );
-		/*
-		 * try { ProgramException entity = new ProgramException( );
-		 * entity.setDescription( e.getMessage( ) ); getEntityManager(
-		 * ).persist( entity ); StackTraceElement[ ] elements = e.getStackTrace(
-		 * ); int nIndex = 1; for ( StackTraceElement item : elements ) {
-		 * ProgramExceptionTrace trace = new ProgramExceptionTrace( );
-		 * trace.getId( ).setId( nIndex++ ); trace.setClassName(
-		 * item.getClassName( ) ); trace.setFileName( item.getFileName( ) );
-		 * trace.setLine( item.getLineNumber( ) ); trace.setMethod(
-		 * item.getMethodName( ) ); entity.add( trace ); } } catch ( Exception
-		 * ex ) { ex = null; // just it doesn't matter here }
-		 */
+	}
+
+	private String getStackTrace( Exception exception )
+	{
+		StringWriter errors = new StringWriter( );
+		exception.printStackTrace( new PrintWriter( errors ) );
+		return errors.toString( );
 	}
 
 	@Override

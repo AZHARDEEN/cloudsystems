@@ -15,6 +15,7 @@ import br.com.mcampos.ejb.security.role.RoleSessionLocal;
 import br.com.mcampos.entity.security.Menu;
 import br.com.mcampos.entity.security.Role;
 import br.com.mcampos.entity.security.Task;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class TaskSessionBean
@@ -42,7 +43,7 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	public List<Menu> getMenus( Integer id )
 	{
 		Task tsk = get( id );
-		if ( tsk == null ) {
+		if( tsk == null ) {
 			return Collections.emptyList( );
 		}
 		else
@@ -56,7 +57,7 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	public List<Role> getRoles( Integer id )
 	{
 		Task tsk = get( id );
-		if ( tsk == null ) {
+		if( tsk == null ) {
 			return Collections.emptyList( );
 		}
 		else
@@ -67,13 +68,13 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	}
 
 	@Override
-	public void changeParent( Task entity, Task newParent )
+	public void changeParent( PrincipalDTO auth, Task entity, Task newParent )
 	{
 		Task targetEntity = get( entity.getId( ) );
 		Task targetParent = get( newParent.getId( ) );
 
 		Task oldParent = targetEntity.getParent( );
-		if ( oldParent != null ) {
+		if( oldParent != null ) {
 			oldParent.remove( targetEntity );
 		}
 		targetParent.add( targetEntity );
@@ -92,64 +93,60 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	}
 
 	@Override
-	public Task add( Task task, Role role )
+	public Task add( PrincipalDTO auth, Task task, Role role )
 	{
-		roleSession.add( role, task );
+		roleSession.add( auth, role, task );
 		return task;
 	}
 
 	@Override
-	public Task remove( Task task, Role role )
+	public Task remove( PrincipalDTO auth, Task task, Role role )
 	{
-		roleSession.remove( role, task );
+		roleSession.remove( auth, role, task );
 		return task;
 	}
 
 	@Override
-	public Task add( Task task, Menu menu )
+	public Task add( PrincipalDTO auth, Task task, Menu menu )
 	{
 		menuSession.add( menu, task );
 		return task;
 	}
 
 	@Override
-	public Task remove( Task task, Menu menu )
+	public Task remove( PrincipalDTO auth, Task task, Menu menu )
 	{
 		menuSession.remove( menu, task );
 		return task;
 	}
 
-	@Override
-	public Task remove( Task entity )
+	public Task remove( PrincipalDTO auth, Integer id )
 	{
-		if ( entity == null ) {
-			return entity;
-		}
-		Task toDelete = get( entity.getId( ) );
-		if ( toDelete == null ) {
+		Task toDelete = get( id );
+		if( toDelete == null ) {
 			return toDelete;
 		}
-		removeChilds( toDelete );
+		removeChilds( auth, toDelete );
 		return toDelete;
 	}
 
-	private void removeChilds( Task entity )
+	private void removeChilds( PrincipalDTO auth, Task entity )
 	{
-		for ( Task item : entity.getChilds( ) ) {
-			removeChilds( item );
+		for( Task item : entity.getChilds( ) ) {
+			removeChilds( auth, item );
 		}
 		entity.setParent( null );
 		removeRoles( entity );
 		removeMenus( entity );
 		entity.setChilds( null );
-		super.remove( entity );
+		super.remove( auth, entity );
 	}
 
 	private void removeRoles( Task entity )
 	{
 		List<Role> list = entity.getRoles( );
 		entity.setRoles( null );
-		for ( Role item : list )
+		for( Role item : list )
 		{
 			item.remove( entity );
 		}
@@ -159,7 +156,7 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	{
 		List<Menu> list = entity.getMenus( );
 		entity.setMenus( null );
-		for ( Menu item : list )
+		for( Menu item : list )
 		{
 			item.remove( entity );
 		}
@@ -181,10 +178,10 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	}
 
 	@Override
-	public Task add( Task newEntity )
+	public Task add( PrincipalDTO auth, Task newEntity )
 	{
 		Task parent = newEntity.getParent( ) != null ? get( newEntity.getParent( ).getId( ) ) : getRootTask( );
-		Task e = super.add( newEntity );
+		Task e = super.add( auth, newEntity );
 		e.setParent( parent );
 		return e;
 	}
