@@ -53,7 +53,7 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 	@Override
 	protected TaskNode createRootTaskNode( )
 	{
-		return ( TaskNode.createNode( getSession( ).getRootTask( ) ) );
+		return(TaskNode.createNode( getSession( ).getRootTask( ) ));
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 	{
 		List<Task> tasks;
 
-		if ( data != null ) {
+		if( data != null ) {
 			labelId.setValue( data.getId( ).toString( ) );
 			labelDescription.setValue( data.getDescription( ) );
 			tasks = getSession( ).getTaks( data );
@@ -89,20 +89,20 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 
 	private void showMenus( Role data )
 	{
-		if ( mainMenu == null ) {
+		if( mainMenu == null ) {
 			return;
 		}
-		if ( mainMenu.getChildren( ) != null ) {
+		if( mainMenu.getChildren( ) != null ) {
 			mainMenu.getChildren( ).clear( );
 		}
 		List<br.com.mcampos.entity.security.Menu> menus;
 		try {
 			menus = getSession( ).getMenus( data );
-			for ( br.com.mcampos.entity.security.Menu item : menus ) {
+			for( br.com.mcampos.entity.security.Menu item : menus ) {
 				getDynamicMenu( ).getParentComponent( item );
 			}
 		}
-		catch ( ApplicationException e ) {
+		catch( ApplicationException e ) {
 			e = null;
 		}
 	}
@@ -110,7 +110,7 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 	@Override
 	protected boolean validateRecord( )
 	{
-		if ( SysUtils.isEmpty( description.getValue( ) ) ) {
+		if( SysUtils.isEmpty( description.getValue( ) ) ) {
 			Messagebox.show( "A descrição deve ser preenchida", "Descrição Inválida", Messagebox.OK, Messagebox.ERROR );
 			description.setFocus( true );
 			return false;
@@ -158,13 +158,13 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 	@Override
 	protected void deleteTask( RoleSession session, Role entity, Task task )
 	{
-		session.remove( entity, task );
+		session.remove( getPrincipal( ), entity, task );
 	}
 
 	@Override
 	protected void addTask( RoleSession session, Role entity, Task task )
 	{
-		session.add( entity, task );
+		session.add( getPrincipal( ), entity, task );
 	}
 
 	@Override
@@ -177,18 +177,21 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 	@Override
 	protected void remove( RoleSession session, Role data )
 	{
-		session.remove( data );
+		if( data != null ) {
+			session.remove( getPrincipal( ), data.getId( ) );
+		}
+
 	}
 
 	@Override
 	protected void changeParent( RoleSession session, Role source, Role target )
 	{
-		getSession( ).changeParent( source, target );
+		getSession( ).changeParent( getPrincipal( ), source, target );
 	}
 
 	protected DynamicMenu getDynamicMenu( )
 	{
-		if ( dynamicMenu == null ) {
+		if( dynamicMenu == null ) {
 			dynamicMenu = new DynamicMenu( mainMenu, null );
 		}
 		return dynamicMenu;

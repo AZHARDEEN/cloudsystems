@@ -31,17 +31,17 @@ public abstract class SimpleTableController<SESSION, ENTITY> extends BaseDBListC
 	{
 		SimpleEntity<ENTITY> simpleEntity = null;
 
-		if ( entity instanceof SimpleEntity ) {
+		if( entity instanceof SimpleEntity ) {
 			simpleEntity = (SimpleEntity<ENTITY>) entity;
 		}
-		for ( int nIndex = 0; nIndex < this.infoLabels.size( ); nIndex++ ) {
+		for( int nIndex = 0; nIndex < this.infoLabels.size( ); nIndex++ ) {
 			this.infoLabels.get( nIndex ).setValue( simpleEntity != null ? simpleEntity.getField( nIndex ) : "" );
 		}
-		for ( int nIndex = 0; nIndex < this.inputs.size( ); nIndex++ ) {
+		for( int nIndex = 0; nIndex < this.inputs.size( ); nIndex++ ) {
 			DBWidget input = this.inputs.get( nIndex );
 			input.setText( simpleEntity != null ? simpleEntity.getField( nIndex ) : "" );
-			if ( getStatus( ).equals( statusUpdate ) ) {
-				if ( input.isPrimaryKey( ) ) {
+			if( getStatus( ).equals( statusUpdate ) ) {
+				if( input.isPrimaryKey( ) ) {
 					input.setDisabled( entity != null );
 				}
 			}
@@ -53,8 +53,8 @@ public abstract class SimpleTableController<SESSION, ENTITY> extends BaseDBListC
 	{
 		@SuppressWarnings( "unchecked" )
 		SimpleEntity<ENTITY> entity = (SimpleEntity<ENTITY>) target;
-		for ( DBWidget input : this.inputs ) {
-			if ( input.getId( ).equals( "id" ) ) {
+		for( DBWidget input : this.inputs ) {
+			if( input.getId( ).equals( "id" ) ) {
 				entity.setId( Integer.parseInt( input.getText( ) ) );
 			}
 			else {
@@ -69,11 +69,11 @@ public abstract class SimpleTableController<SESSION, ENTITY> extends BaseDBListC
 		@SuppressWarnings( "unchecked" )
 		SimpleEntity<ENTITY> entity = (SimpleEntity<ENTITY>) target;
 
-		if ( entity.getId( ) == null || entity.getId( ) == 0 ) {
+		if( entity.getId( ) == null || entity.getId( ).equals( 0 ) ) {
 			showError( "O campo Código não pode estar vazio" );
 			return false;
 		}
-		if ( entity.getDescription( ) == null || entity.getDescription( ).isEmpty( ) ) {
+		if( entity.getDescription( ) == null || entity.getDescription( ).isEmpty( ) ) {
 			showError( "O campo descrição não pode estar vazio" );
 			return false;
 		}
