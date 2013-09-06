@@ -35,6 +35,7 @@ import net.sf.jasperreports.engine.export.JRTextExporter;
 import net.sf.jasperreports.engine.export.oasis.JROdsExporter;
 import net.sf.jasperreports.engine.export.oasis.JROdtExporter;
 import net.sf.jasperreports.j2ee.servlets.ImageServlet;
+import net.sf.jasperreports.view.JasperViewer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -201,9 +202,12 @@ public abstract class BaseReportServlet extends HttpServlet
 		JasperPrint print = compileReport( item.getReportUrl( ), item.getParams( ) );
 		if ( print != null ) {
 			try {
-				byte[ ] obj = JasperExportManager.exportReportToPdf( print );
-				File file = new File( item.getReportUrl( ) );
-				doDownload( response, file.getName( ) + ".pdf", obj );
+				JasperViewer.viewReport( print );
+				if ( 1 != 1 ) {
+					byte[ ] obj = JasperExportManager.exportReportToPdf( print );
+					File file = new File( item.getReportUrl( ) );
+					doDownload( response, file.getName( ) + ".pdf", obj );
+				}
 			}
 			catch ( JRException e ) {
 				logger.error( "JRException", e );
