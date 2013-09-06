@@ -317,9 +317,13 @@ public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> 
 
 	protected void configPaging( )
 	{
-		getListobxPaging( ).setPageSize( getListBox( ).getRows( ) );
-		Long count = getCount( );
-		getListobxPaging( ).setTotalSize( count != null ? count.intValue( ) : 0 );
+		if ( getListBox( ).isAutopaging( ) == false ) {
+			if ( getListobxPaging( ) != null && getListBox( ).getRows( ) > 0 ) {
+				getListobxPaging( ).setPageSize( getListBox( ).getRows( ) );
+			}
+			Long count = getCount( );
+			getListobxPaging( ).setTotalSize( count != null ? count.intValue( ) : 0 );
+		}
 	}
 
 	@SuppressWarnings( "unchecked" )

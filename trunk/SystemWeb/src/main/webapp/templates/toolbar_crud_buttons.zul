@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
-	<style dynamic="true">
-		.z-toolbar a, .z-toolbar a:visited, .z-toolbar a:hover { background-color:transparent; border:0 none; } .vista { background:#FFFFFF repeat-x 0 0;
-		color:black; padding-top:7px; } .p-vista .z-panel-children { background-color: #008BB6; border-bottom: 0 none; }
-	</style>
-	<toolbar hflex="true" width="1" sclass="vista">
-		<toolbarbutton id="cmdCreate" image="/img/icontexto-webdev-add-016x016.png" label="##" />
-		<toolbarbutton id="cmdUpdate" image="/img/icontexto-webdev-alert-016x016.png" label="##" disabled="true" />
-		<separator bar="true" orient="vertical" />
-		<toolbarbutton id="cmdDelete" image="/img/icontexto-webdev-remove-016x016.png" label="##" disabled="true" />
-		<separator bar="true" orient="vertical" />
-		<toolbarbutton id="cmdRefresh" label="##" image="/img/icontexto-webdev-reload-016x016.png" />
-		<separator bar="true" orient="vertical" />
-		<toolbarbutton id="cmdReport" label="Relatórios" image="/img/icontexto-webdev-print-016x016.png" />
+	<hlayout hflex="true" width="1" sclass="vista">
+		<button id="cmdCreate" image="/img/icontexto-webdev-add-016x016.png" label="##" />
+		<button id="cmdUpdate" image="/img/icontexto-webdev-alert-016x016.png" label="##" disabled="true" />
+		<separator />
+		<button id="cmdDelete" image="/img/icontexto-webdev-remove-016x016.png" label="##" disabled="true" />
+		<separator />
+		<button id="cmdRefresh" label="##" image="/img/icontexto-webdev-reload-016x016.png" />
+		<separator  />
+		<button id="cmdReport" label="Relatórios" image="/img/icontexto-webdev-print-016x016.png" />
 		<separator orient="vertical" />
-	</toolbar>
+	</hlayout>
 </zk>
