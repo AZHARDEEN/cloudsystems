@@ -74,7 +74,7 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 			return false;
 		}
 		logger.info( "Login from " + login.getPerson( ).getName( ) );
-		setSessionParameter( LoggedInterface.currentPrincipal, new PrincipalDTO( login.getId( ), login.getPerson( ).getFriendlyName( ) ) );
+		setSessionParameter( currentPrincipal, new PrincipalDTO( login.getId( ), login.getPerson( ).getFriendlyName( ) ) );
 		setCookie( LoggedInterface.lastLoggedUserId, getCredential( ).getIdentification( ) );
 		if ( isDebugMode( ) ) {
 			setCookie( LoggedInterface.lastLoggedUserPassword, getCredential( ).getPassword( ) );

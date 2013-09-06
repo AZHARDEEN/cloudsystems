@@ -27,18 +27,4 @@ public abstract class BaseLoggedController<T extends Component> extends BaseCont
 			return null;
 		}
 	}
-
-	protected PrincipalDTO getPrincipal( )
-	{
-		Object obj = getSessionParameter( LoggedInterface.currentPrincipal );
-
-		if ( obj instanceof PrincipalDTO ) {
-			PrincipalDTO login = (PrincipalDTO) obj;
-			if ( login != null && login.getPersonify( ) != null )
-				return login.getPersonify( );
-			return login;
-		}
-		else
-			return null;
-	}
 }

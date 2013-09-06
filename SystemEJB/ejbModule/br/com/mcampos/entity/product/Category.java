@@ -17,7 +17,7 @@ import br.com.mcampos.entity.BaseCompanyEntity;
  */
 @Entity
 @NamedQueries( {
-		@NamedQuery( name = Category.getNextId, query = "select max(o.id.id) from Category o where o.id.companyId = ?1" )
+		@NamedQuery( name = Category.getNextId, query = "select coalesce ( max(o.id.id), 0 ) + 1 from Category o where o.id.companyId = ?1" )
 } )
 public class Category extends BaseCompanyEntity implements Serializable, Comparable<Category>
 {
@@ -40,7 +40,7 @@ public class Category extends BaseCompanyEntity implements Serializable, Compara
 
 	public CategoryPK getId( )
 	{
-		if( id == null )
+		if ( id == null )
 			id = new CategoryPK( );
 		return id;
 	}
@@ -67,7 +67,7 @@ public class Category extends BaseCompanyEntity implements Serializable, Compara
 
 	public void setName( String catNameCh )
 	{
-		name = catNameCh != null ? name.trim( ) : null;
+		name = catNameCh != null ? catNameCh.trim( ) : null;
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class Category extends BaseCompanyEntity implements Serializable, Compara
 	@Override
 	public int compareTo( Category o )
 	{
-		if( o == null )
+		if ( o == null )
 			return -1;
 		return getId( ).compareTo( o.getId( ) );
 	}
@@ -87,9 +87,9 @@ public class Category extends BaseCompanyEntity implements Serializable, Compara
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( obj == null )
+		if ( obj == null )
 			return false;
-		if( obj instanceof Category ) {
+		if ( obj instanceof Category ) {
 			Category other = (Category) obj;
 
 			return getId( ).equals( other.getId( ) );

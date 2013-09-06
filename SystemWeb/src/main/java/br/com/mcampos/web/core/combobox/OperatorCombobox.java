@@ -18,7 +18,7 @@ public class OperatorCombobox extends ComboboxExt<OperatorSession, Operator>
 	@Override
 	protected void load( )
 	{
-		load( (List<Operator>) getSession( ).getAll( ), null, true );
+		load( (List<Operator>) getSession( ).getAll( getPrincipal( ) ), null, true );
 	}
 
 }

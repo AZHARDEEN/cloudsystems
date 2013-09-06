@@ -14,6 +14,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jasypt.util.password.BasicPasswordEncryptor;
@@ -230,15 +231,15 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	}
 
 	@Override
-	public Collection<Login> getAll( )
+	public Collection<Login> getAll( @NotNull PrincipalDTO auth )
 	{
-		return getLastAccess( super.getAll( ) );
+		return getLastAccess( super.getAll( auth ) );
 	}
 
 	@Override
-	public Collection<Login> getAll( String whereClause, DBPaging page )
+	public Collection<Login> getAll( @NotNull PrincipalDTO auth, String whereClause, DBPaging page )
 	{
-		return getLastAccess( super.getAll( whereClause, page ) );
+		return getLastAccess( super.getAll( auth, whereClause, page ) );
 	}
 
 	@Override

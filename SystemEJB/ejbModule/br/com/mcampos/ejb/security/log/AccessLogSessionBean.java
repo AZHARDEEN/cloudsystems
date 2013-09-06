@@ -12,6 +12,7 @@ import br.com.mcampos.entity.security.AccessLog;
 import br.com.mcampos.entity.security.Login;
 import br.com.mcampos.entity.system.SystemParameters;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Stateless( name = "AccessLogSession", mappedName = "AccessLogSession" )
 public class AccessLogSessionBean extends BaseSessionBean<AccessLog> implements AccessLogSession, AccessLogSessionLocal
@@ -31,7 +32,7 @@ public class AccessLogSessionBean extends BaseSessionBean<AccessLog> implements 
 	}
 
 	@Override
-	protected Query getAllQuery( String whereClause )
+	protected Query getAllQuery( PrincipalDTO auth, String whereClause )
 	{
 		String sqlQuery;
 
@@ -64,7 +65,7 @@ public class AccessLogSessionBean extends BaseSessionBean<AccessLog> implements 
 
 	private SystemParameterSessionLocal getParamSession( )
 	{
-		return this.paramSession;
+		return paramSession;
 	}
 
 	@Override

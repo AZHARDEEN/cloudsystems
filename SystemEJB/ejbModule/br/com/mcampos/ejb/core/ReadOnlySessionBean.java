@@ -23,6 +23,7 @@ import javax.validation.constraints.NotNull;
 import br.com.mcampos.ejb.core.search.Searchable;
 import br.com.mcampos.ejb.core.search.Searchables;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 
 /*
  * This is the base interface for all session beans
@@ -58,7 +59,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	public Class<T> getPersistentClass( )
 	{
-		if( this.persistentClass == null )
+		if ( this.persistentClass == null )
 			setClass( );
 		return this.persistentClass;
 	}
@@ -71,12 +72,12 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		try {
 			entity = getEntityManager( ).find( getPersistentClass( ), key );
 		}
-		catch( IllegalArgumentException e )
+		catch ( IllegalArgumentException e )
 		{
 			storeException( e );
 			throw e;
 		}
-		catch( Exception e ) {
+		catch ( Exception e ) {
 			storeException( e );
 			throw e;
 		}
@@ -88,15 +89,15 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		return null;
 	}
 
-	protected Query getAllQuery( String whereClause )
+	protected Query getAllQuery( PrincipalDTO auth, String whereClause )
 	{
 		String sqlQuery;
 
 		sqlQuery = "select t from " + getPersistentClass( ).getSimpleName( ) + " as t ";
-		if( whereClause != null && whereClause.isEmpty( ) == false ) {
+		if ( whereClause != null && whereClause.isEmpty( ) == false ) {
 			whereClause = whereClause.trim( );
 			String where = whereClause.substring( 0, 5 );
-			if( where.compareToIgnoreCase( "where" ) == 0 ) {
+			if ( where.compareToIgnoreCase( "where" ) == 0 ) {
 				sqlQuery += " " + whereClause;
 			}
 			else {
@@ -104,9 +105,9 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			}
 		}
 		String orderBy = allQueryOrderByClause( "t" );
-		if( SysUtils.isEmpty( orderBy ) == false ) {
+		if ( SysUtils.isEmpty( orderBy ) == false ) {
 			orderBy = orderBy.toLowerCase( );
-			if( orderBy.indexOf( "order by" ) >= 0 ) {
+			if ( orderBy.indexOf( "order by" ) >= 0 ) {
 				sqlQuery += orderBy;
 			}
 			else {
@@ -119,9 +120,9 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	@Override
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public Collection<T> getAll( )
+	public Collection<T> getAll( PrincipalDTO auth )
 	{
-		return getResultList( getAllQuery( null ) );
+		return getResultList( getAllQuery( auth, null ) );
 	}
 
 	@SuppressWarnings( "unchecked" )
@@ -130,7 +131,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		try {
 			return query.getResultList( );
 		}
-		catch( Exception e ) {
+		catch ( Exception e ) {
 			storeException( e );
 			return Collections.emptyList( );
 		}
@@ -142,12 +143,12 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		try {
 			Object obj;
 			obj = query.getSingleResult( );
-			if( obj == null ) {
+			if ( obj == null ) {
 				return null;
 			}
 			return (T) obj;
 		}
-		catch( Exception e ) {
+		catch ( Exception e ) {
 			storeException( e );
 			return null;
 		}
@@ -155,10 +156,10 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	@Override
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public Collection<T> getAll( String whereClause, DBPaging page )
+	public Collection<T> getAll( @NotNull PrincipalDTO auth, String whereClause, DBPaging page )
 	{
-		Query query = getAllQuery( whereClause );
-		if( page != null ) {
+		Query query = getAllQuery( auth, whereClause );
+		if ( page != null ) {
 			query.setMaxResults( page.getRows( ) );
 			query.setFirstResult( page.getRows( ) * page.getPage( ) );
 		}
@@ -168,10 +169,10 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	@Override
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public Collection<T> getAll( String whereClause, DBPaging page, Object... params )
+	public Collection<T> getAll( @NotNull PrincipalDTO auth, String whereClause, DBPaging page, Object... params )
 	{
-		Query query = getAllQuery( whereClause );
-		if( page != null ) {
+		Query query = getAllQuery( auth, whereClause );
+		if ( page != null ) {
 			query.setMaxResults( page.getRows( ) );
 			query.setFirstResult( page.getRows( ) * page.getPage( ) );
 		}
@@ -181,16 +182,16 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	protected void setQueryParams( Query query, Object... params )
 	{
-		if( params != null && params.length > 0 ) {
-			for( int i = 0; i < params.length; i++ ) {
-				query.setParameter( i + 1, params[i] );
+		if ( params != null && params.length > 0 ) {
+			for ( int i = 0; i < params.length; i++ ) {
+				query.setParameter( i + 1, params[ i ] );
 			}
 		}
 	}
 
 	protected void setQueryParams( Query query, Map<String, Object> params )
 	{
-		for( Entry<String, Object> entry : params.entrySet( ) ) {
+		for ( Entry<String, Object> entry : params.entrySet( ) ) {
 			query.setParameter( entry.getKey( ), entry.getValue( ) );
 		}
 	}
@@ -248,7 +249,7 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	private void page( DBPaging paging, Query query )
 	{
-		if( paging != null ) {
+		if ( paging != null ) {
 			query.setFirstResult( paging.getPage( ) * paging.getRows( ) );
 			query.setMaxResults( paging.getRows( ) );
 		}
@@ -314,11 +315,11 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		Integer id;
 		try {
 			id = (Integer) query.getSingleResult( );
-			if( id == null || id.equals( 0 ) ) {
+			if ( id == null || id.equals( 0 ) ) {
 				id = 1;
 			}
 		}
-		catch( Exception e ) {
+		catch ( Exception e ) {
 			storeException( e );
 			id = 1;
 		}
@@ -334,11 +335,11 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		try {
 			setQueryParams( query, params );
 			id = (Integer) query.getSingleResult( );
-			if( id == null || id.equals( 0 ) ) {
+			if ( id == null || id.equals( 0 ) ) {
 				id = 1;
 			}
 		}
-		catch( Exception e ) {
+		catch ( Exception e ) {
 			storeException( e );
 			id = 1;
 		}
@@ -348,14 +349,14 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	@Override
 	public void storeException( Exception e )
 	{
-		if( e == null ) {
+		if ( e == null ) {
 			return;
 		}
-		String trace = getStackTrace( e );
+		// String trace = getStackTrace( e );
 		e.printStackTrace( );
 	}
 
-	private String getStackTrace( Exception exception )
+	protected String getStackTrace( Exception exception )
 	{
 		StringWriter errors = new StringWriter( );
 		exception.printStackTrace( new PrintWriter( errors ) );
@@ -401,15 +402,15 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 		List<Searchable> list = new ArrayList<Searchable>( );
 
 		Annotation annotation = getEntityClass( ).getAnnotation( Searchables.class );
-		if( annotation != null ) {
+		if ( annotation != null ) {
 			Searchables s = (Searchables) annotation;
-			for( Searchable item : s.value( ) ) {
+			for ( Searchable item : s.value( ) ) {
 				list.add( item );
 			}
 		}
 		else {
 			annotation = getEntityClass( ).getAnnotation( Searchable.class );
-			if( annotation != null ) {
+			if ( annotation != null ) {
 				list.add( (Searchable) annotation );
 			}
 		}

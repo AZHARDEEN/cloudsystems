@@ -65,13 +65,6 @@ public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN
 		return getAuthorizedPageOptions( ).isAuthorized( );
 	}
 
-	@Override
-	public PrincipalDTO getPrincipal( )
-	{
-		PrincipalDTO c = (PrincipalDTO) getSessionParameter( currentPrincipal );
-		return c;
-	}
-
 	protected void setCollaborator( Collaborator c )
 	{
 		if ( c != null ) {

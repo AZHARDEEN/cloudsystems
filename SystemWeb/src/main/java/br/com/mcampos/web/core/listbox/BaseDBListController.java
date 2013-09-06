@@ -83,7 +83,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 
 	protected int getCount( )
 	{
-		return getPagingSession( ).count( );
+		return getPagingSession( ).count( getPrincipal( ) );
 	}
 
 	protected void initPaging( int page, int rows )
@@ -250,7 +250,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 	{
 		@SuppressWarnings( "unchecked" )
 		BaseSessionInterface<ENTITY> session = (BaseSessionInterface<ENTITY>) getSession( );
-		return session.getAll( );
+		return session.getAll( getPrincipal( ) );
 	}
 
 	protected ENTITY getNew( )
@@ -296,7 +296,7 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 
 	protected Collection<ENTITY> getAll( int activePage )
 	{
-		return getPagingSession( ).getAll( null, new DBPaging( activePage, getRows( ) ) );
+		return getPagingSession( ).getAll( getPrincipal( ), null, new DBPaging( activePage, getRows( ) ) );
 	}
 
 	private EventListener<PagingEvent> getEventListener( )

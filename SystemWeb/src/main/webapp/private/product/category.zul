@@ -8,7 +8,7 @@
                     <listhead>
                         <listheader align="center" label="Código" id="lblId" width="50px" value="categoryId"/>
                         <listheader align="left" label="Nome" id="lblDescription" sort="auto" value="name" width="1"/>
-                        <listheader align="left" label="Abrev." id="lblAbbrev" sort="auto" width="1" value="description"/>
+                        <listheader align="left" label="Descrição" id="lblAbbrev" sort="auto" width="1" value="description"/>
                     </listhead>
                 </listbox>
             </center>

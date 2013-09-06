@@ -7,15 +7,17 @@ import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
+import br.com.mcampos.utils.dto.PrincipalDTO;
+
 public interface ReadOnlySessionInterface<T>
 {
 	public T get( @NotNull Serializable key );
 
-	public Collection<T> getAll( );
+	public Collection<T> getAll( @NotNull PrincipalDTO auth );
 
-	public Collection<T> getAll( String whereClause, DBPaging page );
+	public Collection<T> getAll( @NotNull PrincipalDTO auth, String whereClause, DBPaging page );
 
-	public Collection<T> getAll( String whereClause, DBPaging page, Object... params );
+	public Collection<T> getAll( @NotNull PrincipalDTO auth, String whereClause, DBPaging page, Object... params );
 
 	List<T> findByNamedQuery( String namedQuery, Object... params );
 

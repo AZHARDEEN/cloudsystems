@@ -13,7 +13,7 @@ import org.zkoss.zk.ui.http.HttpSessionListener;
 import br.com.mcampos.ejb.security.LoginSession;
 import br.com.mcampos.utils.dto.CredentialDTO;
 import br.com.mcampos.utils.dto.PrincipalDTO;
-import br.com.mcampos.web.core.LoggedInterface;
+import br.com.mcampos.web.core.BaseController;
 import br.com.mcampos.web.locator.ServiceLocator;
 
 @WebListener( )
@@ -27,11 +27,11 @@ public class SessionMonitor extends HttpSessionListener
 	public void sessionDestroyed( HttpSessionEvent httpSessionEvent )
 	{
 		if ( getSession( ) != null ) {
-			Object obj = httpSessionEvent.getSession( ).getAttribute( LoggedInterface.currentPrincipal );
+			Object obj = httpSessionEvent.getSession( ).getAttribute( BaseController.currentPrincipal );
 			if ( obj != null ) {
 				PrincipalDTO dto = (PrincipalDTO) obj;
 				getSession( ).logout( dto.getUserId( ), getCredential( httpSessionEvent ) );
-				httpSessionEvent.getSession( ).setAttribute( LoggedInterface.currentPrincipal, null );
+				httpSessionEvent.getSession( ).setAttribute( BaseController.currentPrincipal, null );
 			}
 		}
 		super.sessionDestroyed( httpSessionEvent );

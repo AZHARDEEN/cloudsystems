@@ -13,7 +13,7 @@ import br.com.mcampos.utils.dto.PrincipalDTO;
 /**
  * Session Bean implementation class CategorySessionBean
  */
-@Stateless( mappedName = "CategorySession" )
+@Stateless( mappedName = "CategorySession", name = "CategorySession" )
 @LocalBean
 public class CategorySessionBean extends BaseCompanySessionBean<Category> implements CategorySession, CategorySessionLocal
 {
@@ -26,10 +26,10 @@ public class CategorySessionBean extends BaseCompanySessionBean<Category> implem
 	@Override
 	public Category add( @NotNull PrincipalDTO auth, Category newEntity )
 	{
-		if( auth == null || newEntity == null ) {
+		if ( auth == null || newEntity == null ) {
 			throw new InvalidParameterException( );
 		}
-		if( newEntity.getId( ).getId( ) == null || newEntity.getId( ).getId( ).equals( 0 ) ) {
+		if ( newEntity.getId( ).getId( ) == null || newEntity.getId( ).getId( ).equals( 0 ) ) {
 			Integer nextVal = getNextId( Category.getNextId, auth.getCompanyID( ) );
 			newEntity.getId( ).setId( nextVal );
 		}

@@ -1,10 +1,14 @@
 package br.com.mcampos.ejb.core;
 
+import javax.validation.constraints.NotNull;
+
+import br.com.mcampos.utils.dto.PrincipalDTO;
+
 public interface PagingSessionInterface<T> extends ReadOnlySessionInterface<T>
 {
-	public int count( );
+	public int count( @NotNull PrincipalDTO auth );
 
-	public int count( String filter );
+	public int count( @NotNull PrincipalDTO auth, String filter );
 
-	public int count( String filter, Object... params );
+	public int count( @NotNull PrincipalDTO auth, String filter, Object... params );
 }

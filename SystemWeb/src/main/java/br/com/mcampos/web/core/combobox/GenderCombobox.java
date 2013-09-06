@@ -23,6 +23,6 @@ public class GenderCombobox extends ComboboxExt<GenderSession, Gender>
 	public void load( )
 	{
 		logger.info( "load" );
-		load( ( (List<Gender>) getSession( ).getAll( ) ), null, true );
+		load( ( (List<Gender>) getSession( ).getAll( getPrincipal( ) ) ), null, true );
 	}
 }

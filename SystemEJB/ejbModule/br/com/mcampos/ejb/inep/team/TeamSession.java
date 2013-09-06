@@ -3,6 +3,7 @@ package br.com.mcampos.ejb.inep.team;
 import java.util.List;
 
 import javax.ejb.Remote;
+import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.dto.inep.InepAnaliticoCorrecao;
 import br.com.mcampos.dto.inep.InepTaskCounters;
@@ -22,7 +23,7 @@ import br.com.mcampos.utils.dto.PrincipalDTO;
 @Remote
 public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserPropertyInterface
 {
-	List<InepTask> getTasks( );
+	List<InepTask> getTasks( @NotNull PrincipalDTO auth );
 
 	List<InepTask> getTasks( InepPackage evt );
 
@@ -70,7 +71,7 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserProp
 
 	public List<InepDistribution> getDistribution( InepSubscription e );
 
-	List<InepTest> getTests( InepSubscription s );
+	List<InepTest> getTests( @NotNull PrincipalDTO auth, InepSubscription s );
 
 	InepOralTest getOralTest( InepSubscription s );
 

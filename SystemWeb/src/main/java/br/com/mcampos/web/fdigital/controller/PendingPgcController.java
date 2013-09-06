@@ -64,19 +64,19 @@ public class PendingPgcController extends BaseDBListController<PgcSession, Pgc>
 	@Override
 	protected Collection<Pgc> getAll( int activePage )
 	{
-		return getPagingSession( ).getAll( getFilter( ), new DBPaging( activePage, getRows( ) ) );
+		return getPagingSession( ).getAll( getPrincipal( ), getFilter( ), new DBPaging( activePage, getRows( ) ) );
 	}
 
 	@Override
 	protected int getCount( )
 	{
-		return getSession( ).count( getFilter( ) );
+		return getSession( ).count( getPrincipal( ), getFilter( ) );
 	}
 
 	private String getFilter( )
 	{
 		String filter = " t.status.id <> 1";
-		if ( this.filterPen != null && SysUtils.isEmpty( this.filterPen.getText( ) ) == false ) {
+		if ( filterPen != null && SysUtils.isEmpty( filterPen.getText( ) ) == false ) {
 			filter += " and t.penId = ?1";
 		}
 		return filter;

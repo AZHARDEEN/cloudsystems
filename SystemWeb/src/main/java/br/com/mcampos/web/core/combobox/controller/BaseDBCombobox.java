@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
-import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
@@ -14,10 +13,11 @@ import org.zkoss.zul.ComboitemRenderer;
 import br.com.mcampos.ejb.core.ReadOnlySessionInterface;
 import br.com.mcampos.ejb.core.SimpleEntity;
 import br.com.mcampos.sysutils.SysUtils;
+import br.com.mcampos.web.core.BaseController;
 import br.com.mcampos.web.core.combobox.BasicComboitemRenderer;
 import br.com.mcampos.web.locator.ServiceLocator;
 
-public abstract class BaseDBCombobox<BEAN> extends SelectorComposer<Combobox>
+public abstract class BaseDBCombobox<BEAN> extends BaseController<Combobox>
 {
 	private static final long serialVersionUID = 1161098428937124830L;
 	private Class<BEAN> persistentClass;
@@ -83,7 +83,7 @@ public abstract class BaseDBCombobox<BEAN> extends SelectorComposer<Combobox>
 	{
 		ReadOnlySessionInterface<?> s = (ReadOnlySessionInterface<?>) getSession( );
 		if ( s != null ) {
-			return (List<?>) s.getAll( );
+			return (List<?>) s.getAll( getPrincipal( ) );
 		}
 		else {
 			return Collections.emptyList( );
