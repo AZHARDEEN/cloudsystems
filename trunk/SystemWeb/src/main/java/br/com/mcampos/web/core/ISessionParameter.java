@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 public interface ISessionParameter extends Serializable
 {
+
+	public static final String currentPrincipal = "currentPrincipal";
+
 	String getSessionID( );
 
 	Object getSessionAttribute( String name );

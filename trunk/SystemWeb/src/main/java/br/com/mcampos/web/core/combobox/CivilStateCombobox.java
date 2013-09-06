@@ -23,7 +23,7 @@ public class CivilStateCombobox extends ComboboxExt<CivilStateSession, CivilStat
 	public void load( )
 	{
 		logger.info( "load" );
-		load( (List<CivilState>) getSession( ).getAll( ), null, true );
+		load( (List<CivilState>) getSession( ).getAll( getPrincipal( ) ), null, true );
 	}
 
 }

@@ -18,7 +18,7 @@ public class DocumentTypeCombobox extends ComboboxExt<DocumentTypeSession, Docum
 	@Override
 	protected void load( )
 	{
-		load( (List<DocumentType>) getSession( ).getAll( ), null, true );
+		load( (List<DocumentType>) getSession( ).getAll( getPrincipal( ) ), null, true );
 	}
 
 }

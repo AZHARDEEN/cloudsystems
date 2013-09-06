@@ -73,7 +73,7 @@ public abstract class ReadOnlyListboxController<SESSION, ENTITY> extends BaseDBC
 		int totalSize;
 
 		if ( SysUtils.isEmpty( getPaging( ) ) == false ) {
-			totalSize = getPagingSession( ).count( );
+			totalSize = getPagingSession( ).count( getPrincipal( ) );
 			if ( totalSize >= rows ) {
 				setPagingEventListener( );
 				for ( Paging item : getPaging( ) ) {
@@ -86,7 +86,7 @@ public abstract class ReadOnlyListboxController<SESSION, ENTITY> extends BaseDBC
 				for ( Paging item : getPaging( ) ) {
 					item.setVisible( false );
 				}
-				getListbox( ).setModel( new ListModelList<AccessLog>( getPagingSession( ).getAll( ) ) );
+				getListbox( ).setModel( new ListModelList<AccessLog>( getPagingSession( ).getAll( getPrincipal( ) ) ) );
 			}
 		}
 	}
@@ -121,20 +121,20 @@ public abstract class ReadOnlyListboxController<SESSION, ENTITY> extends BaseDBC
 	private void loadPage( int activePage )
 	{
 		getListbox( ).setModel(
-				new ListModelList<AccessLog>( getPagingSession( ).getAll( null,
+				new ListModelList<AccessLog>( getPagingSession( ).getAll( getPrincipal( ), null,
 						new DBPaging( activePage, ListboxParams.maxListBoxPageSize ) ) ) );
 	}
 
 	private EventListener<PagingEvent> getEventListener( )
 	{
 		return new EventListener<PagingEvent>( )
-				{
+		{
 			@Override
 			public void onEvent( PagingEvent event )
 			{
 				onPaging( event );
 			}
-				};
+		};
 	}
 
 	@SuppressWarnings( "rawtypes" )
@@ -147,7 +147,7 @@ public abstract class ReadOnlyListboxController<SESSION, ENTITY> extends BaseDBC
 	protected Collection<ENTITY> getList( )
 	{
 		PagingSessionInterface session = getPagingSession( );
-		return session.getAll( null, new DBPaging( getActivePage( ), ListboxParams.maxListBoxPageSize ) );
+		return session.getAll( getPrincipal( ), null, new DBPaging( getActivePage( ), ListboxParams.maxListBoxPageSize ) );
 	}
 
 }

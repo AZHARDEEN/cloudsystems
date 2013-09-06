@@ -124,15 +124,6 @@ public class ChangePasswordController extends BaseDialogController<LoginSession>
 		}
 	}
 
-	@Override
-	public PrincipalDTO getPrincipal( )
-	{
-		PrincipalDTO login = (PrincipalDTO) getSessionParameter( LoggedInterface.currentPrincipal );
-		if ( login != null && login.getPersonify( ) != null )
-			return login.getPersonify( );
-		return login;
-	}
-
 	@Listen( "onClick=#btnPasswdHint" )
 	public void onHint( MouseEvent evt )
 	{

@@ -18,7 +18,7 @@ public class AddressTypeCombobox extends ComboboxExt<AddressTypeSession, Address
 	@Override
 	protected void load( )
 	{
-		load( (List<AddressType>) getSession( ).getAll( ), null, true );
+		load( (List<AddressType>) getSession( ).getAll( getPrincipal( ) ), null, true );
 	}
 
 }

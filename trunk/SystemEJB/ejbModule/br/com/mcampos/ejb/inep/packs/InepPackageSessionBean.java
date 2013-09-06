@@ -1,6 +1,5 @@
 package br.com.mcampos.ejb.inep.packs;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,16 +35,6 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepPack
 	protected Class<InepPackage> getEntityClass( )
 	{
 		return InepPackage.class;
-	}
-
-	@Override
-	public Collection<InepPackage> getAll( )
-	{
-		/*
-		 * Deve esconder este metodo, pois o evento (InepPackage) depende da
-		 * empresa.
-		 */
-		return Collections.emptyList( );
 	}
 
 	@Override

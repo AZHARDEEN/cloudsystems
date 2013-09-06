@@ -2,6 +2,8 @@ package br.com.mcampos.ejb.security.lastusedpwd;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.Query;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
@@ -14,6 +16,7 @@ import br.com.mcampos.entity.security.Login;
  */
 @Stateless
 @LocalBean
+@TransactionAttribute( TransactionAttributeType.MANDATORY )
 public class LastUsedPasswordSessionBean extends SimpleSessionBean<LastUsedPassword> implements LastUsedPasswordSessionLocal
 {
 	@Override

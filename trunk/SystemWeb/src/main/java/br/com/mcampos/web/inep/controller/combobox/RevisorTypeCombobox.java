@@ -19,7 +19,7 @@ public class RevisorTypeCombobox extends ComboboxExt<RevisorTypeSession, Revisor
 	@Override
 	protected void load( )
 	{
-		load( (List<RevisorType>) getSession( ).getAll( ), null, true );
+		load( (List<RevisorType>) getSession( ).getAll( getPrincipal( ) ), null, true );
 	}
 
 }

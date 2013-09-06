@@ -19,7 +19,7 @@ public class FormCombobox extends ComboboxExt<AnotoFormSession, AnotoForm>
 	@Override
 	protected void load( )
 	{
-		load( (List<AnotoForm>) getSession( ).getAll( ), null, true );
+		load( (List<AnotoForm>) getSession( ).getAll( getPrincipal( ) ), null, true );
 	}
 
 }

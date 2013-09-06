@@ -23,6 +23,6 @@ public class StateCombobox extends ComboboxExt<StateSession, State>
 	@Override
 	public void load( )
 	{
-		load( (List<State>) getSession( ).getAll( ), null, true );
+		load( (List<State>) getSession( ).getAll( getPrincipal( ) ), null, true );
 	}
 }

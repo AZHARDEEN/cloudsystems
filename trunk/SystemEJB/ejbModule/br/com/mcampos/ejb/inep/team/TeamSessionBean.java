@@ -11,6 +11,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,9 +100,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepTask> getTasks( )
+	public List<InepTask> getTasks( @NotNull PrincipalDTO auth )
 	{
-		return (List<InepTask>) taskSession.getAll( );
+		return (List<InepTask>) taskSession.getAll( auth );
 	}
 
 	@Override
@@ -115,7 +116,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	public List<InepRevisor> getTeam( InepTask task )
 	{
 		InepTask entityTask = taskSession.get( task.getId( ) );
-		if( entityTask == null ) {
+		if ( entityTask == null ) {
 			return Collections.emptyList( );
 		}
 		List<InepRevisor> team = findByNamedQuery( InepRevisor.getAllTeamByEventAndTask, entityTask );
@@ -132,7 +133,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	@Override
 	public InepRevisor getRevisor( InepPackage event, PrincipalDTO auth )
 	{
-		if( auth != null && event != null ) {
+		if ( auth != null && event != null ) {
 			return getRevisorSession( ).get( event, auth );
 		}
 		else
@@ -142,10 +143,10 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	@Override
 	public List<InepDistribution> getTests( InepRevisor revisor, Integer status )
 	{
-		if( revisor == null ) {
+		if ( revisor == null ) {
 			return Collections.emptyList( );
 		}
-		if( status == null || status.intValue( ) < 1 ) {
+		if ( status == null || status.intValue( ) < 1 ) {
 			status = 1;
 		}
 		return distributionSession.get( revisor, status );
@@ -164,7 +165,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		try {
 			return (InepDistribution) query.getSingleResult( );
 		}
-		catch( NoResultException e ) {
+		catch ( NoResultException e ) {
 			e = null;
 			return null;
 		}
@@ -180,8 +181,8 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	public InepDistribution updateRevision( InepDistribution dist )
 	{
 		InepDistribution entity = getEntityManager( ).find( InepDistribution.class, dist.getId( ) );
-		if( entity != null ) {
-			if( entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) == false
+		if ( entity != null ) {
+			if ( entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) == false
 					&& entity.getRevisor( ).isCoordenador( ) == false ) {
 				throw new RuntimeException( "Uma nota já foi atribuída para esta prova. Nota atribuida anteriormente foi: " + entity.getNota( ) );
 			}
@@ -190,9 +191,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		else {
 			getEntityManager( ).persist( dist );
 		}
-		if( dist.getRevisor( ).isCoordenador( ) == false ) {
+		if ( dist.getRevisor( ).isCoordenador( ) == false ) {
 			dist.setStatus( getStatus( DistributionStatus.statusRevised ) );
-			if( hasVariance( dist ) ) {
+			if ( hasVariance( dist ) ) {
 				variance( dist, getStatus( DistributionStatus.statusVariance ) );
 			}
 		}
@@ -208,7 +209,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		List<InepRevisor> coordinators;
 		InepDistribution varianceDistribution;
-		if( sendToAllFromTask( ) == false ) {
+		if ( sendToAllFromTask( ) == false ) {
 			coordinators = revisorSession.findByNamedQuery( InepRevisor.getAllCoordinatorsToTask,
 					entity.getRevisor( ).getTask( ) );
 		}
@@ -216,10 +217,10 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			coordinators = revisorSession.findByNamedQuery( InepRevisor.getAllTeamByEventAndTask,
 					entity.getRevisor( ).getTask( ) );
 		}
-		for( InepRevisor otherRevisor : coordinators )
+		for ( InepRevisor otherRevisor : coordinators )
 		{
 			varianceDistribution = distributionSession.get( new InepDistributionPK( otherRevisor, entity.getTest( ) ) );
-			if( varianceDistribution == null ) {
+			if ( varianceDistribution == null ) {
 				varianceDistribution = new InepDistribution( otherRevisor, entity.getTest( ) );
 			}
 			varianceDistribution.setStatus( status );
@@ -231,7 +232,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 
 		boolean bRet = false;
-		if( entity == null || entity.getRevisor( ).isCoordenador( ) ) {
+		if ( entity == null || entity.getRevisor( ).isCoordenador( ) ) {
 			return bRet;
 		}
 		List<InepDistribution> others;
@@ -240,33 +241,33 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 		others = distributionSession.findByNamedQuery( InepDistribution.getAllFromTest, entity.getTest( ) );
 		threshold = getTreshold( );
-		for( InepDistribution other : others ) {
-			if( other.equals( entity ) || other.getNota( ) == null ) {
+		for ( InepDistribution other : others ) {
+			if ( other.equals( entity ) || other.getNota( ) == null ) {
 				continue;
 			}
 			variance = other.getNota( ).intValue( ) - entity.getNota( ).intValue( );
-			if( variance < 0 ) {
+			if ( variance < 0 ) {
 				variance *= -1;
 			}
-			if( variance > threshold || (other.getNota( ) > 5 && entity.getNota( ).equals( other.getNota( ) ) == false) ) {
+			if ( variance > threshold || ( other.getNota( ) > 5 && entity.getNota( ).equals( other.getNota( ) ) == false ) ) {
 				bRet = true;
 				other.setStatus( getStatus( DistributionStatus.statusVariance ) );
 			}
 			else {
 				double grade = 0.0;
 				int n = other.getNota( );
-				if( n > 5 )
+				if ( n > 5 )
 					n = 0;
 				grade += n;
 				n = entity.getNota( );
-				if( n > 5 )
+				if ( n > 5 )
 					n = 0;
 				grade += n;
 				grade /= 2.0;
 				testSession.setGrade( other.getTest( ), grade );
 			}
 		}
-		if( bRet == true ) {
+		if ( bRet == true ) {
 			entity.setStatus( getStatus( DistributionStatus.statusVariance ) );
 		}
 		return bRet;
@@ -275,7 +276,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	private Boolean sendToAllFromTask( )
 	{
 		Boolean ret = getProperty( ).getBool( "inep.varianceSendToAll" );
-		if( ret == null ) {
+		if ( ret == null ) {
 			ret = true;
 			String description;
 
@@ -288,7 +289,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	private Integer getTreshold( )
 	{
 		Integer threshold = getProperty( ).getInt( "inep.threshold" );
-		if( threshold == null ) {
+		if ( threshold == null ) {
 			threshold = 1;
 			getProperty( ).setInt( "inep.threshold", "Valor máximo admitido de discrepância", threshold );
 		}
@@ -316,7 +317,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	@Override
 	public List<InepPackage> getEvents( PrincipalDTO auth )
 	{
-		if( auth != null ) {
+		if ( auth != null ) {
 			return taskSession.getEvents( auth );
 		}
 		else
@@ -329,13 +330,13 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		byte[ ] obj = null;
 
 		InepDistribution merged = distributionSession.get( item.getId( ) );
-		if( merged == null || merged.getTest( ).getTask( ) == null ) {
+		if ( merged == null || merged.getTest( ).getTask( ) == null ) {
 			return null;
 		}
-		for( InepMedia inepMedia : merged.getTest( ).getSubscription( ).getMedias( ) ) {
-			if( inepMedia.getTask( ) == null )
+		for ( InepMedia inepMedia : merged.getTest( ).getSubscription( ).getMedias( ) ) {
+			if ( inepMedia.getTask( ) == null )
 				continue;
-			if( inepMedia.getTask( ).equals( merged.getTest( ).getTask( ).getId( ).getId( ) ) ) {
+			if ( inepMedia.getTask( ).equals( merged.getTest( ).getTask( ).getId( ).getId( ) ) ) {
 				obj = inepMedia.getMedia( ).getObject( );
 				break;
 			}
@@ -348,10 +349,10 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	public InepTaskCounters getCounters( InepRevisor rev )
 	{
 		InepTaskCounters dto = new InepTaskCounters( );
-		if( rev != null ) {
+		if ( rev != null ) {
 			Query query;
 
-			if( rev.isCoordenador( ) ) {
+			if ( rev.isCoordenador( ) ) {
 				query = getEntityManager( ).createNamedQuery( InepDistribution.getCoordCounter );
 				query.setParameter( 1, rev.getTask( ) );
 			}
@@ -362,12 +363,12 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			try {
 				@SuppressWarnings( "unchecked" )
 				List<Object[ ]> values = query.getResultList( );
-				if( values != null ) {
-					for( Object[ ] obj : values )
+				if ( values != null ) {
+					for ( Object[ ] obj : values )
 					{
-						int status = ((Integer) obj[0]);
-						Long count = ((Long) obj[1]);
-						switch( status )
+						int status = ( (Integer) obj[ 0 ] );
+						Long count = ( (Long) obj[ 1 ] );
+						switch ( status )
 						{
 						case 1:
 							dto.setTasks( count.intValue( ) );
@@ -383,7 +384,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 					}
 				}
 			}
-			catch( Exception e )
+			catch ( Exception e )
 			{
 				e = null;
 			}
@@ -401,19 +402,19 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		try {
 			InepAnaliticoCorrecao analitico = null;
 			List<InepTest> tests = testSession.getTests( revisor );
-			for( InepTest test : tests )
+			for ( InepTest test : tests )
 			{
-				if( test.getSubscription( ).getId( ).getId( ).equals( lastSubscription ) == false )
+				if ( test.getSubscription( ).getId( ).getId( ).equals( lastSubscription ) == false )
 				{
 					analitico = new InepAnaliticoCorrecao( );
 					lastSubscription = test.getSubscription( ).getId( ).getId( );
 					analitico.setSubscritpion( test.getSubscription( ).getId( ).getId( ) );
 					list.add( analitico );
 				}
-				loadGrades( test, analitico.getGrades( )[test.getTask( ).getId( ).getId( ) - 1] );
+				loadGrades( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
 			}
 		}
-		catch( Exception e )
+		catch ( Exception e )
 		{
 			e = null;
 		}
@@ -432,19 +433,19 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		try {
 			InepAnaliticoCorrecao analitico = null;
 			List<InepTest> tests = testSession.getTests( task );
-			for( InepTest test : tests )
+			for ( InepTest test : tests )
 			{
-				if( test.getSubscription( ).getId( ).getId( ).equals( lastSubscription ) == false )
+				if ( test.getSubscription( ).getId( ).getId( ).equals( lastSubscription ) == false )
 				{
 					analitico = new InepAnaliticoCorrecao( );
 					lastSubscription = test.getSubscription( ).getId( ).getId( );
 					analitico.setSubscritpion( test.getSubscription( ).getId( ).getId( ) );
 					list.add( analitico );
 				}
-				loadGrades( test, analitico.getGrades( )[test.getTask( ).getId( ).getId( ) - 1] );
+				loadGrades( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
 			}
 		}
-		catch( Exception e )
+		catch ( Exception e )
 		{
 			e = null;
 		}
@@ -463,19 +464,19 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		try {
 			InepAnaliticoCorrecao analitico = null;
 			List<InepTest> tests = testSession.getTests( event );
-			for( InepTest test : tests )
+			for ( InepTest test : tests )
 			{
-				if( test.getSubscription( ).getId( ).getId( ).equals( lastSubscription ) == false )
+				if ( test.getSubscription( ).getId( ).getId( ).equals( lastSubscription ) == false )
 				{
 					analitico = new InepAnaliticoCorrecao( );
 					lastSubscription = test.getSubscription( ).getId( ).getId( );
 					analitico.setSubscritpion( test.getSubscription( ).getId( ).getId( ) );
 					list.add( analitico );
 				}
-				loadGrades( test, analitico.getGrades( )[test.getTask( ).getId( ).getId( ) - 1] );
+				loadGrades( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
 			}
 		}
-		catch( Exception e )
+		catch ( Exception e )
 		{
 			e = null;
 		}
@@ -486,17 +487,17 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 	private void loadGrades( InepTest s, TaskGrade grade )
 	{
-		if( s == null || grade == null ) {
+		if ( s == null || grade == null ) {
 			return;
 		}
 		List<InepDistribution> distributions = distributionSession.get( s );
-		for( InepDistribution item : distributions )
+		for ( InepDistribution item : distributions )
 		{
-			if( item.getNota( ) == null ) {
+			if ( item.getNota( ) == null ) {
 				continue;
 			}
-			if( item.getRevisor( ).isCoordenador( ) == false ) {
-				if( grade.getFirstGrade( ) == null ) {
+			if ( item.getRevisor( ).isCoordenador( ) == false ) {
+				if ( grade.getFirstGrade( ) == null ) {
 					grade.setFirstGrade( item.getNota( ) );
 				}
 				else {
@@ -511,17 +512,17 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 	private void loadGradesWithVariance( InepTest s, TaskGrade grade )
 	{
-		if( s == null || grade == null ) {
+		if ( s == null || grade == null ) {
 			return;
 		}
 		List<InepDistribution> distributions = distributionSession.getVariance( s );
-		for( InepDistribution item : distributions )
+		for ( InepDistribution item : distributions )
 		{
-			if( item.getNota( ) == null ) {
+			if ( item.getNota( ) == null ) {
 				continue;
 			}
-			if( item.getRevisor( ).isCoordenador( ) == false ) {
-				if( grade.getFirstGrade( ) == null ) {
+			if ( item.getRevisor( ).isCoordenador( ) == false ) {
+				if ( grade.getFirstGrade( ) == null ) {
 					grade.setFirstGrade( item.getNota( ) );
 				}
 				else {
@@ -538,7 +539,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	public List<BaseSubscriptionDTO> report( InepPackage event, Integer report )
 	{
 		List<BaseSubscriptionDTO> list = Collections.emptyList( );
-		switch( report )
+		switch ( report )
 		{
 		case 1:
 			break;
@@ -559,7 +560,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
 		List<InepDistribution> dists = distributionSession.getAllforReport( event );
-		for( InepDistribution item : dists )
+		for ( InepDistribution item : dists )
 		{
 			NotasIndividuaisCorretorDTO dto = new NotasIndividuaisCorretorDTO( );
 			dto.setCpf( getCpf( item.getRevisor( ).getCollaborator( ).getPerson( ) ) );
@@ -581,7 +582,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		query.setParameter( 2, event.getId( ).getId( ) );
 		try {
 			dists = query.getResultList( );
-			for( SubscriptionGradeView item : dists )
+			for ( SubscriptionGradeView item : dists )
 			{
 				NotasFinaisDTO dto = new NotasFinaisDTO( );
 				dto.setSubscription( item.getId( ).getId( ) );
@@ -592,7 +593,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 				list.add( dto );
 			}
 		}
-		catch( Exception e )
+		catch ( Exception e )
 		{
 			e = null;
 		}
@@ -603,7 +604,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
 		List<InepDistribution> dists = distributionSession.getVarianceForReport( event );
-		for( InepDistribution item : dists )
+		for ( InepDistribution item : dists )
 		{
 			NotasConsenso dto = new NotasConsenso( );
 			dto.setNotaConsenso( item.getNota( ) );
@@ -618,9 +619,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		String cpf = "";
 
-		for( UserDocument doc : person.getDocuments( ) )
+		for ( UserDocument doc : person.getDocuments( ) )
 		{
-			if( doc.getType( ).getId( ).equals( UserDocument.typeCPF ) ) {
+			if ( doc.getType( ).getId( ).equals( UserDocument.typeCPF ) ) {
 				cpf = doc.getCode( );
 				break;
 			}
@@ -636,16 +637,16 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		try {
 			InepAnaliticoCorrecao analitico = null;
 			List<InepTest> tests = testSession.getTestsWithVariance( event );
-			for( InepTest test : tests )
+			for ( InepTest test : tests )
 			{
 				analitico = new InepAnaliticoCorrecao( );
 				test.getSubscription( ).getId( ).getId( );
 				analitico.setSubscritpion( test.getSubscription( ).getId( ).getId( ) );
 				list.add( analitico );
-				loadGradesWithVariance( test, analitico.getGrades( )[test.getTask( ).getId( ).getId( ) - 1] );
+				loadGradesWithVariance( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
 			}
 		}
-		catch( Exception e )
+		catch ( Exception e )
 		{
 			e = null;
 		}
@@ -710,13 +711,13 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		byte[ ] obj = null;
 
 		InepTest merged = testSession.get( key );
-		if( merged == null ) {
+		if ( merged == null ) {
 			return null;
 		}
-		for( InepMedia inepMedia : merged.getSubscription( ).getMedias( ) ) {
-			if( inepMedia.getTask( ) == null )
+		for ( InepMedia inepMedia : merged.getSubscription( ).getMedias( ) ) {
+			if ( inepMedia.getTask( ) == null )
 				continue;
-			if( inepMedia.getTask( ).equals( t.getId( ).getId( ) ) ) {
+			if ( inepMedia.getTask( ).equals( t.getId( ).getId( ) ) ) {
 				obj = inepMedia.getMedia( ).getObject( );
 				break;
 			}
@@ -731,9 +732,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepTest> getTests( InepSubscription s )
+	public List<InepTest> getTests( @NotNull PrincipalDTO auth, InepSubscription s )
 	{
-		List<InepTest> tests = (List<InepTest>) testSession.getAll( " t.subscription = ?1", null, s );
+		List<InepTest> tests = (List<InepTest>) testSession.getAll( auth, " t.subscription = ?1", null, s );
 		return tests;
 	}
 
@@ -747,9 +748,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	public void resetTasks( PrincipalDTO auth, InepSubscription s, List<InepTask> tasks )
 	{
 		InepSubscription merged = subscriptionSession.get( s.getId( ) );
-		if( merged == null )
+		if ( merged == null )
 			throw new InvalidParameterException( "Não existe a inscrição" );
-		for( InepTask task : tasks ) {
+		for ( InepTask task : tasks ) {
 			InepTestPK key = new InepTestPK( task, merged );
 			InepTest test = testSession.get( key );
 			resetTest( auth, test );
@@ -761,19 +762,19 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 	private void resetTest( PrincipalDTO auth, InepTest test )
 	{
-		if( test == null )
+		if ( test == null )
 			return;
 		List<InepDistribution> list = distributionSession.findByNamedQuery( InepDistribution.getAllFromTest, test );
-		if( SysUtils.isEmpty( list ) )
+		if ( SysUtils.isEmpty( list ) )
 			return;
-		for( InepDistribution item : list ) {
-			switch( item.getStatus( ).getId( ) ) {
+		for ( InepDistribution item : list ) {
+			switch ( item.getStatus( ).getId( ) ) {
 			case 2:
 				item.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
 				item.setNota( null );
 				break;
 			case 3:
-				if( item.getNota( ) == null ) {
+				if ( item.getNota( ) == null ) {
 					distributionSession.remove( auth, item.getId( ) );
 				}
 				else {
@@ -782,7 +783,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 				}
 				break;
 			case 4:
-				if( item.getRevisor( ).isCoordenador( ).equals( true ) )
+				if ( item.getRevisor( ).isCoordenador( ).equals( true ) )
 					distributionSession.remove( auth, item.getId( ) );
 				else {
 					item.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
@@ -799,12 +800,12 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		InepMedia m1 = null, m2 = null;
 		InepSubscription merged = subscriptionSession.get( s.getId( ) );
-		if( merged == null )
+		if ( merged == null )
 			throw new InvalidParameterException( "Não existe a inscrição" );
-		for( InepMedia media : merged.getMedias( ) ) {
-			if( t1.getId( ).getId( ).equals( media.getTask( ) ) )
+		for ( InepMedia media : merged.getMedias( ) ) {
+			if ( t1.getId( ).getId( ).equals( media.getTask( ) ) )
 				m1 = media;
-			if( t2.getId( ).getId( ).equals( media.getTask( ) ) )
+			if ( t2.getId( ).getId( ).equals( media.getTask( ) ) )
 				m2 = media;
 		}
 		Integer aux;

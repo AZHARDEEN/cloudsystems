@@ -5,7 +5,6 @@ import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.utils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.LoggedInterface;
 
 public class BaseLoggedMDIController extends BaseMDIController implements LoggedInterface
@@ -34,14 +33,5 @@ public class BaseLoggedMDIController extends BaseMDIController implements Logged
 	public boolean isLogged( )
 	{
 		return getPrincipal( ) != null;
-	}
-
-	@Override
-	public PrincipalDTO getPrincipal( )
-	{
-		PrincipalDTO login = (PrincipalDTO) getSessionParameter( LoggedInterface.currentPrincipal );
-		if ( login != null && login.getPersonify( ) != null )
-			return login.getPersonify( );
-		return login;
 	}
 }

@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.inep.InepOralTeamDTO;
@@ -75,7 +76,7 @@ public class InepOralFacadeBean implements InepOralFacade
 	}
 
 	@Override
-	public List<InepOralTeamDTO> getOralTeamToChoice( InepPackage event, PrincipalDTO auth )
+	public List<InepOralTeamDTO> getOralTeamToChoice( InepPackage event, @NotNull PrincipalDTO auth )
 	{
 		List<InepRevisor> list = teamSession.getOralTeam( event );
 		ArrayList<InepOralTeamDTO> retList = null;
@@ -84,7 +85,7 @@ public class InepOralFacadeBean implements InepOralFacade
 			retList = new ArrayList<InepOralTeamDTO>( list.size( ) );
 			for ( InepRevisor item : list ) {
 				InepOralTeamDTO dto = new InepOralTeamDTO( item );
-				Integer value = oralDistributionSession.count( " t.id.companyId = ?1 and t.id.eventId = ?2 and t.id.collaboratorId = ?3",
+				Integer value = oralDistributionSession.count( auth, " t.id.companyId = ?1 and t.id.eventId = ?2 and t.id.collaboratorId = ?3",
 						item.getId( ).getCompanyId( ), item.getId( ).getEventId( ), item.getId( ).getSequence( ) );
 				dto.setTests( value );
 				retList.add( dto );

@@ -50,8 +50,8 @@ public class FileUploadController extends BaseDBLoggedController<FileUploadSessi
 
 	private Listbox getListbox( )
 	{
-		assert ( this.listBox != null );
-		return this.listBox;
+		assert ( listBox != null );
+		return listBox;
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class FileUploadController extends BaseDBLoggedController<FileUploadSessi
 	{
 		super.doAfterCompose( comp );
 		getListbox( ).setItemRenderer( new FileUploadRenderer( ) );
-		getListbox( ).setModel( new ListModelList<FileUpload>( getSession( ).getAll( ) ) );
+		getListbox( ).setModel( new ListModelList<FileUpload>( getSession( ).getAll( getPrincipal( ) ) ) );
 	}
 
 	private void addToListBox( FileUpload entity )

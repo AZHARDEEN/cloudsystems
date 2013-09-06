@@ -36,6 +36,7 @@ import org.zkoss.zul.theme.Themes;
 
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.utils.dto.CredentialDTO;
+import br.com.mcampos.utils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.locator.ServiceLocator;
 
@@ -65,7 +66,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 
 	private CookieImpl getCookieManager( )
 	{
-		if( cookieManager == null ) {
+		if ( cookieManager == null ) {
 			cookieManager = new CookieImpl( );
 		}
 		return cookieManager;
@@ -107,7 +108,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		Object obj;
 
 		obj = Sessions.getCurrent( ).getNativeSession( );
-		if( obj instanceof HttpSession ) {
+		if ( obj instanceof HttpSession ) {
 			HttpSession httpSession;
 
 			httpSession = (HttpSession) obj;
@@ -123,7 +124,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		CredentialDTO c = new CredentialDTO( );
 
 		c.setLocale( Locales.getCurrent( ) );
-		if( Executions.getCurrent( ) != null ) {
+		if ( Executions.getCurrent( ) != null ) {
 			c.setRemoteAddr( Executions.getCurrent( ).getRemoteAddr( ) );
 			c.setRemoteHost( Executions.getCurrent( ).getRemoteHost( ) );
 			c.setProgram( Executions.getCurrent( ).getBrowser( ) );
@@ -138,13 +139,13 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	@Override
 	public Object getSessionAttribute( String name )
 	{
-		return (Sessions.getCurrent( ) != null) ? Sessions.getCurrent( ).getAttribute( name ) : null;
+		return ( Sessions.getCurrent( ) != null ) ? Sessions.getCurrent( ).getAttribute( name ) : null;
 	}
 
 	@Override
 	public void setSessionAttribute( String name, Object value )
 	{
-		if( Sessions.getCurrent( ) != null ) {
+		if ( Sessions.getCurrent( ) != null ) {
 			Sessions.getCurrent( ).setAttribute( name, value );
 		}
 	}
@@ -189,10 +190,10 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		Map<?, ?> map = Executions.getCurrent( ).getArg( );
 		Object param = null;
 
-		if( map != null ) {
+		if ( map != null ) {
 			param = map.get( name );
 		}
-		if( param == null ) {
+		if ( param == null ) {
 			param = Executions.getCurrent( ).getParameter( name );
 		}
 		return param;
@@ -210,12 +211,12 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 
 	protected void gotoPage( String uri, Component parent, Map<?, ?> parameters, boolean mustClear )
 	{
-		if( parent == null && getMainWindow( ) != null ) {
+		if ( parent == null && getMainWindow( ) != null ) {
 			parent = getMainWindow( ).getParent( );
 		}
-		if( parent != null ) {
-			if( mustClear ) {
-				if( SysUtils.isEmpty( parent.getChildren( ) ) == false ) {
+		if ( parent != null ) {
+			if ( mustClear ) {
+				if ( SysUtils.isEmpty( parent.getChildren( ) ) == false ) {
 					parent.getChildren( ).clear( );
 				}
 			}
@@ -229,7 +230,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	protected Component createComponents( String uri, Component parent, Map<?, ?> parameters )
 	{
 		Component c = Executions.getCurrent( ).createComponents( uri, parent, parameters );
-		if( c != null ) {
+		if ( c != null ) {
 			c.setAttribute( "zulPage", uri );
 		}
 		return c;
@@ -237,9 +238,9 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 
 	protected void doModal( Window w, IDialogEvent evt )
 	{
-		if( w != null ) {
-			if( w instanceof BaseDialogWindow ) {
-				((BaseDialogWindow) w).setCallEvent( evt );
+		if ( w != null ) {
+			if ( w instanceof BaseDialogWindow ) {
+				( (BaseDialogWindow) w ).setCallEvent( evt );
 			}
 			w.doModal( );
 		}
@@ -249,11 +250,11 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		Component parent = null;
 
-		if( parent == null && getMainWindow( ) != null ) {
+		if ( parent == null && getMainWindow( ) != null ) {
 			parent = getMainWindow( ).getParent( );
 		}
-		if( parent != null ) {
-			if( SysUtils.isEmpty( parent.getChildren( ) ) == false ) {
+		if ( parent != null ) {
+			if ( SysUtils.isEmpty( parent.getChildren( ) ) == false ) {
 				parent.getChildren( ).clear( );
 			}
 		}
@@ -261,7 +262,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 
 	protected void redirect( String uri )
 	{
-		if( uri == null ) {
+		if ( uri == null ) {
 			uri = "/private/index.zul";
 		}
 		Executions.getCurrent( ).sendRedirect( uri );
@@ -270,7 +271,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	protected void setLanguage( String setLang ) throws Exception
 	{
 		// set session wide language to new value
-		if( SysUtils.isEmpty( setLang ) ) {
+		if ( SysUtils.isEmpty( setLang ) ) {
 			setLang = "pt_BR";
 		}
 		Sessions.getCurrent( ).setAttribute( "preflang", setLang );
@@ -279,24 +280,24 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		// set the new preferred locale
 		// otherwise it will use the default language (no session attribute
 		// and/or language parameter
-		if( !(sessLang == null) ) {
+		if ( !( sessLang == null ) ) {
 			Locale preferredLocale = org.zkoss.util.Locales.getLocale( sessLang );
 			Sessions.getCurrent( ).setAttribute( org.zkoss.web.Attributes.PREFERRED_LOCALE, preferredLocale );
 			org.zkoss.util.Locales.setThreadLocal( org.zkoss.util.Locales.getLocale( sessLang ) );
 		}
 		// Iterate through variables of the current class
-		for( Field f : this.getClass( ).getDeclaredFields( ) ) {
+		for ( Field f : this.getClass( ).getDeclaredFields( ) ) {
 			String compName = this.getClass( ).getName( ) + "." + f.getName( );
 			String compLabel = Labels.getLabel( compName );
 			// only set lable if value found, otherwise it renders empty
-			if( !(compLabel == null) ) {
+			if ( !( compLabel == null ) ) {
 				String compType = f.getType( ).getName( );
-				if( compType.equals( "org.zkoss.zul.Button" ) ) {
-					((Button) f.get( this )).setLabel( compLabel );
+				if ( compType.equals( "org.zkoss.zul.Button" ) ) {
+					( (Button) f.get( this ) ).setLabel( compLabel );
 				}
-				else if( compType.equals( "org.zkoss.zul.Label" ) )
+				else if ( compType.equals( "org.zkoss.zul.Label" ) )
 				{
-					((Label) f.get( this )).setValue( compLabel );
+					( (Label) f.get( this ) ).setValue( compLabel );
 					// Other component types need to be implemented if required
 				}
 			}
@@ -305,9 +306,9 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 
 	protected void setLabel( Label comp )
 	{
-		if( comp != null ) {
+		if ( comp != null ) {
 			String value = Labels.getLabel( comp.getId( ) );
-			if( SysUtils.isEmpty( value ) == false ) {
+			if ( SysUtils.isEmpty( value ) == false ) {
 				comp.setValue( value );
 			}
 		}
@@ -315,9 +316,9 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 
 	protected void setLabel( LabelElement comp )
 	{
-		if( comp != null ) {
+		if ( comp != null ) {
 			String value = Labels.getLabel( comp.getId( ) );
-			if( SysUtils.isEmpty( value ) == false ) {
+			if ( SysUtils.isEmpty( value ) == false ) {
 				comp.setLabel( value );
 			}
 		}
@@ -325,9 +326,9 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 
 	protected void setLabel( Panel comp )
 	{
-		if( comp != null ) {
+		if ( comp != null ) {
 			String value = Labels.getLabel( comp.getId( ) );
-			if( SysUtils.isEmpty( value ) == false ) {
+			if ( SysUtils.isEmpty( value ) == false ) {
 				comp.setTitle( value );
 			}
 		}
@@ -335,15 +336,15 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 
 	protected void setLabel( XulElement comp )
 	{
-		if( comp != null ) {
+		if ( comp != null ) {
 			Labels.getLabel( comp.getId( ) );
-			if( comp instanceof Label ) {
+			if ( comp instanceof Label ) {
 				setLabel( (Label) comp );
 			}
-			else if( comp instanceof Panel ) {
+			else if ( comp instanceof Panel ) {
 				setLabel( (Panel) comp );
 			}
-			else if( comp instanceof LabelElement ) {
+			else if ( comp instanceof LabelElement ) {
 				setLabel( (LabelElement) comp );
 			}
 		}
@@ -358,12 +359,12 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	public void doAfterCompose( T comp ) throws Exception
 	{
 		String[ ] themes = Themes.getThemes( );
-		if( Themes.getCurrentTheme( ).equals( themes[2] ) == false ) {
-			Themes.setTheme( Executions.getCurrent( ), themes[2] );
+		if ( Themes.getCurrentTheme( ).equals( themes[ 2 ] ) == false ) {
+			Themes.setTheme( Executions.getCurrent( ), themes[ 2 ] );
 		}
 		super.doAfterCompose( comp );
-		if( SysUtils.isEmpty( this.labels ) == false ) {
-			for( XulElement item : this.labels ) {
+		if ( SysUtils.isEmpty( this.labels ) == false ) {
+			for ( XulElement item : this.labels ) {
 				setLabel( item );
 			}
 		}
@@ -374,7 +375,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		try {
 			Messagebox.show( msg, title, Messagebox.OK, Messagebox.ERROR );
 		}
-		catch( Exception e ) {
+		catch ( Exception e ) {
 			e = null;
 		}
 	}
@@ -384,7 +385,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		try {
 			return ServiceLocator.getInstance( ).getRemoteSession( zClass );
 		}
-		catch( NamingException e ) {
+		catch ( NamingException e ) {
 			e.printStackTrace( );
 		}
 		return null;
@@ -431,10 +432,10 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 
 	protected ListModelList<?> getModel( Listbox c )
 	{
-		if( c == null || c.getModel( ) == null )
+		if ( c == null || c.getModel( ) == null )
 			return null;
 		Object obj = c.getModel( );
-		if( obj instanceof ListModelList )
+		if ( obj instanceof ListModelList )
 			return (ListModelList<?>) obj;
 		else
 			return null;
@@ -484,22 +485,22 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 
 	protected void setMask( Component c, String mask )
 	{
-		if( c == null )
+		if ( c == null )
 			return;
 		setMask( c.getId( ), mask );
 	}
 
 	protected void setMask( Component c, String mask, boolean clear )
 	{
-		if( c == null )
+		if ( c == null )
 			return;
 		setMask( c.getId( ), mask, clear );
 	}
 
 	protected void setMask( String id, String mask, boolean clear )
 	{
-		if( clear ) {
-			if( mask != null ) {
+		if ( clear ) {
+			if ( mask != null ) {
 				Clients.evalJavaScript( "jQuery('$" + id + "').setMask('" + mask + "').val('');" );
 			}
 			else {
@@ -507,7 +508,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 			}
 		}
 		else {
-			if( mask != null ) {
+			if ( mask != null ) {
 				Clients.evalJavaScript( "jQuery('$" + id + "').setMask('" + mask + "');" );
 			}
 			else {
@@ -515,4 +516,19 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 			}
 		}
 	}
+
+	protected PrincipalDTO getPrincipal( )
+	{
+		Object obj = getSessionParameter( currentPrincipal );
+
+		if ( obj instanceof PrincipalDTO ) {
+			PrincipalDTO login = (PrincipalDTO) obj;
+			if ( login != null && login.getPersonify( ) != null )
+				return login.getPersonify( );
+			return login;
+		}
+		else
+			return null;
+	}
+
 }

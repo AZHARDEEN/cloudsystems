@@ -45,18 +45,18 @@ public class TeamController extends BaseController<Window>
 
 	private void createTabs( )
 	{
-		List<InepTask> tasks = getSession( ).getTasks( );
+		List<InepTask> tasks = getSession( ).getTasks( getPrincipal( ) );
 		Tabpanel newPanel;
 		int nIndex = 0;
 
-		this.listboxes = new Listbox[ tasks.size( ) ];
+		listboxes = new Listbox[ tasks.size( ) ];
 		for ( InepTask task : tasks )
 		{
-			this.tabBox.appendChild( new Tab( task.getDescription( ) ) );
+			tabBox.appendChild( new Tab( task.getDescription( ) ) );
 			newPanel = new Tabpanel( );
-			this.listboxes[ nIndex ] = new Listbox( );
-			newPanel.appendChild( loadTeam( this.listboxes[ nIndex++ ], task ) );
-			this.panels.appendChild( newPanel );
+			listboxes[ nIndex ] = new Listbox( );
+			newPanel.appendChild( loadTeam( listboxes[ nIndex++ ], task ) );
+			panels.appendChild( newPanel );
 		}
 	}
 
@@ -72,10 +72,10 @@ public class TeamController extends BaseController<Window>
 
 	private TeamSession getSession( )
 	{
-		if ( this.session == null ) {
-			this.session = (TeamSession) getSession( TeamSession.class );
+		if ( session == null ) {
+			session = (TeamSession) getSession( TeamSession.class );
 		}
-		return this.session;
+		return session;
 	}
 
 	@Listen( "onClick = #btnDistribution" )

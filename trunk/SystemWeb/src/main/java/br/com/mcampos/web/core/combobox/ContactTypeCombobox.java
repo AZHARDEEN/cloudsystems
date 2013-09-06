@@ -18,7 +18,7 @@ public class ContactTypeCombobox extends ComboboxExt<ContactTypeSession, Contact
 	@Override
 	protected void load( )
 	{
-		load( (List<ContactType>) getSession( ).getAll( ), null, true );
+		load( (List<ContactType>) getSession( ).getAll( getPrincipal( ) ), null, true );
 
 	}
 

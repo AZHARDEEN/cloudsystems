@@ -92,7 +92,7 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 		try {
 			rootMenu.setChilds( getSession( ).getTopContextMenu( ) );
 		}
-		catch( ApplicationException e ) {
+		catch ( ApplicationException e ) {
 			e.printStackTrace( );
 		}
 		return MenuNode.createNode( rootMenu );
@@ -102,7 +102,7 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 	protected void showRecord( Menu node )
 	{
 		List<Task> tasks;
-		if( node == null )
+		if ( node == null )
 		{
 			recordId.setValue( "" );
 			recordDescription.setValue( "" );
@@ -202,13 +202,13 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 	@Override
 	protected TaskNode createRootTaskNode( )
 	{
-		return(TaskNode.createNode( getSession( ).getRootTask( ) ));
+		return ( TaskNode.createNode( getSession( ).getRootTask( ) ) );
 	}
 
 	@Override
 	protected void remove( MenuFacade session, Menu data )
 	{
-		getSession( ).remove( getPrincipal( ), data );
+		getSession( ).remove( getPrincipal( ), data.getId( ) );
 	}
 
 	@Override
@@ -233,10 +233,10 @@ public class MenuController extends BasicTaskAssociatedTreeController<MenuFacade
 	public void onClickFilePath( Event evt )
 	{
 		Component c = createComponents( "/templates/file_path_dialog.zul", getMainWindow( ), null );
-		if( c != null && c instanceof Window ) {
-			((Window) c).doModal( );
+		if ( c != null && c instanceof Window ) {
+			( (Window) c ).doModal( );
 		}
-		if( evt != null )
+		if ( evt != null )
 			evt.stopPropagation( );
 	}
 }
