@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table( name = "rejected_records" )
+@Table( name = "rejected_records", schema = "public" )
 public class RejectedRecord implements Serializable
 {
 	private static final long serialVersionUID = 1L;

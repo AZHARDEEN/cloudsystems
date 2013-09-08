@@ -39,13 +39,13 @@ public class InepTask implements Serializable, Comparable<InepTask>, BasicEntity
 					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
 			@JoinColumn(
 					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ) } )
-	private InepPackage event;
+	private InepEvent event;
 
 	public InepTask( )
 	{
 	}
 
-	public InepTask( InepPackage event )
+	public InepTask( InepEvent event )
 	{
 		getId( ).set( event.getId( ) );
 	}
@@ -111,12 +111,12 @@ public class InepTask implements Serializable, Comparable<InepTask>, BasicEntity
 		}
 	}
 
-	public InepPackage getEvent( )
+	public InepEvent getEvent( )
 	{
 		return this.event;
 	}
 
-	public void setEvent( InepPackage event )
+	public void setEvent( InepEvent event )
 	{
 		this.event = event;
 		if ( getEvent( ) != null ) {

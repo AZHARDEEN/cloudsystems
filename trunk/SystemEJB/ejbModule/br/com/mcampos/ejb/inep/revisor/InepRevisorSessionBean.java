@@ -11,7 +11,7 @@ import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.revisortype.RevisorTypeSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepRevisorPK;
 import br.com.mcampos.entity.inep.InepTask;
@@ -41,13 +41,13 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 	}
 
 	@Override
-	public List<InepPackage> getEvents( PrincipalDTO auth )
+	public List<InepEvent> getEvents( PrincipalDTO auth )
 	{
 		return getTaskSession( ).getEvents( auth );
 	}
 
 	@Override
-	public List<InepTask> getTasks( InepPackage event )
+	public List<InepTask> getTasks( InepEvent event )
 	{
 		return getTaskSession( ).getAll( event );
 	}
@@ -58,10 +58,10 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 	}
 
 	@Override
-	public List<InepRevisor> getAll( InepPackage p )
+	public List<InepRevisor> getAll( InepEvent p )
 	{
 		List<InepRevisor> list = Collections.emptyList( );
-		InepPackage pm = getEntityManager( ).find( InepPackage.class, p.getId( ) );
+		InepEvent pm = getEntityManager( ).find( InepEvent.class, p.getId( ) );
 		if ( pm == null ) {
 			return list;
 		}
@@ -81,16 +81,17 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 	}
 
 	@Override
-	public InepRevisor get( InepPackage event, PrincipalDTO c )
+	public InepRevisor get( InepEvent event, PrincipalDTO c )
 	{
 		if ( c == null ) {
 			return null;
 		}
-		return get( collaboratorSession.find( c ) );
+		Collaborator collaborator = collaboratorSession.find( c );
+		return get( event, collaborator );
 	}
 
 	@Override
-	public InepRevisor get( InepPackage event, Collaborator collaborator )
+	public InepRevisor get( InepEvent event, Collaborator collaborator )
 	{
 		if ( collaborator != null )
 			return get( new InepRevisorPK( collaborator, event ) );
@@ -111,7 +112,7 @@ public class InepRevisorSessionBean extends SimpleSessionBean<InepRevisor> imple
 	}
 
 	@Override
-	public List<InepRevisor> getOralCoordinator( InepPackage event )
+	public List<InepRevisor> getOralCoordinator( InepEvent event )
 	{
 		return findByNamedQuery( InepRevisor.getOralCoordinatorByEvent, event );
 	}

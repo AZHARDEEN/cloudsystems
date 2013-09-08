@@ -12,10 +12,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-
 @Entity
 @NamedQueries( { @NamedQuery( name = "CountryLanguage.findAll", query = "select o from CountryLanguage o" ) } )
-@Table( name = "\"country_language\"" )
+@Table( name = "country_language", schema = "public" )
 @IdClass( CountryLanguagePK.class )
 public class CountryLanguage implements Serializable
 {
@@ -37,50 +36,50 @@ public class CountryLanguage implements Serializable
 	@JoinColumn( name = "ctr_code_ch" )
 	private Country country;
 
-	public CountryLanguage()
+	public CountryLanguage( )
 	{
 	}
 
-	public Boolean getIsMain()
+	public Boolean getIsMain( )
 	{
-		return this.isMain;
+		return isMain;
 	}
 
 	public void setIsMain( Boolean clg_main_bt )
 	{
-		this.isMain = clg_main_bt;
+		isMain = clg_main_bt;
 	}
 
-	public String getCountryId()
+	public String getCountryId( )
 	{
-		return this.countryId;
+		return countryId;
 	}
 
 	public void setCountryId( String ctr_code_ch )
 	{
-		this.countryId = ctr_code_ch;
+		countryId = ctr_code_ch;
 	}
 
-	public Integer getId()
+	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( Integer lng_id_in )
 	{
-		this.id = lng_id_in;
+		id = lng_id_in;
 	}
 
-	public Country getCountry()
+	public Country getCountry( )
 	{
-		return this.country;
+		return country;
 	}
 
 	public void setCountry( Country country2 )
 	{
-		this.country = country2;
+		country = country2;
 		if ( country2 != null ) {
-			this.countryId = country2.getCode();
+			countryId = country2.getId( );
 		}
 	}
 }

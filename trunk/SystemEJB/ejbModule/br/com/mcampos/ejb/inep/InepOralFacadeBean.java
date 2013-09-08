@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.inep.InepOralTeamDTO;
+import br.com.mcampos.ejb.core.BaseSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
 import br.com.mcampos.ejb.inep.distribution.InepOralDistributionLocal;
 import br.com.mcampos.ejb.inep.media.InepMediaSessionLocal;
@@ -22,10 +23,10 @@ import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.team.TeamSessionLocal;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
 import br.com.mcampos.entity.inep.DistributionStatus;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepMedia;
 import br.com.mcampos.entity.inep.InepOralDistribution;
 import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepPackage;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepSubscription;
 import br.com.mcampos.entity.inep.InepSubscriptionPK;
@@ -38,7 +39,7 @@ import br.com.mcampos.utils.dto.PrincipalDTO;
  */
 @Stateless( name = "InepOralFacade", mappedName = "InepOralFacade" )
 @LocalBean
-public class InepOralFacadeBean implements InepOralFacade
+public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacade
 {
 	@EJB
 	InepOralTestSessionLocal oralTestSession;
@@ -58,25 +59,25 @@ public class InepOralFacadeBean implements InepOralFacade
 	InepRevisorSessionLocal revisorSession;
 
 	@Override
-	public List<InepOralTest> getVarianceOralOnly( PrincipalDTO c, InepPackage pack )
+	public List<InepOralTest> getVarianceOralOnly( PrincipalDTO c, InepEvent pack )
 	{
 		return oralTestSession.getVarianceOralOnly( pack );
 	}
 
 	@Override
-	public List<InepPackage> getEvents( PrincipalDTO auth )
+	public List<InepEvent> getEvents( PrincipalDTO auth )
 	{
 		return teamSession.getEvents( auth );
 	}
 
 	@Override
-	public InepRevisor getRevisor( InepPackage event, PrincipalDTO auth )
+	public InepRevisor getRevisor( InepEvent event, PrincipalDTO auth )
 	{
 		return teamSession.getRevisor( event, auth );
 	}
 
 	@Override
-	public List<InepOralTeamDTO> getOralTeamToChoice( InepPackage event, @NotNull PrincipalDTO auth )
+	public List<InepOralTeamDTO> getOralTeamToChoice( InepEvent event, @NotNull PrincipalDTO auth )
 	{
 		List<InepRevisor> list = teamSession.getOralTeam( event );
 		ArrayList<InepOralTeamDTO> retList = null;
@@ -95,7 +96,7 @@ public class InepOralFacadeBean implements InepOralFacade
 	}
 
 	@Override
-	public void distribute( InepPackage event, PrincipalDTO auth, InepRevisor r1, InepRevisor r2, Set<InepOralTest> tests )
+	public void distribute( InepEvent event, PrincipalDTO auth, InepRevisor r1, InepRevisor r2, Set<InepOralTest> tests )
 	{
 		if ( event == null || auth == null || r1 == null || r2 == null || SysUtils.isEmpty( tests ) )
 			throw new InvalidParameterException( );

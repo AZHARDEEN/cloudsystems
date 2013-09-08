@@ -8,12 +8,12 @@ import javax.validation.constraints.NotNull;
 import br.com.mcampos.dto.inep.InepAnaliticoCorrecao;
 import br.com.mcampos.dto.inep.InepTaskCounters;
 import br.com.mcampos.dto.inep.reporting.BaseSubscriptionDTO;
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.ejb.user.company.collaborator.UserPropertyInterface;
 import br.com.mcampos.entity.inep.InepDistribution;
 import br.com.mcampos.entity.inep.InepOralDistribution;
 import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepSubscription;
 import br.com.mcampos.entity.inep.InepTask;
@@ -21,17 +21,17 @@ import br.com.mcampos.entity.inep.InepTest;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
-public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserPropertyInterface
+public interface TeamSession extends BaseCrudSessionInterface<InepRevisor>, UserPropertyInterface
 {
 	List<InepTask> getTasks( @NotNull PrincipalDTO auth );
 
-	List<InepTask> getTasks( InepPackage evt );
+	List<InepTask> getTasks( InepEvent evt );
 
 	List<InepRevisor> getTeam( InepTask task );
 
-	List<InepRevisor> getOralTeam( InepPackage evt );
+	List<InepRevisor> getOralTeam( InepEvent evt );
 
-	List<InepPackage> getPackages( InepRevisor rev );
+	List<InepEvent> getPackages( InepRevisor rev );
 
 	List<InepDistribution> getTests( InepRevisor rev, Integer testStatus );
 
@@ -39,9 +39,9 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserProp
 
 	InepDistribution updateRevision( InepDistribution rev );
 
-	List<InepPackage> getEvents( PrincipalDTO auth );
+	List<InepEvent> getEvents( PrincipalDTO auth );
 
-	InepRevisor getRevisor( InepPackage event, PrincipalDTO auth );
+	InepRevisor getRevisor( InepEvent event, PrincipalDTO auth );
 
 	byte[ ] getMedia( InepDistribution item );
 
@@ -51,23 +51,23 @@ public interface TeamSession extends BaseSessionInterface<InepRevisor>, UserProp
 
 	InepTaskCounters getCounters( InepRevisor rev );
 
-	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepPackage event );
+	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepEvent event );
 
 	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepRevisor revisor );
 
 	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepTask task );
 
-	public List<BaseSubscriptionDTO> report( InepPackage event, Integer report );
+	public List<BaseSubscriptionDTO> report( InepEvent event, Integer report );
 
-	public List<InepAnaliticoCorrecao> getAnaliticoDivergencia( InepPackage event );
+	public List<InepAnaliticoCorrecao> getAnaliticoDivergencia( InepEvent event );
 
 	public List<InepAnaliticoCorrecao> getAnaliticoDivergencia( InepTask task );
 
-	public List<Object[ ]> getWorkStatus( InepPackage event );
+	public List<Object[ ]> getWorkStatus( InepEvent event );
 
-	public List<Object[ ]> getSubscriptionStatus( InepPackage event );
+	public List<Object[ ]> getSubscriptionStatus( InepEvent event );
 
-	public List<InepSubscription> getSubscriptions( InepPackage event, String part );
+	public List<InepSubscription> getSubscriptions( InepEvent event, String part );
 
 	public List<InepDistribution> getDistribution( InepSubscription e );
 

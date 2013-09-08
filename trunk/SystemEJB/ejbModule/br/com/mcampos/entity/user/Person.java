@@ -15,7 +15,7 @@ import br.com.mcampos.entity.locale.City;
 import br.com.mcampos.sysutils.SysUtils;
 
 @Entity
-@Table( name = "\"person\"" )
+@Table( name = "person", schema = "public" )
 @DiscriminatorValue( "1" )
 public class Person extends Users implements Serializable
 {

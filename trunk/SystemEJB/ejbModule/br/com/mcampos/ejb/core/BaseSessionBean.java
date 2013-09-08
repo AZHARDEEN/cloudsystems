@@ -1,138 +1,63 @@
 package br.com.mcampos.ejb.core;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Date;
 
-import javax.ejb.EJB;
-import javax.validation.constraints.NotNull;
+import javax.annotation.Resource;
+import javax.ejb.SessionContext;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import br.com.mcampos.ejb.params.SystemParameterSessionLocal;
-import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public abstract class BaseSessionBean<T> extends PagingSessionBean<T> implements BaseSessionInterface<T>
+import br.com.mcampos.entity.system.LogProgramException;
+
+public abstract class BaseSessionBean implements BaseSessionInterface
 {
+	private static final Logger logger = LoggerFactory.getLogger( BaseSessionBean.class.getSimpleName( ) );
+	@Resource
+	private SessionContext sessionContext;
 
-	@EJB
-	private SystemParameterSessionLocal property;
+	@PersistenceContext( unitName = "SystemEJB" )
+	private EntityManager em;
 
-	@Override
-	@Deprecated
-	public T merge( T newEntity )
+	protected EntityManager getEntityManager( )
 	{
-		if( newEntity == null ) {
-			return null;
-		}
-		T merged = getEntityManager( ).merge( newEntity );
-		return merged;
+		return em;
 	}
 
-	public T merge( @NotNull PrincipalDTO auth, @NotNull T newEntity )
+	public SessionContext getSessionContext( )
 	{
-		T merged = getEntityManager( ).merge( newEntity );
-		return merged;
+		return sessionContext;
 	}
 
 	@Override
-	public T update( @NotNull PrincipalDTO auth, @NotNull T newEntity )
+	public void storeException( Exception e )
 	{
-		return merge( auth, newEntity );
-	}
-
-	@Override
-	public T updateAndRefresh( @NotNull PrincipalDTO auth, @NotNull T newEntity )
-	{
-		T merged = merge( auth, newEntity );
-		refresh( merged );
-		return merged;
-	}
-
-	@Override
-	public T add( @NotNull PrincipalDTO auth, @NotNull T newEntity )
-	{
-		/*
-		 * Do not call this class persist, please!
-		 */
-		getEntityManager( ).persist( newEntity );
-		return newEntity;
-	}
-
-	@Override
-	public T addAndRefresh( @NotNull PrincipalDTO auth, @NotNull T newEntity )
-	{
-		if( newEntity == null ) {
-			return null;
-		}
-		add( auth, newEntity );
-		refresh( newEntity );
-		return newEntity;
-	}
-
-	@Override
-	@Deprecated
-	public T persist( T newEntity )
-	{
-		if( newEntity == null ) {
-			return null;
-		}
-		return merge( newEntity );
-	}
-
-	@Override
-	public Collection<T> merge( Collection<T> entities )
-	{
-		List<T> merged = Collections.emptyList( );
-		if( SysUtils.isEmpty( entities ) == false ) {
-			merged = new ArrayList<T>( entities.size( ) );
-			for( T item : entities ) {
-				merged.add( merge( item ) );
+		try {
+			if ( e == null ) {
+				return;
 			}
+			String trace = getStackTrace( e );
+
+			LogProgramException log = new LogProgramException( );
+			log.setDescription( trace );
+			log.setInsertDate( new Date( ) );
+			getEntityManager( ).persist( log );
+			logger.error( "Store Program Exception", e );
 		}
-		return merged;
-	}
-
-	@Override
-	public T remove( @NotNull PrincipalDTO auth, @NotNull Serializable key )
-	{
-		T removed = get( key );
-		if( removed != null ) {
-			getEntityManager( ).remove( removed );
-			return removed;
-		}
-		else
-			return null;
-	}
-
-	@Override
-	public T refresh( T entity )
-	{
-		if( entity == null ) {
-			return null;
-		}
-		getEntityManager( ).flush( );
-		getEntityManager( ).refresh( entity );
-		return entity;
-	}
-
-	protected SystemParameterSessionLocal getProperty( )
-	{
-		return this.property;
-	}
-
-	@Override
-	public void remove( @NotNull PrincipalDTO auth, @NotNull Collection<T> entities )
-	{
-		for( T item : entities ) {
-			if( item instanceof BaseEntity ) {
-				BaseEntity baseEntity = (BaseEntity) item;
-				remove( auth, baseEntity.getId( ) );
-			}
-			else {
-				throw new ClassCastException( item.getClass( ).getSimpleName( ) + " is not an instance of BaseEntity " );
-			}
+		catch ( Exception exp ) {
+			logger.error( "Erro on Store Program Exception", exp );
 		}
 	}
+
+	private String getStackTrace( Exception exception )
+	{
+		StringWriter errors = new StringWriter( );
+		exception.printStackTrace( new PrintWriter( errors ) );
+		return errors.toString( );
+	}
+
 }

@@ -14,7 +14,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = City.getAllByState, query = "select o from City o where o.state = ?1" ) } )
-@Table( name = "city" )
+@Table( name = "city", schema = "public" )
 public class City extends SimpleTable<City>
 {
 	private static final long serialVersionUID = 7598005142654813274L;
@@ -46,52 +46,56 @@ public class City extends SimpleTable<City>
 
 	public Boolean getIsCountryCapital( )
 	{
-		return this.isCountryCapital;
+		return isCountryCapital;
 	}
 
 	public void setIsCountryCapital( Boolean cit_contry_capital_bt )
 	{
-		this.isCountryCapital = cit_contry_capital_bt;
+		isCountryCapital = cit_contry_capital_bt;
 	}
 
+	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
+	@Override
 	public void setId( Integer cit_id_in )
 	{
-		this.id = cit_id_in;
+		id = cit_id_in;
 	}
 
+	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
+	@Override
 	public void setDescription( String cit_name_ch )
 	{
-		this.description = cit_name_ch;
+		description = cit_name_ch;
 	}
 
 	public Boolean getIsStateCapital( )
 	{
-		return this.isStateCapital;
+		return isStateCapital;
 	}
 
 	public void setIsStateCapital( Boolean cit_state_capital_bt )
 	{
-		this.isStateCapital = cit_state_capital_bt;
+		isStateCapital = cit_state_capital_bt;
 	}
 
 	public State getState( )
 	{
-		return this.state;
+		return state;
 	}
 
 	public void setState( State state2 )
 	{
-		this.state = state2;
+		state = state2;
 	}
 
 	@Override

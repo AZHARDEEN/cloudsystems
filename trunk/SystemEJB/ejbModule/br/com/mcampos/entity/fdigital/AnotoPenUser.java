@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table( name = "anoto_pen_user" )
+@Table( name = "anoto_pen_user", schema = "public" )
 public class AnotoPenUser implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -43,7 +43,7 @@ public class AnotoPenUser implements Serializable
 
 	public AnotoPenUserPK getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( AnotoPenUserPK id )
@@ -53,7 +53,7 @@ public class AnotoPenUser implements Serializable
 
 	public Timestamp getApuFromDt( )
 	{
-		return this.apuFromDt;
+		return apuFromDt;
 	}
 
 	public void setApuFromDt( Timestamp apuFromDt )
@@ -63,7 +63,7 @@ public class AnotoPenUser implements Serializable
 
 	public Timestamp getApuToDt( )
 	{
-		return this.apuToDt;
+		return apuToDt;
 	}
 
 	public void setApuToDt( Timestamp apuToDt )
@@ -73,7 +73,7 @@ public class AnotoPenUser implements Serializable
 
 	public Integer getUsrIdIn( )
 	{
-		return this.usrIdIn;
+		return usrIdIn;
 	}
 
 	public void setUsrIdIn( Integer usrIdIn )
@@ -83,12 +83,12 @@ public class AnotoPenUser implements Serializable
 
 	public AnotoPen getAnotoPen( )
 	{
-		return this.pen;
+		return pen;
 	}
 
 	public void setAnotoPen( AnotoPen anotoPen )
 	{
-		this.pen = anotoPen;
+		pen = anotoPen;
 	}
 
 }

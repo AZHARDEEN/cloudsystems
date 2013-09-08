@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "UserContact.findAll", query = "select o from UserContact o" ) } )
-@Table( name = "user_contact" )
+@Table( name = "user_contact", schema = "public" )
 public class UserContact implements Serializable, Comparable<UserContact>
 {
 	private static final long serialVersionUID = -8452887413412919630L;

@@ -17,7 +17,7 @@ import br.com.mcampos.entity.user.Collaborator;
  * 
  */
 @Entity
-@Table( name = "login_property" )
+@Table( name = "login_property", schema = "public" )
 public class LoginProperty implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -47,10 +47,10 @@ public class LoginProperty implements Serializable
 
 	public LoginPropertyPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new LoginPropertyPK( );
+		if ( id == null ) {
+			id = new LoginPropertyPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( LoginPropertyPK id )
@@ -60,27 +60,27 @@ public class LoginProperty implements Serializable
 
 	public Integer getFieldType( )
 	{
-		return this.fieldType;
+		return fieldType;
 	}
 
 	public void setFieldType( Integer fltIdIn )
 	{
-		this.fieldType = fltIdIn;
+		fieldType = fltIdIn;
 	}
 
 	public String getValue( )
 	{
-		return this.value;
+		return value;
 	}
 
 	public void setValue( String lgpValueCh )
 	{
-		this.value = lgpValueCh;
+		value = lgpValueCh;
 	}
 
 	public Collaborator getCollaborator( )
 	{
-		return this.collaborator;
+		return collaborator;
 	}
 
 	public void setCollaborator( Collaborator collaborator )

@@ -16,7 +16,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "Region.findAll", query = "select o from Region o" ) } )
-@Table( name = "region" )
+@Table( name = "region", schema = "public" )
 @IdClass( RegionPK.class )
 public class Region extends SimpleTable<Region>
 {
@@ -50,68 +50,68 @@ public class Region extends SimpleTable<Region>
 
 	public String getCountryId( )
 	{
-		return this.countryId;
+		return countryId;
 	}
 
 	public void setCountryId( String ctr_code_ch )
 	{
-		this.countryId = ctr_code_ch;
+		countryId = ctr_code_ch;
 	}
 
 	public String getAbbreviation( )
 	{
-		return this.abbreviation;
+		return abbreviation;
 	}
 
 	public void setAbbreviation( String reg_abbreviation_ch )
 	{
-		this.abbreviation = reg_abbreviation_ch;
+		abbreviation = reg_abbreviation_ch;
 	}
 
 	public Byte[ ] getFlag( )
 	{
-		return this.flag;
+		return flag;
 	}
 
 	public void setFlag( Byte[ ] reg_flag_bin )
 	{
-		this.flag = reg_flag_bin;
+		flag = reg_flag_bin;
 	}
 
 	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId( Integer reg_id_in )
 	{
-		this.id = reg_id_in;
+		id = reg_id_in;
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
 	public void setDescription( String reg_name_ch )
 	{
-		this.description = reg_name_ch;
+		description = reg_name_ch;
 	}
 
 	public Country getCountry( )
 	{
-		return this.country;
+		return country;
 	}
 
 	public void setCountry( Country country3 )
 	{
-		this.country = country3;
+		country = country3;
 		if ( country3 != null ) {
-			this.countryId = country3.getCode( );
+			countryId = country3.getId( );
 		}
 	}
 

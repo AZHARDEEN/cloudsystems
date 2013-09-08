@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import br.com.mcampos.ejb.core.SimpleTable;
 
@@ -13,6 +14,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
  * 
  */
 @Entity
+@Table( name = "operator", schema = "public" )
 public class Operator extends SimpleTable<Operator> implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -34,35 +36,35 @@ public class Operator extends SimpleTable<Operator> implements Serializable
 	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId( Integer oprIdIn )
 	{
-		this.id = oprIdIn;
+		id = oprIdIn;
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
 	public void setDescription( String oprDescriptionCh )
 	{
-		this.description = oprDescriptionCh;
+		description = oprDescriptionCh;
 	}
 
 	public String getSymbol( )
 	{
-		return this.symbol;
+		return symbol;
 	}
 
 	public void setSymbol( String oprSimbolCh )
 	{
-		this.symbol = oprSimbolCh;
+		symbol = oprSimbolCh;
 	}
 
 }

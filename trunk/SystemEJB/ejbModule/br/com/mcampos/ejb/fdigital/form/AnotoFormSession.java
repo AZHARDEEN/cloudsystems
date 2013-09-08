@@ -5,7 +5,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import br.com.mcampos.dto.MediaDTO;
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.entity.fdigital.AnotoForm;
 import br.com.mcampos.entity.fdigital.AnotoPage;
 import br.com.mcampos.entity.fdigital.FormMedia;
@@ -13,7 +13,7 @@ import br.com.mcampos.entity.system.Media;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
-public interface AnotoFormSession extends BaseSessionInterface<AnotoForm>
+public interface AnotoFormSession extends BaseCrudSessionInterface<AnotoForm>
 {
 	AnotoForm getRelationships( AnotoForm f );
 

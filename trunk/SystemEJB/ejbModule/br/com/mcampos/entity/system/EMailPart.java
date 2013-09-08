@@ -17,9 +17,10 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="e_mail_part")
+@Table( name = "e_mail_part", schema = "public" )
 @NamedQueries( { @NamedQuery( name = EMailPart.getParts, query = "select o from EMailPart o where o.email = ?1" ) } )
-public class EMailPart implements Serializable {
+public class EMailPart implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	public static final String getParts = "EMailPart.getParts";
@@ -35,36 +36,39 @@ public class EMailPart implements Serializable {
 	@JoinColumn( name = "eml_id_in", insertable = false, updatable = false, nullable = false )
 	private EMail email;
 
-	@Column(name="emp_text_tx")
+	@Column( name = "emp_text_tx" )
 	private String text;
 
-	public EMailPart() {
+	public EMailPart( )
+	{
 	}
 
-	public EMailPartPK getId() {
-		if ( this.id == null ) {
-			this.id = new EMailPartPK( );
+	public EMailPartPK getId( )
+	{
+		if ( id == null ) {
+			id = new EMailPartPK( );
 		}
-		return this.id;
+		return id;
 	}
 
-	public void setId(EMailPartPK id) {
+	public void setId( EMailPartPK id )
+	{
 		this.id = id;
 	}
 
 	public String getText( )
 	{
-		return this.text;
+		return text;
 	}
 
 	public void setText( String empTextTx )
 	{
-		this.text = empTextTx;
+		text = empTextTx;
 	}
 
 	public EMailPartType getType( )
 	{
-		return this.type;
+		return type;
 	}
 
 	public void setType( EMailPartType type )
@@ -74,7 +78,7 @@ public class EMailPart implements Serializable {
 
 	public EMail getEmail( )
 	{
-		return this.email;
+		return email;
 	}
 
 	public void setEmail( EMail email )

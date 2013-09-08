@@ -30,7 +30,7 @@ public class InepRevisorPK implements Serializable, Comparable<InepRevisorPK>
 	{
 	}
 
-	public InepRevisorPK( Collaborator c, InepPackage e )
+	public InepRevisorPK( Collaborator c, InepEvent e )
 	{
 		set( c );
 		set( e );
@@ -48,7 +48,7 @@ public class InepRevisorPK implements Serializable, Comparable<InepRevisorPK>
 		setEventId( c.getId( ).getEventId( ) );
 	}
 
-	public void set( InepPackage c )
+	public void set( InepEvent c )
 	{
 		setCompanyId( c.getId( ).getCompanyId( ) );
 		setEventId( c.getId( ).getId( ) );

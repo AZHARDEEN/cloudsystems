@@ -12,7 +12,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
  * 
  */
 @Entity
-@Table( name = "pgc_status" )
+@Table( name = "pgc_status", schema = "public" )
 public class PgcStatus extends SimpleTable<PgcStatus>
 {
 	private static final long serialVersionUID = 1L;
@@ -31,24 +31,24 @@ public class PgcStatus extends SimpleTable<PgcStatus>
 	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId( Integer pgsIdIn )
 	{
-		this.id = pgsIdIn;
+		id = pgsIdIn;
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
 	public void setDescription( String pgsDescriptionCh )
 	{
-		this.description = pgsDescriptionCh;
+		description = pgsDescriptionCh;
 	}
 }

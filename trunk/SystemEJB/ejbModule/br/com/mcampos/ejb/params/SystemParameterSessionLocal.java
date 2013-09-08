@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 import javax.ejb.Local;
 
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.entity.system.SystemParameters;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Local
-public interface SystemParameterSessionLocal extends BaseSessionInterface<SystemParameters>
+public interface SystemParameterSessionLocal extends BaseCrudSessionInterface<SystemParameters>
 {
 	Integer getMaxTryCount( );
 

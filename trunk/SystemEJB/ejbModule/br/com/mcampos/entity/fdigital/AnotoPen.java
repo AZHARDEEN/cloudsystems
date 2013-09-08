@@ -16,7 +16,7 @@ import br.com.mcampos.ejb.core.BasicEntityRenderer;
  * 
  */
 @Entity
-@Table( name = "anoto_pen" )
+@Table( name = "anoto_pen", schema = "public" )
 public class AnotoPen implements BasicEntityRenderer<AnotoPen>, Comparable<AnotoPen>
 {
 	private static final long serialVersionUID = 1L;
@@ -44,52 +44,52 @@ public class AnotoPen implements BasicEntityRenderer<AnotoPen>, Comparable<Anoto
 
 	public String getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( String penIdCh )
 	{
-		this.id = penIdCh;
+		id = penIdCh;
 	}
 
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	public void setDescription( String penDescriptionCh )
 	{
-		this.description = penDescriptionCh;
+		description = penDescriptionCh;
 	}
 
 	public Date getInsertDate( )
 	{
-		return this.insertDate;
+		return insertDate;
 	}
 
 	public void setInsertDate( Date penInsertDt )
 	{
-		this.insertDate = penInsertDt;
+		insertDate = penInsertDt;
 	}
 
 	public Integer getPin( )
 	{
-		return this.pin;
+		return pin;
 	}
 
 	public void setPin( Integer penPinCh )
 	{
-		this.pin = penPinCh;
+		pin = penPinCh;
 	}
 
 	public String getSerial( )
 	{
-		return this.serial;
+		return serial;
 	}
 
 	public void setSerial( String penSerialCh )
 	{
-		this.serial = penSerialCh;
+		serial = penSerialCh;
 	}
 
 	@Override

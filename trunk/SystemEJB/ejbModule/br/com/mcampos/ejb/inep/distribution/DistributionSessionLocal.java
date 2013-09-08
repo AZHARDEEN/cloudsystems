@@ -4,15 +4,15 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.entity.inep.InepDistribution;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepSubscription;
 import br.com.mcampos.entity.inep.InepTest;
 
 @Local
-public interface DistributionSessionLocal extends BaseSessionInterface<InepDistribution>
+public interface DistributionSessionLocal extends BaseCrudSessionInterface<InepDistribution>
 {
 	List<InepDistribution> get( InepRevisor rev, Integer status );
 
@@ -20,14 +20,14 @@ public interface DistributionSessionLocal extends BaseSessionInterface<InepDistr
 
 	List<InepDistribution> getVariance( InepTest test );
 
-	List<InepDistribution> getAll( InepPackage event );
+	List<InepDistribution> getAll( InepEvent event );
 
 	List<InepDistribution> getAll( InepSubscription s );
 
-	List<InepDistribution> getAllforReport( InepPackage event );
+	List<InepDistribution> getAllforReport( InepEvent event );
 
-	List<InepDistribution> getVariance( InepPackage event );
+	List<InepDistribution> getVariance( InepEvent event );
 
-	List<InepDistribution> getVarianceForReport( InepPackage event );
+	List<InepDistribution> getVarianceForReport( InepEvent event );
 
 }

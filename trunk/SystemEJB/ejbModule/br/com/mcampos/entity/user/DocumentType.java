@@ -12,7 +12,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
  * 
  */
 @Entity
-@Table( name = "document_type" )
+@Table( name = "document_type", schema = "public" )
 public class DocumentType extends SimpleTable<DocumentType>
 {
 	private static final long serialVersionUID = 1L;
@@ -42,40 +42,40 @@ public class DocumentType extends SimpleTable<DocumentType>
 	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId( Integer docIdIn )
 	{
-		this.id = docIdIn;
+		id = docIdIn;
 	}
 
 	public String getMask( )
 	{
-		return this.mask;
+		return mask;
 	}
 
 	public void setMask( String docMaskCh )
 	{
-		this.mask = docMaskCh;
+		mask = docMaskCh;
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
 	public void setDescription( String docNameCh )
 	{
-		this.description = docNameCh;
+		description = docNameCh;
 	}
 
 	public Boolean getUniq( )
 	{
-		return this.uniq;
+		return uniq;
 	}
 
 	public void setUniq( Boolean uniq )

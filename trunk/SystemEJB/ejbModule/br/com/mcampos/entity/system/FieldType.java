@@ -14,7 +14,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
  * 
  */
 @Entity
-@Table( name = "field_type" )
+@Table( name = "field_type", schema = "public" )
 public class FieldType extends SimpleTable<FieldType> implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -30,24 +30,28 @@ public class FieldType extends SimpleTable<FieldType> implements Serializable
 	{
 	}
 
+	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
+	@Override
 	public void setId( Integer fltIdIn )
 	{
-		this.id = fltIdIn;
+		id = fltIdIn;
 	}
 
+	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
+	@Override
 	public void setDescription( String fltDescriptionCh )
 	{
-		this.description = fltDescriptionCh;
+		description = fltDescriptionCh;
 	}
 
 }

@@ -2,13 +2,13 @@ package br.com.mcampos.ejb.user.company.collaborator;
 
 import javax.ejb.Local;
 
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.entity.security.Login;
 import br.com.mcampos.entity.user.Collaborator;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Local
-public interface CollaboratorSessionLocal extends BaseSessionInterface<Collaborator>
+public interface CollaboratorSessionLocal extends BaseCrudSessionInterface<Collaborator>
 {
 	/*
 	 * 

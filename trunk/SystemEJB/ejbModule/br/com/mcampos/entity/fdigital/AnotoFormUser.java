@@ -19,7 +19,7 @@ import br.com.mcampos.entity.user.Company;
  * 
  */
 @Entity
-@Table( name = "anoto_form_user" )
+@Table( name = "anoto_form_user", schema = "public" )
 public class AnotoFormUser implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -50,7 +50,7 @@ public class AnotoFormUser implements Serializable
 
 	public AnotoFormUserPK getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( AnotoFormUserPK id )
@@ -60,23 +60,23 @@ public class AnotoFormUser implements Serializable
 
 	public Date getFromDate( )
 	{
-		return this.fromDate;
+		return fromDate;
 	}
 
 	public AnotoForm getForm( )
 	{
-		return this.form;
+		return form;
 	}
 
 	public void setForm( AnotoForm anotoForm )
 	{
-		this.form = anotoForm;
+		form = anotoForm;
 		getId( ).setFormId( getForm( ) != null ? getForm( ).getId( ) : null );
 	}
 
 	public Company getClient( )
 	{
-		return this.client;
+		return client;
 	}
 
 	public void setClient( Company client )
@@ -86,7 +86,7 @@ public class AnotoFormUser implements Serializable
 
 	public Date getToDate( )
 	{
-		return this.toDate;
+		return toDate;
 	}
 
 	public void setToDate( Date toDate )

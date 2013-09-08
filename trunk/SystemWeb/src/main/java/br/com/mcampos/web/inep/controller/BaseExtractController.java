@@ -13,7 +13,7 @@ import org.zkoss.zul.Window;
 
 import br.com.mcampos.dto.inep.InepAnaliticoCorrecao;
 import br.com.mcampos.ejb.inep.team.TeamSession;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
@@ -29,7 +29,7 @@ public abstract class BaseExtractController extends BaseDBLoggedController<TeamS
 
 	private InepRevisor revisor;
 
-	protected abstract List<InepAnaliticoCorrecao> getList( InepPackage item );
+	protected abstract List<InepAnaliticoCorrecao> getList( InepEvent item );
 
 	protected Grid getDataGrid( )
 	{
@@ -56,7 +56,7 @@ public abstract class BaseExtractController extends BaseDBLoggedController<TeamS
 		List<InepAnaliticoCorrecao> list = Collections.emptyList( );
 		Comboitem item = getComboEvent( ).getSelectedItem( );
 		if( item != null ) {
-			list = getList( (InepPackage) item.getValue( ) );
+			list = getList( (InepEvent) item.getValue( ) );
 		}
 		getComboEvent( ).setModel( new ListModelList<InepAnaliticoCorrecao>( list ) );
 	}
@@ -64,7 +64,7 @@ public abstract class BaseExtractController extends BaseDBLoggedController<TeamS
 	public InepRevisor getRevisor( )
 	{
 		if( revisor == null ) {
-			InepPackage item = (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( );
+			InepEvent item = (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( );
 			revisor = getSession( ).getRevisor( item, getPrincipal( ) );
 		}
 		return revisor;
@@ -72,12 +72,12 @@ public abstract class BaseExtractController extends BaseDBLoggedController<TeamS
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );
 		}
-		for( InepPackage e : events ) {
+		for( InepEvent e : events ) {
 			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}

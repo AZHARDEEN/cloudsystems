@@ -27,7 +27,7 @@ import br.com.mcampos.sysutils.SysUtils;
 @NamedQueries( {
 		@NamedQuery( name = AnotoPage.getAll, query = "select o from AnotoPage o where o.pad.form = ?1" )
 } )
-@Table( name = "anoto_page" )
+@Table( name = "anoto_page", schema = "public" )
 public class AnotoPage implements Serializable, BasicEntityRenderer<AnotoPage>, Comparable<AnotoPage>
 {
 	private static final long serialVersionUID = 1L;

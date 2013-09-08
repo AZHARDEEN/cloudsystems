@@ -9,7 +9,7 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepTask;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
@@ -30,16 +30,16 @@ public class InepTaskSessionBean extends SimpleSessionBean<InepTask> implements 
 	}
 
 	@Override
-	public List<InepPackage> getEvents( PrincipalDTO auth )
+	public List<InepEvent> getEvents( PrincipalDTO auth )
 	{
 		return getEventSession( ).getAll( auth );
 	}
 
 	@Override
-	public List<InepTask> getAll( InepPackage event )
+	public List<InepTask> getAll( InepEvent event )
 	{
 		List<InepTask> tasks = Collections.emptyList( );
-		InepPackage merged = getEventSession( ).get( event.getId( ) );
+		InepEvent merged = getEventSession( ).get( event.getId( ) );
 		if ( merged != null ) {
 			tasks = findByNamedQuery( InepTask.getAllEventTasks, merged );
 		}
@@ -49,6 +49,16 @@ public class InepTaskSessionBean extends SimpleSessionBean<InepTask> implements 
 	private InepPackageSessionLocal getEventSession( )
 	{
 		return eventSession;
+	}
+
+	@Override
+	public void remove( InepEvent event )
+	{
+		List<InepTask> tasks = getAll( event );
+
+		for ( InepTask task : tasks ) {
+			getEntityManager( ).remove( task );
+		}
 	}
 
 }

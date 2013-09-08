@@ -32,7 +32,7 @@ import br.com.mcampos.dto.inep.InepTaskCounters;
 import br.com.mcampos.ejb.inep.team.TeamSession;
 import br.com.mcampos.entity.inep.DistributionStatus;
 import br.com.mcampos.entity.inep.InepDistribution;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
@@ -285,12 +285,12 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );
 		}
-		for ( InepPackage e : events ) {
+		for ( InepEvent e : events ) {
 			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
@@ -308,7 +308,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	public InepRevisor getRevisor( )
 	{
 		if ( revisor == null ) {
-			revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
+			revisor = getSession( ).getRevisor( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ),
 					getPrincipal( ) );
 		}
 		return revisor;

@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.sysutils.SysUtils;
 
 public class InepOralTestGradeLoader extends InepBaseJob
@@ -27,7 +27,7 @@ public class InepOralTestGradeLoader extends InepBaseJob
 		if ( amIRunning( context ) )
 			return;
 
-		List<InepPackage> currentEvents;
+		List<InepEvent> currentEvents;
 
 		try {
 			currentEvents = getSession( ).getAvailableEvents( );
@@ -36,7 +36,7 @@ public class InepOralTestGradeLoader extends InepBaseJob
 			return;
 		}
 
-		for ( InepPackage item : currentEvents ) {
+		for ( InepEvent item : currentEvents ) {
 			String eventPath = getBasePath( item );
 			String files[] = getFiles( item, "nota_oral.csv" );
 			if ( files == null )
@@ -55,7 +55,7 @@ public class InepOralTestGradeLoader extends InepBaseJob
 		}
 	}
 
-	private boolean processFile( InepPackage item, String fileName )
+	private boolean processFile( InepEvent item, String fileName )
 	{
 		File file = new File( getBasePath( item ) + fileName );
 

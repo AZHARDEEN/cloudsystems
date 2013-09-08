@@ -16,7 +16,7 @@ import org.zkoss.zul.Window;
 import br.com.mcampos.dto.inep.InepOralTeamDTO;
 import br.com.mcampos.ejb.inep.InepOralFacade;
 import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.inep.controller.dialog.DlgOralTeamChoice;
 import br.com.mcampos.web.renderer.inep.InepOralTestListRenderer;
@@ -46,7 +46,7 @@ public class OralVarianceCoordinatorController extends BaseOralController implem
 	public void onSelectPackage( Event evt )
 	{
 		List<InepOralTest> list = Collections.emptyList( );
-		InepPackage item = getCurrentEvent( );
+		InepEvent item = getCurrentEvent( );
 		if ( item != null ) {
 			resetRevisor( );
 			if ( getRevisor( ) == null || getRevisor( ).isCoordenador( ) ) {

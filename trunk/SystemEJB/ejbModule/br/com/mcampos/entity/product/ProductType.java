@@ -14,7 +14,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
  * 
  */
 @Entity
-@Table( name = "product_type" )
+@Table( name = "product_type", schema = "public" )
 public class ProductType extends SimpleTable<ProductType> implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -33,14 +33,16 @@ public class ProductType extends SimpleTable<ProductType> implements Serializabl
 	{
 	}
 
+	@Override
 	public Integer getId( )
 	{
 		return id;
 	}
 
+	@Override
 	public void setId( Integer pdtIdIn )
 	{
-		this.id = pdtIdIn;
+		id = pdtIdIn;
 	}
 
 	public Boolean getDefaultType( )
@@ -50,17 +52,19 @@ public class ProductType extends SimpleTable<ProductType> implements Serializabl
 
 	public void setDefaultType( Boolean pdtDefaultBt )
 	{
-		this.defaultType = pdtDefaultBt;
+		defaultType = pdtDefaultBt;
 	}
 
+	@Override
 	public String getDescription( )
 	{
 		return description;
 	}
 
+	@Override
 	public void setDescription( String pdtDescriptionCh )
 	{
-		this.description = pdtDescriptionCh;
+		description = pdtDescriptionCh;
 	}
 
 }

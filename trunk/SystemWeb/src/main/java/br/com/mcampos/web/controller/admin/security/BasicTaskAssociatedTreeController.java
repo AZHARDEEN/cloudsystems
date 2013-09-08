@@ -15,6 +15,7 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.entity.security.Task;
 import br.com.mcampos.web.controller.admin.security.treenode.BaseTreeNode;
 import br.com.mcampos.web.controller.admin.security.treenode.TaskNode;
@@ -23,7 +24,7 @@ import br.com.mcampos.web.core.tree.BaseTreeController;
 import br.com.mcampos.web.renderer.TaskListItemRenderer;
 import br.com.mcampos.web.renderer.TaskTreeItemRenderer;
 
-public abstract class BasicTaskAssociatedTreeController<SESSION, ENTITY> extends BaseTreeController<SESSION, ENTITY>
+public abstract class BasicTaskAssociatedTreeController<SESSION extends BaseSessionInterface, ENTITY> extends BaseTreeController<SESSION, ENTITY>
 {
 	private static final long serialVersionUID = 3217455613838662440L;
 	private static final String taskPopupId = "listPopupTaskRole";
@@ -127,11 +128,11 @@ public abstract class BasicTaskAssociatedTreeController<SESSION, ENTITY> extends
 		Messagebox.show( msg, "Exclusão de Tarefa Associada", Messagebox.YES | Messagebox.NO,
 				Messagebox.QUESTION, 2, new EventListener<Event>( )
 				{
-			@Override
-			public void onEvent( Event event ) throws Exception
-			{
-				onDeleteTask( event );
-			}
+					@Override
+					public void onEvent( Event event ) throws Exception
+					{
+						onDeleteTask( event );
+					}
 				} );
 		evt.stopPropagation( );
 	}

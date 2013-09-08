@@ -12,7 +12,7 @@ import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.entity.inep.DistributionStatus;
 import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepSubscription;
 import br.com.mcampos.entity.inep.InepSubscriptionPK;
 
@@ -94,7 +94,7 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	}
 
 	@Override
-	public List<InepOralTest> getVarianceOralOnly( InepPackage pack )
+	public List<InepOralTest> getVarianceOralOnly( InepEvent pack )
 	{
 		return findByNamedQuery( InepOralTest.getVarianceOralOnly, pack );
 	}

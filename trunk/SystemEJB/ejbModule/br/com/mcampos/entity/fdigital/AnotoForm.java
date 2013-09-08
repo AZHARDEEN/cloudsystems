@@ -20,7 +20,7 @@ import br.com.mcampos.sysutils.SysUtils;
  * 
  */
 @Entity
-@Table( name = "anoto_form" )
+@Table( name = "anoto_form", schema = "public" )
 public class AnotoForm extends SimpleTable<AnotoForm>
 {
 	private static final long serialVersionUID = 1L;
@@ -67,75 +67,75 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId( Integer frmIdIn )
 	{
-		this.id = frmIdIn;
+		id = frmIdIn;
 	}
 
 	public Boolean getConcatenate( )
 	{
-		return this.concatenate;
+		return concatenate;
 	}
 
 	public void setConcatenate( Boolean frmConcatPgcBt )
 	{
-		this.concatenate = frmConcatPgcBt;
+		concatenate = frmConcatPgcBt;
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return this.descriptions;
+		return descriptions;
 	}
 
 	@Override
 	public void setDescription( String frmDescriptionCh )
 	{
-		this.descriptions = frmDescriptionCh;
+		descriptions = frmDescriptionCh;
 	}
 
 	public Boolean getIcr( )
 	{
-		return this.icr;
+		return icr;
 	}
 
 	public void setIcr( Boolean frmIcrImageBt )
 	{
-		this.icr = frmIcrImageBt;
+		icr = frmIcrImageBt;
 	}
 
 	public String getImagePath( )
 	{
-		return this.imagePath;
+		return imagePath;
 	}
 
 	public void setImagePath( String frmImageFilepathCh )
 	{
-		this.imagePath = frmImageFilepathCh;
+		imagePath = frmImageFilepathCh;
 	}
 
 	public Date getFrmInsertDt( )
 	{
-		return this.insertDate;
+		return insertDate;
 	}
 
 	public void setFrmInsertDt( Date frmInsertDt )
 	{
-		this.insertDate = frmInsertDt;
+		insertDate = frmInsertDt;
 	}
 
 	public String getApplication( )
 	{
-		return this.application;
+		return application;
 	}
 
 	public void setApplication( String frmIpCh )
 	{
-		this.application = frmIpCh;
+		application = frmIpCh;
 	}
 
 	@Override
@@ -146,10 +146,10 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 
 	public List<Pad> getPads( )
 	{
-		if ( this.pads == null ) {
-			this.pads = new ArrayList<Pad>( );
+		if ( pads == null ) {
+			pads = new ArrayList<Pad>( );
 		}
-		return this.pads;
+		return pads;
 	}
 
 	public void setPads( List<Pad> pads )
@@ -159,10 +159,10 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 
 	public List<AnotoFormUser> getClients( )
 	{
-		if ( this.clients == null ) {
-			this.clients = new ArrayList<AnotoFormUser>( );
+		if ( clients == null ) {
+			clients = new ArrayList<AnotoFormUser>( );
 		}
-		return this.clients;
+		return clients;
 	}
 
 	public void setClients( List<AnotoFormUser> clients )
@@ -175,10 +175,10 @@ public class AnotoForm extends SimpleTable<AnotoForm>
 	 */
 	public List<FormMedia> getMedias( )
 	{
-		if ( this.medias == null ) {
-			this.medias = new ArrayList<FormMedia>( );
+		if ( medias == null ) {
+			medias = new ArrayList<FormMedia>( );
 		}
-		return this.medias;
+		return medias;
 	}
 
 	/**

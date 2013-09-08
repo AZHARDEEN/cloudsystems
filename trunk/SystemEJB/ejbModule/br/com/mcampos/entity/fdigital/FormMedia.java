@@ -16,7 +16,7 @@ import br.com.mcampos.entity.system.Media;
  * 
  */
 @Entity
-@Table( name = "form_media" )
+@Table( name = "form_media", schema = "public" )
 public class FormMedia implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -40,7 +40,7 @@ public class FormMedia implements Serializable
 	{
 		if ( id == null )
 			id = new FormMediaPK( );
-		return this.id;
+		return id;
 	}
 
 	public void setId( FormMediaPK id )

@@ -16,9 +16,16 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 	{
 		Long result;
 
-		Query query = getCountQuery( auth, null );
-		result = (Long) query.getSingleResult( );
-		return result.intValue( );
+		try {
+			Query query = getCountQuery( auth, null );
+			result = (Long) query.getSingleResult( );
+			return result.intValue( );
+		}
+		catch ( Exception e ) {
+			storeException( e );
+			throw e;
+		}
+
 	}
 
 	@Override
@@ -27,10 +34,17 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 	{
 		Long result;
 
-		Query query = getCountQuery( auth, filter );
-		setParameters( query );
-		result = (Long) query.getSingleResult( );
-		return result.intValue( );
+		try {
+			Query query = getCountQuery( auth, filter );
+			setParameters( query );
+			result = (Long) query.getSingleResult( );
+			return result.intValue( );
+		}
+		catch ( Exception e ) {
+			storeException( e );
+			throw e;
+		}
+
 	}
 
 	@Override
@@ -39,10 +53,17 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 	{
 		Long result;
 
-		Query query = getCountQuery( auth, filter );
-		setQueryParams( query, params );
-		result = (Long) query.getSingleResult( );
-		return result.intValue( );
+		try {
+			Query query = getCountQuery( auth, filter );
+			setQueryParams( query, params );
+			result = (Long) query.getSingleResult( );
+			return result.intValue( );
+		}
+		catch ( Exception e ) {
+			storeException( e );
+			throw e;
+		}
+
 	}
 
 	protected String getCountQL( @NotNull PrincipalDTO auth, String whereClause )
@@ -64,7 +85,13 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 
 	protected Query getCountQuery( @NotNull PrincipalDTO auth, String whereClause )
 	{
-		Query query = getEntityManager( ).createQuery( getCountQL( auth, whereClause ) );
-		return query;
+		try {
+			Query query = getEntityManager( ).createQuery( getCountQL( auth, whereClause ) );
+			return query;
+		}
+		catch ( Exception e ) {
+			storeException( e );
+			throw e;
+		}
 	}
 }

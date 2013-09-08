@@ -7,6 +7,7 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.dto.RegisterDTO;
+import br.com.mcampos.ejb.core.BaseSessionBean;
 import br.com.mcampos.ejb.security.LoginSessionLocal;
 import br.com.mcampos.ejb.security.UserStatusSessionLocal;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
@@ -22,12 +23,11 @@ import br.com.mcampos.sysutils.CPF;
  */
 @Stateless( name = "RegisterSession", mappedName = "RegisterSession" )
 @LocalBean
-public class RegisterSessionBean implements RegisterSession
+public class RegisterSessionBean extends BaseSessionBean implements RegisterSession
 {
 	@Resource
 	SessionContext sessionContext;
-	
-	
+
 	@EJB
 	UserDocumentSessionLocal userDocumentSession;
 
@@ -61,7 +61,7 @@ public class RegisterSessionBean implements RegisterSession
 		if ( person == null ) {
 			person = new Person( );
 			person.setName( dto.getName( ) );
-			person = this.personSession.merge( person );
+			person = personSession.merge( person );
 			// this.userDocumentSession.merge( person.getDocuments( ) );
 		}
 		else {
@@ -80,19 +80,19 @@ public class RegisterSessionBean implements RegisterSession
 		}
 		UserDocument document;
 		if ( emailFound == false ) {
-			document = new UserDocument( dto.getEmail( ), this.documentTypeSession.get( ( UserDocument.typeEmail ) ) );
+			document = new UserDocument( dto.getEmail( ), documentTypeSession.get( ( UserDocument.typeEmail ) ) );
 			person.add( document );
 		}
 		if ( cpfFound == false ) {
-			document = new UserDocument( dto.getDocument( ), this.documentTypeSession.get( ( UserDocument.typeCPF ) ) );
+			document = new UserDocument( dto.getDocument( ), documentTypeSession.get( ( UserDocument.typeCPF ) ) );
 			person.add( document );
 		}
-		return this.loginSession.add( person, dto.getPassword( ) );
+		return loginSession.add( person, dto.getPassword( ) );
 	}
 
 	private UserDocumentSessionLocal getUserDocumentSession( )
 	{
-		return this.userDocumentSession;
+		return userDocumentSession;
 	}
 
 	@Override
@@ -145,12 +145,12 @@ public class RegisterSessionBean implements RegisterSession
 
 	private LoginSessionLocal getLoginSession( )
 	{
-		return this.loginSession;
+		return loginSession;
 	}
 
 	@Override
 	public Boolean validate( String token, String password ) throws Exception
 	{
-		return this.loginSession.validateToken( token, password );
+		return loginSession.validateToken( token, password );
 	}
 }

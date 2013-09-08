@@ -13,7 +13,7 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSession;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepSubscription;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.dbwidgets.DBWidget;
@@ -62,7 +62,7 @@ public class SubscriptionController extends BaseDBListController<InepSubscriptio
 		for ( DBWidget input : this.inputs ) {
 			entity.getId( ).setId( input.getText( ) );
 		}
-		InepPackage event = (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( );
+		InepEvent event = (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( );
 		entity.getId( ).set( event );
 	}
 
@@ -86,12 +86,12 @@ public class SubscriptionController extends BaseDBListController<InepSubscriptio
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) ) {
 			getComboEvent( ).getItems( ).clear( );
 		}
-		for ( InepPackage e : events ) {
+		for ( InepEvent e : events ) {
 			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
@@ -104,7 +104,7 @@ public class SubscriptionController extends BaseDBListController<InepSubscriptio
 	public void onSelectEvent( Event evt )
 	{
 		Comboitem item = getComboEvent( ).getSelectedItem( );
-		getListbox( ).setModel( new ListModelList<InepSubscription>( getSession( ).getAll( (InepPackage) item.getValue( ) ) ) );
+		getListbox( ).setModel( new ListModelList<InepSubscription>( getSession( ).getAll( (InepEvent) item.getValue( ) ) ) );
 		evt.stopPropagation( );
 	}
 

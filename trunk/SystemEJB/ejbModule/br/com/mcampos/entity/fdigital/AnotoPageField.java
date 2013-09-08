@@ -17,7 +17,7 @@ import br.com.mcampos.entity.system.FieldType;
  * 
  */
 @Entity
-@Table( name = "anoto_page_field" )
+@Table( name = "anoto_page_field", schema = "public" )
 public class AnotoPageField implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -78,10 +78,10 @@ public class AnotoPageField implements Serializable
 
 	public AnotoPageFieldPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new AnotoPageFieldPK( );
+		if ( id == null ) {
+			id = new AnotoPageFieldPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( AnotoPageFieldPK id )
@@ -91,118 +91,118 @@ public class AnotoPageField implements Serializable
 
 	public Boolean getIrc( )
 	{
-		return this.irc;
+		return irc;
 	}
 
 	public void setIrc( Boolean aftIcrBt )
 	{
-		this.irc = aftIcrBt;
+		irc = aftIcrBt;
 	}
 
 	public String getAlias( )
 	{
-		return this.alias;
+		return alias;
 	}
 
 	public void setAlias( String alfAliasCh )
 	{
-		this.alias = alfAliasCh;
+		alias = alfAliasCh;
 	}
 
 	public Integer getHeight( )
 	{
-		return this.height;
+		return height;
 	}
 
 	public void setHeight( Integer alfHeightIn )
 	{
-		this.height = alfHeightIn;
+		height = alfHeightIn;
 	}
 
 	public Boolean getSearch( )
 	{
-		return this.search;
+		return search;
 	}
 
 	public void setSearch( Boolean alfSearchBt )
 	{
-		this.search = alfSearchBt;
+		search = alfSearchBt;
 	}
 
 	public Integer getTop( )
 	{
-		return this.top;
+		return top;
 	}
 
 	public void setTop( Integer alfTopIn )
 	{
-		this.top = alfTopIn;
+		top = alfTopIn;
 	}
 
 	public Integer getWidth( )
 	{
-		return this.width;
+		return width;
 	}
 
 	public void setWidth( Integer alfWidthIn )
 	{
-		this.width = alfWidthIn;
+		width = alfWidthIn;
 	}
 
 	public Boolean getExport( )
 	{
-		return this.export;
+		return export;
 	}
 
 	public void setExport( Boolean apfExportBt )
 	{
-		this.export = apfExportBt;
+		export = apfExportBt;
 	}
 
 	public Integer getLeft( )
 	{
-		return this.left;
+		return left;
 	}
 
 	public void setLeft( Integer apfLeftIn )
 	{
-		this.left = apfLeftIn;
+		left = apfLeftIn;
 	}
 
 	public Boolean getPk( )
 	{
-		return this.pk;
+		return pk;
 	}
 
 	public void setPk( Boolean apfPkBt )
 	{
-		this.pk = apfPkBt;
+		pk = apfPkBt;
 	}
 
 	public Integer getSequence( )
 	{
-		return this.sequence;
+		return sequence;
 	}
 
 	public void setSequence( Integer apfSequenceIn )
 	{
-		this.sequence = apfSequenceIn;
+		sequence = apfSequenceIn;
 	}
 
 	public AnotoPage getPage( )
 	{
-		return this.page;
+		return page;
 	}
 
 	public void setPage( AnotoPage anotoPage )
 	{
-		this.page = anotoPage;
+		page = anotoPage;
 		getId( ).set( anotoPage );
 	}
 
 	public FieldType getType( )
 	{
-		return this.type;
+		return type;
 	}
 
 	public void setType( FieldType type )

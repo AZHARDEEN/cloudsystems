@@ -2,7 +2,7 @@ package br.com.mcampos.ejb.core;
 
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
-public interface CollaboratorBaseSessionInterface<ENTITY> extends BaseSessionInterface<ENTITY>
+public interface CollaboratorBaseSessionInterface<ENTITY> extends BaseCrudSessionInterface<ENTITY>
 {
 	String getProperty( PrincipalDTO auth, String name );
 

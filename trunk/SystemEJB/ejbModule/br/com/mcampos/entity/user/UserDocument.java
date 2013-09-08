@@ -12,7 +12,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Table( name = "\"user_document\"" )
+@Table( name = "user_document", schema = "public" )
 @NamedQueries( { @NamedQuery( name = UserDocument.findDocument, query = "SELECT d FROM UserDocument d WHERE d.code = ?1" ) } )
 public class UserDocument implements Serializable, Comparable<UserDocument>
 {
@@ -62,10 +62,10 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
 
 	public UserDocumentPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new UserDocumentPK( );
+		if ( id == null ) {
+			id = new UserDocumentPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setAdditionalInfo( String additionalInfo )
@@ -75,7 +75,7 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
 
 	public String getAdditionalInfo( )
 	{
-		return this.additionalInfo;
+		return additionalInfo;
 	}
 
 	public void setCode( String code )
@@ -85,7 +85,7 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
 
 	public String getCode( )
 	{
-		return this.code;
+		return code;
 	}
 
 	public void setUser( Users user )
@@ -98,12 +98,12 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
 
 	public Users getUser( )
 	{
-		return this.user;
+		return user;
 	}
 
 	public DocumentType getType( )
 	{
-		return this.type;
+		return type;
 	}
 
 	public void setType( DocumentType type )

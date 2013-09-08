@@ -1,8 +1,6 @@
 package br.com.mcampos.ejb.core;
 
-import java.io.PrintWriter;
 import java.io.Serializable;
-import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,12 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.Resource;
-import javax.ejb.SessionContext;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 
@@ -28,13 +22,9 @@ import br.com.mcampos.utils.dto.PrincipalDTO;
 /*
  * This is the base interface for all session beans
  */
-public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface<T>
+public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements ReadOnlySessionInterface<T>
 {
-	@Resource
-	private SessionContext sessionContext;
-
-	@PersistenceContext( unitName = "SystemEJB" )
-	private EntityManager em;
+	private static final long serialVersionUID = 4852211960728247204L;
 
 	private Class<T> persistentClass;
 
@@ -45,11 +35,6 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	public ReadOnlySessionBean( )
 	{
 		super( );
-	}
-
-	protected EntityManager getEntityManager( )
-	{
-		return this.em;
 	}
 
 	private void setClass( )
@@ -93,29 +78,35 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	{
 		String sqlQuery;
 
-		sqlQuery = "select t from " + getPersistentClass( ).getSimpleName( ) + " as t ";
-		if ( whereClause != null && whereClause.isEmpty( ) == false ) {
-			whereClause = whereClause.trim( );
-			String where = whereClause.substring( 0, 5 );
-			if ( where.compareToIgnoreCase( "where" ) == 0 ) {
-				sqlQuery += " " + whereClause;
+		try {
+			sqlQuery = "select t from " + getPersistentClass( ).getSimpleName( ) + " as t ";
+			if ( whereClause != null && whereClause.isEmpty( ) == false ) {
+				whereClause = whereClause.trim( );
+				String where = whereClause.substring( 0, 5 );
+				if ( where.compareToIgnoreCase( "where" ) == 0 ) {
+					sqlQuery += " " + whereClause;
+				}
+				else {
+					sqlQuery += " where " + whereClause;
+				}
 			}
-			else {
-				sqlQuery += " where " + whereClause;
+			String orderBy = allQueryOrderByClause( "t" );
+			if ( SysUtils.isEmpty( orderBy ) == false ) {
+				orderBy = orderBy.toLowerCase( );
+				if ( orderBy.indexOf( "order by" ) >= 0 ) {
+					sqlQuery += orderBy;
+				}
+				else {
+					sqlQuery += " order by " + orderBy;
+				}
 			}
+			Query query = getEntityManager( ).createQuery( sqlQuery );
+			return query;
 		}
-		String orderBy = allQueryOrderByClause( "t" );
-		if ( SysUtils.isEmpty( orderBy ) == false ) {
-			orderBy = orderBy.toLowerCase( );
-			if ( orderBy.indexOf( "order by" ) >= 0 ) {
-				sqlQuery += orderBy;
-			}
-			else {
-				sqlQuery += " order by " + orderBy;
-			}
+		catch ( Exception e ) {
+			storeException( e );
+			throw e;
 		}
-		Query query = getEntityManager( ).createQuery( sqlQuery );
-		return query;
 	}
 
 	@Override
@@ -191,9 +182,16 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 
 	protected void setQueryParams( Query query, Map<String, Object> params )
 	{
-		for ( Entry<String, Object> entry : params.entrySet( ) ) {
-			query.setParameter( entry.getKey( ), entry.getValue( ) );
+		try {
+			for ( Entry<String, Object> entry : params.entrySet( ) ) {
+				query.setParameter( entry.getKey( ), entry.getValue( ) );
+			}
 		}
+		catch ( Exception e ) {
+			storeException( e );
+			throw e;
+		}
+
 	}
 
 	@Override
@@ -347,23 +345,6 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 	}
 
 	@Override
-	public void storeException( Exception e )
-	{
-		if ( e == null ) {
-			return;
-		}
-		// String trace = getStackTrace( e );
-		e.printStackTrace( );
-	}
-
-	protected String getStackTrace( Exception exception )
-	{
-		StringWriter errors = new StringWriter( );
-		exception.printStackTrace( new PrintWriter( errors ) );
-		return errors.toString( );
-	}
-
-	@Override
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByQuery( String sql, Object... params )
 	{
@@ -415,10 +396,5 @@ public abstract class ReadOnlySessionBean<T> implements ReadOnlySessionInterface
 			}
 		}
 		return list;
-	}
-
-	public SessionContext getSessionContext( )
-	{
-		return sessionContext;
 	}
 }

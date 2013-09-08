@@ -12,13 +12,13 @@ import org.zkoss.zul.Textbox;
 
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.inep.packs.InepPackageSession;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
 import br.com.mcampos.web.core.listbox.ListboxParams;
 import br.com.mcampos.web.renderer.inep.EventListRenderer;
 
-public class EventsController extends BaseDBListController<InepPackageSession, InepPackage>
+public class EventsController extends BaseDBListController<InepPackageSession, InepEvent>
 {
 	private static final long serialVersionUID = 3519756939620280341L;
 
@@ -53,7 +53,7 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	}
 
 	@Override
-	protected void showFields( InepPackage e )
+	protected void showFields( InepEvent e )
 	{
 		if( e != null )
 		{
@@ -82,7 +82,7 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	}
 
 	@Override
-	protected void updateTargetEntity( InepPackage target )
+	protected void updateTargetEntity( InepEvent target )
 	{
 		target.setEndDate( endDate.getValue( ) );
 		target.setInitDate( initDate.getValue( ) != null ? initDate.getValue( ) : new Date( ) );
@@ -92,7 +92,7 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	}
 
 	@Override
-	protected boolean validateEntity( InepPackage entity, int operation )
+	protected boolean validateEntity( InepEvent entity, int operation )
 	{
 		return true;
 	}
@@ -104,13 +104,13 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	}
 
 	@Override
-	protected Collection<InepPackage> getList( )
+	protected Collection<InepEvent> getList( )
 	{
 		return getAll( 0 );
 	}
 
 	@Override
-	protected Collection<InepPackage> getAll( int activePage )
+	protected Collection<InepEvent> getAll( int activePage )
 	{
 		return getSession( ).getAll( getPrincipal( ), new DBPaging( activePage, ListboxParams.maxListBoxPageSize ) );
 	}

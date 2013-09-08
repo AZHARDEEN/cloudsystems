@@ -27,7 +27,7 @@ import br.com.mcampos.sysutils.SysUtils;
  * 
  */
 @Entity
-@Table( name = "pgc" )
+@Table( name = "pgc", schema = "public" )
 public class Pgc implements BasicEntityRenderer<Pgc>, Comparable<Pgc>
 {
 	private static final long serialVersionUID = 1L;
@@ -69,7 +69,7 @@ public class Pgc implements BasicEntityRenderer<Pgc>, Comparable<Pgc>
 	// bi-directional many-to-many association to AnotoPenPage
 	@ManyToMany
 	@JoinTable(
-			name = "pgc_pen_page"
+			name = "pgc_pen_page", schema = "public"
 			, joinColumns = {
 					@JoinColumn( name = "pgc_id_in", nullable = false )
 			}
@@ -100,70 +100,70 @@ public class Pgc implements BasicEntityRenderer<Pgc>, Comparable<Pgc>
 
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( Integer pgcIdIn )
 	{
-		this.id = pgcIdIn;
+		id = pgcIdIn;
 	}
 
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	public void setDescription( String pgcDescriptionCh )
 	{
-		this.description = pgcDescriptionCh;
+		description = pgcDescriptionCh;
 	}
 
 	public Date getInsertDate( )
 	{
-		return this.insertDate;
+		return insertDate;
 	}
 
 	public void setInsertDate( Date pgcInsertDt )
 	{
-		this.insertDate = pgcInsertDt;
+		insertDate = pgcInsertDt;
 	}
 
 	public String getPenId( )
 	{
-		return this.penId;
+		return penId;
 	}
 
 	public void setPenId( String pgcPenId )
 	{
-		this.penId = pgcPenId;
+		penId = pgcPenId;
 	}
 
 	public BigDecimal getTimeDiff( )
 	{
-		return this.timeDiff;
+		return timeDiff;
 	}
 
 	public void setTimeDiff( BigDecimal pgcTimeDiffIn )
 	{
-		this.timeDiff = pgcTimeDiffIn;
+		timeDiff = pgcTimeDiffIn;
 	}
 
 	public PgcStatus getStatus( )
 	{
-		if ( this.status == null ) {
-			this.status = new PgcStatus( );
+		if ( status == null ) {
+			status = new PgcStatus( );
 		}
-		return this.status;
+		return status;
 	}
 
 	public void setStatus( PgcStatus pgcStatus )
 	{
-		this.status = pgcStatus;
+		status = pgcStatus;
 	}
 
 	public List<PgcAttachment> getPgcAttachments( )
 	{
-		return this.pgcAttachments;
+		return pgcAttachments;
 	}
 
 	public void setPgcAttachments( List<PgcAttachment> pgcAttachments )
@@ -173,7 +173,7 @@ public class Pgc implements BasicEntityRenderer<Pgc>, Comparable<Pgc>
 
 	public List<PgcPage> getPgcPages( )
 	{
-		return this.pgcPages;
+		return pgcPages;
 	}
 
 	public void setPgcPages( List<PgcPage> pgcPages )
@@ -183,30 +183,30 @@ public class Pgc implements BasicEntityRenderer<Pgc>, Comparable<Pgc>
 
 	public List<AnotoPenPage> getPenPages( )
 	{
-		return this.penPages;
+		return penPages;
 	}
 
 	public void setPenPages( List<AnotoPenPage> anotoPenPages )
 	{
-		this.penPages = anotoPenPages;
+		penPages = anotoPenPages;
 	}
 
 	public List<PgcProperty> getProperties( )
 	{
-		if ( this.properties == null ) {
-			this.properties = new ArrayList<PgcProperty>( );
+		if ( properties == null ) {
+			properties = new ArrayList<PgcProperty>( );
 		}
-		return this.properties;
+		return properties;
 	}
 
 	public void setProperties( List<PgcProperty> pgcProperties )
 	{
-		this.properties = pgcProperties;
+		properties = pgcProperties;
 	}
 
 	public Media getMedia( )
 	{
-		return this.media;
+		return media;
 	}
 
 	public void setMedia( Media media )
@@ -224,7 +224,7 @@ public class Pgc implements BasicEntityRenderer<Pgc>, Comparable<Pgc>
 
 	public RevisionStatus getRevisionStatus( )
 	{
-		return this.revisionStatus;
+		return revisionStatus;
 	}
 
 	public void setRevisionStatus( RevisionStatus revisionStatus )

@@ -1,5 +1,6 @@
 package br.com.mcampos.web.controller.logged;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,8 @@ import br.com.mcampos.ejb.security.menu.MenuFacade;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.event.IClickEvent;
 import br.com.mcampos.web.core.mdi.BaseLoggedMDIController;
+import br.com.mcampos.web.core.report.JasperReportController;
+import br.com.mcampos.web.core.report.ReportItem;
 import br.com.mcampos.web.locator.ServiceLocator;
 
 public class IndexController extends BaseLoggedMDIController implements IClickEvent
@@ -62,11 +65,11 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 		if ( getMdiApplication( ) != null && getMdiApplication( ).getChildren( ) != null ) {
 			clear( );
 		}
-		if ( this.mainMenu == null ) {
+		if ( mainMenu == null ) {
 			return;
 		}
-		if ( this.mainMenu.getChildren( ) != null ) {
-			this.mainMenu.getChildren( ).clear( );
+		if ( mainMenu.getChildren( ) != null ) {
+			mainMenu.getChildren( ).clear( );
 		}
 		List<br.com.mcampos.entity.security.Menu> menus = getSession( ).getMenus( getPrincipal( ) );
 		for ( br.com.mcampos.entity.security.Menu item : menus ) {
@@ -92,14 +95,14 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 	private MenuFacade getSession( )
 	{
 		try {
-			if ( this.session == null ) {
-				this.session = (MenuFacade) ServiceLocator.getInstance( ).getRemoteSession( MenuFacade.class );
+			if ( session == null ) {
+				session = (MenuFacade) ServiceLocator.getInstance( ).getRemoteSession( MenuFacade.class );
 			}
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );
 		}
-		return this.session;
+		return session;
 	}
 
 	@Override
@@ -122,20 +125,29 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 				}
 			}
 		} );
+		subscribeOnReport( );
 	}
 
 	protected DynamicMenu getDynamicMenu( )
 	{
-		if ( this.dynamicMenu == null ) {
-			this.dynamicMenu = new DynamicMenu( this.mainMenu, this );
+		if ( dynamicMenu == null ) {
+			dynamicMenu = new DynamicMenu( mainMenu, this );
 		}
-		return this.dynamicMenu;
+		return dynamicMenu;
 	}
 
 	@Override
 	protected Component createComponents( String uri, Component parent, Map<?, ?> parameters )
 	{
 		return super.createComponents( uri, parent, parameters );
+	}
+
+	@Override
+	protected void onReport( ReportItem item )
+	{
+		Map<String, Object> params = new HashMap<String, Object>( );
+		params.put( JasperReportController.paramName, item );
+		gotoPage( "/private/report.zul", getMdiApplication( ), params, true );
 	}
 
 }

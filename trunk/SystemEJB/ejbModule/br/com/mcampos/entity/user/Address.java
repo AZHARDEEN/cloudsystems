@@ -19,7 +19,7 @@ import br.com.mcampos.entity.locale.City;
  * 
  */
 @Entity
-@Table( name = "address" )
+@Table( name = "address", schema = "public" )
 public class Address implements Serializable, Comparable<Address>
 {
 	private static final long serialVersionUID = 1L;
@@ -65,10 +65,10 @@ public class Address implements Serializable, Comparable<Address>
 
 	public AddressPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new AddressPK( );
+		if ( id == null ) {
+			id = new AddressPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( AddressPK id )
@@ -78,67 +78,67 @@ public class Address implements Serializable, Comparable<Address>
 
 	public String getAddress( )
 	{
-		return this.address;
+		return address;
 	}
 
 	public void setAddress( String adrAdressCh )
 	{
-		this.address = adrAdressCh;
+		address = adrAdressCh;
 	}
 
 	public String getDistrict( )
 	{
-		return this.district;
+		return district;
 	}
 
 	public void setDistrict( String adrDistrictCh )
 	{
-		this.district = adrDistrictCh;
+		district = adrDistrictCh;
 	}
 
 	public Date getFromDate( )
 	{
-		return this.fromDate;
+		return fromDate;
 	}
 
 	public void setFromDate( Date adrFromDt )
 	{
-		this.fromDate = adrFromDt;
+		fromDate = adrFromDt;
 	}
 
 	public String getObs( )
 	{
-		return this.obs;
+		return obs;
 	}
 
 	public void setObs( String adrObsTx )
 	{
-		this.obs = adrObsTx;
+		obs = adrObsTx;
 	}
 
 	public Date getToDate( )
 	{
-		return this.toDate;
+		return toDate;
 	}
 
 	public void setToDate( Date adrToDt )
 	{
-		this.toDate = adrToDt;
+		toDate = adrToDt;
 	}
 
 	public String getZip( )
 	{
-		return this.zip;
+		return zip;
 	}
 
 	public void setZip( String adrZipCodeCh )
 	{
-		this.zip = adrZipCodeCh;
+		zip = adrZipCodeCh;
 	}
 
 	public City getCity( )
 	{
-		return this.city;
+		return city;
 	}
 
 	public void setCity( City city )
@@ -148,7 +148,7 @@ public class Address implements Serializable, Comparable<Address>
 
 	public Users getUser( )
 	{
-		return this.user;
+		return user;
 	}
 
 	public void setUser( Users user )
@@ -162,7 +162,7 @@ public class Address implements Serializable, Comparable<Address>
 	@Override
 	public int compareTo( Address o )
 	{
-		if ( o == null || getUser() == null || getType() == null ) {
+		if ( o == null || getUser( ) == null || getType( ) == null ) {
 			return -1;
 		}
 		int nRet = 0;
@@ -176,7 +176,7 @@ public class Address implements Serializable, Comparable<Address>
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( obj == null || getUser() == null || getType () == null) {
+		if ( obj == null || getUser( ) == null || getType( ) == null ) {
 			return false;
 		}
 		if ( obj instanceof Address ) {
@@ -195,7 +195,7 @@ public class Address implements Serializable, Comparable<Address>
 
 	public AddressType getType( )
 	{
-		return this.type;
+		return type;
 	}
 
 	public void setType( AddressType type )

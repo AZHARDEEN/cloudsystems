@@ -25,7 +25,7 @@ import javax.persistence.TemporalType;
 				name = LastUsedPassword.findAllByLogin,
 				query = "select o from LastUsedPassword o where o.login = ?1 order by o.fromDate" )
 } )
-@Table( name = "last_used_password" )
+@Table( name = "last_used_password", schema = "public" )
 public class LastUsedPassword implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -59,10 +59,10 @@ public class LastUsedPassword implements Serializable
 
 	public LastUsedPasswordPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new LastUsedPasswordPK( );
+		if ( id == null ) {
+			id = new LastUsedPasswordPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( LastUsedPasswordPK id )
@@ -72,27 +72,27 @@ public class LastUsedPassword implements Serializable
 
 	public Date getFromDate( )
 	{
-		return this.fromDate;
+		return fromDate;
 	}
 
 	public void setFromDate( Date lupFromDt )
 	{
-		this.fromDate = lupFromDt;
+		fromDate = lupFromDt;
 	}
 
 	public Date getToDate( )
 	{
-		return this.toDate;
+		return toDate;
 	}
 
 	public void setToDate( Date lupToDt )
 	{
-		this.toDate = lupToDt;
+		toDate = lupToDt;
 	}
 
 	public Login getLogin( )
 	{
-		return this.login;
+		return login;
 	}
 
 	public void setLogin( Login login )

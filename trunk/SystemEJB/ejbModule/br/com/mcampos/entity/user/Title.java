@@ -16,7 +16,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
 		@NamedQuery( name = "Title.findAll", query = "select o from Title o" ),
 		@NamedQuery( name = "Title.getAllFromGender", query = "select o from Title o where o.gender = ?1 or o.gender is null" )
 } )
-@Table( name = "\"title\"" )
+@Table( name = "title", schema = "public" )
 public class Title extends SimpleTable<Title>
 {
 	private static final long serialVersionUID = -5257827831148175822L;
@@ -39,36 +39,36 @@ public class Title extends SimpleTable<Title>
 
 	public String getAbreviation( )
 	{
-		return this.abreviation;
+		return abreviation;
 	}
 
 	public void setAbreviation( String ttl_abrev_ch )
 	{
-		this.abreviation = ttl_abrev_ch;
+		abreviation = ttl_abrev_ch;
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
 	public void setDescription( String ttl_description_ch )
 	{
-		this.description = ttl_description_ch;
+		description = ttl_description_ch;
 	}
 
 	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId( Integer ttl_id_in )
 	{
-		this.id = ttl_id_in;
+		id = ttl_id_in;
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class Title extends SimpleTable<Title>
 
 	public Gender getGender( )
 	{
-		return this.gender;
+		return gender;
 	}
 
 	public void setGender( Gender gender )

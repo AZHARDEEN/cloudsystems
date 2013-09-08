@@ -2,10 +2,12 @@ package br.com.mcampos.web.core.listbox;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -19,13 +21,13 @@ import org.zkoss.zul.Window;
 import org.zkoss.zul.event.PagingEvent;
 import org.zkoss.zul.ext.Paginal;
 
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.core.PagingSessionInterface;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseCrudController;
 
-public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudController<BEAN, ENTITY>
+public abstract class BaseDBListController<BEAN extends BaseCrudSessionInterface<?>, ENTITY> extends BaseCrudController<BEAN, ENTITY>
 {
 	private static final long serialVersionUID = 7099297274300371931L;
 
@@ -140,7 +142,20 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 	}
 
 	@Listen( "onSelect = listbox#listTable" )
-	public void onSelect( )
+	public void onSelectListbox( Event evt )
+	{
+		if ( evt != null )
+			evt.stopPropagation( );
+		try {
+			onSelect( );
+		}
+		catch ( Exception e ) {
+			getSession( ).storeException( e );
+			throw e;
+		}
+	}
+
+	private void onSelect( )
 	{
 		List<ENTITY> itens = getSelectedRecords( );
 		if ( itens != null ) {
@@ -243,27 +258,37 @@ public abstract class BaseDBListController<BEAN, ENTITY> extends BaseCrudControl
 	{
 		ListModelList<ENTITY> model = getModel( );
 		model.removeAll( collection );
-		showFields( null );
+		if ( model.getSize( ) > 0 ) {
+			getListbox( ).setSelectedIndex( 0 );
+		}
+		onSelect( );
 	}
 
 	protected Collection<ENTITY> getList( )
 	{
+
 		@SuppressWarnings( "unchecked" )
-		BaseSessionInterface<ENTITY> session = (BaseSessionInterface<ENTITY>) getSession( );
-		return session.getAll( getPrincipal( ) );
+		BaseCrudSessionInterface<ENTITY> session = (BaseCrudSessionInterface<ENTITY>) getSession( );
+		try {
+			return session.getAll( getPrincipal( ) );
+		}
+		catch ( Exception e ) {
+			session.storeException( e );
+			return Collections.emptyList( );
+		}
 	}
 
 	protected ENTITY getNew( )
 	{
 		@SuppressWarnings( "unchecked" )
-		BaseSessionInterface<ENTITY> session = (BaseSessionInterface<ENTITY>) getSession( );
+		BaseCrudSessionInterface<ENTITY> session = (BaseCrudSessionInterface<ENTITY>) getSession( );
 		Class<ENTITY> cls = session.getPersistentClass( );
 		try {
 			ENTITY newEntity = cls.newInstance( );
 			return newEntity;
 		}
 		catch ( Exception e ) {
-			e.printStackTrace( );
+			session.storeException( e );
 			return null;
 		}
 	}

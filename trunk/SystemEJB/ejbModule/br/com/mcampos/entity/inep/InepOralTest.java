@@ -87,7 +87,7 @@ public class InepOralTest implements Serializable
 	{
 	}
 
-	public InepOralTest( InepPackage item )
+	public InepOralTest( InepEvent item )
 	{
 		set( item );
 	}
@@ -99,7 +99,7 @@ public class InepOralTest implements Serializable
 		return id;
 	}
 
-	public void set( InepPackage item )
+	public void set( InepEvent item )
 	{
 		getId( ).setUserId( item.getId( ).getCompanyId( ) );
 		getId( ).setEventId( item.getId( ).getId( ) );

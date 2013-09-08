@@ -1,6 +1,5 @@
 package br.com.mcampos.entity.system;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,10 +9,9 @@ import javax.persistence.Table;
 
 import br.com.mcampos.ejb.core.BasicEntityRenderer;
 
-
 @Entity
 @NamedQueries( { @NamedQuery( name = "SystemParameters.findAll", query = "select o from SystemParameters o" ) } )
-@Table( name = "\"system_parameters\"" )
+@Table( name = "system_parameters", schema = "public" )
 public class SystemParameters implements BasicEntityRenderer<SystemParameters>, Comparable<SystemParameters>
 {
 	private static final long serialVersionUID = 4036198021227614088L;
@@ -31,39 +29,38 @@ public class SystemParameters implements BasicEntityRenderer<SystemParameters>, 
 	@Column( name = "spr_value_tx", nullable = false )
 	private String value;
 
-	public SystemParameters()
+	public SystemParameters( )
 	{
 	}
 
-
-	public String getDescription()
+	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	public void setDescription( String spr_description_ch )
 	{
-		this.description = spr_description_ch;
+		description = spr_description_ch;
 	}
 
-	public String getId()
+	public String getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( String spr_id_ch )
 	{
-		this.id = spr_id_ch;
+		id = spr_id_ch;
 	}
 
-	public String getValue()
+	public String getValue( )
 	{
-		return this.value;
+		return value;
 	}
 
 	public void setValue( String spr_value_tx )
 	{
-		this.value = spr_value_tx;
+		value = spr_value_tx;
 	}
 
 	@Override
@@ -71,11 +68,11 @@ public class SystemParameters implements BasicEntityRenderer<SystemParameters>, 
 	{
 		switch ( field ) {
 		case 0:
-			return getId();
+			return getId( );
 		case 1:
-			return ( getDescription() );
+			return ( getDescription( ) );
 		case 2:
-			return ( getValue() );
+			return ( getValue( ) );
 		default:
 			return "";
 		}
@@ -88,9 +85,9 @@ public class SystemParameters implements BasicEntityRenderer<SystemParameters>, 
 		case 0:
 			return compareTo( object );
 		case 1:
-			return object.getDescription().compareTo( getDescription() );
+			return object.getDescription( ).compareTo( getDescription( ) );
 		case 2:
-			return object.getValue().compareTo( getValue() );
+			return object.getValue( ).compareTo( getValue( ) );
 		default:
 			return 0;
 		}
@@ -99,6 +96,6 @@ public class SystemParameters implements BasicEntityRenderer<SystemParameters>, 
 	@Override
 	public int compareTo( SystemParameters o )
 	{
-		return o.getId().compareTo( getId() );
+		return o.getId( ).compareTo( getId( ) );
 	}
 }

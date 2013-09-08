@@ -28,14 +28,14 @@ public class InepTaskPK implements Serializable, Comparable<InepTaskPK>
 	{
 	}
 
-	public InepTaskPK( InepPackage e, int id )
+	public InepTaskPK( InepEvent e, int id )
 	{
 		setCompanyId( e.getCompany( ).getId( ) );
 		setEventId( e.getId( ).getId( ) );
 		setId( id );
 	}
 
-	public void set( InepPackagePK key )
+	public void set( InepEventPK key )
 	{
 		setCompanyId( key.getCompanyId( ) );
 		setEventId( key.getId( ) );

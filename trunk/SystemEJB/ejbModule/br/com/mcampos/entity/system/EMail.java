@@ -12,7 +12,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
  * 
  */
 @Entity
-@Table( name = "e_mail" )
+@Table( name = "e_mail", schema = "public" )
 public class EMail extends SimpleTable<EMail>
 {
 	private static final long serialVersionUID = 1L;
@@ -36,25 +36,25 @@ public class EMail extends SimpleTable<EMail>
 	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId( Integer emlIdIn )
 	{
-		this.id = emlIdIn;
+		id = emlIdIn;
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
 	public void setDescription( String emlDescriptionCh )
 	{
-		this.description = emlDescriptionCh;
+		description = emlDescriptionCh;
 	}
 
 }

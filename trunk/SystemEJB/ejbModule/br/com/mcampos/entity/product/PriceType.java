@@ -14,10 +14,15 @@ import br.com.mcampos.ejb.core.SimpleTable;
  * 
  */
 @Entity
-@Table( name = "price_type" )
+@Table( name = "price_type", schema = "public" )
 public class PriceType extends SimpleTable<PriceType> implements Serializable
 {
 	private static final long serialVersionUID = 1L;
+
+	public static final int typeNormal = 1;
+	public static final int typeMin = 2;
+	public static final int typeMax = 3;
+	public static final int typeBuy = 4;
 
 	@Id
 	@Column( name = "pct_id_in" )

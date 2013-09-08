@@ -10,7 +10,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.InepOralFacade;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
@@ -36,11 +36,11 @@ public abstract class BaseOralController extends BaseDBLoggedController<InepOral
 		this.comboEvent = comboEvent;
 	}
 
-	protected InepPackage getCurrentEvent( )
+	protected InepEvent getCurrentEvent( )
 	{
 		Comboitem item = comboEvent.getSelectedItem( );
 		if( item != null && item.getValue( ) != null ) {
-			return (InepPackage) item.getValue( );
+			return (InepEvent) item.getValue( );
 		}
 		else
 			return null;
@@ -49,7 +49,7 @@ public abstract class BaseOralController extends BaseDBLoggedController<InepOral
 	protected InepRevisor getRevisor( )
 	{
 		if( revisor == null ) {
-			revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
+			revisor = getSession( ).getRevisor( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ),
 					getPrincipal( ) );
 		}
 		return revisor;
@@ -68,12 +68,12 @@ public abstract class BaseOralController extends BaseDBLoggedController<InepOral
 
 	private void loadEvents( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );
 		}
-		for( InepPackage e : events ) {
+		for( InepEvent e : events ) {
 			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}

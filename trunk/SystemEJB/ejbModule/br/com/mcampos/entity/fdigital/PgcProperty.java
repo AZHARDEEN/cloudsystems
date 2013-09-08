@@ -14,7 +14,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table( name = "pgc_property" )
+@Table( name = "pgc_property", schema = "public" )
 public class PgcProperty implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -36,10 +36,10 @@ public class PgcProperty implements Serializable
 
 	public PgcPropertyPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new PgcPropertyPK( );
+		if ( id == null ) {
+			id = new PgcPropertyPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( PgcPropertyPK id )
@@ -49,17 +49,17 @@ public class PgcProperty implements Serializable
 
 	public String getValue( )
 	{
-		return this.value;
+		return value;
 	}
 
 	public void setValue( String ppgValueCh )
 	{
-		this.value = ppgValueCh;
+		value = ppgValueCh;
 	}
 
 	public Pgc getPgc( )
 	{
-		return this.pgc;
+		return pgc;
 	}
 
 	public void setPgc( Pgc pgc )

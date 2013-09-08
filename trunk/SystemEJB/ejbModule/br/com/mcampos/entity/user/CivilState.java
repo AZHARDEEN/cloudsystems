@@ -11,7 +11,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "CivilState.findAll", query = "select o from CivilState o" ) } )
-@Table( name = "\"civil_state\"" )
+@Table( name = "civil_state", schema = "public" )
 public class CivilState extends SimpleTable<CivilState>
 {
 	private static final long serialVersionUID = -448962307975236161L;
@@ -26,25 +26,25 @@ public class CivilState extends SimpleTable<CivilState>
 	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
 	public void setDescription( String cst_description_ch )
 	{
-		this.description = cst_description_ch;
+		description = cst_description_ch;
 	}
 
 	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId( Integer cst_id_in )
 	{
-		this.id = cst_id_in;
+		id = cst_id_in;
 	}
 
 	@Override

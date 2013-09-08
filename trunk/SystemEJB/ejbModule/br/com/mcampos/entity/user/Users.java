@@ -28,7 +28,7 @@ import javax.persistence.Transient;
 import br.com.mcampos.sysutils.SysUtils;
 
 @Entity
-@Table( name = "users" )
+@Table( name = "users", schema = "public" )
 @Inheritance( strategy = InheritanceType.JOINED )
 @DiscriminatorColumn( name = "ust_id_in", discriminatorType = DiscriminatorType.STRING )
 public abstract class Users implements Serializable, Comparable<Users>

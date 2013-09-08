@@ -18,7 +18,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
 @Entity
 @NamedQueries( { @NamedQuery(
 		name = State.getCountryStates, query = "select o from State o where o.countryId = ?1 order by o.abbreviation" ) } )
-@Table( name = "state" )
+@Table( name = "state", schema = "public" )
 @IdClass( StatePK.class )
 public class State extends SimpleTable<State>
 {
@@ -59,79 +59,79 @@ public class State extends SimpleTable<State>
 
 	public String getCountryId( )
 	{
-		return this.countryId;
+		return countryId;
 	}
 
 	public void setCountryId( String ctr_code_ch )
 	{
-		this.countryId = ctr_code_ch;
+		countryId = ctr_code_ch;
 	}
 
 	public Integer getRegionId( )
 	{
-		return this.regionId;
+		return regionId;
 	}
 
 	public void setRegionId( Integer reg_id_in )
 	{
-		this.regionId = reg_id_in;
+		regionId = reg_id_in;
 	}
 
 	public String getAbbreviation( )
 	{
-		return this.abbreviation;
+		return abbreviation;
 	}
 
 	public void setAbbreviation( String sta_abbreviation_ch )
 	{
-		this.abbreviation = sta_abbreviation_ch;
+		abbreviation = sta_abbreviation_ch;
 	}
 
 	public Byte[ ] getFlag( )
 	{
-		return this.flag;
+		return flag;
 	}
 
 	public void setFlag( Byte[ ] sta_flag_bin )
 	{
-		this.flag = sta_flag_bin;
+		flag = sta_flag_bin;
 	}
 
 	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId( Integer sta_id_in )
 	{
-		this.id = sta_id_in;
+		id = sta_id_in;
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
 	public void setDescription( String sta_name_ch )
 	{
-		this.description = sta_name_ch;
+		description = sta_name_ch;
 	}
 
 	public Region getRegion( )
 	{
-		return this.region;
+		return region;
 	}
 
 	public void setRegion( Region region )
 	{
 		this.region = region;
 		if ( region != null ) {
-			this.regionId = region.getId( );
-			this.countryId = region.getCountryId( );
+			regionId = region.getId( );
+			countryId = region.getCountryId( );
 		}
 	}
 

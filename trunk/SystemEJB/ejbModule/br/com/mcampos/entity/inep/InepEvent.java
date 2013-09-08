@@ -6,9 +6,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -16,7 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import br.com.mcampos.ejb.core.BasicEntityRenderer;
-import br.com.mcampos.entity.user.Company;
+import br.com.mcampos.entity.BaseCompanyEntity;
 
 /**
  * The persistent class for the inep_package database table.
@@ -27,25 +24,21 @@ import br.com.mcampos.entity.user.Company;
 @NamedQueries(
 {
 		@NamedQuery(
-				name = InepPackage.getAll, query = "select o from InepPackage o where o.company = ?1 " ),
+				name = InepEvent.getAll, query = "select o from InepEvent o where o.company = ?1 " ),
 		@NamedQuery(
-				name = InepPackage.getAllAvailable, query = "select o from InepPackage o where ( o.endDate is null or o.endDate >= CURRENT_TIMESTAMP )" )
+				name = InepEvent.getAllAvailable, query = "select o from InepEvent o where ( o.endDate is null or o.endDate >= CURRENT_TIMESTAMP )" )
 } )
-public class InepPackage implements Serializable, Comparable<InepPackage>, BasicEntityRenderer<InepPackage>
+public class InepEvent extends BaseCompanyEntity implements Serializable, Comparable<InepEvent>, BasicEntityRenderer<InepEvent>
 {
 	private static final long serialVersionUID = 1L;
-	public static final String getAll = "InepPackage.getAll";
-	public static final String getAllAvailable = "InepPackage.getAllAvailable";
+	public static final String getAll = "InepEvent.getAll";
+	public static final String getAllAvailable = "InepEvent.getAllAvailable";
 
 	@EmbeddedId
-	private InepPackagePK id;
+	private InepEventPK id;
 
 	@Column( name = "pct_code_ch" )
 	private String description;
-
-	@ManyToOne( fetch = FetchType.EAGER, optional = false )
-	@JoinColumn( name = "usr_id_in", insertable = false, updatable = false )
-	private Company company;
 
 	@Column( name = "pct_init_dt" )
 	@Temporal( TemporalType.DATE )
@@ -55,19 +48,20 @@ public class InepPackage implements Serializable, Comparable<InepPackage>, Basic
 	@Temporal( TemporalType.DATE )
 	private Date endDate;
 
-	public InepPackage( )
+	public InepEvent( )
 	{
 	}
 
-	public InepPackagePK getId( )
+	@Override
+	public InepEventPK getId( )
 	{
 		if ( id == null ) {
-			id = new InepPackagePK( );
+			id = new InepEventPK( );
 		}
 		return id;
 	}
 
-	public void setId( InepPackagePK id )
+	public void setId( InepEventPK id )
 	{
 		this.id = id;
 	}
@@ -82,18 +76,8 @@ public class InepPackage implements Serializable, Comparable<InepPackage>, Basic
 		description = pctCodeCh;
 	}
 
-	public Company getCompany( )
-	{
-		return company;
-	}
-
-	public void setCompany( Company company )
-	{
-		this.company = company;
-	}
-
 	@Override
-	public int compareTo( InepPackage object, Integer field )
+	public int compareTo( InepEvent object, Integer field )
 	{
 		switch ( field ) {
 		case 0:
@@ -108,11 +92,11 @@ public class InepPackage implements Serializable, Comparable<InepPackage>, Basic
 	@Override
 	public boolean equals( Object obj )
 	{
-		return getId( ).equals( ( (InepPackage) obj ).getId( ) );
+		return getId( ).equals( ( (InepEvent) obj ).getId( ) );
 	}
 
 	@Override
-	public int compareTo( InepPackage o )
+	public int compareTo( InepEvent o )
 	{
 		return getId( ).compareTo( o.getId( ) );
 	}

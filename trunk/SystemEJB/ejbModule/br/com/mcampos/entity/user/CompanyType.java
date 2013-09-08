@@ -1,44 +1,56 @@
 package br.com.mcampos.entity.user;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import br.com.mcampos.ejb.core.SimpleTable;
-
 
 /**
  * The persistent class for the company_type database table.
  * 
  */
 @Entity
-@Table(name="company_type")
-public class CompanyType extends SimpleTable<CompanyType> {
+@Table( name = "company_type", schema = "public" )
+public class CompanyType extends SimpleTable<CompanyType>
+{
 	private static final long serialVersionUID = 1L;
-	
+
 	public static Integer defaultType = 224;
 
 	@Id
-	@Column(name="ctp_id_in")
+	@Column( name = "ctp_id_in" )
 	private Integer id;
 
-	@Column(name="ctp_description_ch")
+	@Column( name = "ctp_description_ch" )
 	private String description;
 
-	public CompanyType() {
+	public CompanyType( )
+	{
 	}
 
-	public Integer getId() {
-		return this.id;
+	@Override
+	public Integer getId( )
+	{
+		return id;
 	}
 
-	public void setId(Integer ctpIdIn) {
-		this.id = ctpIdIn;
+	@Override
+	public void setId( Integer ctpIdIn )
+	{
+		id = ctpIdIn;
 	}
 
-	public String getDescription() {
-		return this.description;
+	@Override
+	public String getDescription( )
+	{
+		return description;
 	}
 
-	public void setDescription(String ctpDescriptionCh) {
-		this.description = ctpDescriptionCh;
+	@Override
+	public void setDescription( String ctpDescriptionCh )
+	{
+		description = ctpDescriptionCh;
 	}
 }

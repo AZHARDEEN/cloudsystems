@@ -9,10 +9,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-
 @Entity
 @NamedQueries( { @NamedQuery( name = "Currency.findAll", query = "select o from Currency o" ) } )
-@Table( name = "\"currency\"" )
+@Table( name = "currency", schema = "public" )
 public class Currency implements Serializable
 {
 	private static final long serialVersionUID = -3375725451724480604L;
@@ -30,49 +29,48 @@ public class Currency implements Serializable
 	@Column( name = "cur_symbol_ch" )
 	private String symbol;
 
-
-	public Currency()
+	public Currency( )
 	{
 	}
 
-	public String getCode()
+	public String getCode( )
 	{
-		return this.code;
+		return code;
 	}
 
 	public void setCode( String cur_code_ch )
 	{
-		this.code = cur_code_ch;
+		code = cur_code_ch;
 	}
 
-	public Integer getId()
+	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( Integer cur_id_in )
 	{
-		this.id = cur_id_in;
+		id = cur_id_in;
 	}
 
-	public String getName()
+	public String getName( )
 	{
-		return this.name;
+		return name;
 	}
 
 	public void setName( String cur_name_ch )
 	{
-		this.name = cur_name_ch;
+		name = cur_name_ch;
 	}
 
-	public String getSymbol()
+	public String getSymbol( )
 	{
-		return this.symbol;
+		return symbol;
 	}
 
 	public void setSymbol( String cur_symbol_ch )
 	{
-		this.symbol = cur_symbol_ch;
+		symbol = cur_symbol_ch;
 	}
 
 }

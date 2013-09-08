@@ -7,7 +7,7 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepTestPK;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -26,7 +26,7 @@ public class InepLoaderJob extends InepBaseJob
 		boolean bRet;
 
 		try {
-			List<InepPackage> currentEvents;
+			List<InepEvent> currentEvents;
 
 			if ( amIRunning( arg0 ) ) {
 				logger.info( "Already running!!!!" );
@@ -36,7 +36,7 @@ public class InepLoaderJob extends InepBaseJob
 			currentEvents = getSession( ).getAvailableEvents( );
 			if ( SysUtils.isEmpty( currentEvents ) )
 				return;
-			for ( InepPackage item : currentEvents ) {
+			for ( InepEvent item : currentEvents ) {
 				String[ ] files = getFiles( item, ".pdf" );
 				if ( files == null )
 					return;
@@ -82,7 +82,7 @@ public class InepLoaderJob extends InepBaseJob
 		}
 	}
 
-	private boolean processFile( InepPackage pack, String file, String subscription, Integer task )
+	private boolean processFile( InepEvent pack, String file, String subscription, Integer task )
 	{
 		InepTestPK key = new InepTestPK( );
 		byte[ ] object = read( file );
