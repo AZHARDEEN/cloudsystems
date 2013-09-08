@@ -11,10 +11,10 @@ import org.zkoss.zul.Button;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.sysutils.SysUtils;
 
-public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedController<BEAN>
+public abstract class BaseCrudController<BEAN extends BaseCrudSessionInterface<?>, ENTITY> extends BaseDBLoggedController<BEAN>
 {
 	/**
 	 * 
@@ -113,7 +113,7 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 			deleteTitle = "Exclusão";
 		}
 		else {
-			deleteMsg = "Cinforma a exclusão dos registros selecionados";
+			deleteMsg = "Confirma a exclusão dos registros selecionados";
 			deleteTitle = "Exclusão de Múltiplos Registros";
 		}
 
@@ -125,10 +125,16 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 	private void delete( )
 	{
 		Collection<ENTITY> toDelete = getEntitiesToDelete( );
-		BaseSessionInterface<ENTITY> bean = (BaseSessionInterface<ENTITY>) getSession( );
-		bean.remove( getPrincipal( ), toDelete );
-		afterDelete( toDelete );
-		setTargetEntity( null );
+		BaseCrudSessionInterface<ENTITY> bean = (BaseCrudSessionInterface<ENTITY>) getSession( );
+		try {
+			bean.remove( getPrincipal( ), toDelete );
+			afterDelete( toDelete );
+			setTargetEntity( null );
+		}
+		catch ( Exception e ) {
+			bean.storeException( e );
+			Messagebox.show( "Erro ao excluir o(s) registro(s) desejado(s): " + e.getMessage( ), "Erro ao Excluir", Messagebox.OK, Messagebox.ERROR );
+		}
 
 	}
 
@@ -150,9 +156,15 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 	@Listen( "onClick = #cmdCreate" )
 	public void onClickCreate( Event evt )
 	{
-		setStatus( statusAdd );
-		onAddNew( );
-		changeButtons( false );
+		try {
+			setStatus( statusAdd );
+			onAddNew( );
+			changeButtons( false );
+		}
+		catch ( Exception e ) {
+			getSession( ).storeException( e );
+			throw e;
+		}
 	}
 
 	@Listen( "onClick = #cmdUpdate" )
@@ -207,16 +219,24 @@ public abstract class BaseCrudController<BEAN, ENTITY> extends BaseDBLoggedContr
 	protected void onSave( )
 	{
 		@SuppressWarnings( "unchecked" )
-		BaseSessionInterface<ENTITY> bean = (BaseSessionInterface<ENTITY>) getSession( );
-		updateTargetEntity( getTargetEntity( ) );
-		if ( validateEntity( getTargetEntity( ), getStatus( ) ) ) {
-			if ( getStatus( ).equals( statusAdd ) ) {
-				setTargetEntity( bean.add( getPrincipal( ), getTargetEntity( ) ) );
+		BaseCrudSessionInterface<ENTITY> bean = (BaseCrudSessionInterface<ENTITY>) getSession( );
+		try {
+			updateTargetEntity( getTargetEntity( ) );
+			if ( validateEntity( getTargetEntity( ), getStatus( ) ) ) {
+				if ( getStatus( ).equals( statusAdd ) ) {
+					setTargetEntity( bean.add( getPrincipal( ), getTargetEntity( ) ) );
+				}
+				else {
+					setTargetEntity( bean.update( getPrincipal( ), getTargetEntity( ) ) );
+				}
+				afterUpdate( getTargetEntity( ), getStatus( ) );
 			}
-			else {
-				setTargetEntity( bean.update( getPrincipal( ), getTargetEntity( ) ) );
-			}
-			afterUpdate( getTargetEntity( ), getStatus( ) );
+		}
+		catch ( Exception e )
+		{
+			bean.storeException( e );
+			Messagebox.show( "Erro ao salvar o(s) registro(s) desejado(s): " + e.getMessage( ) + "\n" + getTargetEntity( ).getClass( ).getSimpleName( ),
+					"Erro ao Excluir", Messagebox.OK, Messagebox.ERROR );
 		}
 	}
 

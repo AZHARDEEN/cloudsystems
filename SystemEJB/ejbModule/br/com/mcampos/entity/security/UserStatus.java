@@ -1,6 +1,5 @@
 package br.com.mcampos.entity.security;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,10 +9,9 @@ import javax.persistence.Table;
 
 import br.com.mcampos.ejb.core.SimpleTable;
 
-
 @Entity
 @NamedQueries( { @NamedQuery( name = "UserStatus.findAll", query = "select o from UserStatus o" ) } )
-@Table( name = "\"user_status\"" )
+@Table( name = "user_status", schema = "public" )
 public class UserStatus extends SimpleTable<UserStatus>
 {
 	private static final long serialVersionUID = 5439295347003979636L;
@@ -35,31 +33,31 @@ public class UserStatus extends SimpleTable<UserStatus>
 	@Column( name = "uts_id_in", nullable = false )
 	private Integer id;
 
-	public UserStatus()
+	public UserStatus( )
 	{
 	}
 
 	public UserStatus( Boolean allow, String description, Integer id )
 	{
-		this.allowLogin = allow;
+		allowLogin = allow;
 		this.description = description;
 		this.id = id;
 	}
 
-	public Boolean getAllowLogin()
+	public Boolean getAllowLogin( )
 	{
-		return this.allowLogin;
+		return allowLogin;
 	}
 
 	public void setAllowLogin( Boolean allow )
 	{
-		this.allowLogin = allow;
+		allowLogin = allow;
 	}
 
 	@Override
-	public String getDescription()
+	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
@@ -69,9 +67,9 @@ public class UserStatus extends SimpleTable<UserStatus>
 	}
 
 	@Override
-	public Integer getId()
+	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 import org.zkoss.zul.event.PagingEvent;
 
+import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.entity.user.Address;
 import br.com.mcampos.entity.user.Client;
@@ -33,7 +34,7 @@ import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.core.report.BaseReportWindow;
 import br.com.mcampos.web.core.report.ReportItem;
 
-public abstract class UserController<BEAN> extends BaseDBLoggedController<BEAN> implements IDialogEvent
+public abstract class UserController<BEAN extends BaseSessionInterface> extends BaseDBLoggedController<BEAN> implements IDialogEvent
 {
 	private static final long serialVersionUID = 4025873645295022522L;
 	private static final int defaultRows = 30;

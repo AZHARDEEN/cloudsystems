@@ -13,7 +13,7 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.task.InepTaskSession;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepTask;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.dbwidgets.DBWidget;
@@ -68,7 +68,7 @@ public class TaskController extends BaseDBListController<InepTaskSession, InepTa
 				entity.setDescription( input.getText( ) );
 			}
 		}
-		InepPackage event = (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( );
+		InepEvent event = (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( );
 		entity.getId( ).set( event.getId( ) );
 	}
 
@@ -92,12 +92,12 @@ public class TaskController extends BaseDBListController<InepTaskSession, InepTa
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) ) {
 			getComboEvent( ).getItems( ).clear( );
 		}
-		for( InepPackage e : events ) {
+		for( InepEvent e : events ) {
 			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
@@ -111,7 +111,7 @@ public class TaskController extends BaseDBListController<InepTaskSession, InepTa
 	public void onSelectEvent( Event evt )
 	{
 		Comboitem item = getComboEvent( ).getSelectedItem( );
-		List<InepTask> list = getSession( ).getAll( (InepPackage) item.getValue( ) );
+		List<InepTask> list = getSession( ).getAll( (InepEvent) item.getValue( ) );
 		getListbox( ).setModel( new ListModelList<InepTask>( list ) );
 		if( evt != null ) {
 			evt.stopPropagation( );

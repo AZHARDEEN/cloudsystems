@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.entity.locale.State;
 
 @Local
-public interface StateSessionLocal extends BaseSessionInterface<State>
+public interface StateSessionLocal extends BaseCrudSessionInterface<State>
 {
 	public List<State> getAll( String countryCode );
 }

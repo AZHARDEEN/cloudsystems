@@ -7,12 +7,12 @@ import javax.ejb.Remote;
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.upload.AssefazDTO;
 import br.com.mcampos.dto.upload.RejectedDTO;
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.entity.system.FileUpload;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
-public interface FileUploadSession extends BaseSessionInterface<FileUpload>
+public interface FileUploadSession extends BaseCrudSessionInterface<FileUpload>
 {
 	FileUpload addNewFile( PrincipalDTO c, MediaDTO media );
 

@@ -6,13 +6,13 @@ import javax.ejb.Remote;
 
 import org.omg.CORBA.portable.ApplicationException;
 
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.entity.security.Menu;
 import br.com.mcampos.entity.security.Task;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
-public interface MenuFacade extends BaseSessionInterface<Menu>
+public interface MenuFacade extends BaseCrudSessionInterface<Menu>
 {
 	public List<Menu> getMenus( PrincipalDTO auth ) throws ApplicationException;
 

@@ -14,7 +14,7 @@ import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.entity.inep.DistributionStatus;
 import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepSubscription;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
@@ -40,11 +40,11 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 	}
 
 	@Override
-	public List<InepSubscription> getAll( InepPackage event )
+	public List<InepSubscription> getAll( InepEvent event )
 	{
 		List<InepSubscription> list = Collections.emptyList( );
 
-		InepPackage merged = getEventSession( ).get( event.getId( ) );
+		InepEvent merged = getEventSession( ).get( event.getId( ) );
 		if ( merged != null ) {
 			list = findByNamedQuery( InepSubscription.getAllEventSubs, merged );
 		}
@@ -57,13 +57,13 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 	}
 
 	@Override
-	public List<InepPackage> getEvents( PrincipalDTO auth )
+	public List<InepEvent> getEvents( PrincipalDTO auth )
 	{
 		return getEventSession( ).getAll( auth );
 	}
 
 	@Override
-	public List<InepSubscription> getAll( InepPackage event, String subs )
+	public List<InepSubscription> getAll( InepEvent event, String subs )
 	{
 		List<InepSubscription> list = Collections.emptyList( );
 

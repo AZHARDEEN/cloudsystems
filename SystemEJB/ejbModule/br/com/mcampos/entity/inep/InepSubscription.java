@@ -43,7 +43,7 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
 			@JoinColumn(
 					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ) } )
-	private InepPackage event;
+	private InepEvent event;
 
 	@Column( name = "isc_written_grade_nm" )
 	private BigDecimal writtenGrade;
@@ -78,12 +78,12 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 		this.id = id;
 	}
 
-	public InepPackage getEvent( )
+	public InepEvent getEvent( )
 	{
 		return event;
 	}
 
-	public void setEvent( InepPackage event )
+	public void setEvent( InepEvent event )
 	{
 		this.event = event;
 		if ( getEvent( ) != null ) {

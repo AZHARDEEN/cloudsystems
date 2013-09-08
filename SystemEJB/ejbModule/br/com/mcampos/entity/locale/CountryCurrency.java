@@ -15,10 +15,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
 @Entity
 @NamedQueries( { @NamedQuery( name = "CountryCurrency.findAll", query = "select o from CountryCurrency o" ) } )
-@Table( name = "\"country_currency\"" )
+@Table( name = "country_currency", schema = "public" )
 @IdClass( CountryCurrencyPK.class )
 public class CountryCurrency implements Serializable
 {
@@ -31,7 +30,6 @@ public class CountryCurrency implements Serializable
 	@Id
 	@Column( name = "cur_id_in", nullable = false, insertable = false, updatable = false )
 	private Integer id;
-
 
 	@Column( name = "ccr_from_dt" )
 	@Temporal( TemporalType.DATE )
@@ -48,88 +46,87 @@ public class CountryCurrency implements Serializable
 	@JoinColumn( name = "ctr_code_ch" )
 	private Country country;
 
-
 	@ManyToOne
 	@JoinColumn( name = "cur_id_in" )
 	private Currency currency;
 
-	public CountryCurrency()
+	public CountryCurrency( )
 	{
 	}
 
-	public Date getFromDate()
+	public Date getFromDate( )
 	{
-		return this.fromDate;
+		return fromDate;
 	}
 
 	public void setFromDate( Date ccr_from_dt )
 	{
-		this.fromDate = ccr_from_dt;
+		fromDate = ccr_from_dt;
 	}
 
-	public Boolean getIsMain()
+	public Boolean getIsMain( )
 	{
-		return this.isMain;
+		return isMain;
 	}
 
 	public void setIsMain( Boolean ccr_main_bt )
 	{
-		this.isMain = ccr_main_bt;
+		isMain = ccr_main_bt;
 	}
 
-	public Date getToDate()
+	public Date getToDate( )
 	{
-		return this.toDate;
+		return toDate;
 	}
 
 	public void setToDate( Date ccr_to_dt )
 	{
-		this.toDate = ccr_to_dt;
+		toDate = ccr_to_dt;
 	}
 
-	public String getCountryId()
+	public String getCountryId( )
 	{
-		return this.countryId;
+		return countryId;
 	}
 
 	public void setCountryId( String ctr_code_ch )
 	{
-		this.countryId = ctr_code_ch;
+		countryId = ctr_code_ch;
 	}
 
-	public Integer getId()
+	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( Integer cur_id_in )
 	{
-		this.id = cur_id_in;
+		id = cur_id_in;
 	}
 
-	public Country getCountry()
+	public Country getCountry( )
 	{
-		return this.country;
+		return country;
 	}
 
 	public void setCountry( Country country )
 	{
 		this.country = country;
 		if ( country != null ) {
-			this.countryId = country.getCode();
+			countryId = country.getId( );
 		}
 	}
 
-	public Currency getCurrency()
+	public Currency getCurrency( )
 	{
-		return this.currency;
+		return currency;
 	}
 
 	public void setCurrency( Currency currency )
 	{
 		this.currency = currency;
 		if ( currency != null ) {
-			this.id = currency.getId();
+			id = currency.getId( );
 		}
 	}
 }

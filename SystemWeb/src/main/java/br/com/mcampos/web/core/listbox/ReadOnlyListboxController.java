@@ -14,13 +14,14 @@ import org.zkoss.zul.Paging;
 import org.zkoss.zul.Window;
 import org.zkoss.zul.event.PagingEvent;
 
+import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.core.PagingSessionInterface;
 import br.com.mcampos.entity.security.AccessLog;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBController;
 
-public abstract class ReadOnlyListboxController<SESSION, ENTITY> extends BaseDBController<SESSION>
+public abstract class ReadOnlyListboxController<SESSION extends BaseSessionInterface, ENTITY> extends BaseDBController<SESSION>
 {
 	private static final long serialVersionUID = -5982064141322569509L;
 

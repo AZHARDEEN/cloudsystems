@@ -20,7 +20,7 @@ import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
 import br.com.mcampos.entity.inep.InepDistribution;
 import br.com.mcampos.entity.inep.InepMedia;
 import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepSubscription;
 import br.com.mcampos.entity.inep.InepSubscriptionPK;
@@ -136,7 +136,7 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 	}
 
 	@Override
-	public List<InepTest> getTests( InepPackage event )
+	public List<InepTest> getTests( InepEvent event )
 	{
 		if ( event == null ) {
 			return Collections.emptyList( );
@@ -145,7 +145,7 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 	}
 
 	@Override
-	public List<InepTest> getTestsWithVariance( InepPackage event )
+	public List<InepTest> getTestsWithVariance( InepEvent event )
 	{
 		if ( event == null ) {
 			return Collections.emptyList( );
@@ -172,7 +172,7 @@ public class InepTestSessionBean extends SimpleSessionBean<InepTest> implements 
 	}
 
 	@Override
-	public List<InepPackage> getAvailableEvents( )
+	public List<InepEvent> getAvailableEvents( )
 	{
 		return eventSession.getAvailable( );
 	}

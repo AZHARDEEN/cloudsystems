@@ -40,7 +40,7 @@ import br.com.mcampos.entity.inep.InepDistributionPK;
 import br.com.mcampos.entity.inep.InepMedia;
 import br.com.mcampos.entity.inep.InepOralDistribution;
 import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepSubscription;
 import br.com.mcampos.entity.inep.InepTask;
@@ -106,7 +106,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepTask> getTasks( InepPackage evt )
+	public List<InepTask> getTasks( InepEvent evt )
 	{
 		List<InepTask> list = taskSession.getAll( evt );
 		return list;
@@ -124,14 +124,14 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepPackage> getPackages( InepRevisor rev )
+	public List<InepEvent> getPackages( InepRevisor rev )
 	{
-		List<InepPackage> packages = Collections.emptyList( );
+		List<InepEvent> packages = Collections.emptyList( );
 		return packages;
 	}
 
 	@Override
-	public InepRevisor getRevisor( InepPackage event, PrincipalDTO auth )
+	public InepRevisor getRevisor( InepEvent event, PrincipalDTO auth )
 	{
 		if ( auth != null && event != null ) {
 			return getRevisorSession( ).get( event, auth );
@@ -315,7 +315,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepPackage> getEvents( PrincipalDTO auth )
+	public List<InepEvent> getEvents( PrincipalDTO auth )
 	{
 		if ( auth != null ) {
 			return taskSession.getEvents( auth );
@@ -455,7 +455,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepPackage event )
+	public List<InepAnaliticoCorrecao> getAnaliticoCorrecao( InepEvent event )
 	{
 		final long startTime = System.nanoTime( );
 		List<InepAnaliticoCorrecao> list = new ArrayList<InepAnaliticoCorrecao>( );
@@ -536,7 +536,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<BaseSubscriptionDTO> report( InepPackage event, Integer report )
+	public List<BaseSubscriptionDTO> report( InepEvent event, Integer report )
 	{
 		List<BaseSubscriptionDTO> list = Collections.emptyList( );
 		switch ( report )
@@ -556,7 +556,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		return list;
 	}
 
-	private List<BaseSubscriptionDTO> notasIndividuais( InepPackage event )
+	private List<BaseSubscriptionDTO> notasIndividuais( InepEvent event )
 	{
 		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
 		List<InepDistribution> dists = distributionSession.getAllforReport( event );
@@ -573,7 +573,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@SuppressWarnings( "unchecked" )
-	private List<BaseSubscriptionDTO> notasFinais( InepPackage event )
+	private List<BaseSubscriptionDTO> notasFinais( InepEvent event )
 	{
 		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
 		List<SubscriptionGradeView> dists;
@@ -600,7 +600,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		return list;
 	}
 
-	private List<BaseSubscriptionDTO> notaConsenso( InepPackage event )
+	private List<BaseSubscriptionDTO> notaConsenso( InepEvent event )
 	{
 		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
 		List<InepDistribution> dists = distributionSession.getVarianceForReport( event );
@@ -630,7 +630,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepAnaliticoCorrecao> getAnaliticoDivergencia( InepPackage event )
+	public List<InepAnaliticoCorrecao> getAnaliticoDivergencia( InepEvent event )
 	{
 		final long startTime = System.nanoTime( );
 		List<InepAnaliticoCorrecao> list = new ArrayList<InepAnaliticoCorrecao>( );
@@ -663,7 +663,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<Object[ ]> getWorkStatus( InepPackage event )
+	public List<Object[ ]> getWorkStatus( InepEvent event )
 	{
 		Query query = getEntityManager( ).createNamedQuery( InepDistribution.getWorkStatus );
 		query.setParameter( 1, event );
@@ -691,7 +691,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepSubscription> getSubscriptions( InepPackage event, String part )
+	public List<InepSubscription> getSubscriptions( InepEvent event, String part )
 	{
 		return subscriptionSession.getAll( event, part );
 	}
@@ -726,7 +726,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepRevisor> getOralTeam( InepPackage event )
+	public List<InepRevisor> getOralTeam( InepEvent event )
 	{
 		return findByNamedQuery( InepRevisor.getAllOralTeamByEvent, event.getId( ).getCompanyId( ), event.getId( ).getId( ) );
 	}
@@ -815,7 +815,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<Object[ ]> getSubscriptionStatus( InepPackage event )
+	public List<Object[ ]> getSubscriptionStatus( InepEvent event )
 	{
 		String sql;
 

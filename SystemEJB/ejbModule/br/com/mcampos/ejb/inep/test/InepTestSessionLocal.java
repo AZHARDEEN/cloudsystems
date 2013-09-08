@@ -4,23 +4,23 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepTask;
 import br.com.mcampos.entity.inep.InepTest;
 
 @Local
-public interface InepTestSessionLocal extends BaseSessionInterface<InepTest>
+public interface InepTestSessionLocal extends BaseCrudSessionInterface<InepTest>
 {
-	List<InepTest> getTests( InepPackage event );
+	List<InepTest> getTests( InepEvent event );
 
 	List<InepTest> getTests( InepTask task );
 
 	List<InepTest> getTests( InepRevisor revisor );
 
-	List<InepTest> getTestsWithVariance( InepPackage event );
+	List<InepTest> getTestsWithVariance( InepEvent event );
 
 	boolean insert( InepOralTest entity, boolean createSubscription );
 

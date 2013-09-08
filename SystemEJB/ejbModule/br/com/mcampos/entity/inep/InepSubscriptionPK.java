@@ -36,7 +36,7 @@ public class InepSubscriptionPK implements Serializable, Comparable<InepSubscrip
 		this.id = id;
 	}
 
-	public void set( InepPackage t )
+	public void set( InepEvent t )
 	{
 		setCompanyId( t.getId( ).getCompanyId( ) );
 		setEventId( t.getId( ).getId( ) );

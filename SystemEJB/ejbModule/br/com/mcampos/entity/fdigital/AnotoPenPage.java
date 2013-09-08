@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
  * 
  */
 @Entity
-@Table( name = "anoto_pen_page" )
+@Table( name = "anoto_pen_page", schema = "public" )
 @NamedQueries( {
 		@NamedQuery( name = AnotoPenPage.getFormPen,
 				query = "select distinct o.pen from AnotoPenPage o where o.page.pad.form = ?1 and o.toDate is null" ),

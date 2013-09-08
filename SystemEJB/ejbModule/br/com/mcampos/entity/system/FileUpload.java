@@ -20,7 +20,7 @@ import br.com.mcampos.sysutils.SysUtils;
  * 
  */
 @Entity
-@Table( name = "file_upload" )
+@Table( name = "file_upload", schema = "public" )
 @NamedQueries( {
 		@NamedQuery( name = FileUpload.getAllByCompany, query = "select o from FileUpload o where o.collaborator.company = ?1" ),
 } )

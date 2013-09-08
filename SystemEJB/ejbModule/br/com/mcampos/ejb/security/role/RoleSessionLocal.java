@@ -4,13 +4,13 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.entity.security.Role;
 import br.com.mcampos.entity.security.Task;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Local
-public interface RoleSessionLocal extends BaseSessionInterface<Role>
+public interface RoleSessionLocal extends BaseCrudSessionInterface<Role>
 {
 	Role getRootRole( );
 

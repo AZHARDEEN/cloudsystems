@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.entity.user.UserDocument;
 import br.com.mcampos.entity.user.Users;
 
 @Local
-public interface UserDocumentSessionLocal extends BaseSessionInterface<UserDocument>
+public interface UserDocumentSessionLocal extends BaseCrudSessionInterface<UserDocument>
 {
 	public Users getUserByDocument( String document );
 

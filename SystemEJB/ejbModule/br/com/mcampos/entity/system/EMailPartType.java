@@ -12,7 +12,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
  * 
  */
 @Entity
-@Table(name="e_mail_part_type")
+@Table( name = "e_mail_part_type", schema = "public" )
 public class EMailPartType extends SimpleTable<EMailPartType>
 {
 	private static final long serialVersionUID = 1L;
@@ -21,33 +21,38 @@ public class EMailPartType extends SimpleTable<EMailPartType>
 	public static final int partBody = 2;
 
 	@Id
-	@Column(name="emp_id_in")
+	@Column( name = "emp_id_in" )
 	private Integer id;
 
-	@Column(name="emp_description_ch")
+	@Column( name = "emp_description_ch" )
 	private String description;
 
-	public EMailPartType() {
+	public EMailPartType( )
+	{
 	}
 
 	@Override
-	public Integer getId() {
-		return this.id;
+	public Integer getId( )
+	{
+		return id;
 	}
 
 	@Override
-	public void setId(Integer empIdIn) {
-		this.id = empIdIn;
+	public void setId( Integer empIdIn )
+	{
+		id = empIdIn;
 	}
 
 	@Override
-	public String getDescription() {
-		return this.description;
+	public String getDescription( )
+	{
+		return description;
 	}
 
 	@Override
-	public void setDescription(String empDescriptionCh) {
-		this.description = empDescriptionCh;
+	public void setDescription( String empDescriptionCh )
+	{
+		description = empDescriptionCh;
 	}
 
 }

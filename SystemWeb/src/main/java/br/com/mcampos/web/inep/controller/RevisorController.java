@@ -28,7 +28,7 @@ import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.inep.CorretorDTO;
 import br.com.mcampos.ejb.inep.InepSession;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSession;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepTask;
 import br.com.mcampos.entity.user.UserDocument;
@@ -132,7 +132,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	public void onSelectEvent( Event evt )
 	{
 		Comboitem item = getComboEvent( ).getSelectedItem( );
-		loadComboTask( (InepPackage) item.getValue( ) );
+		loadComboTask( (InepEvent) item.getValue( ) );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -149,12 +149,12 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );
 		}
-		for ( InepPackage e : events ) {
+		for ( InepEvent e : events ) {
 			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
@@ -171,7 +171,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 		loadCombobox( );
 	}
 
-	private void loadComboTask( InepPackage event )
+	private void loadComboTask( InepEvent event )
 	{
 		List<InepTask> list = getSession( ).getTasks( event );
 
@@ -201,7 +201,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 		}
 		else if ( getComboEvent( ).getSelectedItem( ) != null )
 		{
-			list = getSession( ).getAll( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ) );
+			list = getSession( ).getAll( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ) );
 		}
 		getListbox( ).setModel( new ListModelList<InepRevisor>( list ) );
 	}
@@ -225,7 +225,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	private void loadRevisor( MediaDTO media )
 	{
 		Comboitem item = getComboEvent( ).getSelectedItem( );
-		InepPackage event = ( (InepPackage) item.getValue( ) );
+		InepEvent event = ( (InepEvent) item.getValue( ) );
 
 		try {
 
@@ -263,7 +263,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	public void distribute( Event evt )
 	{
 
-		List<InepTask> tasks = getInepSession( ).getTasks( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ) );
+		List<InepTask> tasks = getInepSession( ).getTasks( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ) );
 
 		for ( InepTask task : tasks ) {
 			logger.info( "Distributing task: " + task.getDescription( ) );

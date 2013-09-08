@@ -4,27 +4,27 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepTask;
 import br.com.mcampos.entity.user.Collaborator;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Local
-public interface InepRevisorSessionLocal extends BaseSessionInterface<InepRevisor>
+public interface InepRevisorSessionLocal extends BaseCrudSessionInterface<InepRevisor>
 {
-	public List<InepPackage> getEvents( PrincipalDTO auth );
+	public List<InepEvent> getEvents( PrincipalDTO auth );
 
-	public List<InepTask> getTasks( InepPackage event );
+	public List<InepTask> getTasks( InepEvent event );
 
-	public List<InepRevisor> getAll( InepPackage p );
+	public List<InepRevisor> getAll( InepEvent p );
 
 	public List<InepRevisor> getAll( InepTask p );
 
-	public InepRevisor get( InepPackage event, PrincipalDTO auth );
+	public InepRevisor get( InepEvent event, PrincipalDTO auth );
 
-	public InepRevisor get( InepPackage event, Collaborator c );
+	public InepRevisor get( InepEvent event, Collaborator c );
 
-	public List<InepRevisor> getOralCoordinator( InepPackage event );
+	public List<InepRevisor> getOralCoordinator( InepEvent event );
 }

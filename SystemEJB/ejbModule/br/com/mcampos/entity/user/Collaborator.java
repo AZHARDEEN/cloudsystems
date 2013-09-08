@@ -26,7 +26,7 @@ import br.com.mcampos.sysutils.SysUtils;
  * 
  */
 @Entity
-@Table( name = "collaborator" )
+@Table( name = "collaborator", schema = "public" )
 @NamedQueries( {
 		@NamedQuery( name = Collaborator.getAllCompanyCollaborator,
 				query = "select o from Collaborator o where o.company = ?1 and o.toDate is null" ),
@@ -75,7 +75,7 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 	private Company company;
 
 	@ManyToMany
-	@JoinTable( name = "collaborator_role", joinColumns = {
+	@JoinTable( name = "collaborator_role", schema = "public", joinColumns = {
 			@JoinColumn( name = "usr_id_in", nullable = false, referencedColumnName = "usr_id_in" ),
 			@JoinColumn( name = "col_seq_in", nullable = false, referencedColumnName = "col_seq_in" )
 	},

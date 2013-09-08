@@ -23,7 +23,7 @@ import br.com.mcampos.ejb.security.core.TaskRelationInterface;
  * 
  */
 @Entity
-@Table( name = "role" )
+@Table( name = "role", schema = "public" )
 public class Role implements Serializable, TaskRelationInterface, SelfRelationInterface<Role>
 {
 	private static final long serialVersionUID = 1L;
@@ -48,7 +48,7 @@ public class Role implements Serializable, TaskRelationInterface, SelfRelationIn
 	private List<Role> childs;
 
 	@ManyToMany
-	@JoinTable( name = "permission_assignment", joinColumns = { @JoinColumn( name = "rol_id_in", nullable = false ) },
+	@JoinTable( name = "permission_assignment", schema = "public", joinColumns = { @JoinColumn( name = "rol_id_in", nullable = false ) },
 			inverseJoinColumns = { @JoinColumn( name = "tsk_id_in", nullable = false ) } )
 	private List<Task> tasks;
 
@@ -64,17 +64,17 @@ public class Role implements Serializable, TaskRelationInterface, SelfRelationIn
 
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( Integer rolIdIn )
 	{
-		this.id = rolIdIn;
+		id = rolIdIn;
 	}
 
 	public Boolean getRolDefaultBt( )
 	{
-		return this.rolDefaultBt;
+		return rolDefaultBt;
 	}
 
 	public void setRolDefaultBt( Boolean rolDefaultBt )
@@ -84,17 +84,17 @@ public class Role implements Serializable, TaskRelationInterface, SelfRelationIn
 
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	public void setDescription( String rolDescriptionCh )
 	{
-		this.description = rolDescriptionCh;
+		description = rolDescriptionCh;
 	}
 
 	public Role getParent( )
 	{
-		return this.parent;
+		return parent;
 	}
 
 	/*
@@ -141,24 +141,24 @@ public class Role implements Serializable, TaskRelationInterface, SelfRelationIn
 
 	public List<Role> getChilds( )
 	{
-		if ( this.childs == null ) {
-			this.childs = new ArrayList<Role>( );
+		if ( childs == null ) {
+			childs = new ArrayList<Role>( );
 		}
-		return this.childs;
+		return childs;
 	}
 
 	public void setChilds( List<Role> roles )
 	{
-		this.childs = roles;
+		childs = roles;
 	}
 
 	@Override
 	public List<Task> getTasks( )
 	{
-		if ( this.tasks == null ) {
-			this.tasks = new ArrayList<Task>( );
+		if ( tasks == null ) {
+			tasks = new ArrayList<Task>( );
 		}
-		return this.tasks;
+		return tasks;
 	}
 
 	@Override

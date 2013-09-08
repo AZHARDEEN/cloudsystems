@@ -4,10 +4,12 @@ import org.zkforge.bwcaptcha.Captcha;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Textbox;
 
+import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.ReadOnlySessionInterface;
 import br.com.mcampos.ejb.security.LoginSession;
 import br.com.mcampos.sysutils.SysUtils;
 
-public abstract class BaseCaptchaDialogController<BEAN> extends BaseDialogController<BEAN>
+public abstract class BaseCaptchaDialogController<BEAN extends BaseSessionInterface> extends BaseDialogController<BEAN>
 {
 	private static final long serialVersionUID = 1420645161349142471L;
 
@@ -112,7 +114,11 @@ public abstract class BaseCaptchaDialogController<BEAN> extends BaseDialogContro
 			}
 		}
 		catch ( Exception e ) {
-			e.printStackTrace();
+			BEAN session = getSession( );
+			if ( session instanceof ReadOnlySessionInterface<?> ) {
+				ReadOnlySessionInterface<?> s = (ReadOnlySessionInterface<?>) session;
+				s.storeException( e );
+			}
 			return false;
 		}
 	}

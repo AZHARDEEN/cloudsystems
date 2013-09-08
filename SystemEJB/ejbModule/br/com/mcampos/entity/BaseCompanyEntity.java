@@ -7,10 +7,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import br.com.mcampos.ejb.core.BaseEntity;
 import br.com.mcampos.entity.user.Company;
 
 @MappedSuperclass
-public abstract class BaseCompanyEntity implements Serializable
+public abstract class BaseCompanyEntity implements BaseEntity, Serializable
 {
 	private static final long serialVersionUID = 5952185756919546022L;
 
@@ -18,9 +19,7 @@ public abstract class BaseCompanyEntity implements Serializable
 	@JoinColumn( name = "usr_id_in", insertable = false, updatable = false, nullable = false )
 	private Company company;
 
-	public abstract void setCompanyId( Integer id );
-
-	public abstract Integer getCompanyId( );
+	public abstract BaseCompanyPK getId( );
 
 	public BaseCompanyEntity( )
 	{
@@ -40,7 +39,12 @@ public abstract class BaseCompanyEntity implements Serializable
 	public void setCompany( Company company )
 	{
 		this.company = company;
-		setCompanyId( company != null ? company.getId( ) : null );
+		getId( ).setCompanyId( company != null ? company.getId( ) : null );
+	}
+
+	public Integer getCompanyId( )
+	{
+		return getId( ).getCompanyId( );
 	}
 
 }

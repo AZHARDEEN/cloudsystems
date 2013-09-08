@@ -6,14 +6,14 @@ import javax.ejb.Local;
 
 import org.omg.CORBA.portable.ApplicationException;
 
-import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.entity.security.Menu;
 import br.com.mcampos.entity.security.Role;
 import br.com.mcampos.entity.security.Task;
 import br.com.mcampos.entity.user.Collaborator;
 
 @Local
-public interface MenuFacadeLocal extends BaseSessionInterface<Menu>
+public interface MenuFacadeLocal extends BaseCrudSessionInterface<Menu>
 {
 	public List<Menu> getMenus( Collaborator auth ) throws ApplicationException;
 

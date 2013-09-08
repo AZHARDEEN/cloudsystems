@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
  * 
  */
 @Entity
-@Table( name = "media" )
+@Table( name = "media", schema = "public" )
 @NamedQueries( {
 		@NamedQuery( name = Media.getByName, query = "select o from Media o where o.name = ?1" ),
 } )

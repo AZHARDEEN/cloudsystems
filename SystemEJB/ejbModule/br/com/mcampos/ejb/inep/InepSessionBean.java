@@ -33,8 +33,8 @@ import br.com.mcampos.ejb.user.document.type.DocumentTypeSessionLocal;
 import br.com.mcampos.ejb.user.person.PersonSessionLocal;
 import br.com.mcampos.entity.inep.DistributionStatus;
 import br.com.mcampos.entity.inep.InepDistribution;
-import br.com.mcampos.entity.inep.InepPackage;
-import br.com.mcampos.entity.inep.InepPackagePK;
+import br.com.mcampos.entity.inep.InepEvent;
+import br.com.mcampos.entity.inep.InepEventPK;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepTask;
 import br.com.mcampos.entity.inep.InepTaskPK;
@@ -110,7 +110,7 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 			logger.warn( "Company is null" );
 			return false;
 		}
-		InepPackage event = packageSession.get( new InepPackagePK( company, dto.getEvento( ) ) );
+		InepEvent event = packageSession.get( new InepEventPK( company, dto.getEvento( ) ) );
 		if ( event == null ) {
 			logger.warn( "Event is null" );
 			return false;
@@ -127,8 +127,8 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 
 	private InepRevisor getRevisor( Collaborator col, CorretorDTO dto )
 	{
-		InepPackagePK key = new InepPackagePK( col.getCompany( ), dto.getEvento( ) );
-		InepPackage event = eventSession.get( key );
+		InepEventPK key = new InepEventPK( col.getCompany( ), dto.getEvento( ) );
+		InepEvent event = eventSession.get( key );
 		if ( event == null ) {
 			return null;
 		}
@@ -294,7 +294,7 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 	}
 
 	@Override
-	public List<InepTask> getTasks( InepPackage event )
+	public List<InepTask> getTasks( InepEvent event )
 	{
 		return taskSession.getAll( event );
 	}
@@ -339,7 +339,7 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 	}
 
 	@Override
-	public InepRevisor add( InepPackage event, Integer task, String name, String email, String cpf, Integer type )
+	public InepRevisor add( InepEvent event, Integer task, String name, String email, String cpf, Integer type )
 	{
 		Person person = null;
 

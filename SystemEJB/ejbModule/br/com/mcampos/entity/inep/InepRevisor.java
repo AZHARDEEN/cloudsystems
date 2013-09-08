@@ -63,7 +63,7 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
 			@JoinColumn(
 					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ) } )
-	private InepPackage event;
+	private InepEvent event;
 
 	@ManyToOne( fetch = FetchType.EAGER, optional = false )
 	@JoinColumns( {
@@ -94,7 +94,7 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 	{
 	}
 
-	public InepRevisor( Collaborator c, InepPackage e )
+	public InepRevisor( Collaborator c, InepEvent e )
 	{
 		getId( ).set( c );
 		getId( ).set( e );
@@ -224,12 +224,12 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 		this.type = type;
 	}
 
-	public InepPackage getEvent( )
+	public InepEvent getEvent( )
 	{
 		return event;
 	}
 
-	public void setEvent( InepPackage event )
+	public void setEvent( InepEvent event )
 	{
 		this.event = event;
 	}

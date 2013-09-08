@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import br.com.mcampos.entity.BaseCompanyPK;
 import br.com.mcampos.entity.user.Collaborator;
 import br.com.mcampos.entity.user.Company;
 
@@ -13,45 +14,32 @@ import br.com.mcampos.entity.user.Company;
  * 
  */
 @Embeddable
-public class InepPackagePK implements Serializable, Comparable<InepPackagePK>
+public class InepEventPK extends BaseCompanyPK implements Serializable, Comparable<InepEventPK>
 {
 	// default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column( name = "usr_id_in" )
-	private Integer companyId;
-
 	@Column( name = "pct_id_in" )
 	private Integer id;
 
-	public InepPackagePK( )
+	public InepEventPK( )
 	{
 	}
 
-	public InepPackagePK( Company c, Integer id )
+	public InepEventPK( Company c, Integer id )
 	{
 		setCompanyId( c.getId( ) );
 		setId( id );
 	}
 
-	public Integer getCompanyId( )
-	{
-		return this.companyId;
-	}
-
-	public void setCompanyId( Integer usrIdIn )
-	{
-		this.companyId = usrIdIn;
-	}
-
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( Integer pctIdIn )
 	{
-		this.id = pctIdIn;
+		id = pctIdIn;
 	}
 
 	public void setCompanyId( Collaborator auth )
@@ -65,12 +53,12 @@ public class InepPackagePK implements Serializable, Comparable<InepPackagePK>
 		if ( this == other ) {
 			return true;
 		}
-		if ( !( other instanceof InepPackagePK ) ) {
+		if ( !( other instanceof InepEventPK ) ) {
 			return false;
 		}
-		InepPackagePK castOther = (InepPackagePK) other;
-		return this.companyId.equals( castOther.companyId )
-				&& this.id.equals( castOther.id );
+		InepEventPK castOther = (InepEventPK) other;
+		return super.equals( castOther )
+				&& id.equals( castOther.id );
 
 	}
 
@@ -79,18 +67,18 @@ public class InepPackagePK implements Serializable, Comparable<InepPackagePK>
 	{
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.companyId.hashCode( );
-		hash = hash * prime + this.id.hashCode( );
+		hash = hash * prime + getCompanyId( ).hashCode( );
+		hash = hash * prime + id.hashCode( );
 
 		return hash;
 	}
 
 	@Override
-	public int compareTo( InepPackagePK o )
+	public int compareTo( InepEventPK o )
 	{
 		int nRet;
 
-		nRet = getCompanyId( ).compareTo( o.getCompanyId( ) );
+		nRet = super.compareTo( o );
 		if ( nRet == 0 ) {
 			nRet = getId( ).compareTo( o.getId( ) );
 		}

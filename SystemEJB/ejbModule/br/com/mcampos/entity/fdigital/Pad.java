@@ -24,7 +24,7 @@ import br.com.mcampos.sysutils.SysUtils;
  * 
  */
 @Entity
-@Table( name = "pad" )
+@Table( name = "pad", schema = "public" )
 public class Pad implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -58,10 +58,10 @@ public class Pad implements Serializable
 
 	public PadPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new PadPK( );
+		if ( id == null ) {
+			id = new PadPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( PadPK id )
@@ -71,45 +71,45 @@ public class Pad implements Serializable
 
 	public Date getInsertDate( )
 	{
-		return this.insertDate;
+		return insertDate;
 	}
 
 	public void setInsertDate( Date padInsertDt )
 	{
-		this.insertDate = padInsertDt;
+		insertDate = padInsertDt;
 	}
 
 	public Boolean getUnique( )
 	{
-		return this.unique;
+		return unique;
 	}
 
 	public void setUnique( Boolean padUniqueBt )
 	{
-		this.unique = padUniqueBt;
+		unique = padUniqueBt;
 	}
 
 	public List<AnotoPage> getPages( )
 	{
-		if ( this.pages == null ) {
-			this.pages = new ArrayList<AnotoPage>( );
+		if ( pages == null ) {
+			pages = new ArrayList<AnotoPage>( );
 		}
-		return this.pages;
+		return pages;
 	}
 
 	public void setPages( List<AnotoPage> anotoPages )
 	{
-		this.pages = anotoPages;
+		pages = anotoPages;
 	}
 
 	public AnotoForm getForm( )
 	{
-		return this.form;
+		return form;
 	}
 
 	public void setForm( AnotoForm anotoForm )
 	{
-		this.form = anotoForm;
+		form = anotoForm;
 		getId( ).setFormId( getForm( ) != null ? getForm( ).getId( ) : null );
 	}
 
@@ -118,7 +118,7 @@ public class Pad implements Serializable
 	 */
 	public Media getMedia( )
 	{
-		return this.media;
+		return media;
 	}
 
 	/**

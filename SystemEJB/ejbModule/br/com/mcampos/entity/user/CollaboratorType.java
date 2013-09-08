@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table( name = "collaborator_type" )
+@Table( name = "collaborator_type", schema = "public" )
 public class CollaboratorType implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -38,27 +38,27 @@ public class CollaboratorType implements Serializable
 
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( Integer cltIdIn )
 	{
-		this.id = cltIdIn;
+		id = cltIdIn;
 	}
 
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	public void setDescription( String cltDescriptionCh )
 	{
-		this.description = cltDescriptionCh;
+		description = cltDescriptionCh;
 	}
 
 	public Boolean getCltInheritRoleBt( )
 	{
-		return this.cltInheritRoleBt;
+		return cltInheritRoleBt;
 	}
 
 	public void setCltInheritRoleBt( Boolean cltInheritRoleBt )

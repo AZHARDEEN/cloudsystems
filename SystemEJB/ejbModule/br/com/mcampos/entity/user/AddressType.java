@@ -11,7 +11,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = "AddressType.findAll", query = "select o from AddressType o" ) } )
-@Table( name = "\"address_type\"" )
+@Table( name = "address_type", schema = "public" )
 public class AddressType extends SimpleTable<AddressType>
 {
 	private static final long serialVersionUID = 1596629990429494444L;
@@ -23,31 +23,31 @@ public class AddressType extends SimpleTable<AddressType>
 	@Column( name = "adt_id_in", nullable = false )
 	private Integer id;
 
-	public AddressType()
+	public AddressType( )
 	{
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
 	public void setDescription( String adt_description_ch )
 	{
-		this.description = adt_description_ch;
+		description = adt_description_ch;
 	}
 
 	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId( Integer adt_id_in )
 	{
-		this.id = adt_id_in;
+		id = adt_id_in;
 	}
 }

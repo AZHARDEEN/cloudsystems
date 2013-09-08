@@ -7,27 +7,28 @@ import javax.ejb.Remote;
 
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.inep.InepOralTeamDTO;
+import br.com.mcampos.ejb.core.BaseSessionInterface;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepOralDistribution;
 import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepPackage;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepSubscription;
 import br.com.mcampos.entity.system.Media;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
 @Remote
-public interface InepOralFacade
+public interface InepOralFacade extends BaseSessionInterface
 {
 
-	List<InepOralTest> getVarianceOralOnly( PrincipalDTO c, InepPackage pack );
+	List<InepOralTest> getVarianceOralOnly( PrincipalDTO c, InepEvent pack );
 
-	List<InepPackage> getEvents( PrincipalDTO auth );
+	List<InepEvent> getEvents( PrincipalDTO auth );
 
-	InepRevisor getRevisor( InepPackage event, PrincipalDTO auth );
+	InepRevisor getRevisor( InepEvent event, PrincipalDTO auth );
 
-	List<InepOralTeamDTO> getOralTeamToChoice( InepPackage event, PrincipalDTO auth );
+	List<InepOralTeamDTO> getOralTeamToChoice( InepEvent event, PrincipalDTO auth );
 
-	void distribute( InepPackage event, PrincipalDTO auth, InepRevisor r1, InepRevisor r2, Set<InepOralTest> tests );
+	void distribute( InepEvent event, PrincipalDTO auth, InepRevisor r1, InepRevisor r2, Set<InepOralTest> tests );
 
 	List<InepOralDistribution> getOralTests( InepRevisor revisor );
 

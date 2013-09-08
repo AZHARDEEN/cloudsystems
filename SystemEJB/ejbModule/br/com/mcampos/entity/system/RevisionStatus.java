@@ -12,7 +12,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
  * 
  */
 @Entity
-@Table( name = "revision_status" )
+@Table( name = "revision_status", schema = "public" )
 public class RevisionStatus extends SimpleTable<RevisionStatus>
 {
 	private static final long serialVersionUID = 1L;
@@ -31,25 +31,25 @@ public class RevisionStatus extends SimpleTable<RevisionStatus>
 	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId( Integer rstIdIn )
 	{
-		this.id = rstIdIn;
+		id = rstIdIn;
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
 	public void setDescription( String rstDescriptionCh )
 	{
-		this.description = rstDescriptionCh;
+		description = rstDescriptionCh;
 	}
 
 }

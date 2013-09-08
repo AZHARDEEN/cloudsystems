@@ -22,7 +22,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table( name = "task" )
+@Table( name = "task", schema = "public" )
 @NamedQueries( { @NamedQuery( name = Task.getTop, query = "select o from Task o where o.parent is null" ) } )
 public class Task implements Serializable, Comparable<Task>
 {
@@ -46,7 +46,7 @@ public class Task implements Serializable, Comparable<Task>
 	private List<Task> childs;
 
 	@ManyToMany
-	@JoinTable( name = "task_menu", joinColumns = { @JoinColumn( name = "tsk_id_in", nullable = false ) },
+	@JoinTable( name = "task_menu", schema = "public", joinColumns = { @JoinColumn( name = "tsk_id_in", nullable = false ) },
 			inverseJoinColumns = { @JoinColumn( name = "mnu_id_in", nullable = false ) } )
 	private List<Menu> menus;
 
@@ -59,30 +59,30 @@ public class Task implements Serializable, Comparable<Task>
 
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( Integer tskIdIn )
 	{
-		this.id = tskIdIn;
+		id = tskIdIn;
 	}
 
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	public void setDescription( String tskDescriptionCh )
 	{
-		this.description = tskDescriptionCh;
+		description = tskDescriptionCh;
 	}
 
 	public List<Menu> getMenus( )
 	{
-		if ( this.menus == null ) {
-			this.menus = new ArrayList<Menu>( );
+		if ( menus == null ) {
+			menus = new ArrayList<Menu>( );
 		}
-		return this.menus;
+		return menus;
 	}
 
 	public void setMenus( List<Menu> menus )
@@ -92,7 +92,7 @@ public class Task implements Serializable, Comparable<Task>
 
 	public Task getParent( )
 	{
-		return this.parent;
+		return parent;
 	}
 
 	public void setParent( Task parent )
@@ -102,10 +102,10 @@ public class Task implements Serializable, Comparable<Task>
 
 	public List<Task> getChilds( )
 	{
-		if ( this.childs == null ) {
-			this.childs = new ArrayList<Task>( );
+		if ( childs == null ) {
+			childs = new ArrayList<Task>( );
 		}
-		return this.childs;
+		return childs;
 	}
 
 	public void setChilds( List<Task> childs )
@@ -135,10 +135,10 @@ public class Task implements Serializable, Comparable<Task>
 
 	public List<Role> getRoles( )
 	{
-		if ( this.roles == null ) {
-			this.roles = new ArrayList<Role>( );
+		if ( roles == null ) {
+			roles = new ArrayList<Role>( );
 		}
-		return this.roles;
+		return roles;
 	}
 
 	public void setRoles( List<Role> roles )

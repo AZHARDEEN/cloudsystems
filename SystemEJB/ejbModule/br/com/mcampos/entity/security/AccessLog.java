@@ -1,6 +1,5 @@
 package br.com.mcampos.entity.security;
 
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -21,11 +20,13 @@ import br.com.mcampos.ejb.core.BasicEntityRenderer;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.utils.dto.CredentialDTO;
 
-
 @Entity
-@NamedQueries( { @NamedQuery( name = "AccessLog.findAll", query = "select o from AccessLog o" ),
-	@NamedQuery( name = AccessLog.getLastLogin, query = "select o from AccessLog o where o.user = :user and o.loginDate = ( select max (l.loginDate) from AccessLog l where l.user = :user1 ) " ) } )
-@Table( name = "\"access_log\"" )
+@NamedQueries( {
+		@NamedQuery( name = "AccessLog.findAll", query = "select o from AccessLog o" ),
+		@NamedQuery(
+				name = AccessLog.getLastLogin,
+				query = "select o from AccessLog o where o.user = :user and o.loginDate = ( select max (l.loginDate) from AccessLog l where l.user = :user1 ) " ) } )
+@Table( name = "access_log", schema = "public" )
 public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, Comparable<AccessLog>
 {
 	private static final long serialVersionUID = -4575942676953543576L;
@@ -67,7 +68,7 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 	@JoinColumn( name = "usr_id_in", insertable = true, updatable = true, nullable = false )
 	private Login user;
 
-	public AccessLog()
+	public AccessLog( )
 	{
 	}
 
@@ -81,20 +82,19 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 		}
 	}
 
-
-	public AccessLogType getType()
+	public AccessLogType getType( )
 	{
-		return this.type;
+		return type;
 	}
 
 	public void setType( AccessLogType altId )
 	{
-		this.type = altId;
+		type = altId;
 	}
 
-	public String getComputer()
+	public String getComputer( )
 	{
-		return this.computer;
+		return computer;
 	}
 
 	public void setComputer( String computer )
@@ -102,9 +102,9 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 		this.computer = computer;
 	}
 
-	public Integer getId()
+	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	public void setId( Integer id )
@@ -112,9 +112,9 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 		this.id = id;
 	}
 
-	public String getIp()
+	public String getIp( )
 	{
-		return this.ip;
+		return ip;
 	}
 
 	public void setIp( String ip )
@@ -122,12 +122,12 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 		this.ip = ip;
 	}
 
-	public Timestamp getLoginDate()
+	public Timestamp getLoginDate( )
 	{
-		if ( this.loginDate == null ) {
-			this.loginDate = new Timestamp( ( new Date() ).getTime() );
+		if ( loginDate == null ) {
+			loginDate = new Timestamp( ( new Date( ) ).getTime( ) );
 		}
-		return this.loginDate;
+		return loginDate;
 	}
 
 	public void setLoginDate( Timestamp loginDate )
@@ -135,9 +135,9 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 		this.loginDate = loginDate;
 	}
 
-	public String getObs()
+	public String getObs( )
 	{
-		return this.obs;
+		return obs;
 	}
 
 	public void setObs( String obs )
@@ -145,9 +145,9 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 		this.obs = obs;
 	}
 
-	public String getProgram()
+	public String getProgram( )
 	{
-		return this.program;
+		return program;
 	}
 
 	public void setProgram( String program )
@@ -155,9 +155,9 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 		this.program = program;
 	}
 
-	public String getSessionId()
+	public String getSessionId( )
 	{
-		return this.sessionId;
+		return sessionId;
 	}
 
 	public void setSessionId( String sessionId )
@@ -165,9 +165,9 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 		this.sessionId = sessionId;
 	}
 
-	public String getToken()
+	public String getToken( )
 	{
-		return this.token;
+		return token;
 	}
 
 	public void setToken( String token )
@@ -175,14 +175,14 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 		this.token = token;
 	}
 
-	public Login getUser()
+	public Login getUser( )
 	{
-		return this.user;
+		return user;
 	}
 
 	public void setUser( Login login )
 	{
-		this.user = login;
+		user = login;
 	}
 
 	@Override
@@ -190,13 +190,13 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 	{
 		switch ( field ) {
 		case 0:
-			return SysUtils.formatDate( getLoginDate() );
+			return SysUtils.formatDate( getLoginDate( ) );
 		case 1:
-			return getIp();
+			return getIp( );
 		case 2:
-			return getType().getDescription();
+			return getType( ).getDescription( );
 		case 3:
-			return getUser().getPerson().getName();
+			return getUser( ).getPerson( ).getName( );
 		}
 		return null;
 	}
@@ -206,13 +206,13 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 	{
 		switch ( field ) {
 		case 0:
-			return getLoginDate().compareTo( object.getLoginDate() );
+			return getLoginDate( ).compareTo( object.getLoginDate( ) );
 		case 1:
-			return getIp().compareTo( object.getIp() );
+			return getIp( ).compareTo( object.getIp( ) );
 		case 2:
-			return getType().getDescription().compareTo( object.getType().getDescription() );
+			return getType( ).getDescription( ).compareTo( object.getType( ).getDescription( ) );
 		case 3:
-			return getUser().getPerson().getName().compareTo( object.getUser().getPerson().getName() );
+			return getUser( ).getPerson( ).getName( ).compareTo( object.getUser( ).getPerson( ).getName( ) );
 		}
 		return 0;
 	}
@@ -220,6 +220,6 @@ public class AccessLog implements Serializable, BasicEntityRenderer<AccessLog>, 
 	@Override
 	public int compareTo( AccessLog o )
 	{
-		return getId().compareTo( o.getId() );
+		return getId( ).compareTo( o.getId( ) );
 	}
 }

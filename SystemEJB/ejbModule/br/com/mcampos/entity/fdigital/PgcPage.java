@@ -18,7 +18,7 @@ import br.com.mcampos.entity.system.RevisionStatus;
  * 
  */
 @Entity
-@Table( name = "pgc_page" )
+@Table( name = "pgc_page", schema = "public" )
 public class PgcPage implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -62,10 +62,10 @@ public class PgcPage implements Serializable
 
 	public PgcPagePK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new PgcPagePK( );
+		if ( id == null ) {
+			id = new PgcPagePK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( PgcPagePK id )
@@ -75,7 +75,7 @@ public class PgcPage implements Serializable
 
 	public List<PgcField> getPgcFields( )
 	{
-		return this.pgcFields;
+		return pgcFields;
 	}
 
 	public void setPgcFields( List<PgcField> pgcFields )
@@ -85,7 +85,7 @@ public class PgcPage implements Serializable
 
 	public AnotoPage getAnotoPage( )
 	{
-		return this.anotoPage;
+		return anotoPage;
 	}
 
 	public void setAnotoPage( AnotoPage anotoPage )
@@ -95,7 +95,7 @@ public class PgcPage implements Serializable
 
 	public Pgc getPgc( )
 	{
-		return this.pgc;
+		return pgc;
 	}
 
 	public void setPgc( Pgc pgc )
@@ -106,7 +106,7 @@ public class PgcPage implements Serializable
 
 	public List<PgcPageAttachment> getPgcPageAttachments( )
 	{
-		return this.pgcPageAttachments;
+		return pgcPageAttachments;
 	}
 
 	public void setPgcPageAttachments( List<PgcPageAttachment> pgcPageAttachments )
@@ -116,7 +116,7 @@ public class PgcPage implements Serializable
 
 	public List<PgcProcessedImage> getPgcProcessedImages( )
 	{
-		return this.pgcProcessedImages;
+		return pgcProcessedImages;
 	}
 
 	public void setPgcProcessedImages( List<PgcProcessedImage> pgcProcessedImages )
@@ -126,7 +126,7 @@ public class PgcPage implements Serializable
 
 	public RevisionStatus getRevisionStatus( )
 	{
-		return this.revisionStatus;
+		return revisionStatus;
 	}
 
 	public void setRevisionStatus( RevisionStatus revisionStatus )

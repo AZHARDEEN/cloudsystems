@@ -18,6 +18,9 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zk.ui.metainfo.PageDefinition;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -38,7 +41,10 @@ import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.utils.dto.CredentialDTO;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.event.IDialogEvent;
+import br.com.mcampos.web.core.report.JasperReportController;
+import br.com.mcampos.web.core.report.ReportItem;
 import br.com.mcampos.web.locator.ServiceLocator;
+import br.com.mcampos.zkutils.ReportEvent;
 
 public abstract class BaseController<T extends Component> extends SelectorComposer<T> implements ISessionParameter, CookieInterface
 {
@@ -529,6 +535,36 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		}
 		else
 			return null;
+	}
+
+	protected void subscribeOnReport( )
+	{
+		EventQueues.lookup( ReportEvent.queueName ).subscribe( new EventListener<Event>( )
+		{
+			@Override
+			public void onEvent( Event evt )
+			{
+				if ( evt != null && evt instanceof ReportEvent ) {
+					evt.stopPropagation( );
+					try {
+						ReportEvent reportEvent = (ReportEvent) evt;
+						onReport( reportEvent.getItem( ) );
+					}
+					catch ( Exception e ) {
+						e.printStackTrace( );
+						e = null;
+					}
+				}
+			}
+		} );
+
+	}
+
+	protected void onReport( ReportItem item )
+	{
+		Map<String, Object> params = new HashMap<String, Object>( );
+		params.put( JasperReportController.paramName, item );
+		gotoPage( "/private/report.zul", null, params, true );
 	}
 
 }

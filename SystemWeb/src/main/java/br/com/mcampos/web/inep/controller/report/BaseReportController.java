@@ -6,8 +6,8 @@ import java.util.Map;
 import net.sf.jasperreports.engine.JRException;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Combobox;
@@ -17,17 +17,16 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.team.TeamSession;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepTask;
 import br.com.mcampos.entity.security.LoginProperty;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseDBLoggedController;
 import br.com.mcampos.web.core.ComboboxUtils;
-import br.com.mcampos.web.core.report.JDBCReportServlet;
-import br.com.mcampos.web.core.report.JasperReportController;
 import br.com.mcampos.web.core.report.ReportItem;
 import br.com.mcampos.web.core.report.ReportListRenderer;
+import br.com.mcampos.zkutils.ReportEvent;
 
 public abstract class BaseReportController extends BaseDBLoggedController<TeamSession>
 {
@@ -111,8 +110,11 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 
 	private void doReport( ReportItem item ) throws JRException
 	{
+		/*
 		pushSessionParameter( JasperReportController.paramName, item );
 		Executions.getCurrent( ).sendRedirect( JDBCReportServlet.reportUrl, "_blank" );
+		*/
+		EventQueues.lookup( ReportEvent.queueName, true ).publish( new ReportEvent( item ) );
 	}
 
 	@Override
@@ -147,7 +149,7 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 	{
 		Map<String, Object> params = super.configReportParams( );
 
-		InepPackage event = (InepPackage) ( getComboEvent( ).getSelectedItem( ).getValue( ) );
+		InepEvent event = (InepEvent) ( getComboEvent( ).getSelectedItem( ).getValue( ) );
 		if ( event != null ) {
 			params.put( "EVENT_ID", event.getId( ).getId( ) );
 		}
@@ -179,8 +181,10 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 	public InepRevisor getRevisor( )
 	{
 		if ( revisor == null ) {
-			revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
-					getPrincipal( ) );
+			if ( getComboEvent( ).getSelectedItem( ) != null ) {
+				revisor = getSession( ).getRevisor( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ),
+						getPrincipal( ) );
+			}
 		}
 		return revisor;
 	}
@@ -198,12 +202,12 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );
 		}
-		for ( InepPackage e : events ) {
+		for ( InepEvent e : events ) {
 			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
@@ -213,7 +217,7 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 		}
 	}
 
-	private void loadTasks( InepPackage event )
+	private void loadTasks( InepEvent event )
 	{
 
 		if ( getRevisor( ) == null ) {
@@ -266,7 +270,7 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 	{
 		Comboitem item = comboEvent.getSelectedItem( );
 		if ( item != null ) {
-			loadTasks( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ) );
+			loadTasks( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ) );
 		}
 		if ( evt != null ) {
 			evt.stopPropagation( );

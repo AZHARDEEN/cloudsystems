@@ -1,6 +1,5 @@
 package br.com.mcampos.entity.user;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,9 +7,8 @@ import javax.persistence.Table;
 
 import br.com.mcampos.ejb.core.SimpleTable;
 
-
 @Entity
-@Table( name = "user_type" )
+@Table( name = "user_type", schema = "public" )
 public class UserType extends SimpleTable<UserType>
 {
 	private static final long serialVersionUID = 3293779834666426061L;
@@ -24,44 +22,43 @@ public class UserType extends SimpleTable<UserType>
 	@Column( name = "ust_id_in", nullable = false )
 	private String id;
 
-
 	@Override
-	public String getDescription()
+	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
 	public void setDescription( String ust_description_ch )
 	{
-		this.description = ust_description_ch;
+		description = ust_description_ch;
 	}
 
 	@Override
-	public Integer getId()
+	public Integer getId( )
 	{
-		return Integer.parseInt( this.id );
+		return Integer.parseInt( id );
 	}
 
 	@Override
 	public void setId( Integer id )
 	{
-		this.id = id.toString();
+		this.id = id.toString( );
 	}
 
 	@Override
-	public String toString()
+	public String toString( )
 	{
-		StringBuffer buffer = new StringBuffer();
-		buffer.append( getClass().getName() + "@" + Integer.toHexString( hashCode() ) );
+		StringBuffer buffer = new StringBuffer( );
+		buffer.append( getClass( ).getName( ) + "@" + Integer.toHexString( hashCode( ) ) );
 		buffer.append( '[' );
 		buffer.append( "ust_description_ch=" );
-		buffer.append( getDescription() );
+		buffer.append( getDescription( ) );
 		buffer.append( ',' );
 		buffer.append( "ust_id_in=" );
-		buffer.append( getId() );
+		buffer.append( getId( ) );
 		buffer.append( ']' );
-		return buffer.toString();
+		return buffer.toString( );
 	}
 
 }

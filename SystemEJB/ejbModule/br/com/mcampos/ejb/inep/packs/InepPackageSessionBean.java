@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.inep.packs;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import br.com.mcampos.ejb.core.CollaboratorBaseSessionBean;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepTask;
 import br.com.mcampos.entity.user.Company;
 import br.com.mcampos.utils.dto.PrincipalDTO;
@@ -22,7 +23,7 @@ import br.com.mcampos.utils.dto.PrincipalDTO;
  */
 @Stateless( name = "InepPackageSession", mappedName = "InepPackageSession" )
 @LocalBean
-public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepPackage> implements InepPackageSession,
+public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEvent> implements InepPackageSession,
 		InepPackageSessionLocal
 {
 	@EJB
@@ -32,25 +33,25 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepPack
 	private CompanySessionLocal companySession;
 
 	@Override
-	protected Class<InepPackage> getEntityClass( )
+	protected Class<InepEvent> getEntityClass( )
 	{
-		return InepPackage.class;
+		return InepEvent.class;
 	}
 
 	@Override
-	public List<InepPackage> getAll( PrincipalDTO auth )
+	public List<InepEvent> getAll( PrincipalDTO auth )
 	{
 		return getAll( auth, null );
 	}
 
 	@Override
-	public List<InepPackage> getAll( PrincipalDTO c, DBPaging page )
+	public List<InepEvent> getAll( PrincipalDTO c, DBPaging page )
 	{
 		if ( c == null ) {
 			return Collections.emptyList( );
 		}
 		Company company = companySession.get( c.getCompanyID( ) );
-		return findByNamedQuery( InepPackage.getAll, page, company );
+		return findByNamedQuery( InepEvent.getAll, page, company );
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepPack
 			return 0;
 		}
 		Query query = getEntityManager( ).createQuery(
-				"select max( o.id.id ) + 1 from InepPackage o where o.company = ?1" );
+				"select max( o.id.id ) + 1 from InepEvent o where o.company = ?1" );
 		query.setParameter( 1, companySession.get( c.getCompanyID( ) ) );
 		Integer id;
 		try {
@@ -76,22 +77,38 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepPack
 	}
 
 	@Override
-	public List<InepPackage> getAvailable( )
+	public List<InepEvent> getAvailable( )
 	{
-		return findByNamedQuery( InepPackage.getAllAvailable );
+		return findByNamedQuery( InepEvent.getAllAvailable );
 	}
 
-	@Override
-	public InepPackage merge( InepPackage newEntity )
+	private void createTasks( PrincipalDTO auth, InepEvent newEntity )
 	{
-		newEntity = super.merge( newEntity );
 		for ( int i = 1; i <= 4; i++ ) {
 			InepTask task = new InepTask( newEntity );
 			task.getId( ).setId( i );
 			task.setDescription( "Tarefa " + i );
-			taskSession.merge( task );
+			taskSession.add( auth, task );
 		}
+	}
+
+	@Override
+	public InepEvent add( PrincipalDTO auth, InepEvent newEntity )
+	{
+		newEntity = super.add( auth, newEntity );
+		createTasks( auth, newEntity );
 		return newEntity;
+	}
+
+	@Override
+	public InepEvent remove( PrincipalDTO auth, Serializable key )
+	{
+		InepEvent event = get( key );
+		if ( event != null ) {
+			taskSession.remove( event );
+			return super.remove( auth, key );
+		}
+		return null;
 	}
 
 }

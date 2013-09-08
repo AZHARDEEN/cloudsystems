@@ -25,7 +25,7 @@ import br.com.mcampos.entity.system.Media;
  * 
  */
 @Entity
-@Table( name = "menu" )
+@Table( name = "menu", schema = "public" )
 @NamedQueries( { @NamedQuery( name = Menu.getTopMenu, query = "select o from Menu o where o.parent is null" ),
 		@NamedQuery( name = Menu.getByUrl, query = "select o from Menu o where o.url = ?1" ) } )
 public class Menu implements Serializable, TaskRelationInterface, SelfRelationInterface<Menu>, Comparable<Menu>

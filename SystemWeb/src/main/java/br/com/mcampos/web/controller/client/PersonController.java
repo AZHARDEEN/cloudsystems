@@ -33,7 +33,7 @@ public class PersonController extends BasePersonController<ClientSession>
 	protected void show( Person person )
 	{
 		super.show( person );
-		if( person != null ) {
+		if ( person != null ) {
 			getCurrentClient( ).setClient( person );
 		}
 	}
@@ -51,14 +51,14 @@ public class PersonController extends BasePersonController<ClientSession>
 	@Override
 	protected Client update( Client client )
 	{
-		if( client == null ) {
+		if ( client == null ) {
 			return null;
 		}
-		if( validate( client.getClient( ) ) ) {
+		if ( validate( client.getClient( ) ) ) {
 			updatePerson( (Person) client.getClient( ) );
 			client = getSession( ).addNewPerson( getPrincipal( ), client );
 			int nIndex = getModel( ).indexOf( client );
-			if( nIndex >= 0 ) {
+			if ( nIndex >= 0 ) {
 				getModel( ).set( nIndex, client );
 			}
 			else {
@@ -75,7 +75,7 @@ public class PersonController extends BasePersonController<ClientSession>
 		setCurrentClient( client );
 		Person person = (Person) getSession( ).getUser( getPrincipal( ), client.getClient( ).getId( ) );
 		show( person );
-		if( SysUtils.isEmpty( getCpf( ).getValue( ) ) ) {
+		if ( SysUtils.isEmpty( getCpf( ).getValue( ) ) ) {
 			getCpf( ).setFocus( true );
 		}
 		else {
@@ -134,7 +134,7 @@ public class PersonController extends BasePersonController<ClientSession>
 			getSession( ).remove( getPrincipal( ), client.getId( ) );
 			return true;
 		}
-		catch( Exception e )
+		catch ( Exception e )
 		{
 			e.printStackTrace( );
 			return false;

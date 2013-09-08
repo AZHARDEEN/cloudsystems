@@ -10,6 +10,7 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.entity.user.Person;
 import br.com.mcampos.entity.user.UserDocument;
 import br.com.mcampos.sysutils.CPF;
@@ -20,7 +21,7 @@ import br.com.mcampos.web.core.combobox.GenderCombobox;
 import br.com.mcampos.web.core.combobox.StateCombobox;
 import br.com.mcampos.web.core.combobox.TitleCombobox;
 
-public abstract class BasePersonController<T> extends UserController<T>
+public abstract class BasePersonController<T extends BaseSessionInterface> extends UserController<T>
 {
 	private static final long serialVersionUID = -5360682636302384214L;
 	private static final Logger logger = LoggerFactory.getLogger( BasePersonController.class );
@@ -50,7 +51,7 @@ public abstract class BasePersonController<T> extends UserController<T>
 	protected void show( Person person )
 	{
 		super.show( person );
-		if( person != null ) {
+		if ( person != null ) {
 			getGender( ).find( person.getGender( ) );
 			getTitle( ).find( person.getTitle( ) );
 			getMaritalStatus( ).find( person.getCivilState( ) );
@@ -58,7 +59,7 @@ public abstract class BasePersonController<T> extends UserController<T>
 			getMotherName( ).setValue( person.getMotherName( ) );
 			getNickName( ).setValue( person.getNickName( ) );
 			showCPF( person.getDocuments( ) );
-			if( person.getBornCity( ) != null ) {
+			if ( person.getBornCity( ) != null ) {
 				getBornState( ).find( person.getBornCity( ).getState( ) );
 				getBornCity( ).find( person.getBornCity( ) );
 			}
@@ -129,8 +130,8 @@ public abstract class BasePersonController<T> extends UserController<T>
 	protected void showCPF( List<UserDocument> docs )
 	{
 		this.cpf.setValue( "" );
-		for( UserDocument doc : docs ) {
-			if( doc.getType( ).getId( ).equals( UserDocument.typeCPF ) ) {
+		for ( UserDocument doc : docs ) {
+			if ( doc.getType( ).getId( ).equals( UserDocument.typeCPF ) ) {
 				this.cpf.setValue( doc.getCode( ) );
 				break;
 			}
@@ -139,16 +140,16 @@ public abstract class BasePersonController<T> extends UserController<T>
 
 	protected boolean validate( Person person )
 	{
-		if( super.validate( person ) ) {
-			if( SysUtils.isEmpty( getName( ).getValue( ) ) ) {
+		if ( super.validate( person ) ) {
+			if ( SysUtils.isEmpty( getName( ).getValue( ) ) ) {
 				showErrorMessage( "O nome deve estar prenchido", "Cadastro de Pessoas" );
 				return false;
 			}
-			if( SysUtils.isEmpty( getCpf( ).getValue( ) ) ) {
+			if ( SysUtils.isEmpty( getCpf( ).getValue( ) ) ) {
 				showErrorMessage( "O cpf deve estar preenchido", "Cadastro de Pessoas" );
 				return false;
 			}
-			else if( CPF.isValid( getCpf( ).getValue( ) ) == false ) {
+			else if ( CPF.isValid( getCpf( ).getValue( ) ) == false ) {
 				showErrorMessage( "O cpf deve está inválido", "Cadastro de Pessoas" );
 				return false;
 			}
@@ -158,7 +159,7 @@ public abstract class BasePersonController<T> extends UserController<T>
 
 	protected void updatePerson( Person person )
 	{
-		if( person == null ) {
+		if ( person == null ) {
 			return;
 		}
 		super.update( person );
@@ -175,18 +176,18 @@ public abstract class BasePersonController<T> extends UserController<T>
 	public void onBlur( Event evt )
 	{
 		String doc = this.cpf.getValue( );
-		if( SysUtils.isEmpty( doc ) ) {
+		if ( SysUtils.isEmpty( doc ) ) {
 			return;
 		}
 		Person person = getPerson( CPF.removeMask( doc ) );
-		if( person == null ) {
+		if ( person == null ) {
 			this.cpf.setValue( doc );
 			addDocument( CPF.removeMask( doc ), getDocumentType( UserDocument.typeCPF ) );
 		}
 		else {
 			show( person );
 		}
-		if( evt != null ) {
+		if ( evt != null ) {
 			logger.info( "onBlur: " + evt.getTarget( ).getId( ) );
 			evt.stopPropagation( );
 		}

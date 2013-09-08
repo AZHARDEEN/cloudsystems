@@ -124,6 +124,13 @@
     <class>br.com.mcampos.entity.product.ProductType</class>
     <class>br.com.mcampos.entity.product.Category</class>
     <class>br.com.mcampos.entity.product.CategoryPK</class>
+    <class>br.com.mcampos.entity.system.LogProgramException</class>
+    <class>br.com.mcampos.entity.product.Product</class>
+    <class>br.com.mcampos.entity.product.ProductPK</class>
+    <class>br.com.mcampos.entity.product.Price</class>
+    <class>br.com.mcampos.entity.product.PricePK</class>
+    <class>br.com.mcampos.entity.product.ProductKeyword</class>
+    <class>br.com.mcampos.entity.product.ProductKeywordPK</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

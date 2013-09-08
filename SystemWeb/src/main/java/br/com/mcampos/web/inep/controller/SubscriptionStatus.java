@@ -28,7 +28,7 @@ import br.com.mcampos.ejb.inep.team.TeamSession;
 import br.com.mcampos.entity.inep.InepDistribution;
 import br.com.mcampos.entity.inep.InepOralDistribution;
 import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.entity.inep.InepRevisor;
 import br.com.mcampos.entity.inep.InepSubscription;
 import br.com.mcampos.entity.inep.InepTask;
@@ -123,18 +123,18 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 
 	private void loadCombobox( )
 	{
-		List<InepPackage> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
 
 		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
 			getComboEvent( ).getItems( ).clear( );
 		}
-		for ( InepPackage e : events ) {
+		for ( InepEvent e : events ) {
 			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
 		if ( getComboEvent( ).getItemCount( ) > 0 ) {
 			getComboEvent( ).setSelectedIndex( 0 );
-			InepPackage event = getComboEvent( ).getSelectedItem( ).getValue( );
+			InepEvent event = getComboEvent( ).getSelectedItem( ).getValue( );
 			loadComboboxTask( event );
 			ListModelList<InepTask> tasks = new ListModelList<InepTask>( getSession( ).getTasks( event ) );
 			tasks.setMultiple( true );
@@ -142,7 +142,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		}
 	}
 
-	private void loadComboboxTask( InepPackage event )
+	private void loadComboboxTask( InepEvent event )
 	{
 		List<InepTask> events = getSession( ).getTasks( event );
 
@@ -201,7 +201,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		if ( getComboEvent( ).getSelectedItem( ) == null ) {
 			return false;
 		}
-		InepPackage event = getComboEvent( ).getSelectedItem( ).getValue( );
+		InepEvent event = getComboEvent( ).getSelectedItem( ).getValue( );
 		if ( event == null ) {
 			return false;
 		}
@@ -316,7 +316,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	{
 		if ( revisor == null ) {
 			if ( getComboEvent( ).getSelectedItem( ) != null ) {
-				revisor = getSession( ).getRevisor( (InepPackage) getComboEvent( ).getSelectedItem( ).getValue( ),
+				revisor = getSession( ).getRevisor( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ),
 						getPrincipal( ) );
 			}
 		}

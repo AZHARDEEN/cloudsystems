@@ -81,7 +81,7 @@ public abstract class BaseCompanySessionBean<T extends BaseCompanyEntity> extend
 			whereClause = "t.id.companyId = " + auth.getCompanyID( );
 		}
 		else {
-			whereClause = whereClause + " t.id.companyId = " + auth.getCompanyID( );
+			whereClause = whereClause + " AND t.id.companyId = " + auth.getCompanyID( );
 		}
 		return super.getAllQuery( auth, whereClause );
 	}

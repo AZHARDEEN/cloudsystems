@@ -12,57 +12,70 @@ import br.com.mcampos.ejb.core.SimpleTable;
  * 
  */
 @Entity
-@Table(name="contact_type")
+@Table( name = "contact_type", schema = "public" )
 public class ContactType extends SimpleTable<ContactType>
 {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="cct_id_in")
+	@Column( name = "cct_id_in" )
 	private Integer id;
 
-	@Column(name="cct_allow_duplicate_bt")
+	@Column( name = "cct_allow_duplicate_bt" )
 	private Boolean duplicate;
 
-	@Column(name="cct_description_ch")
+	@Column( name = "cct_description_ch" )
 	private String description;
 
-	@Column(name="cct_mask_ch")
+	@Column( name = "cct_mask_ch" )
 	private String mask;
 
-	public ContactType() {
+	public ContactType( )
+	{
 	}
 
-	public Integer getId() {
-		return this.id;
+	@Override
+	public Integer getId( )
+	{
+		return id;
 	}
 
-	public void setId(Integer cctIdIn) {
-		this.id = cctIdIn;
+	@Override
+	public void setId( Integer cctIdIn )
+	{
+		id = cctIdIn;
 	}
 
-	public Boolean getDuplicate() {
-		return this.duplicate;
+	public Boolean getDuplicate( )
+	{
+		return duplicate;
 	}
 
-	public void setDuplicate(Boolean cctAllowDuplicateBt) {
-		this.duplicate = cctAllowDuplicateBt;
+	public void setDuplicate( Boolean cctAllowDuplicateBt )
+	{
+		duplicate = cctAllowDuplicateBt;
 	}
 
-	public String getDescription() {
-		return this.description;
+	@Override
+	public String getDescription( )
+	{
+		return description;
 	}
 
-	public void setDescription(String cctDescriptionCh) {
-		this.description = cctDescriptionCh;
+	@Override
+	public void setDescription( String cctDescriptionCh )
+	{
+		description = cctDescriptionCh;
 	}
 
-	public String getMask() {
-		return this.mask;
+	public String getMask( )
+	{
+		return mask;
 	}
 
-	public void setMask(String cctMaskCh) {
-		this.mask = cctMaskCh;
+	public void setMask( String cctMaskCh )
+	{
+		mask = cctMaskCh;
 	}
 
 }

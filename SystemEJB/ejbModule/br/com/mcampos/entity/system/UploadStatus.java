@@ -12,7 +12,7 @@ import br.com.mcampos.ejb.core.SimpleTable;
  * 
  */
 @Entity
-@Table( name = "upload_status" )
+@Table( name = "upload_status", schema = "public" )
 public class UploadStatus extends SimpleTable<UploadStatus>
 {
 	private static final long serialVersionUID = 1L;
@@ -34,24 +34,24 @@ public class UploadStatus extends SimpleTable<UploadStatus>
 	@Override
 	public Integer getId( )
 	{
-		return this.id;
+		return id;
 	}
 
 	@Override
 	public void setId( Integer upsIdIn )
 	{
-		this.id = upsIdIn;
+		id = upsIdIn;
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	@Override
 	public void setDescription( String upsDescriptionCh )
 	{
-		this.description = upsDescriptionCh;
+		description = upsDescriptionCh;
 	}
 }

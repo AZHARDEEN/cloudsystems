@@ -24,7 +24,7 @@ import br.com.mcampos.sysutils.SysUtils;
 
 @Entity
 @NamedQueries( { @NamedQuery( name = Login.getByToken, query = "select o from Login o where o.token = ?1" ) } )
-@Table( name = "\"login\"" )
+@Table( name = "login", schema = "public" )
 @Searchables( {
 		@Searchable( columnName = "person.name", displayName = "Nome" )
 } )

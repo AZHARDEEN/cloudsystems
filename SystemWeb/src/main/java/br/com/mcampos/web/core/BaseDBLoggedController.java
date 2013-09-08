@@ -13,13 +13,14 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 
 import br.com.mcampos.dto.AuthorizedPageOptions;
+import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSession;
 import br.com.mcampos.entity.user.Collaborator;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.utils.dto.PrincipalDTO;
 import br.com.mcampos.web.locator.ServiceLocator;
 
-public abstract class BaseDBLoggedController<BEAN> extends BaseDBController<BEAN> implements LoggedInterface
+public abstract class BaseDBLoggedController<BEAN extends BaseSessionInterface> extends BaseDBController<BEAN> implements LoggedInterface
 {
 	private static final long serialVersionUID = 3928960337564242027L;
 	private static final Logger logger = LoggerFactory.getLogger( BaseDBLoggedController.class );

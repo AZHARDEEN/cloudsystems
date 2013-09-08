@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.ejb.inep.test.InepTestSession;
-import br.com.mcampos.entity.inep.InepPackage;
+import br.com.mcampos.entity.inep.InepEvent;
 import br.com.mcampos.web.locator.ServiceLocator;
 
 public abstract class InepBaseJob implements Serializable, Job
@@ -71,7 +71,7 @@ public abstract class InepBaseJob implements Serializable, Job
 		return false;
 	}
 
-	protected String getBasePath( InepPackage item )
+	protected String getBasePath( InepEvent item )
 	{
 		String eventPath = getPath( ) + item.getId( ).getCompanyId( ).toString( ) + "/" + item.getId( ).getId( ).toString( ) + "/";
 		File filePath = new File( eventPath );
@@ -81,7 +81,7 @@ public abstract class InepBaseJob implements Serializable, Job
 		return eventPath;
 	}
 
-	protected String[ ] getFiles( InepPackage item, final String searchFor )
+	protected String[ ] getFiles( InepEvent item, final String searchFor )
 	{
 		File dir;
 

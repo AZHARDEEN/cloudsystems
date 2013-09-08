@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
  * 
  */
 @Entity
-@Table( name = "client_entry" )
+@Table( name = "client_entry", schema = "public" )
 public class ClientEntry implements Serializable
 {
 	private static final long serialVersionUID = 1L;

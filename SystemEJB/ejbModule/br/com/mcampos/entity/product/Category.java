@@ -7,6 +7,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import br.com.mcampos.entity.BaseCompanyEntity;
@@ -16,6 +17,7 @@ import br.com.mcampos.entity.BaseCompanyEntity;
  * 
  */
 @Entity
+@Table( name = "category", schema = "public" )
 @NamedQueries( {
 		@NamedQuery( name = Category.getNextId, query = "select coalesce ( max(o.id.id), 0 ) + 1 from Category o where o.id.companyId = ?1" )
 } )
@@ -38,6 +40,7 @@ public class Category extends BaseCompanyEntity implements Serializable, Compara
 	{
 	}
 
+	@Override
 	public CategoryPK getId( )
 	{
 		if ( id == null )
@@ -68,12 +71,6 @@ public class Category extends BaseCompanyEntity implements Serializable, Compara
 	public void setName( String catNameCh )
 	{
 		name = catNameCh != null ? catNameCh.trim( ) : null;
-	}
-
-	@Override
-	public void setCompanyId( Integer id )
-	{
-		getId( ).setCompanyId( id );
 	}
 
 	@Override

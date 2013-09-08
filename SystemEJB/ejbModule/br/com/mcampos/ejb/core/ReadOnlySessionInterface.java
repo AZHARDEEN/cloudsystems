@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.utils.dto.PrincipalDTO;
 
-public interface ReadOnlySessionInterface<T>
+public interface ReadOnlySessionInterface<T> extends BaseSessionInterface
 {
 	public T get( @NotNull Serializable key );
 
@@ -55,5 +55,4 @@ public interface ReadOnlySessionInterface<T>
 
 	Integer getNextId( String namedQuery, Object... params );
 
-	void storeException( Exception e );
 }
