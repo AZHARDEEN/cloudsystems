@@ -19,6 +19,10 @@ ALTER TABLE audit.program_exception OWNER TO r_system;
 GRANT SELECT, INSERT, UPDATE, DELETE ON audit.program_exception TO r_system_user;
 GRANT SELECT ON audit.program_exception TO r_system_report;
 
+grant USAGE ON SCHEMA AUDIT TO r_system_user;
+GRANT usage ON SEQUENCE AUDIT.program_exception_pex_id_in_seq to R_SYSTEM_USER;
 
+
+ALTER TABLE product DROP COLUMN prd_code_ch;
 
 
