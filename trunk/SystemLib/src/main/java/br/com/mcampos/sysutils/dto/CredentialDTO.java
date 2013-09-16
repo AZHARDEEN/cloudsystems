@@ -1,4 +1,4 @@
-package br.com.mcampos.utils.dto;
+package br.com.mcampos.sysutils.dto;
 
 import java.io.Serializable;
 import java.util.Locale;
