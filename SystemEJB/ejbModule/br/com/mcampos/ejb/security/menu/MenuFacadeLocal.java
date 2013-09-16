@@ -7,10 +7,10 @@ import javax.ejb.Local;
 import org.omg.CORBA.portable.ApplicationException;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.security.Menu;
-import br.com.mcampos.entity.security.Role;
-import br.com.mcampos.entity.security.Task;
-import br.com.mcampos.entity.user.Collaborator;
+import br.com.mcampos.jpa.security.Menu;
+import br.com.mcampos.jpa.security.Role;
+import br.com.mcampos.jpa.security.Task;
+import br.com.mcampos.jpa.user.Collaborator;
 
 @Local
 public interface MenuFacadeLocal extends BaseCrudSessionInterface<Menu>

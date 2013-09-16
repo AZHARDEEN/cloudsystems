@@ -5,9 +5,9 @@ import java.io.Serializable;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.system.SystemParameters;
+import br.com.mcampos.jpa.system.SystemParameters;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Stateless( name = "SystemParameterSession", mappedName = "SystemParameterSession" )
 public class SystemParameterSessionBean extends SimpleSessionBean<SystemParameters> implements SystemParameterSession, SystemParameterSessionLocal

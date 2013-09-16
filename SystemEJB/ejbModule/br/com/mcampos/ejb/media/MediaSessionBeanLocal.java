@@ -4,7 +4,7 @@ import javax.ejb.Local;
 
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.system.Media;
+import br.com.mcampos.jpa.system.Media;
 
 @Local
 public interface MediaSessionBeanLocal extends BaseCrudSessionInterface<Media>

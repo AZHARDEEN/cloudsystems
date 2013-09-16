@@ -9,10 +9,10 @@ import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.ejb.core.BaseCompanySessionBean;
-import br.com.mcampos.entity.product.Price;
-import br.com.mcampos.entity.product.Product;
+import br.com.mcampos.jpa.product.Price;
+import br.com.mcampos.jpa.product.Product;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class ProductSessionBean

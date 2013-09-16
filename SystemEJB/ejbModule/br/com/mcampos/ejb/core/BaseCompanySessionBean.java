@@ -5,10 +5,10 @@ import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
-import br.com.mcampos.entity.BaseCompanyEntity;
-import br.com.mcampos.entity.user.Company;
+import br.com.mcampos.jpa.BaseCompanyEntity;
+import br.com.mcampos.jpa.user.Company;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 public abstract class BaseCompanySessionBean<T extends BaseCompanyEntity> extends SimpleSessionBean<T>
 {

@@ -22,17 +22,17 @@ import br.com.mcampos.ejb.inep.revisor.InepRevisorSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.team.TeamSessionLocal;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
-import br.com.mcampos.entity.inep.DistributionStatus;
-import br.com.mcampos.entity.inep.InepEvent;
-import br.com.mcampos.entity.inep.InepMedia;
-import br.com.mcampos.entity.inep.InepOralDistribution;
-import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepRevisor;
-import br.com.mcampos.entity.inep.InepSubscription;
-import br.com.mcampos.entity.inep.InepSubscriptionPK;
-import br.com.mcampos.entity.system.Media;
+import br.com.mcampos.jpa.inep.DistributionStatus;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepMedia;
+import br.com.mcampos.jpa.inep.InepOralDistribution;
+import br.com.mcampos.jpa.inep.InepOralTest;
+import br.com.mcampos.jpa.inep.InepRevisor;
+import br.com.mcampos.jpa.inep.InepSubscription;
+import br.com.mcampos.jpa.inep.InepSubscriptionPK;
+import br.com.mcampos.jpa.system.Media;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class InepOralFacadeBean

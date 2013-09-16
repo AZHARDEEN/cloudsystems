@@ -5,11 +5,11 @@ import java.util.List;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.inep.InepEvent;
-import br.com.mcampos.entity.inep.InepRevisor;
-import br.com.mcampos.entity.inep.InepTask;
-import br.com.mcampos.entity.user.Collaborator;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepRevisor;
+import br.com.mcampos.jpa.inep.InepTask;
+import br.com.mcampos.jpa.user.Collaborator;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Local
 public interface InepRevisorSessionLocal extends BaseCrudSessionInterface<InepRevisor>

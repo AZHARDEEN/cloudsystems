@@ -5,8 +5,8 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.user.Gender;
-import br.com.mcampos.entity.user.Title;
+import br.com.mcampos.jpa.user.Gender;
+import br.com.mcampos.jpa.user.Title;
 
 @Remote
 public interface TitleSession extends BaseCrudSessionInterface<Title>

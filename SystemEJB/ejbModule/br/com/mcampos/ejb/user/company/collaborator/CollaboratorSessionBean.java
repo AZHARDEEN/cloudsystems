@@ -20,15 +20,15 @@ import br.com.mcampos.ejb.security.LoginSessionLocal;
 import br.com.mcampos.ejb.security.menu.MenuFacadeLocal;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
-import br.com.mcampos.entity.security.Login;
-import br.com.mcampos.entity.security.LoginProperty;
-import br.com.mcampos.entity.security.Menu;
-import br.com.mcampos.entity.user.Collaborator;
-import br.com.mcampos.entity.user.CollaboratorPK;
-import br.com.mcampos.entity.user.CollaboratorType;
-import br.com.mcampos.entity.user.Company;
+import br.com.mcampos.jpa.security.Login;
+import br.com.mcampos.jpa.security.LoginProperty;
+import br.com.mcampos.jpa.security.Menu;
+import br.com.mcampos.jpa.user.Collaborator;
+import br.com.mcampos.jpa.user.CollaboratorPK;
+import br.com.mcampos.jpa.user.CollaboratorType;
+import br.com.mcampos.jpa.user.Company;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class CollaboratorSessionBean

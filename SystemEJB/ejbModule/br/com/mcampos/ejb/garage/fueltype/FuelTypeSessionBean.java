@@ -4,7 +4,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.garage.FuelType;
+import br.com.mcampos.jpa.garage.FuelType;
 
 /**
  * Session Bean implementation class FuelTypeSessionBean

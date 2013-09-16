@@ -10,11 +10,11 @@ import javax.ejb.Stateless;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
-import br.com.mcampos.entity.inep.DistributionStatus;
-import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepEvent;
-import br.com.mcampos.entity.inep.InepSubscription;
-import br.com.mcampos.entity.inep.InepSubscriptionPK;
+import br.com.mcampos.jpa.inep.DistributionStatus;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepOralTest;
+import br.com.mcampos.jpa.inep.InepSubscription;
+import br.com.mcampos.jpa.inep.InepSubscriptionPK;
 
 /**
  * Session Bean implementation class InepOralTestSessionBean

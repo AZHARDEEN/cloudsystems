@@ -12,12 +12,12 @@ import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.fdigital.form.media.FormMediaSessionLocal;
 import br.com.mcampos.ejb.fdigital.form.pad.PadSessionLocal;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
-import br.com.mcampos.entity.fdigital.AnotoForm;
-import br.com.mcampos.entity.fdigital.AnotoPage;
-import br.com.mcampos.entity.fdigital.FormMedia;
-import br.com.mcampos.entity.fdigital.Pad;
-import br.com.mcampos.entity.system.Media;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.fdigital.AnotoForm;
+import br.com.mcampos.jpa.fdigital.AnotoPage;
+import br.com.mcampos.jpa.fdigital.FormMedia;
+import br.com.mcampos.jpa.fdigital.Pad;
+import br.com.mcampos.jpa.system.Media;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class AnotoFormSessionBean

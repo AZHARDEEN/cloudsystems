@@ -4,7 +4,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.system.EMailPartType;
+import br.com.mcampos.jpa.system.EMailPartType;
 
 /**
  * Session Bean implementation class EmailPartTypeSessionBean

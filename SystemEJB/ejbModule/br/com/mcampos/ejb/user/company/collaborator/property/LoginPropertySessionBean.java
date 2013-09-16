@@ -6,9 +6,9 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
-import br.com.mcampos.entity.security.LoginProperty;
-import br.com.mcampos.entity.security.LoginPropertyPK;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.security.LoginProperty;
+import br.com.mcampos.jpa.security.LoginPropertyPK;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class LoginPropertySessionBean

@@ -7,8 +7,8 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.user.UserDocument;
-import br.com.mcampos.entity.user.Users;
+import br.com.mcampos.jpa.user.UserDocument;
+import br.com.mcampos.jpa.user.Users;
 import br.com.mcampos.sysutils.SysUtils;
 
 /**

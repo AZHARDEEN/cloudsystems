@@ -6,11 +6,11 @@ import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
-import br.com.mcampos.entity.user.Client;
-import br.com.mcampos.entity.user.DocumentType;
-import br.com.mcampos.entity.user.Person;
-import br.com.mcampos.entity.user.Users;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.user.Client;
+import br.com.mcampos.jpa.user.DocumentType;
+import br.com.mcampos.jpa.user.Person;
+import br.com.mcampos.jpa.user.Users;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Local
 public interface ClientSessionLocal extends CollaboratorBaseSessionInterface<Client>

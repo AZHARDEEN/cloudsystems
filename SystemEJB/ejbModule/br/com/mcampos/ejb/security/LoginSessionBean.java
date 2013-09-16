@@ -28,20 +28,20 @@ import br.com.mcampos.ejb.security.lastusedpwd.LastUsedPasswordSessionLocal;
 import br.com.mcampos.ejb.security.log.AccessLogSessionLocal;
 import br.com.mcampos.ejb.security.log.AccessLogTypeSessionLocal;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
-import br.com.mcampos.entity.security.AccessLog;
-import br.com.mcampos.entity.security.AccessLogType;
-import br.com.mcampos.entity.security.LastUsedPassword;
-import br.com.mcampos.entity.security.Login;
-import br.com.mcampos.entity.security.UserStatus;
-import br.com.mcampos.entity.system.EMail;
-import br.com.mcampos.entity.system.SystemParameters;
-import br.com.mcampos.entity.user.Person;
-import br.com.mcampos.entity.user.UserDocument;
-import br.com.mcampos.entity.user.Users;
+import br.com.mcampos.jpa.security.AccessLog;
+import br.com.mcampos.jpa.security.AccessLogType;
+import br.com.mcampos.jpa.security.LastUsedPassword;
+import br.com.mcampos.jpa.security.Login;
+import br.com.mcampos.jpa.security.UserStatus;
+import br.com.mcampos.jpa.system.EMail;
+import br.com.mcampos.jpa.system.SystemParameters;
+import br.com.mcampos.jpa.user.Person;
+import br.com.mcampos.jpa.user.UserDocument;
+import br.com.mcampos.jpa.user.Users;
 import br.com.mcampos.sysutils.RandomString;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.CredentialDTO;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.CredentialDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Stateless( name = "LoginSession", mappedName = "LoginSession" )
 public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginSession, LoginSessionLocal

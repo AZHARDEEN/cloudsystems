@@ -5,8 +5,8 @@ import java.util.List;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.locale.City;
-import br.com.mcampos.entity.locale.State;
+import br.com.mcampos.jpa.locale.City;
+import br.com.mcampos.jpa.locale.State;
 
 @Local
 public interface CitySessionLocal extends BaseCrudSessionInterface<City>

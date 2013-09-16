@@ -13,9 +13,9 @@ import br.com.mcampos.ejb.security.UserStatusSessionLocal;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
 import br.com.mcampos.ejb.user.document.type.DocumentTypeSessionLocal;
 import br.com.mcampos.ejb.user.person.PersonSessionLocal;
-import br.com.mcampos.entity.user.Person;
-import br.com.mcampos.entity.user.UserDocument;
-import br.com.mcampos.entity.user.Users;
+import br.com.mcampos.jpa.user.Person;
+import br.com.mcampos.jpa.user.UserDocument;
+import br.com.mcampos.jpa.user.Users;
 import br.com.mcampos.sysutils.CPF;
 
 /**

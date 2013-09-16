@@ -10,15 +10,15 @@ import br.com.mcampos.dto.inep.InepTaskCounters;
 import br.com.mcampos.dto.inep.reporting.BaseSubscriptionDTO;
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.ejb.user.company.collaborator.UserPropertyInterface;
-import br.com.mcampos.entity.inep.InepDistribution;
-import br.com.mcampos.entity.inep.InepOralDistribution;
-import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepEvent;
-import br.com.mcampos.entity.inep.InepRevisor;
-import br.com.mcampos.entity.inep.InepSubscription;
-import br.com.mcampos.entity.inep.InepTask;
-import br.com.mcampos.entity.inep.InepTest;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.inep.InepDistribution;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepOralDistribution;
+import br.com.mcampos.jpa.inep.InepOralTest;
+import br.com.mcampos.jpa.inep.InepRevisor;
+import br.com.mcampos.jpa.inep.InepSubscription;
+import br.com.mcampos.jpa.inep.InepTask;
+import br.com.mcampos.jpa.inep.InepTest;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Remote
 public interface TeamSession extends BaseCrudSessionInterface<InepRevisor>, UserPropertyInterface

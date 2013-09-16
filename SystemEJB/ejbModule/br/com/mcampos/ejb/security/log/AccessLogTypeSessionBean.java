@@ -5,7 +5,7 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.security.AccessLogType;
+import br.com.mcampos.jpa.security.AccessLogType;
 
 @Stateless( name = "AccessLogTypeSession", mappedName = "AccessLogTypeSession" )
 public class AccessLogTypeSessionBean extends SimpleSessionBean<AccessLogType> implements AccessLogTypeSession, AccessLogTypeSessionLocal

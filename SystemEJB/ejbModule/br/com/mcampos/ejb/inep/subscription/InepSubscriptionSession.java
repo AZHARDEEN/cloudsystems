@@ -5,9 +5,9 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.inep.InepEvent;
-import br.com.mcampos.entity.inep.InepSubscription;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepSubscription;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Remote
 public interface InepSubscriptionSession extends BaseCrudSessionInterface<InepSubscription>

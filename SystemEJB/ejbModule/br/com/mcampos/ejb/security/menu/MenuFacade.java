@@ -7,9 +7,9 @@ import javax.ejb.Remote;
 import org.omg.CORBA.portable.ApplicationException;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.security.Menu;
-import br.com.mcampos.entity.security.Task;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.security.Menu;
+import br.com.mcampos.jpa.security.Task;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Remote
 public interface MenuFacade extends BaseCrudSessionInterface<Menu>

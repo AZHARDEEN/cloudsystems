@@ -5,9 +5,9 @@ import java.util.List;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.security.Role;
-import br.com.mcampos.entity.security.Task;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.security.Role;
+import br.com.mcampos.jpa.security.Task;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Local
 public interface RoleSessionLocal extends BaseCrudSessionInterface<Role>

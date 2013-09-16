@@ -6,12 +6,12 @@ import javax.ejb.Local;
 import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.inep.InepDistribution;
-import br.com.mcampos.entity.inep.InepEvent;
-import br.com.mcampos.entity.inep.InepRevisor;
-import br.com.mcampos.entity.inep.InepTask;
-import br.com.mcampos.entity.inep.InepTest;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.inep.InepDistribution;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepRevisor;
+import br.com.mcampos.jpa.inep.InepTask;
+import br.com.mcampos.jpa.inep.InepTest;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Local
 public interface TeamSessionLocal extends BaseCrudSessionInterface<InepRevisor>

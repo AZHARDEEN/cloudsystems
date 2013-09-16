@@ -4,7 +4,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.user.ContactType;
+import br.com.mcampos.jpa.user.ContactType;
 
 /**
  * Session Bean implementation class ContactTypeSessionBean

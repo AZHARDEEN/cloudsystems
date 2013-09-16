@@ -3,7 +3,7 @@ package br.com.mcampos.ejb.user.document.type;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.user.DocumentType;
+import br.com.mcampos.jpa.user.DocumentType;
 
 @Local
 public interface DocumentTypeSessionLocal extends BaseCrudSessionInterface<DocumentType>

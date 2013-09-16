@@ -1,6 +1,6 @@
 package br.com.mcampos.ejb.core;
 
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 public interface CollaboratorBaseSessionInterface<ENTITY> extends BaseCrudSessionInterface<ENTITY>
 {

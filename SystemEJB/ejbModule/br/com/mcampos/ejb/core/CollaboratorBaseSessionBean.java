@@ -4,9 +4,9 @@ import javax.ejb.EJB;
 
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
-import br.com.mcampos.entity.BaseCompanyEntity;
-import br.com.mcampos.entity.security.LoginProperty;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.BaseCompanyEntity;
+import br.com.mcampos.jpa.security.LoginProperty;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 public abstract class CollaboratorBaseSessionBean<Y extends BaseCompanyEntity> extends BaseCompanySessionBean<Y> implements CollaboratorBaseSessionInterface<Y>
 {
