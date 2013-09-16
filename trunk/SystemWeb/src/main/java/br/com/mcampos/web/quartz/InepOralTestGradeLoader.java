@@ -11,8 +11,8 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepOralTest;
 import br.com.mcampos.sysutils.SysUtils;
 
 public class InepOralTestGradeLoader extends InepBaseJob

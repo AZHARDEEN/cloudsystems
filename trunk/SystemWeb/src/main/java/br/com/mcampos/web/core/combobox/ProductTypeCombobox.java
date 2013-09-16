@@ -3,7 +3,7 @@ package br.com.mcampos.web.core.combobox;
 import java.util.List;
 
 import br.com.mcampos.ejb.product.type.ProductTypeSession;
-import br.com.mcampos.entity.product.ProductType;
+import br.com.mcampos.jpa.product.ProductType;
 
 public class ProductTypeCombobox extends ComboboxExt<ProductTypeSession, ProductType>
 {

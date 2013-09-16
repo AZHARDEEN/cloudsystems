@@ -38,8 +38,8 @@ import org.zkoss.zul.impl.XulElement;
 import org.zkoss.zul.theme.Themes;
 
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.CredentialDTO;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.CredentialDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.core.report.JasperReportController;
 import br.com.mcampos.web.core.report.ReportItem;

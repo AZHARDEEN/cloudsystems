@@ -3,7 +3,7 @@ package br.com.mcampos.web.renderer.inep;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.ComboitemRenderer;
 
-import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.jpa.inep.InepRevisor;
 
 public class RevisorComboItemRenderer implements ComboitemRenderer<InepRevisor>
 {

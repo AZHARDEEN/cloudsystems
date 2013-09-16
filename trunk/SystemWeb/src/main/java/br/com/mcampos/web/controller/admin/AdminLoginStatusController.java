@@ -16,9 +16,9 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.security.LoginSession;
-import br.com.mcampos.entity.security.Login;
+import br.com.mcampos.jpa.security.Login;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.BaseDBLoggedController;
 import br.com.mcampos.web.renderer.LoginItemRenderer;
 

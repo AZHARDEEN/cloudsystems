@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.ejb.user.person.civilstate.CivilStateSession;
-import br.com.mcampos.entity.user.CivilState;
+import br.com.mcampos.jpa.user.CivilState;
 
 public class CivilStateCombobox extends ComboboxExt<CivilStateSession, CivilState>
 {

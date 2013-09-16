@@ -6,7 +6,7 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Label;
 
 import br.com.mcampos.ejb.params.SystemParameterSession;
-import br.com.mcampos.entity.system.SystemParameters;
+import br.com.mcampos.jpa.system.SystemParameters;
 import br.com.mcampos.web.core.dbwidgets.DBWidget;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
 

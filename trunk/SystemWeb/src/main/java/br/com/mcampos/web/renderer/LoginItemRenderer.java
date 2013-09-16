@@ -5,7 +5,7 @@ import java.util.Date;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.entity.security.Login;
+import br.com.mcampos.jpa.security.Login;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.listbox.BaseListRenderer;
 

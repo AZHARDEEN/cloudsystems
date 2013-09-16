@@ -12,7 +12,7 @@ import org.zkoss.zul.Textbox;
 
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.inep.packs.InepPackageSession;
-import br.com.mcampos.entity.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
 import br.com.mcampos.web.core.listbox.ListboxParams;

@@ -3,7 +3,7 @@ package br.com.mcampos.web.core.combobox;
 import java.util.List;
 
 import br.com.mcampos.ejb.user.person.gender.GenderSession;
-import br.com.mcampos.entity.user.Gender;
+import br.com.mcampos.jpa.user.Gender;
 
 public class GenderCombobox extends ComboboxExt<GenderSession, Gender>
 {

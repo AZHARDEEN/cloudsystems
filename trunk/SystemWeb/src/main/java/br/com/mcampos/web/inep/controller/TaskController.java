@@ -13,8 +13,8 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.task.InepTaskSession;
-import br.com.mcampos.entity.inep.InepEvent;
-import br.com.mcampos.entity.inep.InepTask;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepTask;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.dbwidgets.DBWidget;
 import br.com.mcampos.web.core.listbox.BaseDBListController;

@@ -7,7 +7,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.ejb.core.SimpleEntity;
+import br.com.mcampos.jpa.SimpleEntity;
 import br.com.mcampos.web.core.dbwidgets.DBWidget;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
 

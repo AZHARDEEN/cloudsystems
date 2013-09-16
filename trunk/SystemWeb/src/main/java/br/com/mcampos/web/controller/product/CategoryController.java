@@ -5,7 +5,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 
 import br.com.mcampos.ejb.product.CategorySession;
-import br.com.mcampos.entity.product.Category;
+import br.com.mcampos.jpa.product.Category;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.dbwidgets.DBIntbox;
 import br.com.mcampos.web.core.dbwidgets.DBTextbox;

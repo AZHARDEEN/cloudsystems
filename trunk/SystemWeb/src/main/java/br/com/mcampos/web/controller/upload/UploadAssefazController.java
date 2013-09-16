@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.upload.AssefazDTO;
 import br.com.mcampos.dto.upload.RejectedDTO;
-import br.com.mcampos.entity.system.FileUpload;
+import br.com.mcampos.jpa.system.FileUpload;
 
 public class UploadAssefazController extends FileUploadController
 {

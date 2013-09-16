@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import br.com.mcampos.ejb.core.BaseCompanySessionBean;
 import br.com.mcampos.ejb.core.DBPaging;
-import br.com.mcampos.entity.BaseCompanyEntity;
+import br.com.mcampos.jpa.BaseCompanyEntity;
 
 public abstract class BaseCompanyDBListController<BEAN extends BaseCompanySessionBean<BaseCompanyEntity>, ENTITY extends BaseCompanyEntity> extends BaseDBListController<BEAN, ENTITY>
 {

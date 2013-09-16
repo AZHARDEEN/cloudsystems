@@ -2,7 +2,7 @@ package br.com.mcampos.web.renderer.fdigital;
 
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.entity.fdigital.FormMedia;
+import br.com.mcampos.jpa.fdigital.FormMedia;
 import br.com.mcampos.web.core.listbox.BaseListRenderer;
 
 public class FormMediaListRenderer extends BaseListRenderer<FormMedia>

@@ -5,7 +5,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.entity.user.Address;
+import br.com.mcampos.jpa.user.Address;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.combobox.AddressTypeCombobox;
 import br.com.mcampos.web.core.combobox.CityCombobox;

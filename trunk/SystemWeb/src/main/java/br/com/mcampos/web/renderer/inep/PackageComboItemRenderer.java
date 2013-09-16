@@ -3,7 +3,7 @@ package br.com.mcampos.web.renderer.inep;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.ComboitemRenderer;
 
-import br.com.mcampos.entity.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepEvent;
 
 public class PackageComboItemRenderer implements ComboitemRenderer<InepEvent>
 {

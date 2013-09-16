@@ -12,9 +12,9 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 
 import br.com.mcampos.ejb.product.ProductSession;
-import br.com.mcampos.entity.product.Price;
-import br.com.mcampos.entity.product.PriceType;
-import br.com.mcampos.entity.product.Product;
+import br.com.mcampos.jpa.product.Price;
+import br.com.mcampos.jpa.product.PriceType;
+import br.com.mcampos.jpa.product.Product;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.combobox.ProductTypeCombobox;
 import br.com.mcampos.web.core.dbwidgets.DBIntbox;

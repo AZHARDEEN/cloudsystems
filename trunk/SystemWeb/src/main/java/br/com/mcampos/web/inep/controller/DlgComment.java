@@ -3,7 +3,7 @@ package br.com.mcampos.web.inep.controller;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.entity.inep.InepDistribution;
+import br.com.mcampos.jpa.inep.InepDistribution;
 
 public class DlgComment extends Window
 {

@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.ejb.user.person.title.TitleSession;
-import br.com.mcampos.entity.user.Gender;
-import br.com.mcampos.entity.user.Title;
+import br.com.mcampos.jpa.user.Gender;
+import br.com.mcampos.jpa.user.Title;
 
 public class TitleCombobox extends ComboboxExt<TitleSession, Title> implements DetailInterface
 {

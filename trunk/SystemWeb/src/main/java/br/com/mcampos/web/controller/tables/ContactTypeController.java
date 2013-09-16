@@ -6,7 +6,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 
 import br.com.mcampos.ejb.user.contact.ContactTypeSession;
-import br.com.mcampos.entity.user.ContactType;
+import br.com.mcampos.jpa.user.ContactType;
 import br.com.mcampos.web.core.SimpleTableController;
 
 public class ContactTypeController extends SimpleTableController<ContactTypeSession, ContactType>

@@ -15,8 +15,8 @@ import org.zkoss.zul.Window;
 
 import br.com.mcampos.dto.inep.InepOralTeamDTO;
 import br.com.mcampos.ejb.inep.InepOralFacade;
-import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepOralTest;
 import br.com.mcampos.web.core.event.IDialogEvent;
 import br.com.mcampos.web.inep.controller.dialog.DlgOralTeamChoice;
 import br.com.mcampos.web.renderer.inep.InepOralTestListRenderer;

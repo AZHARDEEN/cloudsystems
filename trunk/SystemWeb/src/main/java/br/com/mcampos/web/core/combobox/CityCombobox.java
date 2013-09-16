@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.ejb.locale.city.CitySession;
-import br.com.mcampos.entity.locale.City;
-import br.com.mcampos.entity.locale.State;
+import br.com.mcampos.jpa.locale.City;
+import br.com.mcampos.jpa.locale.State;
 
 public class CityCombobox extends ComboboxExt<CitySession, City> implements DetailInterface
 {

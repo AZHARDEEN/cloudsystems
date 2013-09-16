@@ -11,7 +11,7 @@ import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.ComboitemRenderer;
 
 import br.com.mcampos.ejb.core.ReadOnlySessionInterface;
-import br.com.mcampos.ejb.core.SimpleEntity;
+import br.com.mcampos.jpa.SimpleEntity;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.BaseController;
 import br.com.mcampos.web.core.combobox.BasicComboitemRenderer;

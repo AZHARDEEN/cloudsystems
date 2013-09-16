@@ -2,7 +2,7 @@ package br.com.mcampos.web.renderer;
 
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.entity.security.Menu;
+import br.com.mcampos.jpa.security.Menu;
 
 public class MenuListItemRenderer extends PopupItemRenderer<Menu>
 {
