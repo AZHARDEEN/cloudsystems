@@ -1,7 +1,7 @@
 package br.com.mcampos.web.controller.tables.email;
 
 import br.com.mcampos.ejb.email.EmailSession;
-import br.com.mcampos.entity.system.EMail;
+import br.com.mcampos.jpa.system.EMail;
 import br.com.mcampos.web.core.SimpleTableController;
 
 public class EmailTemplateController extends SimpleTableController<EmailSession, EMail>

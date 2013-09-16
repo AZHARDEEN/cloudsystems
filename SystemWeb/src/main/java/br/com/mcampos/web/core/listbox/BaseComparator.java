@@ -3,7 +3,7 @@ package br.com.mcampos.web.core.listbox;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import br.com.mcampos.ejb.core.BasicEntityRenderer;
+import br.com.mcampos.jpa.BasicEntityRenderer;
 
 public class BaseComparator implements Comparator<BasicEntityRenderer<?>>, Serializable
 {

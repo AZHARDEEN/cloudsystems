@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.ejb.inep.test.InepTestSession;
-import br.com.mcampos.entity.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.web.locator.ServiceLocator;
 
 public abstract class InepBaseJob implements Serializable, Job

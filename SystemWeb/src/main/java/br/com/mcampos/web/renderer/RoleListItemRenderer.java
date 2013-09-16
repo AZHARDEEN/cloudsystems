@@ -2,7 +2,7 @@ package br.com.mcampos.web.renderer;
 
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.entity.security.Role;
+import br.com.mcampos.jpa.security.Role;
 
 public class RoleListItemRenderer extends PopupItemRenderer<Role>
 {

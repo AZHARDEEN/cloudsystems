@@ -5,10 +5,10 @@ import java.util.List;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.user.person.PersonSession;
-import br.com.mcampos.entity.user.Client;
-import br.com.mcampos.entity.user.DocumentType;
-import br.com.mcampos.entity.user.Person;
-import br.com.mcampos.entity.user.Users;
+import br.com.mcampos.jpa.user.Client;
+import br.com.mcampos.jpa.user.DocumentType;
+import br.com.mcampos.jpa.user.Person;
+import br.com.mcampos.jpa.user.Users;
 
 public class MyRecordController extends BasePersonController<PersonSession>
 {

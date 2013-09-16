@@ -3,7 +3,7 @@ package br.com.mcampos.web.core.combobox;
 import java.util.List;
 
 import br.com.mcampos.ejb.system.operators.OperatorSession;
-import br.com.mcampos.entity.system.Operator;
+import br.com.mcampos.jpa.system.Operator;
 
 public class OperatorCombobox extends ComboboxExt<OperatorSession, Operator>
 {

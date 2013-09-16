@@ -2,7 +2,7 @@ package br.com.mcampos.web.renderer.inep;
 
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.entity.inep.InepRevisor;
+import br.com.mcampos.jpa.inep.InepRevisor;
 import br.com.mcampos.web.core.listbox.BaseListRenderer;
 
 public class RevisorListRenderer extends BaseListRenderer<InepRevisor>

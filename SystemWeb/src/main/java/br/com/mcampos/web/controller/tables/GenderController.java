@@ -1,7 +1,7 @@
 package br.com.mcampos.web.controller.tables;
 
 import br.com.mcampos.ejb.user.person.gender.GenderSession;
-import br.com.mcampos.entity.user.Gender;
+import br.com.mcampos.jpa.user.Gender;
 import br.com.mcampos.web.core.SimpleTableController;
 
 public class GenderController extends SimpleTableController<GenderSession, Gender>

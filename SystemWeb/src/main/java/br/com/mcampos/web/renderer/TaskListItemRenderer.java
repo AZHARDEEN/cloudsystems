@@ -2,7 +2,7 @@ package br.com.mcampos.web.renderer;
 
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.entity.security.Task;
+import br.com.mcampos.jpa.security.Task;
 
 public class TaskListItemRenderer extends PopupItemRenderer<Task>
 {

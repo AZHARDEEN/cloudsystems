@@ -5,7 +5,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 
 import br.com.mcampos.ejb.system.operators.OperatorSession;
-import br.com.mcampos.entity.system.Operator;
+import br.com.mcampos.jpa.system.Operator;
 import br.com.mcampos.web.core.SimpleTableController;
 
 public class OperatorController extends SimpleTableController<OperatorSession, Operator>

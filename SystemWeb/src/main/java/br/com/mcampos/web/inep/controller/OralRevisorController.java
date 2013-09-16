@@ -16,8 +16,8 @@ import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.inep.InepOralFacade;
-import br.com.mcampos.entity.inep.InepOralDistribution;
-import br.com.mcampos.entity.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepOralDistribution;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.renderer.inep.InepOralDistributionCoordinatoListRenderer;
 import br.com.mcampos.web.renderer.inep.InepOralDistributionListRenderer;

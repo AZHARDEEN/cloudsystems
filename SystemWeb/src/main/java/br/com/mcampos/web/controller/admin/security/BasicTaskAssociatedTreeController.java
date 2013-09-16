@@ -16,7 +16,7 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.entity.security.Task;
+import br.com.mcampos.jpa.security.Task;
 import br.com.mcampos.web.controller.admin.security.treenode.BaseTreeNode;
 import br.com.mcampos.web.controller.admin.security.treenode.TaskNode;
 import br.com.mcampos.web.core.tree.AdvancedTreeModel;

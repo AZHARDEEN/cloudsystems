@@ -2,7 +2,7 @@ package br.com.mcampos.web.renderer.inep;
 
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.entity.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.web.core.listbox.BaseListRenderer;
 
 public class EventListRenderer extends BaseListRenderer<InepEvent>

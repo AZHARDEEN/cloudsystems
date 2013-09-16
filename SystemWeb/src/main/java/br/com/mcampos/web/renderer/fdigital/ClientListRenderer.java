@@ -2,7 +2,7 @@ package br.com.mcampos.web.renderer.fdigital;
 
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.entity.fdigital.AnotoFormUser;
+import br.com.mcampos.jpa.fdigital.AnotoFormUser;
 import br.com.mcampos.web.core.listbox.BaseListRenderer;
 
 public class ClientListRenderer extends BaseListRenderer<AnotoFormUser>

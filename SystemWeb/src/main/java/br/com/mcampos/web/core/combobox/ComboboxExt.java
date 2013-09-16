@@ -17,7 +17,7 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 import br.com.mcampos.web.core.CookieImpl;
 import br.com.mcampos.web.core.CookieInterface;
 import br.com.mcampos.web.core.ISessionParameter;

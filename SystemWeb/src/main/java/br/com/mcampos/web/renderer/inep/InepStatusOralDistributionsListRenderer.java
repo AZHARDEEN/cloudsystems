@@ -2,7 +2,7 @@ package br.com.mcampos.web.renderer.inep;
 
 import org.zkoss.zul.Listitem;
 
-import br.com.mcampos.entity.inep.InepOralDistribution;
+import br.com.mcampos.jpa.inep.InepOralDistribution;
 import br.com.mcampos.web.core.listbox.BaseListRenderer;
 
 public class InepStatusOralDistributionsListRenderer extends BaseListRenderer<InepOralDistribution>

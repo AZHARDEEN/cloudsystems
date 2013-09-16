@@ -18,9 +18,9 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.security.task.TaskSession;
-import br.com.mcampos.entity.security.Menu;
-import br.com.mcampos.entity.security.Role;
-import br.com.mcampos.entity.security.Task;
+import br.com.mcampos.jpa.security.Menu;
+import br.com.mcampos.jpa.security.Role;
+import br.com.mcampos.jpa.security.Task;
 import br.com.mcampos.web.controller.admin.security.treenode.BaseTreeNode;
 import br.com.mcampos.web.controller.admin.security.treenode.MenuNode;
 import br.com.mcampos.web.controller.admin.security.treenode.RoleNode;

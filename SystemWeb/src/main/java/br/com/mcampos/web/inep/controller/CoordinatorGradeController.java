@@ -12,7 +12,7 @@ import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.entity.inep.InepDistribution;
+import br.com.mcampos.jpa.inep.InepDistribution;
 import br.com.mcampos.web.core.BaseController;
 import br.com.mcampos.web.inep.controller.event.CoordinatorEventChange;
 

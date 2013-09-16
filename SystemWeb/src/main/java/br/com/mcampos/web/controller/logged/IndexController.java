@@ -71,8 +71,8 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 		if ( mainMenu.getChildren( ) != null ) {
 			mainMenu.getChildren( ).clear( );
 		}
-		List<br.com.mcampos.entity.security.Menu> menus = getSession( ).getMenus( getPrincipal( ) );
-		for ( br.com.mcampos.entity.security.Menu item : menus ) {
+		List<br.com.mcampos.jpa.security.Menu> menus = getSession( ).getMenus( getPrincipal( ) );
+		for ( br.com.mcampos.jpa.security.Menu item : menus ) {
 			getDynamicMenu( ).getParentComponent( item );
 		}
 	}

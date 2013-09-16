@@ -19,12 +19,12 @@ import org.zkoss.zul.Window;
 
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.ejb.fdigital.form.AnotoFormSession;
-import br.com.mcampos.entity.fdigital.AnotoForm;
-import br.com.mcampos.entity.fdigital.AnotoFormUser;
-import br.com.mcampos.entity.fdigital.AnotoPage;
-import br.com.mcampos.entity.fdigital.AnotoPageField;
-import br.com.mcampos.entity.fdigital.FormMedia;
-import br.com.mcampos.entity.fdigital.Pad;
+import br.com.mcampos.jpa.fdigital.AnotoForm;
+import br.com.mcampos.jpa.fdigital.AnotoFormUser;
+import br.com.mcampos.jpa.fdigital.AnotoPage;
+import br.com.mcampos.jpa.fdigital.AnotoPageField;
+import br.com.mcampos.jpa.fdigital.FormMedia;
+import br.com.mcampos.jpa.fdigital.Pad;
 import br.com.mcampos.web.core.SimpleTableController;
 import br.com.mcampos.web.core.UploadMedia;
 import br.com.mcampos.web.core.listbox.BasicListRenderer;

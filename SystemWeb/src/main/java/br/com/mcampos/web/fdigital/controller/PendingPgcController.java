@@ -16,7 +16,7 @@ import org.zkoss.zul.Window;
 import br.com.mcampos.dto.FieldFilterDTO;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.fdigital.pgc.PgcSession;
-import br.com.mcampos.entity.fdigital.Pgc;
+import br.com.mcampos.jpa.fdigital.Pgc;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.filter.FilterDialog;
 import br.com.mcampos.web.core.listbox.BaseDBListController;

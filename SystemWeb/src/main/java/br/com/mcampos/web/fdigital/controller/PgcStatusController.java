@@ -1,7 +1,7 @@
 package br.com.mcampos.web.fdigital.controller;
 
 import br.com.mcampos.ejb.fdigital.pgcstatus.PgcStatusSession;
-import br.com.mcampos.entity.fdigital.PgcStatus;
+import br.com.mcampos.jpa.fdigital.PgcStatus;
 import br.com.mcampos.web.core.SimpleTableController;
 
 public class PgcStatusController extends SimpleTableController<PgcStatusSession, PgcStatus>

@@ -15,10 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.ejb.fdigital.upload.UploadSession;
-import br.com.mcampos.entity.fdigital.AnotoPen;
-import br.com.mcampos.entity.fdigital.AnotoPenPage;
-import br.com.mcampos.entity.fdigital.Pgc;
-import br.com.mcampos.entity.fdigital.PgcProperty;
+import br.com.mcampos.jpa.fdigital.AnotoPen;
+import br.com.mcampos.jpa.fdigital.AnotoPenPage;
+import br.com.mcampos.jpa.fdigital.Pgc;
+import br.com.mcampos.jpa.fdigital.PgcProperty;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.locator.ServiceLocator;
 

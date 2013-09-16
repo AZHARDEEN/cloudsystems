@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.ejb.locale.state.StateSession;
-import br.com.mcampos.entity.locale.State;
+import br.com.mcampos.jpa.locale.State;
 
 public class StateCombobox extends ComboboxExt<StateSession, State>
 {

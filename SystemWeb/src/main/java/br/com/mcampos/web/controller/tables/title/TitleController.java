@@ -4,7 +4,7 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Label;
 
 import br.com.mcampos.ejb.user.person.title.TitleSession;
-import br.com.mcampos.entity.user.Title;
+import br.com.mcampos.jpa.user.Title;
 import br.com.mcampos.web.core.SimpleTableController;
 import br.com.mcampos.web.core.dbwidgets.DBWidget;
 

@@ -2,7 +2,7 @@ package br.com.mcampos.web.controller.client.commom;
 
 import org.zkoss.zk.ui.Component;
 
-import br.com.mcampos.entity.user.UserContact;
+import br.com.mcampos.jpa.user.UserContact;
 import br.com.mcampos.web.renderer.UserContactListRenderer;
 
 public class ContactController extends BaseUserAttrListController<UserContact>

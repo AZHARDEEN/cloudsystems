@@ -5,7 +5,7 @@ import java.util.List;
 import org.zkoss.zul.Window;
 
 import br.com.mcampos.dto.inep.InepAnaliticoCorrecao;
-import br.com.mcampos.entity.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.web.renderer.inep.DistributionExtractRowRenderer;
 
 public class VarianceExtratController extends BaseExtractController

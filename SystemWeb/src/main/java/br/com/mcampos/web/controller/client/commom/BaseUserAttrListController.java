@@ -19,7 +19,7 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.entity.user.UserDocument;
+import br.com.mcampos.jpa.user.UserDocument;
 import br.com.mcampos.web.core.BaseController;
 import br.com.mcampos.web.core.event.DialogEvent;
 

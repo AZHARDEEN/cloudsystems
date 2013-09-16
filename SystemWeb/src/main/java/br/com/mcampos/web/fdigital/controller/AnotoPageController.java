@@ -12,8 +12,8 @@ import org.zkoss.zul.Window;
 
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.fdigital.form.pad.page.AnotoPageSession;
-import br.com.mcampos.entity.fdigital.AnotoForm;
-import br.com.mcampos.entity.fdigital.AnotoPage;
+import br.com.mcampos.jpa.fdigital.AnotoForm;
+import br.com.mcampos.jpa.fdigital.AnotoPage;
 import br.com.mcampos.web.core.listbox.BaseDBListController;
 
 public class AnotoPageController extends BaseDBListController<AnotoPageSession, AnotoPage>
