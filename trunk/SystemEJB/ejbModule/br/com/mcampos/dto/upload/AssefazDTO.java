@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.AssefazID;
+import br.com.mcampos.sysutils.dto.AssefazID;
 
 import com.ibm.icu.text.NumberFormat;
 

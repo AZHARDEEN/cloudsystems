@@ -7,9 +7,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.Query;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.security.LastUsedPassword;
-import br.com.mcampos.entity.security.LastUsedPasswordPK;
-import br.com.mcampos.entity.security.Login;
+import br.com.mcampos.jpa.security.LastUsedPassword;
+import br.com.mcampos.jpa.security.LastUsedPasswordPK;
+import br.com.mcampos.jpa.security.Login;
 
 /**
  * Session Bean implementation class LastUsedPasswordSessionBean

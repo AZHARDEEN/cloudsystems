@@ -18,12 +18,12 @@ import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
 import br.com.mcampos.ejb.user.person.PersonSessionLocal;
-import br.com.mcampos.entity.user.Client;
-import br.com.mcampos.entity.user.Company;
-import br.com.mcampos.entity.user.DocumentType;
-import br.com.mcampos.entity.user.Person;
-import br.com.mcampos.entity.user.Users;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.user.Client;
+import br.com.mcampos.jpa.user.Company;
+import br.com.mcampos.jpa.user.DocumentType;
+import br.com.mcampos.jpa.user.Person;
+import br.com.mcampos.jpa.user.Users;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class ClientSessionBean

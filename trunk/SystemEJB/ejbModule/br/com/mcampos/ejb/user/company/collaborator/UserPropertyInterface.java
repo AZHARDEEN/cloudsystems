@@ -1,7 +1,7 @@
 package br.com.mcampos.ejb.user.company.collaborator;
 
-import br.com.mcampos.entity.security.LoginProperty;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.security.LoginProperty;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 public interface UserPropertyInterface
 {

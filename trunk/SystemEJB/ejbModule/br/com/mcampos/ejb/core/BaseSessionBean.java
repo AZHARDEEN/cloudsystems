@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.mcampos.entity.system.LogProgramException;
+import br.com.mcampos.jpa.system.LogProgramException;
 
 public abstract class BaseSessionBean implements BaseSessionInterface
 {

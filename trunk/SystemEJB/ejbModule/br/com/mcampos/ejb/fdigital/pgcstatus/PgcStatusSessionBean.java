@@ -4,7 +4,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.fdigital.PgcStatus;
+import br.com.mcampos.jpa.fdigital.PgcStatus;
 
 /**
  * Session Bean implementation class PgcStatusSessionBean

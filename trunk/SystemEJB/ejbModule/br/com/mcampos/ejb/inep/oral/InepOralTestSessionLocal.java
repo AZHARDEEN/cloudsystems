@@ -5,9 +5,9 @@ import java.util.List;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepEvent;
-import br.com.mcampos.entity.inep.InepSubscription;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepOralTest;
+import br.com.mcampos.jpa.inep.InepSubscription;
 
 @Local
 public interface InepOralTestSessionLocal extends BaseCrudSessionInterface<InepOralTest>

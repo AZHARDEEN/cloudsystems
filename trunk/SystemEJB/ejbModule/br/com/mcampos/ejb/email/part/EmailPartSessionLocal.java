@@ -4,8 +4,8 @@ import javax.ejb.Local;
 
 import br.com.mcampos.dto.MailDTO;
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.system.EMail;
-import br.com.mcampos.entity.system.EMailPart;
+import br.com.mcampos.jpa.system.EMail;
+import br.com.mcampos.jpa.system.EMailPart;
 
 @Local
 public interface EmailPartSessionLocal extends BaseCrudSessionInterface<EMailPart>

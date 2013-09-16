@@ -5,8 +5,8 @@ import java.util.List;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.fdigital.AnotoPage;
-import br.com.mcampos.entity.fdigital.Pad;
+import br.com.mcampos.jpa.fdigital.AnotoPage;
+import br.com.mcampos.jpa.fdigital.Pad;
 
 @Local
 public interface PadSessionLocal extends BaseCrudSessionInterface<Pad>

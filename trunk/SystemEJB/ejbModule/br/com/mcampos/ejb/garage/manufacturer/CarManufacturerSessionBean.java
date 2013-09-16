@@ -4,7 +4,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.garage.CarManufacturer;
+import br.com.mcampos.jpa.garage.CarManufacturer;
 
 /**
  * Session Bean implementation class CarManufacturerSessionBean

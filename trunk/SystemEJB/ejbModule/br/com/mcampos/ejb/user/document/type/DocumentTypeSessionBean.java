@@ -4,7 +4,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.user.DocumentType;
+import br.com.mcampos.jpa.user.DocumentType;
 
 /**
  * Session Bean implementation class DocumentTypeSessionBean

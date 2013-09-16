@@ -5,7 +5,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implements PagingSessionInterface<T>
 {

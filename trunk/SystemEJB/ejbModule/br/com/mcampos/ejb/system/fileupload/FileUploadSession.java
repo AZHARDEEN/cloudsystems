@@ -8,8 +8,8 @@ import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.upload.AssefazDTO;
 import br.com.mcampos.dto.upload.RejectedDTO;
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.system.FileUpload;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.system.FileUpload;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Remote
 public interface FileUploadSession extends BaseCrudSessionInterface<FileUpload>

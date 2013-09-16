@@ -4,7 +4,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.system.FieldType;
+import br.com.mcampos.jpa.system.FieldType;
 
 /**
  * Session Bean implementation class FieldTypeSessionBean

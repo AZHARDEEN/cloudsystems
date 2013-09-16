@@ -5,7 +5,7 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.user.Gender;
+import br.com.mcampos.jpa.user.Gender;
 
 @Stateless( name = "GenderSession", mappedName = "GenderSession" )
 public class GenderSessionBean extends SimpleSessionBean<Gender> implements GenderSession, GenderSessionLocal

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 public interface ReadOnlySessionInterface<T> extends BaseSessionInterface
 {

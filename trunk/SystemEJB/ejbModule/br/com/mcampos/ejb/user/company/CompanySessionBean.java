@@ -6,10 +6,11 @@ import javax.ejb.Stateless;
 
 
 
+
 import br.com.mcampos.ejb.user.BaseUserSession;
-import br.com.mcampos.entity.user.Company;
-import br.com.mcampos.entity.user.CompanyType;
-import br.com.mcampos.entity.user.UserType;
+import br.com.mcampos.jpa.user.Company;
+import br.com.mcampos.jpa.user.CompanyType;
+import br.com.mcampos.jpa.user.UserType;
 
 /**
  * Session Bean implementation class CompanySessionBean

@@ -3,9 +3,9 @@ package br.com.mcampos.ejb.gdf;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import br.com.mcampos.ejb.core.SimpleCodedTable;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.gdf.AdministrativeRegion;
+import br.com.mcampos.jpa.SimpleCodedTable;
+import br.com.mcampos.jpa.gdf.AdministrativeRegion;
 
 /**
  * Session Bean implementation class CodedTableSessionBean

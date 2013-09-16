@@ -8,13 +8,13 @@ import javax.ejb.Remote;
 import br.com.mcampos.dto.MediaDTO;
 import br.com.mcampos.dto.inep.InepOralTeamDTO;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
-import br.com.mcampos.entity.inep.InepEvent;
-import br.com.mcampos.entity.inep.InepOralDistribution;
-import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepRevisor;
-import br.com.mcampos.entity.inep.InepSubscription;
-import br.com.mcampos.entity.system.Media;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepOralDistribution;
+import br.com.mcampos.jpa.inep.InepOralTest;
+import br.com.mcampos.jpa.inep.InepRevisor;
+import br.com.mcampos.jpa.inep.InepSubscription;
+import br.com.mcampos.jpa.system.Media;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Remote
 public interface InepOralFacade extends BaseSessionInterface

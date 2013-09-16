@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 import br.com.mcampos.ejb.core.search.Searchable;
 import br.com.mcampos.ejb.core.search.Searchables;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 /*
  * This is the base interface for all session beans

@@ -6,8 +6,8 @@ import javax.ejb.Remote;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
-import br.com.mcampos.entity.inep.InepEvent;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Remote
 public interface InepPackageSession extends BaseCrudSessionInterface<InepEvent>

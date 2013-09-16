@@ -7,8 +7,8 @@ import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.ejb.core.BaseCompanySessionBean;
-import br.com.mcampos.entity.product.Category;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.product.Category;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class CategorySessionBean

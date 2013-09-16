@@ -13,10 +13,10 @@ import br.com.mcampos.ejb.core.CollaboratorBaseSessionBean;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
-import br.com.mcampos.entity.inep.InepEvent;
-import br.com.mcampos.entity.inep.InepTask;
-import br.com.mcampos.entity.user.Company;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepTask;
+import br.com.mcampos.jpa.user.Company;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class InepPackageSessionBean

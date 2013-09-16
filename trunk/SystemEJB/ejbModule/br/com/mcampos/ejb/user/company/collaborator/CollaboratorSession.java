@@ -9,9 +9,9 @@ import org.omg.CORBA.portable.ApplicationException;
 import br.com.mcampos.dto.AuthorizedPageOptions;
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.ejb.core.SimpleDTO;
-import br.com.mcampos.entity.security.Menu;
-import br.com.mcampos.entity.user.Collaborator;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.security.Menu;
+import br.com.mcampos.jpa.user.Collaborator;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Remote
 public interface CollaboratorSession extends BaseCrudSessionInterface<Collaborator>, UserPropertyInterface

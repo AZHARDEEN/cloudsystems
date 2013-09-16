@@ -3,9 +3,9 @@ package br.com.mcampos.ejb.security;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.security.Login;
-import br.com.mcampos.entity.user.Person;
-import br.com.mcampos.utils.dto.CredentialDTO;
+import br.com.mcampos.jpa.security.Login;
+import br.com.mcampos.jpa.user.Person;
+import br.com.mcampos.sysutils.dto.CredentialDTO;
 
 @Local
 public interface LoginSessionLocal extends BaseCrudSessionInterface<Login>

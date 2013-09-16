@@ -3,7 +3,7 @@ package br.com.mcampos.ejb.system;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.system.LogProgramException;
+import br.com.mcampos.jpa.system.LogProgramException;
 
 /**
  * Session Bean implementation class LogProgramExceptionSessionBean

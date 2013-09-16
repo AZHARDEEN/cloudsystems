@@ -8,11 +8,11 @@ import org.jasypt.util.text.BasicTextEncryptor;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionBean;
 import br.com.mcampos.ejb.params.SystemParameterSessionLocal;
-import br.com.mcampos.entity.security.AccessLog;
-import br.com.mcampos.entity.security.Login;
-import br.com.mcampos.entity.system.SystemParameters;
+import br.com.mcampos.jpa.security.AccessLog;
+import br.com.mcampos.jpa.security.Login;
+import br.com.mcampos.jpa.system.SystemParameters;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Stateless( name = "AccessLogSession", mappedName = "AccessLogSession" )
 public class AccessLogSessionBean extends BaseCrudSessionBean<AccessLog> implements AccessLogSession, AccessLogSessionLocal

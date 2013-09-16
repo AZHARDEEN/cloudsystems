@@ -18,11 +18,11 @@ import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.security.LoginSessionLocal;
 import br.com.mcampos.ejb.security.task.TaskSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
-import br.com.mcampos.entity.security.Menu;
-import br.com.mcampos.entity.security.Role;
-import br.com.mcampos.entity.security.Task;
-import br.com.mcampos.entity.user.Collaborator;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.security.Menu;
+import br.com.mcampos.jpa.security.Role;
+import br.com.mcampos.jpa.security.Task;
+import br.com.mcampos.jpa.user.Collaborator;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class MenuFacadeBean

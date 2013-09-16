@@ -16,11 +16,11 @@ import br.com.mcampos.ejb.fdigital.pgc.PgcSessionLocal;
 import br.com.mcampos.ejb.fdigital.pgcstatus.PgcStatusSessionLocal;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
 import br.com.mcampos.ejb.system.revisionstatus.RevisionStatusSessionLocal;
-import br.com.mcampos.entity.fdigital.AnotoPen;
-import br.com.mcampos.entity.fdigital.AnotoPenPage;
-import br.com.mcampos.entity.fdigital.Pgc;
-import br.com.mcampos.entity.fdigital.PgcStatus;
-import br.com.mcampos.entity.system.Media;
+import br.com.mcampos.jpa.fdigital.AnotoPen;
+import br.com.mcampos.jpa.fdigital.AnotoPenPage;
+import br.com.mcampos.jpa.fdigital.Pgc;
+import br.com.mcampos.jpa.fdigital.PgcStatus;
+import br.com.mcampos.jpa.system.Media;
 
 /**
  * Session Bean implementation class UploadSessionBean

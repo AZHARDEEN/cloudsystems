@@ -10,8 +10,9 @@ import javax.ejb.EJB;
 import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.ejb.params.SystemParameterSessionLocal;
+import br.com.mcampos.jpa.BaseEntity;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implements BaseCrudSessionInterface<T>
 {

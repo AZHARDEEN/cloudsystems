@@ -5,8 +5,8 @@ import java.io.Serializable;
 import javax.ejb.Local;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.system.SystemParameters;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.jpa.system.SystemParameters;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 @Local
 public interface SystemParameterSessionLocal extends BaseCrudSessionInterface<SystemParameters>

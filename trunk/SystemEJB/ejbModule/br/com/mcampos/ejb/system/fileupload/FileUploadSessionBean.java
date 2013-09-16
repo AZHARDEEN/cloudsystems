@@ -19,17 +19,17 @@ import br.com.mcampos.ejb.user.client.entry.ClientEntrySessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 import br.com.mcampos.ejb.user.document.type.DocumentTypeSessionLocal;
 import br.com.mcampos.ejb.user.person.PersonSessionLocal;
-import br.com.mcampos.entity.system.FileUpload;
-import br.com.mcampos.entity.system.Media;
-import br.com.mcampos.entity.system.RejectedRecord;
-import br.com.mcampos.entity.system.UploadStatus;
-import br.com.mcampos.entity.user.Client;
-import br.com.mcampos.entity.user.ClientEntry;
-import br.com.mcampos.entity.user.Collaborator;
-import br.com.mcampos.entity.user.Person;
-import br.com.mcampos.entity.user.UserDocument;
+import br.com.mcampos.jpa.system.FileUpload;
+import br.com.mcampos.jpa.system.Media;
+import br.com.mcampos.jpa.system.RejectedRecord;
+import br.com.mcampos.jpa.system.UploadStatus;
+import br.com.mcampos.jpa.user.Client;
+import br.com.mcampos.jpa.user.ClientEntry;
+import br.com.mcampos.jpa.user.Collaborator;
+import br.com.mcampos.jpa.user.Person;
+import br.com.mcampos.jpa.user.UserDocument;
 import br.com.mcampos.sysutils.SysUtils;
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 /**
  * Session Bean implementation class FileUploadSessionBean

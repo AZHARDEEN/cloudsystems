@@ -5,10 +5,10 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
-import br.com.mcampos.entity.inep.InepOralTest;
-import br.com.mcampos.entity.inep.InepEvent;
-import br.com.mcampos.entity.inep.InepTest;
-import br.com.mcampos.entity.inep.InepTestPK;
+import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepOralTest;
+import br.com.mcampos.jpa.inep.InepTest;
+import br.com.mcampos.jpa.inep.InepTestPK;
 
 @Remote
 public interface InepTestSession extends BaseCrudSessionInterface<InepTest>

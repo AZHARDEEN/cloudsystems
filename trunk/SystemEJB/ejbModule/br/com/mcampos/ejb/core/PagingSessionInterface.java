@@ -2,7 +2,7 @@ package br.com.mcampos.ejb.core;
 
 import javax.validation.constraints.NotNull;
 
-import br.com.mcampos.utils.dto.PrincipalDTO;
+import br.com.mcampos.sysutils.dto.PrincipalDTO;
 
 public interface PagingSessionInterface<T> extends ReadOnlySessionInterface<T>
 {

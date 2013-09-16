@@ -4,9 +4,9 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.entity.inep.InepMedia;
-import br.com.mcampos.entity.inep.InepSubscription;
-import br.com.mcampos.entity.system.Media;
+import br.com.mcampos.jpa.inep.InepMedia;
+import br.com.mcampos.jpa.inep.InepSubscription;
+import br.com.mcampos.jpa.system.Media;
 
 /**
  * Session Bean implementation class InepMediaSessionBean
