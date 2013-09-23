@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<div xmlns="http://www.zkoss.org/2005/zul" style="margin-top: 10px" >
-    Continue navegando em nossa <toolbarbutton href="index.zul" label="Página Inicial" image="img/icontexto-webdev-home-032x032.png" />.
-</div>

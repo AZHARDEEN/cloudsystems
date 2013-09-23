@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<zk xmlns="http://www.zkoss.org/2005/zul">
-    <window width="100%" height="100%" closable="true" border="none" title="Cadastro de Tipos de Endereços"
-            apply="br.com.mcampos.web.controller.tables.AddressTypeController" fulfill="=/templates/simple_table.zul">
-    </window>
-</zk>

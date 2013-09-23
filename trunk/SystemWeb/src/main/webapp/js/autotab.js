@@ -1,1 +1,0 @@
-jQuery.fn.autotab=function(){jQuery(this).keyup(function(e){switch(e.keyCode){case 9:return false;case 16:return false;case 20:return false;default:var maxlength=jQuery(this).attr('maxlength');var inputlength=jQuery(this).val().length;if(inputlength>=maxlength){jQuery(this).next('input[type="text"]').focus();}}});};
