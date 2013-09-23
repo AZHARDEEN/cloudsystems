@@ -31,7 +31,7 @@ public abstract class BaseDBController<BEAN extends BaseSessionInterface> extend
 	{
 		try {
 			if ( this.session == null )
-				this.session = (BEAN) ServiceLocator.getInstance( ).getRemoteSession( this.persistentClass, ServiceLocator.ejbName[ 0 ] );
+				this.session = (BEAN) ServiceLocator.getInstance( ).getRemoteSession( this.persistentClass, ServiceLocator.EJB_NAME[ 0 ] );
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );

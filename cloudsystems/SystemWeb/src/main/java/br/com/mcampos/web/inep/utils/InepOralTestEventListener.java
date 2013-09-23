@@ -40,7 +40,7 @@ public class InepOralTestEventListener implements EventListener<Event>
 	{
 		try {
 			if ( session == null )
-				session = (InepOralFacade) ServiceLocator.getInstance( ).getRemoteSession( InepOralFacade.class, ServiceLocator.ejbName[ 0 ] );
+				session = (InepOralFacade) ServiceLocator.getInstance( ).getRemoteSession( InepOralFacade.class, ServiceLocator.EJB_NAME[ 0 ] );
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );

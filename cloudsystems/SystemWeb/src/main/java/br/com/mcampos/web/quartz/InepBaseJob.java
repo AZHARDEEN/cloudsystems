@@ -40,7 +40,7 @@ public abstract class InepBaseJob implements Serializable, Job
 	{
 		try {
 			if ( session == null )
-				session = (InepTestSession) ServiceLocator.getInstance( ).getRemoteSession( InepTestSession.class, ServiceLocator.ejbName[ 0 ] );
+				session = (InepTestSession) ServiceLocator.getInstance( ).getRemoteSession( InepTestSession.class, ServiceLocator.EJB_NAME[ 0 ] );
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );

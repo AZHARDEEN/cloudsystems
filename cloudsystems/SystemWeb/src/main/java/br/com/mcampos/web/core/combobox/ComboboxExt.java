@@ -102,7 +102,7 @@ public abstract class ComboboxExt<BEAN, DATA> extends Combobox implements Cookie
 	{
 		try {
 			if ( this.session == null )
-				this.session = ( (BEAN) ServiceLocator.getInstance( ).getRemoteSession( this.persistentClass, ServiceLocator.ejbName[ 0 ] ) );
+				this.session = ( (BEAN) ServiceLocator.getInstance( ).getRemoteSession( this.persistentClass, ServiceLocator.EJB_NAME[ 0 ] ) );
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );

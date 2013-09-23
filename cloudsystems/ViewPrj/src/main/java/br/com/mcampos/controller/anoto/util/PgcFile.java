@@ -157,7 +157,7 @@ public class PgcFile implements Serializable, Runnable
 	private UploadFacade getRemoteSession( )
 	{
 		try {
-			return (UploadFacade) ServiceLocator.getInstance( ).getRemoteSession( UploadFacade.class, ServiceLocator.ejbName[ 0 ] );
+			return (UploadFacade) ServiceLocator.getInstance( ).getRemoteSession( UploadFacade.class, ServiceLocator.EJB_NAME[ 0 ] );
 		}
 		catch ( Exception e ) {
 			throw new NullPointerException( "Invalid EJB Session (possible null)" );

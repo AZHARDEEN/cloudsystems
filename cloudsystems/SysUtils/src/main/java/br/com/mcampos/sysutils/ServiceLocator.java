@@ -17,7 +17,7 @@ public final class ServiceLocator
 	private InitialContext context = null;
 	private final Map<String, Object> cache;
 
-	public static final String[ ] ejbName = new String[ ] { "SystemEJB", "EjbPrj" };
+	public static final String[ ] EJB_NAME = new String[ ] { "SystemEJB", "EjbPrj" };
 
 	private String appName;
 	private String moduleName;

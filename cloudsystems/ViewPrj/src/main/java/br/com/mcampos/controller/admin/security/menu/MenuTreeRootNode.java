@@ -45,7 +45,7 @@ public class MenuTreeRootNode extends SimpleTreeNode implements Serializable
 	private MenuFacade getRemoteSession( )
 	{
 		try {
-			return (MenuFacade) ServiceLocator.getInstance( ).getRemoteSession( MenuFacade.class, ServiceLocator.ejbName[ 1 ] );
+			return (MenuFacade) ServiceLocator.getInstance( ).getRemoteSession( MenuFacade.class, ServiceLocator.EJB_NAME[ 1 ] );
 		}
 		catch ( Exception e ) {
 			throw new NullPointerException( "Invalid EJB Session (possible null)" );

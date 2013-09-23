@@ -301,7 +301,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	{
 		try {
 			if ( inepSession == null )
-				inepSession = (InepSession) ServiceLocator.getInstance( ).getRemoteSession( InepSession.class, ServiceLocator.ejbName[ 0 ] );
+				inepSession = (InepSession) ServiceLocator.getInstance( ).getRemoteSession( InepSession.class, ServiceLocator.EJB_NAME[ 0 ] );
 		}
 		catch ( NamingException e ) {
 			logger.error( "getInepSession", e );

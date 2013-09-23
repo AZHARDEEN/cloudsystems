@@ -29,7 +29,7 @@ public abstract class BeanSession<BEAN> implements BeanSessonInterface<BEAN>
 	{
 		try {
 			if ( this.session == null ) {
-				Object obj = ServiceLocator.getInstance( ).getRemoteSession( this.persistentClass, ServiceLocator.ejbName[ 0 ] );
+				Object obj = ServiceLocator.getInstance( ).getRemoteSession( this.persistentClass, ServiceLocator.EJB_NAME[ 0 ] );
 				this.session = (BEAN) obj;
 			}
 		}

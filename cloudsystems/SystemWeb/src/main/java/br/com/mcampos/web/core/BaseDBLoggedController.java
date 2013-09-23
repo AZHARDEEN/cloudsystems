@@ -91,7 +91,7 @@ public abstract class BaseDBLoggedController<BEAN extends BaseSessionInterface> 
 		try {
 			if ( this.collaboratorSession == null )
 				this.collaboratorSession = (CollaboratorSession) ServiceLocator.getInstance( ).getRemoteSession( CollaboratorSession.class,
-						ServiceLocator.ejbName[ 0 ] );
+						ServiceLocator.EJB_NAME[ 0 ] );
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );
