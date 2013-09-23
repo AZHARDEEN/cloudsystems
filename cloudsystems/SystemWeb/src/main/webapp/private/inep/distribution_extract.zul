@@ -1,0 +1,73 @@
+<?page title="Extrato da Situação da Distribuição" contentType="text/html;charset=UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+    <window width="100%" height="100%" closable="true" border="none" title="Extrato da Situação das Tarefas" 
+    	apply = "br.com.mcampos.web.inep.controller.DistributionExtractController" >
+		<div width="100%" height="62px" align="Center" fulfill="=/private/inep/inep_logo.zul" />
+    	<style>
+			.z-grid-autopaging .z-row-cnt {
+			    height:15px;
+			    overflow: hidden;
+			}
+    	</style>
+    	<style>
+			tr.oddRow td.z-row-inner, tr.oddRow {
+				background-color: background-color:rgba(0,0,255,1);
+			}
+    	</style>
+		<hlayout sclass="z-valign-middle" >
+			<label value="Evento"/>
+			<combobox id="comboEvent" readonly="true" hflex="true"/>
+		</hlayout>
+    	<separator orient="horizontal" />
+		<grid mold="paging" autopaging="true" vflex="true" emptyMessage="Não existem item para mostrar" id="dataGrid" oddRowSclass="oddRow">
+		    <auxhead>
+		        <auxheader label="Inscrição" align="left" rowspan="2"/>
+		        <auxheader label="Tarefa 1" colspan="4" align="center"/>
+		        <auxheader label="Tarefa 2" colspan="4" align="center"/>
+		        <auxheader label="Tarefa 3" colspan="4" align="center"/>
+		        <auxheader label="Tarefa 4" colspan="4" align="center"/>
+		        <auxheader label="Nota Final" align="center"  rowspan="2"/>
+		    </auxhead>
+		    <auxhead>
+		        <auxheader label="Nota 1" align="center"/>
+		        <auxheader label="Nota 2" align="center"/>
+		        <auxheader label="Revisão" align="center"/>
+		        <auxheader label="Final" align="center"/>
+		        <auxheader label="Nota 1" align="center"/>
+		        <auxheader label="Nota 2" align="center"/>
+		        <auxheader label="Revisão" align="center"/>
+		        <auxheader label="Final" align="center"/>
+		        <auxheader label="Nota 1" align="center"/>
+		        <auxheader label="Nota 2" align="center"/>
+		        <auxheader label="Revisão" align="center"/>
+		        <auxheader label="Final" align="center"/>
+		        <auxheader label="Nota 1" align="center"/>
+		        <auxheader label="Nota 2" align="center"/>
+		        <auxheader label="Revisão" align="center"/>
+		        <auxheader label="Final" align="center"/>
+		    </auxhead>
+		    <columns visible = "false" >
+		        <column label="Nota 1" align="center" width="150px"/>
+		        <column label="Nota 1" align="center"/>
+		        <column label="Nota 2" align="center"/>
+		        <column label="Revisão" align="center"/>
+		        <column label="Final" align="center"/>
+		        <column label="Nota 1" align="center"/>
+		        <column label="Nota 2" align="center"/>
+		        <column label="Revisão" align="center"/>
+		        <column label="Final" align="center"/>
+		        <column label="Nota 1" align="center"/>
+		        <column label="Nota 2" align="center"/>
+		        <column label="Revisão" align="center"/>
+		        <column label="Final" align="center"/>
+		        <column label="Nota 1" align="center"/>
+		        <column label="Nota 2" align="center"/>
+		        <column label="Revisão" align="center"/>
+		        <column label="Final" align="center"/>
+		        <column label="Nota 1" align="center"/>
+		    </columns>
+		    <rows >
+		    </rows>
+		</grid>
+	</window>
+</zk>

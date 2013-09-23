@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div align="center" id="rootParent" apply="br.com.mcampos.controller.LoginController">
+        <panel id="titleLogin" border="normal" title="##" width="450px">
+            <panelchildren>
+                <div align="left">
+                    <grid>
+                        <columns>
+                            <column width="23%"/>
+                            <column/>
+                        </columns>
+                        <rows>
+                            <row spans="2" align="center">
+                                <label id="loginLabelMsg" value="##"/>
+                            </row>
+                            <row>
+                                <label id="labelIdentification" value="##"/>
+                                <textbox id="identification" width="98%" maxlength="128"/>
+                            </row>
+                            <row>
+                                <label id="labelPassword" value="##"/>
+                                <textbox id="password" type="password" width="98%" maxlength="16"/>
+                            </row>
+                        </rows>
+                    </grid>
+                    <separator/>
+                    <div fulfill="=/resources/captcha.zul"></div>
+                    <separator/>
+                    <div fulfill="=/resources/submit_cancel.zul"></div>
+                    <separator/>
+                    <div align="right">
+                        <toolbarbutton label="##?" id="cmdForgotPassword"/>
+                    </div>
+                </div>
+            </panelchildren>
+        </panel>
+    </div>
+</zk>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+    <window width="100%" height="100%" id="rootParent" closable="true" border="none" title = "Cadastro de Taferas do sistema"
+    	apply="br.com.mcampos.web.controller.admin.security.TaskController" >
+        <borderlayout id="borderLayout">
+            <west size="40%" fulfill="=/private/admin/security/tree_template.zul">
+            </west>
+            <center autoscroll="false" flex="true">
+                <!-- Por favor, nao mude o id desta div -->
+                <tabbox>
+                    <tabs>
+                        <tab id="tabData" label="Informações da Tarefa Selecionada" />
+                        <tab id="tabMenu" label="Lista Geral de Menus" />
+                        <tab id="tabRole" label="Lista Geral de Roles" />
+                    </tabs>
+                    <tabpanels>
+                        <tabpanel >
+                            <div id="recordDetail">
+                                <!-- view mode -->
+                                <div id="recordView" width="1">
+                                    <grid width="100%">
+                                        <columns>
+                                            <column align="right" width="30%"/>
+                                            <column align="left"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label id="labelCode" value="Código"/>
+                                                <label id="recordId"/>
+                                            </row>
+                                            <row>
+                                                <label id="labelDescription" value="Descrição"/>
+                                                <label id="recordDescription"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+							            <div id="div_crud_buttons" fulfill="=/templates/crud_buttons.zul"></div>
+                                    <separator />
+                                    <tabbox id="associationTab">
+                                        <tabs>
+                                            <tab id="tabFreeMenus" label="Lista de Menus Associados à Tarefa"/>
+                                            <tab id="tabFreeRoles" label="Lista de Roles Associadas à Tarefa"/>
+                                        </tabs>
+                                        <tabpanels>
+                                            <tabpanel>
+                                                <toolbar >
+                                                    <toolbarbutton id="removeMenu" image="/img/icontexto-webdev-remove-016x016.png" label="##" disabled="true"/>
+                                                </toolbar>
+                                                <listbox fixedLayout="true" id="listMenu" height="300px">
+                                                    <listhead sizable="true">
+                                                        <listheader id="listHeaderMenuId" align="left" label="Id" sort="auto"
+                                                                    width="10%"/>
+                                                        <listheader id="listHeaderMenuDesc" align="left" label="Descrição" sort="auto"
+                                                                    width="20%"/>
+                                                        <listheader id="listHeaderMenuUrl" align="left" label="URL" sort="auto"
+                                                                    width="50%"/>
+                                                    </listhead>
+                                                </listbox>
+                                            </tabpanel>
+                                            <tabpanel>
+                                                <toolbar >
+                                                    <toolbarbutton id="removeRole" image="/img/icontexto-webdev-remove-016x016.png" label="##" disabled="true"/>
+                                                </toolbar>
+                                                <listbox fixedLayout="true" id="listRole" height="300px">
+                                                    <listhead sizable="true">
+                                                        <listheader id="listHeaderRoleId" align="left" label="Cód" sort="auto"
+                                                                    width="15%"/>
+                                                        <listheader id="listHeaderRoleDesc" align="left" label="Descrição" sort="auto"
+                                                                    width="50%"/>
+                                                    </listhead>
+                                                </listbox>
+                                            </tabpanel>
+                                        </tabpanels>
+                                    </tabbox>
+								    <menupopup id="listPopupRemoveItem">
+								    	<menuitem label="Remover Tarefa Associada" id="removeTaskItem" image="/img/icontexto-webdev-remove-016x016.png" />
+								    </menupopup>
+                                </div>
+                                <!-- Por favor, nao mude o id desta div -->
+                                <div id="recordEdit" visible="false" droppable="true">
+                                    <grid width="100%" fixedLayout="true">
+                                        <columns>
+                                            <column align="right" width="30%"/>
+                                            <column align="left" width="70%"/>
+                                        </columns>
+                                        <rows>
+                                            <row>
+                                                <label id="labelEditCode" value="##"/>
+                                                <intbox id="editId" width="100px" constraint="no negative"/>
+                                            </row>
+                                            <row>
+                                                <label id="labelEditDescription" value="##"/>
+                                                <textbox id="editDescription" width="99%"/>
+                                            </row>
+                                        </rows>
+                                    </grid>
+                                    <separator/>
+						            <div id="div_submit_cancel" fulfill="=/templates/save_cancel.zul"></div>
+                                </div>
+                            </div>
+                        </tabpanel>
+                        <tabpanel>
+                            <div >
+                                <tree fixedLayout="true" id="treeMenus" width="100%" height="100%">
+                                    <treecols sizable="true">
+                                        <treecol label="Descrição" width="1"/>
+                                    </treecols>
+                                    <treechildren id="rootTreeMenu"></treechildren>
+                                </tree>
+                            </div>
+                        </tabpanel>
+                        <tabpanel>
+                            <div >
+                                <tree fixedLayout="true" id="treeRoles" width="100%" height="100%" mold="paging" pagingPosition="top">
+                                    <treecols sizable="true">
+                                        <treecol label="Descricção" width="1" />
+                                    </treecols>
+                                    <treechildren id="rootTreeRole"></treechildren>
+                                </tree>
+                            </div>
+                        </tabpanel>
+                    </tabpanels>
+                </tabbox>
+            </center>
+        </borderlayout>
+    </window>
+</zk>

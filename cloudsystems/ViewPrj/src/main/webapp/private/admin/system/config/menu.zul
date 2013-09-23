@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.admin.security.menu.MenuController">
+        <borderlayout id="borderLayout">
+            <north flex="true" style="background: #D0DEF0">
+                <vbox align="center">
+                    <label style="font-size:20px;color:#0C7A9A" value="Manutenção - Menu do Sistema"/>
+                </vbox>
+            </north>
+            <west size="40%" splittable="true" autoscroll="false" title="Hierarquia do Menu">
+                <!-- Por favor, nao mude o id deste TreeControl -->
+                <tree id="treeList" zclass="z-dottree" vflex="true">
+                    <treecols sizable="true">
+                        <treecol label="Menu" width="80%"/>
+                        <treecol label="Seq" width="20%"/>
+                    </treecols>
+                    <treechildren id="rootTree"></treechildren>
+                </tree>
+            </west>
+            <center autoscroll="true" flex="true">
+                <div>
+                    <tabbox>
+                        <tabs>
+                            <tab label="Detalhes"/>
+                            <tab label="Tarefas"/>
+                        </tabs>
+                        <tabpanels>
+                            <tabpanel>
+                                <div fulfill="=/private/admin/system/config/menu_crud.zul"></div>
+                            </tabpanel>
+                            <tabpanel>
+                                <div>
+                                    <tree fixedLayout="true" id="treeTasks" width="100%" height="100%" zclass="z-dottree">
+                                        <treecols sizable="true">
+                                            <treecol label="Tarefa" width="1"/>
+                                        </treecols>
+                                        <treechildren id="rootTreeTasks"></treechildren>
+                                    </tree>
+                                </div>
+                            </tabpanel>
+                        </tabpanels>
+                    </tabbox>
+                    <!--
+                    <div >
+                        <groupbox id="gb" mold="3d" width="100%">
+                            <caption label="Outras Opções"/>
+                            <button id="cmdTasks" label="Associar Tarefas" image="/img/icontexto-webdev-site-map-016x016.png"
+                                    tooltiptext="Vincula Tarefas ao Menu"/>
+                        </groupbox>
+                    </div>
+                    -->
+                </div>
+            </center>
+        </borderlayout>
+    </div>
+</zk>

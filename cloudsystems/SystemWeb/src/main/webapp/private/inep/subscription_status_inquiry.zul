@@ -1,0 +1,153 @@
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<window width="100%" height="100%" closable="true" border="none" title="Consulta Status Inscrição"
+		apply="br.com.mcampos.web.inep.controller.SubscriptionStatus">
+		<div align="center" width="100%">
+			<grid width="800px">
+				<columns>
+					<column width="25%" />
+					<column width="75%" />
+				</columns>
+				<rows>
+					<row>
+						<label value="Evento: " />
+						<hlayout>
+							<combobox id="comboEvent" readonly="true" width="400px" />
+						</hlayout>
+					</row>
+					<row>
+						<label value="Inscrição: " />
+						<bandbox maxlength="32" id="subscription" width="200px" mold="rounded">
+							<bandpopup>
+								<listbox height="250px" width="300px" mold="paging" autopaging="true" id="list">
+									<listhead>
+										<listheader label="Inscrições" />
+									</listhead>
+								</listbox>
+							</bandpopup>
+						</bandbox>
+					</row>
+				</rows>
+			</grid>
+		</div>
+		<style dynamic="true">
+			.varianceStyle { background-color:rgba(255,0,0,0.1); } .revisedStyle { background-color:rgba(0,255,0,0.1); } .tasksStyle {
+			background-color:rgba(0,0,255,0.1); }
+		</style>
+		<tabbox>
+			<tabs>
+				<tab label="Distribuição da Parte Escrita" />
+				<tab label="Provas da Parte Escrita" />
+				<tab label="Notas da Parte Oral" />
+				<tab label="Tarefas" />
+				<tab label="Operações" id="tabOper" />
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<listbox pagingPosition="top" autopaging="true" mold="paging" rows="8" emptyMessage="Não existem informações da inscrição" id="listDetail">
+						<listhead>
+							<listheader label="Tarefa" width="50px" align="Center" />
+							<listheader label="Corretor" width="250px" align="Left" />
+							<listheader label="Id" width="30px" align="Center" />
+							<listheader label="Status" width="180px" align="Left" />
+							<listheader label="Nota" width="35px" align="Center" />
+							<listheader label="Distriuído Em" width="150px" align="Left" />
+							<listheader label="Última Atual." width="150px" align="Left" />
+						</listhead>
+					</listbox>
+				</tabpanel>
+				<tabpanel vflex="true" height="100%">
+					<div id="divFrame" height="100%" width="100%">
+						<combobox id="cmbTask" width="1" visible="false" />
+						<iframe width="100%" height="100%" id="framePdf"></iframe>
+					</div>
+				</tabpanel>
+				<tabpanel>
+					<vlayout>
+						<grid hflex="true" vflex="true">
+							<columns>
+								<column width="25%" />
+								<column width="75%" />
+							</columns>
+							<rows>
+								<row>
+									<label value="Posto: " />
+									<label id="station" />
+								</row>
+								<row>
+									<label value="Nota do Entrevistador: " />
+									<label id="interviewerGrade" />
+								</row>
+								<row>
+									<label value="Nota do Observador: " />
+									<label id="observerGrade" />
+								</row>
+								<row>
+									<label value="Nota do Posto: " />
+									<label id="stationGrade" />
+								</row>
+								<row>
+									<label value="Nota de Reavaliação: " />
+									<label id="agreementGrade" />
+								</row>
+								<row>
+									<label value="Nota de Consenso: " />
+									<label id="agreement2Grade" />
+								</row>
+							</rows>
+						</grid>
+						<separator />
+						<listbox id="lstOralRevisor" rows="7">
+							<listhead>
+								<listheader label="Corretor" width="250px" align="Left" />
+								<listheader label="Id" width="30px" align="Center" />
+								<listheader label="Status" width="150px" align="Left" />
+								<listheader label="Nota" width="60px" align="Left" />
+							</listhead>
+						</listbox>
+					</vlayout>
+				</tabpanel>
+				<tabpanel>
+					<grid hflex="true" vflex="true">
+						<columns>
+							<column width="25%" />
+							<column width="75%" />
+						</columns>
+						<rows>
+							<row>
+								<label value="Tarefa 1:" />
+								<label id="task1" />
+							</row>
+							<row>
+								<label value="Tarefa 2:" />
+								<label id="task2" />
+							</row>
+							<row>
+								<label value="Tarefa 3:" />
+								<label id="task3" />
+							</row>
+							<row>
+								<label value="Tarefa 4:" />
+								<label id="task4" />
+							</row>
+						</rows>
+					</grid>
+				</tabpanel>
+				<tabpanel>
+					<div align="Center" width="350px">
+						<groupbox>
+							<caption>Trocar Provas entre Tarefas</caption>
+							<vlayout>
+								<listbox rows="4" id="swapTaskListbox" multiple="true" checkmark="true"></listbox>
+								<hlayout>
+									<button id="swapTask" label="Trocar as Provas" />
+									<button id="resetDistribution" label="Reinicialiar Tarefa" tooltiptext="Permite uma nova correção" />
+								</hlayout>
+							</vlayout>
+						</groupbox>
+					</div>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+	</window>
+</zk>

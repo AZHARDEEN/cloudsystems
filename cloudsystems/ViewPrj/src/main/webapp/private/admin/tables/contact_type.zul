@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.admin.tables.ContactTypeController">
+        <borderlayout id="borderLayout">
+            <north flex="true" style="background: #D0DEF0">
+                <vbox align="center">
+                    <label style="font-size:20px;color:#0C7A9A" value="Manutenção - Tipo de Contato"/>
+                </vbox>
+            </north>
+            <west size="50%" splittable="true" flex="true">
+                <!-- Por favor, nao mude o id desta listbox -->
+                <listbox fixedLayout="true" id="listboxRecord">
+                    <listhead sizable="true">
+                        <listheader id="recordListIdSort" align="left" label="Código" sort="auto" width="10%"/>
+                        <listheader id="recordListDescSort" align="left" label="Descrição" sort="auto" width="55%"/>
+                        <listheader id="recordListMask" align="left" label="Máscara" width="35%"/>
+                    </listhead>
+                </listbox>
+            </west>
+            <center>
+                <!-- Por favor, nao mude o id desta div -->
+                <div id="recordDetail">
+                    <!-- view mode -->
+                    <div id="recordView" width="100%">
+                        <grid width="100%">
+                            <columns>
+                                <column align="right" width="20%"/>
+                                <column align="left" width="80%"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    Código
+                                    <label id="recordId" value=""/>
+                                </row>
+                                <row>
+                                    Descrição
+                                    <label id="recordDescription"/>
+                                </row>
+                                <row>
+                                    Máscara
+                                    <label id="recordMask"/>
+                                </row>
+                                <row>
+                                    Aceita Duplicação
+                                    <checkbox id="recordDuplicate" disabled="true"/>
+                                </row>
+                            </rows>
+                        </grid>
+                        <separator/>
+                        <div align="center">
+                            <hbox>
+                                <!-- Por favor, nao mude o id dos botoes -->
+                                <button id="cmdCreate" label="Novo" image="/img/icontexto-webdev-add-032x032.png"
+                                        tooltiptext="Adiciona um novo registro"/>
+                                <button id="cmdUpdate" label="Editar" image="/img/icontexto-webdev-alert-032x032.png"
+                                        tooltiptext="Altera o registro selecionado"/>
+                                <button id="cmdDelete" label="Apagar" image="/img/icontexto-webdev-remove-032x032.png"
+                                        tooltiptext="Exclui o registro selecionado"/>
+                                <separator/>
+                                <button id="cmdRefresh" label="Atualizar" image="/img/icontexto-webdev-reload-032x032.png"
+                                        tooltiptext="Atualiza a lista de registros"/>
+                            </hbox>
+                        </div>
+                    </div>
+                    <separator/>
+                    <!-- Por favor, nao mude o id desta div -->
+                    <div id="recordEdit" visible="false">
+                        <grid width="100%" fixedLayout="true">
+                            <columns>
+                                <column align="right" width="20%"/>
+                                <column align="left" width="80%"/>
+                            </columns>
+                            <rows>
+                                <row>
+                                    Código
+                                    <intbox id="editId" width="100px" constraint="no negative, no zero"/>
+                                </row>
+                                <row>
+                                    Descrição
+                                    <textbox id="editDescription" width="99%" constraint="no empty"/>
+                                </row>
+                                <row>
+                                    Máscara
+                                    <textbox id="editMask" width="99%" value=""/>
+                                </row>
+                                <row>
+                                    Permite Duplicação
+                                    <checkbox id="editDuplicate" width="99%"/>
+                                </row>
+                            </rows>
+                        </grid>
+                        <separator/>
+                        <div align="center">
+                            <hbox>
+                                <!-- Por favor, nao mude o id dos botoes -->
+                                <button id="cmdSave" label="Salvar" image="/img/icontexto-webdev-ok-032x032.png"/>
+                                <button id="cmdCancel" label="Cancelar" image="/img/icontexto-webdev-cancel-032x032.png"/>
+                            </hbox>
+                        </div>
+                    </div>
+                </div>
+            </center>
+        </borderlayout>
+    </div>
+</zk>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Created by ZK Studio
+-->
+<zk>
+    <!-- Turn on if you want to debug JavaScript.
+		Once turned on, the uncompressed JavaScript files will be loaded.
+	-->
+    <client-config>
+        <debug-js>false</debug-js>
+    </client-config>
+    <session-config>
+        <!-- Turn on the following if you want a different timeout
+			Note: The unit is seconds (while that of web.xml is minute)
+		-->
+        <session-timeout>600</session-timeout>
+        <!-- Turn on the following if you want to reset the session-timeout
+		counter when receiving onTimer, like any other request
+		In other words, the session is never timeoout if the desktop has
+		a timer.
+		<timer-keep-alive>true</timer-keep-alive>
+		-->
+    </session-config>
+    <library-property>
+        <name>org.zkoss.zul.include.mode</name>
+        <value>auto</value>
+    </library-property>
+    <library-property>
+        <name>org.zkoss.zul.listbox.rod</name>
+        <value>true</value>
+    </library-property>
+    <!--
+    <library-property>
+        <name>org.zkoss.zul.theme.fontFamilyC</name>
+        <value>Courier New</value>
+    </library-property>
+    <library-property>
+        <name>org.zkoss.zul.theme.fontFamilyT</name>
+        <value>Courier New</value>
+    </library-property>
+    -->
+    <device-config>
+        <device-type>ajax</device-type>
+        <timeout-uri>/index.zul</timeout-uri>
+        <!-- An empty URL can cause the browser to reload the same URL -->
+    </device-config>
+    <!-- Uncomment if you want to embed JavaScript codes and any other
+	tags to be generated inside HTML HEAD.
+	-->
+    <device-config>
+        <device-type>ajax</device-type>
+        <embed>
+            <![CDATA[
+                <script type="text/javascript">
+                </script>
+            ]]>
+        </embed>
+    </device-config>
+	<listener>
+		<description>[Optional] Monitor the statistic</description>
+		<listener-class>org.zkoss.zk.ui.util.Statistic</listener-class>
+	</listener>
+    <system-config>
+        <disable-event-thread>true</disable-event-thread>
+    	<id-generator-class>br.com.mcampos.zkutils.SimpleIDGenerator</id-generator-class>
+	</system-config>
+	<library-property>
+    	<name>org.zkoss.composite.packageScan</name>
+    	<value>br.com.mcampos.web.core.dbwidgets</value>
+	</library-property>
+	<language-config>
+	    <addon-uri>/WEB-INF/lang-addon.xml</addon-uri>
+	</language-config>
+	
+
+		
+    <!--#########          Performace Monitor          ##########-->
+	<listener>
+        <description>ZK performance monitor</description>
+        <listener-class>org.zkoss.poc.gazer.ctrl.PfmMonitor</listener-class>
+	</listener>
+	<listener>
+        <description>ZK AuInfoInterceptor</description>
+        <listener-class>org.zkoss.poc.gazer.ctrl.AuInfoInterceptor</listener-class>
+	</listener>
+	<library-property>
+		<name>org.zkoss.monitor.cleartime</name>
+		<value>10000</value>
+	</library-property>
+	
+</zk>
+
