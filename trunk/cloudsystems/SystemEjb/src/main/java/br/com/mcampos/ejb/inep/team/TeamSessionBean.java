@@ -136,8 +136,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		if ( auth != null && event != null ) {
 			return getRevisorSession( ).get( event, auth );
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 	@Override
@@ -256,12 +257,14 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			else {
 				double grade = 0.0;
 				int n = other.getNota( );
-				if ( n > 5 )
+				if ( n > 5 ) {
 					n = 0;
+				}
 				grade += n;
 				n = entity.getNota( );
-				if ( n > 5 )
+				if ( n > 5 ) {
 					n = 0;
+				}
 				grade += n;
 				grade /= 2.0;
 				testSession.setGrade( other.getTest( ), grade );
@@ -320,8 +323,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		if ( auth != null ) {
 			return taskSession.getEvents( auth );
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 	@Override
@@ -334,8 +338,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			return null;
 		}
 		for ( InepMedia inepMedia : merged.getTest( ).getSubscription( ).getMedias( ) ) {
-			if ( inepMedia.getTask( ) == null )
+			if ( inepMedia.getTask( ) == null ) {
 				continue;
+			}
 			if ( inepMedia.getTask( ).equals( merged.getTest( ).getTask( ).getId( ).getId( ) ) ) {
 				obj = inepMedia.getMedia( ).getObject( );
 				break;
@@ -715,8 +720,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			return null;
 		}
 		for ( InepMedia inepMedia : merged.getSubscription( ).getMedias( ) ) {
-			if ( inepMedia.getTask( ) == null )
+			if ( inepMedia.getTask( ) == null ) {
 				continue;
+			}
 			if ( inepMedia.getTask( ).equals( t.getId( ).getId( ) ) ) {
 				obj = inepMedia.getMedia( ).getObject( );
 				break;
@@ -748,8 +754,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	public void resetTasks( PrincipalDTO auth, InepSubscription s, List<InepTask> tasks )
 	{
 		InepSubscription merged = subscriptionSession.get( s.getId( ) );
-		if ( merged == null )
+		if ( merged == null ) {
 			throw new InvalidParameterException( "Não existe a inscrição" );
+		}
 		for ( InepTask task : tasks ) {
 			InepTestPK key = new InepTestPK( task, merged );
 			InepTest test = testSession.get( key );
@@ -762,11 +769,13 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 	private void resetTest( PrincipalDTO auth, InepTest test )
 	{
-		if ( test == null )
+		if ( test == null ) {
 			return;
+		}
 		List<InepDistribution> list = distributionSession.findByNamedQuery( InepDistribution.getAllFromTest, test );
-		if ( SysUtils.isEmpty( list ) )
+		if ( SysUtils.isEmpty( list ) ) {
 			return;
+		}
 		for ( InepDistribution item : list ) {
 			switch ( item.getStatus( ).getId( ) ) {
 			case 2:
@@ -783,8 +792,9 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 				}
 				break;
 			case 4:
-				if ( item.getRevisor( ).isCoordenador( ).equals( true ) )
+				if ( item.getRevisor( ).isCoordenador( ).equals( true ) ) {
 					distributionSession.remove( auth, item.getId( ) );
+				}
 				else {
 					item.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
 					item.setNota( null );
@@ -800,13 +810,16 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		InepMedia m1 = null, m2 = null;
 		InepSubscription merged = subscriptionSession.get( s.getId( ) );
-		if ( merged == null )
+		if ( merged == null ) {
 			throw new InvalidParameterException( "Não existe a inscrição" );
+		}
 		for ( InepMedia media : merged.getMedias( ) ) {
-			if ( t1.getId( ).getId( ).equals( media.getTask( ) ) )
+			if ( t1.getId( ).getId( ).equals( media.getTask( ) ) ) {
 				m1 = media;
-			if ( t2.getId( ).getId( ).equals( media.getTask( ) ) )
+			}
+			if ( t2.getId( ).getId( ).equals( media.getTask( ) ) ) {
 				m2 = media;
+			}
 		}
 		Integer aux;
 		aux = m1.getTask( );

@@ -33,9 +33,20 @@ public class InepOralTeamDTO implements Serializable, Comparable<InepOralTeamDTO
 
 	public Integer getTests( )
 	{
-		if ( tests == null )
+		if ( tests == null ) {
 			tests = 0;
+		}
 		return tests;
+	}
+
+	@Override
+	public int hashCode( )
+	{
+		final int prime = 31;
+		int hash = 17;
+		hash = hash * prime + getTests( ).hashCode( );
+		hash = hash * prime + getRevisor( ).getId( ).hashCode( );
+		return hash;
 	}
 
 	public void setTests( Integer tests )

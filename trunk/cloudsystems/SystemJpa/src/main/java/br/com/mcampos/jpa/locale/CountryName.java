@@ -22,17 +22,17 @@ public class CountryName implements Serializable
 
 	@Id
 	@Column( name = "ctr_code_ch", nullable = false, insertable = false, updatable = false )
-	private String countryId;
+	private String id;
 
 	@Id
 	@Column( name = "ctr_locale_ch", nullable = false, insertable = false, updatable = false )
-	private String localeCountryId;
+	private String localeId;
 
 	@Column( name = "ctr_alternate_name_ch" )
-	private String ctr_alternate_name_ch;
+	private String alternateName;
 
 	@Column( name = "ctr_name_ch", nullable = false )
-	private String ctr_name_ch;
+	private String name;
 
 	@ManyToOne
 	@JoinColumn( name = "ctr_locale_ch" )
@@ -46,44 +46,44 @@ public class CountryName implements Serializable
 	{
 	}
 
-	public String getCtr_alternate_name_ch( )
+	public String getAlternateName( )
 	{
-		return ctr_alternate_name_ch;
+		return alternateName;
 	}
 
-	public void setCtr_alternate_name_ch( String ctr_alternate_name_ch )
+	public void setAlternateName( String name )
 	{
-		this.ctr_alternate_name_ch = ctr_alternate_name_ch;
+		alternateName = name;
 	}
 
 	public String getCountryId( )
 	{
-		return countryId;
+		return id;
 	}
 
 	public void setCountryId( String ctr_code_ch )
 	{
-		countryId = ctr_code_ch;
+		id = ctr_code_ch;
 	}
 
 	public String getLocaleCountryId( )
 	{
-		return localeCountryId;
+		return localeId;
 	}
 
 	public void setLocaleCountryId( String ctr_locale_ch )
 	{
-		localeCountryId = ctr_locale_ch;
+		localeId = ctr_locale_ch;
 	}
 
 	public String getCtr_name_ch( )
 	{
-		return ctr_name_ch;
+		return name;
 	}
 
-	public void setCtr_name_ch( String ctr_name_ch )
+	public void setName( String ctr_name_ch )
 	{
-		this.ctr_name_ch = ctr_name_ch;
+		name = ctr_name_ch;
 	}
 
 	public Country getLocaleCountry( )
@@ -95,7 +95,7 @@ public class CountryName implements Serializable
 	{
 		localeCountry = country1;
 		if ( country1 != null ) {
-			localeCountryId = country1.getId( );
+			localeId = country1.getId( );
 		}
 	}
 
@@ -108,7 +108,7 @@ public class CountryName implements Serializable
 	{
 		country = country4;
 		if ( country4 != null ) {
-			countryId = country4.getId( );
+			id = country4.getId( );
 		}
 	}
 }

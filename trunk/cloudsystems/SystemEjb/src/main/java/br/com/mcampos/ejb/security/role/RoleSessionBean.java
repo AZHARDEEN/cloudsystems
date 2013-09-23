@@ -79,13 +79,13 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 
 	private void addTask( List<Task> tasks, Role entity )
 	{
-		for( Role item : entity.getChilds( ) )
+		for ( Role item : entity.getChilds( ) )
 		{
 			addTask( tasks, item );
 		}
-		for( Task task : entity.getTasks( ) )
+		for ( Task task : entity.getTasks( ) )
 		{
-			if( tasks.contains( task ) == false ) {
+			if ( tasks.contains( task ) == false ) {
 				tasks.add( task );
 			}
 		}
@@ -96,7 +96,7 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	public Role remove( PrincipalDTO auth, Serializable key )
 	{
 		Role toDelete = get( key );
-		if( toDelete == null ) {
+		if ( toDelete == null ) {
 			return toDelete;
 		}
 		removeChilds( auth, toDelete );
@@ -106,10 +106,10 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 
 	private void removeChilds( PrincipalDTO auth, Role entity )
 	{
-		for( Role item : entity.getChilds( ) ) {
+		for ( Role item : entity.getChilds( ) ) {
 			removeChilds( auth, item );
 			item.setParent( null );
-			for( Task task : getTaks( entity ) )
+			for ( Task task : getTaks( entity ) )
 			{
 				task.remove( entity );
 			}
@@ -122,7 +122,7 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	@Override
 	public Role add( PrincipalDTO auth, Role item, List<Task> tasks )
 	{
-		for( Task task : tasks ) {
+		for ( Task task : tasks ) {
 			add( auth, item, task );
 		}
 		return item;
@@ -132,7 +132,7 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	public Role add( PrincipalDTO auth, Role item, Task task )
 	{
 		Role merged = get( item.getId( ) );
-		if( merged != null )
+		if ( merged != null )
 		{
 			Task taskMerged = taskSession.get( task.getId( ) );
 			merged.add( taskMerged );
@@ -144,7 +144,7 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	public Role remove( PrincipalDTO auth, Role role, Task task )
 	{
 		Role merged = get( role.getId( ) );
-		if( merged != null )
+		if ( merged != null )
 		{
 			Task taskMerged = taskSession.get( task.getId( ) );
 			merged.remove( taskMerged );
@@ -155,16 +155,17 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	@Override
 	public List<Menu> getMenus( Role role ) throws ApplicationException
 	{
-		if( role != null ) {
+		if ( role != null ) {
 			List<Menu> menus = new ArrayList<Menu>( );
 			Role m = get( role.getId( ) );
-			if( m != null ) {
+			if ( m != null ) {
 				menuSession.addRoleToMenu( m, menus );
 			}
 			return menus;
 		}
-		else
+		else {
 			return Collections.emptyList( );
+		}
 	}
 
 	@Override

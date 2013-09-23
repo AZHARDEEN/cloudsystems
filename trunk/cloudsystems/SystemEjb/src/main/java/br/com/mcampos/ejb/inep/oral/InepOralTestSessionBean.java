@@ -45,10 +45,12 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 		if ( entity.getFinalGrade( ) != null && entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) ) {
 			subscriptionSession.setOralGrade( s, entity.getFinalGrade( ) );
 		}
-		if ( entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) )
+		if ( entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) ) {
 			entity.setVarianceStatus( 0 );
-		else
+		}
+		else {
 			entity.setVarianceStatus( 1 );
+		}
 	}
 
 	private InepSubscription getSubscription( InepOralTest test, boolean create )
@@ -75,20 +77,24 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 
 	private InepOralTest setStatus( InepOralTest newEntity )
 	{
-		if ( newEntity == null )
+		if ( newEntity == null ) {
 			return null;
+		}
 		if ( newEntity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) ) {
 			double grade1, grade2;
 
 			grade1 = newEntity.getInterviewGrade( ) != null ? newEntity.getInterviewGrade( ).doubleValue( ) : 0.0;
 			grade2 = newEntity.getObserverGrade( ) != null ? newEntity.getObserverGrade( ).doubleValue( ) : 0.0;
 			double variance = Math.abs( grade1 - grade2 );
-			if ( variance >= 1.5 )
+			if ( variance >= 1.5 ) {
 				newEntity.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
-			if ( grade1 >= 2.0 && grade2 < 2.0 )
+			}
+			if ( grade1 >= 2.0 && grade2 < 2.0 ) {
 				newEntity.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
-			if ( grade2 >= 2.0 && grade1 < 2.0 )
+			}
+			if ( grade2 >= 2.0 && grade1 < 2.0 ) {
 				newEntity.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+			}
 		}
 		return newEntity;
 	}

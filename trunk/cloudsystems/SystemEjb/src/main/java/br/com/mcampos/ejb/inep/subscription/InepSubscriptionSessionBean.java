@@ -85,8 +85,9 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 	public void setOralGrade( InepSubscription s, BigDecimal grade )
 	{
 		s.setOralGrade( grade );
-		if ( s.getWrittenGrade( ) == null )
+		if ( s.getWrittenGrade( ) == null ) {
 			return;
+		}
 		verifyVariance( s );
 	}
 
@@ -94,8 +95,9 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 	public void setWrittenGrade( InepSubscription s, BigDecimal grade )
 	{
 		s.setWrittenGrade( grade );
-		if ( s.getOralGrade( ) == null )
+		if ( s.getOralGrade( ) == null ) {
 			return;
+		}
 		verifyVariance( s );
 
 	}
@@ -105,12 +107,14 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 		double oral, written;
 		boolean bVariance = false;
 
-		if ( s.getOralGrade( ) == null || s.getWrittenGrade( ) == null )
+		if ( s.getOralGrade( ) == null || s.getWrittenGrade( ) == null ) {
 			return;
+		}
 		oral = s.getOralGrade( ).doubleValue( );
 		written = s.getWrittenGrade( ).doubleValue( );
-		if ( oral >= written )
+		if ( oral >= written ) {
 			return;
+		}
 		if ( oral < 2.0 && written >= 2.0 ) {
 			bVariance = true;
 		}
@@ -127,10 +131,12 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 			InepOralTest oralTest = oralTestSession.get( s );
 			if ( oralTest != null ) {
 				oralTest.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
-				if ( oralTest.getVarianceStatus( ).equals( 0 ) )
+				if ( oralTest.getVarianceStatus( ).equals( 0 ) ) {
 					oralTest.setVarianceStatus( 11 );
-				else
+				}
+				else {
 					oralTest.setVarianceStatus( oralTest.getVarianceStatus( ) + 10 );
+				}
 			}
 		}
 	}

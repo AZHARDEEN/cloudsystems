@@ -43,19 +43,20 @@ public class Country implements BasicEntityRenderer<Country>
 		return code3;
 	}
 
-	public void setCode3( String ctr_code3_ch )
+	public void setCode3( String param )
 	{
-		code3 = ctr_code3_ch;
+		code3 = param;
 	}
 
+	@Override
 	public String getId( )
 	{
 		return id;
 	}
 
-	public void setId( String ctr_code_ch )
+	public void setId( String param )
 	{
-		id = ctr_code_ch;
+		id = param;
 	}
 
 	public Byte[ ] getFlag( )
@@ -63,9 +64,9 @@ public class Country implements BasicEntityRenderer<Country>
 		return flag;
 	}
 
-	public void setFlag( Byte[ ] ctr_flag_bin )
+	public void setFlag( Byte[ ] bin )
 	{
-		flag = ctr_flag_bin;
+		flag = bin.clone( );
 	}
 
 	public Integer getNumericCode( )
@@ -73,9 +74,9 @@ public class Country implements BasicEntityRenderer<Country>
 		return numericCode;
 	}
 
-	public void setNumericCode( Integer ctr_num_code_in )
+	public void setNumericCode( Integer code )
 	{
-		numericCode = ctr_num_code_in;
+		numericCode = code;
 	}
 
 	@Override

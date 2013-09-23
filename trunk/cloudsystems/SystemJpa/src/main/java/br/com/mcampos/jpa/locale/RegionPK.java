@@ -8,50 +8,54 @@ public class RegionPK implements Serializable
 	private String countryId;
 	private Integer id;
 
-	public RegionPK()
+	public RegionPK( )
 	{
 	}
 
-	public RegionPK( String ctr_code_ch, Integer reg_id_in )
+	public RegionPK( String country, Integer region )
 	{
-		this.countryId = ctr_code_ch;
-		this.id = reg_id_in;
+		this.countryId = country;
+		this.id = region;
 	}
 
 	@Override
 	public boolean equals( Object other )
 	{
 		if ( other instanceof RegionPK ) {
-			final RegionPK otherRegionPK = ( RegionPK ) other;
-			final boolean areEqual = ( otherRegionPK.countryId.equals( this.countryId ) && otherRegionPK.id.equals( this.id ) );
-			return areEqual;
+			final RegionPK otherRegionPK = (RegionPK) other;
+			return ( otherRegionPK.countryId.equals( this.countryId ) && otherRegionPK.id.equals( this.id ) );
 		}
 		return false;
 	}
 
 	@Override
-	public int hashCode()
+	public int hashCode( )
 	{
-		return super.hashCode();
+		final int prime = 31;
+		int hash = 17;
+		hash = hash * prime + this.getCountryId( ).hashCode( );
+		hash = hash * prime + this.getId( ).hashCode( );
+
+		return hash;
 	}
 
-	public String getCountryId()
+	public String getCountryId( )
 	{
 		return this.countryId;
 	}
 
-	public void setCountryId( String ctr_code_ch )
+	public void setCountryId( String country )
 	{
-		this.countryId = ctr_code_ch;
+		this.countryId = country;
 	}
 
-	public Integer getId()
+	public Integer getId( )
 	{
 		return this.id;
 	}
 
-	public void setId( Integer reg_id_in )
+	public void setId( Integer region )
 	{
-		this.id = reg_id_in;
+		this.id = region;
 	}
 }

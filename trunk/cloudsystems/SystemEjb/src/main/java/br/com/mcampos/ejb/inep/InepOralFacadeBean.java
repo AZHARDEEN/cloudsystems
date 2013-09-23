@@ -97,8 +97,9 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 	@Override
 	public void distribute( InepEvent event, PrincipalDTO auth, InepRevisor r1, InepRevisor r2, Set<InepOralTest> tests )
 	{
-		if ( event == null || auth == null || r1 == null || r2 == null || SysUtils.isEmpty( tests ) )
+		if ( event == null || auth == null || r1 == null || r2 == null || SysUtils.isEmpty( tests ) ) {
 			throw new InvalidParameterException( );
+		}
 
 		DistributionStatus status = statusSession.get( DistributionStatus.statusDistributed );
 		for ( InepOralTest test : tests ) {
@@ -112,8 +113,9 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 	@Override
 	public List<InepOralDistribution> getOralTests( InepRevisor revisor )
 	{
-		if ( revisor != null )
+		if ( revisor != null ) {
 			return oralDistributionSession.getOralTests( revisor );
+		}
 		return Collections.emptyList( );
 	}
 
@@ -123,14 +125,16 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 		ArrayList<Media> medias = null;
 
 		InepSubscription merged = subscriptionSession.get( subscription.getId( ) );
-		if ( merged == null || SysUtils.isEmpty( merged.getMedias( ) ) )
+		if ( merged == null || SysUtils.isEmpty( merged.getMedias( ) ) ) {
 			return medias;
+		}
 		medias = new ArrayList<Media>( );
 		for ( InepMedia media : merged.getMedias( ) ) {
-			if ( media.getTask( ) == null )
+			if ( media.getTask( ) == null ) {
 				if ( media.getMedia( ).getObject( ).length > 0 ) {
 					medias.add( media.getMedia( ) );
 				}
+			}
 		}
 		return medias;
 	}
@@ -140,8 +144,9 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 	{
 		InepSubscriptionPK key = new InepSubscriptionPK( companyId, eventId, isc );
 		InepSubscription merged = subscriptionSession.get( key );
-		if ( merged == null )
+		if ( merged == null ) {
 			return false;
+		}
 		List<Media> audios = getAudios( merged );
 		if ( SysUtils.isEmpty( audios ) ) {
 			Media media = mediaSession.add( obj );
@@ -149,21 +154,25 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 			merged.add( inepMedia );
 			return true;
 		}
-		else
+		else {
 			return false;
+		}
 	}
 
 	@Override
 	public void updateGrade( InepOralDistribution item, int grade )
 	{
 		InepOralDistribution merged = oralDistributionSession.get( item.getId( ) );
-		if ( merged == null )
+		if ( merged == null ) {
 			throw new InvalidParameterException( "Item não existe (InepOralDistribution)" );
+		}
 		merged.setNota( grade );
-		if ( item.getRevisor( ).isCoordenador( ) )
+		if ( item.getRevisor( ).isCoordenador( ) ) {
 			merged.setStatus( statusSession.get( DistributionStatus.statusRevised ) );
-		else
+		}
+		else {
 			merged.setStatus( statusSession.get( DistributionStatus.statusFinalRevised ) );
+		}
 		/*
 		 * Cuidado, a posicao da linha abaixo e importante!!!!
 		 */

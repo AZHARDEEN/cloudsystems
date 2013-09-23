@@ -42,16 +42,19 @@ public class UserDocumentSessionBean extends SimpleSessionBean<UserDocument> imp
 	@Override
 	public List<UserDocument> searchByDocument( Integer documentType, String lookFor )
 	{
-		if ( documentType == null || SysUtils.isEmpty( lookFor ) )
+		if ( documentType == null || SysUtils.isEmpty( lookFor ) ) {
 			return null;
+		}
 		String sql = "select distinct o from UserDocument o where o.type.id = ?1 and o.code ";
 
 		if ( lookFor.contains( "*" ) || lookFor.contains( "%" ) || lookFor.contains( "_" ) || lookFor.contains( "?" ) ) {
 			sql = sql + "like ";
-			if ( lookFor.contains( "*" ) )
+			if ( lookFor.contains( "*" ) ) {
 				lookFor = lookFor.replaceAll( "\\*", "\\%" );
-			if ( lookFor.contains( "?" ) )
+			}
+			if ( lookFor.contains( "?" ) ) {
 				lookFor = lookFor.replaceAll( "\\?", "_" );
+			}
 		}
 		else {
 			sql = sql + " = ";
@@ -63,8 +66,9 @@ public class UserDocumentSessionBean extends SimpleSessionBean<UserDocument> imp
 	@Override
 	public List<UserDocument> searchByEmail( String lookFor )
 	{
-		if ( SysUtils.isEmpty( lookFor ) )
+		if ( SysUtils.isEmpty( lookFor ) ) {
 			return null;
+		}
 		lookFor = lookFor.toLowerCase( );
 		return searchByDocument( UserDocument.typeEmail, lookFor );
 	}
@@ -72,8 +76,9 @@ public class UserDocumentSessionBean extends SimpleSessionBean<UserDocument> imp
 	@Override
 	public List<UserDocument> searchByCPF( String lookFor )
 	{
-		if ( SysUtils.isEmpty( lookFor ) )
+		if ( SysUtils.isEmpty( lookFor ) ) {
 			return null;
+		}
 		lookFor = lookFor.replaceAll( "\\.", "" );
 		lookFor = lookFor.replaceAll( "-", "" );
 		return searchByDocument( UserDocument.typeCPF, lookFor );
