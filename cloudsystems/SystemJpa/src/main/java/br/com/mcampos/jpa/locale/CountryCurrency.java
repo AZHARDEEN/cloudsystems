@@ -59,9 +59,9 @@ public class CountryCurrency implements Serializable
 		return fromDate;
 	}
 
-	public void setFromDate( Date ccr_from_dt )
+	public void setFromDate( Date date )
 	{
-		fromDate = ccr_from_dt;
+		fromDate = date;
 	}
 
 	public Boolean getIsMain( )
@@ -69,9 +69,9 @@ public class CountryCurrency implements Serializable
 		return isMain;
 	}
 
-	public void setIsMain( Boolean ccr_main_bt )
+	public void setIsMain( Boolean main )
 	{
-		isMain = ccr_main_bt;
+		isMain = main;
 	}
 
 	public Date getToDate( )
@@ -79,9 +79,9 @@ public class CountryCurrency implements Serializable
 		return toDate;
 	}
 
-	public void setToDate( Date ccr_to_dt )
+	public void setToDate( Date date )
 	{
-		toDate = ccr_to_dt;
+		toDate = date;
 	}
 
 	public String getCountryId( )
@@ -89,9 +89,9 @@ public class CountryCurrency implements Serializable
 		return countryId;
 	}
 
-	public void setCountryId( String ctr_code_ch )
+	public void setCountryId( String code )
 	{
-		countryId = ctr_code_ch;
+		countryId = code;
 	}
 
 	public Integer getId( )
@@ -99,9 +99,9 @@ public class CountryCurrency implements Serializable
 		return id;
 	}
 
-	public void setId( Integer cur_id_in )
+	public void setId( Integer key )
 	{
-		id = cur_id_in;
+		id = key;
 	}
 
 	public Country getCountry( )

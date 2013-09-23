@@ -124,13 +124,17 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	{
 		boolean bCPF = false, bEmail = false;
 
-		if ( list == null )
+		if ( list == null ) {
 			return false;
-		for ( UserDocumentDTO item : list )
-			if ( item.getDocumentType( ).getId( ).equals( UserDocumentDTO.typeEmail ) )
+		}
+		for ( UserDocumentDTO item : list ) {
+			if ( item.getDocumentType( ).getId( ).equals( UserDocumentDTO.typeEmail ) ) {
 				bEmail = true;
-			else if ( item.getDocumentType( ).getId( ).equals( UserDocumentDTO.typeCPF ) )
+			}
+			else if ( item.getDocumentType( ).getId( ).equals( UserDocumentDTO.typeCPF ) ) {
 				bCPF = true;
+			}
+		}
 		return ( bEmail && bCPF );
 	}
 
@@ -151,9 +155,11 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	{
 		SendMailDTO emailDTO = createTemplate( templateId );
 		emailDTO.setBody( translateMessageTokens( emailDTO.getBody( ), login, flatPassword ) );
-		for ( UserDocument item : login.getPerson( ).getDocuments( ) )
-			if ( item.getDocumentType( ).getId( ).equals( UserDocument.typeEmail ) )
+		for ( UserDocument item : login.getPerson( ).getDocuments( ) ) {
+			if ( item.getDocumentType( ).getId( ).equals( UserDocument.typeEmail ) ) {
 				emailDTO.addRecipient( item.getCode( ) );
+			}
+		}
 		try {
 			sendMail.sendMail( emailDTO );
 		}
@@ -173,8 +179,9 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	private SendMailDTO createTemplate( Integer templateID ) throws ApplicationException
 	{
 		SendMailDTO dto = getEmailTemplate( ).get( templateID );
-		if ( dto == null )
+		if ( dto == null ) {
 			throwRuntimeException( 11 );
+		}
 		return dto;
 	}
 
@@ -191,14 +198,16 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	private String translateMessageTokens( String msg, Login login, String flatPassword )
 	{
 		msg = msg.replaceAll( "<<@@LOGIN_NAME@@>>", login.getPerson( ).getName( ) );
-		for ( UserDocument item : login.getPerson( ).getDocuments( ) )
+		for ( UserDocument item : login.getPerson( ).getDocuments( ) ) {
 			if ( item.getDocumentType( ).getId( ).equals( UserDocument.typeEmail ) ) {
 				msg = msg.replaceAll( "<<@@EMAIL@@>>", item.getCode( ) );
 				break;
 			}
+		}
 		msg = msg.replaceAll( "<<@@TOKEN@@>>", login.getToken( ) );
-		if ( flatPassword != null )
+		if ( flatPassword != null ) {
 			msg = msg.replace( "<<@@PASSWORD@@>>", flatPassword );
+		}
 		return msg;
 	}
 
@@ -243,17 +252,20 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 		/*
 		 * TODO: esta rotina ainda não está validada.
 		 */
-		if ( id == null )
+		if ( id == null ) {
 			throwException( 14 );
+		}
 		login = getEntityManager( ).find( Login.class, id );
-		if ( login == null )
+		if ( login == null ) {
 			return;
+		}
 		/*
 		 * Regra: Se o login está aguardando email, apenas exclua normalmente,
 		 * pois significa que este usuário nunca logou no sistema.
 		 */
-		if ( login.getUserStatus( ).getId( ) == UserStatus.statusEmailNotValidated )
+		if ( login.getUserStatus( ).getId( ) == UserStatus.statusEmailNotValidated ) {
 			getEntityManager( ).remove( login );
+		}
 	}
 
 	/**
@@ -266,8 +278,9 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	public void updateLoginStatus( Integer id, Integer newStatus ) throws ApplicationException
 	{
 		Login login = getEntityManager( ).find( Login.class, id );
-		if ( login == null || newStatus == null )
+		if ( login == null || newStatus == null ) {
 			throwException( 14 );
+		}
 		login.setUserStatus( getEntityManager( ).find( UserStatus.class, newStatus ) );
 	}
 
@@ -280,11 +293,13 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	@Override
 	public void logoutUser( AuthenticationDTO dto ) throws ApplicationException
 	{
-		if ( dto == null || dto.getUserId( ) == null )
+		if ( dto == null || dto.getUserId( ) == null ) {
 			return;
+		}
 		Login login = getEntityManager( ).find( Login.class, dto.getUserId( ) );
-		if ( login == null )
+		if ( login == null ) {
 			return;
+		}
 		storeAccessLog( login, dto, AccessLogType.accessLogTypeLogout );
 
 	}
@@ -301,11 +316,13 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	private Login getLogin( List<UserDocumentDTO> list ) throws ApplicationException
 	{
 		Person person = (Person) getUserSession( ).findByDocumentList( list );
-		if ( person == null )
+		if ( person == null ) {
 			throwException( 14 );
+		}
 		Login login = getEntityManager( ).find( Login.class, person.getId( ) );
-		if ( login == null )
+		if ( login == null ) {
 			throwException( 14 );
+		}
 		return login;
 	}
 
@@ -320,11 +337,13 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	private Login getLogin( UserDocumentDTO dto ) throws ApplicationException
 	{
 		Person person = (Person) getUserSession( ).getUserByDocument( dto );
-		if ( person == null )
+		if ( person == null ) {
 			throwException( 14 );
+		}
 		Login login = getEntityManager( ).find( Login.class, person.getId( ) );
-		if ( login == null )
+		if ( login == null ) {
 			throwException( 14 );
+		}
 		return login;
 	}
 
@@ -343,14 +362,18 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 		BasicPasswordEncryptor passwordEncryptor;
 		SystemParameters sysParam = null;
 
-		if ( dto == null )
+		if ( dto == null ) {
 			throwException( 1 );
-		if ( SysUtils.isEmpty( dto.getPassword( ) ) )
+		}
+		if ( SysUtils.isEmpty( dto.getPassword( ) ) ) {
 			throwException( 6 );
-		if ( SysUtils.isEmpty( dto.getDocuments( ) ) )
+		}
+		if ( SysUtils.isEmpty( dto.getDocuments( ) ) ) {
 			throwException( 3 );
-		if ( SysUtils.isEmpty( dto.getSessionId( ) ) )
+		}
+		if ( SysUtils.isEmpty( dto.getSessionId( ) ) ) {
 			throwException( 20 );
+		}
 
 		login = getLogin( dto.getDocuments( ) );
 		getEntityManager( ).refresh( login );
@@ -367,8 +390,9 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 			catch ( Exception e ) {
 				tryCount = 5;
 			}
-			if ( login.getTryCount( ) > tryCount )
+			if ( login.getTryCount( ) > tryCount ) {
 				login.setUserStatus( getEntityManager( ).find( UserStatus.class, UserStatus.statusMaxLoginTryCount ) );
+			}
 			throwException( 13 );
 		}
 		login.setTryCount( 0 );
@@ -378,8 +402,9 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 		 * but we'll denied every operation that depends on this login.
 		 */
 		Date now = new Date( );
-		if ( login.getPasswordExpirationDate( ).compareTo( new Timestamp( now.getTime( ) ) ) < 0 )
+		if ( login.getPasswordExpirationDate( ).compareTo( new Timestamp( now.getTime( ) ) ) < 0 ) {
 			login.setUserStatus( getEntityManager( ).find( UserStatus.class, UserStatus.statusExpiredPassword ) );
+		}
 		// throwException( 19 );
 		AuthenticationDTO retDTO = new AuthenticationDTO( );
 		retDTO.setUserId( login.getUserId( ) );
@@ -406,8 +431,9 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	{
 		AccessLog log;
 
-		if ( login == null )
+		if ( login == null ) {
 			throwException( 1 );
+		}
 
 		log = new AccessLog( );
 
@@ -423,8 +449,9 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 			getEntityManager( ).persist( log );
 			return log.getAuthenticationId( );
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 	/**
@@ -442,12 +469,14 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 		BasicPasswordEncryptor passwordEncryptor;
 		String password;
 
-		if ( document == null )
+		if ( document == null ) {
 			throwException( 1 );
+		}
 
 		login = getLogin( document );
-		if ( login == null )
+		if ( login == null ) {
 			throwException( 14 );
+		}
 		verifyUserStatus( login );
 		passwordEncryptor = new BasicPasswordEncryptor( );
 		password = RandomString.randomstring( );
@@ -479,8 +508,9 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	@TransactionAttribute( TransactionAttributeType.MANDATORY )
 	private void verifyUserStatus( Login login ) throws ApplicationException
 	{
-		if ( login.getUserStatus( ).getAllowLogin( ) == true )
+		if ( login.getUserStatus( ).getAllowLogin( ) == true ) {
 			return;
+		}
 
 		switch ( ( login.getUserStatus( ).getId( ) ) ) {
 		case UserStatus.statusMaxLoginTryCount:
@@ -512,14 +542,17 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 		BasicPasswordEncryptor passwordEncryptor;
 
 		login = getLogin( document );
-		if ( login == null )
+		if ( login == null ) {
 			throw new EJBException( "Usuário o senha inválida." );
+		}
 		verifyUserStatus( login );
 		passwordEncryptor = new BasicPasswordEncryptor( );
-		if ( passwordEncryptor.checkPassword( oldPassword, login.getPassword( ) ) == false )
+		if ( passwordEncryptor.checkPassword( oldPassword, login.getPassword( ) ) == false ) {
 			throw new EJBException( "A senha atual está inválida." );
-		if ( isPasswordUsed( login, newPassword ) )
+		}
+		if ( isPasswordUsed( login, newPassword ) ) {
 			throw new EJBException( "A nova senha já foi usada antes. Não é permitido o uso de senhas antigas." );
+		}
 		storeOldPassword( login );
 		login.setPassword( passwordEncryptor.encryptPassword( newPassword ) );
 		storeOldPassword( login );
@@ -578,14 +611,17 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 		BasicPasswordEncryptor passwordEncryptor;
 		Login login;
 
-		if ( SysUtils.isEmpty( token ) )
+		if ( SysUtils.isEmpty( token ) ) {
 			throwException( 8 );
-		if ( SysUtils.isEmpty( password ) )
+		}
+		if ( SysUtils.isEmpty( password ) ) {
 			throwException( 6 );
+		}
 
 		login = findLoginByToken( token );
-		if ( login.getUserStatus( ).getId( ) != UserStatus.statusEmailNotValidated )
+		if ( login.getUserStatus( ).getId( ) != UserStatus.statusEmailNotValidated ) {
 			throwException( 12 );
+		}
 		passwordEncryptor = new BasicPasswordEncryptor( );
 		if ( passwordEncryptor.checkPassword( password, login.getPassword( ) ) == false ) {
 			incrementTryCount( login );
@@ -639,10 +675,12 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	public List<ListLoginDTO> getLoginByRange( int firstResult, int maxResults )
 	{
 		Query query = getEntityManager( ).createNamedQuery( "Login.findAll" );
-		if ( firstResult > 0 )
+		if ( firstResult > 0 ) {
 			query = query.setFirstResult( firstResult );
-		if ( maxResults > 0 )
+		}
+		if ( maxResults > 0 ) {
 			query = query.setMaxResults( maxResults );
+		}
 		return copy( query.getResultList( ) );
 	}
 
@@ -650,11 +688,13 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	{
 		List<ListLoginDTO> dtos = null;
 
-		if ( list == null )
+		if ( list == null ) {
 			return dtos;
+		}
 		dtos = new ArrayList<ListLoginDTO>( list.size( ) );
-		for ( Login item : list )
+		for ( Login item : list ) {
 			dtos.add( DTOFactory.copy( item ) );
+		}
 		return dtos;
 
 	}
@@ -674,8 +714,9 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 
 		login = getLogin( dto );
 		login.getUserStatus( );
-		if ( login.getUserStatus( ).getId( ) != UserStatus.statusEmailNotValidated )
+		if ( login.getUserStatus( ).getId( ) != UserStatus.statusEmailNotValidated ) {
 			throwException( 12 );
+		}
 		sendMail( login, 1, null );
 	}
 
@@ -727,8 +768,9 @@ public class LoginSessionBean extends AbstractSecurity implements LoginSessionLo
 	public void setStatus( AuthenticationDTO currentUser, Integer newStatus ) throws ApplicationException
 	{
 		authenticate( currentUser );
-		if ( SysUtils.isZero( newStatus ) )
+		if ( SysUtils.isZero( newStatus ) ) {
 			throwCommomRuntimeException( 3 );
+		}
 		Login login = getEntityManager( ).find( Login.class, currentUser.getUserId( ) );
 		login.setUserStatus( getEntityManager( ).find( UserStatus.class, newStatus ) );
 	}

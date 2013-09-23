@@ -61,8 +61,9 @@ public class MediaSessionBean extends SimpleSessionBean<Media> implements MediaS
 	@Override
 	public Media merge( Media newEntity )
 	{
-		if ( newEntity.getInsertDate( ) == null )
+		if ( newEntity.getInsertDate( ) == null ) {
 			newEntity.setInsertDate( new Date( ) );
+		}
 		return super.merge( newEntity );
 	}
 }

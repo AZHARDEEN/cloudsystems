@@ -8,50 +8,54 @@ public class CountryCurrencyPK implements Serializable
 	private String countryId;
 	private Integer id;
 
-	public CountryCurrencyPK()
+	public CountryCurrencyPK( )
 	{
 	}
 
-	public CountryCurrencyPK( String ctr_code_ch, Integer cur_id_in )
+	public CountryCurrencyPK( String countryId, Integer id )
 	{
-		this.countryId = ctr_code_ch;
-		this.id = cur_id_in;
+		this.countryId = countryId;
+		this.id = id;
 	}
 
 	@Override
 	public boolean equals( Object other )
 	{
 		if ( other instanceof CountryCurrencyPK ) {
-			final CountryCurrencyPK otherCountryCurrencyPK = ( CountryCurrencyPK ) other;
-			final boolean areEqual = ( otherCountryCurrencyPK.countryId.equals( this.countryId ) && otherCountryCurrencyPK.id.equals( this.id ) );
-			return areEqual;
+			final CountryCurrencyPK otherCountryCurrencyPK = (CountryCurrencyPK) other;
+			return ( otherCountryCurrencyPK.countryId.equals( this.countryId ) && otherCountryCurrencyPK.id.equals( this.id ) );
 		}
 		return false;
 	}
 
 	@Override
-	public int hashCode()
+	public int hashCode( )
 	{
-		return super.hashCode();
+		final int prime = 31;
+		int hash = 17;
+		hash = hash * prime + this.getCountryId( ).hashCode( );
+		hash = hash * prime + this.getId( ).hashCode( );
+
+		return hash;
 	}
 
-	public String getCountryId()
+	public String getCountryId( )
 	{
 		return this.countryId;
 	}
 
-	public void setCountryId( String ctr_code_ch )
+	public void setCountryId( String id )
 	{
-		this.countryId = ctr_code_ch;
+		this.countryId = id;
 	}
 
-	public Integer getId()
+	public Integer getId( )
 	{
 		return this.id;
 	}
 
-	public void setId( Integer cur_id_in )
+	public void setId( Integer id )
 	{
-		this.id = cur_id_in;
+		this.id = id;
 	}
 }

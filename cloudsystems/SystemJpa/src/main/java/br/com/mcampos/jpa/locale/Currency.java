@@ -38,9 +38,9 @@ public class Currency implements Serializable
 		return code;
 	}
 
-	public void setCode( String cur_code_ch )
+	public void setCode( String value )
 	{
-		code = cur_code_ch;
+		code = value;
 	}
 
 	public Integer getId( )
@@ -48,9 +48,9 @@ public class Currency implements Serializable
 		return id;
 	}
 
-	public void setId( Integer cur_id_in )
+	public void setId( Integer value )
 	{
-		id = cur_id_in;
+		id = value;
 	}
 
 	public String getName( )
@@ -58,9 +58,9 @@ public class Currency implements Serializable
 		return name;
 	}
 
-	public void setName( String cur_name_ch )
+	public void setName( String value )
 	{
-		name = cur_name_ch;
+		name = value;
 	}
 
 	public String getSymbol( )
@@ -68,9 +68,9 @@ public class Currency implements Serializable
 		return symbol;
 	}
 
-	public void setSymbol( String cur_symbol_ch )
+	public void setSymbol( String value )
 	{
-		symbol = cur_symbol_ch;
+		symbol = value;
 	}
 
 }

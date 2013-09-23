@@ -42,44 +42,44 @@ public class CountryLanguage implements Serializable
 
 	public Boolean getIsMain( )
 	{
-		return isMain;
+		return this.isMain;
 	}
 
-	public void setIsMain( Boolean clg_main_bt )
+	public void setIsMain( Boolean main )
 	{
-		isMain = clg_main_bt;
+		this.isMain = main;
 	}
 
 	public String getCountryId( )
 	{
-		return countryId;
+		return this.countryId;
 	}
 
-	public void setCountryId( String ctr_code_ch )
+	public void setCountryId( String id )
 	{
-		countryId = ctr_code_ch;
+		this.countryId = id;
 	}
 
 	public Integer getId( )
 	{
-		return id;
+		return this.id;
 	}
 
-	public void setId( Integer lng_id_in )
+	public void setId( Integer id )
 	{
-		id = lng_id_in;
+		this.id = id;
 	}
 
 	public Country getCountry( )
 	{
-		return country;
+		return this.country;
 	}
 
 	public void setCountry( Country country2 )
 	{
-		country = country2;
+		this.country = country2;
 		if ( country2 != null ) {
-			countryId = country2.getId( );
+			this.countryId = country2.getId( );
 		}
 	}
 }

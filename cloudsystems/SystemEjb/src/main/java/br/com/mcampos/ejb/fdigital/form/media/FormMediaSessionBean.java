@@ -37,18 +37,21 @@ public class FormMediaSessionBean extends SimpleSessionBean<FormMedia> implement
 	@Override
 	public FormMedia remove( PrincipalDTO auth, Serializable key )
 	{
-		if( key == null || auth == null )
+		if ( key == null || auth == null ) {
 			throw new InvalidParameterException( "Form Media remove" );
+		}
 
 		FormMedia entity = get( key );
-		if( entity != null ) {
+		if ( entity != null ) {
 			Media media = entity.getMedia( );
-			if( media != null )
+			if ( media != null ) {
 				mediaSession.remove( auth, media.getId( ) );
+			}
 			return super.remove( auth, entity.getId( ) );
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 }

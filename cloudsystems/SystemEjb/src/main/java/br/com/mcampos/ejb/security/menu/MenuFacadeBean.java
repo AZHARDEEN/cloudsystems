@@ -52,8 +52,9 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	@Override
 	public List<Menu> getMenus( PrincipalDTO auth ) throws ApplicationException
 	{
-		if( auth == null )
+		if ( auth == null ) {
 			return Collections.emptyList( );
+		}
 		return getMenus( collaboratorSession.find( auth ) );
 	}
 
@@ -62,13 +63,12 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	public List<Menu> getMenus( Collaborator collaborator ) throws ApplicationException
 	{
 		List<Menu> availableMenus = Collections.emptyList( );
-		if( collaborator == null ) {
+		if ( collaborator == null ) {
 			return Collections.emptyList( );
 		}
 		collaborator = collaboratorSession.merge( collaborator );
 		availableMenus = new ArrayList<Menu>( );
-		for( Role role : collaborator.getRoles( ) )
-		{
+		for ( Role role : collaborator.getRoles( ) ) {
 			addRoleToMenu( role, availableMenus );
 		}
 		return availableMenus;
@@ -77,11 +77,11 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	@Override
 	public void addRoleToMenu( Role role, List<Menu> availableMenus )
 	{
-		if( role != null ) {
-			for( Role sub : role.getChilds( ) ) {
+		if ( role != null ) {
+			for ( Role sub : role.getChilds( ) ) {
 				addRoleToMenu( sub, availableMenus );
 			}
-			for( Task task : role.getTasks( ) ) {
+			for ( Task task : role.getTasks( ) ) {
 				addTaskToMenu( task, availableMenus );
 			}
 		}
@@ -89,11 +89,11 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 
 	private void addTaskToMenu( Task task, List<Menu> availableMenus )
 	{
-		if( task != null ) {
-			for( Task child : task.getChilds( ) ) {
+		if ( task != null ) {
+			for ( Task child : task.getChilds( ) ) {
 				addTaskToMenu( child, availableMenus );
 			}
-			for( Menu menu : task.getMenus( ) ) {
+			for ( Menu menu : task.getMenus( ) ) {
 				addMenus( menu, availableMenus );
 			}
 		}
@@ -101,9 +101,9 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 
 	private void addMenus( Menu item, List<Menu> availableMenus )
 	{
-		if( item != null ) {
+		if ( item != null ) {
 			addMenus( item.getParent( ), availableMenus );
-			if( availableMenus.contains( item ) == false ) {
+			if ( availableMenus.contains( item ) == false ) {
 				availableMenus.add( item );
 			}
 		}
@@ -136,13 +136,11 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 
 	private void addTask( List<Task> tasks, Menu entity )
 	{
-		for( Menu item : entity.getChilds( ) )
-		{
+		for ( Menu item : entity.getChilds( ) ) {
 			addTask( tasks, item );
 		}
-		for( Task task : entity.getTasks( ) )
-		{
-			if( tasks.contains( task ) == false ) {
+		for ( Task task : entity.getTasks( ) ) {
+			if ( tasks.contains( task ) == false ) {
 				tasks.add( task );
 			}
 		}
@@ -155,7 +153,7 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 		Menu targetParent = get( newParent.getId( ) );
 
 		Menu oldParent = targetEntity.getParent( );
-		if( oldParent != null ) {
+		if ( oldParent != null ) {
 			targetEntity = oldParent.remove( targetEntity );
 		}
 		targetParent.add( targetEntity );
@@ -164,7 +162,7 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	@Override
 	public Menu add( Menu item, List<Task> tasks )
 	{
-		for( Task task : tasks ) {
+		for ( Task task : tasks ) {
 			add( item, task );
 		}
 		return item;
@@ -174,7 +172,7 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	public Menu add( Menu item, Task task )
 	{
 		Menu merged = get( item.getId( ) );
-		if( merged != null ) {
+		if ( merged != null ) {
 			Task taskMerged = taskSession.get( task.getId( ) );
 			merged.add( taskMerged );
 		}
@@ -185,7 +183,7 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	public Menu remove( Menu item, Task task )
 	{
 		Menu merged = get( item.getId( ) );
-		if( merged != null ) {
+		if ( merged != null ) {
 			Task taskMerged = taskSession.get( task.getId( ) );
 			merged.remove( taskMerged );
 		}

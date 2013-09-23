@@ -9,61 +9,66 @@ public class StatePK implements Serializable
 	private Integer regionId;
 	private Integer id;
 
-	public StatePK()
+	public StatePK( )
 	{
 	}
 
-	public StatePK( String ctr_code_ch, Integer reg_id_in, Integer sta_id_in )
+	public StatePK( String code, Integer region, Integer state )
 	{
-		this.countryId = ctr_code_ch;
-		this.regionId = reg_id_in;
-		this.id = sta_id_in;
+		this.countryId = code;
+		this.regionId = region;
+		this.id = state;
 	}
 
 	@Override
 	public boolean equals( Object other )
 	{
 		if ( other instanceof StatePK ) {
-			final StatePK otherStatePK = ( StatePK ) other;
-			final boolean areEqual = ( otherStatePK.countryId.equals( this.countryId ) && otherStatePK.regionId.equals( this.regionId ) && otherStatePK.id.equals( this.id ) );
-			return areEqual;
+			final StatePK otherStatePK = (StatePK) other;
+			return ( otherStatePK.countryId.equals( this.countryId ) && otherStatePK.regionId.equals( this.regionId ) && otherStatePK.id.equals( this.id ) );
 		}
 		return false;
 	}
 
 	@Override
-	public int hashCode()
+	public int hashCode( )
 	{
-		return super.hashCode();
+		final int prime = 31;
+		int hash = 17;
+		hash = hash * prime + this.getCountryId( ).hashCode( );
+		hash = hash * prime + this.getRegionId( ).hashCode( );
+		hash = hash * prime + this.getId( ).hashCode( );
+
+		return hash;
 	}
 
-	public String getCountryId()
+	public String getCountryId( )
 	{
 		return this.countryId;
 	}
 
-	public void setCountryId( String ctr_code_ch )
+	public void setCountryId( String code )
 	{
-		this.countryId = ctr_code_ch;
+		this.countryId = code;
 	}
 
-	public Integer getRegionId()
+	public Integer getRegionId( )
 	{
 		return this.regionId;
 	}
 
-	public void setRegionId( Integer reg_id_in )
+	public void setRegionId( Integer region )
 	{
-		this.regionId = reg_id_in;
+		this.regionId = region;
 	}
 
-	public Integer getId()
+	public Integer getId( )
 	{
 		return this.id;
 	}
 
-	public void setId( Integer sta_id_in )
+	public void setId( Integer state )
 	{
-		this.id = sta_id_in;
+		this.id = state;
 	}
 }

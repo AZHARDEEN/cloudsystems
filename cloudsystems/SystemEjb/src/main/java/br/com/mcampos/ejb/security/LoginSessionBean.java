@@ -130,8 +130,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		if ( login.getTryCount( ) > getParamSession( ).getMaxTryCount( ) ) {
 			return false;
 		}
-		if ( verifyPassword( login, credential.getPassword( ) ) == false )
-		{
+		if ( verifyPassword( login, credential.getPassword( ) ) == false ) {
 			return false;
 		}
 		return true;
@@ -145,8 +144,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		}
 		int tryCount = login.getTryCount( );
 		int maxTryCount = getProperty( ).getInt( SystemParameters.maxLoginTryCount );
-		if ( maxTryCount == 0 )
-		{
+		if ( maxTryCount == 0 ) {
 			maxTryCount = 5;
 			getProperty( ).setInt( SystemParameters.maxLoginTryCount, "Número Máximo de Tentativas de Login", maxTryCount );
 		}
@@ -354,7 +352,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		 */
 		login.setPerson( person );
 		login.setPassword( encryptPassword( password ) );
-		login.setToken( RandomStringUtils.random( 8, true, true ));
+		login.setToken( RandomStringUtils.random( 8, true, true ) );
 		setPasswordExpirationDate( login );
 		login.setStatus( statusSession.get( UserStatus.statusEmailNotValidated ) );
 		login = merge( login );
@@ -484,8 +482,9 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	@Override
 	public void logout( Integer id, CredentialDTO credential )
 	{
-		if ( id == null )
+		if ( id == null ) {
 			throw new InvalidParameterException( this.getClass( ).getSimpleName( ) + " - Login could not be null" );
+		}
 		AccessLogType type = getLogTypeSession( ).get( AccessLogType.accessLogTypeLogout );
 		log( get( id ), type, credential );
 	}
@@ -494,12 +493,14 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	public List<Login> search( String searchField, String lookFor )
 	{
 		List<Login> logins = Collections.emptyList( );
-		if ( SysUtils.isEmpty( searchField ) || SysUtils.isEmpty( lookFor ) )
+		if ( SysUtils.isEmpty( searchField ) || SysUtils.isEmpty( lookFor ) ) {
 			return Collections.emptyList( );
+		}
 		if ( searchField.equalsIgnoreCase( "id" ) ) {
 			Login login = get( SysUtils.parseInteger( lookFor ) );
-			if ( login == null )
+			if ( login == null ) {
 				return Collections.emptyList( );
+			}
 			logins = new ArrayList<Login>( );
 			logins.add( login );
 		}
@@ -521,10 +522,12 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 
 		if ( lookFor.contains( "*" ) || lookFor.contains( "%" ) || lookFor.contains( "_" ) || lookFor.contains( "?" ) ) {
 			sql = sql + "like ";
-			if ( lookFor.contains( "*" ) )
+			if ( lookFor.contains( "*" ) ) {
 				lookFor = lookFor.replaceAll( "\\*", "\\%" );
-			if ( lookFor.contains( "?" ) )
+			}
+			if ( lookFor.contains( "?" ) ) {
 				lookFor = lookFor.replaceAll( "\\?", "_" );
+			}
 		}
 		else {
 			sql = sql + " = ";
@@ -535,8 +538,9 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 
 	private List<Login> searchByEmail( String lookFor )
 	{
-		if ( SysUtils.isEmpty( lookFor ) )
+		if ( SysUtils.isEmpty( lookFor ) ) {
 			return Collections.emptyList( );
+		}
 		lookFor = lookFor.toLowerCase( );
 		String sql = "select o from Login o where o.person in (" +
 				getUserDocumentSQL( lookFor ) + ")";
@@ -546,8 +550,9 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 
 	private List<Login> searchByCPF( String lookFor )
 	{
-		if ( SysUtils.isEmpty( lookFor ) )
+		if ( SysUtils.isEmpty( lookFor ) ) {
 			return Collections.emptyList( );
+		}
 		lookFor = lookFor.replaceAll( "\\.", "" );
 		lookFor = lookFor.replaceAll( "-", "" );
 		String sql = "select o from Login o where o.person in (" +
@@ -558,16 +563,19 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 
 	private String getUserDocumentSQL( String lookFor )
 	{
-		if ( SysUtils.isEmpty( lookFor ) )
+		if ( SysUtils.isEmpty( lookFor ) ) {
 			return null;
+		}
 		String sql = "select distinct o.user from UserDocument o where o.type.id = ?1 and o.code ";
 
 		if ( lookFor.contains( "*" ) || lookFor.contains( "%" ) || lookFor.contains( "_" ) || lookFor.contains( "?" ) ) {
 			sql = sql + "like ";
-			if ( lookFor.contains( "*" ) )
+			if ( lookFor.contains( "*" ) ) {
 				lookFor = lookFor.replaceAll( "\\*", "\\%" );
-			if ( lookFor.contains( "?" ) )
+			}
+			if ( lookFor.contains( "?" ) ) {
 				lookFor = lookFor.replaceAll( "\\?", "_" );
+			}
 		}
 		else {
 			sql = sql + " = ";
@@ -579,11 +587,13 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	@Override
 	public Login resetLogin( PrincipalDTO admin, Login toReset, CredentialDTO credential )
 	{
-		if ( admin == null || toReset == null )
+		if ( admin == null || toReset == null ) {
 			return toReset;
+		}
 		Login targetLogin = get( toReset.getId( ) );
-		if ( targetLogin == null )
+		if ( targetLogin == null ) {
 			return toReset;
+		}
 		targetLogin.setStatus( statusSession.get( ( UserStatus.statusOk ) ) );
 		targetLogin.setTryCount( 0 );
 		setPasswordExpirationDate( targetLogin );

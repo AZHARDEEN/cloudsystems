@@ -5,53 +5,58 @@ import java.io.Serializable;
 public class CountryNamePK implements Serializable
 {
 	private static final long serialVersionUID = 5708805760362180632L;
-	private String countryId;
-	private String localeCountryId;
+	private String id;
+	private String localeId;
 
-	public CountryNamePK()
+	public CountryNamePK( )
 	{
 	}
 
-	public CountryNamePK( String ctr_code_ch, String ctr_locale_ch )
+	public CountryNamePK( String id, String locale )
 	{
-		this.countryId = ctr_code_ch;
-		this.localeCountryId = ctr_locale_ch;
+		this.id = id;
+		this.localeId = locale;
 	}
 
 	@Override
 	public boolean equals( Object other )
 	{
 		if ( other instanceof CountryNamePK ) {
-			final CountryNamePK otherCountryNamePK = ( CountryNamePK ) other;
-			final boolean areEqual = ( otherCountryNamePK.countryId.equals( this.countryId ) && otherCountryNamePK.localeCountryId.equals( this.localeCountryId ) );
+			final CountryNamePK otherCountryNamePK = (CountryNamePK) other;
+			final boolean areEqual = ( otherCountryNamePK.id.equals( this.id ) && otherCountryNamePK.localeId.equals( this.localeId ) );
 			return areEqual;
 		}
 		return false;
 	}
 
 	@Override
-	public int hashCode()
+	public int hashCode( )
 	{
-		return super.hashCode();
+		final int prime = 31;
+		int hash = 17;
+		hash = hash * prime + this.getCountryId( ).hashCode( );
+		hash = hash * prime + this.getLocaleCountryId( ).hashCode( );
+
+		return hash;
 	}
 
-	public String getCountryId()
+	public String getCountryId( )
 	{
-		return this.countryId;
+		return this.id;
 	}
 
-	public void setCountryId( String ctr_code_ch )
+	public void setCountryId( String id )
 	{
-		this.countryId = ctr_code_ch;
+		this.id = id;
 	}
 
-	public String getLocaleCountryId()
+	public String getLocaleCountryId( )
 	{
-		return this.localeCountryId;
+		return this.localeId;
 	}
 
-	public void setLocaleCountryId( String ctr_locale_ch )
+	public void setLocaleCountryId( String locale )
 	{
-		this.localeCountryId = ctr_locale_ch;
+		this.localeId = locale;
 	}
 }

@@ -62,9 +62,9 @@ public class State extends SimpleTable<State>
 		return countryId;
 	}
 
-	public void setCountryId( String ctr_code_ch )
+	public void setCountryId( String code )
 	{
-		countryId = ctr_code_ch;
+		countryId = code;
 	}
 
 	public Integer getRegionId( )
@@ -72,9 +72,9 @@ public class State extends SimpleTable<State>
 		return regionId;
 	}
 
-	public void setRegionId( Integer reg_id_in )
+	public void setRegionId( Integer region )
 	{
-		regionId = reg_id_in;
+		regionId = region;
 	}
 
 	public String getAbbreviation( )
@@ -82,9 +82,9 @@ public class State extends SimpleTable<State>
 		return abbreviation;
 	}
 
-	public void setAbbreviation( String sta_abbreviation_ch )
+	public void setAbbreviation( String value )
 	{
-		abbreviation = sta_abbreviation_ch;
+		abbreviation = value;
 	}
 
 	public Byte[ ] getFlag( )
@@ -92,9 +92,9 @@ public class State extends SimpleTable<State>
 		return flag;
 	}
 
-	public void setFlag( Byte[ ] sta_flag_bin )
+	public void setFlag( Byte[ ] bin )
 	{
-		flag = sta_flag_bin;
+		flag = bin.clone( );
 	}
 
 	@Override
@@ -104,9 +104,9 @@ public class State extends SimpleTable<State>
 	}
 
 	@Override
-	public void setId( Integer sta_id_in )
+	public void setId( Integer state )
 	{
-		id = sta_id_in;
+		id = state;
 	}
 
 	@Override
@@ -116,9 +116,9 @@ public class State extends SimpleTable<State>
 	}
 
 	@Override
-	public void setDescription( String sta_name_ch )
+	public void setDescription( String value )
 	{
-		description = sta_name_ch;
+		description = value;
 	}
 
 	public Region getRegion( )

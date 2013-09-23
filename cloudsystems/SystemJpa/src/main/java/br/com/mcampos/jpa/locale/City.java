@@ -49,9 +49,9 @@ public class City extends SimpleTable<City>
 		return isCountryCapital;
 	}
 
-	public void setIsCountryCapital( Boolean cit_contry_capital_bt )
+	public void setIsCountryCapital( Boolean capital )
 	{
-		isCountryCapital = cit_contry_capital_bt;
+		isCountryCapital = capital;
 	}
 
 	@Override
@@ -61,9 +61,9 @@ public class City extends SimpleTable<City>
 	}
 
 	@Override
-	public void setId( Integer cit_id_in )
+	public void setId( Integer id )
 	{
-		id = cit_id_in;
+		this.id = id;
 	}
 
 	@Override
@@ -73,9 +73,9 @@ public class City extends SimpleTable<City>
 	}
 
 	@Override
-	public void setDescription( String cit_name_ch )
+	public void setDescription( String value )
 	{
-		description = cit_name_ch;
+		description = value;
 	}
 
 	public Boolean getIsStateCapital( )
@@ -83,9 +83,9 @@ public class City extends SimpleTable<City>
 		return isStateCapital;
 	}
 
-	public void setIsStateCapital( Boolean cit_state_capital_bt )
+	public void setIsStateCapital( Boolean capital )
 	{
-		isStateCapital = cit_state_capital_bt;
+		isStateCapital = capital;
 	}
 
 	public State getState( )
