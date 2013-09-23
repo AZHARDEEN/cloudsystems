@@ -11,7 +11,7 @@ import javax.rmi.PortableRemoteObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ServiceLocator
+public final class ServiceLocator
 {
 	private static ServiceLocator myServiceLocator;
 	private InitialContext context = null;
@@ -81,8 +81,9 @@ public class ServiceLocator
 
 	public static synchronized ServiceLocator getInstance( ) throws NamingException
 	{
-		if ( myServiceLocator == null )
+		if ( myServiceLocator == null ) {
 			myServiceLocator = new ServiceLocator( );
+		}
 		return myServiceLocator;
 	}
 
@@ -90,13 +91,15 @@ public class ServiceLocator
 	{
 		Object home = null;
 
-		if ( cache != null && cache.containsKey( name ) )
+		if ( cache != null && cache.containsKey( name ) ) {
 			home = cache.get( name );
+		}
 		else {
 			logger.info( "Cache miss for ejb : " + name );
 			home = context.lookup( name );
-			if ( cache != null )
+			if ( cache != null ) {
 				cache.put( name, home );
+			}
 		}
 		return home;
 	}
@@ -144,8 +147,9 @@ public class ServiceLocator
 					ejb:<app-name>/<module-name>/<distinct-name>/<bean-name>!<fully-qualified-classname-of-the-remote-interface>?stateful
 			 */
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 	public Object getRemoteSession( Class<?> cls, String ejbProjectName ) throws NamingException
@@ -153,17 +157,19 @@ public class ServiceLocator
 		Object obj = null;
 		if ( cls != null ) {
 			obj = getHome( makeEJBSessionNameLocator( cls, ejbProjectName ) );
-			if ( obj != null )
+			if ( obj != null ) {
 				obj = PortableRemoteObject.narrow( obj, cls );
+			}
 			return obj;
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 	private String getAppName( )
 	{
-		if ( SysUtils.isEmpty( appName ) )
+		if ( SysUtils.isEmpty( appName ) ) {
 			try {
 				appName = (String) getHome( JNDI_APP_NAME );
 				logger.info( "APP NAME FOUND: " + appName );
@@ -172,12 +178,13 @@ public class ServiceLocator
 				logger.warn( "Failed to get module name: " + JNDI_APP_NAME, e );
 				appName = "System";
 			}
+		}
 		return appName;
 	}
 
 	private String getModuleName( )
 	{
-		if ( SysUtils.isEmpty( moduleName ) )
+		if ( SysUtils.isEmpty( moduleName ) ) {
 			try {
 				moduleName = (String) getHome( JNDI_MODULE_NAME );
 				logger.info( "MODULE NAME FOUND: " + appName );
@@ -186,6 +193,7 @@ public class ServiceLocator
 				logger.warn( "Failed to get module name: " + JNDI_MODULE_NAME, e );
 				moduleName = "SystemEJB";
 			}
+		}
 		return moduleName;
 	}
 }

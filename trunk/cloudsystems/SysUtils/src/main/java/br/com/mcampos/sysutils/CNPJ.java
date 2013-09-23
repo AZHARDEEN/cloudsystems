@@ -1,8 +1,14 @@
 package br.com.mcampos.sysutils;
 
-public class CNPJ
+import java.io.Serializable;
+
+public class CNPJ extends BaseID implements Serializable
 {
-	private static final int[ ] pesoCNPJ = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6635738900874417578L;
+	private static final int[ ] PESO_CNPJ = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
 
 	public CNPJ( )
 	{
@@ -27,18 +33,8 @@ public class CNPJ
 			return false;
 		}
 
-		Integer digito1 = calcularDigito( cnpj.substring( 0, 12 ), pesoCNPJ );
-		Integer digito2 = calcularDigito( cnpj.substring( 0, 12 ) + digito1, pesoCNPJ );
+		Integer digito1 = calcularDigito( cnpj.substring( 0, 12 ), PESO_CNPJ );
+		Integer digito2 = calcularDigito( cnpj.substring( 0, 12 ) + digito1, PESO_CNPJ );
 		return cnpj.equals( cnpj.substring( 0, 12 ) + digito1.toString( ) + digito2.toString( ) );
 	}
-
-	public static String removeMask( String cpf )
-	{
-		if ( SysUtils.isEmpty( cpf ) == false ) {
-			cpf = cpf.replaceAll( "\\.", "" );
-			cpf = cpf.replaceAll( "-", "" );
-		}
-		return cpf;
-	}
-
 }
