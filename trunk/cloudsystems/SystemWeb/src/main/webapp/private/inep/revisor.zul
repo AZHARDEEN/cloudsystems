@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+    <window width="100%" height="100%" closable="true" border="none" title="Lista de Revisores"
+            apply="br.com.mcampos.web.inep.controller.RevisorController" >
+		<div width="100%" height="62px" align="Center" fulfill="=/private/inep/inep_logo.zul" />
+	    <borderlayout>
+	        <center flex="true">
+	        	<div vflex="true">
+                    <grid fixedLayout="true">
+                        <columns>
+                            <column width="100px"/>
+                            <column />
+                        </columns>
+                        <rows>
+                            <row>
+				        		<label value="Evento"/>
+				        		<combobox id="comboEvent" readonly="true" width="100%"/>
+	                        </row>
+                            <row>
+				        		<label value="Tarefa"/>
+				        		<combobox id="comboTask" readonly="true" width="100%"/>
+	                        </row>
+                        </rows>
+                    </grid>
+		            <listbox vflex="true" autopaging="true" id="listTable" mold="paging" pagingPosition="bottom">
+		                <listhead>
+		                    <listheader align="center" label="Código" width="70px" value="id"/>
+		                    <listheader align="left" label="Nome do Corretor" sort="auto" value="description"/>
+		                    <listheader align="center" label="Tarefa" sort="auto" value="task" width="90px"/>
+		                    <listheader align="center" label="Coord." sort="auto" value="teamMaster" width="50px"/>
+		                </listhead>
+		            </listbox>
+	            </div>
+	        </center>
+	        <east autoscroll="true" splittable="true" width="50%">
+	            <div id="divEast">
+	            	<toolbarbutton id="loadRevisor" label="Carregar Revisores" upload="true" ></toolbarbutton>
+	            	<toolbarbutton id="distribute" label="Distribuir"></toolbarbutton>
+	                <div id="divInfo">
+	                    <grid fixedLayout="true">
+	                        <columns>
+	                            <column label="Campo" width="150px"/>
+	                            <column label="Valor"/>
+	                        </columns>
+	                        <rows>
+	                            <row>
+		                            <label value="Nome"/>
+		                            <label id="revNome" width="100%"/>
+		                        </row>
+	                            <row>
+		                            <label value="CPF"/>
+		                            <label id="infoCPF" width="100%"/>
+		                        </row>
+	                            <row>
+		                            <label value="Email"/>
+		                            <label id="infoEmail" width="100%"/>
+		                        </row>
+	                            <row>
+		                            <label value="Tarefa Associada"/>
+		                            <label id="infoTask" width="100%"/>
+		                        </row>
+	                            <row>
+		                            <label value="Coordenador"/>
+		                            <label id="infoTeamMaster" width="100%"/>
+		                        </row>
+	                        </rows>
+	                    </grid>
+	                <separator/>
+	                <div fulfill="=/templates/crud_buttons.zul" visible = "false"/>
+	                </div>
+	                <div id="divEdit" visible="false">
+	                    <grid fixedLayout="true">
+	                        <columns>
+	                            <column label="Campo" width="150px"/>
+	                            <column label="Valor"/>
+	                        </columns>
+	                        <rows>
+	                            <row>
+	                            <label value="Código"/>
+	                            <intbox id="id" use="br.com.mcampos.web.core.dbwidgets.DBIntbox" PrimaryKey="true"/>
+	                        </row>
+	                            <row>
+	                            <label value="Descrição"/>
+	                            <textbox id="description" width="100%" use="br.com.mcampos.web.core.dbwidgets.DBTextbox"/>
+	                        </row>
+	                        </rows>
+	                    </grid>
+	                <separator/>
+	                <div fulfill="=/templates/save_cancel.zul"></div>
+	                </div>
+	            </div>
+	        </east>
+	    </borderlayout>
+    </window>
+</zk>

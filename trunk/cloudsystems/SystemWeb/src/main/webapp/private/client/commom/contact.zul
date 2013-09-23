@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<window id = "wndContact" apply="br.com.mcampos.web.controller.client.commom.ContactController">
+		<listbox fixedLayout="true" id="lstItem" rows= "10">
+			<listhead sizable="true" >
+				<listheader label="Tipo" sort="auto" align="left" width="30%" />
+				<listheader label="Descrição" sort="auto" align="left" width="30%" />
+				<listheader label="Observação" width= "40%" />
+			</listhead>
+		</listbox>
+		<separator />
+		<hlayout valign="center">
+			<button id="cmdCreate" label="Novo" image="/img/icontexto-webdev-add-016x016.png" tooltiptext="Adiciona um novo contato"
+				autodisable="true" />
+			<button id="cmdUpdate" label="Editar" image="/img/icontexto-webdev-alert-016x016.png"
+				tooltiptext="Altera o contato selecionado" disabled="true" autodisable="true" />
+			<button id="cmdDelete" label="Excluir" image="/img/icontexto-webdev-remove-016x016.png"
+				tooltiptext="Exclui o contato selecionado" disabled="true" autodisable="true" />
+		</hlayout>
+	</window>
+</zk>

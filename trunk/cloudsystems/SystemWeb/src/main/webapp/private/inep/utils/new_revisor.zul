@@ -1,0 +1,43 @@
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<window title="Novo Revisor" border="normal" closable="true" width="480px" id="dlgMainWnd" use="br.com.mcampos.web.inep.controller.dialog.NewRevisorWindow">
+        <script type="text/JavaScript" defer="true">jq(document).ready( function() { jq('$cpf').setMask ( 'cpf' ); } );</script>
+	    <div align="center" xmlns="http://www.zkoss.org/2005/zul">
+			<grid>
+			    <columns>
+			        <column width="23%"/>
+			        <column/>
+			    </columns>
+			    <rows>
+			        <row spans="2" align="center">
+		                <label value="Entre com os dados do novo revisor"/>
+		            </row>
+			        <row>
+		                <label value="Nome"/>
+		                <textbox id="name" width="98%" maxlength="128" constraint="no empty"/>
+		            </row>
+			        <row>
+		                <label value="E-mail"/>
+		                <textbox id="email" width="98%" maxlength="128" />
+		            </row>
+			        <row>
+		                <label value="C.P.F."/>
+		                <textbox id="cpf" width="150px" maxlength="16" />
+		            </row>
+			        <row>
+		                <label value="Tipo"/>
+		                <combobox id="revisorType" width="98%" use="br.com.mcampos.web.inep.controller.combobox.RevisorTypeCombobox"/>
+		            </row>
+			        <row id="rowTasks" >
+		                <label value="Tarefa"/>
+		                <intbox id="task" width="10px" maxlength="1" />
+		            </row>
+			    </rows>
+			</grid>
+	        <hbox>
+	            <button label="Ok" id="cmdSubmit" image="/img/icontexto-webdev-ok-032x032.png" width="150px" forward="dlgMainWnd.onOK" />
+	            <separator width="50px"/>
+	            <button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png" dir="reverse" width="150px" forward="dlgMainWnd.onCancel"/>
+	        </hbox>
+	    </div>	
+	</window>
+</zk>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div id="rootParent" apply="br.com.mcampos.controller.ValidateEmailController" align="center">
+        <div id="login" width="400px">
+            <panel id="titleValidateEmail" border="normal" title="##">
+                <panelchildren>
+                    <div align="left">
+                        <grid fixedLayout="true">
+                            <columns>
+                                <column width="23%"/>
+                                <column/>
+                            </columns>
+                            <rows>
+                                <row spans="2" align="center">
+                                    <label id="validateEmailLabelMsg" value="##"/>
+                                </row>
+                                <row id="tokenRow">
+                                    <label id="labelCode" value="##"/>
+                                    <textbox id="token" width="98%" maxlength="32"/>
+                                </row>
+                                <row>
+                                    <label id="labelPassword" value="##"/>
+                                    <textbox id="password" type="password" width="98%" maxlength="16"/>
+                                </row>
+                            </rows>
+                        </grid>
+                        <separator/>
+                        <div fulfill="=/resources/captcha.zul"></div>
+                        <separator/>
+                        <div fulfill="=/resources/submit_cancel.zul"></div>
+                    </div>
+                    <separator/>
+                    <div align="right">
+                        <toolbarbutton id="cmdForgotPassword" label="Esqueceu a senha?"/>
+                    </div>
+                </panelchildren>
+            </panel>
+        </div>
+    </div>
+</zk>

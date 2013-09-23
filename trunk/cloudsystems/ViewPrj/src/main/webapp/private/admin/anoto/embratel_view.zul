@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div width="100%" height="100%" id="rootParent" apply="br.com.mcampos.controller.anoto.AnotoViewController">
+        <borderlayout id="borderLayout">
+            <north autoscroll="false" height="65px">
+                <grid>
+                    <columns>
+                        <column width="20%" align="center"/>
+                        <column width="60%" align="center"/>
+                        <column width="20%" align="center"/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <image id="imageClienteLogo"/>
+                            <label id="labelFormViewTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
+                            <image id="imageCompanyLogo"/>
+                        </row>
+                    </rows>
+                </grid>
+            </north>
+            <center autoscroll="false">
+                <borderlayout>
+                    <west splittable="true" width="40%" autoscroll="true" id="westView">
+                        <div align="center" width="100%" height="100%">
+                            <!-- Por favor, nao mude o id desta div -->
+                            <tabbox>
+                                <tabs>
+                                    <tab id="tabBackoffice" label="Backoffice"/>
+                                    <tab id="tabIcr" label="##"/>
+                                    <tab id="tabPgc" label="##" visible="false"/>
+                                    <tab id="tabbarCode" label="##" visible="false"/>
+                                    <tab id="tabPhotos" label="##"/>
+                                    <tab id="tabGPS" label="##"/>
+                                </tabs>
+                                <tabpanels>
+                                    <tabpanel>
+                                        <radiogroup id="optionStatus">
+                                            <grid width="100%">
+                                                <columns>
+                                                    <column width="50%" align="center"/>
+                                                    <column width="50%" align="center"/>
+                                                </columns>
+                                                <rows>
+                                                    <row>
+                                                        <radio label="Venda Cadastrada" id="vendaCadastrada" checked="false"
+                                                               onCheck="gridVendaOK.visible=true;optionRejeicao.visible=false;ordemServico.value=null;"/>
+                                                        <radio label="Venda Inválida" id="vendaInvalida" checked="false"
+                                                               onCheck="gridVendaOK.visible=false;optionRejeicao.visible=true;"/>
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </radiogroup>
+                                        <grid id="gridVendaOK" width="100%" visible="false">
+                                            <columns>
+                                                <column width="50%" align="left" label="Campo"/>
+                                                <column width="50%" align="left" label="Valor"/>
+                                            </columns>
+                                            <rows>
+                                                <row>
+                                                    <label value="Ordem de Serviço"/>
+                                                    <intbox id="ordemServico"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Telefone Livre"/>
+                                                    <textbox id="telefoneLivre"/>
+                                                </row>
+                                                <row>
+                                                    <label value="Número Portado"/>
+                                                    <textbox id="numeroPortado"/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                        <radiogroup id="optionRejeicao" visible="false">
+                                            <grid width="100%">
+                                                <columns>
+                                                    <column width="50%" align="center" label="Motivo da Rejeição"/>
+                                                    <column width="50%" align="center"/>
+                                                </columns>
+                                                <rows>
+                                                    <row>
+                                                        <radio label="CEP Inválido" id="rejeitadoCEP"/>
+                                                        <radio label="Análise Crédito" id="rejeitadoCredito"/>
+                                                    </row>
+                                                </rows>
+                                            </grid>
+                                        </radiogroup>
+                                        <button id="btnBackofficeSave" label="Salvar"/>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <listbox id="listFields" width="100%" height="400px" mold="paging">
+                                            <listhead sizable="true">
+                                                <listheader align="left" width="250px" label="Campo"/>
+                                                <listheader align="left" width="250px" label="Valor"/>
+                                                <listheader align="left" width="100px" label="Tempo Dig."/>
+                                            </listhead>
+                                        </listbox>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <div id="divProperties">
+                                            <listbox height="400px" vflex="true" width="99%" fixedLayout="true" id="listProperties">
+                                                <listhead>
+                                                    <listheader label="Propriedade do PGC" align="left"/>
+                                                </listhead>
+                                            </listbox>
+                                        </div>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <div id="divbarCcode">
+                                            <grid width="100%" fixedLayout="true" id="gridAttach">
+                                                <columns>
+                                                    <column align="left" width="30%"/>
+                                                    <column align="left"/>
+                                                </columns>
+                                            </grid>
+                                        </div>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <div id="divPgcAttach">
+                                            <toolbar>
+                                                <toolbarbutton image="/img/icontexto-webdev-file-016x016.png" label="##"
+                                                               id="btnExportAttach"/>
+                                            </toolbar>
+                                            <listbox height="400px" width="99%" fixedLayout="true" id="listPgcAttach">
+                                                <listhead sizable="true">
+                                                    <listheader align="left" width="50%" label="Nome"/>
+                                                </listhead>
+                                            </listbox>
+                                        </div>
+                                    </tabpanel>
+                                    <tabpanel>
+                                        <div id="divGPS">
+                                            <listbox height="400px" vflex="true" width="99%" fixedLayout="true" id="listGPS">
+                                                <listhead sizable="true">
+                                                    <listheader align="left" width="50%" label="Campo"/>
+                                                    <listheader align="left" label="Valor"/>
+                                                </listhead>
+                                            </listbox>
+                                            <separator/>
+                                            <gmaps width="400px" height="300px" id="gmapGPS" showSmallCtrl="true"/>
+                                        </div>
+                                    </tabpanel>
+                                </tabpanels>
+                            </tabbox>
+                        </div>
+                    </west>
+                    <center autoscroll="false" border="normal" id="centerImageArea">
+                        <div width="100%" height="100%">
+                            <borderlayout>
+                                <north autoscroll="false" splittable="false">
+                                    <div align="center" width="100%" id="divImageButtons">
+                                        <hbox>
+                                            <button id="btnFit" label="##" image="/img/icontexto-webdev-search-016x016.png"
+                                                    visible="false"/>
+                                            <button id="btnZoomIn" label="##" image="/img/icontexto-webdev-search-016x016.png"
+                                                    visible="false"/>
+                                            <label value="Zoom"/>
+                                            <combobox id="cmbZoonRate" width="80px"/>
+                                            <button id="btnZoomOut" label="##" image="/img/icontexto-webdev-alert-016x016.png"
+                                                    visible="false"/>
+                                            <separator/>
+                                            <button id="btnDeleteBook" label="##" image="/img/icontexto-webdev-remove-016x016.png"
+                                                    visible="false"/>
+                                        </hbox>
+                                    </div>
+                                </north>
+                                <center autoscroll="true">
+                                    <div align="center" id="divCenterImageArea" width="100%" height="100%">
+                                        <image id="pgcImage" align="center" border="normal"></image>
+                                    </div>
+                                </center>
+                                <south autoscroll="false" splittable="false">
+                                    <div align="center" width="100%" id="divOperations">
+                                        <grid width="100%">
+                                            <columns>
+                                                <column width="100px"/>
+                                                <column/>
+                                            </columns>
+                                            <rows>
+                                                <row id="rowPaging">
+                                                    <label value="##" id="labelPages"/>
+                                                    <hbox>
+                                                        <paging id="pagingPages"/>
+                                                        <button image="/img/icontexto-webdev-file-016x016.png" label="##"
+                                                                id="btnExport"/>
+                                                        <button image="/img/icontexto-webdev-file-016x016.png" label="##"
+                                                                id="btnExportPDF"/>
+                                                    </hbox>
+                                                </row>
+                                                <row id="rowBackGroundImages">
+                                                    <label value="Imagens de Fundo" id="labelBackgrounImage"/>
+                                                    <combobox id="cmbBackgroundImages" width="90%" readonly="true"/>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </div>
+                                </south>
+                            </borderlayout>
+                        </div>
+                    </center>
+                </borderlayout>
+            </center>
+        </borderlayout>
+    </div>
+</zk>

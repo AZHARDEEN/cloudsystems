@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language-addon>
+	<language-name>xul/html</language-name>
+    <addon-name>dbwidgets</addon-name>
+    <component>
+        <component-name>dbintbox</component-name>
+        <extends>intbox</extends>
+        <component-class>br.com.mcampos.web.core.dbwidgets.DBIntbox</component-class>
+    </component>
+    <component>
+        <component-name>dbtextbox</component-name>
+        <extends>textbox</extends>
+        <component-class>br.com.mcampos.web.core.dbwidgets.DBIntbox</component-class>
+    </component>
+    <component>
+        <component-name>button</component-name>
+        <extends>button</extends>
+        <property>
+            <property-name>autodisable</property-name>
+            <property-value>self</property-value>
+        </property>
+    </component>
+</language-addon>
+

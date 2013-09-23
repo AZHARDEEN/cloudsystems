@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?script type="text/javascript" src="/js/jquery.meio.mask.js" charset="utf-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div align="center" width="100%">
+        <script type="text/JavaScript" defer="true">
+            <![CDATA[
+                jq(document).ready(
+                    function()
+                    {
+                        jq('@cpf').setMask ( 'cpf' );
+                        jq('@zip').setMask ( 'cep' );
+                        jq('@birthdate').setMask ('date');
+                    }
+                );
+            ]]>
+        </script>
+        <div align="left">
+            <tabbox id="registerTab">
+                <tabs>
+                    <tab label="Dados Pessoais"/>
+                    <tab label="Endereço"/>
+                    <tab label="Documentos"/>
+                    <tab label="Contatos"/>
+                </tabs>
+                <tabpanels>
+                    <tabpanel fulfill="=/private/templates/personal.zul"></tabpanel>
+                    <tabpanel fulfill="=/private/templates/address.zul"></tabpanel>
+                    <tabpanel fulfill="=/private/templates/document.zul"></tabpanel>
+                    <tabpanel fulfill="=/private/templates/contact.zul"></tabpanel>
+                </tabpanels>
+            </tabbox>
+        </div>
+        <separator/>
+        <div fulfill="=/resources/submit_cancel.zul"/>
+    </div>
+</zk>
+

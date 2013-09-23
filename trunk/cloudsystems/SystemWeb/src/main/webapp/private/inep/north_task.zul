@@ -1,0 +1,27 @@
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<div width="100%">
+		<separator bar="true" orient="horizontal" width="100%"/>	    
+		<hlayout sclass="z-valign-middle" >
+			<style dynamic="true">
+				.varianceStyle {
+					background-color:rgba(255,0,0,0.1);
+				}
+				.revisedStyle {
+					background-color:rgba(0,255,0,0.1);
+				}
+				.tasksStyle {
+					background-color:rgba(0,0,255,0.1);
+				}
+			</style>
+			<label value="Evento"/>
+			<combobox id="comboEvent" readonly="true" hflex="true"/>
+			<separator  bar="true" orient="vertical"/>
+			<label value="Total de Tarefas"/>
+			<toolbarbutton id="countAll" width="140px" sclass="tasksStyle" />
+			<label value="Corrigidas"/>
+			<toolbarbutton id="countRevised" width="140px" sclass="revisedStyle"/>
+			<label value="Discrepâncias"/>
+			<toolbarbutton id="countVariance" width="140px" sclass="varianceStyle"/>
+		</hlayout>
+	</div>
+</zk>
