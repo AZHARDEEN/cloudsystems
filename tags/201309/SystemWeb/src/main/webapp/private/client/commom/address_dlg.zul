@@ -1,0 +1,46 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<window title="Endereço" border="normal" zclass="z-window-modal" closable="true" width="600px"
+		apply="br.com.mcampos.web.controller.client.commom.AddressDialogController">
+		<div >
+			<grid>
+				<columns>
+					<column width="15%" />
+					<column />
+				</columns>
+				<rows>
+					<row>
+						<label value="Tipo" />
+						<combobox id="addressType" readonly="true" use="br.com.mcampos.web.core.combobox.AddressTypeCombobox" />
+					</row>
+					<row>
+						<label value="CEP" />
+						<textbox id="zip" width="100px" maxlength="10" />
+					</row>
+					<row>
+						<label value="Logradouro" />
+						<textbox id="address" width="99%" maxlength="255" multiline="true" rows="2" />
+					</row>
+					<row>
+						<label value="Bairro" />
+						<textbox id="hood" width="99%" maxlength="128" />
+					</row>
+					<row>
+						<label value="Cidade/UF" id="labelAddressState" />
+						<vlayout>
+							<combobox id="state" width="300px" readonly="true" use="br.com.mcampos.web.core.combobox.StateCombobox" />
+							<combobox id="city" hflex="1" readonly="true" use="br.com.mcampos.web.core.combobox.CityCombobox" />
+						</vlayout>
+					</row>
+					<row>
+						<label value="Comentário" id="labelAddressObs" />
+						<textbox id="addressComment" width="99%" rows="2" />
+					</row>
+				</rows>
+			</grid>
+			<separator />
+			<div fulfill="=/templates/save_cancel.zul" />
+		</div>
+	</window>
+</zk>

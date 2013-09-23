@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native" xmlns:w="http://www.zkoss.org/2005/zk/client">
+    <!--<div align="center" id="rootParent" apply="br.com.mcampos.controller.LoginController"> -->
+    <div align="center" >
+        <window id="windowLogin" border="normal" title="Login" width="450px" closable="true" apply="br.com.mcampos.web.controller.authentication.LoginController">
+            <div align="left">
+                <grid>
+                    <columns>
+                        <column width="23%"/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <row spans="2" align="center">
+							<label id="loginLabelMsg" value="Entre com seu login(email) e senha"/>
+                        </row>
+                        <row>
+							<label id="labelIdentification" value="Identificação"/>
+							<textbox id="identification" width="98%" maxlength="128" constraint="no empty"/>
+                        </row>
+                        <row>
+							<label id="labelPassword" value="Senha"/>
+							<textbox id="password" type="password" width="98%" maxlength="16" constraint="no empty"/>
+                        </row>
+                    </rows>
+                </grid>
+                <separator/>
+                <div fulfill="=/templates/captcha.zul"></div>
+                <separator/>
+                <div fulfill="=/templates/submit_cancel.zul"></div>
+                <separator/>
+                <div align="right">
+                    <toolbarbutton label="Esqueceu a Senha?" id="cmdForgotPassword"/>
+                </div>
+            </div>
+        </window>
+    </div>
+</zk>

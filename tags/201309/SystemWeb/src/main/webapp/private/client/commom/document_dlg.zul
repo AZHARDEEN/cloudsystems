@@ -1,0 +1,32 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<window title="Documentos" border="normal" zclass="z-window-modal" closable="true" width="600px"
+		apply="br.com.mcampos.web.controller.client.commom.DocumentDialogController">
+		<div >
+			<grid >
+				<columns>
+					<column width="25%" />
+					<column />
+				</columns>
+				<rows>
+					<row>
+						<label value="Tipo do Documento" />
+						<combobox id="documentType" width="400px"  use="br.com.mcampos.web.core.combobox.DocumentTypeCombobox"  readonly="true">
+						</combobox>
+					</row>
+					<row>
+						<label value="Código/Id" />
+						<textbox id="documentId" maxlength="32" width="300px" />
+					</row>
+					<row>
+						<label value="Observação" />
+						<textbox id="documentComent" width="99%" maxlength="255" multiline="true" rows="2" />
+					</row>
+				</rows>
+			</grid>
+			<separator />
+			<div fulfill="=/templates/save_cancel.zul" />
+		</div>
+	</window>
+</zk>

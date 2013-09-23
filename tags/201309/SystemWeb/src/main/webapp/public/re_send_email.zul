@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div align="center">
+        <window border="normal" id="windowResendPassword" title="Reenviar Email de Confirmação" width="480px" closable="true"
+        	apply="br.com.mcampos.web.controller.authentication.SendConfirmationMail">
+            <div align="left">
+                <grid fixedLayout="true">
+                    <columns>
+                        <column width="23%"/>
+                        <column/>
+                    </columns>
+                    <rows>
+                        <row spans="2" align="center">
+                            <label value="Informe o seu email" id="resendEmailLabelMsg"/>
+                        </row>
+                        <row>
+                            <label value="Email" id="labelEmail"/>
+                            <textbox id="identification" width="98%" maxlength="128"/>
+                        </row>
+                    </rows>
+                </grid>
+                <separator/>
+                <div fulfill="=/templates/captcha.zul"></div>
+                <separator/>
+                <div fulfill="=/templates/submit_cancel.zul"></div>
+            </div>
+        </window>
+    </div>
+</zk>
+

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Zebra" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E5E5E5"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T:/Workspaces/indigo/cloudsystems/SystemWeb/WebContent/img"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+		iot_station_ch,
+		count (case when status = 'Presente' then 1 else null end ) Audios,
+		count (case when status = 'Ausente' then 1 else null end ) ausentes,
+		count( faixa_revisao ) reavaliadas,
+		sum ( diff0 ) igual,
+		sum ( maior ) maior,
+		sum ( diff1 ) sdiff1,
+		sum ( diff2 ) sdiff2,
+		sum ( diff3 ) sdiff3,
+		sum ( diff4 ) sdiff4,
+		sum ( menor ) menor,
+		sum ( diff_1 ) sdiff_1,
+		sum ( diff_2 ) sdiff_2,
+		sum ( diff_3 ) sdiff_3,
+		sum ( diff_4 ) sdiff_4
+from (
+	select
+		iot_station_ch,
+		status,
+		faixa_posto,
+		faixa_revisao,
+		case when diferenca between 1 and 4 then 1 else null end maior,
+		case when diferenca = 0 then 1 else null end diff0,
+		case when diferenca = 1 then 1 else null end diff1,
+		case when diferenca = 2 then 1 else null end diff2,
+		case when diferenca = 3 then 1 else null end diff3,
+		case when diferenca = 4 then 1 else null end diff4,
+		case when diferenca between -4 and -1 then 1 else null end menor,
+		case when diferenca = -1 then 1 else null end diff_1,
+		case when diferenca = -2 then 1 else null end diff_2,
+		case when diferenca = -3 then 1 else null end diff_3,
+		case when diferenca = -4 then 1 else null end diff_4
+	from (
+		select
+			iot_station_ch,
+			status,
+			faixa_posto,
+			faixa_revisao,
+			case when faixa_revisao is not null then faixa_posto - faixa_revisao else null end diferenca
+		from (
+			select
+				iot_station_ch,
+				iot_status_ch status,
+				iot_final_grade_nm,
+				case
+					when iot_final_grade_nm < 2 then 1
+					when iot_final_grade_nm between 2.00 and 2.75 then 2
+					when iot_final_grade_nm between 2.76 and 3.50 then 3
+					when iot_final_grade_nm between 3.51 and 4.25 then 4
+					when iot_final_grade_nm >= 4.26 then 5 end faixa_posto,
+				coalesce ( iot_agreement_grade_in, iot_agreement2_grade_nm ) revisao,
+				case
+					when coalesce ( iot_agreement_grade_in, iot_agreement2_grade_nm ) < 2 then 1
+					when coalesce ( iot_agreement_grade_in, iot_agreement2_grade_nm ) between 2.00 and 2.75 then 2
+					when coalesce ( iot_agreement_grade_in, iot_agreement2_grade_nm ) between 2.76 and 3.50 then 3
+					when coalesce ( iot_agreement_grade_in, iot_agreement2_grade_nm ) between 3.51 and 4.25 then 4
+					when coalesce ( iot_agreement_grade_in, iot_agreement2_grade_nm ) >= 4.26 then 5 end faixa_revisao
+			from
+				inep.inep_oral_test
+		) as t
+	) t1
+) t3
+group by
+iot_station_ch
+order by
+iot_station_ch]]>
+	</queryString>
+	<field name="iot_station_ch" class="java.lang.String"/>
+	<field name="audios" class="java.lang.Long"/>
+	<field name="ausentes" class="java.lang.Long"/>
+	<field name="reavaliadas" class="java.lang.Long"/>
+	<field name="igual" class="java.lang.Long"/>
+	<field name="maior" class="java.lang.Long"/>
+	<field name="sdiff1" class="java.lang.Long"/>
+	<field name="sdiff2" class="java.lang.Long"/>
+	<field name="sdiff3" class="java.lang.Long"/>
+	<field name="sdiff4" class="java.lang.Long"/>
+	<field name="menor" class="java.lang.Long"/>
+	<field name="sdiff_1" class="java.lang.Long"/>
+	<field name="sdiff_2" class="java.lang.Long"/>
+	<field name="sdiff_3" class="java.lang.Long"/>
+	<field name="sdiff_4" class="java.lang.Long"/>
+	<group name="Posto" keepTogether="true">
+		<groupExpression><![CDATA[$F{iot_station_ch}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<textField>
+					<reportElement uuid="0cbc7605-071c-4640-82ca-4bae53d3989d" x="3" y="0" width="550" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{iot_station_ch}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="e068ea81-11e6-41e5-955b-c2b914369d3e" x="0" y="0" width="555" height="1"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="14">
+				<break>
+					<reportElement uuid="671a9c68-d7c6-4ce4-bc4e-0ccbb26a43a1" x="0" y="0" width="555" height="1"/>
+				</break>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="0" y="0" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reavaliações da Prova Oral por Posto Aplicador]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="64" splitType="Stretch">
+			<elementGroup/>
+			<image>
+				<reportElement uuid="6cd20d8c-8ef0-40ca-aee3-3eeb3b61a13c" x="3" y="0" width="117" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="75a50f28-1c27-4b0e-8f9b-8f4d91a39ddf" x="388" y="2" width="165" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="f643afe2-77e7-4361-a7e7-7b314f698f0b" x="144" y="1" width="231" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="63" splitType="Stretch">
+			<frame>
+				<reportElement uuid="bfee00be-642f-4346-8bfe-a36693652557" style="Zebra" mode="Opaque" x="0" y="0" width="555" height="60"/>
+				<staticText>
+					<reportElement uuid="c63c366e-6935-4112-8b11-ed1c7337b9ca" x="3" y="0" width="73" height="13"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Total de Audios]]></text>
+				</staticText>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="a60b7d9e-07b8-460a-8b0b-f389abb3317d" x="3" y="13" width="73" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{audios}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="4c2955b9-cbc8-43f3-895d-7e493c27014e" x="84" y="0" width="59" height="13"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Reavaliadas]]></text>
+				</staticText>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="8b935bec-8d17-4550-b28e-2df8ffef0633" x="84" y="13" width="59" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{reavaliadas}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="8d54282a-6ba2-4d64-aa08-272da4babd81" x="154" y="0" width="40" height="13"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Igual]]></text>
+				</staticText>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="86ca06d6-15a3-4b32-96ae-6073ff6d2736" x="154" y="13" width="40" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{igual}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="3dee43eb-3b99-491b-a22b-c01ca1d651b6" x="200" y="0" width="172" height="13" isPrintWhenDetailOverflows="true"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Faixa Reavaliação > Faixa Posto]]></text>
+				</staticText>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="dae1fd2a-e23a-4b5c-91f4-e27d4a1a291c" x="200" y="13" width="172" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{menor}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="6d79fd03-c16c-4147-a48f-35ba9240effc" x="379" y="0" width="173" height="13"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Faixa Reavaliação < Faixa Posto]]></text>
+				</staticText>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="48fd7612-b2e2-419a-a5f8-f7a236a15da1" x="379" y="13" width="173" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{maior}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="27f489ec-68df-4754-b10d-1a79d59c264f" x="510" y="44" width="43" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{sdiff4}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="6e21ad88-3f73-45c0-b350-b35675c74efc" x="423" y="44" width="43" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{sdiff2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="e27b2d53-3053-4097-94c8-446c9b944aa1" x="379" y="44" width="43" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{sdiff1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="d2942436-3a80-4550-8874-8939180035f2" x="466" y="44" width="43" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{sdiff3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="d274c209-e7f3-4cec-b57b-76a70012e0cc" x="200" y="44" width="43" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{sdiff_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="7f865acb-0ca0-4a53-8d53-18dd2786d0f7" x="243" y="44" width="43" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{sdiff_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="563fd040-7b3e-4918-af43-c382729967ff" x="286" y="44" width="43" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{sdiff_3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="27101f9c-2a57-428f-b218-320b1ac9d87c" x="329" y="44" width="43" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{sdiff_4}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="6fbe925c-9e3f-4c29-ae68-69ced851b164" x="200" y="28" width="43" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Top"/>
+					<text><![CDATA[1]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="d5fe6fd7-5e24-4977-841c-7324c6402393" x="243" y="28" width="43" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Top"/>
+					<text><![CDATA[2]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="fd63b1a2-148b-4493-98f7-1d45da43c66f" x="286" y="28" width="43" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Top"/>
+					<text><![CDATA[3]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ff54f257-fe01-4264-ac6d-51da2a542f5a" x="329" y="28" width="43" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Top"/>
+					<text><![CDATA[4]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="8e25b707-e5f4-436b-9658-15f328f88516" x="466" y="28" width="43" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Top"/>
+					<text><![CDATA[3]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="1e10381e-1d21-4965-9ea3-c9b28c5a652c" x="509" y="28" width="43" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Top"/>
+					<text><![CDATA[4]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="81e61ead-492a-43c0-8aa8-18e32602acd4" x="380" y="28" width="43" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Top"/>
+					<text><![CDATA[1]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="7a73ea99-3934-4cd6-aa3c-12bfafa23d72" x="423" y="28" width="43" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Top"/>
+					<text><![CDATA[2]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ea731c5b-1eb5-4d8b-9cd1-2ec649b8bace" x="3" y="28" width="73" height="15"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Ausentes]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="14b21de9-83e5-417f-ba8c-6ebcb3830f66" x="3" y="43" width="73" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{ausentes}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7" x="455" y="0" width="100" height="23"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6" x="0" y="0" width="103" height="23"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd" x="0" y="0" width="555" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="14" splitType="Stretch"/>
+	</summary>
+</jasperReport>

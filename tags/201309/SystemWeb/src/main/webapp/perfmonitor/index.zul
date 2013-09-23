@@ -1,0 +1,220 @@
+<?page id="gazer" title="Gazer"?>
+<window id="win" title="ZK Gazer" border="normal" apply="org.zkoss.poc.gazer.ctrl.DataCtrl">
+	<timer id="reqUpdateTimer" />
+	<zk>
+		<style dynamic="true">.grids { border: 5px solid blue; }</style>
+		<zscript>
+					<![CDATA[
+	String tarId = "Target\nID";
+	String evtName = "Event\nName";
+	String eht = "Event\nHandling\nTime (ms)";
+	String reqId = "Request\nID";
+	String spt = "Server\nProcess\nTime (ms)";
+	String crt = "Client\nRendering\nTime (ms)";
+	String nl = "Network\nLatency\n(ms)";
+	String aveTime = "Average\nHandling\nTime (ms)";
+	String reqStamp = "Request\nReceived";
+	String eventStamp = "Event\nHandling\nStarts";
+	String totalTime = "Total\nTime";
+]]></zscript>
+
+	</zk>
+	<borderlayout height="600px">
+		<north>
+			<hbox>
+				<button id="reset" label="Clear Data" />
+				<button id="reload" label="Reload URL" />
+				<button id="entry" label="Enter URL to Monitor:" />
+				<textbox id="urlBox" width="600px" />
+			</hbox>
+		</north>
+		<west title="Request Path" style="background:#c5e6ef;" size="12%" splittable="true" collapsible="true">
+			<panel height="600px" style="margin-bottom:2px" border="normal" collapsible="false">
+				<panelchildren>
+					<tree>
+						<treecols>
+							<treecol />
+						</treecols>
+						<treechildren id="treeStem"></treechildren>
+					</tree>
+
+				</panelchildren>
+			</panel>
+		</west>
+		<center autoscroll="true" border="0">
+
+			<div style="background:#FFFFFF">
+				<tabbox>
+					<tabs>
+						<tab id="real" label="Real-Time Monitoring" />
+						<tab label="Statistics" id="statsTab" />
+					</tabs>
+					<tabpanels>
+						<tabpanel id="realtime">
+							<hbox>
+								<vbox>
+									<panel width="520px" title="Target Monitor" movable="true">
+										<panelchildren>
+											<grid fixedLayout="true" sclass="grids" id="eventDataGrid" height="300px">
+												<columns sizable="true">
+													<column width="20%">
+														<label multiline="true" value='${tarId}' />
+													</column>
+													<column width="20%">
+														<label multiline="true" value='${evtName}' />
+													</column>
+													<column width="20%">
+														<label multiline="true" value='${eht}' />
+													</column>
+													<column width="20%">
+														<label multiline="true" value='${reqId}' />
+													</column>
+													<column width="20%">
+														<label multiline="false" value='Time Stamp' />
+													</column>
+												</columns>
+												<rows>
+													<row></row>
+												</rows>
+											</grid>
+										</panelchildren>
+									</panel>
+									<panel width="520px" title="Request Monitor">
+										<panelchildren>
+
+											<grid fixedLayout="true" id="reqDataGrid" height="300px">
+												<columns sizable="true">
+													<column width="20%">
+														<label multiline="true" value='${reqId}' />
+													</column>
+													<column width="20%">
+														<label multiline="true" value='${spt}' />
+													</column>
+													<column width="20%">
+														<label multiline="true" value='${crt}' />
+													</column>
+													<column width="20%">
+														<label multiline="true" value='${nl}' />
+													</column>
+													<column width="20%">
+														<label multiline="false" value='Time Stamp' />
+													</column>
+
+												</columns>
+												<rows>
+													<row></row>
+												</rows>
+											</grid>
+
+										</panelchildren>
+									</panel>
+								</vbox>
+								<panel width="600px" title="Browser Panel" collapsible="true">
+									<panelchildren id="browserParent">
+										<iframe id="browser" width="99%" height="560px" style="border:3px insect"
+											src="http://en.wikipedia.org/wiki/ZK_(framework)" />
+									</panelchildren>
+								</panel>
+							</hbox>
+						</tabpanel>
+						<tabpanel id="statsTabPan">
+							<hbox>
+								<panel title="Data Record">
+									<panelchildren>
+										<window id="statsWin" apply="org.zkoss.poc.gazer.ctrl.StatCtrl">
+											<menubar>
+												<menu label="Sort">
+													<menupopup>
+														<menuitem id="sortByEventTime" label="by Event Handling Time" />
+														<menuseparator />
+														<menuitem id="sortByReqID" label="by Request ID" />
+														<menuseparator />
+														<menuitem id="sortByTarget" label="by Target ID" />
+													</menupopup>
+												</menu>
+												<menu label="Plot">
+													<menupopup>
+														<menuitem id="plotTarget" label="not implemented" />
+														<menuseparator />
+														<menuitem id="plotTime" label="not implemented" />
+													</menupopup>
+												</menu>
+
+											</menubar>
+										</window>
+
+										<grid fixedLayout="true" id="statsGrid" width="620px" height="600px">
+
+											<columns sizable="true">
+												<column width="60px">
+													<label multiline="true" value='${tarId}' />
+												</column>
+												<column width="60px">
+													<label multiline="true" value='${evtName}' />
+												</column>
+												<column width="60px">
+													<label multiline="true" value='${eht}' />
+												</column>
+												<column width="60px">
+													<label multiline="true" value='${spt}' />
+												</column>
+												<column width="60px">
+													<label multiline="true" value='${crt}' />
+												</column>
+												<column width="60px">
+													<label multiline="true" value='${nl}' />
+												</column>
+												<column width="60px">
+													<label multiline="true" value='${reqId}' />
+												</column>
+												<column width="60px">
+													<label multiline="true" value='Time Stamp' />
+												</column>
+											</columns>
+											<rows>
+												<row></row>
+											</rows>
+										</grid>
+									</panelchildren>
+								</panel>
+								<vbox>
+									<panel title="Analytics">
+										<panelchildren>
+											<grid fixedLayout="true" width="500px" height="250px" id="anylGrid">
+												<columns sizable="true">
+													<column width="20%">
+														<label multiline="true" value='${tarId}' />
+													</column>
+													<column width="20%">
+														<label multiline="true" value='${evtName}' />
+													</column>
+													<column width="20%">
+														<label multiline="true" value='${totalTime}' />
+													</column>
+													<column width="20%">
+														<label multiline="true" value='${aveTime}' />
+													</column>
+													<column width="20%" label="Count" />
+
+												</columns>
+												<rows>
+													<row></row>
+												</rows>
+											</grid>
+
+										</panelchildren>
+									</panel>
+									<panel title="Plot">
+										<panelchildren id="plot">
+											<flashchart height="360px" width="500px" id="eventPie" />
+										</panelchildren>
+									</panel>
+								</vbox>
+							</hbox>
+						</tabpanel>
+					</tabpanels>
+				</tabbox>
+			</div>
+		</center>
+	</borderlayout>
+</window>

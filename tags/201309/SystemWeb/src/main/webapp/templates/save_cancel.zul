@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div align="center" id="divConfirmOperations">
+        <hbox>
+            <button id="cmdSave" label="Salvar" image="/img/icontexto-webdev-ok-016x016.png"/>
+            <separator/>
+            <button id="cmdCancel" label="Cancelar" image="/img/icontexto-webdev-cancel-016x016.png"/>
+        </hbox>
+    </div>
+</zk>

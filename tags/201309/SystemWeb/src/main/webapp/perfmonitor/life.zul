@@ -1,0 +1,21 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window id="lifewin" title="Life Expectancy Around the World" border="normal" apply="org.zkoss.poc.gazer.demo.LifeCtrl">
+<vbox> 
+<grid id="lifeGrid" width="100%">
+		<columns>
+			<column width="200px" label="Country"/>
+			<column width="200px" label="Female Life Expectancy"/>
+			<column width="200px" label="Male Life Expectancy"/>
+		</columns>
+		<rows>
+			<row>	
+			</row>
+		</rows>
+</grid>
+<hbox>
+<button id="display" label="Display"/>
+</hbox>
+</vbox>
+</window>
+</zk>
