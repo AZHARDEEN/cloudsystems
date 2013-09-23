@@ -125,21 +125,20 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+
+				<plugin>
+					<groupId>org.jboss.as.plugins</groupId>
+					<artifactId>jboss-as-maven-plugin</artifactId>
+					<version>7.4.Final</version>
+					<configuration>
+						<jbossHome>/usr/jboss-4.2.3.GA</jbossHome>
+						<serverName>all</serverName>
+						<fileName>target/my-project.war</fileName>
+					</configuration>
+				</plugin>
+
 			</plugins>
 		</pluginManagement>
-
-
-		<plugins>
-			<plugin>
-				<groupId>org.jboss.as.plugins</groupId>
-				<artifactId>jboss-as-maven-plugin</artifactId>
-				<version>${version.org.jboss.as.plugins.maven.plugin}</version>
-				<inherited>true</inherited>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
-		</plugins>
 	</build>
 
 </project>

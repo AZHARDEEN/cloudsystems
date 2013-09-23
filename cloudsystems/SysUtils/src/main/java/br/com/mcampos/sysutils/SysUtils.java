@@ -36,15 +36,15 @@ public final class SysUtils
 
 	public static String trim( String s )
 	{
-		return(isEmpty( s ) ? null : s.trim( ));
+		return ( isEmpty( s ) ? null : s.trim( ) );
 	}
 
 	public static boolean isEmpty( String s )
 	{
-		if( isNull( s ) ) {
+		if ( isNull( s ) ) {
 			return true;
 		}
-		if( s.isEmpty( ) == true ) {
+		if ( s.isEmpty( ) == true ) {
 			return true;
 		}
 		return false;
@@ -52,24 +52,22 @@ public final class SysUtils
 
 	public static boolean isEmptyAfterTrim( String s )
 	{
-		if( isNull( s ) ) {
+		if ( isEmpty( s ) ) {
 			return true;
 		}
-		if( s.isEmpty( ) == true ) {
+		String aux = s.trim( );
+		if ( aux.isEmpty( ) == true ) {
 			return true;
 		}
-		s = s.trim( );
-		if( s.isEmpty( ) == true )
-			return true;
 		return false;
 	}
 
 	public static boolean isZero( Integer i )
 	{
-		if( isNull( i ) ) {
+		if ( isNull( i ) ) {
 			return true;
 		}
-		if( i.equals( 0 ) ) {
+		if ( i.equals( 0 ) ) {
 			return true;
 		}
 		return false;
@@ -83,12 +81,12 @@ public final class SysUtils
 	public static Timestamp nowTimestamp( )
 	{
 		java.util.Date today = new java.util.Date( );
-		return(new java.sql.Timestamp( today.getTime( ) ));
+		return ( new java.sql.Timestamp( today.getTime( ) ) );
 	}
 
 	public static boolean isEmpty( Collection<?> list )
 	{
-		return((isNull( list ) || list.size( ) == 0) ? true : false);
+		return ( ( isNull( list ) || list.size( ) == 0 ) ? true : false );
 	}
 
 	public static String formatDateForSQLSearch( Date date )
@@ -104,11 +102,12 @@ public final class SysUtils
 
 	public static String formatDate( Date date, String format )
 	{
-		if( date != null ) {
-			if( isEmpty( format ) ) {
-				format = "dd/MM/yyyy HH:mm:ss";
+		if ( date != null ) {
+			String aux = format;
+			if ( isEmpty( aux ) ) {
+				aux = "dd/MM/yyyy HH:mm:ss";
 			}
-			DateFormat df = new SimpleDateFormat( format );
+			DateFormat df = new SimpleDateFormat( aux );
 			return df.format( date );
 		}
 		else {
@@ -118,7 +117,7 @@ public final class SysUtils
 
 	public static String toUpperCase( String fieldValue )
 	{
-		if( fieldValue == null || fieldValue.isEmpty( ) ) {
+		if ( fieldValue == null || fieldValue.isEmpty( ) ) {
 			return fieldValue;
 		}
 		return fieldValue.toUpperCase( );
@@ -126,7 +125,7 @@ public final class SysUtils
 
 	public static String toLowerCase( String fieldValue )
 	{
-		if( fieldValue == null || fieldValue.isEmpty( ) ) {
+		if ( fieldValue == null || fieldValue.isEmpty( ) ) {
 			return fieldValue;
 		}
 		return fieldValue.toLowerCase( );
@@ -134,7 +133,7 @@ public final class SysUtils
 
 	public static String unaccent( String str )
 	{
-		if( SysUtils.isEmpty( str ) == false ) {
+		if ( SysUtils.isEmpty( str ) == false ) {
 			return Normalizer.normalize( str.trim( ), Normalizer.Form.NFD ).replaceAll( "\\p{IsM}+", "" );
 		}
 		else {
@@ -144,13 +143,13 @@ public final class SysUtils
 
 	public static String getHexString( byte[ ] raw, String caracterCode ) throws UnsupportedEncodingException
 	{
-		byte[ ] hex = new byte[2 * raw.length];
+		byte[ ] hex = new byte[ 2 * raw.length ];
 		int index = 0;
 
-		for( byte b : raw ) {
+		for ( byte b : raw ) {
 			int v = b & 0xFF;
-			hex[index++] = HEX_CHAR_TABLE[v >>> 4];
-			hex[index++] = HEX_CHAR_TABLE[v & 0xF];
+			hex[ index++ ] = HEX_CHAR_TABLE[ v >>> 4 ];
+			hex[ index++ ] = HEX_CHAR_TABLE[ v & 0xF ];
 		}
 		return new String( hex, caracterCode );
 	}
@@ -163,24 +162,25 @@ public final class SysUtils
 	public static List<Field> getDeclaredFields( Class<?> clazz )
 	{
 		List<Field> fields = new ArrayList<Field>( );
+		Class<?> localClass = clazz;
 		do {
 			try {
-				fields.addAll( Arrays.asList( clazz.getDeclaredFields( ) ) );
+				fields.addAll( Arrays.asList( localClass.getDeclaredFields( ) ) );
 			}
-			catch( Exception e ) {
+			catch ( Exception e ) {
 				e = null;
 			}
-			clazz = clazz.getSuperclass( );
-		} while( clazz != null );
+			localClass = localClass.getSuperclass( );
+		} while ( localClass != null );
 		return fields;
 	}
 
 	public static boolean search( Object object, String criteria ) throws IllegalArgumentException, IllegalAccessException
 	{
 		List<Field> fields = getDeclaredFields( object.getClass( ) );
-		for( Field field : fields ) {
+		for ( Field field : fields ) {
 			field.setAccessible( true );
-			if( String.valueOf( field.get( object ) ).equalsIgnoreCase( criteria ) ) {
+			if ( String.valueOf( field.get( object ) ).equalsIgnoreCase( criteria ) ) {
 				return true;
 			}
 		}
@@ -195,13 +195,13 @@ public final class SysUtils
 			try {
 				field = clazz.getDeclaredField( name );
 			}
-			catch( Exception e ) {
+			catch ( Exception e ) {
 				e = null;
 			}
 			clazz = clazz.getSuperclass( );
-		} while( field == null && clazz != null );
+		} while ( field == null && clazz != null );
 
-		if( field == null ) {
+		if ( field == null ) {
 			throw new NoSuchFieldException( );
 		}
 
@@ -216,13 +216,13 @@ public final class SysUtils
 			try {
 				method = clazz.getDeclaredMethod( name );
 			}
-			catch( Exception e ) {
+			catch ( Exception e ) {
 				e = null;
 			}
 			clazz = clazz.getSuperclass( );
-		} while( method == null && clazz != null );
+		} while ( method == null && clazz != null );
 
-		if( method == null ) {
+		if ( method == null ) {
 			throw new NoSuchMethodException( );
 		}
 
@@ -240,7 +240,7 @@ public final class SysUtils
 	public static <T> T newInstance( Class<T> clazz ) throws IllegalArgumentException, SecurityException, InstantiationException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException
 	{
-		return newInstance( clazz, new Class[0], new Object[0] );
+		return newInstance( clazz, new Class[ 0 ], new Object[ 0 ] );
 	}
 
 	public static <T> T newInstance( Class<T> clazz, Class<?>[ ] paramClazzes, Object[ ] params ) throws IllegalArgumentException,
@@ -261,22 +261,22 @@ public final class SysUtils
 
 	public static void add( List<Object> list, Object obj )
 	{
-		if( list == null || obj == null ) {
+		if ( list == null || obj == null ) {
 			return;
 		}
 		int nIndex = list.indexOf( obj );
-		if( nIndex < 0 ) {
+		if ( nIndex < 0 ) {
 			list.add( obj );
 		}
 	}
 
 	public static void remove( List<?> list, Object obj )
 	{
-		if( list == null || obj == null ) {
+		if ( list == null || obj == null ) {
 			return;
 		}
 		int nIndex = list.indexOf( obj );
-		if( nIndex >= 0 ) {
+		if ( nIndex >= 0 ) {
 			list.remove( nIndex );
 		}
 	}
@@ -287,50 +287,53 @@ public final class SysUtils
 		String s = f.getName( );
 		int i = s.lastIndexOf( '.' );
 
-		if( i > 0 && i < s.length( ) - 1 ) {
+		if ( i > 0 && i < s.length( ) - 1 ) {
 			ext = s.substring( i + 1 ).toLowerCase( );
 		}
 
-		if( ext == null ) {
+		if ( ext == null ) {
 			return "";
 		}
 		return ext;
 	}
 
-	public static byte[ ] readByteFromStream( InputStream inputStream ) throws Exception
+	public static byte[ ] readByteFromStream( InputStream inputStream )
 	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream( );
 		DataOutputStream dos = new DataOutputStream( baos );
-		byte[ ] data = new byte[4096];
-		int count = inputStream.read( data );
-		while( count != -1 )
-		{
-			dos.write( data, 0, count );
-			count = inputStream.read( data );
+		byte[ ] data = new byte[ 4096 ];
+		try {
+			int count = inputStream.read( data );
+			while ( count != -1 )
+			{
+				dos.write( data, 0, count );
+				count = inputStream.read( data );
+			}
 		}
-
+		catch ( Exception e ) {
+			e = null;
+		}
 		return baos.toByteArray( );
 	}
 
 	public static Date parseDate( String value, String format )
 	{
 
-		if( isEmpty( value ) || isEmpty( format ) ) {
+		if ( isEmpty( value ) || isEmpty( format ) ) {
 			return null;
 		}
 
 		SimpleDateFormat formatter = new SimpleDateFormat( format );
 		try {
-			Date date = formatter.parse( value );
-			return date;
+			return formatter.parse( value );
 		}
-		catch( ParseException e ) {
+		catch ( ParseException e ) {
 			e.printStackTrace( );
 			return null;
 		}
 	}
 
-	public static Locale Locale_BR( )
+	public static Locale getLocalePtBR( )
 	{
 		return new Locale( "pt", "BR" );
 	}
@@ -338,9 +341,9 @@ public final class SysUtils
 	public static Number parseNumber( String value )
 	{
 		try {
-			return NumberFormat.getInstance( Locale_BR( ) ).parse( value );
+			return NumberFormat.getInstance( getLocalePtBR( ) ).parse( value );
 		}
-		catch( ParseException e ) {
+		catch ( ParseException e ) {
 			e.printStackTrace( );
 			return null;
 		}
@@ -358,21 +361,21 @@ public final class SysUtils
 		try {
 			return Integer.parseInt( value );
 		}
-		catch( Exception e )
+		catch ( Exception e )
 		{
-			return new Integer( 0 );
+			return Integer.valueOf( 0 );
 		}
 	}
 
 	public static String format( String source, String regexPattern, String regexMask )
 	{
-		if( SysUtils.isEmpty( source ) ) {
+		if ( SysUtils.isEmpty( source ) ) {
 			return source;
 		}
 		try {
 			return source.replaceFirst( regexPattern, regexMask );
 		}
-		catch( Exception e )
+		catch ( Exception e )
 		{
 			return source;
 		}
@@ -381,18 +384,19 @@ public final class SysUtils
 
 	public static String format( String source, String meioMaskPattern )
 	{
-		if( isEmpty( meioMaskPattern ) || isEmpty( source ) )
+		if ( isEmpty( meioMaskPattern ) || isEmpty( source ) ) {
 			return source;
-		if( meioMaskPattern.equalsIgnoreCase( "phone" ) ) {
+		}
+		if ( meioMaskPattern.equalsIgnoreCase( "phone" ) ) {
 			return formatPhone( source );
 		}
-		else if( meioMaskPattern.equalsIgnoreCase( "cep" ) ) {
+		else if ( meioMaskPattern.equalsIgnoreCase( "cep" ) ) {
 			return formatCEP( source );
 		}
-		else if( meioMaskPattern.equalsIgnoreCase( "cpf" ) ) {
+		else if ( meioMaskPattern.equalsIgnoreCase( "cpf" ) ) {
 			return formatCPF( source );
 		}
-		else if( meioMaskPattern.equalsIgnoreCase( "cnpj" ) ) {
+		else if ( meioMaskPattern.equalsIgnoreCase( "cnpj" ) ) {
 			return formatCPF( source );
 		}
 		return source;
@@ -405,7 +409,8 @@ public final class SysUtils
 
 	public static String formatPhone( String source )
 	{
-		return format( source, "^\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d).*$", "($1$2) $3$4$5$6-$7$8$9$10" );
+		return format( source, "^\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d).*$",
+				"($1$2) $3$4$5$6-$7$8$9$10" );
 	}
 
 	public static String formatCPF( String source )
@@ -416,7 +421,8 @@ public final class SysUtils
 
 	public static String formatCNPJ( String source )
 	{
-		return format( source,
+		return format(
+				source,
 				"^\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d).*$",
 				"$1$2\\.$3$4$5\\.$6$7$8$9/$10$11$12$13-$14$15" );
 	}

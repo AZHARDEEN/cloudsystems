@@ -247,7 +247,7 @@ public class AssefazDTO implements Serializable
 	private void setPayment( String value ) throws Exception
 	{
 		try {
-			NumberFormat nf_br = NumberFormat.getInstance( SysUtils.Locale_BR( ) );
+			NumberFormat nf_br = NumberFormat.getInstance( SysUtils.getLocalePtBR( ) );
 
 			Number n = nf_br.parse( value );
 			setPayment( n.doubleValue( ) );

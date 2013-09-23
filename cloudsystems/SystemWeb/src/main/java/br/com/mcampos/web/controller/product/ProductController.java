@@ -94,7 +94,7 @@ public class ProductController extends BaseDBListController<ProductSession, Prod
 			type.find( targetEntity.getType( ) );
 			description.setValue( targetEntity.getDescription( ) );
 
-			NumberFormat dm = DecimalFormat.getCurrencyInstance( SysUtils.Locale_BR( ) );
+			NumberFormat dm = DecimalFormat.getCurrencyInstance( SysUtils.getLocalePtBR( ) );
 			targetEntity = getSession( ).loadObjects( getPrincipal( ), targetEntity );
 			for ( Price price : targetEntity.getPrices( ) ) {
 				switch ( price.getId( ).getPriceTypeId( ) ) {
