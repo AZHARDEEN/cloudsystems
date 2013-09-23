@@ -10,6 +10,8 @@ public class CPF extends BaseID implements Serializable
 	private static final long serialVersionUID = -873123898678107661L;
 
 	private static final int[ ] PESO_CPF = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+	private static final int VALID_SIZE = 11;
+	private static final int DIGIT_POSITION = 9;
 
 	private String code;
 
@@ -26,7 +28,7 @@ public class CPF extends BaseID implements Serializable
 			digito = Integer.parseInt( str.substring( indice, indice + 1 ) );
 			soma += digito * peso[ peso.length - str.length( ) + indice ];
 		}
-		soma = 11 - soma % 11;
+		soma = VALID_SIZE - soma % VALID_SIZE;
 		return soma > 9 ? 0 : soma;
 	}
 
@@ -37,12 +39,12 @@ public class CPF extends BaseID implements Serializable
 		}
 		String aux = removeMask( cpf );
 
-		if ( aux.length( ) != 11 ) {
+		if ( aux.length( ) != VALID_SIZE ) {
 			return false;
 		}
-		Integer digito1 = calcularDigito( aux.substring( 0, 9 ), PESO_CPF );
-		Integer digito2 = calcularDigito( aux.substring( 0, 9 ) + digito1, PESO_CPF );
-		return aux.equals( aux.substring( 0, 9 ) + digito1.toString( ) + digito2.toString( ) );
+		Integer digito1 = calcularDigito( aux.substring( 0, DIGIT_POSITION ), PESO_CPF );
+		Integer digito2 = calcularDigito( aux.substring( 0, DIGIT_POSITION ) + digito1, PESO_CPF );
+		return aux.equals( aux.substring( 0, DIGIT_POSITION ) + digito1.toString( ) + digito2.toString( ) );
 	}
 
 	public static String removeMask( String cpf )

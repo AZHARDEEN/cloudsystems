@@ -32,6 +32,10 @@ public final class SysUtils
 			(byte) '8', (byte) '9', (byte) 'a', (byte) 'b', (byte) 'c', (byte) 'd', (byte) 'e',
 			(byte) 'f' };
 	private static final Logger LOGGER = LoggerFactory.getLogger( ServiceLocator.class.getSimpleName( ) );
+	private static final int CONVERT_HEX_VALUE = 0xFF;
+	private static final int RIGHT_SHIFT_VALUE = 4;
+	private static final int CONVERT_HEX_VALUE_8BIT = 0xF;
+	private static final int BUFFER_SIZE = 4096;
 
 	private SysUtils( )
 	{
@@ -132,9 +136,9 @@ public final class SysUtils
 		int index = 0;
 
 		for ( byte b : raw ) {
-			int v = b & 0xFF;
-			hex[ index++ ] = HEX_CHAR_TABLE[ v >>> 4 ];
-			hex[ index++ ] = HEX_CHAR_TABLE[ v & 0xF ];
+			int v = b & CONVERT_HEX_VALUE;
+			hex[ index++ ] = HEX_CHAR_TABLE[ v >>> RIGHT_SHIFT_VALUE ];
+			hex[ index++ ] = HEX_CHAR_TABLE[ v & CONVERT_HEX_VALUE_8BIT ];
 		}
 		return new String( hex, caracterCode );
 	}
@@ -286,7 +290,7 @@ public final class SysUtils
 	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream( );
 		DataOutputStream dos = new DataOutputStream( baos );
-		byte[ ] data = new byte[ 4096 ];
+		byte[ ] data = new byte[ BUFFER_SIZE ];
 		try {
 			int count = inputStream.read( data );
 			while ( count != -1 )
