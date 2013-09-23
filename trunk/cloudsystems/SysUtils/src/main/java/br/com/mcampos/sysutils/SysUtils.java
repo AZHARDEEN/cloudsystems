@@ -22,14 +22,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class SysUtils
 {
 	static final byte[ ] HEX_CHAR_TABLE = { (byte) '0', (byte) '1', (byte) '2', (byte) '3', (byte) '4', (byte) '5', (byte) '6',
 			(byte) '7',
 			(byte) '8', (byte) '9', (byte) 'a', (byte) 'b', (byte) 'c', (byte) 'd', (byte) 'e',
 			(byte) 'f' };
+	private static final Logger LOGGER = LoggerFactory.getLogger( ServiceLocator.class.getSimpleName( ) );
 
-	public SysUtils( )
+	private SysUtils( )
 	{
 		super( );
 	}
@@ -41,41 +45,22 @@ public final class SysUtils
 
 	public static boolean isEmpty( String s )
 	{
-		if ( isNull( s ) ) {
-			return true;
-		}
-		if ( s.isEmpty( ) == true ) {
-			return true;
-		}
-		return false;
+		return ( isNull( s ) || s.isEmpty( ) );
 	}
 
 	public static boolean isEmptyAfterTrim( String s )
 	{
-		if ( isEmpty( s ) ) {
-			return true;
-		}
-		String aux = s.trim( );
-		if ( aux.isEmpty( ) == true ) {
-			return true;
-		}
-		return false;
+		return ( isEmpty( s ) || isEmpty( s.trim( ) ) );
 	}
 
 	public static boolean isZero( Integer i )
 	{
-		if ( isNull( i ) ) {
-			return true;
-		}
-		if ( i.equals( 0 ) ) {
-			return true;
-		}
-		return false;
+		return ( isNull( i ) || i.equals( 0 ) );
 	}
 
 	public static boolean isNull( Object o )
 	{
-		return o == null ? true : false;
+		return ( o == null );
 	}
 
 	public static Timestamp nowTimestamp( )
@@ -133,7 +118,7 @@ public final class SysUtils
 
 	public static String unaccent( String str )
 	{
-		if ( SysUtils.isEmpty( str ) == false ) {
+		if ( !SysUtils.isEmpty( str ) ) {
 			return Normalizer.normalize( str.trim( ), Normalizer.Form.NFD ).replaceAll( "\\p{IsM}+", "" );
 		}
 		else {
@@ -328,7 +313,7 @@ public final class SysUtils
 			return formatter.parse( value );
 		}
 		catch ( ParseException e ) {
-			e.printStackTrace( );
+			LOGGER.error( "Format: value= " + value + ". format=" + format, e );
 			return null;
 		}
 	}
@@ -344,7 +329,7 @@ public final class SysUtils
 			return NumberFormat.getInstance( getLocalePtBR( ) ).parse( value );
 		}
 		catch ( ParseException e ) {
-			e.printStackTrace( );
+			LOGGER.error( "parseNumber: " + value, e );
 			return null;
 		}
 	}
@@ -377,6 +362,7 @@ public final class SysUtils
 		}
 		catch ( Exception e )
 		{
+			LOGGER.error( "Format: source= " + source + ". regexPattern=" + regexPattern + ". regetMask=" + regexMask, e );
 			return source;
 		}
 
