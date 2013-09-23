@@ -5,7 +5,7 @@ abstract class BaseID
 	public static String removeMask( String id )
 	{
 		String aux = null;
-		if ( SysUtils.isEmpty( id ) == false ) {
+		if ( !SysUtils.isEmpty( id ) ) {
 			aux = id.replaceAll( "\\.", "" );
 			aux = aux.replaceAll( "-", "" );
 		}

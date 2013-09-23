@@ -49,7 +49,7 @@ public class CPF extends BaseID implements Serializable
 	{
 		String aux = null;
 
-		if ( SysUtils.isEmpty( cpf ) == false ) {
+		if ( !SysUtils.isEmpty( cpf ) ) {
 			aux = cpf.replaceAll( "\\.", "" );
 			aux = aux.replaceAll( "-", "" );
 		}
