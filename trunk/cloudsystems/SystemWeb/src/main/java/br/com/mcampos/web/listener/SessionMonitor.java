@@ -41,7 +41,7 @@ public class SessionMonitor extends HttpSessionListener
 	{
 		try {
 			if ( session == null )
-				session = (LoginSession) ServiceLocator.getInstance( ).getRemoteSession( LoginSession.class, ServiceLocator.ejbName[ 0 ] );
+				session = (LoginSession) ServiceLocator.getInstance( ).getRemoteSession( LoginSession.class, ServiceLocator.EJB_NAME[ 0 ] );
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );

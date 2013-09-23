@@ -19,7 +19,7 @@ public class BusinessDelegate implements Serializable
 	public Object getEJBSession( Class<?> cls )
 	{
 		try {
-			return ServiceLocator.getInstance( ).getRemoteSession( cls, ServiceLocator.ejbName[ 1 ] );
+			return ServiceLocator.getInstance( ).getRemoteSession( cls, ServiceLocator.EJB_NAME[ 1 ] );
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );

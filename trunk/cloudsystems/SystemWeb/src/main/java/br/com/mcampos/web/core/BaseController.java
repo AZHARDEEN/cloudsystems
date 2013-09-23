@@ -365,7 +365,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	protected Object getSession( Class<?> zClass )
 	{
 		try {
-			return ServiceLocator.getInstance( ).getRemoteSession( zClass, ServiceLocator.ejbName[ 0 ] );
+			return ServiceLocator.getInstance( ).getRemoteSession( zClass, ServiceLocator.EJB_NAME[ 0 ] );
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );

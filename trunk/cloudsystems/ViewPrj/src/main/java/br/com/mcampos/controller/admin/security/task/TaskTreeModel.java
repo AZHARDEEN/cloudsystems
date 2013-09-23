@@ -71,7 +71,7 @@ public class TaskTreeModel extends AbstractTreeModel
 	protected Object getRemoteSession( Class remoteClass )
 	{
 		try {
-			return ServiceLocator.getInstance( ).getRemoteSession( remoteClass, ServiceLocator.ejbName[ 1 ] );
+			return ServiceLocator.getInstance( ).getRemoteSession( remoteClass, ServiceLocator.EJB_NAME[ 1 ] );
 		}
 		catch ( Exception e ) {
 			throw new NullPointerException( "Invalid EJB Session (possible null)" );

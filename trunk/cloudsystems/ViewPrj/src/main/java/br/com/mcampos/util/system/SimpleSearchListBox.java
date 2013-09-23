@@ -150,7 +150,7 @@ public abstract class SimpleSearchListBox extends Window
 	protected Object getRemoteSession( Class<?> remoteClass )
 	{
 		try {
-			return ServiceLocator.getInstance( ).getRemoteSession( remoteClass, ServiceLocator.ejbName[ 0 ] );
+			return ServiceLocator.getInstance( ).getRemoteSession( remoteClass, ServiceLocator.EJB_NAME[ 0 ] );
 		}
 		catch ( Exception e ) {
 			throw new NullPointerException( "Invalid EJB Session (possible null)" );

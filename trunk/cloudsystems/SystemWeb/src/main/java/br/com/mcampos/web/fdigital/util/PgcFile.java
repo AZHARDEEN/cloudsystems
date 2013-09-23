@@ -93,7 +93,7 @@ public class PgcFile implements Serializable, Runnable
 	{
 		try {
 			if ( session == null )
-				session = (UploadSession) ServiceLocator.getInstance( ).getRemoteSession( UploadSession.class, ServiceLocator.ejbName[ 0 ] );
+				session = (UploadSession) ServiceLocator.getInstance( ).getRemoteSession( UploadSession.class, ServiceLocator.EJB_NAME[ 0 ] );
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );

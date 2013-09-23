@@ -360,7 +360,7 @@ public class AnotoExport
 	protected AnotoExportFacade getRemoteSession( )
 	{
 		try {
-			return (AnotoExportFacade) ServiceLocator.getInstance( ).getRemoteSession( AnotoExportFacade.class, ServiceLocator.ejbName[ 1 ] );
+			return (AnotoExportFacade) ServiceLocator.getInstance( ).getRemoteSession( AnotoExportFacade.class, ServiceLocator.EJB_NAME[ 1 ] );
 		}
 		catch ( Exception e ) {
 			throw new NullPointerException( "Invalid EJB Session (possible null)" );
