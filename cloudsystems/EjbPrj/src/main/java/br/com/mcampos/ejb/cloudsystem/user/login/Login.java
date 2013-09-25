@@ -32,7 +32,7 @@ public class Login implements Serializable
 	public static final String getAll = "Login.findAll";
 
 	@Id
-	@Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
+	@Column( name = "usr_id_in", nullable = false )
 	private Integer userId;
 	@Column( name = "lgi_passwd_exp_dt" )
 	private Timestamp passwordExpirationDate;
@@ -44,7 +44,7 @@ public class Login implements Serializable
 	private String token;
 
 	@OneToOne( fetch = FetchType.EAGER )
-	@JoinColumn( name = "usr_id_in", nullable = false, referencedColumnName = "usr_id_in", columnDefinition = "Integer" )
+	@JoinColumn( name = "usr_id_in", nullable = false, referencedColumnName = "usr_id_in", columnDefinition = "Integer", insertable = false, updatable = false )
 	protected Person person;
 	@ManyToOne( fetch = FetchType.EAGER, optional = false )
 	@JoinColumn( name = "uts_id_in", nullable = false, referencedColumnName = "uts_id_in", columnDefinition = "Integer" )
@@ -58,64 +58,64 @@ public class Login implements Serializable
 	public Login( Timestamp passwordExpirationDate, String password, UserStatus userType )
 	{
 		super( );
-		init( passwordExpirationDate, password, userType );
+		this.init( passwordExpirationDate, password, userType );
 	}
 
 	protected void init( Timestamp usr_passwd_exp_dt, String usr_password_ch, UserStatus userType )
 	{
-		setPasswordExpirationDate( usr_passwd_exp_dt );
-		setPassword( usr_password_ch );
-		setUserStatus( userType );
+		this.setPasswordExpirationDate( usr_passwd_exp_dt );
+		this.setPassword( usr_password_ch );
+		this.setUserStatus( userType );
 	}
 
 	public Integer getUserId( )
 	{
-		return userId;
+		return this.userId;
 	}
 
 	public void setUserId( Integer usr_id_in )
 	{
-		userId = usr_id_in;
+		this.userId = usr_id_in;
 	}
 
 	public Timestamp getPasswordExpirationDate( )
 	{
-		return passwordExpirationDate;
+		return this.passwordExpirationDate;
 	}
 
 	public void setPasswordExpirationDate( Timestamp usr_passwd_exp_dt )
 	{
-		passwordExpirationDate = usr_passwd_exp_dt;
+		this.passwordExpirationDate = usr_passwd_exp_dt;
 	}
 
 	public String getPassword( )
 	{
-		return password;
+		return this.password;
 	}
 
 	public void setPassword( String usr_password_ch )
 	{
-		password = usr_password_ch;
+		this.password = usr_password_ch;
 	}
 
 	public void setPerson( Person p )
 	{
-		person = p;
+		this.person = p;
 	}
 
 	public Person getPerson( )
 	{
-		return person;
+		return this.person;
 	}
 
 	public void setUserStatus( UserStatus userType )
 	{
-		userStatus = userType;
+		this.userStatus = userType;
 	}
 
 	public UserStatus getUserStatus( )
 	{
-		return userStatus;
+		return this.userStatus;
 	}
 
 	public void setTryCount( Integer tryCount )
@@ -125,16 +125,18 @@ public class Login implements Serializable
 
 	public Integer getTryCount( )
 	{
-		return tryCount;
+		return this.tryCount;
 	}
 
 	public Integer incrementTryCount( )
 	{
-		if ( getTryCount( ) == null )
-			setTryCount( new Integer( 1 ) );
-		else
-			setTryCount( getTryCount( ) + 1 );
-		return getTryCount( );
+		if( this.getTryCount( ) == null ) {
+			this.setTryCount( new Integer( 1 ) );
+		}
+		else {
+			this.setTryCount( this.getTryCount( ) + 1 );
+		}
+		return this.getTryCount( );
 	}
 
 	public void setToken( String token )
@@ -144,7 +146,7 @@ public class Login implements Serializable
 
 	public String getToken( )
 	{
-		return token;
+		return this.token;
 	}
 
 }
