@@ -37,16 +37,17 @@ public class AnotoFormUserSessionBean extends Crud<AnotoFormUserPK, AnotoFormUse
 	@Override
 	public void delete( AnotoFormUserPK key ) throws ApplicationException
 	{
-		AnotoFormUser entity = get( AnotoFormUser.class, key );
-		if ( entity != null )
+		AnotoFormUser entity = this.get( AnotoFormUser.class, key );
+		if ( entity != null ) {
 			entity.setToDate( new Date( ) );
+		}
 	}
 
 	@Override
 	public AnotoFormUser add( AnotoFormUser entity ) throws ApplicationException
 	{
 		entity.setFromDate( new Date( ) );
-		entity.setSequence( nextSequence( entity.getForm( ) ) );
+		entity.setSequence( this.nextSequence( entity.getForm( ) ) );
 		return super.add( entity );
 	}
 
@@ -54,18 +55,19 @@ public class AnotoFormUserSessionBean extends Crud<AnotoFormUserPK, AnotoFormUse
 	public AnotoFormUser add( Integer formId, Integer companyId ) throws ApplicationException
 	{
 		AnotoFormUser entity = new AnotoFormUser( );
-		AnotoForm form = getEntityManager( ).find( AnotoForm.class, formId );
-		Company company = companySession.get( companyId );
+		AnotoForm form = this.getEntityManager( ).find( AnotoForm.class, formId );
+		Company company = this.companySession.get( companyId );
 		entity.setForm( form );
 		entity.setCompany( company );
-		return add( entity );
+		return this.add( entity );
 	}
 
 	private Integer nextSequence( AnotoForm form ) throws ApplicationException
 	{
-		Integer id = nextIntegerId( AnotoFormUser.nextSequence, form );
-		if ( SysUtils.isZero( id ) )
+		Integer id = this.nextIntegerId( AnotoFormUser.nextSequence, form );
+		if ( SysUtils.isZero( id ) ) {
 			id = 1;
+		}
 		return id;
 	}
 
@@ -73,7 +75,7 @@ public class AnotoFormUserSessionBean extends Crud<AnotoFormUserPK, AnotoFormUse
 	@Override
 	public List<AnotoFormUser> get( Integer formId ) throws ApplicationException
 	{
-		return (List<AnotoFormUser>) getResultList( AnotoFormUser.getAll, formId );
+		return (List<AnotoFormUser>) this.getResultList( AnotoFormUser.getAll, formId );
 	}
 
 	@Override
@@ -83,21 +85,23 @@ public class AnotoFormUserSessionBean extends Crud<AnotoFormUserPK, AnotoFormUse
 		param.add( formId );
 		param.add( companyId );
 		@SuppressWarnings( "unchecked" )
-		List<AnotoFormUser> list = (List<AnotoFormUser>) getResultList( AnotoFormUser.getUser, param );
-		if ( SysUtils.isEmpty( list ) )
+		List<AnotoFormUser> list = (List<AnotoFormUser>) this.getResultList( AnotoFormUser.getUser, param );
+		if ( SysUtils.isEmpty( list ) ) {
 			return null;
+		}
 		/*
 		 * Just in case!!!1
 		 */
-		if ( list.size( ) > 1 )
+		if ( list.size( ) > 1 ) {
 			throw new ApplicationRuntimeException( "Erro interno! Existe mais de um registro associado ao formulário" );
+		}
 		return list.get( 0 );
 	}
 
 	@Override
 	public void delete( Integer formId, Integer companyId ) throws ApplicationException
 	{
-		AnotoFormUser user = get( formId, companyId );
+		AnotoFormUser user = this.get( formId, companyId );
 		if ( user != null ) {
 			user.setToDate( new Date( ) );
 		}
@@ -107,6 +111,6 @@ public class AnotoFormUserSessionBean extends Crud<AnotoFormUserPK, AnotoFormUse
 	@Override
 	public List<AnotoFormUser> get( Company company ) throws ApplicationException
 	{
-		return (List<AnotoFormUser>) getResultList( AnotoFormUser.getFormUser, company );
+		return (List<AnotoFormUser>) this.getResultList( AnotoFormUser.getFormUser, company );
 	}
 }

@@ -62,7 +62,7 @@ public class AnotoFormUser implements Serializable
 	private AnotoForm form;
 
 	@ManyToOne( optional = false )
-	@JoinColumn( name = "usr_id_in", insertable = false, updatable = false )
+	@JoinColumn( name = "usr_id_in" )
 	private Company company;
 
 	public AnotoFormUser( )

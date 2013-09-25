@@ -14,7 +14,7 @@
                 <url-pattern>/upload_pcg</url-pattern>
                 <url-pattern>/upload_pgc</url-pattern>
                 <url-pattern>/uploadpgc</url-pattern>
-                <url-pattern>/uploadpgc</url-pattern>
+                <url-pattern>/uploadpcg</url-pattern>
         </servlet-mapping>
         <session-config>
                 <session-timeout>30</session-timeout>
