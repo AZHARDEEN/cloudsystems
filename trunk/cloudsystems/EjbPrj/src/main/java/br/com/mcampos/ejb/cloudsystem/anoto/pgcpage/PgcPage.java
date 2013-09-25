@@ -39,7 +39,7 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
 	public static final String getAllByForm = "PgcPage.getAllByForm";
 
 	@Id
-	@Column( name = "pgc_id_in", nullable = false, insertable = false, updatable = false )
+	@Column( name = "pgc_id_in", nullable = false )
 	private Integer pgcId;
 
 	@Id
@@ -51,16 +51,18 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
 	private Integer pageId;
 
 	@ManyToOne
-	@JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" )
+	@JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in", insertable = false, updatable = false )
 	private Pgc pgc;
 
 	/*
-	@OneToMany( mappedBy = "pgcPage", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY )
-	private List<PgcPageAttachment> attachments;
-
-	@OneToMany( mappedBy = "pgcPage", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY )
-	private List<PgcField> fields;
-	*/
+	 * @OneToMany( mappedBy = "pgcPage", cascade = CascadeType.ALL,
+	 * orphanRemoval = true, fetch = FetchType.LAZY ) private
+	 * List<PgcPageAttachment> attachments;
+	 * 
+	 * @OneToMany( mappedBy = "pgcPage", cascade = CascadeType.ALL,
+	 * orphanRemoval = true, fetch = FetchType.LAZY ) private List<PgcField>
+	 * fields;
+	 */
 
 	@ManyToOne( fetch = FetchType.EAGER )
 	@JoinColumns( { @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in", nullable = false ),
@@ -78,51 +80,52 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
 
 	public PgcPage( Pgc pgc, Integer bookId, Integer ppg_page_id )
 	{
-		setPgc( pgc );
+		this.setPgc( pgc );
 		this.bookId = bookId;
-		pageId = ppg_page_id;
+		this.pageId = ppg_page_id;
 	}
 
 	public Integer getPgcId( )
 	{
-		return pgcId;
+		return this.pgcId;
 	}
 
 	public void setPgcId( Integer pgc_id_in )
 	{
-		pgcId = pgc_id_in;
+		this.pgcId = pgc_id_in;
 	}
 
 	public Integer getBookId( )
 	{
-		return bookId;
+		return this.bookId;
 	}
 
 	public void setBookId( Integer ppg_book_id )
 	{
-		bookId = ppg_book_id;
+		this.bookId = ppg_book_id;
 	}
 
 	public Integer getPageId( )
 	{
-		return pageId;
+		return this.pageId;
 	}
 
 	public void setPageId( Integer ppg_page_id )
 	{
-		pageId = ppg_page_id;
+		this.pageId = ppg_page_id;
 	}
 
 	public void setPgc( Pgc pgc )
 	{
 		this.pgc = pgc;
-		if ( pgc != null )
-			setPgcId( pgc.getId( ) );
+		if( pgc != null ) {
+			this.setPgcId( pgc.getId( ) );
+		}
 	}
 
 	public Pgc getPgc( )
 	{
-		return pgc;
+		return this.pgc;
 	}
 
 	public void setAttachments( List<PgcPageAttachment> attachments )
@@ -149,22 +152,22 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
 	public PgcPageDTO toDTO( )
 	{
 		PgcPageDTO dto = new PgcPageDTO( );
-		dto.setBookId( getBookId( ) );
-		dto.setPageId( getPageId( ) );
-		dto.setPgc( getPgc( ).toDTO( ) );
-		dto.setAnotoPage( getAnotoPage( ).toDTO( ) );
-		dto.setRevisionStatus( RevisionStatusUtil.copy( getRevisionStatus( ) ) );
+		dto.setBookId( this.getBookId( ) );
+		dto.setPageId( this.getPageId( ) );
+		dto.setPgc( this.getPgc( ).toDTO( ) );
+		dto.setAnotoPage( this.getAnotoPage( ).toDTO( ) );
+		dto.setRevisionStatus( RevisionStatusUtil.copy( this.getRevisionStatus( ) ) );
 		return dto;
 	}
 
 	public void setAnotoPage( AnotoPage page )
 	{
-		anotoPage = page;
+		this.anotoPage = page;
 	}
 
 	public AnotoPage getAnotoPage( )
 	{
-		return anotoPage;
+		return this.anotoPage;
 	}
 
 	public void setRevisionStatus( RevisionStatus revisionStatus )
@@ -174,6 +177,6 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
 
 	public RevisionStatus getRevisionStatus( )
 	{
-		return revisionStatus;
+		return this.revisionStatus;
 	}
 }

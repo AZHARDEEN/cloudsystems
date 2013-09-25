@@ -35,14 +35,14 @@ public class PgcPageAttachment implements Serializable, EntityCopyInterface<PgcA
 	public static final String findOtherBarCode = "PgcPageAttachment.findOtherBarCode";
 
 	@Id
-	@Column( name = "ppg_book_id", nullable = false, insertable = false, updatable = false )
+	@Column( name = "ppg_book_id", nullable = false )
 	private Integer bookId;
 
 	@Column( name = "pat_id_in", nullable = false )
 	private Integer type;
 
 	@Id
-	@Column( name = "ppg_page_id", nullable = false, insertable = false, updatable = false )
+	@Column( name = "ppg_page_id", nullable = false )
 	private Integer pageId;
 
 	@Id
@@ -53,16 +53,18 @@ public class PgcPageAttachment implements Serializable, EntityCopyInterface<PgcA
 	private String value;
 
 	@Id
-	@Column( name = "pgc_id_in", nullable = false, insertable = false, updatable = false )
+	@Column( name = "pgc_id_in" )
 	private Integer pgcId;
 
 	@Column( name = "pat_barcode_type_in" )
 	private Integer barcodeType;
 
 	@ManyToOne
-	@JoinColumns( { @JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in" ),
-			@JoinColumn( name = "ppg_book_id", referencedColumnName = "ppg_book_id" ),
-			@JoinColumn( name = "ppg_page_id", referencedColumnName = "ppg_page_id" ) } )
+	@JoinColumns( {
+			@JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in", insertable = false, updatable = false ),
+			@JoinColumn( name = "ppg_book_id", referencedColumnName = "ppg_book_id", insertable = false, updatable = false ),
+			@JoinColumn( name = "ppg_page_id", referencedColumnName = "ppg_page_id", insertable = false, updatable = false )
+	} )
 	private PgcPage pgcPage;
 
 	@ManyToOne
@@ -75,62 +77,62 @@ public class PgcPageAttachment implements Serializable, EntityCopyInterface<PgcA
 
 	public Integer getBookId( )
 	{
-		return bookId;
+		return this.bookId;
 	}
 
 	public void setBookId( Integer pat_book_id )
 	{
-		bookId = pat_book_id;
+		this.bookId = pat_book_id;
 	}
 
 	public Integer getType( )
 	{
-		return type;
+		return this.type;
 	}
 
 	public void setType( Integer pat_id_in )
 	{
-		type = pat_id_in;
+		this.type = pat_id_in;
 	}
 
 	public Integer getPageId( )
 	{
-		return pageId;
+		return this.pageId;
 	}
 
 	public void setPageId( Integer pat_page_id )
 	{
-		pageId = pat_page_id;
+		this.pageId = pat_page_id;
 	}
 
 	public Integer getSequence( )
 	{
-		return sequence;
+		return this.sequence;
 	}
 
 	public void setSequence( Integer pat_seq_in )
 	{
-		sequence = pat_seq_in;
+		this.sequence = pat_seq_in;
 	}
 
 	public String getValue( )
 	{
-		return value;
+		return this.value;
 	}
 
 	public void setValue( String pat_value_ch )
 	{
-		value = pat_value_ch;
+		this.value = pat_value_ch;
 	}
 
 	public Integer getPgcId( )
 	{
-		return pgcId;
+		return this.pgcId;
 	}
 
 	public void setPgcId( Integer pgc_id_in )
 	{
-		pgcId = pgc_id_in;
+		this.pgcId = pgc_id_in;
 	}
 
 	public void setMedia( Media media )
@@ -140,7 +142,7 @@ public class PgcPageAttachment implements Serializable, EntityCopyInterface<PgcA
 
 	public Media getMedia( )
 	{
-		return media;
+		return this.media;
 	}
 
 	public void setBarcodeType( Integer barcodeType )
@@ -150,34 +152,35 @@ public class PgcPageAttachment implements Serializable, EntityCopyInterface<PgcA
 
 	public Integer getBarcodeType( )
 	{
-		return barcodeType;
+		return this.barcodeType;
 	}
 
 	public void setPgcPage( PgcPage pgcPage )
 	{
 		this.pgcPage = pgcPage;
-		if ( pgcPage != null ) {
-			setBookId( pgcPage.getBookId( ) );
-			setPageId( pgcPage.getPageId( ) );
-			setPgcId( pgcPage.getPgcId( ) );
+		if( pgcPage != null ) {
+			this.setBookId( pgcPage.getBookId( ) );
+			this.setPageId( pgcPage.getPageId( ) );
+			this.setPgcId( pgcPage.getPgcId( ) );
 		}
 	}
 
 	public PgcPage getPgcPage( )
 	{
-		return pgcPage;
+		return this.pgcPage;
 	}
 
 	@Override
 	public PgcAttachmentDTO toDTO( )
 	{
-		PgcAttachmentDTO dto = new PgcAttachmentDTO( getPgcPage( ).toDTO( ) );
-		dto.setBarcodeType( getBarcodeType( ) );
-		if ( getMedia( ) != null )
-			dto.setMedia( getMedia( ).toDTO( ) );
-		dto.setSequence( getSequence( ) );
-		dto.setType( getType( ) );
-		dto.setValue( getValue( ) );
+		PgcAttachmentDTO dto = new PgcAttachmentDTO( this.getPgcPage( ).toDTO( ) );
+		dto.setBarcodeType( this.getBarcodeType( ) );
+		if( this.getMedia( ) != null ) {
+			dto.setMedia( this.getMedia( ).toDTO( ) );
+		}
+		dto.setSequence( this.getSequence( ) );
+		dto.setType( this.getType( ) );
+		dto.setValue( this.getValue( ) );
 		return dto;
 	}
 }

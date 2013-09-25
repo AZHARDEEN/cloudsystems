@@ -55,18 +55,18 @@ public class AnotoPenUser implements Serializable
 	private Date toDate;
 
 	@Id
-	@Column( name = "pen_id_ch", nullable = false, insertable = false, updatable = false )
+	@Column( name = "pen_id_ch", nullable = false )
 	private String penId;
 
-	@Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
+	@Column( name = "usr_id_in", nullable = false )
 	private Integer personId;
 
 	@ManyToOne( optional = false )
-	@JoinColumn( name = "usr_id_in", columnDefinition = "Integer", nullable = false )
+	@JoinColumn( name = "usr_id_in", columnDefinition = "Integer", nullable = false, insertable = false, updatable = false )
 	private Person person;
 
 	@ManyToOne( optional = false )
-	@JoinColumn( name = "pen_id_ch", referencedColumnName = "pen_id_ch" )
+	@JoinColumn( name = "pen_id_ch", referencedColumnName = "pen_id_ch", insertable = false, updatable = false )
 	private AnotoPen pen;
 
 	public AnotoPenUser( )
@@ -75,79 +75,79 @@ public class AnotoPenUser implements Serializable
 
 	public AnotoPenUser( AnotoPen pen, Person person )
 	{
-		setPen( pen );
-		setPerson( person );
+		this.setPen( pen );
+		this.setPerson( person );
 	}
 
 	public Date getFromDate( )
 	{
-		return fromDate;
+		return this.fromDate;
 	}
 
 	public void setFromDate( Date apu_from_dt )
 	{
-		fromDate = apu_from_dt;
+		this.fromDate = apu_from_dt;
 	}
 
 	public Integer getSequence( )
 	{
-		return sequence;
+		return this.sequence;
 	}
 
 	public void setSequence( Integer apu_seq_in )
 	{
-		sequence = apu_seq_in;
+		this.sequence = apu_seq_in;
 	}
 
 	public Date getToDate( )
 	{
-		return toDate;
+		return this.toDate;
 	}
 
 	public void setToDate( Date apu_to_dt )
 	{
-		toDate = apu_to_dt;
+		this.toDate = apu_to_dt;
 	}
 
 	public String getPenId( )
 	{
-		return penId;
+		return this.penId;
 	}
 
 	public void setPenId( String pen_id_ch )
 	{
-		penId = pen_id_ch;
+		this.penId = pen_id_ch;
 	}
 
 	public Integer getPersonId( )
 	{
-		return personId;
+		return this.personId;
 	}
 
 	public void setPersonId( Integer usr_id_in )
 	{
-		personId = usr_id_in;
+		this.personId = usr_id_in;
 	}
 
 	public void setPerson( Person person )
 	{
 		this.person = person;
-		setPersonId( person != null ? person.getId( ) : null );
+		this.setPersonId( person != null ? person.getId( ) : null );
 	}
 
 	public Person getPerson( )
 	{
-		return person;
+		return this.person;
 	}
 
 	public void setPen( AnotoPen pen )
 	{
 		this.pen = pen;
-		setPenId( pen != null ? pen.getId( ) : null );
+		this.setPenId( pen != null ? pen.getId( ) : null );
 	}
 
 	public AnotoPen getPen( )
 	{
-		return pen;
+		return this.pen;
 	}
 }
