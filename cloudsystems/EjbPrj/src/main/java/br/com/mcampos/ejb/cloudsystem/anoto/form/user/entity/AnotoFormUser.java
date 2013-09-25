@@ -52,7 +52,7 @@ public class AnotoFormUser implements Serializable
 	private Date toDate;
 
 	@Id
-	@Column( name = "frm_id_in", nullable = false, insertable = false, updatable = false )
+	@Column( name = "frm_id_in", nullable = false )
 	private Integer formId;
 
 	@ManyToOne( optional = false, fetch = FetchType.EAGER )
@@ -62,7 +62,7 @@ public class AnotoFormUser implements Serializable
 	private AnotoForm form;
 
 	@ManyToOne( optional = false )
-	@JoinColumn( name = "usr_id_in" )
+	@JoinColumn( name = "usr_id_in", insertable = false, updatable = false )
 	private Company company;
 
 	public AnotoFormUser( )
@@ -71,62 +71,62 @@ public class AnotoFormUser implements Serializable
 
 	public Date getFromDate( )
 	{
-		return fromDate;
+		return this.fromDate;
 	}
 
 	public void setFromDate( Date afu_from_dt )
 	{
-		fromDate = afu_from_dt;
+		this.fromDate = afu_from_dt;
 	}
 
 	public Integer getSequence( )
 	{
-		return sequence;
+		return this.sequence;
 	}
 
 	public void setSequence( Integer afu_seq_in )
 	{
-		sequence = afu_seq_in;
+		this.sequence = afu_seq_in;
 	}
 
 	public Date getToDate( )
 	{
-		return toDate;
+		return this.toDate;
 	}
 
 	public void setToDate( Date afu_to_dt )
 	{
-		toDate = afu_to_dt;
+		this.toDate = afu_to_dt;
 	}
 
 	public Integer getFormId( )
 	{
-		return formId;
+		return this.formId;
 	}
 
 	public void setFormId( Integer frm_id_in )
 	{
-		formId = frm_id_in;
+		this.formId = frm_id_in;
 	}
 
 	public void setForm( AnotoForm form )
 	{
 		this.form = form;
-		setFormId( form != null ? form.getId( ) : null );
+		this.setFormId( form != null ? form.getId( ) : null );
 	}
 
 	public AnotoForm getForm( )
 	{
-		return form;
+		return this.form;
 	}
 
 	public void setCompany( Company user )
 	{
-		company = user;
+		this.company = user;
 	}
 
 	public Company getCompany( )
 	{
-		return company;
+		return this.company;
 	}
 }

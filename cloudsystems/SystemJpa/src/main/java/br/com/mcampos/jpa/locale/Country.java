@@ -27,7 +27,6 @@ public class Country implements BasicEntityRenderer<Country>
 	private String code3;
 
 	@Column( name = "ctr_flag_bin" )
-	@Lob
 	@Basic( fetch = FetchType.LAZY )
 	private Byte[ ] flag;
 
