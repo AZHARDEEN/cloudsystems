@@ -53,8 +53,8 @@ public class PgcFile implements Serializable, Runnable
 
 	public PgcFile( MediaDTO pgc, ArrayList<MediaDTO> medias ) throws IOException, NoSuchPermissionException, ApplicationException
 	{
-		setPgc( pgc );
-		setMedias( medias );
+		this.setPgc( pgc );
+		this.setMedias( medias );
 	}
 
 	@Override
@@ -62,16 +62,17 @@ public class PgcFile implements Serializable, Runnable
 	{
 		final long startTime = System.nanoTime( );
 		logger.info( "Tread is running" );
-		if ( getPgc( ) == null )
+		if ( this.getPgc( ) == null ) {
 			return;
-		processPgcFile( );
+		}
+		this.processPgcFile( );
 		final long endTime = System.nanoTime( ) - startTime;
 		logger.info( "Tread has finished its jobs in " + ( endTime / 1000000000.0 ) + "seconds" );
 	}
 
 	public MediaDTO getPgc( )
 	{
-		return pgc;
+		return this.pgc;
 	}
 
 	private void setPgc( MediaDTO pgc )
@@ -81,7 +82,7 @@ public class PgcFile implements Serializable, Runnable
 
 	public List<MediaDTO> getMedias( )
 	{
-		return medias;
+		return this.medias;
 	}
 
 	private void setMedias( List<MediaDTO> medias )
@@ -92,26 +93,29 @@ public class PgcFile implements Serializable, Runnable
 	public UploadSession getSession( )
 	{
 		try {
-			if ( session == null )
-				session = (UploadSession) ServiceLocator.getInstance( ).getRemoteSession( UploadSession.class, ServiceLocator.EJB_NAME[ 0 ] );
+			if ( this.session == null ) {
+				this.session = (UploadSession) ServiceLocator.getInstance( ).getRemoteSession( UploadSession.class, ServiceLocator.EJB_NAME[ 0 ] );
+			}
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );
 		}
-		return session;
+		return this.session;
 	}
 
 	private boolean processPgcFile( )
 	{
 		// Pgc pgc = getSession( ).add( getPgc( ) );
-		createPgcObject( );
-		if ( getPen( ) != null && getCurrentPgc( ).getStatus( ).getId( ).equals( 1 ) ) {
-			if ( getCurrentPgc( ).getStatus( ).getId( ).equals( 1 ) )
-				getPageAddresess( );
-			if ( getCurrentPgc( ).getStatus( ).getId( ).equals( 1 ) )
-				getProperties( );
+		this.createPgcObject( );
+		if ( this.getPen( ) != null && this.getCurrentPgc( ).getStatus( ).getId( ).equals( 1 ) ) {
+			if ( this.getCurrentPgc( ).getStatus( ).getId( ).equals( 1 ) ) {
+				this.getPageAddresess( );
+			}
+			if ( this.getCurrentPgc( ).getStatus( ).getId( ).equals( 1 ) ) {
+				this.getProperties( );
+			}
 		}
-		setCurrentPgc( getSession( ).persist( getCurrentPgc( ), getPgc( ) ) );
+		this.setCurrentPgc( this.getSession( ).persist( this.getCurrentPgc( ), this.getPgc( ) ) );
 		return true;
 	}
 
@@ -119,12 +123,12 @@ public class PgcFile implements Serializable, Runnable
 	{
 		Pgc pgc = new Pgc( );
 		pgc.setStatus( 1 );
-		setCurrentPgc( pgc );
+		this.setCurrentPgc( pgc );
 	}
 
 	public Pgc getCurrentPgc( )
 	{
-		return currentPgc;
+		return this.currentPgc;
 	}
 
 	private void setCurrentPgc( Pgc currentPgc )
@@ -134,18 +138,19 @@ public class PgcFile implements Serializable, Runnable
 
 	public Pen getPen( )
 	{
-		ByteArrayInputStream is = new ByteArrayInputStream( getPgc( ).getObject( ) );
+		ByteArrayInputStream is = new ByteArrayInputStream( this.getPgc( ).getObject( ) );
 		Pen pen = null;
 		try {
 			pen = PenHome.read( is );
 			if ( pen != null ) {
-				setCurrentPen( pen );
+				this.setCurrentPen( pen );
 				String penSerial;
-				penSerial = getCurrentPen( ).getPenData( ).getPenSerial( );
+				penSerial = this.getCurrentPen( ).getPenData( ).getPenSerial( );
 				logger.info( "Pen Serial" + penSerial );
-				getCurrentPgc( ).setPenId( penSerial );
-				if ( existsPen( penSerial ) == false )
-					getCurrentPgc( ).setStatus( 2 );
+				this.getCurrentPgc( ).setPenId( penSerial );
+				if ( this.existsPen( penSerial ) == false ) {
+					this.getCurrentPgc( ).setStatus( 2 );
+				}
 			}
 		}
 		catch ( Exception e ) {
@@ -153,21 +158,22 @@ public class PgcFile implements Serializable, Runnable
 			pen = null;
 		}
 		finally {
-			if ( pen == null )
-				getCurrentPgc( ).setStatus( 6 );
+			if ( pen == null ) {
+				this.getCurrentPgc( ).setStatus( 6 );
+			}
 		}
 		return pen;
 	}
 
 	private boolean existsPen( String penId )
 	{
-		AnotoPen pen = getSession( ).getPen( penId );
+		AnotoPen pen = this.getSession( ).getPen( penId );
 		return pen != null ? true : false;
 	}
 
 	public Pen getCurrentPen( )
 	{
-		return currentPen;
+		return this.currentPen;
 	}
 
 	private void setCurrentPen( Pen currentPen )
@@ -179,25 +185,26 @@ public class PgcFile implements Serializable, Runnable
 	{
 		logger.info( "getPageAddesses" );
 		@SuppressWarnings( "rawtypes" )
-		Iterator it = getCurrentPen( ).getPageAddresses( );
+		Iterator it = this.getCurrentPen( ).getPageAddresses( );
 		List<String> addresses = null;
 		while ( it != null && it.hasNext( ) ) {
-			if ( addresses == null )
+			if ( addresses == null ) {
 				addresses = new ArrayList<String>( );
+			}
 			addresses.add( (String) it.next( ) );
 		}
 		if ( SysUtils.isEmpty( addresses ) ) {
-			getCurrentPgc( ).setStatus( 4 );
+			this.getCurrentPgc( ).setStatus( 4 );
 			logger.warn( "Pgc does not have any pages" );
 			return;
 		}
-		List<AnotoPenPage> penPages = getSession( ).getPenPages( getCurrentPgc( ).getPenId( ), addresses );
+		List<AnotoPenPage> penPages = this.getSession( ).getPenPages( this.getCurrentPgc( ).getPenId( ), addresses );
 		if ( SysUtils.isEmpty( penPages ) ) {
-			getCurrentPgc( ).setStatus( 3 );
+			this.getCurrentPgc( ).setStatus( 3 );
 			logger.warn( "PenPage not found" );
 			return;
 		}
-		getCurrentPgc( ).setPenPages( penPages );
+		this.getCurrentPgc( ).setPenPages( penPages );
 	}
 
 	private List<PgcProperty> getProperties( )
@@ -205,22 +212,24 @@ public class PgcFile implements Serializable, Runnable
 		List<PgcProperty> properties = new ArrayList<PgcProperty>( );
 		try {
 			@SuppressWarnings( "rawtypes" )
-			Iterator it = getCurrentPen( ).getPropertyIds( );
+			Iterator it = this.getCurrentPen( ).getPropertyIds( );
 			while ( it != null && it.hasNext( ) ) {
 				Short obj = (Short) it.next( );
 				if ( obj != null ) {
-					String[ ] values = getCurrentPen( ).getProperty( obj );
-					if ( values != null && values.length > 0 )
+					String[ ] values = this.getCurrentPen( ).getProperty( obj );
+					if ( values != null && values.length > 0 ) {
 						for ( String v : values ) {
 							v = v.replaceAll( "'", "" );
-							if ( SysUtils.isEmpty( v ) )
+							if ( SysUtils.isEmpty( v ) ) {
 								continue;
+							}
 							PgcProperty p = new PgcProperty( );
 							p.getId( ).setId( obj.intValue( ) );
 							logger.info( "Adding property: " + obj + " - " + v );
 							p.setValue( v );
 							properties.add( p );
 						}
+					}
 				}
 			}
 		}
