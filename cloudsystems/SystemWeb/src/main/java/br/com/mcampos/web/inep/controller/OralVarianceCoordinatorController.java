@@ -38,7 +38,7 @@ public class OralVarianceCoordinatorController extends BaseOralController implem
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		getListbox( ).setItemRenderer( new InepOralTestListRenderer( ) );
+		this.getListbox( ).setItemRenderer( new InepOralTestListRenderer( ) );
 	}
 
 	@Override
@@ -46,14 +46,14 @@ public class OralVarianceCoordinatorController extends BaseOralController implem
 	public void onSelectPackage( Event evt )
 	{
 		List<InepOralTest> list = Collections.emptyList( );
-		InepEvent item = getCurrentEvent( );
+		InepEvent item = this.getCurrentEvent( );
 		if ( item != null ) {
-			resetRevisor( );
-			if ( getRevisor( ) == null || getRevisor( ).isCoordenador( ) ) {
-				list = getSession( ).getVarianceOralOnly( getPrincipal( ), item );
+			this.resetRevisor( );
+			if ( this.getRevisor( ) == null || this.getRevisor( ).isCoordenador( ) ) {
+				list = this.getSession( ).getVarianceOralOnly( this.getPrincipal( ), item );
 			}
 		}
-		setModel( list );
+		this.setModel( list );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -61,7 +61,7 @@ public class OralVarianceCoordinatorController extends BaseOralController implem
 
 	private Listbox getListbox( )
 	{
-		return listbox;
+		return this.listbox;
 	}
 
 	private void setModel( List<InepOralTest> list )
@@ -70,16 +70,17 @@ public class OralVarianceCoordinatorController extends BaseOralController implem
 		ListModelList model = new ListModelList<InepOralTest>( list );
 
 		model.setMultiple( true );
-		getListbox( ).setModel( model );
+		this.getListbox( ).setModel( model );
 	}
 
 	@Listen( "onClick = #assign" )
 	public void onAssign( Event evt )
 	{
-		if ( evt != null )
+		if ( evt != null ) {
 			evt.stopPropagation( );
+		}
 		@SuppressWarnings( "unchecked" )
-		ListModelList<InepOralTest> model = (ListModelList<InepOralTest>) ( (Object) getListbox( ).getModel( ) );
+		ListModelList<InepOralTest> model = (ListModelList<InepOralTest>) ( (Object) this.getListbox( ).getModel( ) );
 		Set<InepOralTest> items = model.getSelection( );
 		if ( items == null || items.size( ) == 0 ) {
 			Messagebox.show( "Por favor, selecione uma ou mais inscrições em discrepância para distribuir aos corretores",
@@ -88,11 +89,11 @@ public class OralVarianceCoordinatorController extends BaseOralController implem
 					Messagebox.INFORMATION );
 			return;
 		}
-		Component c = createDialog( "/private/inep/oral/dlg_oral_team_choice.zul" );
+		Component c = this.createDialog( "/private/inep/oral/dlg_oral_team_choice.zul" );
 		if ( c != null && c instanceof DlgOralTeamChoice ) {
 			DlgOralTeamChoice dlg = (DlgOralTeamChoice) c;
 			dlg.setCallEvent( this );
-			dlg.loadList( getSession( ).getOralTeamToChoice( getCurrentEvent( ), getPrincipal( ) ) );
+			dlg.loadList( this.getSession( ).getOralTeamToChoice( this.getCurrentEvent( ), this.getPrincipal( ) ) );
 			dlg.doModal( );
 		}
 	}
@@ -100,18 +101,19 @@ public class OralVarianceCoordinatorController extends BaseOralController implem
 	@Override
 	public void onOK( Window wnd )
 	{
-		if ( !( wnd instanceof DlgOralTeamChoice ) )
+		if ( !( wnd instanceof DlgOralTeamChoice ) ) {
 			return;
+		}
 		InepOralTeamDTO first, second;
 		DlgOralTeamChoice dlg = (DlgOralTeamChoice) wnd;
 		first = (InepOralTeamDTO) dlg.getFirst( ).getSelectedItem( ).getValue( );
 		second = (InepOralTeamDTO) dlg.getSecond( ).getSelectedItem( ).getValue( );
 
 		@SuppressWarnings( "unchecked" )
-		ListModelList<InepOralTest> model = (ListModelList<InepOralTest>) ( (Object) getListbox( ).getModel( ) );
+		ListModelList<InepOralTest> model = (ListModelList<InepOralTest>) ( (Object) this.getListbox( ).getModel( ) );
 		Set<InepOralTest> items = model.getSelection( );
 
-		getSession( ).distribute( getCurrentEvent( ), getPrincipal( ), first.getRevisor( ), second.getRevisor( ), items );
+		this.getSession( ).distribute( this.getCurrentEvent( ), this.getPrincipal( ), first.getRevisor( ), second.getRevisor( ), items );
 		model.removeAll( items );
 	}
 }

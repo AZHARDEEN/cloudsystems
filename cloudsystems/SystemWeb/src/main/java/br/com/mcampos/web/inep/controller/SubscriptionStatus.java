@@ -106,72 +106,72 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		listBox.setItemRenderer( new SubscriptionItemRenderer( ) );
-		listDetail.setItemRenderer( new DistributionInfoListRenderer( ) );
-		lstOralRevisor.setItemRenderer( new InepStatusOralDistributionsListRenderer( ) );
-		swapTaskListbox.setItemRenderer( new InepTaskListRenderer( ) );
-		loadCombobox( );
+		this.listBox.setItemRenderer( new SubscriptionItemRenderer( ) );
+		this.listDetail.setItemRenderer( new DistributionInfoListRenderer( ) );
+		this.lstOralRevisor.setItemRenderer( new InepStatusOralDistributionsListRenderer( ) );
+		this.swapTaskListbox.setItemRenderer( new InepTaskListRenderer( ) );
+		this.loadCombobox( );
 
-		if ( getRevisor( ) == null ) {
-			cmbTask.setVisible( true );
-			tabOper.setVisible( true );
+		if ( this.getRevisor( ) == null ) {
+			this.cmbTask.setVisible( true );
+			this.tabOper.setVisible( true );
 		}
 		else {
-			tabOper.setVisible( false );
+			this.tabOper.setVisible( false );
 		}
 	}
 
 	private void loadCombobox( )
 	{
-		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = this.getSession( ).getEvents( this.getPrincipal( ) );
 
-		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
-			getComboEvent( ).getItems( ).clear( );
+		if ( SysUtils.isEmpty( this.getComboEvent( ).getItems( ) ) == false ) {
+			this.getComboEvent( ).getItems( ).clear( );
 		}
 		for ( InepEvent e : events ) {
-			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
+			Comboitem item = this.getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
-		if ( getComboEvent( ).getItemCount( ) > 0 ) {
-			getComboEvent( ).setSelectedIndex( 0 );
-			InepEvent event = getComboEvent( ).getSelectedItem( ).getValue( );
-			loadComboboxTask( event );
-			ListModelList<InepTask> tasks = new ListModelList<InepTask>( getSession( ).getTasks( event ) );
+		if ( this.getComboEvent( ).getItemCount( ) > 0 ) {
+			this.getComboEvent( ).setSelectedIndex( 0 );
+			InepEvent event = this.getComboEvent( ).getSelectedItem( ).getValue( );
+			this.loadComboboxTask( event );
+			ListModelList<InepTask> tasks = new ListModelList<InepTask>( this.getSession( ).getTasks( event ) );
 			tasks.setMultiple( true );
-			swapTaskListbox.setModel( tasks );
+			this.swapTaskListbox.setModel( tasks );
 		}
 	}
 
 	private void loadComboboxTask( InepEvent event )
 	{
-		List<InepTask> events = getSession( ).getTasks( event );
+		List<InepTask> events = this.getSession( ).getTasks( event );
 
-		cmbTask.getItems( ).clear( );
+		this.cmbTask.getItems( ).clear( );
 		for ( InepTask e : events ) {
-			if ( getRevisor( ) == null || getRevisor( ).getTask( ) == null || getRevisor( ).getTask( ).equals( e ) ) {
-				Comboitem item = cmbTask.appendItem( e.getDescription( ) );
+			if ( this.getRevisor( ) == null || this.getRevisor( ).getTask( ) == null || this.getRevisor( ).getTask( ).equals( e ) ) {
+				Comboitem item = this.cmbTask.appendItem( e.getDescription( ) );
 				item.setValue( e );
 			}
 		}
-		if ( cmbTask.getItemCount( ) > 0 ) {
-			cmbTask.setSelectedIndex( 0 );
+		if ( this.cmbTask.getItemCount( ) > 0 ) {
+			this.cmbTask.setSelectedIndex( 0 );
 		}
 	}
 
 	private Combobox getComboEvent( )
 	{
-		return comboEvent;
+		return this.comboEvent;
 	}
 
 	private void search( String value )
 	{
 		if ( SysUtils.isEmpty( value ) == false && value.length( ) >= 3 ) {
-			if ( showSubscriptions( value ) == false ) {
-				subscription.close( );
+			if ( this.showSubscriptions( value ) == false ) {
+				this.subscription.close( );
 			}
 		}
 		else {
-			subscription.close( );
+			this.subscription.close( );
 		}
 	}
 
@@ -180,7 +180,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	{
 		if ( evt != null ) {
 			logger.info( "onOpen[bandbox]: " + evt.getValue( ) );
-			search( evt.getValue( ).toString( ) );
+			this.search( evt.getValue( ).toString( ) );
 			evt.stopPropagation( );
 		}
 	}
@@ -189,38 +189,38 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	public void onOkBandbox( Event evt )
 	{
 		if ( evt != null ) {
-			subscription.open( );
-			logger.info( "onOK[bandbox]: " + subscription.getValue( ) );
-			search( subscription.getValue( ) );
+			this.subscription.open( );
+			logger.info( "onOK[bandbox]: " + this.subscription.getValue( ) );
+			this.search( this.subscription.getValue( ) );
 			evt.stopPropagation( );
 		}
 	}
 
 	private boolean showSubscriptions( String part )
 	{
-		if ( getComboEvent( ).getSelectedItem( ) == null ) {
+		if ( this.getComboEvent( ).getSelectedItem( ) == null ) {
 			return false;
 		}
-		InepEvent event = getComboEvent( ).getSelectedItem( ).getValue( );
+		InepEvent event = this.getComboEvent( ).getSelectedItem( ).getValue( );
 		if ( event == null ) {
 			return false;
 		}
 		logger.info( "Searching for: " + part );
-		List<InepSubscription> list = getSession( ).getSubscriptions( event, part );
+		List<InepSubscription> list = this.getSession( ).getSubscriptions( event, part );
 		if ( SysUtils.isEmpty( list ) ) {
 			return false;
 		}
-		listBox.setModel( new ListModelList<InepSubscription>( list ) );
+		this.listBox.setModel( new ListModelList<InepSubscription>( list ) );
 		return true;
 	}
 
 	@Listen( "onSelect = #list" )
 	public void onSelect( Event evt )
 	{
-		InepSubscription s = getCurrentSubscription( );
-		subscription.setValue( s.getId( ).getId( ) );
-		subscription.close( );
-		showInfo( s );
+		InepSubscription s = this.getCurrentSubscription( );
+		this.subscription.setValue( s.getId( ).getId( ) );
+		this.subscription.close( );
+		this.showInfo( s );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -228,7 +228,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 
 	private InepSubscription getCurrentSubscription( )
 	{
-		Listitem item = listBox.getSelectedItem( );
+		Listitem item = this.listBox.getSelectedItem( );
 		if ( item == null || item.getValue( ) == null ) {
 			return null;
 		}
@@ -238,7 +238,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	@Listen( "onSelect = #cmbTask" )
 	public void onSelectTask( Event evt )
 	{
-		onSelect( evt );
+		this.onSelect( evt );
 	}
 
 	private void showInfo( InepSubscription s )
@@ -246,54 +246,56 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		if ( s == null ) {
 			return;
 		}
-		List<InepDistribution> list = getSession( ).getDistribution( s );
-		listDetail.setModel( new ListModelList<InepDistribution>( list ) );
-		showFrame( s );
-		showOralGrade( s );
-		showTasks( s );
+		List<InepDistribution> list = this.getSession( ).getDistribution( s );
+		this.listDetail.setModel( new ListModelList<InepDistribution>( list ) );
+		this.showFrame( s );
+		this.showOralGrade( s );
+		this.showTasks( s );
 
 	}
 
 	private void showOralGrade( InepSubscription s )
 	{
-		InepOralTest test = getSession( ).getOralTest( s );
-		station.setValue( "" );
-		interviewerGrade.setValue( "" );
-		observerGrade.setValue( "" );
-		stationGrade.setValue( "" );
-		agreementGrade.setValue( "" );
-		agreement2Grade.setValue( "" );
+		InepOralTest test = this.getSession( ).getOralTest( s );
+		this.station.setValue( "" );
+		this.interviewerGrade.setValue( "" );
+		this.observerGrade.setValue( "" );
+		this.stationGrade.setValue( "" );
+		this.agreementGrade.setValue( "" );
+		this.agreement2Grade.setValue( "" );
 		if ( test != null ) {
-			station.setValue( test.getStation( ) );
-			interviewerGrade.setValue( test.getInterviewGrade( ).toString( ) );
-			observerGrade.setValue( test.getObserverGrade( ).toString( ) );
-			stationGrade.setValue( test.getFinalGrade( ).toString( ) );
-			if ( test.getAgreementGrade( ) != null )
-				agreementGrade.setValue( test.getAgreementGrade( ).toString( ) );
-			if ( test.getAgreement2Grade( ) != null )
-				agreement2Grade.setValue( test.getAgreement2Grade( ).toString( ) );
+			this.station.setValue( test.getStation( ) );
+			this.interviewerGrade.setValue( test.getInterviewGrade( ).toString( ) );
+			this.observerGrade.setValue( test.getObserverGrade( ).toString( ) );
+			this.stationGrade.setValue( test.getFinalGrade( ).toString( ) );
+			if ( test.getAgreementGrade( ) != null ) {
+				this.agreementGrade.setValue( test.getAgreementGrade( ).toString( ) );
+			}
+			if ( test.getAgreement2Grade( ) != null ) {
+				this.agreement2Grade.setValue( test.getAgreement2Grade( ).toString( ) );
+			}
 		}
-		List<InepOralDistribution> list = getSession( ).getOralDistributions( test );
-		lstOralRevisor.setModel( new ListModelList<InepOralDistribution>( list ) );
+		List<InepOralDistribution> list = this.getSession( ).getOralDistributions( test );
+		this.lstOralRevisor.setModel( new ListModelList<InepOralDistribution>( list ) );
 	}
 
 	private void showTasks( InepSubscription s )
 	{
-		List<InepTest> tests = getSession( ).getTests( getPrincipal( ), s );
+		List<InepTest> tests = this.getSession( ).getTests( this.getPrincipal( ), s );
 		if ( !SysUtils.isEmpty( tests ) ) {
 			for ( InepTest test : tests ) {
 				switch ( test.getId( ).getTaskId( ) ) {
 				case 1:
-					task1.setValue( test.getGrade( ).toString( ) );
+					this.task1.setValue( test.getGrade( ).toString( ) );
 					break;
 				case 2:
-					task2.setValue( test.getGrade( ).toString( ) );
+					this.task2.setValue( test.getGrade( ).toString( ) );
 					break;
 				case 3:
-					task3.setValue( test.getGrade( ).toString( ) );
+					this.task3.setValue( test.getGrade( ).toString( ) );
 					break;
 				case 4:
-					task4.setValue( test.getGrade( ).toString( ) );
+					this.task4.setValue( test.getGrade( ).toString( ) );
 					break;
 				}
 			}
@@ -302,37 +304,38 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 
 	private void showFrame( InepSubscription s )
 	{
-		if ( cmbTask.getSelectedItem( ) != null ) {
-			InepTask task = (InepTask) cmbTask.getSelectedItem( ).getValue( );
-			byte[ ] obj = getSession( ).getMedia( s, task );
+		if ( this.cmbTask.getSelectedItem( ) != null ) {
+			InepTask task = (InepTask) this.cmbTask.getSelectedItem( ).getValue( );
+			byte[ ] obj = this.getSession( ).getMedia( s, task );
 			AMedia media = null;
-			if ( obj != null )
+			if ( obj != null ) {
 				media = new AMedia( s.getId( ).getId( ) + "-" + task.getId( ).getId( ) + ".pdf", "pdf", "application/pdf", obj );
-			framePdf.setContent( media );
+			}
+			this.framePdf.setContent( media );
 		}
 	}
 
 	public InepRevisor getRevisor( )
 	{
-		if ( revisor == null ) {
-			if ( getComboEvent( ).getSelectedItem( ) != null ) {
-				revisor = getSession( ).getRevisor( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ),
-						getPrincipal( ) );
+		if ( this.revisor == null ) {
+			if ( this.getComboEvent( ).getSelectedItem( ) != null ) {
+				this.revisor = this.getSession( ).getRevisor( (InepEvent) this.getComboEvent( ).getSelectedItem( ).getValue( ),
+						this.getPrincipal( ) );
 			}
 		}
-		return revisor;
+		return this.revisor;
 	}
 
 	@SuppressWarnings( { "unchecked", "rawtypes" } )
 	@Listen( "onClick=#swapTask" )
 	public void onSwapTask( MouseEvent evt )
 	{
-		ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
+		ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) this.swapTaskListbox.getModel( );
 		if ( model == null || SysUtils.isEmpty( model.getSelection( ) ) ) {
 			Messagebox.show( "Por favor selecione ao menos 2(duas) tarefas", "Trocar Tarefa", Messagebox.OK, Messagebox.EXCLAMATION );
 			return;
 		}
-		if ( getCurrentSubscription( ) == null ) {
+		if ( this.getCurrentSubscription( ) == null ) {
 			Messagebox.show( "Não existe uma inscrição selecionada", "Reinicar Tarefa", Messagebox.OK, Messagebox.ERROR );
 			return;
 		}
@@ -347,28 +350,30 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 					public void onEvent( Event e )
 					{
 						if ( Messagebox.ON_YES.equals( e.getName( ) ) ) {
-							ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
+							ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) SubscriptionStatus.this.swapTaskListbox.getModel( );
 							ArrayList<InepTask> tasks = new ArrayList<InepTask>( model.getSelection( ) );
-							getSession( ).swapTasks( getCurrentSubscription( ), tasks.get( 0 ), tasks.get( 1 ) );
-							onSelect( null );
+							SubscriptionStatus.this.getSession( ).swapTasks( SubscriptionStatus.this.getCurrentSubscription( ), tasks.get( 0 ),
+									tasks.get( 1 ) );
+							SubscriptionStatus.this.onSelect( null );
 							Messagebox.show( "As provas foram trocadas com suceso", "Trocar Provas", Messagebox.OK, Messagebox.INFORMATION );
 						}
 					}
 				} );
-		if ( evt != null )
+		if ( evt != null ) {
 			evt.stopPropagation( );
+		}
 	}
 
 	@SuppressWarnings( { "unchecked", "rawtypes" } )
 	@Listen( "onClick=#resetDistribution" )
 	public void onResetDistribution( MouseEvent evt )
 	{
-		ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
+		ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) this.swapTaskListbox.getModel( );
 		if ( model == null || SysUtils.isEmpty( model.getSelection( ) ) ) {
 			Messagebox.show( "Por favor selecione ao menos 1(uma) tarefa", "Reinicar Tarefa", Messagebox.OK, Messagebox.EXCLAMATION );
 			return;
 		}
-		if ( getCurrentSubscription( ) == null ) {
+		if ( this.getCurrentSubscription( ) == null ) {
 			Messagebox.show( "Não existe uma inscrição selecionada", "Reinicar Tarefa", Messagebox.OK, Messagebox.ERROR );
 			return;
 		}
@@ -379,15 +384,17 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 					public void onEvent( Event e )
 					{
 						if ( Messagebox.ON_YES.equals( e.getName( ) ) ) {
-							ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) swapTaskListbox.getModel( );
+							ListModelList<InepTask> model = (ListModelList<InepTask>) (Object) SubscriptionStatus.this.swapTaskListbox.getModel( );
 							ArrayList<InepTask> tasks = new ArrayList<InepTask>( model.getSelection( ) );
-							getSession( ).resetTasks( getPrincipal( ), getCurrentSubscription( ), tasks );
-							onSelect( null );
+							SubscriptionStatus.this.getSession( ).resetTasks( SubscriptionStatus.this.getPrincipal( ),
+									SubscriptionStatus.this.getCurrentSubscription( ), tasks );
+							SubscriptionStatus.this.onSelect( null );
 							Messagebox.show( "Reinicialização concluída com sucesso", "Reinicar Tarefa", Messagebox.OK, Messagebox.INFORMATION );
 						}
 					}
 				} );
-		if ( evt != null )
+		if ( evt != null ) {
 			evt.stopPropagation( );
+		}
 	}
 }

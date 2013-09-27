@@ -16,17 +16,17 @@ public class DistributionExtractController extends BaseExtractController
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		getDataGrid( ).setRowRenderer( new DistributionExtractRowRenderer( ) );
+		this.getDataGrid( ).setRowRenderer( new DistributionExtractRowRenderer( ) );
 	}
 
 	@Override
 	protected List<InepAnaliticoCorrecao> getList( InepEvent item )
 	{
-		if ( getRevisor( ) == null || getRevisor( ).isCoordenador( ) ) {
-			return getSession( ).getAnaliticoCorrecao( item );
+		if ( this.getRevisor( ) == null || this.getRevisor( ).isCoordenador( ) ) {
+			return this.getSession( ).getAnaliticoCorrecao( item );
 		}
 		else {
-			return getSession( ).getAnaliticoCorrecao( getRevisor( ).getTask( ) );
+			return this.getSession( ).getAnaliticoCorrecao( this.getRevisor( ).getTask( ) );
 		}
 	}
 }

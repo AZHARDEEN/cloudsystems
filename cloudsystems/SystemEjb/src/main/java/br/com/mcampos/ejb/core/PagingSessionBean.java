@@ -10,6 +10,11 @@ import br.com.mcampos.dto.core.PrincipalDTO;
 public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implements PagingSessionInterface<T>
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1176033381769950845L;
+
 	@Override
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public int count( @NotNull PrincipalDTO auth )
@@ -17,12 +22,12 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 		Long result;
 
 		try {
-			Query query = getCountQuery( auth, null );
+			Query query = this.getCountQuery( auth, null );
 			result = (Long) query.getSingleResult( );
 			return result.intValue( );
 		}
 		catch ( Exception e ) {
-			storeException( e );
+			this.storeException( e );
 			throw e;
 		}
 
@@ -35,13 +40,13 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 		Long result;
 
 		try {
-			Query query = getCountQuery( auth, filter );
-			setParameters( query );
+			Query query = this.getCountQuery( auth, filter );
+			this.setParameters( query );
 			result = (Long) query.getSingleResult( );
 			return result.intValue( );
 		}
 		catch ( Exception e ) {
-			storeException( e );
+			this.storeException( e );
 			throw e;
 		}
 
@@ -54,13 +59,13 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 		Long result;
 
 		try {
-			Query query = getCountQuery( auth, filter );
-			setQueryParams( query, params );
+			Query query = this.getCountQuery( auth, filter );
+			this.setQueryParams( query, params );
 			result = (Long) query.getSingleResult( );
 			return result.intValue( );
 		}
 		catch ( Exception e ) {
-			storeException( e );
+			this.storeException( e );
 			throw e;
 		}
 
@@ -70,7 +75,7 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 	{
 		String sqlQuery;
 
-		sqlQuery = "select count(t) as registros from " + getPersistentClass( ).getSimpleName( ) + " as t ";
+		sqlQuery = "select count(t) as registros from " + this.getPersistentClass( ).getSimpleName( ) + " as t ";
 		if ( whereClause != null && whereClause.isEmpty( ) == false ) {
 			String aux = whereClause.trim( ).toLowerCase( );
 			if ( aux.startsWith( "where" ) ) {
@@ -86,11 +91,11 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 	protected Query getCountQuery( @NotNull PrincipalDTO auth, String whereClause )
 	{
 		try {
-			Query query = getEntityManager( ).createQuery( getCountQL( auth, whereClause ) );
+			Query query = this.getEntityManager( ).createQuery( this.getCountQL( auth, whereClause ) );
 			return query;
 		}
 		catch ( Exception e ) {
-			storeException( e );
+			this.storeException( e );
 			throw e;
 		}
 	}

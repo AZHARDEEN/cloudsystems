@@ -40,29 +40,29 @@ public class TeamController extends BaseController<Window>
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		createTabs( );
+		this.createTabs( );
 	}
 
 	private void createTabs( )
 	{
-		List<InepTask> tasks = getSession( ).getTasks( getPrincipal( ) );
+		List<InepTask> tasks = this.getSession( ).getTasks( this.getPrincipal( ) );
 		Tabpanel newPanel;
 		int nIndex = 0;
 
-		listboxes = new Listbox[ tasks.size( ) ];
+		this.listboxes = new Listbox[ tasks.size( ) ];
 		for ( InepTask task : tasks )
 		{
-			tabBox.appendChild( new Tab( task.getDescription( ) ) );
+			this.tabBox.appendChild( new Tab( task.getDescription( ) ) );
 			newPanel = new Tabpanel( );
-			listboxes[ nIndex ] = new Listbox( );
-			newPanel.appendChild( loadTeam( listboxes[ nIndex++ ], task ) );
-			panels.appendChild( newPanel );
+			this.listboxes[ nIndex ] = new Listbox( );
+			newPanel.appendChild( this.loadTeam( this.listboxes[ nIndex++ ], task ) );
+			this.panels.appendChild( newPanel );
 		}
 	}
 
 	private Listbox loadTeam( Listbox list, InepTask task )
 	{
-		List<InepRevisor> team = getSession( ).getTeam( task );
+		List<InepRevisor> team = this.getSession( ).getTeam( task );
 		ListModelList<InepRevisor> model = new ListModelList<InepRevisor>( team );
 		list.setItemRenderer( new RevisorListRenderer( ) );
 		list.setModel( model );
@@ -72,10 +72,10 @@ public class TeamController extends BaseController<Window>
 
 	private TeamSession getSession( )
 	{
-		if ( session == null ) {
-			session = (TeamSession) getSession( TeamSession.class );
+		if ( this.session == null ) {
+			this.session = (TeamSession) this.getSession( TeamSession.class );
 		}
-		return session;
+		return this.session;
 	}
 
 	@Listen( "onClick = #btnDistribution" )

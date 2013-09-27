@@ -20,7 +20,7 @@ import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.mcampos.ejb.inep.test.InepTestSession;
+import br.com.mcampos.ejb.inep.InepLoaderSession;
 import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.sysutils.ServiceLocator;
 
@@ -29,23 +29,24 @@ public abstract class InepBaseJob implements Serializable, Job
 	private static final long serialVersionUID = 9162031955846573614L;
 	private static final Logger logger = LoggerFactory.getLogger( InepBaseJob.class );
 	private static final String path = "/var/local/jboss/loader/inep/written/";
-	private transient InepTestSession session = null;
+	private transient InepLoaderSession session = null;
 
 	protected static String getPath( )
 	{
 		return path;
 	}
 
-	protected InepTestSession getSession( )
+	protected InepLoaderSession getSession( )
 	{
 		try {
-			if ( session == null )
-				session = (InepTestSession) ServiceLocator.getInstance( ).getRemoteSession( InepTestSession.class, ServiceLocator.EJB_NAME[ 0 ] );
+			if ( this.session == null ) {
+				this.session = (InepLoaderSession) ServiceLocator.getInstance( ).getRemoteSession( InepLoaderSession.class, ServiceLocator.EJB_NAME[ 0 ] );
+			}
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );
 		}
-		return session;
+		return this.session;
 	}
 
 	protected boolean amIRunning( JobExecutionContext context )
@@ -57,9 +58,11 @@ public abstract class InepBaseJob implements Serializable, Job
 			existingJobDetail = sched.getJobDetail( context.getJobDetail( ).getKey( ) );
 			if ( existingJobDetail != null ) {
 				List<JobExecutionContext> currentlyExecutingJobs = sched.getCurrentlyExecutingJobs( );
-				for ( JobExecutionContext jec : currentlyExecutingJobs )
-					if ( existingJobDetail.equals( jec.getJobDetail( ) ) && jec.equals( context ) == false )
+				for ( JobExecutionContext jec : currentlyExecutingJobs ) {
+					if ( existingJobDetail.equals( jec.getJobDetail( ) ) && jec.equals( context ) == false ) {
 						return true;
+					}
+				}
 			}
 		}
 		catch ( SchedulerException e ) {
@@ -72,8 +75,9 @@ public abstract class InepBaseJob implements Serializable, Job
 	{
 		String eventPath = getPath( ) + item.getId( ).getCompanyId( ).toString( ) + "/" + item.getId( ).getId( ).toString( ) + "/";
 		File filePath = new File( eventPath );
-		if ( filePath.exists( ) == false )
+		if ( filePath.exists( ) == false ) {
 			filePath.mkdirs( );
+		}
 		return eventPath;
 	}
 
@@ -81,7 +85,7 @@ public abstract class InepBaseJob implements Serializable, Job
 	{
 		File dir;
 
-		String eventPath = getBasePath( item );
+		String eventPath = this.getBasePath( item );
 		dir = new File( eventPath );
 		FilenameFilter filter = new FilenameFilter( )
 		{
@@ -100,14 +104,18 @@ public abstract class InepBaseJob implements Serializable, Job
 		try {
 			logger.info( "Moving " + filename + " to " + directory );
 			File file = new File( filename );
-			if ( file.exists( ) == false )
+			if ( file.exists( ) == false ) {
 				return;
+			}
 			File dest = new File( directory );
-			if ( dest.exists( ) == false )
-				if ( dest.mkdirs( ) == false )
+			if ( dest.exists( ) == false ) {
+				if ( dest.mkdirs( ) == false ) {
 					return;
-			if ( file.renameTo( new File( dest, file.getName( ) ) ) == false )
+				}
+			}
+			if ( file.renameTo( new File( dest, file.getName( ) ) ) == false ) {
 				logger.error( "Error moving file " + filename + " to " + directory );
+			}
 		}
 		catch ( Exception e )
 		{
@@ -119,7 +127,7 @@ public abstract class InepBaseJob implements Serializable, Job
 	protected byte[ ] read( String aInputFileName )
 	{
 		File file = new File( aInputFileName );
-		return readFile( file );
+		return this.readFile( file );
 	}
 
 	protected byte[ ] readFile( File file )
@@ -134,8 +142,9 @@ public abstract class InepBaseJob implements Serializable, Job
 					int bytesRemaining = result.length - totalBytesRead;
 					// input.read() returns -1, 0, or more :
 					int bytesRead = input.read( result, totalBytesRead, bytesRemaining );
-					if ( bytesRead > 0 )
+					if ( bytesRead > 0 ) {
 						totalBytesRead = totalBytesRead + bytesRead;
+					}
 				}
 				/*
 				 * the above style is a bit tricky: it places bytes into the

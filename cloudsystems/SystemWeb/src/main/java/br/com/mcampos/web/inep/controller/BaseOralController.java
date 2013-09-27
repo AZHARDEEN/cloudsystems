@@ -28,7 +28,7 @@ public abstract class BaseOralController extends BaseDBLoggedController<InepOral
 
 	protected Combobox getComboEvent( )
 	{
-		return comboEvent;
+		return this.comboEvent;
 	}
 
 	protected void setComboEvent( Combobox comboEvent )
@@ -38,50 +38,51 @@ public abstract class BaseOralController extends BaseDBLoggedController<InepOral
 
 	protected InepEvent getCurrentEvent( )
 	{
-		Comboitem item = comboEvent.getSelectedItem( );
-		if( item != null && item.getValue( ) != null ) {
+		Comboitem item = this.comboEvent.getSelectedItem( );
+		if ( item != null && item.getValue( ) != null ) {
 			return (InepEvent) item.getValue( );
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 	protected InepRevisor getRevisor( )
 	{
-		if( revisor == null ) {
-			revisor = getSession( ).getRevisor( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ),
-					getPrincipal( ) );
+		if ( this.revisor == null ) {
+			this.revisor = this.getSession( ).getRevisor( (InepEvent) this.getComboEvent( ).getSelectedItem( ).getValue( ),
+					this.getPrincipal( ) );
 		}
-		return revisor;
+		return this.revisor;
 	}
 
 	protected BaseDialogWindow createDialog( String uri )
 	{
-		Component c = getMainWindow( ).getFellowIfAny( "dlgMainWnd" );
-		if( c != null ) {
+		Component c = this.getMainWindow( ).getFellowIfAny( "dlgMainWnd" );
+		if ( c != null ) {
 			c.detach( );
 			c = null;
 		}
-		BaseDialogWindow dlg = (BaseDialogWindow) createComponents( uri, getMainWindow( ), null );
+		BaseDialogWindow dlg = (BaseDialogWindow) this.createComponents( uri, this.getMainWindow( ), null );
 		return dlg;
 	}
 
 	private void loadEvents( )
 	{
-		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = this.getSession( ).getEvents( this.getPrincipal( ) );
 
-		if( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
-			getComboEvent( ).getItems( ).clear( );
+		if ( SysUtils.isEmpty( this.getComboEvent( ).getItems( ) ) == false ) {
+			this.getComboEvent( ).getItems( ).clear( );
 		}
-		for( InepEvent e : events ) {
-			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
+		for ( InepEvent e : events ) {
+			Comboitem item = this.getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
-		if( getComboEvent( ).getItemCount( ) > 0 ) {
-			getComboEvent( ).setSelectedIndex( 0 );
-			onSelectPackage( null );
+		if ( this.getComboEvent( ).getItemCount( ) > 0 ) {
+			this.getComboEvent( ).setSelectedIndex( 0 );
+			this.onSelectPackage( null );
 		}
-		getComboEvent( ).setDisabled( events.size( ) <= 1 );
+		this.getComboEvent( ).setDisabled( events.size( ) <= 1 );
 	}
 
 	@Override
@@ -94,12 +95,12 @@ public abstract class BaseOralController extends BaseDBLoggedController<InepOral
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		loadEvents( );
+		this.loadEvents( );
 	}
 
 	protected void resetRevisor( )
 	{
-		revisor = null;
+		this.revisor = null;
 	}
 
 }

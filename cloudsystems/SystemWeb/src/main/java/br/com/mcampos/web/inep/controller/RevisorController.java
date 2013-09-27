@@ -69,27 +69,28 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	protected void showFields( InepRevisor field )
 	{
 		if ( field != null ) {
-			revNome.setValue( field.getCollaborator( ).getPerson( ).getName( ) );
-			infoCPF.setValue( "" );
-			infoEmail.setValue( "" );
-			for ( UserDocument doc : field.getCollaborator( ).getPerson( ).getDocuments( ) )
+			this.revNome.setValue( field.getCollaborator( ).getPerson( ).getName( ) );
+			this.infoCPF.setValue( "" );
+			this.infoEmail.setValue( "" );
+			for ( UserDocument doc : field.getCollaborator( ).getPerson( ).getDocuments( ) ) {
 				switch ( doc.getType( ).getId( ) ) {
 				case 1:
-					infoCPF.setValue( doc.getCode( ) );
+					this.infoCPF.setValue( doc.getCode( ) );
 					break;
 				case 6:
-					infoEmail.setValue( doc.getCode( ) );
+					this.infoEmail.setValue( doc.getCode( ) );
 					break;
 				}
-			infoTask.setValue( field.getTask( ) != null ? field.getTask( ).getDescription( ) : "Oral" );
-			infoTeamMaster.setValue( field.isCoordenador( ) ? "SIM" : "" );
+			}
+			this.infoTask.setValue( field.getTask( ) != null ? field.getTask( ).getDescription( ) : "Oral" );
+			this.infoTeamMaster.setValue( field.isCoordenador( ) ? "SIM" : "" );
 		}
 		else {
-			revNome.setValue( "" );
-			infoCPF.setValue( "" );
-			infoEmail.setValue( "" );
-			infoTask.setValue( "" );
-			infoTeamMaster.setValue( "" );
+			this.revNome.setValue( "" );
+			this.infoCPF.setValue( "" );
+			this.infoEmail.setValue( "" );
+			this.infoTask.setValue( "" );
+			this.infoTeamMaster.setValue( "" );
 		}
 	}
 
@@ -119,44 +120,47 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 
 	private Combobox getComboTask( )
 	{
-		return comboTask;
+		return this.comboTask;
 	}
 
 	private Combobox getComboEvent( )
 	{
-		return comboEvent;
+		return this.comboEvent;
 	}
 
 	@Listen( "onSelect = #comboEvent" )
 	public void onSelectEvent( Event evt )
 	{
-		Comboitem item = getComboEvent( ).getSelectedItem( );
-		loadComboTask( (InepEvent) item.getValue( ) );
-		if ( evt != null )
+		Comboitem item = this.getComboEvent( ).getSelectedItem( );
+		this.loadComboTask( (InepEvent) item.getValue( ) );
+		if ( evt != null ) {
 			evt.stopPropagation( );
+		}
 	}
 
 	@Listen( "onSelect = #comboTask" )
 	public void onSelectTask( Event evt )
 	{
-		loadPage( 0 );
-		if ( evt != null )
+		this.loadPage( 0 );
+		if ( evt != null ) {
 			evt.stopPropagation( );
+		}
 	}
 
 	private void loadCombobox( )
 	{
-		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = this.getSession( ).getEvents( this.getPrincipal( ) );
 
-		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false )
-			getComboEvent( ).getItems( ).clear( );
+		if ( SysUtils.isEmpty( this.getComboEvent( ).getItems( ) ) == false ) {
+			this.getComboEvent( ).getItems( ).clear( );
+		}
 		for ( InepEvent e : events ) {
-			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
+			Comboitem item = this.getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
-		if ( getComboEvent( ).getItemCount( ) > 0 ) {
-			getComboEvent( ).setSelectedIndex( 0 );
-			onSelectEvent( null );
+		if ( this.getComboEvent( ).getItemCount( ) > 0 ) {
+			this.getComboEvent( ).setSelectedIndex( 0 );
+			this.onSelectEvent( null );
 		}
 	}
 
@@ -164,23 +168,24 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		loadCombobox( );
+		this.loadCombobox( );
 	}
 
 	private void loadComboTask( InepEvent event )
 	{
-		List<InepTask> list = getSession( ).getTasks( event );
+		List<InepTask> list = this.getSession( ).getTasks( event );
 
-		if ( SysUtils.isEmpty( getComboTask( ).getItems( ) ) == false )
-			getComboTask( ).getItems( ).clear( );
-		getComboTask( ).appendItem( "Todas as Tarefas" );
+		if ( SysUtils.isEmpty( this.getComboTask( ).getItems( ) ) == false ) {
+			this.getComboTask( ).getItems( ).clear( );
+		}
+		this.getComboTask( ).appendItem( "Todas as Tarefas" );
 		for ( InepTask e : list ) {
-			Comboitem item = getComboTask( ).appendItem( e.getDescription( ) );
+			Comboitem item = this.getComboTask( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
-		if ( getComboTask( ).getItemCount( ) > 0 ) {
-			getComboTask( ).setSelectedIndex( 0 );
-			loadPage( 0 );
+		if ( this.getComboTask( ).getItemCount( ) > 0 ) {
+			this.getComboTask( ).setSelectedIndex( 0 );
+			this.loadPage( 0 );
 		}
 	}
 
@@ -190,12 +195,14 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 		Comboitem comboItem;
 		List<InepRevisor> list = Collections.emptyList( );
 
-		comboItem = getComboTask( ).getSelectedItem( );
-		if ( comboItem != null && comboItem.getValue( ) != null )
-			list = getSession( ).getAll( (InepTask) comboItem.getValue( ) );
-		else if ( getComboEvent( ).getSelectedItem( ) != null )
-			list = getSession( ).getAll( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ) );
-		getListbox( ).setModel( new ListModelList<InepRevisor>( list ) );
+		comboItem = this.getComboTask( ).getSelectedItem( );
+		if ( comboItem != null && comboItem.getValue( ) != null ) {
+			list = this.getSession( ).getAll( (InepTask) comboItem.getValue( ) );
+		}
+		else if ( this.getComboEvent( ).getSelectedItem( ) != null ) {
+			list = this.getSession( ).getAll( (InepEvent) this.getComboEvent( ).getSelectedItem( ).getValue( ) );
+		}
+		this.getListbox( ).setModel( new ListModelList<InepRevisor>( list ) );
 	}
 
 	@Listen( "onUpload = #loadRevisor" )
@@ -205,7 +212,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 		if ( evt != null ) {
 			try {
 				MediaDTO m = UploadMedia.getMedia( evt.getMedia( ) );
-				loadRevisor( m );
+				this.loadRevisor( m );
 			}
 			catch ( IOException e ) {
 				e.printStackTrace( );
@@ -216,7 +223,7 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 
 	private void loadRevisor( MediaDTO media )
 	{
-		Comboitem item = getComboEvent( ).getSelectedItem( );
+		Comboitem item = this.getComboEvent( ).getSelectedItem( );
 		InepEvent event = ( (InepEvent) item.getValue( ) );
 
 		try {
@@ -229,20 +236,23 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 
 			while ( SysUtils.isEmpty( ( line = br.readLine( ) ) ) == false ) {
 				lineNumber++;
-				if ( lineNumber == 1 )
+				if ( lineNumber == 1 ) {
 					continue;
+				}
 				String[ ] parts = line.split( ";" );
 				Integer type = Integer.parseInt( parts[ 4 ] );
-				if ( !SysUtils.isEmpty( parts[ 3 ] ) )
+				if ( !SysUtils.isEmpty( parts[ 3 ] ) ) {
 					task = Integer.parseInt( parts[ 3 ] );
-				else
+				}
+				else {
 					task = null;
+				}
 				String cpf = parts[ 2 ];
 				if ( !SysUtils.isEmpty( cpf ) ) {
 					cpf = cpf.replaceAll( "\\.", "" );
 					cpf = cpf.replaceAll( "-", "" );
 				}
-				getInepSession( ).add( event, task, parts[ 0 ], parts[ 1 ], cpf, type );
+				this.getInepSession( ).add( event, task, parts[ 0 ], parts[ 1 ], cpf, type );
 			}
 			br.close( );
 		}
@@ -255,21 +265,22 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	public void distribute( Event evt )
 	{
 
-		List<InepTask> tasks = getInepSession( ).getTasks( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ) );
+		List<InepTask> tasks = this.getInepSession( ).getTasks( (InepEvent) this.getComboEvent( ).getSelectedItem( ).getValue( ) );
 
 		for ( InepTask task : tasks ) {
 			logger.info( "Distributing task: " + task.getDescription( ) );
-			getInepSession( ).distribute( task );
+			this.getInepSession( ).distribute( task );
 		}
-		if ( evt != null )
+		if ( evt != null ) {
 			evt.stopPropagation( );
+		}
 	}
 
 	public void load( File file ) throws IOException
 	{
 		BufferedReader input = new BufferedReader( new FileReader( file ) );
 		String line;
-		InepSession is = getInepSession( );
+		InepSession is = this.getInepSession( );
 
 		while ( ( line = input.readLine( ) ) != null ) {
 			logger.info( line );
@@ -285,8 +296,9 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 				dto.setEvento( 1 );
 				dto.setUser( 13623 );
 				try {
-					if ( is.loadCorretore( dto ) == false )
+					if ( is.loadCorretore( dto ) == false ) {
 						break;
+					}
 				}
 				catch ( Exception e ) {
 					logger.error( "load", e );
@@ -300,35 +312,38 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 	private InepSession getInepSession( )
 	{
 		try {
-			if ( inepSession == null )
-				inepSession = (InepSession) ServiceLocator.getInstance( ).getRemoteSession( InepSession.class, ServiceLocator.EJB_NAME[ 0 ] );
+			if ( this.inepSession == null ) {
+				this.inepSession = (InepSession) ServiceLocator.getInstance( ).getRemoteSession( InepSession.class, ServiceLocator.EJB_NAME[ 0 ] );
+			}
 		}
 		catch ( NamingException e ) {
 			logger.error( "getInepSession", e );
 		}
-		return inepSession;
+		return this.inepSession;
 	}
 
 	@SuppressWarnings( "unchecked" )
 	@Override
 	public void onOK( Window wnd )
 	{
-		if ( !( wnd instanceof NewRevisorWindow ) )
+		if ( !( wnd instanceof NewRevisorWindow ) ) {
 			return;
+		}
 		NewRevisorWindow w = (NewRevisorWindow) wnd;
 
-		InepTask task = getComboTask( ).getSelectedItem( ).getValue( );
+		InepTask task = this.getComboTask( ).getSelectedItem( ).getValue( );
 
-		InepRevisor rev = getInepSession( ).add( task, w.getName( ).getValue( ), w.getEmail( ).getValue( ), w.getCpf( ).getValue( ),
+		InepRevisor rev = this.getInepSession( ).add( task, w.getName( ).getValue( ), w.getEmail( ).getValue( ), w.getCpf( ).getValue( ),
 				false );
 		if ( rev != null ) {
 			ListModelList<InepRevisor> model = null;
-			Object objModel = getListbox( ).getModel( );
-			if ( objModel != null )
+			Object objModel = this.getListbox( ).getModel( );
+			if ( objModel != null ) {
 				model = (ListModelList<InepRevisor>) objModel;
+			}
 			if ( model == null ) {
 				model = new ListModelList<InepRevisor>( );
-				getListbox( ).setModel( model );
+				this.getListbox( ).setModel( model );
 			}
 			model.add( rev );
 		}
