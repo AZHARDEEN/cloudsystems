@@ -12,6 +12,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.mcampos.dto.ApplicationException;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
 import br.com.mcampos.dto.anoto.AnotoPageFieldDTO;
@@ -85,6 +88,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 	 * 
 	 */
 	private static final long serialVersionUID = 6532257362892303311L;
+	private static final Logger LOGGER = LoggerFactory.getLogger( AnodeFacadeBean.class.getSimpleName( ) );
 
 	protected static final int SystemMessageTypeId = 7;
 
@@ -136,33 +140,36 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
 	public void addPens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException
 	{
-		authenticate( auth );
-		List<AnotoPen> entities = loadPenEntityList( pens );
-		AnotoForm aForm = formSession.get( form.getId( ) );
-		if ( form != null )
-			formSession.add( aForm, entities );
+		this.authenticate( auth );
+		List<AnotoPen> entities = this.loadPenEntityList( pens );
+		AnotoForm aForm = this.formSession.get( form.getId( ) );
+		if ( form != null ) {
+			this.formSession.add( aForm, entities );
+		}
 	}
 
 	public void removePens( AuthenticationDTO auth, FormDTO form, List<PenDTO> pens ) throws ApplicationException
 	{
-		authenticate( auth );
-		List<AnotoPen> entities = loadPenEntityList( pens );
+		this.authenticate( auth );
+		List<AnotoPen> entities = this.loadPenEntityList( pens );
 		for ( AnotoPen pen : entities ) {
-			List<?> list = pgcSession.getAll( pen );
-			if ( SysUtils.isEmpty( list ) == false )
-				throwRuntimeException( 1 );
+			List<?> list = this.pgcSession.getAll( pen );
+			if ( SysUtils.isEmpty( list ) == false ) {
+				this.throwRuntimeException( 1 );
+			}
 		}
-		AnotoForm aForm = formSession.get( form.getId( ) );
-		if ( aForm != null )
-			formSession.remove( aForm, entities );
+		AnotoForm aForm = this.formSession.get( form.getId( ) );
+		if ( aForm != null ) {
+			this.formSession.remove( aForm, entities );
+		}
 	}
 
 	@Override
 	public List<FormDTO> getForms( AuthenticationDTO auth ) throws ApplicationException
 	{
-		authenticate( auth );
-		Company company = companySession.get( auth.getCurrentCompany( ) );
-		return AnotoUtils.toFormList( formSession.getAll( company ) );
+		this.authenticate( auth );
+		Company company = this.companySession.get( auth.getCurrentCompany( ) );
+		return AnotoUtils.toFormList( this.formSession.getAll( company ) );
 	}
 
 	/*
@@ -173,60 +180,67 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 	@Override
 	public List<PadDTO> getPads( FormDTO form ) throws ApplicationException
 	{
-		AnotoForm entity = formSession.get( form.getId( ) );
-		return AnotoUtils.toPadList( formSession.getPads( entity ) );
+		AnotoForm entity = this.formSession.get( form.getId( ) );
+		return AnotoUtils.toPadList( this.formSession.getPads( entity ) );
 	}
 
 	@Override
 	public List<PenDTO> getAvailablePens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
 	{
-		authenticate( auth );
-		AnotoForm aForm = formSession.get( form.getId( ) );
-		if ( aForm != null )
-			return AnotoUtils.toPenList( formSession.getAvailablePens( aForm ) );
-		else
+		this.authenticate( auth );
+		AnotoForm aForm = this.formSession.get( form.getId( ) );
+		if ( aForm != null ) {
+			return AnotoUtils.toPenList( this.formSession.getAvailablePens( aForm ) );
+		}
+		else {
 			return Collections.emptyList( );
+		}
 	}
 
 	@Override
 	public List<PenDTO> getPens( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
 	{
-		authenticate( auth );
-		AnotoForm aForm = formSession.get( form.getId( ) );
-		if ( aForm == null )
+		this.authenticate( auth );
+		AnotoForm aForm = this.formSession.get( form.getId( ) );
+		if ( aForm == null ) {
 			return Collections.emptyList( );
-		List<PenDTO> pens = AnotoUtils.toPenList( formSession.getPens( aForm ) );
-		return linkToUser( pens );
+		}
+		List<PenDTO> pens = AnotoUtils.toPenList( this.formSession.getPens( aForm ) );
+		return this.linkToUser( pens );
 	}
 
 	@Override
 	public List<AnotoPageFieldDTO> getSearchableFields( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
 	{
-		authenticate( auth );
-		AnotoForm aForm = formSession.get( form.getId( ) );
-		if ( aForm == null )
+		this.authenticate( auth );
+		AnotoForm aForm = this.formSession.get( form.getId( ) );
+		if ( aForm == null ) {
 			return Collections.emptyList( );
-		List<AnotoPageField> searchables = pageFieldSession.getSearchable( aForm );
-		if ( SysUtils.isEmpty( searchables ) )
+		}
+		List<AnotoPageField> searchables = this.pageFieldSession.getSearchable( aForm );
+		if ( SysUtils.isEmpty( searchables ) ) {
 			return Collections.emptyList( );
+		}
 		return AnotoUtils.toAnotoPageFieldDTO( searchables );
 	}
 
 	private List<PenDTO> linkToUser( List<PenDTO> pens ) throws ApplicationException
 	{
-		if ( SysUtils.isEmpty( pens ) )
+		if ( SysUtils.isEmpty( pens ) ) {
 			return Collections.emptyList( );
+		}
 		for ( PenDTO pen : pens ) {
-			linkToUser( pen );
+			this.linkToUser( pen );
 		}
 		return pens;
 	}
 
 	private PenDTO linkToUser( PenDTO pen ) throws ApplicationException
 	{
-		if ( pen == null )
+		if ( pen == null ) {
 			return null;
-		AnotoPenUser penUser = penUserSession.getCurrentUser( pen.getId( ) );
+		}
+		AnotoPenUser penUser = this.penUserSession.getCurrentUser( pen.getId( ) );
 		if ( penUser != null ) {
 			ListUserDTO user = UserUtil.copy( penUser.getPerson( ) );
 			pen.setUser( user );
@@ -240,7 +254,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 	@Override
 	protected EntityManager getEntityManager( )
 	{
-		return em;
+		return this.em;
 	}
 
 	@Override
@@ -251,35 +265,37 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
 	public Integer nextFormId( AuthenticationDTO auth ) throws ApplicationException
 	{
-		authenticate( auth );
-		return formSession.nextId( );
+		this.authenticate( auth );
+		return this.formSession.nextId( );
 	}
 
 	public MediaDTO addFile( AuthenticationDTO auth, FormDTO form, MediaDTO media ) throws ApplicationException
 	{
-		authenticate( auth );
-		Media entity = mediaSession.add( MediaUtil.createEntity( media ) );
-		AnotoForm anotoForm = formSession.get( form.getId( ) );
-		return formSession.addFile( anotoForm, entity ).getMedia( ).toDTO( );
+		this.authenticate( auth );
+		Media entity = this.mediaSession.add( MediaUtil.createEntity( media ) );
+		AnotoForm anotoForm = this.formSession.get( form.getId( ) );
+		return this.formSession.addFile( anotoForm, entity ).getMedia( ).toDTO( );
 	}
 
 	public void removeFile( AuthenticationDTO auth, FormDTO form, MediaDTO media ) throws ApplicationException
 	{
-		authenticate( auth );
-		Media entity = mediaSession.add( MediaUtil.createEntity( media ) );
-		AnotoForm anotoForm = formSession.get( form.getId( ) );
-		formSession.removeFile( anotoForm, entity );
+		this.authenticate( auth );
+		Media entity = this.mediaSession.add( MediaUtil.createEntity( media ) );
+		AnotoForm anotoForm = this.formSession.get( form.getId( ) );
+		this.formSession.removeFile( anotoForm, entity );
 	}
 
 	public List<MediaDTO> getFiles( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
 	{
-		authenticate( auth );
-		AnotoForm anotoForm = formSession.get( form.getId( ) );
-		if ( anotoForm == null )
+		this.authenticate( auth );
+		AnotoForm anotoForm = this.formSession.get( form.getId( ) );
+		if ( anotoForm == null ) {
 			return Collections.emptyList( );
-		List<FormMedia> list = formSession.getFiles( anotoForm );
-		if ( SysUtils.isEmpty( list ) )
+		}
+		List<FormMedia> list = this.formSession.getFiles( anotoForm );
+		if ( SysUtils.isEmpty( list ) ) {
 			return Collections.emptyList( );
+		}
 		List<Media> medias = new ArrayList<Media>( list.size( ) );
 		for ( FormMedia fm : list ) {
 			medias.add( fm.getMedia( ) );
@@ -308,7 +324,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 	@Override
 	public byte[ ] getObject( MediaDTO key ) throws ApplicationException
 	{
-		return mediaSession.getObject( key.getId( ) );
+		return this.mediaSession.getObject( key.getId( ) );
 	}
 
 	/* *************************************************************************
@@ -323,56 +339,56 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 	@Override
 	public List<AnotoPageDTO> getPages( AuthenticationDTO auth, PadDTO pad ) throws ApplicationException
 	{
-		authenticate( auth );
+		this.authenticate( auth );
 		PadPK key = new PadPK( pad.getFormId( ), pad.getId( ) );
-		Pad entity = padSession.get( key );
+		Pad entity = this.padSession.get( key );
 
-		return AnotoUtils.toPageList( padSession.getPages( entity ) );
+		return AnotoUtils.toPageList( this.padSession.getPages( entity ) );
 	}
 
 	@Override
 	public List<AnotoPageDTO> getPages( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
 	{
-		authenticate( auth );
-		AnotoForm entity = formSession.get( form.getId( ) );
+		this.authenticate( auth );
+		AnotoForm entity = this.formSession.get( form.getId( ) );
 
-		return AnotoUtils.toPageList( padSession.getPages( entity ) );
+		return AnotoUtils.toPageList( this.padSession.getPages( entity ) );
 	}
 
 	@Override
 	public List<AnotoPageDTO> getPages( AuthenticationDTO auth ) throws ApplicationException
 	{
-		authenticate( auth );
-		return AnotoUtils.toPageList( padSession.getPages( ) );
+		this.authenticate( auth );
+		return AnotoUtils.toPageList( this.padSession.getPages( ) );
 	}
 
 	@Override
 	public List<MediaDTO> getImages( AnotoPageDTO page ) throws ApplicationException
 	{
-		return AnotoUtils.toMediaList( padSession.getImages( getPageEntity( page ) ) );
+		return AnotoUtils.toMediaList( this.padSession.getImages( this.getPageEntity( page ) ) );
 	}
 
 	@Override
 	public MediaDTO removeFromPage( AuthenticationDTO auth, AnotoPageDTO page, MediaDTO image ) throws ApplicationException
 	{
-		authenticate( auth );
-		AnotoPage pageEntity = getPageEntity( page );
-		return padSession.removeImage( pageEntity, mediaSession.get( image.getId( ) ) ).toDTO( );
+		this.authenticate( auth );
+		AnotoPage pageEntity = this.getPageEntity( page );
+		return this.padSession.removeImage( pageEntity, this.mediaSession.get( image.getId( ) ) ).toDTO( );
 	}
 
 	@Override
 	public MediaDTO addToPage( AuthenticationDTO auth, AnotoPageDTO page, MediaDTO image ) throws ApplicationException
 	{
-		authenticate( auth );
-		Media imageEntity = mediaSession.add( MediaUtil.createEntity( image ) );
-		return padSession.addImage( getPageEntity( page ), imageEntity ).toDTO( );
+		this.authenticate( auth );
+		Media imageEntity = this.mediaSession.add( MediaUtil.createEntity( image ) );
+		return this.padSession.addImage( this.getPageEntity( page ), imageEntity ).toDTO( );
 	}
 
 	protected List<AnotoPen> loadPenEntityList( List<PenDTO> pens ) throws ApplicationException
 	{
 		List<AnotoPen> entities = new ArrayList<AnotoPen>( pens.size( ) );
 		for ( PenDTO pen : pens ) {
-			entities.add( penSession.get( pen.getId( ) ) );
+			entities.add( this.penSession.get( pen.getId( ) ) );
 		}
 		return entities;
 	}
@@ -380,101 +396,112 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 	@Override
 	public void removePens( AuthenticationDTO auth, AnotoPageDTO page, List<PenDTO> pens ) throws ApplicationException
 	{
-		authenticate( auth );
+		this.authenticate( auth );
 
-		List<AnotoPen> entities = loadPenEntityList( pens );
-		padSession.removePens( getPageEntity( page ), entities );
+		List<AnotoPen> entities = this.loadPenEntityList( pens );
+		this.padSession.removePens( this.getPageEntity( page ), entities );
 	}
 
 	@Override
 	public void addPens( AuthenticationDTO auth, AnotoPageDTO page, List<PenDTO> pens ) throws ApplicationException
 	{
-		authenticate( auth );
-		List<AnotoPen> entities = loadPenEntityList( pens );
-		padSession.addPens( getPageEntity( page ), entities );
+		this.authenticate( auth );
+		List<AnotoPen> entities = this.loadPenEntityList( pens );
+		this.padSession.addPens( this.getPageEntity( page ), entities );
 	}
 
 	@Override
 	public List<PenDTO> getAvailablePens( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
 	{
-		authenticate( auth );
-		return AnotoUtils.toPenList( padSession.getAvailablePens( getPageEntity( page ) ) );
+		this.authenticate( auth );
+		return AnotoUtils.toPenList( this.padSession.getAvailablePens( this.getPageEntity( page ) ) );
 	}
 
 	protected AnotoPage getPageEntity( AnotoPageDTO page )
 	{
 		AnotoPagePK key = new AnotoPagePK( page );
-		AnotoPage entity = padSession.getPage( key );
+		AnotoPage entity = this.padSession.getPage( key );
 		return entity;
 	}
 
 	@Override
 	public List<PenDTO> getPens( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
 	{
-		authenticate( auth );
-		return AnotoUtils.toPenList( padSession.getPens( getPageEntity( page ) ) );
+		this.authenticate( auth );
+		return AnotoUtils.toPenList( this.padSession.getPens( this.getPageEntity( page ) ) );
 	}
 
 	@Override
 	public List<PGCDTO> getAllPgc( AuthenticationDTO auth ) throws ApplicationException
 	{
-		authenticate( auth );
-		return AnotoUtils.toPgcList( pgcSession.getAll( ) );
+		this.authenticate( auth );
+		return AnotoUtils.toPgcList( this.pgcSession.getAll( ) );
 	}
 
 	@Override
 	public List<PGCDTO> getSuspendedPgc( AuthenticationDTO auth ) throws ApplicationException
 	{
-		authenticate( auth );
-		return AnotoUtils.toPgcList( pgcSession.getSuspended( ) );
+		this.authenticate( auth );
+		return AnotoUtils.toPgcList( this.pgcSession.getSuspended( ) );
 	}
 
 	@Override
 	public List<PgcPenPageDTO> get( AuthenticationDTO auth, AnotoPenPageDTO penPage ) throws ApplicationException
 	{
-		authenticate( auth );
-		AnotoPen pen = penSession.get( penPage.getPen( ).getId( ) );
-		AnotoPage page = getPageEntity( penPage.getPage( ) );
-		AnotoPenPage entity = padSession.getPenPage( pen, page );
-		return AnotoUtils.toPgcPenPageList( pgcSession.getAll( entity ) );
+		this.authenticate( auth );
+		AnotoPen pen = this.penSession.get( penPage.getPen( ).getId( ) );
+		AnotoPage page = this.getPageEntity( penPage.getPage( ) );
+		AnotoPenPage entity = this.padSession.getPenPage( pen, page );
+		return AnotoUtils.toPgcPenPageList( this.pgcSession.getAll( entity ) );
 	}
 
 	@Override
-	public List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props, Integer maxRecords, Boolean bNewFirst ) throws ApplicationException
+	public List<AnotoResultList> getAllPgcPenPage( AuthenticationDTO auth, Properties props, Integer maxRecords, Boolean bNewFirst )
+			throws ApplicationException
 	{
-		authenticate( auth );
+		this.authenticate( auth );
 		if ( props != null && props.size( ) > 0 ) {
 			/* Trocar o DTO pela entidade */
 			Object value;
 
 			value = props.get( "form" );
 			if ( value != null ) {
-				AnotoForm entity = formSession.get( ( (FormDTO) value ).getId( ) );
-				if ( entity != null )
+				AnotoForm entity = this.formSession.get( ( (FormDTO) value ).getId( ) );
+				if ( entity != null ) {
 					props.put( "form", entity );
+				}
 			}
 		}
-		List<PgcPage> list = pgcPenPageSession.getAll( props, maxRecords, bNewFirst );
-		if ( SysUtils.isEmpty( list ) )
+		List<PgcPage> list = this.pgcPenPageSession.getAll( props, maxRecords, bNewFirst );
+		if ( SysUtils.isEmpty( list ) ) {
 			return Collections.emptyList( );
+		}
 		List<AnotoResultList> resultList = new ArrayList<AnotoResultList>( );
-		for ( PgcPage page : list ) {
-			AnotoResultList item = new AnotoResultList( );
+		try {
+			for ( PgcPage page : list ) {
+				AnotoResultList item = new AnotoResultList( );
 
-			item.setForm( page.getPgc( ).getPgcPenPages( ).get( 0 ).getPenPage( ).getPage( ).getPad( ).getForm( ).toDTO( ) );
-			item.setPen( page.getPgc( ).getPgcPenPages( ).get( 0 ).getPenPage( ).getPen( ).toDTO( ) );
-			item.setPgcPage( page.toDTO( ) );
-			if ( resultList.contains( item ) == false ) {
-				loadProperties( item, page );
-				resultList.add( item );
+				if ( page.getPgc( ) == null || page.getPgc( ).getPgcPenPages( ) == null ) {
+					continue;
+				}
+				item.setForm( page.getPgc( ).getPgcPenPages( ).get( 0 ).getPenPage( ).getPage( ).getPad( ).getForm( ).toDTO( ) );
+				item.setPen( page.getPgc( ).getPgcPenPages( ).get( 0 ).getPenPage( ).getPen( ).toDTO( ) );
+				item.setPgcPage( page.toDTO( ) );
+				if ( resultList.contains( item ) == false ) {
+					this.loadProperties( item, page );
+					resultList.add( item );
+				}
 			}
+		}
+		catch ( Exception e ) {
+			LOGGER.error( "getAllPgcPenPage", e );
 		}
 		return resultList;
 	}
 
 	private void getExportFields( AnotoResultList item, PgcPage page ) throws ApplicationException
 	{
-		List<AnotoPageField> fields = pageFieldSession.getFieldsToExport( );
+		List<AnotoPageField> fields = this.pageFieldSession.getFieldsToExport( );
 		if ( SysUtils.isEmpty( fields ) == false ) {
 			for ( AnotoPageField field : fields ) {
 				PgcFieldPK key = new PgcFieldPK( );
@@ -482,7 +509,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 				key.setPageId( page.getPageId( ) );
 				key.setPgcId( page.getPgcId( ) );
 				key.setName( field.getName( ) );
-				PgcField pgcField = pgcFieldSession.get( key );
+				PgcField pgcField = this.pgcFieldSession.get( key );
 				if ( pgcField != null ) {
 					item.getFields( ).add( pgcField.toDTO( ) );
 				}
@@ -492,22 +519,23 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
 	private void loadProperties( AnotoResultList item, PgcPage pgcPage ) throws ApplicationException
 	{
-		if ( item == null )
+		if ( item == null ) {
 			return;
+		}
 		try {
-			loadUserData( item );
-			List<PgcProperty> prop = pgcPropertySession.get( pgcPage.getPgc( ).getId( ), PgcProperty.cellNumber );
+			this.loadUserData( item );
+			List<PgcProperty> prop = this.pgcPropertySession.get( pgcPage.getPgc( ).getId( ), PgcProperty.cellNumber );
 			if ( SysUtils.isEmpty( prop ) == false ) {
 				item.setCellNumber( prop.get( 0 ).getValue( ) );
 			}
-			prop = pgcPropertySession.getGPS( item.getPgcPage( ).getPgc( ).getId( ) );
+			prop = this.pgcPropertySession.getGPS( item.getPgcPage( ).getPgc( ).getId( ) );
 			if ( SysUtils.isEmpty( prop ) == false ) {
 				item.setLatitude( prop.get( 3 ).getValue( ) );
 				item.setLongitude( prop.get( 4 ).getValue( ) );
 			}
-			loadBarCode( item, pgcPage );
-			loadAttach( item, pgcPage );
-			getExportFields( item, pgcPage );
+			this.loadBarCode( item, pgcPage );
+			this.loadAttach( item, pgcPage );
+			this.getExportFields( item, pgcPage );
 		}
 		catch ( Exception e ) {
 			e.printStackTrace( );
@@ -516,13 +544,13 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
 	private void loadAttach( AnotoResultList item, PgcPage pgcPage ) throws ApplicationException
 	{
-		List<PgcAttachment> attachs = pgcAttachmentSession.get( pgcPage.getPgc( ).getId( ) );
+		List<PgcAttachment> attachs = this.pgcAttachmentSession.get( pgcPage.getPgc( ).getId( ) );
 		item.setAttach( SysUtils.isEmpty( attachs ) == false );
 	}
 
 	private void loadUserData( AnotoResultList item ) throws ApplicationException
 	{
-		AnotoPenUser penUser = penUserSession.getUser( item.getPen( ).getId( ), item.getPgcPage( ).getPgc( ).getInsertDate( ) );
+		AnotoPenUser penUser = this.penUserSession.getUser( item.getPen( ).getId( ), item.getPgcPage( ).getPgc( ).getInsertDate( ) );
 		if ( penUser != null ) {
 			item.setUserName( penUser.getPerson( ).getName( ) );
 			if ( SysUtils.isEmpty( penUser.getPerson( ).getDocuments( ) ) == false ) {
@@ -539,7 +567,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 
 	private void loadBarCode( AnotoResultList item, PgcPage pgcPage ) throws ApplicationException
 	{
-		List<PgcPageAttachment> list = pgcPageAttachmentSession.getAll( pgcPage );
+		List<PgcPageAttachment> list = this.pgcPageAttachmentSession.getAll( pgcPage );
 		if ( SysUtils.isEmpty( list ) == false ) {
 			for ( PgcPageAttachment attach : list ) {
 				if ( attach.getType( ).equals( PgcAttachmentDTO.typeBarCode ) ) {
@@ -555,9 +583,9 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 		AnotoPenPage item;
 
 		for ( AnotoPage page : pages ) {
-			item = penPageSession.get( page, pen );
+			item = this.penPageSession.get( page, pen );
 			if ( item != null ) {
-				pgcSession.attach( pgc, item );
+				this.pgcSession.attach( pgc, item );
 			}
 		}
 		return true;
@@ -566,95 +594,99 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 	@Override
 	public List<AnotoPenPageDTO> getPenPages( AuthenticationDTO auth, AnotoPageDTO page ) throws ApplicationException
 	{
-		authenticate( auth );
-		List<AnotoPenPage> list = pgcSession.get( getPageEntity( page ) );
+		this.authenticate( auth );
+		List<AnotoPenPage> list = this.pgcSession.get( this.getPageEntity( page ) );
 		return AnotoUtils.toPenPageList( list );
 	}
 
 	@Override
 	public void delete( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException
 	{
-		authenticate( auth );
-		Pgc entity = pgcSession.get( pgc.getId( ) );
+		this.authenticate( auth );
+		Pgc entity = this.pgcSession.get( pgc.getId( ) );
 		if ( entity != null ) {
-			pgcPenPageSession.delete( entity );
-			pgcSession.delete( pgc.getId( ) );
+			this.pgcPenPageSession.delete( entity );
+			this.pgcSession.delete( pgc.getId( ) );
 		}
 	}
 
 	@Override
 	public List<MediaDTO> getImages( PgcPageDTO page ) throws ApplicationException
 	{
-		return AnotoUtils.toMediaList( pgcSession.getImages( PgcPageUtil.createEntity( page ) ) );
+		return AnotoUtils.toMediaList( this.pgcSession.getImages( PgcPageUtil.createEntity( page ) ) );
 	}
 
 	@Override
 	public List<PgcFieldDTO> getFields( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
 	{
-		authenticate( auth );
-		List<PgcField> fields = pgcSession.getFields( PgcPageUtil.createEntity( page ) );
-		if ( SysUtils.isEmpty( fields ) )
+		this.authenticate( auth );
+		List<PgcField> fields = this.pgcSession.getFields( PgcPageUtil.createEntity( page ) );
+		if ( SysUtils.isEmpty( fields ) ) {
 			return Collections.emptyList( );
+		}
 		return AnotoUtils.toPgcFieldList( fields );
 	}
 
 	@Override
 	public void update( AuthenticationDTO auth, PgcFieldDTO field ) throws ApplicationException
 	{
-		authenticate( auth );
-		PgcField pgcField = pgcFieldSession.get( new PgcFieldPK( field ) );
+		this.authenticate( auth );
+		PgcField pgcField = this.pgcFieldSession.get( new PgcFieldPK( field ) );
 		if ( pgcField != null ) {
 			PgcFieldUtil.update( pgcField, field );
-			pgcFieldSession.update( pgcField );
+			this.pgcFieldSession.update( pgcField );
 		}
 		else {
 			pgcField = PgcFieldUtil.createEntity( field );
-			pgcFieldSession.add( pgcField );
+			this.pgcFieldSession.add( pgcField );
 		}
 	}
 
 	@Override
 	public Integer remove( AuthenticationDTO auth, AnotoResultList item ) throws ApplicationException
 	{
-		authenticate( auth );
-		return pgcSession.remove( item );
+		this.authenticate( auth );
+		return this.pgcSession.remove( item );
 	}
 
 	@Override
 	public List<PgcAttachmentDTO> getAttachments( AuthenticationDTO auth, PgcPageDTO page ) throws ApplicationException
 	{
-		authenticate( auth );
-		return AnotoUtils.toPgcAttachmentList( pgcSession.getAttachments( PgcPageUtil.createEntity( page ) ) );
+		this.authenticate( auth );
+		return AnotoUtils.toPgcAttachmentList( this.pgcSession.getAttachments( PgcPageUtil.createEntity( page ) ) );
 	}
 
 	@Override
 	public List<MediaDTO> getAttachments( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException
 	{
-		authenticate( auth );
-		Pgc entity = pgcSession.get( pgc.getId( ) );
+		this.authenticate( auth );
+		Pgc entity = this.pgcSession.get( pgc.getId( ) );
 		if ( entity != null ) {
-			List<PgcAttachment> attachments = pgcSession.getAttachments( entity );
-			if ( SysUtils.isEmpty( attachments ) )
+			List<PgcAttachment> attachments = this.pgcSession.getAttachments( entity );
+			if ( SysUtils.isEmpty( attachments ) ) {
 				return Collections.emptyList( );
+			}
 			List<MediaDTO> medias = new ArrayList<MediaDTO>( attachments.size( ) );
 			for ( PgcAttachment a : attachments ) {
-				medias.add( mediaSession.get( a.getMediaId( ) ).toDTO( ) );
+				medias.add( this.mediaSession.get( a.getMediaId( ) ).toDTO( ) );
 			}
 			return medias;
 		}
-		else
+		else {
 			return Collections.emptyList( );
+		}
 	}
 
 	@Override
 	public List<PgcPropertyDTO> getProperties( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException
 	{
-		authenticate( auth );
-		Pgc entity = pgcSession.get( pgc.getId( ) );
+		this.authenticate( auth );
+		Pgc entity = this.pgcSession.get( pgc.getId( ) );
 		if ( entity != null ) {
-			List<PgcProperty> attachments = pgcSession.getProperties( entity );
-			if ( SysUtils.isEmpty( attachments ) )
+			List<PgcProperty> attachments = this.pgcSession.getProperties( entity );
+			if ( SysUtils.isEmpty( attachments ) ) {
 				return Collections.emptyList( );
+			}
 			List<PgcPropertyDTO> list = new ArrayList<PgcPropertyDTO>( attachments.size( ) );
 			for ( PgcProperty a : attachments ) {
 				PgcPropertyDTO dto = new PgcPropertyDTO( );
@@ -664,19 +696,21 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 			}
 			return list;
 		}
-		else
+		else {
 			return Collections.emptyList( );
+		}
 	}
 
 	@Override
 	public List<PgcPropertyDTO> getGPS( AuthenticationDTO auth, PGCDTO pgc ) throws ApplicationException
 	{
-		authenticate( auth );
-		Pgc entity = pgcSession.get( pgc.getId( ) );
+		this.authenticate( auth );
+		Pgc entity = this.pgcSession.get( pgc.getId( ) );
 		if ( entity != null ) {
-			List<PgcProperty> attachments = pgcSession.getGPS( entity );
-			if ( SysUtils.isEmpty( attachments ) )
+			List<PgcProperty> attachments = this.pgcSession.getGPS( entity );
+			if ( SysUtils.isEmpty( attachments ) ) {
 				return Collections.emptyList( );
+			}
 			List<PgcPropertyDTO> list = new ArrayList<PgcPropertyDTO>( attachments.size( ) );
 			for ( PgcProperty a : attachments ) {
 				PgcPropertyDTO dto = new PgcPropertyDTO( );
@@ -686,96 +720,103 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 			}
 			return list;
 		}
-		else
+		else {
 			return Collections.emptyList( );
+		}
 	}
 
 	@Override
 	public void addToPage( AuthenticationDTO auth, PadDTO padDTO, String pageAddress, List<AnotoPageFieldDTO> fields ) throws ApplicationException
 	{
-		authenticate( auth );
-		AnotoPage page = padSession.getPage( new AnotoPagePK( pageAddress, padDTO.getForm( ).getId( ), padDTO.getId( ) ) );
-		if ( page == null )
+		this.authenticate( auth );
+		AnotoPage page = this.padSession.getPage( new AnotoPagePK( pageAddress, padDTO.getForm( ).getId( ), padDTO.getId( ) ) );
+		if ( page == null ) {
 			return;
-		padSession.add( page, fields );
+		}
+		this.padSession.add( page, fields );
 	}
 
 	@Override
 	public List<FieldTypeDTO> getFieldTypes( AuthenticationDTO auth ) throws ApplicationException
 	{
-		authenticate( auth );
-		return fieldTypeSession.toDTOList( fieldTypeSession.getAll( ) );
+		this.authenticate( auth );
+		return this.fieldTypeSession.toDTOList( this.fieldTypeSession.getAll( ) );
 	}
 
 	@Override
 	public void addFields( AuthenticationDTO auth, List<AnotoPageFieldDTO> fields ) throws ApplicationException
 	{
-		authenticate( auth );
-		if ( SysUtils.isEmpty( fields ) )
+		this.authenticate( auth );
+		if ( SysUtils.isEmpty( fields ) ) {
 			return;
+		}
 		List<AnotoPageField> list = AnotoUtils.toAnotoPageField( fields );
-		AnotoPage page = getAnotoPage( fields.get( 0 ).getPage( ) );
-		pageFieldSession.add( page, list );
+		AnotoPage page = this.getAnotoPage( fields.get( 0 ).getPage( ) );
+		this.pageFieldSession.add( page, list );
 	}
 
 	@Override
 	public void refreshFields( AuthenticationDTO auth, List<AnotoPageFieldDTO> fields ) throws ApplicationException
 	{
-		authenticate( auth );
-		if ( SysUtils.isEmpty( fields ) )
+		this.authenticate( auth );
+		if ( SysUtils.isEmpty( fields ) ) {
 			return;
+		}
 
-		AnotoPage page = getAnotoPage( fields.get( 0 ).getPage( ) );
+		AnotoPage page = this.getAnotoPage( fields.get( 0 ).getPage( ) );
 		if ( page != null ) {
 			List<AnotoPageField> list = AnotoUtils.toAnotoPageField( fields );
-			pageFieldSession.refresh( page, list );
+			this.pageFieldSession.refresh( page, list );
 		}
 	}
 
 	protected AnotoPage getAnotoPage( AnotoPageDTO dto )
 	{
-		AnotoPage page = getEntityManager( ).find( AnotoPage.class, new AnotoPagePK( dto ) );
+		AnotoPage page = this.getEntityManager( ).find( AnotoPage.class, new AnotoPagePK( dto ) );
 		return page;
 	}
 
 	@Override
 	public List<AnotoPageFieldDTO> getFields( AuthenticationDTO auth, AnotoPageDTO anotoPage ) throws ApplicationException
 	{
-		authenticate( auth );
-		AnotoPage page = getAnotoPage( anotoPage );
-		if ( page == null )
+		this.authenticate( auth );
+		AnotoPage page = this.getAnotoPage( anotoPage );
+		if ( page == null ) {
 			return Collections.emptyList( );
-		return AnotoUtils.toAnotoPageFieldDTO( pageFieldSession.getAll( page ) );
+		}
+		return AnotoUtils.toAnotoPageFieldDTO( this.pageFieldSession.getAll( page ) );
 	}
 
 	@Override
 	public void update( AuthenticationDTO auth, AnotoPageFieldDTO dto ) throws ApplicationException
 	{
-		authenticate( auth );
+		this.authenticate( auth );
 		AnotoPageField entity = DTOFactory.copy( dto );
-		pageFieldSession.update( entity );
+		this.pageFieldSession.update( entity );
 	}
 
 	@Override
 	public void update( AuthenticationDTO auth, AnotoPageDTO anotoPage ) throws ApplicationException
 	{
-		authenticate( auth );
+		this.authenticate( auth );
 
 		AnotoPage page = AnotoPageUtil.createEntity( anotoPage );
-		padSession.update( page );
+		this.padSession.update( page );
 	}
 
 	@Override
 	public byte[ ] getPDFTemplate( AuthenticationDTO auth, FormDTO form ) throws ApplicationException
 	{
-		authenticate( auth );
+		this.authenticate( auth );
 
-		AnotoForm eForm = formSession.get( form.getId( ) );
-		if ( eForm == null )
+		AnotoForm eForm = this.formSession.get( form.getId( ) );
+		if ( eForm == null ) {
 			return null;
-		FormMedia formMedia = formMediaSession.getPDFTemplate( eForm );
-		if ( formMedia == null )
+		}
+		FormMedia formMedia = this.formMediaSession.getPDFTemplate( eForm );
+		if ( formMedia == null ) {
 			return null;
-		return mediaSession.getObject( formMedia.getMediaId( ) );
+		}
+		return this.mediaSession.getObject( formMedia.getMediaId( ) );
 	}
 }

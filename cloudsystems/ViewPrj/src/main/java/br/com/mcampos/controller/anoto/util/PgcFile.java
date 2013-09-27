@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.zk.ui.event.UploadEvent;
 
-import br.com.mcampos.controller.UploadPGC;
 import br.com.mcampos.controller.anoto.util.icr.IcrField;
 import br.com.mcampos.dto.ApplicationException;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
@@ -56,7 +55,7 @@ import com.anoto.api.RendererFactory;
 public class PgcFile implements Serializable, Runnable
 {
 	private static final long serialVersionUID = 6976380697956677391L;
-	private static final Logger LOGGER = LoggerFactory.getLogger( UploadPGC.class.getSimpleName( ) );
+	private static final Logger LOGGER = LoggerFactory.getLogger( PgcFile.class.getSimpleName( ) );
 	private static final short KEY_LOCATION_COORDINATES = 16386;
 
 	private String imageFileTypeExtension = "jpg";
@@ -155,7 +154,6 @@ public class PgcFile implements Serializable, Runnable
 		}
 		catch ( Exception e ) {
 			LOGGER.error( "Create Media" + media, e );
-			System.out.println( e.getMessage( ) );
 			return null;
 		}
 	}
@@ -197,7 +195,7 @@ public class PgcFile implements Serializable, Runnable
 				if ( obj != null ) {
 					PgcPropertyDTO p = new PgcPropertyDTO( );
 					p.setId( obj );
-					System.out.println( "Propriedade: " + obj );
+					LOGGER.info( "Propriedade: " + obj );
 					String[ ] values = this.getCurrentPen( ).getProperty( obj );
 					if ( values != null && values.length > 0 ) {
 						for ( String v : values ) {
@@ -404,7 +402,7 @@ public class PgcFile implements Serializable, Runnable
 			}
 		}
 		catch ( Exception e ) {
-			System.out.println( e.getMessage( ) );
+			LOGGER.error( "Exception on addAnotoImages basePath" + basePath + " nBookIndex: " + nBookIndex + " nPageIndex: " + nPageIndex, e );
 			e = null;
 		}
 
@@ -496,7 +494,7 @@ public class PgcFile implements Serializable, Runnable
 			// icrFields = ICRObject.processImage( template, icrImage, A2iaDocument.typeJPEG );
 		}
 		catch ( Exception e ) {
-			System.out.println( e.getMessage( ) );
+			LOGGER.info( "processIcr", e );
 			icrFields = null;
 		}
 		if ( pgcPenPage.getForm( ).getIcrImage( ) == false ) {
@@ -519,7 +517,7 @@ public class PgcFile implements Serializable, Runnable
 			while ( it != null && it.hasNext( ) ) {
 				Attachment obj = (Attachment) it.next( );
 				dto = new PgcAttachmentDTO( pgcPage );
-				System.out.println( "O pgc recebido possui anexos. Tipo " + obj.getType( ) );
+				LOGGER.info( "O pgc recebido possui anexos. Tipo " + obj.getType( ) );
 				if ( obj.getType( ) == Attachment.ATTACHMENT_TYPE_BARCODE ) {
 					dto.setType( 1 );
 					byte[ ] barCodeData = obj.getData( );
@@ -596,9 +594,7 @@ public class PgcFile implements Serializable, Runnable
 					fieldIndex++;
 				}
 				catch ( Exception e ) {
-					System.out.println( "Erro em update Fields" );
-					System.out.println( e.getMessage( ) );
-					e.printStackTrace( );
+					LOGGER.error( "Erro em update Fields", e );
 				}
 			}
 			if ( icrFields != null ) {
@@ -620,10 +616,16 @@ public class PgcFile implements Serializable, Runnable
 	private void getFieldImage( String basePath, PageArea pageArea, PgcFieldDTO fieldDTO ) throws RenderException,
 			NotAllowedException
 	{
-		Renderer renderer;
+		Renderer renderer = null;
 		String path;
 
-		renderer = RendererFactory.create( pageArea );
+		try {
+			LOGGER.info( "Rendering" );
+			renderer = RendererFactory.create( pageArea );
+		}
+		catch ( Exception e ) {
+			LOGGER.error( "RendererFactory.create( pageArea );", e );
+		}
 		path = basePath + "/" + "field." + this.getImageFileTypeExtension( );
 		renderer.renderToFile( path, 200 );
 		MediaDTO media = this.createMedia( path );
@@ -780,7 +782,7 @@ public class PgcFile implements Serializable, Runnable
 			it = this.getCurrentPen( ).getLogicalBooks( );
 		}
 		catch ( Exception e ) {
-			System.out.println( e.getMessage( ) );
+			LOGGER.error( "getBook", e );
 			return null;
 		}
 		while ( it != null && it.hasNext( ) && nIndex >= 0 ) {
@@ -825,7 +827,7 @@ public class PgcFile implements Serializable, Runnable
 			it = this.getCurrentPen( ).getPages( );
 		}
 		catch ( PageException e ) {
-			System.out.println( e.getMessage( ) );
+			LOGGER.error( "getPage", e );
 			return null;
 		}
 		while ( it != null && it.hasNext( ) && nIndex >= 0 ) {
