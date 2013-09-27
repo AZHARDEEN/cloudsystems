@@ -40,10 +40,10 @@ public abstract class CoordinatorGradeController extends BaseController<Window>
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		getCmdInepSave( ).setVisible( false );
-		getCmdCancel( ).setVisible( false );
-		sv6.setSelectedItem( null );
-		for ( Radio r : options ) {
+		this.getCmdInepSave( ).setVisible( false );
+		this.getCmdCancel( ).setVisible( false );
+		this.sv6.setSelectedItem( null );
+		for ( Radio r : this.options ) {
 			r.setDisabled( true );
 		}
 		EventQueues.lookup( TasksController.coordinatorEvent ).subscribe( new EventListener<Event>( )
@@ -53,7 +53,7 @@ public abstract class CoordinatorGradeController extends BaseController<Window>
 			{
 				if ( evt instanceof CoordinatorEventChange ) {
 					try {
-						onNotify( (CoordinatorEventChange) evt );
+						CoordinatorGradeController.this.onNotify( (CoordinatorEventChange) evt );
 					}
 					catch ( ApplicationException e ) {
 						e.printStackTrace( );
@@ -67,12 +67,12 @@ public abstract class CoordinatorGradeController extends BaseController<Window>
 
 	private Button getCmdInepSave( )
 	{
-		return cmdInepSave;
+		return this.cmdInepSave;
 	}
 
 	private Button getCmdCancel( )
 	{
-		return cmdCancel;
+		return this.cmdCancel;
 	}
 
 	public void onNotify( CoordinatorEventChange evt ) throws ApplicationException
@@ -84,7 +84,7 @@ public abstract class CoordinatorGradeController extends BaseController<Window>
 			if ( grade.getNota( ) == null ) {
 				continue;
 			}
-			showGrade( nIndex++, grade );
+			this.showGrade( nIndex++, grade );
 		}
 	}
 
@@ -93,20 +93,20 @@ public abstract class CoordinatorGradeController extends BaseController<Window>
 		if ( d == null || d.getNota( ) == null ) {
 			return;
 		}
-		sv6.setSelectedIndex( d.getNota( ) );
-		for ( Radio r : options ) {
+		this.sv6.setSelectedIndex( d.getNota( ) );
+		for ( Radio r : this.options ) {
 			r.setDisabled( true );
 			r.setSclass( "" );
 		}
 		if ( d.getNota( ) != null ) {
-			options[ d.getNota( ) ].setSclass( "strongRadio" );
+			this.options[ d.getNota( ) ].setSclass( "strongRadio" );
 		}
-		setCurrent( d );
+		this.setCurrent( d );
 	}
 
 	protected InepDistribution getCurrent( )
 	{
-		return current;
+		return this.current;
 	}
 
 	protected void setCurrent( InepDistribution current )

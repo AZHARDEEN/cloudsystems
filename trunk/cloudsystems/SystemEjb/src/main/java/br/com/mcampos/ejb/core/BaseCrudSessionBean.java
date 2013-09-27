@@ -16,7 +16,10 @@ import br.com.mcampos.sysutils.SysUtils;
 
 public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implements BaseCrudSessionInterface<T>
 {
-	private static final long serialVersionUID = -4445328200543388877L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1598463542802104703L;
 	@EJB
 	private SystemParameterSessionLocal property;
 
@@ -28,11 +31,11 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 			if ( newEntity == null ) {
 				return null;
 			}
-			T merged = getEntityManager( ).merge( newEntity );
+			T merged = this.getEntityManager( ).merge( newEntity );
 			return merged;
 		}
 		catch ( Exception e ) {
-			storeException( e );
+			this.storeException( e );
 			throw e;
 		}
 	}
@@ -40,11 +43,11 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 	public T merge( @NotNull PrincipalDTO auth, @NotNull T newEntity )
 	{
 		try {
-			T merged = getEntityManager( ).merge( newEntity );
+			T merged = this.getEntityManager( ).merge( newEntity );
 			return merged;
 		}
 		catch ( Exception e ) {
-			storeException( e );
+			this.storeException( e );
 			throw e;
 		}
 	}
@@ -52,14 +55,14 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 	@Override
 	public T update( @NotNull PrincipalDTO auth, @NotNull T newEntity )
 	{
-		return merge( auth, newEntity );
+		return this.merge( auth, newEntity );
 	}
 
 	@Override
 	public T updateAndRefresh( @NotNull PrincipalDTO auth, @NotNull T newEntity )
 	{
-		T merged = merge( auth, newEntity );
-		refresh( merged );
+		T merged = this.merge( auth, newEntity );
+		this.refresh( merged );
 		return merged;
 	}
 
@@ -69,12 +72,21 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 		/*
 		 * Do not call this class persist, please!
 		 */
+		return this.add( newEntity );
+	}
+
+	@Override
+	public T add( @NotNull T newEntity )
+	{
+		/*
+		 * Do not call this class persist, please!
+		 */
 		try {
-			getEntityManager( ).persist( newEntity );
+			this.getEntityManager( ).persist( newEntity );
 			return newEntity;
 		}
 		catch ( Exception e ) {
-			storeException( e );
+			this.storeException( e );
 			throw e;
 		}
 	}
@@ -85,8 +97,8 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 		if ( newEntity == null ) {
 			return null;
 		}
-		add( auth, newEntity );
-		refresh( newEntity );
+		this.add( auth, newEntity );
+		this.refresh( newEntity );
 		return newEntity;
 	}
 
@@ -97,7 +109,7 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 		if ( newEntity == null ) {
 			return null;
 		}
-		return merge( newEntity );
+		return this.merge( newEntity );
 	}
 
 	@Override
@@ -107,7 +119,7 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 		if ( SysUtils.isEmpty( entities ) == false ) {
 			merged = new ArrayList<T>( entities.size( ) );
 			for ( T item : entities ) {
-				merged.add( merge( item ) );
+				merged.add( this.merge( item ) );
 			}
 		}
 		return merged;
@@ -117,16 +129,17 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 	public T remove( @NotNull PrincipalDTO auth, @NotNull Serializable key )
 	{
 		try {
-			T removed = get( key );
+			T removed = this.get( key );
 			if ( removed != null ) {
-				getEntityManager( ).remove( removed );
+				this.getEntityManager( ).remove( removed );
 				return removed;
 			}
-			else
+			else {
 				return null;
+			}
 		}
 		catch ( Exception e ) {
-			storeException( e );
+			this.storeException( e );
 			throw e;
 		}
 	}
@@ -138,12 +151,12 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 			if ( entity == null ) {
 				return null;
 			}
-			getEntityManager( ).flush( );
-			getEntityManager( ).refresh( entity );
+			this.getEntityManager( ).flush( );
+			this.getEntityManager( ).refresh( entity );
 			return entity;
 		}
 		catch ( Exception e ) {
-			storeException( e );
+			this.storeException( e );
 			throw e;
 		}
 	}
@@ -160,7 +173,7 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 			for ( T item : entities ) {
 				if ( item instanceof BaseEntity ) {
 					BaseEntity baseEntity = (BaseEntity) item;
-					remove( auth, baseEntity.getId( ) );
+					this.remove( auth, baseEntity.getId( ) );
 				}
 				else {
 					throw new ClassCastException( item.getClass( ).getSimpleName( ) + " is not an instance of BaseEntity " );
@@ -168,7 +181,7 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 			}
 		}
 		catch ( Exception e ) {
-			storeException( e );
+			this.storeException( e );
 			throw e;
 		}
 	}

@@ -23,16 +23,17 @@ import br.com.mcampos.jpa.BasicEntityRenderer;
 @Table( name = "inep_package", schema = "inep" )
 @NamedQueries(
 {
-		@NamedQuery(
-				name = InepEvent.getAll, query = "select o from InepEvent o where o.company = ?1 " ),
-		@NamedQuery(
-				name = InepEvent.getAllAvailable, query = "select o from InepEvent o where ( o.endDate is null or o.endDate >= CURRENT_TIMESTAMP )" )
+		@NamedQuery( name = InepEvent.getAll, query = "select o from InepEvent o where o.company = ?1 " ),
+		@NamedQuery( name = InepEvent.getAllAvailable, query = "select o from InepEvent o where ( o.endDate is null or o.endDate >= CURRENT_TIMESTAMP )" ),
+		@NamedQuery( name = InepEvent.getAvailable, query = "select o from InepEvent o where o.company = ?1 and "
+				+ "( o.endDate is null or o.endDate >= CURRENT_TIMESTAMP )" )
 } )
 public class InepEvent extends BaseCompanyEntity implements Serializable, Comparable<InepEvent>, BasicEntityRenderer<InepEvent>
 {
 	private static final long serialVersionUID = 1L;
 	public static final String getAll = "InepEvent.getAll";
 	public static final String getAllAvailable = "InepEvent.getAllAvailable";
+	public static final String getAvailable = "InepEvent.getAvailable";
 
 	@EmbeddedId
 	private InepEventPK id;
@@ -55,10 +56,10 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 	@Override
 	public InepEventPK getId( )
 	{
-		if ( id == null ) {
-			id = new InepEventPK( );
+		if ( this.id == null ) {
+			this.id = new InepEventPK( );
 		}
-		return id;
+		return this.id;
 	}
 
 	public void setId( InepEventPK id )
@@ -68,12 +69,12 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 
 	public String getDescription( )
 	{
-		return description;
+		return this.description;
 	}
 
 	public void setDescription( String pctCodeCh )
 	{
-		description = pctCodeCh;
+		this.description = pctCodeCh;
 	}
 
 	@Override
@@ -81,9 +82,9 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 	{
 		switch ( field ) {
 		case 0:
-			return getId( ).getId( ).compareTo( object.getId( ).getId( ) );
+			return this.getId( ).getId( ).compareTo( object.getId( ).getId( ) );
 		case 1:
-			return getDescription( ).compareTo( object.getDescription( ) );
+			return this.getDescription( ).compareTo( object.getDescription( ) );
 		default:
 			return 0;
 		}
@@ -92,13 +93,13 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 	@Override
 	public boolean equals( Object obj )
 	{
-		return getId( ).equals( ( (InepEvent) obj ).getId( ) );
+		return this.getId( ).equals( ( (InepEvent) obj ).getId( ) );
 	}
 
 	@Override
 	public int compareTo( InepEvent o )
 	{
-		return getId( ).compareTo( o.getId( ) );
+		return this.getId( ).compareTo( o.getId( ) );
 	}
 
 	@Override
@@ -106,9 +107,9 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 	{
 		switch ( field ) {
 		case 0:
-			return getId( ).getId( ).toString( );
+			return this.getId( ).getId( ).toString( );
 		case 1:
-			return getDescription( );
+			return this.getDescription( );
 		default:
 			return "";
 		}
@@ -116,7 +117,7 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 
 	public Date getInitDate( )
 	{
-		return initDate;
+		return this.initDate;
 	}
 
 	public void setInitDate( Date initDate )
@@ -126,7 +127,7 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 
 	public Date getEndDate( )
 	{
-		return endDate;
+		return this.endDate;
 	}
 
 	public void setEndDate( Date endDate )

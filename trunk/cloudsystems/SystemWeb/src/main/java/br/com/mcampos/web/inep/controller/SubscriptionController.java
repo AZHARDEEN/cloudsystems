@@ -42,13 +42,13 @@ public class SubscriptionController extends BaseDBListController<InepSubscriptio
 	@Override
 	protected void showFields( InepSubscription entity )
 	{
-		for ( int nIndex = 0; nIndex < getInfoLabels( ).size( ); nIndex++ ) {
-			getInfoLabels( ).get( nIndex ).setValue( entity != null ? entity.getField( nIndex ) : "" );
+		for ( int nIndex = 0; nIndex < this.getInfoLabels( ).size( ); nIndex++ ) {
+			this.getInfoLabels( ).get( nIndex ).setValue( entity != null ? entity.getField( nIndex ) : "" );
 		}
 		for ( int nIndex = 0; nIndex < this.inputs.size( ); nIndex++ ) {
 			DBWidget input = this.inputs.get( nIndex );
 			input.setText( entity != null ? entity.getField( nIndex ) : "" );
-			if ( getStatus( ).equals( statusUpdate ) ) {
+			if ( this.getStatus( ).equals( statusUpdate ) ) {
 				if ( input.isPrimaryKey( ) ) {
 					input.setDisabled( entity != null );
 				}
@@ -62,7 +62,7 @@ public class SubscriptionController extends BaseDBListController<InepSubscriptio
 		for ( DBWidget input : this.inputs ) {
 			entity.getId( ).setId( input.getText( ) );
 		}
-		InepEvent event = (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( );
+		InepEvent event = (InepEvent) this.getComboEvent( ).getSelectedItem( ).getValue( );
 		entity.getId( ).set( event );
 	}
 
@@ -76,7 +76,7 @@ public class SubscriptionController extends BaseDBListController<InepSubscriptio
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		loadCombobox( );
+		this.loadCombobox( );
 	}
 
 	public Combobox getComboEvent( )
@@ -86,25 +86,25 @@ public class SubscriptionController extends BaseDBListController<InepSubscriptio
 
 	private void loadCombobox( )
 	{
-		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = this.getSession( ).getEvents( this.getPrincipal( ) );
 
-		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) ) {
-			getComboEvent( ).getItems( ).clear( );
+		if ( SysUtils.isEmpty( this.getComboEvent( ).getItems( ) ) ) {
+			this.getComboEvent( ).getItems( ).clear( );
 		}
 		for ( InepEvent e : events ) {
-			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
+			Comboitem item = this.getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
-		if ( getComboEvent( ).getItemCount( ) > 0 ) {
-			getComboEvent( ).setSelectedIndex( 0 );
+		if ( this.getComboEvent( ).getItemCount( ) > 0 ) {
+			this.getComboEvent( ).setSelectedIndex( 0 );
 		}
 	}
 
 	@Listen( "onSelect = #comboEvent" )
 	public void onSelectEvent( Event evt )
 	{
-		Comboitem item = getComboEvent( ).getSelectedItem( );
-		getListbox( ).setModel( new ListModelList<InepSubscription>( getSession( ).getAll( (InepEvent) item.getValue( ) ) ) );
+		Comboitem item = this.getComboEvent( ).getSelectedItem( );
+		this.getListbox( ).setModel( new ListModelList<InepSubscription>( this.getSession( ).getAll( (InepEvent) item.getValue( ) ) ) );
 		evt.stopPropagation( );
 	}
 

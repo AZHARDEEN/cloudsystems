@@ -46,21 +46,25 @@ public class OralRevisorController extends BaseOralController
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		setRadio( );
-		if ( getRevisor( ) != null ) {
-			if ( getRevisor( ).isCoordenador( ) )
-				getListbox( ).setItemRenderer( new InepOralDistributionCoordinatoListRenderer( ) );
-			else
-				getListbox( ).setItemRenderer( new InepOralDistributionListRenderer( ) );
+		this.setRadio( );
+		if ( this.getRevisor( ) != null ) {
+			if ( this.getRevisor( ).isCoordenador( ) ) {
+				this.getListbox( ).setItemRenderer( new InepOralDistributionCoordinatoListRenderer( ) );
+			}
+			else {
+				this.getListbox( ).setItemRenderer( new InepOralDistributionListRenderer( ) );
+			}
 		}
 	}
 
 	private void setRadio( )
 	{
-		if ( rdVoid != null )
-			rdVoid.setVisible( false );
-		if ( rdBlank != null )
-			rdBlank.setVisible( false );
+		if ( this.rdVoid != null ) {
+			this.rdVoid.setVisible( false );
+		}
+		if ( this.rdBlank != null ) {
+			this.rdBlank.setVisible( false );
+		}
 	}
 
 	@Override
@@ -68,12 +72,12 @@ public class OralRevisorController extends BaseOralController
 	public void onSelectPackage( Event evt )
 	{
 		List<InepOralDistribution> list = Collections.emptyList( );
-		InepEvent item = getCurrentEvent( );
+		InepEvent item = this.getCurrentEvent( );
 		if ( item != null ) {
-			resetRevisor( );
-			list = getSession( ).getOralTests( getRevisor( ) );
+			this.resetRevisor( );
+			list = this.getSession( ).getOralTests( this.getRevisor( ) );
 		}
-		setModel( list );
+		this.setModel( list );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -85,45 +89,46 @@ public class OralRevisorController extends BaseOralController
 		ListModelList model = new ListModelList<InepOralDistribution>( list );
 
 		model.setMultiple( true );
-		getListbox( ).setModel( model );
+		this.getListbox( ).setModel( model );
 	}
 
 	@SuppressWarnings( "unchecked" )
 	private ListModelList<InepOralDistribution> getModel( )
 	{
-		return (ListModelList<InepOralDistribution>) ( (Object) getListbox( ).getModel( ) );
+		return (ListModelList<InepOralDistribution>) ( (Object) this.getListbox( ).getModel( ) );
 	}
 
 	private Listbox getListbox( )
 	{
-		return listbox;
+		return this.listbox;
 	}
 
 	@Listen( "onClick=#cmdInepSave" )
 	public void onSave( MouseEvent evt )
 	{
-		if ( evt != null )
+		if ( evt != null ) {
 			evt.stopPropagation( );
-		Set<InepOralDistribution> items = getModel( ).getSelection( );
+		}
+		Set<InepOralDistribution> items = this.getModel( ).getSelection( );
 		if ( SysUtils.isEmpty( items ) || items.size( ) > 1 ) {
 			Messagebox.show( "Por favor, escolha um item da lista antes de salvar a nota", "Nota da Prova Oral", Messagebox.OK, Messagebox.EXCLAMATION );
 			return;
 		}
-		int nota = getNotas( ).getSelectedIndex( );
+		int nota = this.getNotas( ).getSelectedIndex( );
 		if ( nota < 0 ) {
 			Messagebox.show( "Por favor, escolha a sua nota da prova entre as opções de 0 a 5", "Nota da Prova Oral", Messagebox.OK,
 					Messagebox.EXCLAMATION );
 			return;
 		}
 		for ( InepOralDistribution item : items ) {
-			getSession( ).updateGrade( item, nota );
+			this.getSession( ).updateGrade( item, nota );
 		}
-		getModel( ).removeAll( items );
-		getNotas( ).setSelectedItem( null );
+		this.getModel( ).removeAll( items );
+		this.getNotas( ).setSelectedItem( null );
 	}
 
 	public Radiogroup getNotas( )
 	{
-		return notas;
+		return this.notas;
 	}
 }

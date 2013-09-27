@@ -55,40 +55,40 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	@Override
 	protected void showFields( InepEvent e )
 	{
-		if( e != null )
+		if ( e != null )
 		{
-			infoInitDate.setValue( SysUtils.formatDate( e.getInitDate( ) ) );
-			infoEndDate.setValue( SysUtils.formatDate( e.getEndDate( ) ) );
-			initDate.setValue( e.getInitDate( ) );
-			endDate.setValue( e.getEndDate( ) );
-			infoId.setValue( e.getId( ).getId( ).toString( ) );
-			infoDescription.setValue( e.getDescription( ) );
-			id.setValue( e.getId( ).getId( ) );
-			description.setValue( e.getDescription( ) );
+			this.infoInitDate.setValue( SysUtils.formatDate( e.getInitDate( ) ) );
+			this.infoEndDate.setValue( SysUtils.formatDate( e.getEndDate( ) ) );
+			this.initDate.setValue( e.getInitDate( ) );
+			this.endDate.setValue( e.getEndDate( ) );
+			this.infoId.setValue( e.getId( ).getId( ).toString( ) );
+			this.infoDescription.setValue( e.getDescription( ) );
+			this.id.setValue( e.getId( ).getId( ) );
+			this.description.setValue( e.getDescription( ) );
 		}
 		else
 		{
-			infoInitDate.setValue( "" );
-			infoEndDate.setValue( "" );
-			infoId.setValue( "" );
-			infoDescription.setValue( "" );
+			this.infoInitDate.setValue( "" );
+			this.infoEndDate.setValue( "" );
+			this.infoId.setValue( "" );
+			this.infoDescription.setValue( "" );
 
-			initDate.setValue( null );
-			endDate.setValue( new Date( ) );
-			id.setValue( getSession( ).getNextId( getPrincipal( ) ) );
-			description.setValue( "" );
-			description.setFocus( true );
+			this.initDate.setValue( null );
+			this.endDate.setValue( new Date( ) );
+			this.id.setValue( this.getSession( ).getNextId( this.getPrincipal( ) ) );
+			this.description.setValue( "" );
+			this.description.setFocus( true );
 		}
 	}
 
 	@Override
 	protected void updateTargetEntity( InepEvent target )
 	{
-		target.setEndDate( endDate.getValue( ) );
-		target.setInitDate( initDate.getValue( ) != null ? initDate.getValue( ) : new Date( ) );
-		target.getId( ).setCompanyId( getPrincipal( ).getCompanyID( ) );
-		target.getId( ).setId( id.getValue( ) );
-		target.setDescription( description.getValue( ) );
+		target.setEndDate( this.endDate.getValue( ) );
+		target.setInitDate( this.initDate.getValue( ) != null ? this.initDate.getValue( ) : new Date( ) );
+		target.getId( ).setCompanyId( this.getPrincipal( ).getCompanyID( ) );
+		target.getId( ).setId( this.id.getValue( ) );
+		target.setDescription( this.description.getValue( ) );
 	}
 
 	@Override
@@ -106,12 +106,12 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	@Override
 	protected Collection<InepEvent> getList( )
 	{
-		return getAll( 0 );
+		return this.getAll( 0 );
 	}
 
 	@Override
 	protected Collection<InepEvent> getAll( int activePage )
 	{
-		return getSession( ).getAll( getPrincipal( ), new DBPaging( activePage, ListboxParams.maxListBoxPageSize ) );
+		return this.getSession( ).getAll( this.getPrincipal( ), new DBPaging( activePage, ListboxParams.maxListBoxPageSize ) );
 	}
 }

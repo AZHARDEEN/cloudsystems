@@ -53,32 +53,32 @@ public class WorkStatusController extends BaseDBLoggedController<TeamSession>
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		loadCombobox( );
+		this.loadCombobox( );
 	}
 
 	private void loadCombobox( )
 	{
-		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = this.getSession( ).getEvents( this.getPrincipal( ) );
 
-		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) ) {
-			getComboEvent( ).getItems( ).clear( );
+		if ( SysUtils.isEmpty( this.getComboEvent( ).getItems( ) ) ) {
+			this.getComboEvent( ).getItems( ).clear( );
 		}
 		for ( InepEvent e : events ) {
-			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
+			Comboitem item = this.getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
-		if ( getComboEvent( ).getItemCount( ) > 0 ) {
-			getComboEvent( ).setSelectedIndex( 0 );
-			onSelectEvent( null );
+		if ( this.getComboEvent( ).getItemCount( ) > 0 ) {
+			this.getComboEvent( ).setSelectedIndex( 0 );
+			this.onSelectEvent( null );
 		}
 	}
 
 	@Listen( "onSelect = #comboEvent" )
 	public void onSelectEvent( Event evt )
 	{
-		Comboitem item = getComboEvent( ).getSelectedItem( );
+		Comboitem item = this.getComboEvent( ).getSelectedItem( );
 		if ( item != null && item.getValue( ) != null ) {
-			loadData( (InepEvent) item.getValue( ) );
+			this.loadData( (InepEvent) item.getValue( ) );
 		}
 		if ( evt != null ) {
 			evt.stopPropagation( );
@@ -93,7 +93,7 @@ public class WorkStatusController extends BaseDBLoggedController<TeamSession>
 		SimplePieModel model4 = new SimplePieModel( );
 		SimplePieModel model = new SimplePieModel( );
 
-		List<Object[ ]> list = getSession( ).getWorkStatus( event );
+		List<Object[ ]> list = this.getSession( ).getWorkStatus( event );
 		String desc;
 
 		for ( Object[ ] item : list ) {
@@ -101,7 +101,7 @@ public class WorkStatusController extends BaseDBLoggedController<TeamSession>
 			Integer status = (Integer) item[ 1 ];
 			Long value = (Long) item[ 2 ];
 
-			desc = getStatusDescription( status );
+			desc = this.getStatusDescription( status );
 			switch ( task ) {
 			case 1:
 				model1.setValue( desc, value );
@@ -124,30 +124,30 @@ public class WorkStatusController extends BaseDBLoggedController<TeamSession>
 				model.setValue( desc, n.longValue( ) + value );
 			}
 		}
-		chartTask1.setModel( model1 );
-		chartTask2.setModel( model2 );
-		chartTask3.setModel( model3 );
-		chartTask4.setModel( model4 );
-		chartEvent.setModel( model );
+		this.chartTask1.setModel( model1 );
+		this.chartTask2.setModel( model2 );
+		this.chartTask3.setModel( model3 );
+		this.chartTask4.setModel( model4 );
+		this.chartEvent.setModel( model );
 
-		list = getSession( ).getSubscriptionStatus( event );
+		list = this.getSession( ).getSubscriptionStatus( event );
 		if ( SysUtils.isEmpty( list ) == false ) {
 			Object[ ] item = list.get( 0 );
 			model = new SimplePieModel( );
 			model.setValue( "Total", (BigInteger) item[ 0 ] );
 			model.setValue( "Finalizadas", (BigInteger) item[ 1 ] );
-			chartSubscriptions.setModel( model );
-			chartSubscriptions.setVisible( true );
+			this.chartSubscriptions.setModel( model );
+			this.chartSubscriptions.setVisible( true );
 		}
 		else {
-			chartSubscriptions.setVisible( false );
+			this.chartSubscriptions.setVisible( false );
 		}
 
 	}
 
 	public Combobox getComboEvent( )
 	{
-		return comboEvent;
+		return this.comboEvent;
 	}
 
 	private String getStatusDescription( Integer status )

@@ -26,6 +26,8 @@ public interface BaseCrudSessionInterface<T> extends PagingSessionInterface<T>
 
 	public T add( @NotNull PrincipalDTO auth, @NotNull T newEntity );
 
+	public T add( @NotNull T newEntity );
+
 	public T updateAndRefresh( @NotNull PrincipalDTO auth, @NotNull T newEntity );
 
 	public T addAndRefresh( @NotNull PrincipalDTO auth, @NotNull T newEntity );

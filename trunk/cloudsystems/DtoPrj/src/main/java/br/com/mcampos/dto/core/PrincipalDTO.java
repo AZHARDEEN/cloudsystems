@@ -2,6 +2,11 @@ package br.com.mcampos.dto.core;
 
 import java.io.Serializable;
 
+/**
+ * Brief DTO para persistir na sessão qual o usuário logado no sistema. Junto com o usuário, está vinculado também a empresa do usuário Então é esperado
+ * que esta classe tenha ao menos usuário e empresa
+ * 
+ */
 public class PrincipalDTO implements Serializable
 {
 	private static final long serialVersionUID = 2357323473807507112L;
@@ -17,19 +22,19 @@ public class PrincipalDTO implements Serializable
 
 	public PrincipalDTO( Integer companyId, Integer userId, String name )
 	{
-		setCompanyID( companyId );
-		setUserId( userId );
+		this.setCompanyID( companyId );
+		this.setUserId( userId );
 	}
 
 	public PrincipalDTO( Integer userId, String name )
 	{
-		setUserId( userId );
-		setName( name );
+		this.setUserId( userId );
+		this.setName( name );
 	}
 
 	public Integer getUserId( )
 	{
-		return userId;
+		return this.userId;
 	}
 
 	public void setUserId( Integer userId )
@@ -39,7 +44,7 @@ public class PrincipalDTO implements Serializable
 
 	public Integer getCompanyID( )
 	{
-		return companyID;
+		return this.companyID;
 	}
 
 	public void setCompanyID( Integer companyID )
@@ -49,7 +54,7 @@ public class PrincipalDTO implements Serializable
 
 	public PrincipalDTO getPersonify( )
 	{
-		return personify;
+		return this.personify;
 	}
 
 	public void setPersonify( PrincipalDTO personify )
@@ -59,7 +64,7 @@ public class PrincipalDTO implements Serializable
 
 	public String getName( )
 	{
-		return name;
+		return this.name;
 	}
 
 	public void setName( String name )
@@ -70,21 +75,23 @@ public class PrincipalDTO implements Serializable
 	@Override
 	public String toString( )
 	{
-		if ( getUserId( ) != null && getName( ) != null )
-			return getUserId( ).toString( ) + " - " + getName( ).toString( );
-		else if ( getUserId( ) != null && getCompanyID( ) != null ) {
-			return "Company " + getCompanyID( ).toString( ) + " - User " + getUserId( ).toString( );
+		if ( this.getUserId( ) != null && this.getName( ) != null ) {
+			return this.getUserId( ).toString( ) + " - " + this.getName( ).toString( );
 		}
-		else if ( getUserId( ) != null ) {
-			return "UserId: " + getUserId( ).toString( );
+		else if ( this.getUserId( ) != null && this.getCompanyID( ) != null ) {
+			return "Company " + this.getCompanyID( ).toString( ) + " - User " + this.getUserId( ).toString( );
 		}
-		else
+		else if ( this.getUserId( ) != null ) {
+			return "UserId: " + this.getUserId( ).toString( );
+		}
+		else {
 			return super.toString( );
+		}
 	}
 
 	public Integer getSequence( )
 	{
-		return sequence;
+		return this.sequence;
 	}
 
 	public void setSequence( Integer sequence )
