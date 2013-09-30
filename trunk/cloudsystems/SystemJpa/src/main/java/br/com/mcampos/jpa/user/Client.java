@@ -37,10 +37,13 @@ import br.com.mcampos.jpa.BaseCompanyEntity;
 				query = "select count(o) from Client o where o.company = ?1 and o.toDate is null and o.client.userType.id = '2'" ),
 		@NamedQuery(
 				name = Client.getClientFromUser,
-				query = "select o from Client o where o.company = ?1 and o.toDate is null and o.client = ?2" ),
+				query = "select o from Client o where o.company = ?1 and o.client = ?2 and ( o.toDate >= CURRENT_TIMESTAMP or o.toDate is null ) " ),
 		@NamedQuery(
 				name = Client.nextId,
-				query = "select coalesce ( max (o.id.sequence), 0 ) + 1 from Client o where o.company = ?1 " )
+				query = "select coalesce ( max (o.id.sequence), 0 ) + 1 from Client o where o.company = ?1 " ),
+		@NamedQuery(
+				name = Client.getByInternalCode,
+				query = "select o from Client o where o.company = ?1 and o.internalCode = ?2" )
 } )
 public class Client extends BaseCompanyEntity implements Serializable, Comparable<Client>
 {
@@ -52,6 +55,7 @@ public class Client extends BaseCompanyEntity implements Serializable, Comparabl
 	public static final String countCompany = "Client.countCompany";
 	public static final String nextId = "Client.nextId";
 	public static final String getClientFromUser = "Client.getClientFromUser";
+	public static final String getByInternalCode = "Client.getByInternalCode";
 
 	@EmbeddedId
 	private ClientPK id;
@@ -68,6 +72,9 @@ public class Client extends BaseCompanyEntity implements Serializable, Comparabl
 	@Temporal( TemporalType.TIMESTAMP )
 	private Date toDate;
 
+	@Column( name = "cli_internal_code_ch", columnDefinition = "varchar", insertable = true, updatable = true, nullable = true, length = 16 )
+	private String internalCode;
+
 	public Client( )
 	{
 
@@ -75,17 +82,17 @@ public class Client extends BaseCompanyEntity implements Serializable, Comparabl
 
 	public Client( Integer companyId, Users u )
 	{
-		getId( ).setCompanyId( companyId );
-		setClient( u );
+		this.getId( ).setCompanyId( companyId );
+		this.setClient( u );
 	}
 
 	@Override
 	public ClientPK getId( )
 	{
-		if ( id == null ) {
-			id = new ClientPK( );
+		if ( this.id == null ) {
+			this.id = new ClientPK( );
 		}
-		return id;
+		return this.id;
 	}
 
 	public void setId( ClientPK id )
@@ -95,27 +102,27 @@ public class Client extends BaseCompanyEntity implements Serializable, Comparabl
 
 	public Date getFromDate( )
 	{
-		return fromDate;
+		return this.fromDate;
 	}
 
 	public void setFromDate( Date cliFromDt )
 	{
-		fromDate = cliFromDt;
+		this.fromDate = cliFromDt;
 	}
 
 	public Date getToDate( )
 	{
-		return toDate;
+		return this.toDate;
 	}
 
 	public void setToDate( Date cliToDt )
 	{
-		toDate = cliToDt;
+		this.toDate = cliToDt;
 	}
 
 	public Users getClient( )
 	{
-		return client;
+		return this.client;
 	}
 
 	public void setClient( Users client )
@@ -126,7 +133,7 @@ public class Client extends BaseCompanyEntity implements Serializable, Comparabl
 	@Override
 	public int compareTo( Client o )
 	{
-		return getId( ).compareTo( o.getId( ) );
+		return this.getId( ).compareTo( o.getId( ) );
 	}
 
 	@Override
@@ -134,15 +141,25 @@ public class Client extends BaseCompanyEntity implements Serializable, Comparabl
 	{
 		if ( obj instanceof Client ) {
 			Client other = (Client) obj;
-			return getId( ).equals( other.getId( ) );
+			return this.getId( ).equals( other.getId( ) );
 		}
 		else if ( obj instanceof ClientPK )
 		{
 			ClientPK other = (ClientPK) obj;
-			return getId( ).equals( other );
+			return this.getId( ).equals( other );
 		}
 		else {
 			return false;
 		}
+	}
+
+	public String getInternalCode( )
+	{
+		return this.internalCode;
+	}
+
+	public void setInternalCode( String internalCode )
+	{
+		this.internalCode = internalCode;
 	}
 }

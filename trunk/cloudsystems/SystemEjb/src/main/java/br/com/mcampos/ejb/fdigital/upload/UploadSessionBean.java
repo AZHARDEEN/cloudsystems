@@ -9,7 +9,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.fdigital.pen.AnotoPenSessionLocal;
 import br.com.mcampos.ejb.fdigital.penpage.AnotoPenPageSessionLocal;
 import br.com.mcampos.ejb.fdigital.pgc.PgcSessionLocal;

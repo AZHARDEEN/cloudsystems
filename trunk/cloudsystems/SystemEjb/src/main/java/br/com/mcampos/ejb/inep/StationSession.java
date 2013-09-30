@@ -1,6 +1,6 @@
 package br.com.mcampos.ejb.inep;
 
-import java.io.Serializable;
+import java.util.List;
 
 import javax.ejb.Remote;
 
@@ -14,5 +14,14 @@ public interface StationSession extends BaseSessionInterface
 {
 	InepEvent getCurrentEvent( PrincipalDTO auth );
 
-	InepSubscription getSubscription( PrincipalDTO auth, Serializable key );
+	/**
+	 * Brief Obtem uma lista de inscrições de acordo com uma pesquisa pela parte do número de inscrições. A procura pelas inscrições deve levar em conta o
+	 * evento e se o usuário corrente pertence a algum posto aplicador.
+	 * 
+	 * @param auth
+	 * @param evt
+	 * @param part
+	 * @return List<InepSubscription> Lista de inscrições
+	 */
+	List<InepSubscription> getSubscriptions( PrincipalDTO auth, InepEvent evt, String part );
 }

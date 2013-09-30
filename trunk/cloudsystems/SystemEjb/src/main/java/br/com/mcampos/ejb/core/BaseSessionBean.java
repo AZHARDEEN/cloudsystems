@@ -7,6 +7,8 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -31,11 +33,21 @@ public abstract class BaseSessionBean implements BaseSessionInterface, Serializa
 	@PersistenceContext( unitName = "SystemEJB" )
 	private EntityManager em;// **< Entity Manager. Esta variável é fundamental para todo o sistema
 
+	/**
+	 * Brief Principal funão desta classe. O entity manager é a unidade básica de transação do EJB
+	 * 
+	 * @return EntityManager
+	 */
 	protected EntityManager getEntityManager( )
 	{
 		return this.em;
 	}
 
+	/**
+	 * Brief esta função retorna o contexto da sessão (Em termos do EJB 3.1) e é diferente do contexto da sessão http
+	 * 
+	 * @return SessionContext
+	 */
 	public SessionContext getSessionContext( )
 	{
 		return this.sessionContext;
@@ -51,6 +63,7 @@ public abstract class BaseSessionBean implements BaseSessionInterface, Serializa
 	 * @return nada
 	 */
 	@Override
+	@TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 	public void storeException( Exception e )
 	{
 		try {

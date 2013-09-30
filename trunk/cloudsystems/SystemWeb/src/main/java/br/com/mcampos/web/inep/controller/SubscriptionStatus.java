@@ -43,7 +43,7 @@ import br.com.mcampos.web.renderer.inep.SubscriptionItemRenderer;
 public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 {
 	private static final long serialVersionUID = 4073500689607424974L;
-	private static final Logger logger = LoggerFactory.getLogger( SubscriptionStatus.class );
+	private static final Logger LOGGER = LoggerFactory.getLogger( SubscriptionStatus.class );
 
 	private InepRevisor revisor;
 
@@ -179,7 +179,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	public void onOpenBandbox( OpenEvent evt )
 	{
 		if ( evt != null ) {
-			logger.info( "onOpen[bandbox]: " + evt.getValue( ) );
+			LOGGER.info( "onOpen[bandbox]: " + evt.getValue( ) );
 			this.search( evt.getValue( ).toString( ) );
 			evt.stopPropagation( );
 		}
@@ -190,7 +190,7 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 	{
 		if ( evt != null ) {
 			this.subscription.open( );
-			logger.info( "onOK[bandbox]: " + this.subscription.getValue( ) );
+			LOGGER.info( "onOK[bandbox]: " + this.subscription.getValue( ) );
 			this.search( this.subscription.getValue( ) );
 			evt.stopPropagation( );
 		}
@@ -205,8 +205,8 @@ public class SubscriptionStatus extends BaseDBLoggedController<TeamSession>
 		if ( event == null ) {
 			return false;
 		}
-		logger.info( "Searching for: " + part );
-		List<InepSubscription> list = this.getSession( ).getSubscriptions( event, part );
+		LOGGER.info( "Searching for: " + part );
+		List<InepSubscription> list = this.getSession( ).getSubscriptions( this.getPrincipal( ), event, part );
 		if ( SysUtils.isEmpty( list ) ) {
 			return false;
 		}

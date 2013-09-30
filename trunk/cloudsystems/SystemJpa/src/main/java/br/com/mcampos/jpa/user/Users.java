@@ -292,17 +292,17 @@ public abstract class Users implements Serializable, Comparable<Users>
 	@Transient
 	public String getEmail( )
 	{
-		return getDocument( UserDocument.typeEmail );
+		return getDocument( UserDocument.EMAIL );
 	}
 
 	@Transient
 	public String getDocument( )
 	{
 		if ( getUserType( ).getId( ).equals( 1 ) ) {
-			return getDocument( UserDocument.typeCPF );
+			return getDocument( UserDocument.CPF );
 		}
 		else {
-			return getDocument( UserDocument.typeCNPJ );
+			return getDocument( UserDocument.CNPJ );
 		}
 	}
 

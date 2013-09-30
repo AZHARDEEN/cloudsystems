@@ -114,7 +114,7 @@ public class CompanyController extends UserController<ClientSession>
 	{
 		getDocument( ).setValue( "" );
 		for( UserDocument doc : docs ) {
-			if( doc.getType( ).getId( ).equals( UserDocument.typeCNPJ ) ) {
+			if( doc.getType( ).getId( ).equals( UserDocument.CNPJ ) ) {
 				getDocument( ).setValue( doc.getCode( ) );
 				break;
 			}
@@ -159,7 +159,7 @@ public class CompanyController extends UserController<ClientSession>
 		Company c = getCompany( CNPJ.removeMask( doc ) );
 		if( c == null ) {
 			getDocument( ).setValue( doc );
-			addDocument( CPF.removeMask( doc ), getDocumentType( UserDocument.typeCNPJ ) );
+			addDocument( CPF.removeMask( doc ), getDocumentType( UserDocument.CNPJ ) );
 		}
 		else {
 			show( c );

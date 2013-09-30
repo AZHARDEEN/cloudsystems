@@ -11,7 +11,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
 
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.BaseSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;

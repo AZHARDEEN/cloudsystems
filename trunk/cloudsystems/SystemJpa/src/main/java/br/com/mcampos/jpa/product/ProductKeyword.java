@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table( name = "product_keyword" )
+@Table( name = "product_keyword", schema = "public" )
 @NamedQuery( name = "ProductKeyword.findAll", query = "SELECT p FROM ProductKeyword p" )
 public class ProductKeyword extends BaseProduct implements Serializable
 {
@@ -28,7 +28,7 @@ public class ProductKeyword extends BaseProduct implements Serializable
 	@Override
 	public ProductKeywordPK getId( )
 	{
-		return id;
+		return this.id;
 	}
 
 	public void setId( ProductKeywordPK id )

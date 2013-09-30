@@ -21,11 +21,13 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
 
 	public static final String findDocument = "UserDocument.findDocument";
 
-	public static final int typeCPF = 1;
-	public static final int typeIdentity = 2;
-	public static final int typeEmail = 6;
-	public static final int typeCNPJ = 10;
-	public static final int typeAssefaz = 13;
+	public static final int CPF = 1;
+	public static final int IDENTITIDADE = 2;
+	public static final int EMAIL = 6;
+	public static final int CNPJ = 10;
+	public static final int ASSEFAZ = 13;
+	public static final int INTERNAL_CODE = 8;
+	public static final int PASSAPORTE = 8;
 
 	@EmbeddedId
 	private UserDocumentPK id;
@@ -51,8 +53,8 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
 
 	public UserDocument( String code, DocumentType type )
 	{
-		setCode( code );
-		setType( type );
+		this.setCode( code );
+		this.setType( type );
 	}
 
 	public void setId( UserDocumentPK id )
@@ -62,10 +64,10 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
 
 	public UserDocumentPK getId( )
 	{
-		if ( id == null ) {
-			id = new UserDocumentPK( );
+		if ( this.id == null ) {
+			this.id = new UserDocumentPK( );
 		}
-		return id;
+		return this.id;
 	}
 
 	public void setAdditionalInfo( String additionalInfo )
@@ -75,7 +77,7 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
 
 	public String getAdditionalInfo( )
 	{
-		return additionalInfo;
+		return this.additionalInfo;
 	}
 
 	public void setCode( String code )
@@ -85,45 +87,45 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
 
 	public String getCode( )
 	{
-		return code;
+		return this.code;
 	}
 
 	public void setUser( Users user )
 	{
 		this.user = user;
 		if ( this.user != null ) {
-			getId( ).setUserId( this.user.getId( ) );
+			this.getId( ).setUserId( this.user.getId( ) );
 		}
 	}
 
 	public Users getUser( )
 	{
-		return user;
+		return this.user;
 	}
 
 	public DocumentType getType( )
 	{
-		return type;
+		return this.type;
 	}
 
 	public void setType( DocumentType type )
 	{
 		this.type = type;
-		if ( getType( ) != null ) {
-			getId( ).setDocId( type.getId( ) );
+		if ( this.getType( ) != null ) {
+			this.getId( ).setDocId( type.getId( ) );
 		}
 	}
 
 	@Override
 	public int compareTo( UserDocument o )
 	{
-		return getId( ).compareTo( o.getId( ) );
+		return this.getId( ).compareTo( o.getId( ) );
 	}
 
 	@Override
 	public int hashCode( )
 	{
-		return getId( ).hashCode( );
+		return this.getId( ).hashCode( );
 	}
 
 	@Override
@@ -133,12 +135,12 @@ public class UserDocument implements Serializable, Comparable<UserDocument>
 			return false;
 		}
 		UserDocument other = (UserDocument) obj;
-		return getId( ).equals( other.getId( ) );
+		return this.getId( ).equals( other.getId( ) );
 	}
 
 	@Override
 	public String toString( )
 	{
-		return getId( ).toString( ) + " - " + getCode( );
+		return this.getId( ).toString( ) + " - " + this.getCode( );
 	}
 }

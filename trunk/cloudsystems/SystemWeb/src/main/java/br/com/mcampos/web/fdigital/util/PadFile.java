@@ -16,7 +16,7 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.fdigital.form.AnotoFormSession;
 import br.com.mcampos.jpa.fdigital.AnotoForm;
 import br.com.mcampos.jpa.fdigital.Pad;

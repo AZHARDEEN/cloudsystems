@@ -53,9 +53,9 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 		List<Client> clients = Collections.emptyList( );
 
 		if ( auth != null ) {
-			Company c = companySession.get( auth.getCompanyID( ) );
+			Company c = this.companySession.get( auth.getCompanyID( ) );
 			if ( c != null ) {
-				clients = findByNamedQuery( Client.getAllPerson, paging, c );
+				clients = this.findByNamedQuery( Client.getAllPerson, paging, c );
 			}
 		}
 		return clients;
@@ -68,9 +68,9 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 		if ( auth == null ) {
 			return null;
 		}
-		Company company = companySession.get( auth.getCompanyID( ) );
+		Company company = this.companySession.get( auth.getCompanyID( ) );
 
-		clients = findByNamedQuery( Client.getAllCompany, paging, company );
+		clients = this.findByNamedQuery( Client.getAllCompany, paging, company );
 		return clients;
 	}
 
@@ -80,8 +80,8 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 		if ( auth == null ) {
 			return null;
 		}
-		Company company = companySession.get( auth.getCompanyID( ) );
-		Query query = getEntityManager( ).createNamedQuery( Client.countPerson );
+		Company company = this.companySession.get( auth.getCompanyID( ) );
+		Query query = this.getEntityManager( ).createNamedQuery( Client.countPerson );
 		query.setParameter( 1, company );
 		return (Long) query.getSingleResult( );
 	}
@@ -92,8 +92,8 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 		if ( auth == null ) {
 			return null;
 		}
-		Company company = companySession.get( auth.getCompanyID( ) );
-		Query query = getEntityManager( ).createNamedQuery( Client.countCompany );
+		Company company = this.companySession.get( auth.getCompanyID( ) );
+		Query query = this.getEntityManager( ).createNamedQuery( Client.countCompany );
 		query.setParameter( 1, company );
 		return (Long) query.getSingleResult( );
 	}
@@ -104,7 +104,7 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 		if ( auth == null ) {
 			return null;
 		}
-		Users user = userDocumentSession.getUserByDocument( document );
+		Users user = this.userDocumentSession.getUserByDocument( document );
 		if ( user != null ) {
 			user.getAddresses( ).size( );
 			user.getContacts( ).size( );
@@ -118,7 +118,7 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 		if ( auth == null ) {
 			return null;
 		}
-		Users user = getEntityManager( ).find( Users.class, id );
+		Users user = this.getEntityManager( ).find( Users.class, id );
 		if ( user != null ) {
 			int nSize;
 			nSize = user.getAddresses( ).size( );
@@ -136,10 +136,10 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 		if ( auth == null ) {
 			return null;
 		}
-		Company company = companySession.get( auth.getCompanyID( ) );
+		Company company = this.companySession.get( auth.getCompanyID( ) );
 		newEntity.setCompany( company );
-		configClient( newEntity );
-		return updatePerson( auth, newEntity );
+		this.configClient( auth, newEntity );
+		return this.updatePerson( auth, newEntity );
 	}
 
 	@Override
@@ -148,27 +148,28 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 		if ( auth == null ) {
 			return null;
 		}
-		Company company = companySession.get( auth.getCompanyID( ) );
+		Company company = this.companySession.get( auth.getCompanyID( ) );
 		if ( company.equals( newEntity.getCompany( ) ) == false ) {
 			newEntity.setCompany( company );
 		}
-		newEntity.setClient( personSession.merge( (Person) newEntity.getClient( ) ) );
+		newEntity.setClient( this.personSession.merge( (Person) newEntity.getClient( ) ) );
 		return super.merge( newEntity );
 	}
 
-	private void configClient( Client client )
+	private void configClient( PrincipalDTO auth, Client client )
 	{
 		client.setFromDate( new Date( ) );
 		if ( client.getId( ).getSequence( ) == null ) {
-			client.getId( ).setSequence( getSequence( client.getCompany( ) ) );
+			this.set( auth, client );
+			client.getId( ).setSequence( this.getSequence( client.getCompany( ) ) );
 		}
 	}
 
 	@Override
 	public Client addNewCompany( PrincipalDTO auth, Client newEntity )
 	{
-		configClient( newEntity );
-		return updateCompany( auth, newEntity );
+		this.configClient( auth, newEntity );
+		return this.updateCompany( auth, newEntity );
 	}
 
 	@Override
@@ -178,11 +179,11 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 			return null;
 		}
 
-		Company company = companySession.get( auth.getCompanyID( ) );
+		Company company = this.companySession.get( auth.getCompanyID( ) );
 		if ( company.equals( newEntity.getCompany( ) ) == false ) {
 			newEntity.setCompany( company );
 		}
-		newEntity.setClient( companySession.merge( (Company) newEntity.getClient( ) ) );
+		newEntity.setClient( this.companySession.merge( (Company) newEntity.getClient( ) ) );
 		return super.merge( newEntity );
 	}
 
@@ -191,14 +192,14 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 		if ( c == null ) {
 			return null;
 		}
-		return getNextId( Client.nextId, c );
+		return this.getNextId( Client.nextId, c );
 	}
 
 	@Override
 	public DocumentType getDocumentType( Integer type )
 	{
 		try {
-			return getEntityManager( ).find( DocumentType.class, type );
+			return this.getEntityManager( ).find( DocumentType.class, type );
 		}
 		catch ( NoResultException e )
 		{
@@ -212,10 +213,10 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 		if ( auth == null || key == null ) {
 			throw new InvalidParameterException( this.getClass( ).getSimpleName( ) + " remove with invalid params " );
 		}
-		Client entity = get( key );
+		Client entity = this.get( key );
 		if ( entity != null ) {
 			entity.setToDate( new Date( ) );
-			return update( auth, entity );
+			return this.update( auth, entity );
 		}
 		else {
 			return null;
@@ -229,10 +230,10 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 			return null;
 		}
 
-		Company company = companySession.get( auth.getCompanyID( ) );
+		Company company = this.companySession.get( auth.getCompanyID( ) );
 		List<Client> clients = Collections.emptyList( );
 		List<Person> persons = Collections.emptyList( );
-		clients = findByNamedQuery( Client.getAllPerson, company );
+		clients = this.findByNamedQuery( Client.getAllPerson, company );
 		persons = new ArrayList<Person>( clients.size( ) );
 		for ( Client client : clients ) {
 			persons.add( (Person) client.getClient( ) );
@@ -243,30 +244,86 @@ public class ClientSessionBean extends CollaboratorBaseSessionBean<Client> imple
 	@Override
 	public Client getClient( PrincipalDTO auth, String document )
 	{
-		Users u = getUser( auth, document );
+		Users u = this.getUser( auth, document );
 		if ( u == null ) {
 			return null;
 		}
-		Company company = companySession.get( auth.getCompanyID( ) );
-		return getByNamedQuery( Client.getClientFromUser, company, u );
+		Company company = this.companySession.get( auth.getCompanyID( ) );
+		return this.getByNamedQuery( Client.getClientFromUser, company, u );
 	}
 
 	@Override
 	public Client getClient( PrincipalDTO auth, Integer id )
 	{
-		Users u = getEntityManager( ).find( Users.class, id );
-		return getClient( auth, u );
+		Users u = this.getEntityManager( ).find( Users.class, id );
+		return this.getClient( auth, u );
 	}
 
 	@Override
 	public Client getClient( PrincipalDTO auth, Users user )
 	{
-		if ( user == null ) {
-			return null;
+		if ( user == null || auth == null ) {
+			throw new InvalidParameterException( );
 		}
-		Company company = companySession.get( auth.getCompanyID( ) );
+		Company company = this.companySession.get( auth.getCompanyID( ) );
 		Client c;
-		c = getByNamedQuery( Client.getClientFromUser, company, user );
+		c = this.getByNamedQuery( Client.getClientFromUser, company, user );
 		return c;
 	}
+
+	/**
+	 * Brief Esta função tenta localizar um cliente pelo código interno que é atribuído pelo usuário do sistema. Este código interno faz parte da
+	 * inteligência organizacional que contratou nosso sistema. Ou seja, e um identificador que diz respeito apenas a empresa. O conjunto UserId (Empresa
+	 * Corrente) + internalCode é único
+	 * 
+	 * @param auth
+	 *            Usuário Logado no sistema
+	 * @param internalCode
+	 *            Id interno da empresa
+	 * 
+	 * @return Client Entidade Cliente da empresa
+	 */
+	@Override
+	public Client get( PrincipalDTO auth, String internalCode )
+	{
+		if ( auth == null || auth.getCompanyID( ) == null || internalCode == null ) {
+			throw new InvalidParameterException( );
+		}
+		Company company = this.companySession.get( auth.getCompanyID( ) );
+
+		return this.getByNamedQuery( Client.getByInternalCode, company, internalCode );
+	}
+
+	/**
+	 * Brief Adiciona uma entrada na tabela de usuários ( Pessoa Física ou Jurídica ) como um cliente da empresa logada. Antes, verifica se já não temos
+	 * este cliente na nossa base de dados para evitar dupla inserção.
+	 */
+	@Override
+	public Client add( PrincipalDTO auth, Users newClient )
+	{
+
+		Client entity;
+
+		/*
+		 * Have we this client already????
+		 */
+		entity = this.getClient( auth, newClient );
+		if ( entity != null ) {
+			return entity;
+		}
+		/*
+		 * No, we haven´t!!! Let´s create
+		 */
+		entity = new Client( );
+		entity.setClient( newClient );
+		return this.add( auth, entity );
+	}
+
+	@Override
+	public Client add( PrincipalDTO auth, Client entity )
+	{
+		this.configClient( auth, entity );
+		return super.add( auth, entity );
+	}
+
 }

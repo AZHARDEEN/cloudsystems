@@ -9,7 +9,7 @@ import java.io.InputStream;
 
 import javax.naming.NamingException;
 
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.inep.InepOralFacade;
 import br.com.mcampos.sysutils.ServiceLocator;
 

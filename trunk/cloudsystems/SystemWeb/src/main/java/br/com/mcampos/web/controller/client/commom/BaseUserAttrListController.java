@@ -47,7 +47,7 @@ public abstract class BaseUserAttrListController<DATA> extends BaseController<Co
 			enableItemButtons( true );
 			if( value instanceof UserDocument ) {
 				UserDocument d = (UserDocument) value;
-				if( d.getType( ).getId( ).equals( UserDocument.typeCPF ) || d.getType( ).getId( ).equals( UserDocument.typeEmail ) ) {
+				if( d.getType( ).getId( ).equals( UserDocument.CPF ) || d.getType( ).getId( ).equals( UserDocument.EMAIL ) ) {
 					for( Button b : itemButtons ) {
 						if( b.getId( ).equals( "removeDocument" ) ) {
 							b.setDisabled( true );

@@ -67,7 +67,7 @@ public interface TeamSession extends BaseCrudSessionInterface<InepRevisor>, User
 
 	public List<Object[ ]> getSubscriptionStatus( InepEvent event );
 
-	public List<InepSubscription> getSubscriptions( InepEvent event, String part );
+	public List<InepSubscription> getSubscriptions( PrincipalDTO auth, InepEvent event, String part );
 
 	public List<InepDistribution> getDistribution( InepSubscription e );
 

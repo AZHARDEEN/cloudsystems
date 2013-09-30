@@ -144,7 +144,7 @@ public class PersonController extends BasePersonController<ClientSession>
 	@Override
 	protected DocumentType getDocumentType( Integer type )
 	{
-		return getSession( ).getDocumentType( UserDocument.typeCPF );
+		return getSession( ).getDocumentType( UserDocument.CPF );
 	}
 
 }

@@ -13,9 +13,19 @@ public abstract class BaseCompanyPK implements Serializable
 	@Column( name = "usr_id_in", unique = true, nullable = false, updatable = true, insertable = true, columnDefinition = "Integer not null" )
 	private Integer companyId;
 
+	public BaseCompanyPK( )
+	{
+
+	}
+
+	public BaseCompanyPK( Integer companyId )
+	{
+		this.setCompanyId( companyId );
+	}
+
 	public Integer getCompanyId( )
 	{
-		return companyId;
+		return this.companyId;
 	}
 
 	public void setCompanyId( Integer companyId )
@@ -26,7 +36,7 @@ public abstract class BaseCompanyPK implements Serializable
 	public int compareTo( BaseCompanyPK o )
 	{
 		if ( o != null ) {
-			return getCompanyId( ).compareTo( o.getCompanyId( ) );
+			return this.getCompanyId( ).compareTo( o.getCompanyId( ) );
 		}
 		return -1;
 	}
@@ -34,10 +44,20 @@ public abstract class BaseCompanyPK implements Serializable
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( obj == null || ( obj instanceof BaseCompanyPK ) == false )
+		if ( obj == null || ( obj instanceof BaseCompanyPK ) == false ) {
 			return false;
+		}
 		BaseCompanyPK other = (BaseCompanyPK) obj;
-		return getCompanyId( ).equals( other.getCompanyId( ) );
+		return this.getCompanyId( ).equals( other.getCompanyId( ) );
+	}
+
+	@Override
+	public int hashCode( )
+	{
+		final int prime = 31;
+		int hash = 17;
+		hash = hash * prime + this.getCompanyId( ).hashCode( );
+		return hash;
 	}
 
 }

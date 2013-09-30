@@ -23,7 +23,7 @@ import br.com.mcampos.sysutils.SysUtils;
 public abstract class BaseDBLoggedController<BEAN extends BaseSessionInterface> extends BaseDBController<BEAN> implements LoggedInterface
 {
 	private static final long serialVersionUID = 3928960337564242027L;
-	private static final Logger logger = LoggerFactory.getLogger( BaseDBLoggedController.class );
+	private static final Logger LOGGER = LoggerFactory.getLogger( BaseDBLoggedController.class );
 	private CollaboratorSession collaboratorSession;
 	private AuthorizedPageOptions authorizedPageOptions;
 
@@ -38,7 +38,7 @@ public abstract class BaseDBLoggedController<BEAN extends BaseSessionInterface> 
 	public ComponentInfo doBeforeCompose( Page page, Component parent, ComponentInfo compInfo )
 	{
 		if ( isLogged( ) && isValidAccess( compInfo.getPageDefinition( ).getRequestPath( ) ) ) {
-			logger.info( "Access is ok for url " + compInfo.getPageDefinition( ).getRequestPath( ) );
+			LOGGER.info( "Access is ok for url " + compInfo.getPageDefinition( ).getRequestPath( ) );
 			return super.doBeforeCompose( page, parent, compInfo );
 		}
 		else {
@@ -52,16 +52,16 @@ public abstract class BaseDBLoggedController<BEAN extends BaseSessionInterface> 
 	{
 		PrincipalDTO c = getPrincipal( );
 		if ( c == null ) {
-			logger.error( "Collaborator is null" );
+			LOGGER.error( "Collaborator is null" );
 			return true;
 		}
 		if ( SysUtils.isEmpty( path ) ) {
-			logger.error( "Access is not valid" );
+			LOGGER.error( "Access is not valid" );
 			return false;
 		}
 		setAuthorizedPageOptions( getCollaboratorSession( ).verifyAccess( c, path ) );
 		if ( getAuthorizedPageOptions( ).isAuthorized( ) == false )
-			logger.error( "Invalid Access  violations" );
+			LOGGER.error( "Invalid Access  violations" );
 		return getAuthorizedPageOptions( ).isAuthorized( );
 	}
 

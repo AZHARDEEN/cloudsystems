@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.jpa.fdigital.AnotoPen;
 import br.com.mcampos.jpa.fdigital.AnotoPenPage;
 import br.com.mcampos.jpa.fdigital.Pgc;

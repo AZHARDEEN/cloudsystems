@@ -9,6 +9,7 @@ import br.com.mcampos.ejb.user.BaseUserSession;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
 import br.com.mcampos.jpa.user.Person;
 import br.com.mcampos.jpa.user.UserType;
+import br.com.mcampos.jpa.user.Users;
 import br.com.mcampos.sysutils.SysUtils;
 
 @Stateless( name = "PersonSession", mappedName = "PersonSession" )
@@ -24,23 +25,12 @@ public class PersonSessionBean extends BaseUserSession<Person> implements Person
 	}
 
 	@Override
+	@Deprecated
 	public Person merge( Person newEntity )
 	{
-		if ( newEntity.getUserType( ) == null ) {
-			newEntity.setUserType( getEntityManager( ).find( UserType.class, UserType.typePerson ) );
-		}
+		this.configureDefault( newEntity );
 		newEntity = super.merge( newEntity );
-		if ( SysUtils.isEmpty( newEntity.getFatherName( ) ) == false ) {
-			newEntity.setFatherName( SysUtils.unaccent( newEntity.getFatherName( ).toUpperCase( ) ) );
-		}
-		if ( SysUtils.isEmpty( newEntity.getMotherName( ) ) == false ) {
-			newEntity.setMotherName( SysUtils.unaccent( newEntity.getMotherName( ).toUpperCase( ) ) );
-		}
-		String[ ] s = splitName( newEntity.getName( ) );
-		newEntity.setFirstName( s[ 0 ] );
-		newEntity.setMiddleName( s[ 1 ] );
-		newEntity.setLastName( s[ 2 ] );
-		lazyLoad( newEntity );
+		this.lazyLoad( newEntity );
 		return newEntity;
 	}
 
@@ -83,7 +73,7 @@ public class PersonSessionBean extends BaseUserSession<Person> implements Person
 	{
 		Person p = super.get( key );
 		if ( p != null ) {
-			lazyLoad( p );
+			this.lazyLoad( p );
 		}
 		return p;
 	}
@@ -92,5 +82,32 @@ public class PersonSessionBean extends BaseUserSession<Person> implements Person
 	public Person getByDocument( String document )
 	{
 		return (Person) this.userDocumentSession.getUserByDocument( document );
+	}
+
+	private void configureDefault( Person newEntity )
+	{
+		super.configureDefault( (Users) newEntity );
+		if ( newEntity.getUserType( ) == null ) {
+			newEntity.setUserType( this.getEntityManager( ).find( UserType.class, UserType.typePerson ) );
+		}
+		if ( SysUtils.isEmpty( newEntity.getFatherName( ) ) == false ) {
+			newEntity.setFatherName( SysUtils.unaccent( newEntity.getFatherName( ).toUpperCase( ) ) );
+		}
+		if ( SysUtils.isEmpty( newEntity.getMotherName( ) ) == false ) {
+			newEntity.setMotherName( SysUtils.unaccent( newEntity.getMotherName( ).toUpperCase( ) ) );
+		}
+		String[ ] s = this.splitName( newEntity.getName( ) );
+		newEntity.setFirstName( s[ 0 ] );
+		newEntity.setMiddleName( s[ 1 ] );
+		newEntity.setLastName( s[ 2 ] );
+	}
+
+	@Override
+	public Person add( Person newEntity )
+	{
+		this.configureDefault( newEntity );
+		newEntity = super.add( newEntity );
+		this.lazyLoad( newEntity );
+		return newEntity;
 	}
 }

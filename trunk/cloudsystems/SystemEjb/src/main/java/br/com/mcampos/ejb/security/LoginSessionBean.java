@@ -312,7 +312,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 			Login login = (Login) param;
 			dto.setBody( translateTokens( dto.getBody( ), login, login.getToken( ) ) );
 			for ( UserDocument item : login.getPerson( ).getDocuments( ) ) {
-				if ( item.getType( ).getId( ).equals( UserDocument.typeEmail ) ) {
+				if ( item.getType( ).getId( ).equals( UserDocument.EMAIL ) ) {
 					dto.addRecipient( item.getCode( ) );
 				}
 			}
@@ -386,7 +386,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	{
 		msg = msg.replaceAll( "<<@@LOGIN_NAME@@>>", login.getPerson( ).getName( ) );
 		for ( UserDocument item : login.getPerson( ).getDocuments( ) ) {
-			if ( item.getType( ).getId( ).equals( UserDocument.typeEmail ) ) {
+			if ( item.getType( ).getId( ).equals( UserDocument.EMAIL ) ) {
 				msg = msg.replaceAll( "<<@@EMAIL@@>>", item.getCode( ) );
 				break;
 			}
@@ -545,7 +545,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		String sql = "select o from Login o where o.person in (" +
 				getUserDocumentSQL( lookFor ) + ")";
 		sql = sql + "order by o.person.name";
-		return findByQuery( sql, new DBPaging( 0, 40 ), UserDocument.typeEmail, lookFor );
+		return findByQuery( sql, new DBPaging( 0, 40 ), UserDocument.EMAIL, lookFor );
 	}
 
 	private List<Login> searchByCPF( String lookFor )
@@ -558,7 +558,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		String sql = "select o from Login o where o.person in (" +
 				getUserDocumentSQL( lookFor ) + ")";
 		sql = sql + "order by o.person.name";
-		return findByQuery( sql, new DBPaging( 0, 40 ), UserDocument.typeCPF, lookFor );
+		return findByQuery( sql, new DBPaging( 0, 40 ), UserDocument.CPF, lookFor );
 	}
 
 	private String getUserDocumentSQL( String lookFor )

@@ -1,7 +1,6 @@
 <zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
-	<window width="100%" height="100%" closable="true" border="none"
-		title="Ficha de Avaliação da Interação Face a Face - Entrevistador"
+	<window width="100%" height="100%" closable="true" border="none" title="Ficha de Avaliação da Interação Face a Face - Entrevistador"
 		apply="br.com.mcampos.web.inep.controller.station.InterviewerController">
 		<div width="100%" height="62px" align="Center" fulfill="=/private/inep/inep_logo.zul" />
 		<borderlayout>
@@ -15,15 +14,27 @@
 						<rows>
 							<row>
 								<label value="Número de Inscrição:" />
-								<hlayout>
-									<textbox id="subscription" width="150px" maxlength="12" />
-									<button id="btnSearch" label="Localizar Candidato"
-										image="/img/icontexto-webdev-search-016x016.png" />
-								</hlayout>
+								<bandbox maxlength="32" id="subscription" width="200px" mold="rounded">
+									<bandpopup>
+										<listbox height="250px" width="300px" mold="paging" autopaging="true" id="list">
+											<listhead>
+												<listheader label="Inscrições" />
+											</listhead>
+										</listbox>
+									</bandpopup>
+								</bandbox>
 							</row>
 							<row>
 								<label value="Nome do Examinando:" />
 								<label id="candidate" />
+							</row>
+							<row>
+								<label value="Nacionalidade:" />
+								<label id="citizenship" />
+							</row>
+							<row>
+								<label value="Necessidades Especiais:" />
+								<label id="needs" />
 							</row>
 						</rows>
 					</grid>
@@ -95,59 +106,55 @@
 									<hlayout valign="Center">
 										<radio label="5" radiogroup="comprehension" value="5" />
 										<separator width="10px" />
-										Demonstra autonomia e desenvoltura, contribuindo bastante para o desenvolvimento da
-										interação. Apresenta fluência e variedade ampla de vocabulário e de estruturas, com raras
-										inadequações. Sua pronúncia é adequada e demonstra compreensão do fluxo natural da fala.
+										Demonstra autonomia e desenvoltura, contribuindo bastante para o desenvolvimento da interação. Apresenta fluência e
+										variedade ampla de vocabulário e de estruturas, com raras inadequações. Sua pronúncia é adequada e demonstra compreensão
+										do fluxo natural da fala.
+										<separator width="10px" />
 									</hlayout>
 								</row>
 								<row>
 									<hlayout valign="Center">
 										<radio label="4" radiogroup="comprehension" value="4" />
 										<separator width="10px" />
-										Demonstra autonomia e desenvoltura, contribuindo para o desenvolvimento da interação.
-										Apresenta fluência e variedade ampla de vocabulário e de estruturas, com inadequações
-										ocasionais na comunicação. Sua pronúncia pode apresentar algumas inadequações. Demonstra
-										compreensão do fluxo natural da fala.
+										Demonstra autonomia e desenvoltura, contribuindo para o desenvolvimento da interação. Apresenta fluência e variedade ampla
+										de vocabulário e de estruturas, com inadequações ocasionais na comunicação. Sua pronúncia pode apresentar algumas
+										inadequações. Demonstra compreensão do fluxo natural da fala.
 									</hlayout>
 								</row>
 								<row>
 									<hlayout valign="Center">
 										<radio label="3" radiogroup="comprehension" value="3" />
 										<separator width="10px" />
-										Contribui para o desenvolvimento da interação. Apresenta fluência, mas também algumas
-										inadequações de vocabulário, estruturas e/ou pronúncia. Demonstra compreensão do fluxo
-										natural da fala.
+										Contribui para o desenvolvimento da interação. Apresenta fluência, mas também algumas inadequações de vocabulário,
+										estruturas e/ou pronúncia. Demonstra compreensão do fluxo natural da fala.
 									</hlayout>
 								</row>
 								<row>
-									<hlayout valign="Center">
+									<hlayout valign="Center" hflex="1">
 										<radio label="2" radiogroup="comprehension" value="2" />
 										<separator width="10px" />
-										Contribui para o desenvolvimento da interação. Apresenta poucas hesitações, com algumas
-										interrupções no fluxo da conversa. Apresenta inadequações de vocabulário, estruturas e/ou
-										pronúncia. Pode demonstrar alguns problemas de compreensão do fluxo da fala.
+										Contribui para o desenvolvimento da interação. Apresenta poucas hesitações, com algumas interrupções no fluxo da conversa.
+										Apresenta inadequações de vocabulário, estruturas e/ou pronúncia. Pode demonstrar alguns problemas de compreensão do fluxo
+										da fala.
 									</hlayout>
 								</row>
 								<row>
 									<hlayout valign="Center">
 										<radio label="1" radiogroup="comprehension" value="1" />
 										<separator width="10px" />
-										Contribui pouco para o desenvolvimento da interação. Apresenta muitas pausas e hesitações,
-										ocasionando interrupções no uxo da conversa, ou apresenta alternância no uxo de fala entre
-										língua portuguesa e outra língua. Apresenta muitas limitações e/ou inadequações de
-										vocabulário, estruturas e/ou pronúncia. Demonstra problemas de compreensão do fluxo natural
-										da fala.
+										Contribui pouco para o desenvolvimento da interação. Apresenta muitas pausas e hesitações, ocasionando interrupções no uxo
+										da conversa, ou apresenta alternância no uxo de fala entre língua portuguesa e outra língua. Apresenta muitas limitações
+										e/ou inadequações de vocabulário, estruturas e/ou pronúncia. Demonstra problemas de compreensão do fluxo natural da fala.
 									</hlayout>
 								</row>
 								<row>
 									<hlayout valign="Center">
 										<radio label="0" radiogroup="comprehension" value="0" />
 										<separator width="10px" />
-										Raramente contribui para o desenvolvimento da interação. Apresenta pausas e hesitações muito
-										frequentes que interrompem o fluxo da conversa, ou apresenta fluxo de fala em outra língua.
-										Apresenta muitas limitações e/ou inadequações de vocabulário, estruturas e/ou pronúncia, que
-										comprometem a comunicação. Demonstra problemas de compreensão de fala simplificada e
-										pausada.
+										Raramente contribui para o desenvolvimento da interação. Apresenta pausas e hesitações muito frequentes que interrompem o
+										fluxo da conversa, ou apresenta fluxo de fala em outra língua. Apresenta muitas limitações e/ou inadequações de
+										vocabulário, estruturas e/ou pronúncia, que comprometem a comunicação. Demonstra problemas de compreensão de fala
+										simplificada e pausada.
 									</hlayout>
 								</row>
 							</rows>
@@ -157,8 +164,7 @@
 							<hlayout>
 								<button label="Ok" id="cmdSubmit" image="/img/icontexto-webdev-ok-032x032.png" width="150px" />
 								<separator width="50px" />
-								<button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png"
-									dir="reverse" width="150px" />
+								<button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png" dir="reverse" width="150px" />
 							</hlayout>
 						</div>
 					</div>

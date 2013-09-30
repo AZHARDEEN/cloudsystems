@@ -5,117 +5,44 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
-		<defaultValueExpression><![CDATA["T:/Workspaces/indigo/cloudsystems/SystemWeb/WebContent/img"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["T:/Workspaces/Kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[33]]></defaultValueExpression>
 	</parameter>
-	<parameter name="TASK_ID" class="java.lang.Integer">
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT
-     inep_revisor."usr_id_in" AS inep_revisor_usr_id_in,
-     inep_revisor."col_seq_in" AS inep_revisor_col_seq_in,
-     inep_revisor."pct_id_in" AS inep_revisor_pct_id_in,
-     inep_revisor."tsk_id_in" AS inep_revisor_tsk_id_in,
-     inep_revisor."rvs_coordinator_bt" AS inep_revisor_rvs_coordinator_bt,
-     users."usr_name_ch" AS users_usr_name_ch,
-     ( select count(*) from inep.inep_distribution d
-		where d.usr_id_in = inep_revisor.usr_id_in and d.pct_id_in = inep_revisor.pct_id_in and d.col_seq_in = inep_revisor.col_seq_in and
-			inep_revisor.tsk_id_in = d.tsk_id_in and inep_revisor."tsk_id_in" = d."tsk_id_in" and ids_id_in = 1 ) as distribuido,
-     ( select count(*) from inep.inep_distribution d
-		where d.usr_id_in = inep_revisor.usr_id_in and d.pct_id_in = inep_revisor.pct_id_in and d.col_seq_in = inep_revisor.col_seq_in and
-			inep_revisor.tsk_id_in = d.tsk_id_in and inep_revisor."tsk_id_in" = d."tsk_id_in" and ids_id_in = 2 ) as corrigido,
-     ( select count(*) from inep.inep_distribution d
-		where d.usr_id_in = inep_revisor.usr_id_in and d.pct_id_in = inep_revisor.pct_id_in and  d.col_seq_in = inep_revisor.col_seq_in and
-			inep_revisor.tsk_id_in = d.tsk_id_in and inep_revisor."tsk_id_in" = d."tsk_id_in" and ids_id_in in (3,4)
-			and dis_grade_in is not null ) as variance
-FROM
-     "inep"."inep_revisor" inep_revisor INNER JOIN "public"."collaborator" collaborator
-		ON inep_revisor."usr_id_in" = collaborator."usr_id_in" AND collaborator."col_seq_in" = inep_revisor."col_seq_in"
-		INNER JOIN "public"."users" users
-			ON collaborator."col_id_in" = users."usr_id_in"
+		<![CDATA[select
+	U.USR_NAME_CH,
+	COUNT(*)
+from
+	inep.inep_subscription S,
+	INEP.INEP_STATION P,
+	CLIENT C,
+	USERS U
 where
-	inep_revisor.rvs_coordinator_bt = false
-and inep_revisor."usr_id_in" = $P{COMPANY_ID}
-and inep_revisor."pct_id_in" = $P{EVENT_ID}
-and inep_revisor."tsk_id_in" = $P{TASK_ID}
-and inep_revisor.col_seq_in = $P{COLLABORATOR_ID}
-order by
-     inep_revisor."usr_id_in",
-     inep_revisor."tsk_id_in",
-     inep_revisor."pct_id_in",
-     users."usr_name_ch"]]>
+	P.USR_ID_IN = S.USR_ID_IN
+AND P.PCT_ID_IN = S.PCT_ID_IN
+AND P.CLI_SEQ_IN = S.CLI_SEQ_IN
+AND	C.USR_ID_IN = P.USR_ID_IN
+AND C.CLI_SEQ_IN = P.CLI_SEQ_IN
+AND U.USR_ID_IN = CLI_ID_IN
+AND S.usr_id_in = $P{COMPANY_ID}
+AND S.PCT_ID_IN = $P{EVENT_ID}
+GROUP BY U.USR_NAME_CH
+ORDER BY USR_NAME_CH
+]]>
 	</queryString>
-	<field name="inep_revisor_usr_id_in" class="java.lang.Integer"/>
-	<field name="inep_revisor_col_seq_in" class="java.lang.Integer"/>
-	<field name="inep_revisor_pct_id_in" class="java.lang.Integer"/>
-	<field name="inep_revisor_tsk_id_in" class="java.lang.Integer"/>
-	<field name="inep_revisor_rvs_coordinator_bt" class="java.lang.Boolean"/>
-	<field name="users_usr_name_ch" class="java.lang.String"/>
-	<field name="distribuido" class="java.lang.Long"/>
-	<field name="corrigido" class="java.lang.Long"/>
-	<field name="variance" class="java.lang.Long"/>
-	<group name="Tarefa">
-		<groupExpression><![CDATA[$F{inep_revisor_tsk_id_in}]]></groupExpression>
-		<groupHeader>
-			<band height="39">
-				<line>
-					<reportElement uuid="2592040c-b3ea-44cc-a251-3b335a410f23" x="0" y="38" width="555" height="1"/>
-				</line>
-				<staticText>
-					<reportElement uuid="0cf99e56-1354-4c8a-84e3-bcc444e1856b" x="-1" y="20" width="233" height="18"/>
-					<textElement>
-						<font isBold="true"/>
-					</textElement>
-					<text><![CDATA[Corretor]]></text>
-				</staticText>
-				<textField>
-					<reportElement uuid="ae037cdd-b817-4cf2-97e2-832e6ca23433" x="44" y="0" width="100" height="20"/>
-					<textElement>
-						<font size="12" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{inep_revisor_tsk_id_in}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement uuid="97a29d36-0be6-470d-92a3-45559ca973ef" x="-1" y="0" width="45" height="20"/>
-					<textElement>
-						<font size="12" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Tarefa]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="c46be5aa-bee9-4969-bb47-f3e81f9c4645" x="310" y="19" width="70" height="20"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[Distribuídas]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="819ad66c-87a5-4543-8c47-578f433f176c" x="400" y="18" width="70" height="20"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[Corrigidas]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="5a5efa7a-78d5-49f8-819c-23cfad31e399" x="483" y="18" width="70" height="20"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[Discrepância]]></text>
-				</staticText>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="50">
-				<line>
-					<reportElement uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd" x="0" y="0" width="555" height="1"/>
-				</line>
-			</band>
-		</groupFooter>
-	</group>
+	<field name="usr_name_ch" class="java.lang.String"/>
+	<field name="count" class="java.lang.Long"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -126,7 +53,7 @@ order by
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[Situação da Correção]]></text>
+				<text><![CDATA[Consolidado de Inscrições por Posto Aplicador]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -147,30 +74,31 @@ order by
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="22" splitType="Stretch"/>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d54cdb73-e4f8-4827-a961-46a1d88db214" x="3" y="2" width="385" height="20"/>
+				<textElement/>
+				<text><![CDATA[Posto Aplicador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cb1a7565-8ece-459b-93d4-8b80d5b3d181" x="453" y="2" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Total de Inscrições]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<elementGroup/>
 			<textField>
-				<reportElement uuid="0af04a80-25d8-4fa2-82ea-bc62ca5891e1" x="0" y="1" width="295" height="17"/>
+				<reportElement uuid="2710df5e-b863-4ff1-870a-41a0605696e5" x="3" y="0" width="385" height="18"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{users_usr_name_ch}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{usr_name_ch}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="b2969af5-f89a-46ae-b9ad-4734e4d23396" x="310" y="1" width="71" height="17"/>
+			<textField pattern="0,000" isBlankWhenNull="true">
+				<reportElement uuid="e0f8bf19-0c14-4fc9-b520-1e9ace622f31" x="453" y="0" width="100" height="18"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{distribuido}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="246d5573-891e-4276-9d90-c5492143bbfc" x="400" y="1" width="70" height="17"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{corrigido}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="f24f054c-7ae5-46f4-8110-7446ab9a4da6" x="483" y="1" width="70" height="17"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{variance}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{count}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

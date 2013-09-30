@@ -16,6 +16,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import br.com.mcampos.jpa.user.Person;
+
 /**
  * The persistent class for the inep_subscription database table.
  * 
@@ -61,16 +63,29 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 	@OneToMany( mappedBy = "inepSubscription" )
 	private List<InepMedia> medias;
 
+	@Column( name = "cli_seq_in" )
+	private Integer stationId;
+
+	@Column( name = "isc_special_needs_ch", columnDefinition = "varchar", length = 128, nullable = true )
+	private String specialNeeds;
+
+	@Column( name = "isc_citizenship_ch", columnDefinition = "varchar", length = 64, nullable = true )
+	private String citizenship;
+
+	@ManyToOne
+	@JoinColumn( name = "isc_candidate_in", referencedColumnName = "usr_id_in", nullable = true )
+	private Person person;
+
 	public InepSubscription( )
 	{
 	}
 
 	public InepSubscriptionPK getId( )
 	{
-		if ( id == null ) {
-			id = new InepSubscriptionPK( );
+		if ( this.id == null ) {
+			this.id = new InepSubscriptionPK( );
 		}
-		return id;
+		return this.id;
 	}
 
 	public void setId( InepSubscriptionPK id )
@@ -80,28 +95,28 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 
 	public InepEvent getEvent( )
 	{
-		return event;
+		return this.event;
 	}
 
 	public void setEvent( InepEvent event )
 	{
 		this.event = event;
-		if ( getEvent( ) != null ) {
-			getId( ).set( getEvent( ) );
+		if ( this.getEvent( ) != null ) {
+			this.getId( ).set( this.getEvent( ) );
 		}
 	}
 
 	@Override
 	public int compareTo( InepSubscription o )
 	{
-		return getId( ).compareTo( o.getId( ) );
+		return this.getId( ).compareTo( o.getId( ) );
 	}
 
 	public int compareTo( InepSubscription object, Integer field )
 	{
 		switch ( field ) {
 		case 0:
-			return getId( ).getId( ).compareTo( object.getId( ).getId( ) );
+			return this.getId( ).getId( ).compareTo( object.getId( ).getId( ) );
 		default:
 			return 0;
 		}
@@ -110,14 +125,14 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 	@Override
 	public boolean equals( Object obj )
 	{
-		return getId( ).equals( ( (InepSubscription) obj ).getId( ) );
+		return this.getId( ).equals( ( (InepSubscription) obj ).getId( ) );
 	}
 
 	public String getField( Integer field )
 	{
 		switch ( field ) {
 		case 0:
-			return getId( ).getId( ).toString( );
+			return this.getId( ).getId( ).toString( );
 		default:
 			return "";
 		}
@@ -125,7 +140,7 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 
 	public BigDecimal getWrittenGrade( )
 	{
-		return writtenGrade;
+		return this.writtenGrade;
 	}
 
 	public void setWrittenGrade( BigDecimal writtenGrade )
@@ -135,7 +150,7 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 
 	public BigDecimal getOralGrade( )
 	{
-		return oralGrade;
+		return this.oralGrade;
 	}
 
 	public void setOralGrade( BigDecimal oralGrade )
@@ -145,7 +160,7 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 
 	public BigDecimal getFinalGrade( )
 	{
-		return finalGrade;
+		return this.finalGrade;
 	}
 
 	public void setFinalGrade( BigDecimal finalGrade )
@@ -155,21 +170,22 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 
 	public List<InepMedia> getMedias( )
 	{
-		if ( medias == null )
-			medias = new ArrayList<InepMedia>( );
-		return medias;
+		if ( this.medias == null ) {
+			this.medias = new ArrayList<InepMedia>( );
+		}
+		return this.medias;
 	}
 
 	public void setMedias( List<InepMedia> inepMedias )
 	{
-		medias = inepMedias;
+		this.medias = inepMedias;
 	}
 
 	public void add( InepMedia media )
 	{
 		if ( media != null ) {
-			if ( getMedias( ).contains( media ) == false ) {
-				getMedias( ).add( media );
+			if ( this.getMedias( ).contains( media ) == false ) {
+				this.getMedias( ).add( media );
 				media.setInepSubscription( this );
 			}
 		}
@@ -177,11 +193,51 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 
 	public BigDecimal getAgreementGrade( )
 	{
-		return agreementGrade;
+		return this.agreementGrade;
 	}
 
 	public void setAgreementGrade( BigDecimal agreementGrade )
 	{
 		this.agreementGrade = agreementGrade;
+	}
+
+	public Integer getStationId( )
+	{
+		return this.stationId;
+	}
+
+	public void setStationId( Integer stationId )
+	{
+		this.stationId = stationId;
+	}
+
+	public String getSpecialNeeds( )
+	{
+		return this.specialNeeds;
+	}
+
+	public void setSpecialNeeds( String specialNeeds )
+	{
+		this.specialNeeds = specialNeeds;
+	}
+
+	public Person getPerson( )
+	{
+		return this.person;
+	}
+
+	public void setPerson( Person person )
+	{
+		this.person = person;
+	}
+
+	public String getCitizenship( )
+	{
+		return this.citizenship;
+	}
+
+	public void setCitizenship( String citizenship )
+	{
+		this.citizenship = citizenship;
 	}
 }

@@ -70,7 +70,7 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 	public T add( @NotNull PrincipalDTO auth, @NotNull T newEntity )
 	{
 		/*
-		 * Do not call this class persist, please!
+		 * Do not call this class persist method, please!
 		 */
 		return this.add( newEntity );
 	}

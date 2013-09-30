@@ -20,7 +20,7 @@ public class ClientCompanyRenderer extends BaseListRenderer<Client>
 		for ( UserDocument document : data.getClient( ).getDocuments( ) )
 		{
 			switch ( document.getType( ).getId( ) ) {
-			case UserDocument.typeCNPJ:
+			case UserDocument.CNPJ:
 				cpf = document;
 				break;
 			}

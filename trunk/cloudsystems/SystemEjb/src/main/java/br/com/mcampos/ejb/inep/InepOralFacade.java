@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.ejb.Remote;
 
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.jpa.inep.InepEvent;

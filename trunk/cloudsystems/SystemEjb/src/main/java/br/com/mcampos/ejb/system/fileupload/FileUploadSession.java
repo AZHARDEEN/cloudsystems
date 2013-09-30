@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.ejb.Remote;
 
 import br.com.mcampos.dto.AssefazDTO;
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.RejectedDTO;
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;

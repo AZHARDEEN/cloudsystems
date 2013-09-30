@@ -1,6 +1,5 @@
 package br.com.mcampos.ejb.inep;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -9,6 +8,7 @@ import javax.ejb.Stateless;
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.BaseSessionBean;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
+import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.jpa.inep.InepSubscription;
 import br.com.mcampos.sysutils.SysUtils;
@@ -22,6 +22,9 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	private static final long serialVersionUID = 7677179078573223942L;
 	@EJB
 	private InepPackageSessionLocal eventSession;
+
+	@EJB
+	private InepSubscriptionSessionLocal subscriptionSession;
 
 	@Override
 	/**
@@ -44,9 +47,8 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	}
 
 	@Override
-	public InepSubscription getSubscription( PrincipalDTO auth, Serializable key )
+	public List<InepSubscription> getSubscriptions( PrincipalDTO auth, InepEvent evt, String part )
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return this.subscriptionSession.getAll( auth, evt, part );
 	}
 }

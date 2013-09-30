@@ -3,7 +3,7 @@ package br.com.mcampos.web.core;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 
 public class UploadMedia
 {

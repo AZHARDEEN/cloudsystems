@@ -17,7 +17,7 @@ public interface InepSubscriptionSessionLocal extends BaseCrudSessionInterface<I
 
 	public List<InepSubscription> getAll( InepEvent event );
 
-	public List<InepSubscription> getAll( InepEvent event, String subs );
+	public List<InepSubscription> getAll( PrincipalDTO auth, InepEvent event, String subs );
 
 	public void setOralGrade( InepSubscription s, BigDecimal grade );
 
