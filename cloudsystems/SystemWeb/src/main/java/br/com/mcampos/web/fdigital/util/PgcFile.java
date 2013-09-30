@@ -13,7 +13,7 @@ import org.omg.CORBA.portable.ApplicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.fdigital.upload.UploadSession;
 import br.com.mcampos.jpa.fdigital.AnotoPen;
 import br.com.mcampos.jpa.fdigital.AnotoPenPage;

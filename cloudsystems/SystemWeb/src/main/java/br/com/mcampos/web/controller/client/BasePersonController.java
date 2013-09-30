@@ -131,7 +131,7 @@ public abstract class BasePersonController<T extends BaseSessionInterface> exten
 	{
 		this.cpf.setValue( "" );
 		for ( UserDocument doc : docs ) {
-			if ( doc.getType( ).getId( ).equals( UserDocument.typeCPF ) ) {
+			if ( doc.getType( ).getId( ).equals( UserDocument.CPF ) ) {
 				this.cpf.setValue( doc.getCode( ) );
 				break;
 			}
@@ -182,7 +182,7 @@ public abstract class BasePersonController<T extends BaseSessionInterface> exten
 		Person person = getPerson( CPF.removeMask( doc ) );
 		if ( person == null ) {
 			this.cpf.setValue( doc );
-			addDocument( CPF.removeMask( doc ), getDocumentType( UserDocument.typeCPF ) );
+			addDocument( CPF.removeMask( doc ), getDocumentType( UserDocument.CPF ) );
 		}
 		else {
 			show( person );

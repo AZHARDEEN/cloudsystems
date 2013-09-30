@@ -1,7 +1,6 @@
 <zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
-	<window width="100%" height="100%" closable="true" border="none"
-		title="Ficha de Avaliação da Interação Face a Face - Observador"
+	<window width="100%" height="100%" closable="true" border="none" title="Ficha de Avaliação da Interação Face a Face - Observador"
 		apply="br.com.mcampos.web.inep.controller.station.ObserverController">
 		<div width="100%" height="62px" align="Center" fulfill="=/private/inep/inep_logo.zul" />
 		<borderlayout>
@@ -15,15 +14,27 @@
 						<rows>
 							<row>
 								<label value="Número de Inscrição:" />
-								<hlayout>
-									<textbox id="subscription" width="150px" maxlength="12" />
-									<button id="btnSearch" label="Localizar Candidato"
-										image="/img/icontexto-webdev-search-016x016.png" />
-								</hlayout>
+								<bandbox maxlength="32" id="subscription" width="200px" mold="rounded">
+									<bandpopup>
+										<listbox height="250px" width="300px" mold="paging" autopaging="true" id="list">
+											<listhead>
+												<listheader label="Inscrições" />
+											</listhead>
+										</listbox>
+									</bandpopup>
+								</bandbox>
 							</row>
 							<row>
 								<label value="Nome do Examinando:" />
 								<label id="candidate" />
+							</row>
+							<row>
+								<label value="Nacionalidade:" />
+								<label id="citizenship" />
+							</row>
+							<row>
+								<label value="Necessidades Especiais:" />
+								<label id="needs" />
 							</row>
 						</rows>
 					</grid>

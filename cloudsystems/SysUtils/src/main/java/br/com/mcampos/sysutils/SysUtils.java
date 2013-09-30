@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Vector;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,16 @@ public final class SysUtils
 	public static boolean isEmpty( String s )
 	{
 		return ( isNull( s ) || s.isEmpty( ) );
+	}
+
+	public static boolean isEmpty( Vector<?> s )
+	{
+		return ( isNull( s ) || s.isEmpty( ) );
+	}
+
+	public static boolean isEmpty( Object[ ] s )
+	{
+		return ( isNull( s ) || s.length == 0 );
 	}
 
 	public static boolean isEmptyAfterTrim( String s )

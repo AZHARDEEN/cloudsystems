@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 
@@ -123,6 +124,9 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 		try {
 			return query.getResultList( );
 		}
+		catch ( NoResultException e ) {
+			return null;
+		}
 		catch ( Exception e ) {
 			this.storeException( e );
 			return Collections.emptyList( );
@@ -139,6 +143,9 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 				return null;
 			}
 			return (T) obj;
+		}
+		catch ( NoResultException e ) {
+			return null;
 		}
 		catch ( Exception e ) {
 			this.storeException( e );

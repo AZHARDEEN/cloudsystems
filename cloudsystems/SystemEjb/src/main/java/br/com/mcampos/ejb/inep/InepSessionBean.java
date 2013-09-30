@@ -200,7 +200,7 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 				logger.debug( dto.getNome( ) + " is created" );
 			}
 			else {
-				UserDocument doc = new UserDocument( dto.getCpf( ), documentTypeSession.get( UserDocument.typeCPF ) );
+				UserDocument doc = new UserDocument( dto.getCpf( ), documentTypeSession.get( UserDocument.CPF ) );
 				person.add( doc );
 			}
 		}
@@ -212,9 +212,9 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		Person person = new Person( );
 
 		logger.debug( "Creating Person" + dto.getNome( ) );
-		UserDocument doc = new UserDocument( dto.getCpf( ), documentTypeSession.get( UserDocument.typeCPF ) );
+		UserDocument doc = new UserDocument( dto.getCpf( ), documentTypeSession.get( UserDocument.CPF ) );
 		person.add( doc );
-		doc = new UserDocument( dto.getEmail( ), documentTypeSession.get( UserDocument.typeEmail ) );
+		doc = new UserDocument( dto.getEmail( ), documentTypeSession.get( UserDocument.EMAIL ) );
 		person.add( doc );
 		person.setName( dto.getNome( ) );
 		return personSession.merge( person );
@@ -313,10 +313,10 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		if ( person == null ) {
 			person = new Person( );
 			if ( SysUtils.isEmpty( email ) == false ) {
-				person.add( new UserDocument( email, documentTypeSession.get( UserDocument.typeEmail ) ) );
+				person.add( new UserDocument( email, documentTypeSession.get( UserDocument.EMAIL ) ) );
 			}
 			if ( SysUtils.isEmpty( cpf ) == false ) {
-				person.add( new UserDocument( cpf, documentTypeSession.get( UserDocument.typeCPF ) ) );
+				person.add( new UserDocument( cpf, documentTypeSession.get( UserDocument.CPF ) ) );
 			}
 			person.setName( name );
 			person = personSession.merge( person );
@@ -352,10 +352,10 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		if ( person == null ) {
 			person = new Person( );
 			if ( SysUtils.isEmpty( email ) == false ) {
-				person.add( new UserDocument( email, documentTypeSession.get( UserDocument.typeEmail ) ) );
+				person.add( new UserDocument( email, documentTypeSession.get( UserDocument.EMAIL ) ) );
 			}
 			if ( SysUtils.isEmpty( cpf ) == false ) {
-				person.add( new UserDocument( cpf, documentTypeSession.get( UserDocument.typeCPF ) ) );
+				person.add( new UserDocument( cpf, documentTypeSession.get( UserDocument.CPF ) ) );
 			}
 			person.setName( name );
 			person = personSession.merge( person );

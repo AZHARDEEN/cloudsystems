@@ -24,7 +24,7 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.inep.CorretorDTO;
 import br.com.mcampos.ejb.inep.InepSession;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSession;

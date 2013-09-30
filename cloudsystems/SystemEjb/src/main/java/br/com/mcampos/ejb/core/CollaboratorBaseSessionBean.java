@@ -3,10 +3,13 @@ package br.com.mcampos.ejb.core;
 import javax.ejb.EJB;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
+import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.ejb.system.fileupload.FileUPloadSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
 import br.com.mcampos.jpa.BaseCompanyEntity;
 import br.com.mcampos.jpa.security.LoginProperty;
+import br.com.mcampos.jpa.system.FileUpload;
 
 public abstract class CollaboratorBaseSessionBean<Y extends BaseCompanyEntity> extends BaseCompanySessionBean<Y> implements CollaboratorBaseSessionInterface<Y>
 {
@@ -16,26 +19,29 @@ public abstract class CollaboratorBaseSessionBean<Y extends BaseCompanyEntity> e
 	@EJB
 	private CollaboratorSessionLocal collaboratorSession;
 
+	@EJB
+	private FileUPloadSessionLocal fileUploadSession;
+
 	@Override
 	public String getProperty( PrincipalDTO auth, String name )
 	{
 		if ( auth == null || name == null ) {
 			return null;
 		}
-		LoginProperty p = getPropertySession( ).getProperty( auth, name );
+		LoginProperty p = this.getPropertySession( ).getProperty( auth, name );
 		return p != null ? p.getValue( ) : "";
 	}
 
 	@Override
 	public void setProperty( PrincipalDTO auth, String name, String value )
 	{
-		getPropertySession( ).setProperty( auth, name, value );
+		this.getPropertySession( ).setProperty( auth, name, value );
 	}
 
 	@Override
 	public void remove( PrincipalDTO auth, String name )
 	{
-		getPropertySession( ).remove( auth, name );
+		this.getPropertySession( ).remove( auth, name );
 	}
 
 	protected LoginPropertySessionLocal getPropertySession( )
@@ -46,6 +52,12 @@ public abstract class CollaboratorBaseSessionBean<Y extends BaseCompanyEntity> e
 	protected CollaboratorSessionLocal getCollaboratorSession( )
 	{
 		return this.collaboratorSession;
+	}
+
+	@Override
+	public FileUpload storeUploadInformation( PrincipalDTO auth, MediaDTO media )
+	{
+		return this.fileUploadSession.addNewFile( auth, media );
 	}
 
 }

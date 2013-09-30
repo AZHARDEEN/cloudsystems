@@ -70,7 +70,7 @@ public class UserDocumentSessionBean extends SimpleSessionBean<UserDocument> imp
 			return null;
 		}
 		lookFor = lookFor.toLowerCase( );
-		return searchByDocument( UserDocument.typeEmail, lookFor );
+		return searchByDocument( UserDocument.EMAIL, lookFor );
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class UserDocumentSessionBean extends SimpleSessionBean<UserDocument> imp
 		}
 		lookFor = lookFor.replaceAll( "\\.", "" );
 		lookFor = lookFor.replaceAll( "-", "" );
-		return searchByDocument( UserDocument.typeCPF, lookFor );
+		return searchByDocument( UserDocument.CPF, lookFor );
 	}
 
 }

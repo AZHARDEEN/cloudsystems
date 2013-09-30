@@ -9,7 +9,7 @@ import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.system.fileupload.FileUploadSession;
 import br.com.mcampos.jpa.system.FileUpload;
 import br.com.mcampos.jpa.system.UploadStatus;

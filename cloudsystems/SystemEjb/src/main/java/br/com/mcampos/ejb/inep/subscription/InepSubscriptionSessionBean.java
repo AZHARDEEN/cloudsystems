@@ -44,26 +44,26 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 	{
 		List<InepSubscription> list = Collections.emptyList( );
 
-		InepEvent merged = getEventSession( ).get( event.getId( ) );
+		InepEvent merged = this.getEventSession( ).get( event.getId( ) );
 		if ( merged != null ) {
-			list = findByNamedQuery( InepSubscription.getAllEventSubs, merged );
+			list = this.findByNamedQuery( InepSubscription.getAllEventSubs, merged );
 		}
 		return list;
 	}
 
 	private InepPackageSessionLocal getEventSession( )
 	{
-		return eventSession;
+		return this.eventSession;
 	}
 
 	@Override
 	public List<InepEvent> getEvents( PrincipalDTO auth )
 	{
-		return getEventSession( ).getAll( auth );
+		return this.getEventSession( ).getAll( auth );
 	}
 
 	@Override
-	public List<InepSubscription> getAll( InepEvent event, String subs )
+	public List<InepSubscription> getAll( PrincipalDTO auth, InepEvent event, String subs )
 	{
 		List<InepSubscription> list = Collections.emptyList( );
 
@@ -77,7 +77,10 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 		if ( nIndex < 0 ) {
 			subs = "%" + subs + "%";
 		}
-		list = findByNamedQuery( InepSubscription.getAllEventSubsById, event, subs );
+		/*
+		 * TODO: verificar se o usuário logado no sistena não está vinculado a um posto aplicador
+		 */
+		list = this.findByNamedQuery( InepSubscription.getAllEventSubsById, event, subs );
 		return list;
 	}
 
@@ -88,7 +91,7 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 		if ( s.getWrittenGrade( ) == null ) {
 			return;
 		}
-		verifyVariance( s );
+		this.verifyVariance( s );
 	}
 
 	@Override
@@ -98,7 +101,7 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 		if ( s.getOralGrade( ) == null ) {
 			return;
 		}
-		verifyVariance( s );
+		this.verifyVariance( s );
 
 	}
 
@@ -128,9 +131,9 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 			bVariance = true;
 		}
 		if ( bVariance ) {
-			InepOralTest oralTest = oralTestSession.get( s );
+			InepOralTest oralTest = this.oralTestSession.get( s );
 			if ( oralTest != null ) {
-				oralTest.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+				oralTest.setStatus( this.statusSession.get( DistributionStatus.statusVariance ) );
 				if ( oralTest.getVarianceStatus( ).equals( 0 ) ) {
 					oralTest.setVarianceStatus( 11 );
 				}

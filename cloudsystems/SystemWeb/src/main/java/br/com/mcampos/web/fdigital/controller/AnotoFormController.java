@@ -17,7 +17,7 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.fdigital.form.AnotoFormSession;
 import br.com.mcampos.jpa.fdigital.AnotoForm;
 import br.com.mcampos.jpa.fdigital.AnotoFormUser;

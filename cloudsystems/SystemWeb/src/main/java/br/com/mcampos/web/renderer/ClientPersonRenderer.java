@@ -22,10 +22,10 @@ public class ClientPersonRenderer extends BaseListRenderer<Client>
 		for ( UserDocument document : data.getClient( ).getDocuments( ) )
 		{
 			switch ( document.getType( ).getId( ) ) {
-			case UserDocument.typeCPF:
+			case UserDocument.CPF:
 				cpf = document;
 				break;
-			case UserDocument.typeEmail:
+			case UserDocument.EMAIL:
 				email = document;
 				break;
 			}

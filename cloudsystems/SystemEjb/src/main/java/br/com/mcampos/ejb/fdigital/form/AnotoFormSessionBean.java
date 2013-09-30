@@ -7,7 +7,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import br.com.mcampos.dto.MediaDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.fdigital.form.media.FormMediaSessionLocal;
@@ -74,7 +74,7 @@ public class AnotoFormSessionBean extends SimpleSessionBean<AnotoForm> implement
 	 * 
 	 * @see
 	 * br.com.mcampos.ejb.fdigital.form.AnotoFormSession#add(br.com.mcampos.
-	 * ejb.fdigital.form.AnotoForm, br.com.mcampos.dto.MediaDTO)
+	 * ejb.fdigital.form.AnotoForm, br.com.mcampos.dto.system.MediaDTO)
 	 */
 	@Override
 	public AnotoForm add( PrincipalDTO auth, AnotoForm f, MediaDTO m )

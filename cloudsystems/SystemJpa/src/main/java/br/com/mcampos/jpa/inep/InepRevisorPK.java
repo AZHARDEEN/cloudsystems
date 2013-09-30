@@ -32,46 +32,46 @@ public class InepRevisorPK implements Serializable, Comparable<InepRevisorPK>
 
 	public InepRevisorPK( Collaborator c, InepEvent e )
 	{
-		set( c );
-		set( e );
+		this.set( c );
+		this.set( e );
 	}
 
 	public void set( Collaborator c )
 	{
-		setCompanyId( c.getId( ).getCompanyId( ) );
-		setSequence( c.getId( ).getSequence( ) );
+		this.setCompanyId( c.getId( ).getCompanyId( ) );
+		this.setSequence( c.getId( ).getSequence( ) );
 	}
 
 	public void set( InepTask c )
 	{
-		setCompanyId( c.getId( ).getCompanyId( ) );
-		setEventId( c.getId( ).getEventId( ) );
+		this.setCompanyId( c.getId( ).getCompanyId( ) );
+		this.setEventId( c.getId( ).getEventId( ) );
 	}
 
 	public void set( InepEvent c )
 	{
-		setCompanyId( c.getId( ).getCompanyId( ) );
-		setEventId( c.getId( ).getId( ) );
+		this.setCompanyId( c.getId( ).getCompanyId( ) );
+		this.setEventId( c.getId( ).getId( ) );
 	}
 
 	public Integer getCompanyId( )
 	{
-		return companyId;
+		return this.companyId;
 	}
 
 	public void setCompanyId( Integer usrIdIn )
 	{
-		companyId = usrIdIn;
+		this.companyId = usrIdIn;
 	}
 
 	public Integer getSequence( )
 	{
-		return sequence;
+		return this.sequence;
 	}
 
 	public void setSequence( Integer colSeqIn )
 	{
-		sequence = colSeqIn;
+		this.sequence = colSeqIn;
 	}
 
 	@Override
@@ -84,8 +84,8 @@ public class InepRevisorPK implements Serializable, Comparable<InepRevisorPK>
 			return false;
 		}
 		InepRevisorPK castOther = (InepRevisorPK) other;
-		return getCompanyId( ).equals( castOther.getCompanyId( ) ) && getSequence( ).equals( castOther.getSequence( ) )
-				&& getEventId( ).equals( castOther.getEventId( ) );
+		return this.getCompanyId( ).equals( castOther.getCompanyId( ) ) && this.getSequence( ).equals( castOther.getSequence( ) )
+				&& this.getEventId( ).equals( castOther.getEventId( ) );
 
 	}
 
@@ -94,16 +94,16 @@ public class InepRevisorPK implements Serializable, Comparable<InepRevisorPK>
 	{
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + getCompanyId( ).hashCode( );
-		hash = hash * prime + getSequence( ).hashCode( );
-		hash = hash * prime + getEventId( ).hashCode( );
+		hash = hash * prime + this.getCompanyId( ).hashCode( );
+		hash = hash * prime + this.getSequence( ).hashCode( );
+		hash = hash * prime + this.getEventId( ).hashCode( );
 
 		return hash;
 	}
 
 	public Integer getEventId( )
 	{
-		return eventId;
+		return this.eventId;
 	}
 
 	public void setEventId( Integer eventId )
@@ -116,11 +116,11 @@ public class InepRevisorPK implements Serializable, Comparable<InepRevisorPK>
 	{
 		int nRet;
 
-		nRet = getCompanyId( ).compareTo( o.getCompanyId( ) );
+		nRet = this.getCompanyId( ).compareTo( o.getCompanyId( ) );
 		if ( nRet == 0 ) {
-			nRet = getEventId( ).compareTo( o.getEventId( ) );
+			nRet = this.getEventId( ).compareTo( o.getEventId( ) );
 			if ( nRet == 0 ) {
-				nRet = getSequence( ).compareTo( o.getSequence( ) );
+				nRet = this.getSequence( ).compareTo( o.getSequence( ) );
 			}
 		}
 		return nRet;

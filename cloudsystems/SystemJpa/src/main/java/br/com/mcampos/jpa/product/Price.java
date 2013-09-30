@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the price database table.
@@ -15,6 +16,7 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQuery( name = "Price.findAll", query = "SELECT p FROM Price p" )
+@Table( name = "price", schema = "public" )
 public class Price extends BaseProduct implements Serializable, Comparable<Price>
 {
 	private static final long serialVersionUID = 1L;
@@ -32,11 +34,13 @@ public class Price extends BaseProduct implements Serializable, Comparable<Price
 	{
 	}
 
+	@Override
 	public PricePK getId( )
 	{
-		if ( id == null )
-			id = new PricePK( );
-		return id;
+		if ( this.id == null ) {
+			this.id = new PricePK( );
+		}
+		return this.id;
 	}
 
 	public void setId( PricePK id )
@@ -46,44 +50,46 @@ public class Price extends BaseProduct implements Serializable, Comparable<Price
 
 	public Date getToDate( )
 	{
-		return toDate;
+		return this.toDate;
 	}
 
 	public void setToDate( Date pctToDt )
 	{
-		toDate = pctToDt;
+		this.toDate = pctToDt;
 	}
 
 	public BigDecimal getValue( )
 	{
-		return value;
+		return this.value;
 	}
 
 	public void setValue( BigDecimal prcValueNm )
 	{
-		value = prcValueNm;
+		this.value = prcValueNm;
 	}
 
 	@Override
 	public int compareTo( Price o )
 	{
-		return getId( ).compareTo( o.getId( ) );
+		return this.getId( ).compareTo( o.getId( ) );
 	}
 
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( obj == this )
+		if ( obj == this ) {
 			return true;
+		}
 		if ( obj instanceof Price ) {
 			Price other = (Price) obj;
-			return getId( ).equals( other.getId( ) );
+			return this.getId( ).equals( other.getId( ) );
 		}
 		if ( obj instanceof PricePK ) {
 			PricePK other = (PricePK) obj;
-			return getId( ).equals( other );
+			return this.getId( ).equals( other );
 		}
-		else
+		else {
 			return false;
+		}
 	}
 }

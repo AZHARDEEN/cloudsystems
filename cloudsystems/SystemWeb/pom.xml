@@ -28,6 +28,7 @@
 
 	<properties>
 		<zk.version>6.5.3</zk.version>
+		<apache.poi.version>3.9</apache.poi.version>
 	</properties>
 
 
@@ -166,6 +167,20 @@
 			<artifactId>timelinez</artifactId>
 			<version>2.3.1_50</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${apache.poi.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${apache.poi.version}</version>
+		</dependency>
+
+
 	</dependencies>
 
 

@@ -67,11 +67,11 @@ public class RegisterSessionBean extends BaseSessionBean implements RegisterSess
 		else {
 			for ( UserDocument doc : person.getDocuments( ) ) {
 				switch ( doc.getType( ).getId( ) ) {
-				case UserDocument.typeEmail:
+				case UserDocument.EMAIL:
 					doc.setCode( dto.getEmail( ) );
 					emailFound = true;
 					break;
-				case UserDocument.typeCPF:
+				case UserDocument.CPF:
 					doc.setCode( dto.getDocument( ) );
 					cpfFound = true;
 					break;
@@ -80,11 +80,11 @@ public class RegisterSessionBean extends BaseSessionBean implements RegisterSess
 		}
 		UserDocument document;
 		if ( emailFound == false ) {
-			document = new UserDocument( dto.getEmail( ), documentTypeSession.get( ( UserDocument.typeEmail ) ) );
+			document = new UserDocument( dto.getEmail( ), documentTypeSession.get( ( UserDocument.EMAIL ) ) );
 			person.add( document );
 		}
 		if ( cpfFound == false ) {
-			document = new UserDocument( dto.getDocument( ), documentTypeSession.get( ( UserDocument.typeCPF ) ) );
+			document = new UserDocument( dto.getDocument( ), documentTypeSession.get( ( UserDocument.CPF ) ) );
 			person.add( document );
 		}
 		return loginSession.add( person, dto.getPassword( ) );
