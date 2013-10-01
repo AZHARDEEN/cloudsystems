@@ -5,14 +5,32 @@ import java.io.InputStreamReader;
 
 import br.com.mcampos.dto.system.MediaDTO;
 
-public class UploadMedia
+public final class UploadMedia
 {
-	public UploadMedia( )
+	/**
+	 * Brief Esta função tansforma a media (do zk framework) em mediaDTO e também é apenas um wrapper para getMedia ( media, getBinaryData ); @see MediaDTO
+	 * getMedia( org.zkoss.util.media.Media media, boolean getBinaryData )
+	 * 
+	 * 
+	 * @param media
+	 * @return MediaDTO
+	 * @throws IOException
+	 */
+	public static MediaDTO getMedia( org.zkoss.util.media.Media media ) throws IOException
 	{
-		super( );
+		return getMedia( media, true );
 	}
 
-	public static MediaDTO getMedia( org.zkoss.util.media.Media media ) throws IOException
+	/**
+	 * Brief Esta função tansforma a media (do zk framework) em mediaDTO
+	 * 
+	 * @param media
+	 * @param getBinaryData
+	 *            Se você não deseja que o binário seja copiado, simplesmente informe false
+	 * @return Media DTO
+	 * @throws IOException
+	 */
+	public static MediaDTO getMedia( org.zkoss.util.media.Media media, boolean getBinaryData ) throws IOException
 	{
 		MediaDTO dto = new MediaDTO( );
 		int mediaSize = 1;
@@ -20,6 +38,9 @@ public class UploadMedia
 		dto.setFormat( media.getFormat( ) );
 		dto.setName( media.getName( ) );
 		dto.setMimeType( media.getContentType( ) );
+		if ( getBinaryData == false ) {
+			return dto;
+		}
 		if ( media.inMemory( ) ) {
 			if ( media.isBinary( ) ) {
 				dto.setObject( media.getByteData( ) );
@@ -51,4 +72,5 @@ public class UploadMedia
 		}
 		return dto;
 	}
+
 }

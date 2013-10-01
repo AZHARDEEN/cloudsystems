@@ -37,7 +37,10 @@ public class InepMediaSessionBean extends SimpleSessionBean<InepMedia> implement
 		InepMedia inepMedia = new InepMedia( isc );
 		inepMedia.setMedia( media );
 		inepMedia.setTask( null );
-		return this.add( inepMedia );
+		inepMedia = this.add( inepMedia );
+		inepMedia.setType( InepMedia.TYPE_AUDIO );
+		isc.add( inepMedia );
+		return inepMedia;
 
 	}
 
@@ -55,6 +58,7 @@ public class InepMediaSessionBean extends SimpleSessionBean<InepMedia> implement
 		InepMedia inepMedia = new InepMedia( test.getSubscription( ) );
 		inepMedia.setMedia( media );
 		inepMedia.setTask( test.getId( ).getTaskId( ) );
+		inepMedia.setType( InepMedia.TYPE_TEST );
 		test.getSubscription( ).add( inepMedia );
 		return this.add( inepMedia );
 	}

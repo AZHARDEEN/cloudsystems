@@ -11,8 +11,10 @@ import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zul.Messagebox;
 
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.jpa.inep.InepSubscription;
 import br.com.mcampos.jpa.inep.InepSubscriptionPK;
+import br.com.mcampos.web.core.UploadMedia;
 
 public class AudioUploadController extends BaseStationController
 {
@@ -64,7 +66,7 @@ public class AudioUploadController extends BaseStationController
 	private void saveAudio( InepSubscription subscription, Media audio ) throws IOException
 	{
 		InepSubscriptionPK id = subscription.getId( );
-		File dir = new File( SAVE_DIR + "/" + id.getCompanyId( ) + "/" + id.getEventId( ) );
+		File dir = new File( SAVE_DIR + "/" + id.getCompanyId( ) + "/" + id.getEventId( ) + "/audio" );
 		if ( !dir.exists( ) ) {
 			dir.mkdirs( );
 		}
@@ -80,5 +82,10 @@ public class AudioUploadController extends BaseStationController
 		nRead = audio.getStreamData( ).read( buffer );
 		out.write( buffer, 0, nRead );
 		out.close( );
+		MediaDTO dto = UploadMedia.getMedia( audio, false );
+		dto.setSize( buffer.length );
+		dto.setPath( file.getPath( ) );
+		this.getSession( ).storeUploadInformation( this.getPrincipal( ), subscription, dto );
+		buffer = null;
 	}
 }

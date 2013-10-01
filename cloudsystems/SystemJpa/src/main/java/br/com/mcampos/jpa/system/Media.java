@@ -57,84 +57,97 @@ public class Media implements Serializable
 	@Column( name = "med_size_in", nullable = false )
 	private Integer size;
 
+	@Column( name = "med_url_ch", nullable = true, length = 1024, columnDefinition = "varchar" )
+	private String path;
+
 	public Media( )
 	{
 	}
 
 	public Media( Integer id )
 	{
-		setId( id );
+		this.setId( id );
 	}
 
 	public Integer getId( )
 	{
-		return id;
+		return this.id;
 	}
 
 	public void setId( Integer medIdIn )
 	{
-		id = medIdIn;
+		this.id = medIdIn;
 	}
 
 	public String getFormat( )
 	{
-		return format;
+		return this.format;
 	}
 
 	public void setFormat( String medFormatCh )
 	{
-		format = medFormatCh;
+		this.format = medFormatCh;
 	}
 
 	public Date getInsertDate( )
 	{
-		return insertDate;
+		return this.insertDate;
 	}
 
 	public void setInsertDate( Date medInsetDt )
 	{
-		insertDate = medInsetDt;
+		this.insertDate = medInsetDt;
 	}
 
 	public String getMimeType( )
 	{
-		return mimeType;
+		return this.mimeType;
 	}
 
 	public void setMimeType( String medMimeCh )
 	{
-		mimeType = medMimeCh;
+		this.mimeType = medMimeCh;
 	}
 
 	public String getName( )
 	{
-		return name;
+		return this.name;
 	}
 
 	public void setName( String medNameCh )
 	{
-		name = medNameCh;
+		this.name = medNameCh;
 	}
 
 	public byte[ ] getObject( )
 	{
-		return object;
+		return this.object;
 	}
 
 	public void setObject( byte[ ] medObjectBin )
 	{
-		object = medObjectBin;
-		setSize( getObject( ) != null ? getObject( ).length : 0 );
+		this.object = medObjectBin;
+		this.setSize( this.getObject( ) != null ? this.getObject( ).length : 0 );
 	}
 
 	public Integer getSize( )
 	{
-		return size;
+		return this.size;
 	}
 
 	public void setSize( Integer medSizeIn )
 	{
-		size = medSizeIn;
+		this.size = medSizeIn;
+	}
+
+	public String getPath( )
+	{
+		return this.path;
+	}
+
+	public void setPath( String path )
+	{
+		this.path = path;
 	}
 
 }

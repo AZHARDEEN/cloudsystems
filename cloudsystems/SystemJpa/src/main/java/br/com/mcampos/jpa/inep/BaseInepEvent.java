@@ -51,4 +51,20 @@ public abstract class BaseInepEvent extends BaseCompanyEntity
 		}
 	}
 
+	@Override
+	public boolean equals( Object obj )
+	{
+		if ( obj != null ) {
+			return this.getId( ).equals( ( (BaseInepEvent) obj ).getId( ) );
+		}
+		else {
+			return false;
+		}
+	}
+
+	public int compareTo( BaseInepEvent other )
+	{
+		return this.getId( ).compareTo( other.getId( ) );
+	}
+
 }
