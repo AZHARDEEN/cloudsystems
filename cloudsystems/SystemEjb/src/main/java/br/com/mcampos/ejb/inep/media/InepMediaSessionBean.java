@@ -45,6 +45,13 @@ public class InepMediaSessionBean extends SimpleSessionBean<InepMedia> implement
 	}
 
 	@Override
+	public InepMedia removeAudio( InepSubscription isc )
+	{
+
+		return null;
+	}
+
+	@Override
 	public InepMedia addPDF( InepTest test, String name, byte[ ] object )
 	{
 		Media media = new Media( );

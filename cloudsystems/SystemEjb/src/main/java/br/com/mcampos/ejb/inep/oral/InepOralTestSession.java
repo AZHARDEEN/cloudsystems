@@ -8,6 +8,6 @@ import br.com.mcampos.jpa.inep.InepOralTest;
 @Remote
 public interface InepOralTestSession extends BaseCrudSessionInterface<InepOralTest>
 {
-	void add( InepOralTest entity, boolean createSubscription );
+	InepOralTest add( InepOralTest entity, boolean createSubscription );
 
 }

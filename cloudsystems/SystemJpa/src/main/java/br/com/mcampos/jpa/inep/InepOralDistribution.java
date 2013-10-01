@@ -75,37 +75,38 @@ public class InepOralDistribution implements Serializable
 
 	public InepOralDistribution( InepOralTest test, InepRevisor revisor )
 	{
-		set( test );
-		set( revisor );
+		this.set( test );
+		this.set( revisor );
 	}
 
 	public InepOralDistribution( InepOralTest test, InepRevisor revisor, DistributionStatus status )
 	{
-		set( test );
-		set( revisor );
-		setStatus( status );
+		this.set( test );
+		this.set( revisor );
+		this.setStatus( status );
 	}
 
 	public void set( InepOralTest test )
 	{
-		getId( ).setCompanyId( test.getId( ).getUserId( ) );
-		getId( ).setEventId( test.getId( ).getEventId( ) );
-		getId( ).setSubscriptionId( test.getId( ).getSubscriptionId( ) );
+		this.getId( ).setCompanyId( test.getId( ).getCompanyId( ) );
+		this.getId( ).setEventId( test.getId( ).getEventId( ) );
+		this.getId( ).setSubscriptionId( test.getId( ).getSubscriptionId( ) );
 	}
 
 	public void set( InepRevisor revisor )
 	{
-		getId( ).setCompanyId( revisor.getId( ).getCompanyId( ) );
-		getId( ).setEventId( revisor.getId( ).getEventId( ) );
-		getId( ).setCollaboratorId( revisor.getId( ).getSequence( ) );
+		this.getId( ).setCompanyId( revisor.getId( ).getCompanyId( ) );
+		this.getId( ).setEventId( revisor.getId( ).getEventId( ) );
+		this.getId( ).setCollaboratorId( revisor.getId( ).getSequence( ) );
 
 	}
 
 	public InepOralDistributionPK getId( )
 	{
-		if ( id == null )
-			id = new InepOralDistributionPK( );
-		return id;
+		if ( this.id == null ) {
+			this.id = new InepOralDistributionPK( );
+		}
+		return this.id;
 	}
 
 	public void setId( InepOralDistributionPK id )
@@ -115,7 +116,7 @@ public class InepOralDistribution implements Serializable
 
 	public DistributionStatus getStatus( )
 	{
-		return status;
+		return this.status;
 	}
 
 	public void setStatus( DistributionStatus status )
@@ -125,7 +126,7 @@ public class InepOralDistribution implements Serializable
 
 	public Integer getNota( )
 	{
-		return nota;
+		return this.nota;
 	}
 
 	public void setNota( Integer nota )
@@ -135,7 +136,7 @@ public class InepOralDistribution implements Serializable
 
 	public InepOralTest getTest( )
 	{
-		return test;
+		return this.test;
 	}
 
 	public void setTest( InepOralTest test )
@@ -145,7 +146,7 @@ public class InepOralDistribution implements Serializable
 
 	public InepRevisor getRevisor( )
 	{
-		return revisor;
+		return this.revisor;
 	}
 
 	public void setRevisor( InepRevisor revisor )

@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.inep;
 
+import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.List;
 
@@ -11,12 +12,15 @@ import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.core.BaseSessionBean;
 import br.com.mcampos.ejb.inep.media.InepMediaSessionLocal;
+import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.system.fileupload.FileUPloadSessionLocal;
 import br.com.mcampos.jpa.inep.InepElement;
 import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.jpa.inep.InepMedia;
+import br.com.mcampos.jpa.inep.InepObserverGrade;
+import br.com.mcampos.jpa.inep.InepOralTest;
 import br.com.mcampos.jpa.inep.InepSubscription;
 import br.com.mcampos.jpa.system.FileUpload;
 import br.com.mcampos.sysutils.SysUtils;
@@ -42,6 +46,12 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 
 	@EJB
 	private InepMediaSessionLocal inepMediaSession;
+
+	@EJB
+	private InepOralTestSessionLocal oralTestSession;
+
+	private static final int MAX_ELEMENTS = 3;
+	private static final int MAX_ORAL_GRADE = 6;
 
 	@Override
 	/**
@@ -72,6 +82,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	@Override
 	public FileUpload storeUploadInformation( PrincipalDTO auth, InepSubscription subscription, MediaDTO media )
 	{
+		this.removeExistingAudio( auth, subscription, media );
 		FileUpload uploaded = this.fileUploadSession.addNewFile( auth, media );
 
 		InepSubscription merged = this.subscriptionSession.get( subscription.getId( ) );
@@ -83,10 +94,15 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		return uploaded;
 	}
 
-	@Override
-	public void addElements( PrincipalDTO auth, InepSubscription subscription, int[ ] elements )
+	private void removeExistingAudio( PrincipalDTO auth, InepSubscription subscription, MediaDTO media )
 	{
-		if ( auth == null || subscription == null || elements == null || elements.length != 3 ) {
+		InepMedia inepMedia = this.inepMediaSession.removeAudio( subscription );
+	}
+
+	@Override
+	public void setInterviewerInformation( PrincipalDTO auth, InepSubscription subscription, int[ ] elements, int grade )
+	{
+		if ( auth == null || subscription == null || elements == null || elements.length != MAX_ELEMENTS ) {
 			throw new InvalidParameterException( );
 		}
 		try {
@@ -101,5 +117,50 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 			InepElement element = new InepElement( subscription, id );
 			this.getEntityManager( ).persist( element );
 		}
+
+		/*
+		 * Setup Interviewer Grade
+		 */
+		InepOralTest oralTest = this.oralTestSession.get( subscription );
+		if ( oralTest == null ) {
+			oralTest = this.oralTestSession.add( new InepOralTest( subscription ), false );
+		}
+		oralTest.setInterviewGrade( BigDecimal.valueOf( grade ) );
+		this.oralTestSession.setStatus( oralTest );
 	}
+
+	@Override
+	public void setObserverInformation( PrincipalDTO auth, InepSubscription subscription, int[ ] grades )
+	{
+
+		Double grade = 0.0D;
+		if ( auth == null || subscription == null || grades == null || grades.length != MAX_ORAL_GRADE ) {
+			throw new InvalidParameterException( );
+		}
+		try {
+			String deleteQuery = "DELETE FROM InepObserverGrade o WHERE o.subscription = ?1 ";
+			Query query = this.getEntityManager( ).createQuery( deleteQuery ).setParameter( 1, subscription );
+			query.executeUpdate( );
+		}
+		catch ( Exception e ) {
+			e = null;
+		}
+		int nIndex = 0;
+		for ( int id : grades ) {
+			InepObserverGrade element = new InepObserverGrade( subscription, ++nIndex, id );
+			grade += id;
+			this.getEntityManager( ).persist( element );
+		}
+		grade /= ( (double) MAX_ORAL_GRADE );
+		/*
+		 * Setup Interviewer Grade
+		 */
+		InepOralTest oralTest = this.oralTestSession.get( subscription );
+		if ( oralTest == null ) {
+			oralTest = this.oralTestSession.add( new InepOralTest( subscription ), false );
+		}
+		oralTest.setObserverGrade( BigDecimal.valueOf( grade ) );
+		this.oralTestSession.setStatus( oralTest );
+	}
+
 }

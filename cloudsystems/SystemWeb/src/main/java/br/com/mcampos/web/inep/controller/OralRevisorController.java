@@ -47,13 +47,11 @@ public class OralRevisorController extends BaseOralController
 	{
 		super.doAfterCompose( comp );
 		this.setRadio( );
-		if ( this.getRevisor( ) != null ) {
-			if ( this.getRevisor( ).isCoordenador( ) ) {
-				this.getListbox( ).setItemRenderer( new InepOralDistributionCoordinatoListRenderer( ) );
-			}
-			else {
-				this.getListbox( ).setItemRenderer( new InepOralDistributionListRenderer( ) );
-			}
+		if ( this.getRevisor( ) == null || this.getRevisor( ).isCoordenador( ) ) {
+			this.getListbox( ).setItemRenderer( new InepOralDistributionCoordinatoListRenderer( ) );
+		}
+		else {
+			this.getListbox( ).setItemRenderer( new InepOralDistributionListRenderer( ) );
 		}
 	}
 

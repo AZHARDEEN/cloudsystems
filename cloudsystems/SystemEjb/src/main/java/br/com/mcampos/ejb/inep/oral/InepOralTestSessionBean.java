@@ -23,6 +23,8 @@ import br.com.mcampos.jpa.inep.InepSubscriptionPK;
 @LocalBean
 public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> implements InepOralTestSession, InepOralTestSessionLocal
 {
+	private static final long serialVersionUID = -4861196998777088222L;
+
 	@EJB
 	private InepSubscriptionSessionLocal subscriptionSession;
 
@@ -36,14 +38,14 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	}
 
 	@Override
-	public void add( InepOralTest entity, boolean createSubscription )
+	public InepOralTest add( InepOralTest entity, boolean createSubscription )
 	{
-		InepSubscription s = getSubscription( entity, createSubscription );
+		InepSubscription s = this.getSubscription( entity, createSubscription );
 		entity.setSubscription( s );
-		entity.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
-		entity = merge( entity );
+		entity.setStatus( this.statusSession.get( DistributionStatus.statusDistributed ) );
+		entity = this.merge( entity );
 		if ( entity.getFinalGrade( ) != null && entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) ) {
-			subscriptionSession.setOralGrade( s, entity.getFinalGrade( ) );
+			this.subscriptionSession.setOralGrade( s, entity.getFinalGrade( ) );
 		}
 		if ( entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) ) {
 			entity.setVarianceStatus( 0 );
@@ -51,19 +53,20 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 		else {
 			entity.setVarianceStatus( 1 );
 		}
+		return entity;
 	}
 
 	private InepSubscription getSubscription( InepOralTest test, boolean create )
 	{
 		InepSubscriptionPK key = new InepSubscriptionPK( );
 		key.setEventId( test.getId( ).getEventId( ) );
-		key.setCompanyId( test.getId( ).getUserId( ) );
+		key.setCompanyId( test.getId( ).getCompanyId( ) );
 		key.setId( test.getId( ).getSubscriptionId( ) );
-		InepSubscription entity = subscriptionSession.get( key );
+		InepSubscription entity = this.subscriptionSession.get( key );
 		if ( entity == null && create ) {
 			entity = new InepSubscription( );
 			entity.setId( key );
-			entity = subscriptionSession.merge( entity );
+			entity = this.subscriptionSession.merge( entity );
 		}
 		return entity;
 	}
@@ -71,29 +74,31 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	@Override
 	public InepOralTest merge( InepOralTest newEntity )
 	{
-		newEntity = setStatus( super.merge( newEntity ) );
+		newEntity = this.setStatus( super.merge( newEntity ) );
 		return newEntity;
 	}
 
-	private InepOralTest setStatus( InepOralTest newEntity )
+	@Override
+	public InepOralTest setStatus( InepOralTest newEntity )
 	{
 		if ( newEntity == null ) {
 			return null;
 		}
-		if ( newEntity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) ) {
+		if ( newEntity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed )
+				&& newEntity.getInterviewGrade( ) != null && newEntity.getObserverGrade( ) != null ) {
 			double grade1, grade2;
 
-			grade1 = newEntity.getInterviewGrade( ) != null ? newEntity.getInterviewGrade( ).doubleValue( ) : 0.0;
-			grade2 = newEntity.getObserverGrade( ) != null ? newEntity.getObserverGrade( ).doubleValue( ) : 0.0;
+			grade1 = newEntity.getInterviewGrade( ).doubleValue( );
+			grade2 = newEntity.getObserverGrade( ).doubleValue( );
 			double variance = Math.abs( grade1 - grade2 );
 			if ( variance >= 1.5 ) {
-				newEntity.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+				newEntity.setStatus( this.statusSession.get( DistributionStatus.statusVariance ) );
 			}
 			if ( grade1 >= 2.0 && grade2 < 2.0 ) {
-				newEntity.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+				newEntity.setStatus( this.statusSession.get( DistributionStatus.statusVariance ) );
 			}
 			if ( grade2 >= 2.0 && grade1 < 2.0 ) {
-				newEntity.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+				newEntity.setStatus( this.statusSession.get( DistributionStatus.statusVariance ) );
 			}
 		}
 		return newEntity;
@@ -102,24 +107,24 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	@Override
 	public List<InepOralTest> getVarianceOralOnly( InepEvent pack )
 	{
-		return findByNamedQuery( InepOralTest.getVarianceOralOnly, pack );
+		return this.findByNamedQuery( InepOralTest.getVarianceOralOnly, pack );
 	}
 
 	@Override
 	public void setAgreementGrade( InepOralTest test, Integer grade, boolean isCoordinator )
 	{
-		test.setStatus( statusSession.get( DistributionStatus.statusRevised ) );
+		test.setStatus( this.statusSession.get( DistributionStatus.statusRevised ) );
 		if ( isCoordinator == false ) {
 			test.setAgreementGrade( grade );
 			if ( test.getVarianceStatus( ).intValue( ) < 10 ) {
 				double variance = test.getFinalGrade( ).doubleValue( );
 				variance = Math.abs( variance - ( (double) grade ) );
 				if ( variance > 1.5 ) {
-					test.setStatus( statusSession.get( DistributionStatus.statusVariance ) );
+					test.setStatus( this.statusSession.get( DistributionStatus.statusVariance ) );
 					test.setVarianceStatus( 3 );
 				}
 				else {
-					subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
+					this.subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
 					test.setVarianceStatus( 2 );
 				}
 			}
@@ -130,7 +135,7 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 		else {
 			if ( test.getVarianceStatus( ).intValue( ) < 10 ) {
 				test.setAgreement2Grade( new BigDecimal( grade ) );
-				subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
+				this.subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
 				test.setVarianceStatus( 4 );
 			}
 			else {
@@ -142,6 +147,6 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	@Override
 	public InepOralTest get( InepSubscription s )
 	{
-		return getByNamedQuery( InepOralTest.getBySubscription, s );
+		return this.getByNamedQuery( InepOralTest.getBySubscription, s );
 	}
 }
