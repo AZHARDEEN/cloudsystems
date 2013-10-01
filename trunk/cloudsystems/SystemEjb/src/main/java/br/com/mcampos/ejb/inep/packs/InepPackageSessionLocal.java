@@ -17,4 +17,5 @@ public interface InepPackageSessionLocal extends BaseCrudSessionInterface<InepEv
 	List<InepEvent> getAvailable( PrincipalDTO c );
 
 	List<InepEvent> getAvailable( );
+
 }

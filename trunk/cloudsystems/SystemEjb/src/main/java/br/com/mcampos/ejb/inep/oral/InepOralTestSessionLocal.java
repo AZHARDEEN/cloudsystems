@@ -12,12 +12,14 @@ import br.com.mcampos.jpa.inep.InepSubscription;
 @Local
 public interface InepOralTestSessionLocal extends BaseCrudSessionInterface<InepOralTest>
 {
-	void add( InepOralTest entity, boolean createSubscription );
+	InepOralTest add( InepOralTest entity, boolean createSubscription );
 
 	List<InepOralTest> getVarianceOralOnly( InepEvent pack );
 
 	void setAgreementGrade( InepOralTest test, Integer grade, boolean isCoordinator );
 
 	InepOralTest get( InepSubscription s );
+
+	InepOralTest setStatus( InepOralTest newEntity );
 
 }

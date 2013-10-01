@@ -8,7 +8,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -29,7 +28,7 @@ import javax.persistence.Table;
 				name = InepOralTest.getBySubscription,
 				query = "select o from InepOralTest o WHERE o.subscription = ?1 " )
 } )
-public class InepOralTest implements Serializable
+public class InepOralTest extends BaseInepSubscription implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	public static final String getVarianceOralOnly = "InepOralTest.getVarianceOralOnly";
@@ -73,36 +72,33 @@ public class InepOralTest implements Serializable
 	@Column( name = "iot_grade_nm", nullable = true )
 	private BigDecimal realGrade;
 
-	@ManyToOne
-	@JoinColumns( {
-			@JoinColumn(
-					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
-			@JoinColumn(
-					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ),
-			@JoinColumn(
-					name = "isc_id_ch", referencedColumnName = "isc_id_ch", updatable = false, insertable = false, nullable = false ) } )
-	private InepSubscription subscription;
-
 	public InepOralTest( )
 	{
 	}
 
-	public InepOralTest( InepEvent item )
+	public InepOralTest( InepSubscription sub )
 	{
-		set( item );
+		super( sub );
 	}
 
+	public InepOralTest( InepEvent item )
+	{
+		this.set( item );
+	}
+
+	@Override
 	public InepOralTestPK getId( )
 	{
-		if ( id == null )
-			id = new InepOralTestPK( );
-		return id;
+		if ( this.id == null ) {
+			this.id = new InepOralTestPK( );
+		}
+		return this.id;
 	}
 
 	public void set( InepEvent item )
 	{
-		getId( ).setUserId( item.getId( ).getCompanyId( ) );
-		getId( ).setEventId( item.getId( ).getId( ) );
+		this.getId( ).setCompanyId( item.getId( ).getCompanyId( ) );
+		this.getId( ).setEventId( item.getId( ).getId( ) );
 	}
 
 	public void setId( InepOralTestPK id )
@@ -112,57 +108,62 @@ public class InepOralTest implements Serializable
 
 	public BigDecimal getFinalGrade( )
 	{
-		return finalGrade;
+		return this.finalGrade;
 	}
 
 	public void setFinalGrade( BigDecimal iotFinalGradeNm )
 	{
-		finalGrade = iotFinalGradeNm;
+		this.finalGrade = iotFinalGradeNm;
 	}
 
 	public BigDecimal getInterviewGrade( )
 	{
-		return interviewGrade;
+		return this.interviewGrade;
 	}
 
 	public void setInterviewGrade( BigDecimal iotInterviewerGradeNm )
 	{
-		interviewGrade = iotInterviewerGradeNm;
+		this.interviewGrade = iotInterviewerGradeNm;
+		this.setSubscriptionOralGrade( );
 	}
 
 	public BigDecimal getObserverGrade( )
 	{
-		return observerGrade;
+		return this.observerGrade;
 	}
 
 	public void setObserverGrade( BigDecimal iotObserverGradeNm )
 	{
-		observerGrade = iotObserverGradeNm;
+		this.observerGrade = iotObserverGradeNm;
+		this.setSubscriptionOralGrade( );
+	}
+
+	private void setSubscriptionOralGrade( )
+	{
+		if ( this.getSubscription( ) != null && this.getObserverGrade( ) != null && this.getInterviewGrade( ) != null ) {
+			double dValue = 0;
+			dValue += this.getObserverGrade( ).doubleValue( );
+			dValue += this.getInterviewGrade( ).doubleValue( );
+			dValue /= 2.0D;
+			BigDecimal value = BigDecimal.valueOf( dValue );
+			this.setFinalGrade( value );
+			this.getSubscription( ).setOralGrade( value );
+		}
 	}
 
 	public String getStation( )
 	{
-		return station;
+		return this.station;
 	}
 
 	public void setStation( String iotStationCh )
 	{
-		station = iotStationCh;
-	}
-
-	public InepSubscription getSubscription( )
-	{
-		return subscription;
-	}
-
-	public void setSubscription( InepSubscription subscription )
-	{
-		this.subscription = subscription;
+		this.station = iotStationCh;
 	}
 
 	public DistributionStatus getStatus( )
 	{
-		return status;
+		return this.status;
 	}
 
 	public void setStatus( DistributionStatus status )
@@ -172,7 +173,7 @@ public class InepOralTest implements Serializable
 
 	public Integer getAgreementGrade( )
 	{
-		return agreementGrade;
+		return this.agreementGrade;
 	}
 
 	public void setAgreementGrade( Integer agreementGrade )
@@ -182,7 +183,7 @@ public class InepOralTest implements Serializable
 
 	public BigDecimal getWrittenGrade( )
 	{
-		return writtenGrade;
+		return this.writtenGrade;
 	}
 
 	public void setWrittenGrade( BigDecimal writtenGrade )
@@ -192,7 +193,7 @@ public class InepOralTest implements Serializable
 
 	public BigDecimal getAgreement2Grade( )
 	{
-		return agreement2Grade;
+		return this.agreement2Grade;
 	}
 
 	public void setAgreement2Grade( BigDecimal agreement2Grade )
@@ -202,7 +203,7 @@ public class InepOralTest implements Serializable
 
 	public BigDecimal getRealGrade( )
 	{
-		return realGrade;
+		return this.realGrade;
 	}
 
 	public void setRealGrade( BigDecimal realGrade )
@@ -212,7 +213,7 @@ public class InepOralTest implements Serializable
 
 	public String getDescStatus( )
 	{
-		return descStatus;
+		return this.descStatus;
 	}
 
 	public void setDescStatus( String descStatus )
@@ -222,7 +223,7 @@ public class InepOralTest implements Serializable
 
 	public Integer getVarianceStatus( )
 	{
-		return varianceStatus;
+		return this.varianceStatus;
 	}
 
 	public void setVarianceStatus( Integer varianceStatus )

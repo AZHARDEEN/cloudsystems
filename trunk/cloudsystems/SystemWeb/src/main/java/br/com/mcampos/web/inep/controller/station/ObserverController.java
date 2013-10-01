@@ -38,6 +38,13 @@ public class ObserverController extends BaseStationController
 	@Override
 	protected void proceed( )
 	{
+		int[ ] ids = new int[ this.grades.length ];
+
+		int nIndex = 0;
+		for ( Radiogroup item : this.grades ) {
+			ids[ nIndex++ ] = Integer.parseInt( (String) item.getSelectedItem( ).getValue( ) );
+		}
+		this.getSession( ).setObserverInformation( this.getPrincipal( ), this.getCurrentSubscription( ), ids );
 	}
 
 	private boolean validateGrades( )

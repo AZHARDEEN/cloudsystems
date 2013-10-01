@@ -29,5 +29,7 @@ public interface StationSession extends BaseSessionInterface
 
 	FileUpload storeUploadInformation( PrincipalDTO auth, InepSubscription subscription, MediaDTO media );
 
-	void addElements( PrincipalDTO auth, InepSubscription subscription, int[ ] elements );
+	void setInterviewerInformation( PrincipalDTO auth, InepSubscription subscription, int[ ] elements, int grade );
+
+	void setObserverInformation( PrincipalDTO auth, InepSubscription subscription, int[ ] grades );
 }

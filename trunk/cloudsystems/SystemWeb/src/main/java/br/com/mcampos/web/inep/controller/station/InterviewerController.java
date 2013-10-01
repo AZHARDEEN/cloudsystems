@@ -55,7 +55,8 @@ public class InterviewerController extends BaseStationController
 				break;
 			}
 		}
-		this.getSession( ).addElements( this.getPrincipal( ), this.getCurrentSubscription( ), ids );
+		int iGrade = Integer.parseInt( ( (String) this.grade.getSelectedItem( ).getValue( ) ) );
+		this.getSession( ).setInterviewerInformation( this.getPrincipal( ), this.getCurrentSubscription( ), ids, iGrade );
 	}
 
 	public boolean validateElements( )

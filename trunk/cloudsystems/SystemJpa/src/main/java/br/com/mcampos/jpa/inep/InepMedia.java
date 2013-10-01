@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import br.com.mcampos.jpa.system.Media;
@@ -19,9 +21,15 @@ import br.com.mcampos.jpa.system.Media;
  */
 @Entity
 @Table( name = "inep_media", schema = "inep" )
+@NamedQueries( {
+		@NamedQuery( name = InepMedia.getAudios, query = "select o from InepMedia o where o.subscription = ?1 and o.imt_id_in = 2" )
+
+} )
 public class InepMedia implements Serializable, Comparable<InepMedia>
 {
 	private static final long serialVersionUID = 1L;
+
+	private static final String getAudios = "InepMedia.getAudios";
 
 	public static final Integer TYPE_TEST = 1;
 	public static final Integer TYPE_AUDIO = 2;

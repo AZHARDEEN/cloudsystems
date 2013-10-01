@@ -2,7 +2,6 @@ package br.com.mcampos.ejb.inep;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -11,13 +10,14 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
 
-import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.core.PrincipalDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.core.BaseSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
 import br.com.mcampos.ejb.inep.distribution.InepOralDistributionLocal;
 import br.com.mcampos.ejb.inep.media.InepMediaSessionLocal;
 import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
+import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.team.TeamSessionLocal;
@@ -56,36 +56,38 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 	InepMediaSessionLocal inepMediaSession;
 	@EJB
 	InepRevisorSessionLocal revisorSession;
+	@EJB
+	InepPackageSessionLocal eventSession;
 
 	@Override
 	public List<InepOralTest> getVarianceOralOnly( PrincipalDTO c, InepEvent pack )
 	{
-		return oralTestSession.getVarianceOralOnly( pack );
+		return this.oralTestSession.getVarianceOralOnly( pack );
 	}
 
 	@Override
 	public List<InepEvent> getEvents( PrincipalDTO auth )
 	{
-		return teamSession.getEvents( auth );
+		return this.eventSession.getAvailable( auth );
 	}
 
 	@Override
 	public InepRevisor getRevisor( InepEvent event, PrincipalDTO auth )
 	{
-		return teamSession.getRevisor( event, auth );
+		return this.teamSession.getRevisor( event, auth );
 	}
 
 	@Override
 	public List<InepOralTeamDTO> getOralTeamToChoice( InepEvent event, @NotNull PrincipalDTO auth )
 	{
-		List<InepRevisor> list = teamSession.getOralTeam( event );
+		List<InepRevisor> list = this.teamSession.getOralTeam( event );
 		ArrayList<InepOralTeamDTO> retList = null;
 
 		if ( list != null ) {
 			retList = new ArrayList<InepOralTeamDTO>( list.size( ) );
 			for ( InepRevisor item : list ) {
 				InepOralTeamDTO dto = new InepOralTeamDTO( item );
-				Integer value = oralDistributionSession.count( auth, " t.id.companyId = ?1 and t.id.eventId = ?2 and t.id.collaboratorId = ?3",
+				Integer value = this.oralDistributionSession.count( auth, " t.id.companyId = ?1 and t.id.eventId = ?2 and t.id.collaboratorId = ?3",
 						item.getId( ).getCompanyId( ), item.getId( ).getEventId( ), item.getId( ).getSequence( ) );
 				dto.setTests( value );
 				retList.add( dto );
@@ -101,22 +103,19 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 			throw new InvalidParameterException( );
 		}
 
-		DistributionStatus status = statusSession.get( DistributionStatus.statusDistributed );
+		DistributionStatus status = this.statusSession.get( DistributionStatus.statusDistributed );
 		for ( InepOralTest test : tests ) {
-			InepOralTest merged = oralTestSession.merge( test );
+			InepOralTest merged = this.oralTestSession.merge( test );
 			merged.setStatus( status );
-			oralDistributionSession.merge( new InepOralDistribution( merged, r1, status ) );
-			oralDistributionSession.merge( new InepOralDistribution( merged, r2, status ) );
+			this.oralDistributionSession.merge( new InepOralDistribution( merged, r1, status ) );
+			this.oralDistributionSession.merge( new InepOralDistribution( merged, r2, status ) );
 		}
 	}
 
 	@Override
 	public List<InepOralDistribution> getOralTests( InepRevisor revisor )
 	{
-		if ( revisor != null ) {
-			return oralDistributionSession.getOralTests( revisor );
-		}
-		return Collections.emptyList( );
+		return this.oralDistributionSession.getOralTests( revisor );
 	}
 
 	@Override
@@ -124,7 +123,7 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 	{
 		ArrayList<Media> medias = null;
 
-		InepSubscription merged = subscriptionSession.get( subscription.getId( ) );
+		InepSubscription merged = this.subscriptionSession.get( subscription.getId( ) );
 		if ( merged == null || SysUtils.isEmpty( merged.getMedias( ) ) ) {
 			return medias;
 		}
@@ -143,14 +142,14 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 	public boolean uploadAudio( Integer companyId, Integer eventId, String isc, MediaDTO obj )
 	{
 		InepSubscriptionPK key = new InepSubscriptionPK( companyId, eventId, isc );
-		InepSubscription merged = subscriptionSession.get( key );
+		InepSubscription merged = this.subscriptionSession.get( key );
 		if ( merged == null ) {
 			return false;
 		}
-		List<Media> audios = getAudios( merged );
+		List<Media> audios = this.getAudios( merged );
 		if ( SysUtils.isEmpty( audios ) ) {
-			Media media = mediaSession.add( obj );
-			InepMedia inepMedia = inepMediaSession.addAudio( merged, media );
+			Media media = this.mediaSession.add( obj );
+			InepMedia inepMedia = this.inepMediaSession.addAudio( merged, media );
 			merged.add( inepMedia );
 			return true;
 		}
@@ -162,31 +161,31 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 	@Override
 	public void updateGrade( InepOralDistribution item, int grade )
 	{
-		InepOralDistribution merged = oralDistributionSession.get( item.getId( ) );
+		InepOralDistribution merged = this.oralDistributionSession.get( item.getId( ) );
 		if ( merged == null ) {
 			throw new InvalidParameterException( "Item não existe (InepOralDistribution)" );
 		}
 		merged.setNota( grade );
 		if ( item.getRevisor( ).isCoordenador( ) ) {
-			merged.setStatus( statusSession.get( DistributionStatus.statusRevised ) );
+			merged.setStatus( this.statusSession.get( DistributionStatus.statusRevised ) );
 		}
 		else {
-			merged.setStatus( statusSession.get( DistributionStatus.statusFinalRevised ) );
+			merged.setStatus( this.statusSession.get( DistributionStatus.statusFinalRevised ) );
 		}
 		/*
 		 * Cuidado, a posicao da linha abaixo e importante!!!!
 		 */
-		oralTestSession.setAgreementGrade( merged.getTest( ), grade, item.getRevisor( ).isCoordenador( ) );
+		this.oralTestSession.setAgreementGrade( merged.getTest( ), grade, item.getRevisor( ).isCoordenador( ) );
 		if ( item.getRevisor( ).isCoordenador( ) == false ) {
-			InepOralDistribution other = oralDistributionSession.findOther( merged );
+			InepOralDistribution other = this.oralDistributionSession.findOther( merged );
 			if ( other != null && !merged.getNota( ).equals( other.getNota( ) ) ) {
 				throw new RuntimeException( "As notas da prova oral não poder ser diferentes entre os corretores" );
 			}
 			if ( !merged.getTest( ).getStatus( ).getId( ).equals( DistributionStatus.statusRevised ) ) {
-				List<InepRevisor> coordinators = revisorSession.getOralCoordinator( item.getTest( ).getSubscription( ).getEvent( ) );
+				List<InepRevisor> coordinators = this.revisorSession.getOralCoordinator( item.getTest( ).getSubscription( ).getEvent( ) );
 				for ( InepRevisor c : coordinators ) {
-					oralDistributionSession.merge( new InepOralDistribution( merged.getTest( ), c,
-							statusSession.get( DistributionStatus.statusDistributed ) ) );
+					this.oralDistributionSession.merge( new InepOralDistribution( merged.getTest( ), c,
+							this.statusSession.get( DistributionStatus.statusDistributed ) ) );
 				}
 			}
 		}
