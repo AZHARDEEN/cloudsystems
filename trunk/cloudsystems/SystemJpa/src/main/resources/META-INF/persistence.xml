@@ -133,6 +133,8 @@
     <class>br.com.mcampos.jpa.product.ProductKeywordPK</class>
     <class>br.com.mcampos.jpa.inep.InepStation</class>
     <class>br.com.mcampos.jpa.inep.InepStationPK</class>
+    <class>br.com.mcampos.jpa.inep.InepElement</class>
+    <class>br.com.mcampos.jpa.inep.InepElementPK</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

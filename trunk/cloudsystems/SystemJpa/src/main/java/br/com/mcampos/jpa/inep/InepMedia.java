@@ -23,6 +23,9 @@ public class InepMedia implements Serializable, Comparable<InepMedia>
 {
 	private static final long serialVersionUID = 1L;
 
+	public static final Integer TYPE_TEST = 1;
+	public static final Integer TYPE_AUDIO = 2;
+
 	@EmbeddedId
 	private InepMediaPK id;
 
@@ -42,20 +45,24 @@ public class InepMedia implements Serializable, Comparable<InepMedia>
 	} )
 	private InepSubscription inepSubscription;
 
+	@Column( name = "imt_id_in", nullable = true, updatable = true, insertable = true, columnDefinition = "integer" )
+	private Integer type;
+
 	public InepMedia( )
 	{
 	}
 
 	public InepMedia( InepSubscription parent )
 	{
-		getId( ).set( parent.getId( ) );
+		this.getId( ).set( parent.getId( ) );
 	}
 
 	public InepMediaPK getId( )
 	{
-		if ( id == null )
-			id = new InepMediaPK( );
-		return id;
+		if ( this.id == null ) {
+			this.id = new InepMediaPK( );
+		}
+		return this.id;
 	}
 
 	public void setId( InepMediaPK id )
@@ -65,64 +72,78 @@ public class InepMedia implements Serializable, Comparable<InepMedia>
 
 	public Integer getTask( )
 	{
-		return task;
+		return this.task;
 	}
 
 	public void setTask( Integer tskIdIn )
 	{
-		task = tskIdIn;
+		this.task = tskIdIn;
 	}
 
 	public Media getMedia( )
 	{
-		return media;
+		return this.media;
 	}
 
 	public void setMedia( Media media )
 	{
 		this.media = media;
-		getId( ).setMediaId( media != null ? media.getId( ) : null );
+		this.getId( ).setMediaId( media != null ? media.getId( ) : null );
 	}
 
 	public InepSubscription getInepSubscription( )
 	{
-		return inepSubscription;
+		return this.inepSubscription;
 	}
 
 	public void setInepSubscription( InepSubscription inepSubscription )
 	{
 		this.inepSubscription = inepSubscription;
 		if ( inepSubscription != null ) {
-			getId( ).set( inepSubscription.getId( ) );
-			if ( inepSubscription.getMedias( ).contains( this ) == false )
+			this.getId( ).set( inepSubscription.getId( ) );
+			if ( inepSubscription.getMedias( ).contains( this ) == false ) {
 				inepSubscription.add( this );
+			}
 		}
-		else
-			getId( ).set( null );
+		else {
+			this.getId( ).set( null );
+		}
 	}
 
 	@Override
 	public int compareTo( InepMedia o )
 	{
-		if ( o == null )
+		if ( o == null ) {
 			return -1;
+		}
 
-		return getId( ).compareTo( o.getId( ) );
+		return this.getId( ).compareTo( o.getId( ) );
 	}
 
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( obj == null )
+		if ( obj == null ) {
 			return false;
+		}
 		if ( obj instanceof InepMedia ) {
 			InepMedia other = (InepMedia) obj;
-			return getId( ).equals( other.getId( ) );
+			return this.getId( ).equals( other.getId( ) );
 		}
 		else if ( obj instanceof InepMediaPK ) {
 			InepMediaPK other = (InepMediaPK) obj;
-			return getId( ).equals( other );
+			return this.getId( ).equals( other );
 		}
-		return getId( ).equals( obj );
+		return this.getId( ).equals( obj );
+	}
+
+	public Integer getType( )
+	{
+		return this.type;
+	}
+
+	public void setType( Integer type )
+	{
+		this.type = type;
 	}
 }

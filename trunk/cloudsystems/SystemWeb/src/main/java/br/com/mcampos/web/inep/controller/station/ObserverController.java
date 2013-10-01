@@ -9,6 +9,7 @@ public class ObserverController extends BaseStationController
 	@Override
 	protected void cleanUp( )
 	{
+		super.cleanUp( );
 		if ( this.grades == null ) {
 			return;
 		}

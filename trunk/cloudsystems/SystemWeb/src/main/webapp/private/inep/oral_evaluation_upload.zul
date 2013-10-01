@@ -42,8 +42,6 @@
 					<div id="divData" visible="false">
 						<button upload="true,maxsize=30630,multiple=true,native" id="uploadAudio" image="/img/audio-128x128.png"
 							label="Enviar audio da entrevista" orient="vertical"/>
-						<separator height="30px" />
-						<div fulfill="=/templates/submit_cancel.zul"></div>
 					</div>
 				</div>
 			</center>

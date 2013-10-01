@@ -33,8 +33,6 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 
 	protected abstract void proceed( );
 
-	protected abstract void cleanUp( );
-
 	@Wire
 	private Bandbox subscription;
 	@Wire( "#list" )
@@ -172,6 +170,11 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 			this.citizenship.setValue( s.getCitizenship( ) );
 			this.needs.setValue( s.getSpecialNeeds( ) );
 		}
+	}
+
+	protected void cleanUp( )
+	{
+		this.showInfo( null );
 	}
 
 }

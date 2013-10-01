@@ -15,6 +15,7 @@ public class InterviewerController extends BaseStationController
 	@Override
 	protected void cleanUp( )
 	{
+		super.cleanUp( );
 		for ( Checkbox checkbox : this.elements ) {
 			if ( checkbox.isChecked( ) ) {
 				checkbox.setChecked( false );
@@ -43,6 +44,18 @@ public class InterviewerController extends BaseStationController
 	@Override
 	protected void proceed( )
 	{
+		int[ ] ids = new int[ 3 ];
+
+		int nIndex = 0;
+		for ( Checkbox item : this.elements ) {
+			if ( item.isChecked( ) ) {
+				ids[ nIndex++ ] = Integer.parseInt( (String) item.getValue( ) );
+			}
+			if ( nIndex >= 3 ) {
+				break;
+			}
+		}
+		this.getSession( ).addElements( this.getPrincipal( ), this.getCurrentSubscription( ), ids );
 	}
 
 	public boolean validateElements( )

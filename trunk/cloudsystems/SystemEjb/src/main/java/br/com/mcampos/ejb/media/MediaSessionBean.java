@@ -17,6 +17,11 @@ import br.com.mcampos.jpa.system.Media;
 public class MediaSessionBean extends SimpleSessionBean<Media> implements MediaSessionBeanRemote, MediaSessionBeanLocal
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2220683069716480L;
+
 	@Override
 	protected Class<Media> getEntityClass( )
 	{
@@ -33,9 +38,9 @@ public class MediaSessionBean extends SimpleSessionBean<Media> implements MediaS
 	@Override
 	public Media add( MediaDTO m )
 	{
-		Media entity = createEntity( m );
+		Media entity = this.createEntity( m );
 
-		return merge( entity );
+		return this.merge( entity );
 	}
 
 	private Media createEntity( MediaDTO source )
@@ -45,8 +50,12 @@ public class MediaSessionBean extends SimpleSessionBean<Media> implements MediaS
 		target.setMimeType( source.getMimeType( ) );
 		target.setName( source.getName( ) );
 		target.setObject( source.getObject( ) );
+		if ( source.getObject( ) == null ) {
+			target.setSize( source.getSize( ) );
+		}
 		target.setFormat( source.getFormat( ) );
 		target.setInsertDate( new Date( ) );
+		target.setPath( source.getPath( ) );
 		return target;
 
 	}
@@ -54,7 +63,7 @@ public class MediaSessionBean extends SimpleSessionBean<Media> implements MediaS
 	@Override
 	public Media findByName( String name )
 	{
-		Media media = getByNamedQuery( Media.getByName, name );
+		Media media = this.getByNamedQuery( Media.getByName, name );
 		return media;
 	}
 
