@@ -15,14 +15,14 @@ import br.com.mcampos.ejb.inep.media.InepMediaSessionLocal;
 import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
-import br.com.mcampos.ejb.system.fileupload.FileUPloadSessionLocal;
+import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
+import br.com.mcampos.ejb.system.fileupload.FileUploadSessionLocal;
 import br.com.mcampos.jpa.inep.InepElement;
 import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.jpa.inep.InepMedia;
 import br.com.mcampos.jpa.inep.InepObserverGrade;
 import br.com.mcampos.jpa.inep.InepOralTest;
 import br.com.mcampos.jpa.inep.InepSubscription;
-import br.com.mcampos.jpa.system.FileUpload;
 import br.com.mcampos.sysutils.SysUtils;
 
 /**
@@ -42,13 +42,16 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	private InepSubscriptionSessionLocal subscriptionEvent;
 
 	@EJB
-	private FileUPloadSessionLocal fileUploadSession;
+	private FileUploadSessionLocal fileUploadSession;
 
 	@EJB
 	private InepMediaSessionLocal inepMediaSession;
 
 	@EJB
 	private InepOralTestSessionLocal oralTestSession;
+
+	@EJB
+	private MediaSessionBeanLocal mediaSession;
 
 	private static final int MAX_ELEMENTS = 3;
 	private static final int MAX_ORAL_GRADE = 6;
@@ -80,23 +83,16 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	}
 
 	@Override
-	public FileUpload storeUploadInformation( PrincipalDTO auth, InepSubscription subscription, MediaDTO media )
+	public InepMedia storeUploadInformation( PrincipalDTO auth, InepSubscription subscription, MediaDTO media )
 	{
-		this.removeExistingAudio( auth, subscription, media );
-		FileUpload uploaded = this.fileUploadSession.addNewFile( auth, media );
-
+		this.inepMediaSession.removeAudio( subscription );
 		InepSubscription merged = this.subscriptionSession.get( subscription.getId( ) );
-		if ( merged == null ) {
-			return null;
+		InepMedia inepMedia = null;
+		if ( merged != null ) {
+			inepMedia = this.inepMediaSession.addAudio( merged, this.mediaSession.add( media ) );
+			merged.add( inepMedia );
 		}
-		InepMedia inepMedia = this.inepMediaSession.addAudio( merged, uploaded.getMedia( ) );
-		merged.add( inepMedia );
-		return uploaded;
-	}
-
-	private void removeExistingAudio( PrincipalDTO auth, InepSubscription subscription, MediaDTO media )
-	{
-		InepMedia inepMedia = this.inepMediaSession.removeAudio( subscription );
+		return inepMedia;
 	}
 
 	@Override
@@ -161,6 +157,12 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		}
 		oralTest.setObserverGrade( BigDecimal.valueOf( grade ) );
 		this.oralTestSession.setStatus( oralTest );
+	}
+
+	@Override
+	public List<InepMedia> lookupForName( PrincipalDTO auth, InepSubscription subscription, String mediaName )
+	{
+		return this.inepMediaSession.findByNamedQuery( InepMedia.LookupForMediaName, subscription.getEvent( ), mediaName );
 	}
 
 }

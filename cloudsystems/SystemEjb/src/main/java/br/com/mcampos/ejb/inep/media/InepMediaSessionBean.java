@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
@@ -45,10 +46,10 @@ public class InepMediaSessionBean extends SimpleSessionBean<InepMedia> implement
 	}
 
 	@Override
-	public InepMedia removeAudio( InepSubscription isc )
+	public void removeAudio( InepSubscription isc )
 	{
-
-		return null;
+		Query query = this.getEntityManager( ).createQuery( "delete from InepMedia o where o.subscription = ?1 and o.type = 2" ).setParameter( 1, isc );
+		query.executeUpdate( );
 	}
 
 	@Override

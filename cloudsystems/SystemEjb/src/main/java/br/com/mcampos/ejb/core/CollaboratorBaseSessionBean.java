@@ -4,7 +4,7 @@ import javax.ejb.EJB;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.dto.system.MediaDTO;
-import br.com.mcampos.ejb.system.fileupload.FileUPloadSessionLocal;
+import br.com.mcampos.ejb.system.fileupload.FileUploadSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
 import br.com.mcampos.jpa.BaseCompanyEntity;
@@ -20,7 +20,7 @@ public abstract class CollaboratorBaseSessionBean<Y extends BaseCompanyEntity> e
 	private CollaboratorSessionLocal collaboratorSession;
 
 	@EJB
-	private FileUPloadSessionLocal fileUploadSession;
+	private FileUploadSessionLocal fileUploadSession;
 
 	@Override
 	public String getProperty( PrincipalDTO auth, String name )

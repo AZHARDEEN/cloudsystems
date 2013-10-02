@@ -8,8 +8,8 @@ import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.jpa.inep.InepEvent;
+import br.com.mcampos.jpa.inep.InepMedia;
 import br.com.mcampos.jpa.inep.InepSubscription;
-import br.com.mcampos.jpa.system.FileUpload;
 
 @Remote
 public interface StationSession extends BaseSessionInterface
@@ -27,9 +27,11 @@ public interface StationSession extends BaseSessionInterface
 	 */
 	List<InepSubscription> getSubscriptions( PrincipalDTO auth, InepEvent evt, String part );
 
-	FileUpload storeUploadInformation( PrincipalDTO auth, InepSubscription subscription, MediaDTO media );
+	InepMedia storeUploadInformation( PrincipalDTO auth, InepSubscription subscription, MediaDTO media );
 
 	void setInterviewerInformation( PrincipalDTO auth, InepSubscription subscription, int[ ] elements, int grade );
 
 	void setObserverInformation( PrincipalDTO auth, InepSubscription subscription, int[ ] grades );
+
+	List<InepMedia> lookupForName( PrincipalDTO auth, InepSubscription subscription, String mediaName );
 }

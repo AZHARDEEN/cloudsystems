@@ -1,13 +1,14 @@
 package br.com.mcampos.ejb.system.fileupload;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 import br.com.mcampos.dto.AssefazDTO;
 import br.com.mcampos.dto.RejectedDTO;
@@ -35,7 +36,7 @@ import br.com.mcampos.sysutils.SysUtils;
  * Session Bean implementation class FileUploadSessionBean
  */
 @Stateless( mappedName = "FileUploadSession", name = "FileUploadSession" )
-public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> implements FileUploadSession, FileUPloadSessionLocal
+public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> implements FileUploadSession, FileUploadSessionLocal
 {
 	private static final long serialVersionUID = -6741288363235165463L;
 
@@ -78,6 +79,15 @@ public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> impleme
 		entity.setMedia( mediaEntity );
 		entity.setCollaborator( this.collaboratorSession.find( auth ) );
 		return this.add( auth, entity );
+	}
+
+	public void deleteAllByMediaId( PrincipalDTO auth, Serializable mediaId )
+	{
+		String sql;
+
+		sql = "delete from FileUpload o where o.media.id = ?1";
+		Query query = this.getEntityManager( ).createQuery( sql ).setParameter( 1, mediaId );
+		query.executeUpdate( );
 	}
 
 	@Override
@@ -197,5 +207,11 @@ public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> impleme
 			p.add( new UserDocument( dto.getEmail( ), this.documentTypeSession.get( UserDocument.EMAIL ) ) );
 		}
 		return this.personSession.merge( p );
+	}
+
+	@Override
+	public List<FileUpload> getAllByMedia( Media media )
+	{
+		return this.findByNamedQuery( FileUpload.getAllByMedia, media );
 	}
 }
