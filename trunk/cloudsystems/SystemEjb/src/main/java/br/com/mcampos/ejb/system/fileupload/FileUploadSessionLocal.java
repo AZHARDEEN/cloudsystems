@@ -3,7 +3,7 @@ package br.com.mcampos.ejb.system.fileupload;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import br.com.mcampos.dto.AssefazDTO;
 import br.com.mcampos.dto.RejectedDTO;
@@ -13,8 +13,8 @@ import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.jpa.system.FileUpload;
 import br.com.mcampos.jpa.system.Media;
 
-@Remote
-public interface FileUploadSession extends BaseCrudSessionInterface<FileUpload>
+@Local
+public interface FileUploadSessionLocal extends BaseCrudSessionInterface<FileUpload>
 {
 	FileUpload addNewFile( PrincipalDTO c, MediaDTO media );
 

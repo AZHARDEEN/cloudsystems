@@ -23,11 +23,13 @@ import br.com.mcampos.sysutils.SysUtils;
 @Table( name = "file_upload", schema = "public" )
 @NamedQueries( {
 		@NamedQuery( name = FileUpload.getAllByCompany, query = "select o from FileUpload o where o.collaborator.company = ?1" ),
+		@NamedQuery( name = FileUpload.getAllByMedia, query = "select o from FileUpload o where o.media = ?1" )
 } )
 public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<FileUpload>
 {
 	private static final long serialVersionUID = 1L;
 	public static final String getAllByCompany = "FileUpload.getAllByCompany";
+	public static final String getAllByMedia = "FileUpload.getAllByMedia";
 
 	@EmbeddedId
 	private FileUploadPK id;
@@ -60,12 +62,13 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 	{
 	}
 
+	@Override
 	public FileUploadPK getId( )
 	{
-		if ( id == null ) {
-			id = new FileUploadPK( );
+		if ( this.id == null ) {
+			this.id = new FileUploadPK( );
 		}
-		return id;
+		return this.id;
 	}
 
 	public void setId( FileUploadPK id )
@@ -75,38 +78,38 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 
 	public UploadStatus getStatus( )
 	{
-		return status;
+		return this.status;
 	}
 
 	public void setStatus( UploadStatus uploadStatus )
 	{
-		status = uploadStatus;
+		this.status = uploadStatus;
 	}
 
 	public Media getMedia( )
 	{
-		return media;
+		return this.media;
 	}
 
 	public void setMedia( Media media )
 	{
 		this.media = media;
-		getId( ).setMedia( media == null ? 0 : media.getId( ) );
+		this.getId( ).setMedia( media == null ? 0 : media.getId( ) );
 	}
 
 	public Collaborator getCollaborator( )
 	{
-		return collaborator;
+		return this.collaborator;
 	}
 
 	public void setCollaborator( Collaborator collaborator )
 	{
 		this.collaborator = collaborator;
 		if ( collaborator != null ) {
-			getId( ).set( collaborator.getId( ) );
+			this.getId( ).set( collaborator.getId( ) );
 		}
 		else {
-			getId( ).set( null );
+			this.getId( ).set( null );
 		}
 	}
 
@@ -119,7 +122,7 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 		if ( other == null ) {
 			return -1;
 		}
-		return getId( ).compareTo( other.getId( ) );
+		return this.getId( ).compareTo( other.getId( ) );
 	}
 
 	@Override
@@ -150,14 +153,14 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 			return false;
 		}
 		FileUpload castOther = (FileUpload) other;
-		return getId( ).equals( castOther );
+		return this.getId( ).equals( castOther );
 	}
 
 	@Transient
 	public Integer getMediaId( )
 	{
-		if ( getMedia( ) != null ) {
-			return getMedia( ).getId( );
+		if ( this.getMedia( ) != null ) {
+			return this.getMedia( ).getId( );
 		}
 		else {
 			return 0;
@@ -167,8 +170,8 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 	@Transient
 	public String getName( )
 	{
-		if ( getMedia( ) != null ) {
-			return getMedia( ).getName( );
+		if ( this.getMedia( ) != null ) {
+			return this.getMedia( ).getName( );
 		}
 		else {
 			return null;
@@ -179,8 +182,8 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 	@Transient
 	public String getDate( )
 	{
-		if ( getMedia( ) != null ) {
-			return SysUtils.formatDate( getMedia( ).getInsertDate( ), "dd/MM/yyyy" );
+		if ( this.getMedia( ) != null ) {
+			return SysUtils.formatDate( this.getMedia( ).getInsertDate( ), "dd/MM/yyyy" );
 		}
 		else {
 			return null;
@@ -191,8 +194,8 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 	@Transient
 	public String getTime( )
 	{
-		if ( getMedia( ) != null ) {
-			return SysUtils.formatDate( getMedia( ).getInsertDate( ), "HH:mm:ss" );
+		if ( this.getMedia( ) != null ) {
+			return SysUtils.formatDate( this.getMedia( ).getInsertDate( ), "HH:mm:ss" );
 		}
 		else {
 			return null;
@@ -202,8 +205,8 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 	@Transient
 	public String getResponsable( )
 	{
-		if ( getCollaborator( ) != null ) {
-			return getCollaborator( ).getPerson( ).getName( );
+		if ( this.getCollaborator( ) != null ) {
+			return this.getCollaborator( ).getPerson( ).getName( );
 		}
 		else {
 			return null;
@@ -214,12 +217,12 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 	@Transient
 	public String getStatusDescription( )
 	{
-		return getStatus( ).getDescription( );
+		return this.getStatus( ).getDescription( );
 	}
 
 	public Integer getRecords( )
 	{
-		return records;
+		return this.records;
 	}
 
 	public void setRecords( Integer records )
@@ -229,7 +232,7 @@ public class FileUpload implements BasicEntityRenderer<FileUpload>, Comparable<F
 
 	public Integer getRejecteds( )
 	{
-		return rejecteds;
+		return this.rejecteds;
 	}
 
 	public void setRejecteds( Integer rejecteds )

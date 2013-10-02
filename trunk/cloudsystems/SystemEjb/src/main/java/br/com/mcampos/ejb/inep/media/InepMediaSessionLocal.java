@@ -13,7 +13,7 @@ public interface InepMediaSessionLocal extends BaseCrudSessionInterface<InepMedi
 {
 	InepMedia addAudio( InepSubscription isc, Media media );
 
-	InepMedia removeAudio( InepSubscription isc );
+	void removeAudio( InepSubscription isc );
 
 	InepMedia addPDF( InepTest test, String name, byte[ ] object );
 
