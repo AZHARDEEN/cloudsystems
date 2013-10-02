@@ -21,7 +21,9 @@ import br.com.mcampos.jpa.system.Media;
 @Entity
 @Table( name = "inep_media", schema = "inep" )
 @NamedQueries( {
-		@NamedQuery( name = InepMedia.getAudios, query = "select o from InepMedia o where o.subscription = ?1 and o.type = 2" )
+		@NamedQuery( name = InepMedia.getAudios, query = "select o from InepMedia o where o.subscription = ?1 and o.type = 2" ),
+		@NamedQuery( name = InepMedia.LookupForMediaName, query = "select o from InepMedia o where o.subscription.event = ?1 and o.media.name = ?2 "
+				+ " order by o.subscription" )
 
 } )
 public class InepMedia extends BaseInepSubscription implements Serializable, Comparable<InepMedia>
@@ -29,6 +31,7 @@ public class InepMedia extends BaseInepSubscription implements Serializable, Com
 	private static final long serialVersionUID = 1L;
 
 	public static final String getAudios = "InepMedia.getAudios";
+	public static final String LookupForMediaName = "InepMedia.LookupForMediaName";
 
 	public static final Integer TYPE_TEST = 1;
 	public static final Integer TYPE_AUDIO = 2;
