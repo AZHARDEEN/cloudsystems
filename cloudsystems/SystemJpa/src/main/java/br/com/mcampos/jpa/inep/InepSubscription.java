@@ -60,7 +60,7 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 	private BigDecimal agreementGrade;
 
 	// bi-directional many-to-one association to InepMedia
-	@OneToMany( mappedBy = "inepSubscription" )
+	@OneToMany( mappedBy = "subscription" )
 	private List<InepMedia> medias;
 
 	@Column( name = "cli_seq_in" )
@@ -186,7 +186,7 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 		if ( media != null ) {
 			if ( this.getMedias( ).contains( media ) == false ) {
 				this.getMedias( ).add( media );
-				media.setInepSubscription( this );
+				media.setSubscription( this );
 			}
 		}
 	}
