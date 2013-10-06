@@ -1,5 +1,6 @@
 package br.com.mcampos.ejb.security.task;
 
+import java.security.InvalidParameterException;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import org.omg.CORBA.portable.ApplicationException;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.security.menu.MenuFacadeLocal;
+import br.com.mcampos.ejb.security.menu.MenuSessionLocal;
 import br.com.mcampos.ejb.security.role.RoleSessionLocal;
 import br.com.mcampos.jpa.security.Menu;
 import br.com.mcampos.jpa.security.Role;
@@ -24,6 +25,7 @@ import br.com.mcampos.jpa.security.Task;
 @LocalBean
 public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSession, TaskSessionLocal
 {
+	private static final long serialVersionUID = -1783324606644700893L;
 
 	private static final Integer rootId = 1;
 
@@ -31,7 +33,7 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	RoleSessionLocal roleSession;
 
 	@EJB
-	MenuFacadeLocal menuSession;
+	MenuSessionLocal menuSession;
 
 	@Override
 	protected Class<Task> getEntityClass( )
@@ -42,8 +44,8 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	@Override
 	public List<Menu> getMenus( Integer id )
 	{
-		Task tsk = get( id );
-		if( tsk == null ) {
+		Task tsk = this.get( id );
+		if ( tsk == null ) {
 			return Collections.emptyList( );
 		}
 		else
@@ -56,8 +58,8 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	@Override
 	public List<Role> getRoles( Integer id )
 	{
-		Task tsk = get( id );
-		if( tsk == null ) {
+		Task tsk = this.get( id );
+		if ( tsk == null ) {
 			return Collections.emptyList( );
 		}
 		else
@@ -70,11 +72,11 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	@Override
 	public void changeParent( PrincipalDTO auth, Task entity, Task newParent )
 	{
-		Task targetEntity = get( entity.getId( ) );
-		Task targetParent = get( newParent.getId( ) );
+		Task targetEntity = this.get( entity.getId( ) );
+		Task targetParent = this.get( newParent.getId( ) );
 
 		Task oldParent = targetEntity.getParent( );
-		if( oldParent != null ) {
+		if ( oldParent != null ) {
 			oldParent.remove( targetEntity );
 		}
 		targetParent.add( targetEntity );
@@ -83,61 +85,61 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	@Override
 	public Role getRootRole( )
 	{
-		return roleSession.getRootRole( );
+		return this.roleSession.getRootRole( );
 	}
 
 	@Override
 	public List<Menu> getTopContextMenu( ) throws ApplicationException
 	{
-		return menuSession.getTopContextMenu( );
+		return this.menuSession.getTopContextMenu( );
 	}
 
 	@Override
 	public Task add( PrincipalDTO auth, Task task, Role role )
 	{
-		roleSession.add( auth, role, task );
+		this.roleSession.add( auth, role, task );
 		return task;
 	}
 
 	@Override
 	public Task remove( PrincipalDTO auth, Task task, Role role )
 	{
-		roleSession.remove( auth, role, task );
+		this.roleSession.remove( auth, role, task );
 		return task;
 	}
 
 	@Override
 	public Task add( PrincipalDTO auth, Task task, Menu menu )
 	{
-		menuSession.add( menu, task );
+		this.menuSession.add( menu, task );
 		return task;
 	}
 
 	@Override
 	public Task remove( PrincipalDTO auth, Task task, Menu menu )
 	{
-		menuSession.remove( menu, task );
+		this.menuSession.remove( menu, task );
 		return task;
 	}
 
 	public Task remove( PrincipalDTO auth, Integer id )
 	{
-		Task toDelete = get( id );
-		if( toDelete == null ) {
+		Task toDelete = this.get( id );
+		if ( toDelete == null ) {
 			return toDelete;
 		}
-		removeChilds( auth, toDelete );
+		this.removeChilds( auth, toDelete );
 		return toDelete;
 	}
 
 	private void removeChilds( PrincipalDTO auth, Task entity )
 	{
-		for( Task item : entity.getChilds( ) ) {
-			removeChilds( auth, item );
+		for ( Task item : entity.getChilds( ) ) {
+			this.removeChilds( auth, item );
 		}
 		entity.setParent( null );
-		removeRoles( entity );
-		removeMenus( entity );
+		this.removeRoles( entity );
+		this.removeMenus( entity );
 		entity.setChilds( null );
 		super.remove( auth, entity );
 	}
@@ -146,7 +148,7 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	{
 		List<Role> list = entity.getRoles( );
 		entity.setRoles( null );
-		for( Role item : list )
+		for ( Role item : list )
 		{
 			item.remove( entity );
 		}
@@ -156,7 +158,7 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	{
 		List<Menu> list = entity.getMenus( );
 		entity.setMenus( null );
-		for( Menu item : list )
+		for ( Menu item : list )
 		{
 			item.remove( entity );
 		}
@@ -165,22 +167,19 @@ public class TaskSessionBean extends SimpleSessionBean<Task> implements TaskSess
 	@Override
 	public Task getRootTask( )
 	{
-		return get( rootId );
+		return this.get( rootId );
 	}
 
 	@Override
 	public Task merge( Task newEntity )
 	{
-		Task parent = newEntity.getParent( ) != null ? get( newEntity.getParent( ).getId( ) ) : getRootTask( );
-		Task e = super.merge( newEntity );
-		e.setParent( parent );
-		return e;
+		throw new InvalidParameterException( "Deprecated" );
 	}
 
 	@Override
 	public Task add( PrincipalDTO auth, Task newEntity )
 	{
-		Task parent = newEntity.getParent( ) != null ? get( newEntity.getParent( ).getId( ) ) : getRootTask( );
+		Task parent = newEntity.getParent( ) != null ? this.get( newEntity.getParent( ).getId( ) ) : this.getRootTask( );
 		Task e = super.add( auth, newEntity );
 		e.setParent( parent );
 		return e;

@@ -13,7 +13,7 @@ import org.omg.CORBA.portable.ApplicationException;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.security.menu.MenuFacadeLocal;
+import br.com.mcampos.ejb.security.menu.MenuSessionLocal;
 import br.com.mcampos.ejb.security.task.TaskSessionLocal;
 import br.com.mcampos.jpa.security.Menu;
 import br.com.mcampos.jpa.security.Role;
@@ -33,7 +33,7 @@ public class RoleSessionBean extends SimpleSessionBean<Role> implements RoleSess
 	TaskSessionLocal taskSession;
 
 	@EJB
-	MenuFacadeLocal menuSession;
+	MenuSessionLocal menuSession;
 
 	@Override
 	protected Class<Role> getEntityClass( )

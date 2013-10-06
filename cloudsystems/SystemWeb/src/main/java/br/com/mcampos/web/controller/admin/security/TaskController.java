@@ -77,7 +77,7 @@ public class TaskController extends BaseTreeController<TaskSession, Task> implem
 	@Override
 	public BaseTreeNode<Task> getRootNode( )
 	{
-		return TaskNode.createNode( getSession( ).getRootTask( ) );
+		return TaskNode.createNode( this.getSession( ).getRootTask( ) );
 	}
 
 	@Override
@@ -86,45 +86,45 @@ public class TaskController extends BaseTreeController<TaskSession, Task> implem
 		List<Role> roles;
 		List<Menu> menus;
 
-		if( node != null ) {
-			recordId.setValue( node.getId( ).toString( ) );
-			recordDescription.setValue( node.getDescription( ) );
-			roles = getSession( ).getRoles( node.getId( ) );
-			menus = getSession( ).getMenus( node.getId( ) );
+		if ( node != null ) {
+			this.recordId.setValue( node.getId( ).toString( ) );
+			this.recordDescription.setValue( node.getDescription( ) );
+			roles = this.getSession( ).getRoles( node.getId( ) );
+			menus = this.getSession( ).getMenus( node.getId( ) );
 		}
 		else {
 			roles = Collections.emptyList( );
 			menus = Collections.emptyList( );
-			recordId.setValue( "" );
-			recordDescription.setValue( "" );
+			this.recordId.setValue( "" );
+			this.recordDescription.setValue( "" );
 		}
-		listMenu.setModel( new ListModelList<Menu>( menus ) );
-		listRole.setModel( new ListModelList<Role>( roles ) );
+		this.listMenu.setModel( new ListModelList<Menu>( menus ) );
+		this.listRole.setModel( new ListModelList<Role>( roles ) );
 	}
 
 	@Override
 	protected void prepareForInsert( )
 	{
-		editId.setRawValue( new Integer( getSession( ).getNextId( ) ) );
-		editId.setReadonly( false );
-		editDescription.setFocus( true );
-		editDescription.setRawValue( "" );
+		this.editId.setRawValue( new Integer( this.getSession( ).getNextId( ) ) );
+		this.editId.setReadonly( false );
+		this.editDescription.setFocus( true );
+		this.editDescription.setRawValue( "" );
 
 	}
 
 	@Override
 	protected void prepareForUpdate( Task data )
 	{
-		editId.setRawValue( data.getId( ) );
-		editId.setReadonly( true );
-		editDescription.setRawValue( data.getDescription( ) );
-		editDescription.setFocus( true );
+		this.editId.setRawValue( data.getId( ) );
+		this.editId.setReadonly( true );
+		this.editDescription.setRawValue( data.getDescription( ) );
+		this.editDescription.setFocus( true );
 	}
 
 	@Override
 	protected boolean validateRecord( )
 	{
-		if( editDescription.isValid( ) == false ) {
+		if ( this.editDescription.isValid( ) == false ) {
 			return false;
 		}
 		return true;
@@ -134,49 +134,54 @@ public class TaskController extends BaseTreeController<TaskSession, Task> implem
 	protected TaskNode insert( )
 	{
 		Task task = new Task( );
-		update( getSession( ), task );
+		this.update( task );
+		task = this.getSession( ).add( this.getPrincipal( ), task );
 		return TaskNode.createNode( task );
+	}
+
+	private void update( Task data )
+	{
+		data.setId( this.editId.getValue( ) );
+		data.setDescription( this.editDescription.getValue( ) );
 	}
 
 	@Override
 	protected void update( TaskSession session, Task data )
 	{
-		data.setId( editId.getValue( ) );
-		data.setDescription( editDescription.getValue( ) );
-		getSession( ).merge( data );
-		session.merge( data );
+		this.update( data );
+		this.getSession( ).update( this.getPrincipal( ), data );
 	}
 
 	@Override
 	protected void remove( TaskSession session, Task data )
 	{
-		session.remove( getPrincipal( ), data.getId( ) );
+		session.remove( this.getPrincipal( ), data.getId( ) );
 	}
 
 	@Override
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		listMenu.setItemRenderer( new MenuListItemRenderer( "listPopupRemoveItem" ) );
-		listRole.setItemRenderer( new RoleListItemRenderer( "listPopupRemoveItem" ) );
-		treeMenus.setItemRenderer( new MenuTreeItemRenderer( this ) );
-		treeRoles.setItemRenderer( new RoleTreeItemRenderer( this ) );
-		treeRoles.setModel( new AdvancedTreeModel<Role>( getRootRoleNode( ) ) );
-		treeMenus.setModel( new AdvancedTreeModel<Menu>( getRootMenuNode( ) ) );
+		this.listMenu.setItemRenderer( new MenuListItemRenderer( "listPopupRemoveItem" ) );
+		this.listRole.setItemRenderer( new RoleListItemRenderer( "listPopupRemoveItem" ) );
+		this.treeMenus.setItemRenderer( new MenuTreeItemRenderer( this ) );
+		this.treeRoles.setItemRenderer( new RoleTreeItemRenderer( this ) );
+		this.treeRoles.setModel( new AdvancedTreeModel<Role>( this.getRootRoleNode( ) ) );
+		this.treeMenus.setModel( new AdvancedTreeModel<Menu>( this.getRootMenuNode( ) ) );
 	}
 
 	private RoleNode getRootRoleNode( )
 	{
-		return RoleNode.createNode( getSession( ).getRootRole( ) );
+		return RoleNode.createNode( this.getSession( ).getRootRole( ) );
 	}
 
 	protected MenuNode getRootMenuNode( )
 	{
 		Menu rootMenu = new Menu( );
 		try {
-			rootMenu.setChilds( getSession( ).getTopContextMenu( ) );
+			rootMenu.setChilds( this.getSession( ).getTopContextMenu( ) );
 		}
-		catch( ApplicationException e ) {
+		catch ( ApplicationException e ) {
 			e.printStackTrace( );
 		}
 		return MenuNode.createNode( rootMenu );
@@ -186,38 +191,38 @@ public class TaskController extends BaseTreeController<TaskSession, Task> implem
 	@SuppressWarnings( "unchecked" )
 	public void onDrop( DropEvent evt )
 	{
-		if( evt != null )
+		if ( evt != null )
 		{
 			Treerow source = (Treerow) evt.getDragged( );
 			Treerow target = (Treerow) evt.getTarget( );
-			Object vSource = ((Treeitem) source.getParent( )).getValue( );
-			TaskNode vTarget = ((Treeitem) target.getParent( )).getValue( );
-			if( vSource instanceof MenuNode || vSource instanceof RoleNode )
+			Object vSource = ( (Treeitem) source.getParent( ) ).getValue( );
+			TaskNode vTarget = ( (Treeitem) target.getParent( ) ).getValue( );
+			if ( vSource instanceof MenuNode || vSource instanceof RoleNode )
 			{
 				BaseTreeNode<?> t;
 				t = (BaseTreeNode<?>) vSource;
-				if( t != null ) {
+				if ( t != null ) {
 					try {
-						if( t instanceof MenuNode )
+						if ( t instanceof MenuNode )
 						{
-							getSession( ).add( getPrincipal( ), vTarget.getData( ), (Menu) t.getData( ) );
-							ListModelList<Menu> model = (ListModelList<Menu>) (Object) listMenu.getModel( );
-							if( model.contains( t.getData( ) ) == false ) {
+							this.getSession( ).add( this.getPrincipal( ), vTarget.getData( ), (Menu) t.getData( ) );
+							ListModelList<Menu> model = (ListModelList<Menu>) (Object) this.listMenu.getModel( );
+							if ( model.contains( t.getData( ) ) == false ) {
 								model.add( (Menu) t.getData( ) );
 							}
 						}
 						else
 						{
-							getSession( ).add( getPrincipal( ), vTarget.getData( ), (Role) t.getData( ) );
-							ListModelList<Role> model = (ListModelList<Role>) (Object) listRole.getModel( );
-							if( model.contains( t.getData( ) ) == false ) {
+							this.getSession( ).add( this.getPrincipal( ), vTarget.getData( ), (Role) t.getData( ) );
+							ListModelList<Role> model = (ListModelList<Role>) (Object) this.listRole.getModel( );
+							if ( model.contains( t.getData( ) ) == false ) {
 								model.add( (Role) t.getData( ) );
 							}
 						}
 					}
-					catch( Exception e )
+					catch ( Exception e )
 					{
-						showErrorMessage( "Erro ao adicionar item à tarefa", "Adicionar" );
+						this.showErrorMessage( "Erro ao adicionar item à tarefa", "Adicionar" );
 					}
 
 				}
@@ -231,6 +236,6 @@ public class TaskController extends BaseTreeController<TaskSession, Task> implem
 	@Override
 	protected void changeParent( TaskSession session, Task source, Task target )
 	{
-		session.changeParent( getPrincipal( ), source, target );
+		session.changeParent( this.getPrincipal( ), source, target );
 	}
 }

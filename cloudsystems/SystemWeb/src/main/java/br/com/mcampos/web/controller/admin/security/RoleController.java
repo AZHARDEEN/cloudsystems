@@ -53,7 +53,7 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 	@Override
 	protected TaskNode createRootTaskNode( )
 	{
-		return(TaskNode.createNode( getSession( ).getRootTask( ) ));
+		return ( TaskNode.createNode( this.getSession( ).getRootTask( ) ) );
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 	@Override
 	protected RoleNode getRootNode( )
 	{
-		return RoleNode.createNode( getSession( ).getRootRole( ) );
+		return RoleNode.createNode( this.getSession( ).getRootRole( ) );
 	}
 
 	@Override
@@ -73,36 +73,36 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 	{
 		List<Task> tasks;
 
-		if( data != null ) {
-			labelId.setValue( data.getId( ).toString( ) );
-			labelDescription.setValue( data.getDescription( ) );
-			tasks = getSession( ).getTaks( data );
+		if ( data != null ) {
+			this.labelId.setValue( data.getId( ).toString( ) );
+			this.labelDescription.setValue( data.getDescription( ) );
+			tasks = this.getSession( ).getTaks( data );
 		}
 		else {
 			tasks = Collections.emptyList( );
-			labelId.setValue( "" );
-			labelDescription.setValue( "" );
+			this.labelId.setValue( "" );
+			this.labelDescription.setValue( "" );
 		}
-		showMenus( data );
-		getListTasks( ).setModel( new ListModelList<Task>( tasks ) );
+		this.showMenus( data );
+		this.getListTasks( ).setModel( new ListModelList<Task>( tasks ) );
 	}
 
 	private void showMenus( Role data )
 	{
-		if( mainMenu == null ) {
+		if ( this.mainMenu == null ) {
 			return;
 		}
-		if( mainMenu.getChildren( ) != null ) {
-			mainMenu.getChildren( ).clear( );
+		if ( this.mainMenu.getChildren( ) != null ) {
+			this.mainMenu.getChildren( ).clear( );
 		}
 		List<br.com.mcampos.jpa.security.Menu> menus;
 		try {
-			menus = getSession( ).getMenus( data );
-			for( br.com.mcampos.jpa.security.Menu item : menus ) {
-				getDynamicMenu( ).getParentComponent( item );
+			menus = this.getSession( ).getMenus( data );
+			for ( br.com.mcampos.jpa.security.Menu item : menus ) {
+				this.getDynamicMenu( ).getParentComponent( item );
 			}
 		}
-		catch( ApplicationException e ) {
+		catch ( ApplicationException e ) {
 			e = null;
 		}
 	}
@@ -110,9 +110,9 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 	@Override
 	protected boolean validateRecord( )
 	{
-		if( SysUtils.isEmpty( description.getValue( ) ) ) {
+		if ( SysUtils.isEmpty( this.description.getValue( ) ) ) {
 			Messagebox.show( "A descrição deve ser preenchida", "Descrição Inválida", Messagebox.OK, Messagebox.ERROR );
-			description.setFocus( true );
+			this.description.setFocus( true );
 			return false;
 		}
 		return true;
@@ -121,79 +121,78 @@ public class RoleController extends BasicTaskAssociatedTreeController<RoleSessio
 	@Override
 	public void prepareForInsert( )
 	{
-		getId( ).setRawValue( new Integer( getSession( ).getNextId( ) ) );
-		getId( ).setReadonly( false );
-		getDescription( ).setFocus( true );
-		getDescription( ).setRawValue( "" );
+		this.getId( ).setRawValue( new Integer( this.getSession( ).getNextId( ) ) );
+		this.getId( ).setReadonly( false );
+		this.getDescription( ).setFocus( true );
+		this.getDescription( ).setRawValue( "" );
 	}
 
 	@Override
 	public void prepareForUpdate( Role data )
 	{
-		getId( ).setRawValue( data.getId( ) );
-		getId( ).setReadonly( true );
-		getDescription( ).setRawValue( data.getDescription( ) );
-		getDescription( ).setFocus( true );
+		this.getId( ).setRawValue( data.getId( ) );
+		this.getId( ).setReadonly( true );
+		this.getDescription( ).setRawValue( data.getDescription( ) );
+		this.getDescription( ).setFocus( true );
 	}
 
 	private Textbox getDescription( )
 	{
-		return description;
+		return this.description;
 	}
 
 	private Intbox getId( )
 	{
-		return id;
+		return this.id;
 	}
 
 	@Override
 	protected RoleNode insert( )
 	{
-		Role role = new Role( getId( ).getValue( ), getDescription( ).getValue( ) );
-		role.setParent( getSession( ).getRootRole( ) );
-		getSession( ).merge( role );
+		Role role = new Role( this.getId( ).getValue( ), this.getDescription( ).getValue( ) );
+		role.setParent( this.getSession( ).getRootRole( ) );
+		this.getSession( ).add( this.getPrincipal( ), role );
 		return RoleNode.createNode( role );
 	}
 
 	@Override
 	protected void deleteTask( RoleSession session, Role entity, Task task )
 	{
-		session.remove( getPrincipal( ), entity, task );
+		session.remove( this.getPrincipal( ), entity, task );
 	}
 
 	@Override
 	protected void addTask( RoleSession session, Role entity, Task task )
 	{
-		session.add( getPrincipal( ), entity, task );
+		session.add( this.getPrincipal( ), entity, task );
 	}
 
 	@Override
 	protected void update( RoleSession session, Role data )
 	{
-		data.setDescription( getDescription( ).getValue( ) );
-		getSession( ).merge( data );
+		data.setDescription( this.getDescription( ).getValue( ) );
+		this.getSession( ).update( this.getPrincipal( ), data );
 	}
 
 	@Override
 	protected void remove( RoleSession session, Role data )
 	{
-		if( data != null ) {
-			session.remove( getPrincipal( ), data.getId( ) );
+		if ( data != null ) {
+			session.remove( this.getPrincipal( ), data.getId( ) );
 		}
-
 	}
 
 	@Override
 	protected void changeParent( RoleSession session, Role source, Role target )
 	{
-		getSession( ).changeParent( getPrincipal( ), source, target );
+		this.getSession( ).changeParent( this.getPrincipal( ), source, target );
 	}
 
 	protected DynamicMenu getDynamicMenu( )
 	{
-		if( dynamicMenu == null ) {
-			dynamicMenu = new DynamicMenu( mainMenu, null );
+		if ( this.dynamicMenu == null ) {
+			this.dynamicMenu = new DynamicMenu( this.mainMenu, null );
 		}
-		return dynamicMenu;
+		return this.dynamicMenu;
 	}
 }

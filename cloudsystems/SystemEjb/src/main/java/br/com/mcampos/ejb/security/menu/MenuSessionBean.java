@@ -29,10 +29,12 @@ import br.com.mcampos.jpa.user.Collaborator;
  */
 @Stateless( name = "MenuFacade", mappedName = "MenuFacade" )
 @LocalBean
-public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacade, MenuFacadeLocal
+public class MenuSessionBean extends SimpleSessionBean<Menu> implements MenuFacade, MenuSessionLocal
 {
+	private static final long serialVersionUID = -2522273966532535171L;
+
 	@SuppressWarnings( "unused" )
-	private static final Logger logger = LoggerFactory.getLogger( MenuFacadeBean.class );
+	private static final Logger logger = LoggerFactory.getLogger( MenuSessionBean.class );
 
 	@EJB
 	private CollaboratorSessionLocal collaboratorSession;
@@ -55,7 +57,7 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 		if ( auth == null ) {
 			return Collections.emptyList( );
 		}
-		return getMenus( collaboratorSession.find( auth ) );
+		return this.getMenus( this.collaboratorSession.find( auth ) );
 	}
 
 	@Override
@@ -66,10 +68,10 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 		if ( collaborator == null ) {
 			return Collections.emptyList( );
 		}
-		collaborator = collaboratorSession.merge( collaborator );
+		collaborator = this.collaboratorSession.merge( collaborator );
 		availableMenus = new ArrayList<Menu>( );
 		for ( Role role : collaborator.getRoles( ) ) {
-			addRoleToMenu( role, availableMenus );
+			this.addRoleToMenu( role, availableMenus );
 		}
 		return availableMenus;
 	}
@@ -79,10 +81,10 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	{
 		if ( role != null ) {
 			for ( Role sub : role.getChilds( ) ) {
-				addRoleToMenu( sub, availableMenus );
+				this.addRoleToMenu( sub, availableMenus );
 			}
 			for ( Task task : role.getTasks( ) ) {
-				addTaskToMenu( task, availableMenus );
+				this.addTaskToMenu( task, availableMenus );
 			}
 		}
 	}
@@ -91,10 +93,10 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	{
 		if ( task != null ) {
 			for ( Task child : task.getChilds( ) ) {
-				addTaskToMenu( child, availableMenus );
+				this.addTaskToMenu( child, availableMenus );
 			}
 			for ( Menu menu : task.getMenus( ) ) {
-				addMenus( menu, availableMenus );
+				this.addMenus( menu, availableMenus );
 			}
 		}
 	}
@@ -102,7 +104,7 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	private void addMenus( Menu item, List<Menu> availableMenus )
 	{
 		if ( item != null ) {
-			addMenus( item.getParent( ), availableMenus );
+			this.addMenus( item.getParent( ), availableMenus );
 			if ( availableMenus.contains( item ) == false ) {
 				availableMenus.add( item );
 			}
@@ -112,32 +114,32 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	@Override
 	public List<Menu> getTopContextMenu( ) throws ApplicationException
 	{
-		return findByNamedQuery( Menu.getTopMenu );
+		return this.findByNamedQuery( Menu.getTopMenu );
 	}
 
 	protected CollaboratorSessionLocal getCollaboratorSession( )
 	{
-		return collaboratorSession;
+		return this.collaboratorSession;
 	}
 
 	protected TaskSessionLocal getTaskSession( )
 	{
-		return taskSession;
+		return this.taskSession;
 	}
 
 	@Override
 	public List<Task> getTaks( Menu entity )
 	{
 		List<Task> tasks = new ArrayList<Task>( );
-		Menu merged = get( entity.getId( ) );
-		addTask( tasks, merged );
+		Menu merged = this.get( entity.getId( ) );
+		this.addTask( tasks, merged );
 		return tasks;
 	}
 
 	private void addTask( List<Task> tasks, Menu entity )
 	{
 		for ( Menu item : entity.getChilds( ) ) {
-			addTask( tasks, item );
+			this.addTask( tasks, item );
 		}
 		for ( Task task : entity.getTasks( ) ) {
 			if ( tasks.contains( task ) == false ) {
@@ -149,8 +151,8 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	@Override
 	public void changeParent( Menu entity, Menu newParent )
 	{
-		Menu targetEntity = get( entity.getId( ) );
-		Menu targetParent = get( newParent.getId( ) );
+		Menu targetEntity = this.get( entity.getId( ) );
+		Menu targetParent = this.get( newParent.getId( ) );
 
 		Menu oldParent = targetEntity.getParent( );
 		if ( oldParent != null ) {
@@ -163,7 +165,7 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	public Menu add( Menu item, List<Task> tasks )
 	{
 		for ( Task task : tasks ) {
-			add( item, task );
+			this.add( item, task );
 		}
 		return item;
 	}
@@ -171,9 +173,9 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	@Override
 	public Menu add( Menu item, Task task )
 	{
-		Menu merged = get( item.getId( ) );
+		Menu merged = this.get( item.getId( ) );
 		if ( merged != null ) {
-			Task taskMerged = taskSession.get( task.getId( ) );
+			Task taskMerged = this.taskSession.get( task.getId( ) );
 			merged.add( taskMerged );
 		}
 		return merged;
@@ -182,9 +184,9 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	@Override
 	public Menu remove( Menu item, Task task )
 	{
-		Menu merged = get( item.getId( ) );
+		Menu merged = this.get( item.getId( ) );
 		if ( merged != null ) {
-			Task taskMerged = taskSession.get( task.getId( ) );
+			Task taskMerged = this.taskSession.get( task.getId( ) );
 			merged.remove( taskMerged );
 		}
 		return merged;
@@ -199,21 +201,21 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	@Override
 	public Menu get( String Url )
 	{
-		Menu menu = getByNamedQuery( Menu.getByUrl, Url );
+		Menu menu = this.getByNamedQuery( Menu.getByUrl, Url );
 		return menu;
 	}
 
 	@Override
 	public Task getRootTask( )
 	{
-		return taskSession.getRootTask( );
+		return this.taskSession.getRootTask( );
 	}
 
 	@Override
 	public Menu add( PrincipalDTO auth, Menu newEntity )
 	{
 		Menu m = super.add( auth, newEntity );
-		m.add( taskSession.getRootTask( ) );
+		m.add( this.taskSession.getRootTask( ) );
 		return m;
 	}
 
@@ -221,8 +223,7 @@ public class MenuFacadeBean extends SimpleSessionBean<Menu> implements MenuFacad
 	public Menu update( PrincipalDTO auth, Menu newEntity )
 	{
 		Menu m = super.update( auth, newEntity );
-		m.add( taskSession.getRootTask( ) );
+		m.add( this.taskSession.getRootTask( ) );
 		return m;
 	}
-
 }
