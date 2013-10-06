@@ -18,7 +18,7 @@ import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.SimpleDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.security.LoginSessionLocal;
-import br.com.mcampos.ejb.security.menu.MenuFacadeLocal;
+import br.com.mcampos.ejb.security.menu.MenuSessionLocal;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
 import br.com.mcampos.ejb.user.company.collaborator.property.LoginPropertySessionLocal;
 import br.com.mcampos.jpa.security.Login;
@@ -50,7 +50,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	private LoginSessionLocal loginSession;
 
 	@EJB
-	private MenuFacadeLocal menuSession;
+	private MenuSessionLocal menuSession;
 
 	@Override
 	protected Class<Collaborator> getEntityClass( )

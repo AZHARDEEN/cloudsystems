@@ -13,7 +13,7 @@ import br.com.mcampos.jpa.security.Task;
 import br.com.mcampos.jpa.user.Collaborator;
 
 @Local
-public interface MenuFacadeLocal extends BaseCrudSessionInterface<Menu>
+public interface MenuSessionLocal extends BaseCrudSessionInterface<Menu>
 {
 	public List<Menu> getMenus( Collaborator auth ) throws ApplicationException;
 
