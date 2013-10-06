@@ -53,22 +53,22 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 	@Listen( "onClick = #cmdSubmit" )
 	public void onOk( Event evt )
 	{
-		if ( this.validate( ) == false ) {
+		if( this.validate( ) == false ) {
 			return;
 		}
-		Messagebox.show( "Confirma a avaliação do candidato?", "Confirmação", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, 0,
+		Messagebox.show( "Confirma a avaliação do Examinando?", "Confirmação", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, 0,
 				new EventListener<Event>( )
 				{
 					@Override
 					public void onEvent( Event evt )
 					{
-						if ( ( (Integer) evt.getData( ) ).equals( Messagebox.YES ) ) {
+						if( ((Integer) evt.getData( )).equals( Messagebox.YES ) ) {
 							BaseStationController.this.update( );
 						}
 					}
 				} );
 
-		if ( evt != null ) {
+		if( evt != null ) {
 			evt.stopPropagation( );
 		}
 	}
@@ -89,7 +89,7 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 		this.cleanUp( );
 		this.subscription.setFocus( true );
 		this.listBox.setItemRenderer( new SubscriptionItemRenderer( ) );
-		if ( this.getCurrentEvent( ) == null ) {
+		if( this.getCurrentEvent( ) == null ) {
 			Messagebox.show( "Não há nenhum evento de correção ativo", "Evento", Messagebox.OK, Messagebox.EXCLAMATION );
 		}
 
@@ -98,7 +98,7 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 	@Listen( "onOK=#subscription;onClick=#btnSearch;onOpen=bandbox" )
 	public void lookupCandidate( Event evt )
 	{
-		if ( evt != null ) {
+		if( evt != null ) {
 			evt.stopPropagation( );
 		}
 		this.getSubscription( this.subscription.getValue( ) );
@@ -106,7 +106,7 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 
 	protected InepEvent getCurrentEvent( )
 	{
-		if ( this.currentEvent == null ) {
+		if( this.currentEvent == null ) {
 			this.currentEvent = this.getSession( ).getCurrentEvent( this.getPrincipal( ) );
 		}
 		return this.currentEvent;
@@ -122,14 +122,14 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 	{
 
 		InepEvent event = this.getCurrentEvent( );
-		if ( event == null || SysUtils.isEmpty( part ) ) {
+		if( event == null || SysUtils.isEmpty( part ) ) {
 			return;
 		}
-		if ( part.length( ) >= 3 ) {
+		if( part.length( ) >= 3 ) {
 			LOGGER.info( "Searching for Subscription: " + part );
 			List<InepSubscription> list = this.getSession( ).getSubscriptions( this.getPrincipal( ), event, part );
 			this.listBox.setModel( new ListModelList<InepSubscription>( list ) );
-			if ( SysUtils.isEmpty( list ) ) {
+			if( SysUtils.isEmpty( list ) ) {
 				return;
 			}
 			this.subscription.open( );
@@ -139,11 +139,11 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 	@Listen( "onSelect = #list" )
 	public void onSelect( Event evt )
 	{
-		if ( evt != null ) {
+		if( evt != null ) {
 			evt.stopPropagation( );
 		}
 		InepSubscription s = this.getCurrentSubscription( );
-		if ( s != null ) {
+		if( s != null ) {
 			this.subscription.setValue( s.getId( ).getId( ) );
 			this.subscription.close( );
 			this.showInfo( s );
@@ -153,7 +153,7 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 	protected InepSubscription getCurrentSubscription( )
 	{
 		Listitem item = this.listBox.getSelectedItem( );
-		if ( item == null || item.getValue( ) == null ) {
+		if( item == null || item.getValue( ) == null ) {
 			return null;
 		}
 		return item.getValue( );
@@ -165,7 +165,7 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 		this.candidate.setValue( "" );
 		this.citizenship.setValue( "" );
 		this.needs.setValue( "" );
-		if ( s != null ) {
+		if( s != null ) {
 			this.candidate.setValue( s.getPerson( ).getName( ) );
 			this.citizenship.setValue( s.getCitizenship( ) );
 			this.needs.setValue( s.getSpecialNeeds( ) );
