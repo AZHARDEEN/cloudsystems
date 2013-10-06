@@ -33,24 +33,24 @@ public class CompanyType extends SimpleTable<CompanyType>
 	@Override
 	public Integer getId( )
 	{
-		return id;
+		return this.id;
 	}
 
 	@Override
 	public void setId( Integer ctpIdIn )
 	{
-		id = ctpIdIn;
+		this.id = ctpIdIn;
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return description;
+		return this.description;
 	}
 
 	@Override
 	public void setDescription( String ctpDescriptionCh )
 	{
-		description = ctpDescriptionCh;
+		this.description = ctpDescriptionCh;
 	}
 }

@@ -6,6 +6,9 @@ import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.jpa.user.CollaboratorType;
 
 @Local
-public interface CollaboratorTypeSessionBeanLocal extends BaseCrudSessionInterface<CollaboratorType> {
+public interface CollaboratorTypeSessionBeanLocal extends BaseCrudSessionInterface<CollaboratorType>
+{
+
+	CollaboratorType get( Integer companyId, Integer type );
 
 }

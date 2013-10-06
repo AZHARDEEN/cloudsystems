@@ -56,9 +56,9 @@ public abstract class BaseDBListController<BEAN extends BaseCrudSessionInterface
 
 	protected List<Paginal> getPaging( )
 	{
-		if ( this.pagings == null && getListbox( ).getPaginal( ) != null ) {
+		if ( this.pagings == null && this.getListbox( ).getPaginal( ) != null ) {
 			this.pagings = new ArrayList<Paginal>( );
-			this.pagings.add( getListbox( ).getPaginal( ) );
+			this.pagings.add( this.getListbox( ).getPaginal( ) );
 		}
 		return this.pagings;
 	}
@@ -67,55 +67,55 @@ public abstract class BaseDBListController<BEAN extends BaseCrudSessionInterface
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		setupComparator( );
-		getListbox( ).setItemRenderer( getListRenderer( ) );
-		initPaging( 0, getRows( ) );
-		loadPage( 0 );
+		this.setupComparator( );
+		this.getListbox( ).setItemRenderer( this.getListRenderer( ) );
+		this.initPaging( 0, this.getRows( ) );
+		this.loadPage( 0 );
 	}
 
 	protected int getRows( )
 	{
-		int rows = getListbox( ).getRows( );
+		int rows = this.getListbox( ).getRows( );
 		if ( rows == 0 ) {
 			rows = ListboxParams.maxListBoxPageSize;
-			getListbox( ).setRows( rows );
+			this.getListbox( ).setRows( rows );
 		}
 		return rows;
 	}
 
 	protected int getCount( )
 	{
-		return getPagingSession( ).count( getPrincipal( ) );
+		return this.getPagingSession( ).count( this.getPrincipal( ) );
 	}
 
 	protected void initPaging( int page, int rows )
 	{
 		int totalSize;
 
-		if ( SysUtils.isEmpty( getPaging( ) ) == false && getPagingSession( ) != null ) {
-			totalSize = getCount( );
+		if ( SysUtils.isEmpty( this.getPaging( ) ) == false && this.getPagingSession( ) != null ) {
+			totalSize = this.getCount( );
 			if ( totalSize >= rows ) {
-				setPagingEventListener( );
-				for ( Paginal item : getPaging( ) ) {
+				this.setPagingEventListener( );
+				for ( Paginal item : this.getPaging( ) ) {
 					item.setTotalSize( totalSize );
 					item.setActivePage( page );
 					item.setPageSize( rows );
 				}
 			}
 			else {
-				for ( Paginal item : getPaging( ) ) {
+				for ( Paginal item : this.getPaging( ) ) {
 					if ( item instanceof Paging ) {
 						( (Paging) item ).setVisible( false );
 					}
 				}
-				getListbox( ).setModel( new ListModelList<ENTITY>( getList( ) ) );
+				this.getListbox( ).setModel( new ListModelList<ENTITY>( this.getList( ) ) );
 			}
 		}
 	}
 
 	private void setupComparator( )
 	{
-		List<Component> headers = getListbox( ).getListhead( ).getChildren( );
+		List<Component> headers = this.getListbox( ).getListhead( ).getChildren( );
 		if ( headers != null ) {
 			for ( int nIndex = 0; nIndex < headers.size( ); nIndex++ ) {
 				Listheader header = (Listheader) headers.get( nIndex );
@@ -130,7 +130,7 @@ public abstract class BaseDBListController<BEAN extends BaseCrudSessionInterface
 	{
 		Set<Listitem> itens;
 
-		itens = getListbox( ).getSelectedItems( );
+		itens = this.getListbox( ).getSelectedItems( );
 		ArrayList<ENTITY> entities = null;
 		if ( itens != null && itens.size( ) > 0 ) {
 			entities = new ArrayList<ENTITY>( itens.size( ) );
@@ -144,100 +144,101 @@ public abstract class BaseDBListController<BEAN extends BaseCrudSessionInterface
 	@Listen( "onSelect = listbox#listTable" )
 	public void onSelectListbox( Event evt )
 	{
-		if ( evt != null )
+		if ( evt != null ) {
 			evt.stopPropagation( );
+		}
 		try {
-			onSelect( );
+			this.onSelect( );
 		}
 		catch ( Exception e ) {
-			getSession( ).storeException( e );
+			this.getSession( ).storeException( e );
 			throw e;
 		}
 	}
 
 	private void onSelect( )
 	{
-		List<ENTITY> itens = getSelectedRecords( );
+		List<ENTITY> itens = this.getSelectedRecords( );
 		if ( itens != null ) {
 			if ( itens.size( ) == 1 ) {
-				allowUpdateAndDelete( true );
-				showFields( itens.get( 0 ) );
+				this.allowUpdateAndDelete( true );
+				this.showFields( itens.get( 0 ) );
 			}
 			else {
-				allowDelete( true );
-				allowUpdate( false );
+				this.allowDelete( true );
+				this.allowUpdate( false );
 			}
 		}
 		else {
-			showFields( null );
-			allowUpdateAndDelete( false );
+			this.showFields( null );
+			this.allowUpdateAndDelete( false );
 		}
 	}
 
 	@Override
 	public void onRefresh( )
 	{
-		getListbox( ).setModel( new ListModelList<ENTITY>( getList( ) ) );
-		allowUpdateAndDelete( false );
+		this.getListbox( ).setModel( new ListModelList<ENTITY>( this.getList( ) ) );
+		this.allowUpdateAndDelete( false );
 	}
 
 	@Override
 	protected void onAddNew( )
 	{
-		showFields( null );
-		setTargetEntity( getNew( ) );
+		this.showFields( null );
+		this.setTargetEntity( this.getNew( ) );
 	}
 
 	@Override
 	protected void onUpdate( )
 	{
-		List<ENTITY> items = getSelectedRecords( );
+		List<ENTITY> items = this.getSelectedRecords( );
 		if ( items != null ) {
-			setTargetEntity( ( (ArrayList<ENTITY>) getSelectedRecords( ) ).get( 0 ) );
-			showFields( items.get( 0 ) );
-			disableListBox( true );
+			this.setTargetEntity( ( (ArrayList<ENTITY>) this.getSelectedRecords( ) ).get( 0 ) );
+			this.showFields( items.get( 0 ) );
+			this.disableListBox( true );
 		}
 	}
 
 	private void disableListBox( boolean bDisable )
 	{
-		List<Listitem> list = getListbox( ).getItems( );
+		List<Listitem> list = this.getListbox( ).getItems( );
 		for ( Listitem item : list ) {
 			item.setDisabled( bDisable );
 		}
-		getListbox( ).setDisabled( bDisable );
+		this.getListbox( ).setDisabled( bDisable );
 	}
 
 	@Override
 	protected void onCancel( )
 	{
-		disableListBox( false );
-		List<ENTITY> items = getSelectedRecords( );
+		this.disableListBox( false );
+		List<ENTITY> items = this.getSelectedRecords( );
 		if ( items != null ) {
-			showFields( items.get( 0 ) );
+			this.showFields( items.get( 0 ) );
 		}
 		else {
-			showFields( null );
+			this.showFields( null );
 		}
 	}
 
 	@Override
 	protected Collection<ENTITY> getEntitiesToDelete( )
 	{
-		return getSelectedRecords( );
+		return this.getSelectedRecords( );
 	}
 
 	@SuppressWarnings( "unchecked" )
 	private ListModelList<ENTITY> getModel( )
 	{
-		ListModelList<ENTITY> model = (ListModelList<ENTITY>) getListbox( ).getModel( );
+		ListModelList<ENTITY> model = (ListModelList<ENTITY>) this.getListbox( ).getModel( );
 		return model;
 	}
 
 	@Override
 	protected void afterUpdate( ENTITY entity, int operation )
 	{
-		ListModelList<ENTITY> model = getModel( );
+		ListModelList<ENTITY> model = this.getModel( );
 		int nIndex = model.indexOf( entity );
 		if ( nIndex < 0 ) {
 			model.add( entity );
@@ -246,31 +247,31 @@ public abstract class BaseDBListController<BEAN extends BaseCrudSessionInterface
 		else {
 			model.set( nIndex, entity );
 		}
-		Listitem item = getListbox( ).getItemAtIndex( nIndex );
+		Listitem item = this.getListbox( ).getItemAtIndex( nIndex );
 		item.setValue( entity );
-		getListbox( ).setSelectedIndex( nIndex );
+		this.getListbox( ).setSelectedIndex( nIndex );
 
-		onSelect( );
+		this.onSelect( );
 	}
 
 	@Override
 	protected void afterDelete( Collection<ENTITY> collection )
 	{
-		ListModelList<ENTITY> model = getModel( );
+		ListModelList<ENTITY> model = this.getModel( );
 		model.removeAll( collection );
 		if ( model.getSize( ) > 0 ) {
-			getListbox( ).setSelectedIndex( 0 );
+			this.getListbox( ).setSelectedIndex( 0 );
 		}
-		onSelect( );
+		this.onSelect( );
 	}
 
 	protected Collection<ENTITY> getList( )
 	{
 
 		@SuppressWarnings( "unchecked" )
-		BaseCrudSessionInterface<ENTITY> session = (BaseCrudSessionInterface<ENTITY>) getSession( );
+		BaseCrudSessionInterface<ENTITY> session = (BaseCrudSessionInterface<ENTITY>) this.getSession( );
 		try {
-			return session.getAll( getPrincipal( ) );
+			return session.getAll( this.getPrincipal( ) );
 		}
 		catch ( Exception e ) {
 			session.storeException( e );
@@ -281,7 +282,7 @@ public abstract class BaseDBListController<BEAN extends BaseCrudSessionInterface
 	protected ENTITY getNew( )
 	{
 		@SuppressWarnings( "unchecked" )
-		BaseCrudSessionInterface<ENTITY> session = (BaseCrudSessionInterface<ENTITY>) getSession( );
+		BaseCrudSessionInterface<ENTITY> session = (BaseCrudSessionInterface<ENTITY>) this.getSession( );
 		Class<ENTITY> cls = session.getPersistentClass( );
 		try {
 			ENTITY newEntity = cls.newInstance( );
@@ -295,33 +296,33 @@ public abstract class BaseDBListController<BEAN extends BaseCrudSessionInterface
 
 	protected void setPagingEventListener( )
 	{
-		for ( Paginal item : getPaging( ) ) {
-			item.addEventListener( "onPaging", getEventListener( ) );
+		for ( Paginal item : this.getPaging( ) ) {
+			item.addEventListener( "onPaging", this.getEventListener( ) );
 		}
 
 	}
 
 	private void setActivePage( int activePage )
 	{
-		for ( Paginal item : getPaging( ) ) {
+		for ( Paginal item : this.getPaging( ) ) {
 			item.setActivePage( activePage );
 		}
 	}
 
 	protected void onPaging( PagingEvent event )
 	{
-		loadPage( event.getActivePage( ) );
-		setActivePage( event.getActivePage( ) );
+		this.loadPage( event.getActivePage( ) );
+		this.setActivePage( event.getActivePage( ) );
 	}
 
 	protected void loadPage( int activePage )
 	{
-		getListbox( ).setModel( new ListModelList<ENTITY>( getAll( activePage ) ) );
+		this.getListbox( ).setModel( new ListModelList<ENTITY>( this.getAll( activePage ) ) );
 	}
 
 	protected Collection<ENTITY> getAll( int activePage )
 	{
-		return getPagingSession( ).getAll( getPrincipal( ), null, new DBPaging( activePage, getRows( ) ) );
+		return this.getPagingSession( ).getAll( this.getPrincipal( ), null, new DBPaging( activePage, this.getRows( ) ) );
 	}
 
 	private EventListener<PagingEvent> getEventListener( )
@@ -331,7 +332,7 @@ public abstract class BaseDBListController<BEAN extends BaseCrudSessionInterface
 			@Override
 			public void onEvent( PagingEvent event )
 			{
-				onPaging( event );
+				BaseDBListController.this.onPaging( event );
 			}
 		};
 	}

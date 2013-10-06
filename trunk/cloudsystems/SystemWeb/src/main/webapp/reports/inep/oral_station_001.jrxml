@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T:/Workspaces/Kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[33]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+	*
+FROM
+	INEP.INEP_SUBSCRIPTION T1 INNER JOIN INEP.INEP_STATION T2 ON (T1.USR_ID_IN = T2.USR_ID_IN AND T1.PCT_ID_IN = T2.PCT_ID_IN AND T1.CLI_SEQ_IN = T2.CLI_SEQ_IN)
+	INNER JOIN CLIENT T3 ON ( T2.USR_ID_IN = T3.USR_ID_IN AND T2.CLI_SEQ_IN = T3.CLI_SEQ_IN )
+	INNER JOIN COMPANY T4 ON ( T3.CLI_ID_IN = T4.USR_ID_IN )
+	INNER JOIN USERS T5 ON ( T4.USR_ID_IN = T5.USR_ID_IN )
+	LEFT JOIN INEP.INEP_ORAL_TEST T6 ON ( T1.USR_ID_IN = T6.USR_ID_IN AND T1.PCT_ID_IN = T6.PCT_ID_IN AND T1.ISC_ID_CH = T6.ISC_ID_CH )
+WHERE
+    T1.USR_ID_IN = $P{COMPANY_ID}
+AND T2.PCT_ID_IN = $P{EVENT_ID}
+order by
+	t5.usr_name_ch,
+	t1.isc_id_ch]]>
+	</queryString>
+	<field name="pct_id_in" class="java.lang.Integer"/>
+	<field name="usr_id_in" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Usar sequence: seq_usuario]]></fieldDescription>
+	</field>
+	<field name="isc_id_ch" class="java.lang.String"/>
+	<field name="isc_written_grade_nm" class="java.math.BigDecimal"/>
+	<field name="isc_oral_grade_nm" class="java.math.BigDecimal"/>
+	<field name="isc_final_grade_nm" class="java.math.BigDecimal"/>
+	<field name="isc_station_ch" class="java.lang.String"/>
+	<field name="isc_agreement_grade_nm" class="java.math.BigDecimal"/>
+	<field name="isc_level_in" class="java.lang.Integer"/>
+	<field name="cli_seq_in" class="java.lang.Integer"/>
+	<field name="isc_candidate_in" class="java.lang.Integer"/>
+	<field name="isc_special_needs_ch" class="java.lang.String"/>
+	<field name="isc_citizenship_ch" class="java.lang.String">
+		<fieldDescription><![CDATA[Este campo só existe por que na planilha de importação do INEP consta a nacionalidade por extenso - chinesa, por exemplo - sem vínculo algum com o pais. Neste caso, infelizmente, não há como realizar um vínculo automático com a tabela de países, sem fazer um 'DE-PARA' primeiro.]]></fieldDescription>
+	</field>
+	<field name="cli_id_in" class="java.lang.Integer"/>
+	<field name="cli_from_dt" class="java.sql.Timestamp"/>
+	<field name="cli_to_dt" class="java.sql.Timestamp"/>
+	<field name="cli_internal_code_ch" class="java.lang.String"/>
+	<field name="usr_isento_ie_bt" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[Indica que a pessoa jurídica é isenta de inscrição estadual. Este é um atributo exclusivo  brasileiro.]]></fieldDescription>
+	</field>
+	<field name="usr_isento_im_bt" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[Indica que a pessoa jurídica é isenta de inscrição municipal. Este é um atributo exclusivo  brasileiro.]]></fieldDescription>
+	</field>
+	<field name="usr_optante_simples_bt" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[Indica que a empresa é optante pelo sistema simples de tributação. Atributo exclusivo do sistema brasilteiro.]]></fieldDescription>
+	</field>
+	<field name="ctp_id_in" class="java.lang.Integer"/>
+	<field name="usr_holding_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Usar sequence: seq_usuario]]></fieldDescription>
+	</field>
+	<field name="usr_name_ch" class="java.lang.String"/>
+	<field name="ust_id_in" class="java.lang.String">
+		<fieldDescription><![CDATA[Código sequencial do tipo do usuário.
+Este campo teve que ser alterado para String, em função de um problema ainda não identificado no EJB3 ou no Banco do Postgresql, que não permite
+
+@Inheritance(strategy=InheritanceType.JOINED)
+
+com um campo discriminador Integer, apesar de usar todos as anotações conforme definido.
+
+@DiscriminatorColumn(name="ust_id_in", discriminatorType = DiscriminatorType.INTEGER )]]></fieldDescription>
+	</field>
+	<field name="usr_nick_name_ch" class="java.lang.String">
+		<fieldDescription><![CDATA[Nome de fantasia de uma pessoa jurídica ou simplesmente o apelido de uma pessoa física.]]></fieldDescription>
+	</field>
+	<field name="usr_insert_dt" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[Data onde o registro foi incluído no banco de dados.]]></fieldDescription>
+	</field>
+	<field name="usr_update_dt" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[Data da última alteração no registro. Data em que o registro e seus filhos foram alterados pela última vez]]></fieldDescription>
+	</field>
+	<field name="usr_observation_tx" class="java.lang.String"/>
+	<field name="usr_birth_dt" class="java.sql.Timestamp"/>
+	<field name="iot_station_ch" class="java.lang.String"/>
+	<field name="iot_interviewer_grade_nm" class="java.math.BigDecimal"/>
+	<field name="iot_observer_grade_nm" class="java.math.BigDecimal"/>
+	<field name="iot_final_grade_nm" class="java.math.BigDecimal"/>
+	<field name="ids_id_in" class="java.lang.Integer"/>
+	<field name="iot_agreement_grade_in" class="java.lang.Integer"/>
+	<field name="iot_written_grade_nm" class="java.math.BigDecimal"/>
+	<field name="iot_agreement2_grade_nm" class="java.math.BigDecimal"/>
+	<field name="iot_grade_nm" class="java.math.BigDecimal"/>
+	<field name="iot_status_ch" class="java.lang.String"/>
+	<field name="iot_variance_in" class="java.lang.Integer"/>
+	<field name="iot_level_in" class="java.lang.Integer"/>
+	<variable name="CountSubscription" class="java.lang.Integer" resetType="Group" resetGroup="Station Name" calculation="Count">
+		<variableExpression><![CDATA[$F{isc_id_ch}]]></variableExpression>
+	</variable>
+	<group name="Station Name" isReprintHeaderOnEachPage="true" keepTogether="true">
+		<groupExpression><![CDATA[$F{usr_name_ch}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<staticText>
+					<reportElement uuid="7c7e5e55-1cc6-4db2-ae88-eb0a05beb992" x="182" y="30" width="100" height="20"/>
+					<textElement/>
+					<text><![CDATA[Entrevistador]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="6ee61508-7e44-4738-a7a0-148ad06155e3" x="294" y="30" width="100" height="20"/>
+					<textElement/>
+					<text><![CDATA[Observador]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="fc027fcc-1505-4fdf-ab85-3379f364b0e8" x="0" y="30" width="88" height="20"/>
+					<textElement/>
+					<text><![CDATA[Inscrição]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="a4c2bfa5-1e97-48bb-8f54-4878ed2cde8b" x="0" y="0" width="550" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{usr_name_ch}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<textField>
+					<reportElement uuid="887b96b8-8511-4849-b78f-8d25de14d5d5" x="182" y="0" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$V{CountSubscription}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="85708062-4551-45f4-be7c-f5ae753a1d33" x="0" y="0" width="182" height="20"/>
+					<textElement/>
+					<text><![CDATA[Total de Inscrições do Posto]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="0" y="0" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Consolidado de Inscrições por Posto Aplicador]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="53" splitType="Stretch">
+			<image>
+				<reportElement uuid="b8f3d208-d5c0-4eec-a205-6241c030a737" x="3" y="1" width="117" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="4312c333-ca76-4c9c-bb9f-42a166d16665" x="144" y="2" width="231" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="54632e40-5f44-4f64-9069-37b26efbf901" x="388" y="3" width="165" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="7" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<elementGroup/>
+			<textField>
+				<reportElement uuid="de5e44d9-7341-48b5-8091-59442eaac7c9" x="0" y="0" width="88" height="18"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
+				<reportElement uuid="891a391b-7e98-4219-b378-06ea39b69297" x="182" y="0" width="100" height="18"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{iot_interviewer_grade_nm}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
+				<reportElement uuid="a7aae8fd-cfd6-4127-b691-fee96103b9a6" x="294" y="0" width="100" height="18"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{iot_observer_grade_nm}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7" x="455" y="0" width="100" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6" x="0" y="0" width="199" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

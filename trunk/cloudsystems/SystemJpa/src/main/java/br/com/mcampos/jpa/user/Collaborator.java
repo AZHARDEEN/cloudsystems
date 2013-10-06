@@ -9,6 +9,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -51,8 +52,20 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 	@EmbeddedId
 	private CollaboratorPK id;
 
+	@Column( name = "clt_id_in", nullable = false, updatable = true, insertable = true, columnDefinition = "Integer NOT NULL" )
+	private Integer typeId;
+
 	@ManyToOne
-	@JoinColumn( name = "clt_id_in" )
+	@JoinColumns( {
+			@JoinColumn(
+					name = "usr_id_in", referencedColumnName = "usr_id_in",
+					nullable = false, updatable = false, insertable = false, columnDefinition = "Integer"
+			),
+			@JoinColumn(
+					name = "clt_id_in", referencedColumnName = "clt_id_in",
+					nullable = false, updatable = false, insertable = false, columnDefinition = "Integer"
+			)
+	} )
 	private CollaboratorType collaboratorType;
 
 	@Column( name = "col_from_dt", nullable = false )
@@ -88,10 +101,10 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	public CollaboratorPK getId( )
 	{
-		if ( id == null ) {
-			id = new CollaboratorPK( );
+		if ( this.id == null ) {
+			this.id = new CollaboratorPK( );
 		}
-		return id;
+		return this.id;
 	}
 
 	public void setId( CollaboratorPK id )
@@ -101,27 +114,27 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	public Date getFromDate( )
 	{
-		return fromDate;
+		return this.fromDate;
 	}
 
 	public void setFromDate( Date colFromDt )
 	{
-		fromDate = colFromDt;
+		this.fromDate = colFromDt;
 	}
 
 	public Date getToDate( )
 	{
-		return toDate;
+		return this.toDate;
 	}
 
 	public void setToDate( Date colToDt )
 	{
-		toDate = colToDt;
+		this.toDate = colToDt;
 	}
 
 	public Integer getCpsIdIn( )
 	{
-		return cpsIdIn;
+		return this.cpsIdIn;
 	}
 
 	public void setCpsIdIn( Integer cpsIdIn )
@@ -131,17 +144,18 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	public CollaboratorType getCollaboratorType( )
 	{
-		return collaboratorType;
+		return this.collaboratorType;
 	}
 
-	public void setCollaboratorType( CollaboratorType collaboratorType )
+	public void setCollaboratorType( CollaboratorType type )
 	{
-		this.collaboratorType = collaboratorType;
+		this.collaboratorType = type;
+		this.setTypeId( type != null ? type.getId( ).getId( ) : null );
 	}
 
 	public Person getPerson( )
 	{
-		return person;
+		return this.person;
 	}
 
 	public void setPerson( Person person )
@@ -151,20 +165,20 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	public Company getCompany( )
 	{
-		return company;
+		return this.company;
 	}
 
 	public void setCompany( Company company )
 	{
 		this.company = company;
-		if ( getCompany( ) != null ) {
-			getId( ).setCompanyId( company.getId( ) );
+		if ( this.getCompany( ) != null ) {
+			this.getId( ).setCompanyId( company.getId( ) );
 		}
 	}
 
 	public List<Role> getRoles( )
 	{
-		return roles;
+		return this.roles;
 	}
 
 	public void setRoles( List<Role> roles )
@@ -175,15 +189,15 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 	@Override
 	public int compareTo( Collaborator o )
 	{
-		return getId( ).compareTo( o.getId( ) );
+		return this.getId( ).compareTo( o.getId( ) );
 	}
 
 	public Role add( Role item )
 	{
 		if ( item != null ) {
-			int nIndex = getRoles( ).indexOf( item );
+			int nIndex = this.getRoles( ).indexOf( item );
 			if ( nIndex < 0 ) {
-				getRoles( ).add( item );
+				this.getRoles( ).add( item );
 			}
 		}
 		return item;
@@ -191,8 +205,18 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	public Role remove( Role item )
 	{
-		SysUtils.remove( getRoles( ), item );
+		SysUtils.remove( this.getRoles( ), item );
 		return item;
+	}
+
+	public Integer getTypeId( )
+	{
+		return this.typeId;
+	}
+
+	public void setTypeId( Integer typeId )
+	{
+		this.typeId = typeId;
 	}
 
 }

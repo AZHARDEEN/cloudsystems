@@ -18,6 +18,7 @@ public abstract class BaseCompanyEntity implements BaseEntity, Serializable
 	@JoinColumn( name = "usr_id_in", insertable = false, updatable = false, nullable = false )
 	private Company company;
 
+	@Override
 	public abstract BaseCompanyPK getId( );
 
 	public BaseCompanyEntity( )
@@ -27,23 +28,34 @@ public abstract class BaseCompanyEntity implements BaseEntity, Serializable
 
 	public BaseCompanyEntity( Company c )
 	{
-		setCompany( c );
+		this.setCompany( c );
 	}
 
 	public Company getCompany( )
 	{
-		return company;
+		return this.company;
 	}
 
 	public void setCompany( Company company )
 	{
 		this.company = company;
-		getId( ).setCompanyId( company != null ? company.getId( ) : null );
+		this.getId( ).setCompanyId( company != null ? company.getId( ) : null );
 	}
 
 	public Integer getCompanyId( )
 	{
-		return getId( ).getCompanyId( );
+		return this.getId( ).getCompanyId( );
+	}
+
+	public int compareTo( BaseCompanyEntity other )
+	{
+		if ( other == null ) {
+			return -1;
+		}
+		if ( other == this ) {
+			return 0;
+		}
+		return this.getId( ).compareTo( other.getId( ) );
 	}
 
 }
