@@ -3,9 +3,12 @@ package br.com.mcampos.jpa.user;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
+
+import br.com.mcampos.jpa.BaseCompanyEntity;
+import br.com.mcampos.jpa.SimpleEntity;
 
 /**
  * The persistent class for the collaborator_type database table.
@@ -13,57 +16,115 @@ import javax.persistence.Table;
  */
 @Entity
 @Table( name = "collaborator_type", schema = "public" )
-public class CollaboratorType implements Serializable
+public class CollaboratorType extends BaseCompanyEntity implements Serializable, Comparable<CollaboratorType>, SimpleEntity<CollaboratorType>
 {
 	private static final long serialVersionUID = 1L;
 
-	public static final Integer typeEmployee = 2;
-	public static final Integer typeManager = 4;
-	public static final Integer typeDirector = 3;
-	public static final Integer typeAdministrator = 1;
-
-	@Id
-	@Column( name = "clt_id_in", unique = true, nullable = false )
-	private Integer id;
+	@EmbeddedId
+	private CollaboratorTypePK id;
 
 	@Column( name = "clt_description_ch", nullable = false, length = 32 )
 	private String description;
 
 	@Column( name = "clt_inherit_role_bt" )
-	private Boolean cltInheritRoleBt;
+	private Boolean inheritRole;
 
 	public CollaboratorType( )
 	{
 	}
 
-	public Integer getId( )
+	public CollaboratorType( Company company )
 	{
-		return id;
+		super( company );
 	}
 
-	public void setId( Integer cltIdIn )
+	public CollaboratorType( Company company, Integer id, String description, Boolean inherit )
 	{
-		id = cltIdIn;
+		super( company );
+		this.getId( ).setId( id );
+		this.setDescription( description );
+		this.setInheritRole( inherit );
 	}
 
+	@Override
+	public CollaboratorTypePK getId( )
+	{
+		if ( this.id == null ) {
+			this.id = new CollaboratorTypePK( );
+		}
+		return this.id;
+	}
+
+	public void setId( CollaboratorTypePK key )
+	{
+		this.id = key;
+	}
+
+	@Override
 	public String getDescription( )
 	{
-		return description;
+		return this.description;
 	}
 
+	@Override
 	public void setDescription( String cltDescriptionCh )
 	{
-		description = cltDescriptionCh;
+		this.description = cltDescriptionCh;
 	}
 
-	public Boolean getCltInheritRoleBt( )
+	public Boolean getInheritRole( )
 	{
-		return cltInheritRoleBt;
+		return this.inheritRole;
 	}
 
-	public void setCltInheritRoleBt( Boolean cltInheritRoleBt )
+	public void setInheritRole( Boolean inherit )
 	{
-		this.cltInheritRoleBt = cltInheritRoleBt;
+		this.inheritRole = inherit;
 	}
 
+	@Override
+	public int compareTo( CollaboratorType other )
+	{
+		return this.getId( ).compareTo( other.getId( ) );
+	}
+
+	@Override
+	public boolean equals( Object arg0 )
+	{
+		return this.getId( ).equals( ( (CollaboratorType) arg0 ).getId( ) );
+	}
+
+	@Override
+	public void setId( Integer id )
+	{
+		this.getId( ).setId( id );
+	}
+
+	@Override
+	public String getField( Integer field )
+	{
+		switch ( field ) {
+		case 0:
+			return this.getId( ).getId( ).toString( );
+		case 1:
+			return this.getDescription( );
+		case 2:
+			return this.getInheritRole( ).toString( );
+		}
+		return null;
+	}
+
+	@Override
+	public int compareTo( CollaboratorType object, Integer field )
+	{
+		switch ( field ) {
+		case 0:
+			return this.getId( ).compareTo( object.getId( ) );
+		case 1:
+			return this.getDescription( ).compareTo( object.getDescription( ) );
+		case 2:
+			return this.getInheritRole( ).compareTo( object.getInheritRole( ) );
+		}
+		return 0;
+	}
 }

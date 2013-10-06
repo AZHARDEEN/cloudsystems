@@ -44,7 +44,6 @@ import br.com.mcampos.jpa.inep.RevisorType;
 import br.com.mcampos.jpa.security.Login;
 import br.com.mcampos.jpa.security.UserStatus;
 import br.com.mcampos.jpa.user.Collaborator;
-import br.com.mcampos.jpa.user.CollaboratorType;
 import br.com.mcampos.jpa.user.Company;
 import br.com.mcampos.jpa.user.Person;
 import br.com.mcampos.jpa.user.UserDocument;
@@ -105,82 +104,82 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 			logger.warn( "Dto is null" );
 			return false;
 		}
-		Company company = companySession.get( dto.getUser( ) );
+		Company company = this.companySession.get( dto.getUser( ) );
 		if ( company == null ) {
 			logger.warn( "Company is null" );
 			return false;
 		}
-		InepEvent event = packageSession.get( new InepEventPK( company, dto.getEvento( ) ) );
+		InepEvent event = this.packageSession.get( new InepEventPK( company, dto.getEvento( ) ) );
 		if ( event == null ) {
 			logger.warn( "Event is null" );
 			return false;
 		}
-		Person person = getPerson( dto );
-		Login login = getLogin( person );
-		Collaborator col = getCollaborator( login, company, dto );
+		Person person = this.getPerson( dto );
+		Login login = this.getLogin( person );
+		Collaborator col = this.getCollaborator( login, company, dto );
 		logger.debug( "The task is done!!!!! " );
 		logger.debug( "Name...........: " + col.getPerson( ).getName( ) );
 		logger.debug( "Id.............: " + col.getPerson( ).getId( ) );
 		logger.debug( "Collaborator ID: " + col.getId( ).getSequence( ) );
-		return getRevisor( col, dto ) != null ? true : false;
+		return this.getRevisor( col, dto ) != null ? true : false;
 	}
 
 	private InepRevisor getRevisor( Collaborator col, CorretorDTO dto )
 	{
 		InepEventPK key = new InepEventPK( col.getCompany( ), dto.getEvento( ) );
-		InepEvent event = eventSession.get( key );
+		InepEvent event = this.eventSession.get( key );
 		if ( event == null ) {
 			return null;
 		}
-		InepRevisor rev = revisorSession.get( event, col );
+		InepRevisor rev = this.revisorSession.get( event, col );
 		if ( rev == null ) {
 			rev = new InepRevisor( );
 			rev.setCollaborator( col );
 			rev.setCoordenador( dto.getCoordenador( ) );
-			InepTask task = taskSession.get( new InepTaskPK( event, dto.getTarefa( ) ) );
+			InepTask task = this.taskSession.get( new InepTaskPK( event, dto.getTarefa( ) ) );
 			if ( task == null ) {
 				return null;
 			}
 			rev.setTask( task );
-			rev = revisorSession.merge( rev );
+			rev = this.revisorSession.merge( rev );
 		}
 		return rev;
 	}
 
 	private Collaborator getCollaborator( Login login, Company company, CorretorDTO dto )
 	{
-		Collaborator collaborator = collaboratorSession.find( new PrincipalDTO( company.getId( ), login.getId( ), null ) );
+		Collaborator collaborator = this.collaboratorSession.find( new PrincipalDTO( company.getId( ), login.getId( ), null ) );
 		if ( collaborator == null ) {
 			logger.debug( "Collaborator does not exists: " + login.getPerson( ).getName( ) );
 			collaborator = new Collaborator( );
-			collaborator.setCollaboratorType( collaboratorTypeSession.get( CollaboratorType.typeEmployee ) );
+			collaborator.setCollaboratorType( this.collaboratorTypeSession.get( company.getId( ), 1 ) );
 			collaborator.setCompany( company );
 			collaborator.setPerson( login.getPerson( ) );
 			collaborator.setCpsIdIn( 5 );
 			collaborator.setFromDate( new Date( ) );
-			collaborator = collaboratorSession.merge( collaborator );
+			collaborator = this.collaboratorSession.merge( collaborator );
 		}
 		logger.debug( "Adding roles for collaborator: " + collaborator.getId( ).getSequence( ) );
-		collaborator.add( roleSession.get( 4 ) );
+		collaborator.add( this.roleSession.get( 4 ) );
 		if ( dto.getCoordenador( ) ) {
-			collaborator.add( roleSession.get( 20 ) );
+			collaborator.add( this.roleSession.get( 20 ) );
 		}
 		else {
-			collaborator.add( roleSession.get( 18 ) );
+			collaborator.add( this.roleSession.get( 18 ) );
 		}
 		return collaborator;
 	}
 
 	private Login getLogin( Person person )
 	{
-		Login login = loginSession.get( person.getId( ) );
+		Login login = this.loginSession.get( person.getId( ) );
 		if ( login == null ) {
 			logger.debug( "Creating Login for person: " + person.getName( ) );
-			loginSession.add( person, "987654" );
-			login = loginSession.get( person.getId( ) );
+			this.loginSession.add( person, "987654" );
+			login = this.loginSession.get( person.getId( ) );
 		}
 		logger.debug( "Resetting login parameters for login: " + login.getId( ) );
-		login.setStatus( userStatusSession.get( UserStatus.statusOk ) );
+		login.setStatus( this.userStatusSession.get( UserStatus.statusOk ) );
 		login.setTryCount( 0 );
 		Calendar now = Calendar.getInstance( );
 		now.add( Calendar.DATE, 60 );
@@ -190,17 +189,17 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 
 	private Person getPerson( CorretorDTO dto )
 	{
-		Person person = personSession.getByDocument( dto.getCpf( ) );
+		Person person = this.personSession.getByDocument( dto.getCpf( ) );
 		if ( person == null ) {
 			logger.debug( "There is no person for document" + dto.getCpf( ) );
-			person = personSession.getByDocument( dto.getEmail( ) );
+			person = this.personSession.getByDocument( dto.getEmail( ) );
 			if ( person == null ) {
 				logger.debug( "There is no person for document" + dto.getEmail( ) );
-				person = insertPerson( dto );
+				person = this.insertPerson( dto );
 				logger.debug( dto.getNome( ) + " is created" );
 			}
 			else {
-				UserDocument doc = new UserDocument( dto.getCpf( ), documentTypeSession.get( UserDocument.CPF ) );
+				UserDocument doc = new UserDocument( dto.getCpf( ), this.documentTypeSession.get( UserDocument.CPF ) );
 				person.add( doc );
 			}
 		}
@@ -212,12 +211,12 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		Person person = new Person( );
 
 		logger.debug( "Creating Person" + dto.getNome( ) );
-		UserDocument doc = new UserDocument( dto.getCpf( ), documentTypeSession.get( UserDocument.CPF ) );
+		UserDocument doc = new UserDocument( dto.getCpf( ), this.documentTypeSession.get( UserDocument.CPF ) );
 		person.add( doc );
-		doc = new UserDocument( dto.getEmail( ), documentTypeSession.get( UserDocument.EMAIL ) );
+		doc = new UserDocument( dto.getEmail( ), this.documentTypeSession.get( UserDocument.EMAIL ) );
 		person.add( doc );
 		person.setName( dto.getNome( ) );
-		return personSession.merge( person );
+		return this.personSession.merge( person );
 	}
 
 	@Override
@@ -227,12 +226,12 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		int x = 0;
 		int nIndex = 1;
 		InepDistribution entity;
-		DistributionStatus status = distributionStatusSession.get( new Integer( 1 ) );
-		List<InepRevisor> team = teamSession.findByNamedQuery( InepRevisor.getAllRevisorByEventAndTask, task );
+		DistributionStatus status = this.distributionStatusSession.get( new Integer( 1 ) );
+		List<InepRevisor> team = this.teamSession.findByNamedQuery( InepRevisor.getAllRevisorByEventAndTask, task );
 		ArrayList<InepRevisor> pairs = new ArrayList<InepRevisor>( team );
 		ArrayList<InepRevisor> assigneds = new ArrayList<InepRevisor>( team.size( ) );
 		logger.info( "Getting tests....." );
-		List<InepTest> tests = testSession.findByNamedQuery( InepTest.getAllEventTasks, task );
+		List<InepTest> tests = this.testSession.findByNamedQuery( InepTest.getAllEventTasks, task );
 		logger.info( "Done..." );
 		InepRevisor current;
 		Boolean mustAdd = false;
@@ -258,14 +257,14 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 			entity.setStatus( status );
 			entity.setRevisor( current );
 			entity.setTest( test );
-			distributionSession.merge( entity );
+			this.distributionSession.merge( entity );
 
-			InepRevisor pair = getPair( pairs, assigneds );
+			InepRevisor pair = this.getPair( pairs, assigneds );
 			entity = new InepDistribution( );
 			entity.setStatus( status );
 			entity.setRevisor( pair );
 			entity.setTest( test );
-			distributionSession.merge( entity );
+			this.distributionSession.merge( entity );
 
 			if ( mustAdd ) {
 				pairs.add( current );
@@ -296,7 +295,7 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 	@Override
 	public List<InepTask> getTasks( InepEvent event )
 	{
-		return taskSession.getAll( event );
+		return this.taskSession.getAll( event );
 	}
 
 	@Override
@@ -305,37 +304,37 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		Person person = null;
 
 		if ( SysUtils.isEmpty( email ) == false ) {
-			person = personSession.getByDocument( email );
+			person = this.personSession.getByDocument( email );
 		}
 		if ( person == null && SysUtils.isEmpty( cpf ) == false ) {
-			person = personSession.getByDocument( cpf );
+			person = this.personSession.getByDocument( cpf );
 		}
 		if ( person == null ) {
 			person = new Person( );
 			if ( SysUtils.isEmpty( email ) == false ) {
-				person.add( new UserDocument( email, documentTypeSession.get( UserDocument.EMAIL ) ) );
+				person.add( new UserDocument( email, this.documentTypeSession.get( UserDocument.EMAIL ) ) );
 			}
 			if ( SysUtils.isEmpty( cpf ) == false ) {
-				person.add( new UserDocument( cpf, documentTypeSession.get( UserDocument.CPF ) ) );
+				person.add( new UserDocument( cpf, this.documentTypeSession.get( UserDocument.CPF ) ) );
 			}
 			person.setName( name );
-			person = personSession.merge( person );
+			person = this.personSession.merge( person );
 		}
-		Login login = loginSession.get( person.getId( ) );
+		Login login = this.loginSession.get( person.getId( ) );
 		if ( login == null ) {
-			loginSession.add( person, "987654" );
-			login = loginSession.get( person.getId( ) );
+			this.loginSession.add( person, "987654" );
+			login = this.loginSession.get( person.getId( ) );
 		}
-		Collaborator collaborator = collaboratorSession.find( new PrincipalDTO( task.getId( ).getCompanyId( ), login.getId( ), null ) );
+		Collaborator collaborator = this.collaboratorSession.find( new PrincipalDTO( task.getId( ).getCompanyId( ), login.getId( ), null ) );
 		if ( collaborator == null ) {
-			collaborator = collaboratorSession.add( login, task.getId( ).getCompanyId( ) );
-			collaborator.add( roleSession.get( 4 ) );
-			collaborator.add( coordenador ? roleSession.get( 20 ) : roleSession.get( 18 ) );
+			collaborator = this.collaboratorSession.add( login, task.getId( ).getCompanyId( ) );
+			collaborator.add( this.roleSession.get( 4 ) );
+			collaborator.add( coordenador ? this.roleSession.get( 20 ) : this.roleSession.get( 18 ) );
 		}
 		InepRevisor rev = new InepRevisor( collaborator, task.getEvent( ) );
 		rev.setTask( task );
 		rev.setCoordenador( coordenador );
-		return revisorSession.merge( rev );
+		return this.revisorSession.merge( rev );
 	}
 
 	@Override
@@ -344,39 +343,39 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		Person person = null;
 
 		if ( SysUtils.isEmpty( email ) == false ) {
-			person = personSession.getByDocument( email );
+			person = this.personSession.getByDocument( email );
 		}
 		if ( person == null && SysUtils.isEmpty( cpf ) == false ) {
-			person = personSession.getByDocument( cpf );
+			person = this.personSession.getByDocument( cpf );
 		}
 		if ( person == null ) {
 			person = new Person( );
 			if ( SysUtils.isEmpty( email ) == false ) {
-				person.add( new UserDocument( email, documentTypeSession.get( UserDocument.EMAIL ) ) );
+				person.add( new UserDocument( email, this.documentTypeSession.get( UserDocument.EMAIL ) ) );
 			}
 			if ( SysUtils.isEmpty( cpf ) == false ) {
-				person.add( new UserDocument( cpf, documentTypeSession.get( UserDocument.CPF ) ) );
+				person.add( new UserDocument( cpf, this.documentTypeSession.get( UserDocument.CPF ) ) );
 			}
 			person.setName( name );
-			person = personSession.merge( person );
+			person = this.personSession.merge( person );
 		}
-		Login login = loginSession.get( person.getId( ) );
+		Login login = this.loginSession.get( person.getId( ) );
 		if ( login == null ) {
-			loginSession.add( person, "987654" );
-			login = loginSession.get( person.getId( ) );
+			this.loginSession.add( person, "987654" );
+			login = this.loginSession.get( person.getId( ) );
 		}
-		Collaborator collaborator = collaboratorSession.find( new PrincipalDTO( event.getId( ).getCompanyId( ), login.getId( ), null ) );
+		Collaborator collaborator = this.collaboratorSession.find( new PrincipalDTO( event.getId( ).getCompanyId( ), login.getId( ), null ) );
 		if ( collaborator == null ) {
-			collaborator = collaboratorSession.add( login, event.getId( ).getCompanyId( ) );
-			collaborator.add( roleSession.get( 4 ) );
-			collaborator.add( type.equals( 3 ) || type.equals( 4 ) ? roleSession.get( 20 ) : roleSession.get( 18 ) );
+			collaborator = this.collaboratorSession.add( login, event.getId( ).getCompanyId( ) );
+			collaborator.add( this.roleSession.get( 4 ) );
+			collaborator.add( type.equals( 3 ) || type.equals( 4 ) ? this.roleSession.get( 20 ) : this.roleSession.get( 18 ) );
 		}
 		InepRevisor rev = new InepRevisor( collaborator, event );
 		if ( task != null ) {
-			rev.setTask( taskSession.get( new InepTaskPK( event, task ) ) );
+			rev.setTask( this.taskSession.get( new InepTaskPK( event, task ) ) );
 		}
-		rev.setType( getEntityManager( ).find( RevisorType.class, type ) );
+		rev.setType( this.getEntityManager( ).find( RevisorType.class, type ) );
 		rev.setCoordenador( false );
-		return revisorSession.merge( rev );
+		return this.revisorSession.merge( rev );
 	}
 }

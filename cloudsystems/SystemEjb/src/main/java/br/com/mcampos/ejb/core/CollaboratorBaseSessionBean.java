@@ -13,6 +13,8 @@ import br.com.mcampos.jpa.system.FileUpload;
 
 public abstract class CollaboratorBaseSessionBean<Y extends BaseCompanyEntity> extends BaseCompanySessionBean<Y> implements CollaboratorBaseSessionInterface<Y>
 {
+	private static final long serialVersionUID = 3793650512659808246L;
+
 	@EJB
 	private LoginPropertySessionLocal propertySession;
 

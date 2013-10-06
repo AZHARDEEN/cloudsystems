@@ -41,7 +41,7 @@ public abstract class SimpleTableController<SESSION extends BaseCrudSessionInter
 		for ( int nIndex = 0; nIndex < this.inputs.size( ); nIndex++ ) {
 			DBWidget input = this.inputs.get( nIndex );
 			input.setText( simpleEntity != null ? simpleEntity.getField( nIndex ) : "" );
-			if ( getStatus( ).equals( statusUpdate ) ) {
+			if ( this.getStatus( ).equals( statusUpdate ) ) {
 				if ( input.isPrimaryKey( ) ) {
 					input.setDisabled( entity != null );
 				}
@@ -71,11 +71,11 @@ public abstract class SimpleTableController<SESSION extends BaseCrudSessionInter
 		SimpleEntity<ENTITY> entity = (SimpleEntity<ENTITY>) target;
 
 		if ( entity.getId( ) == null || entity.getId( ).equals( 0 ) ) {
-			showError( "O campo Código não pode estar vazio" );
+			this.showError( "O campo Código não pode estar vazio" );
 			return false;
 		}
 		if ( entity.getDescription( ) == null || entity.getDescription( ).isEmpty( ) ) {
-			showError( "O campo descrição não pode estar vazio" );
+			this.showError( "O campo descrição não pode estar vazio" );
 			return false;
 		}
 		return true;

@@ -1,18 +1,19 @@
 package br.com.mcampos.web.core.report;
 
 import java.io.File;
+import java.security.InvalidParameterException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+import javax.validation.constraints.NotNull;
 
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,6 @@ public class JasperReportController extends BaseLoggedController<Window>
 	public static final String paramName = "JasperReportParameter";
 	private static final Logger logger = LoggerFactory.getLogger( JasperReportController.class );
 	private ReportItem reportItem;
-	private JasperReport report;
 
 	@Wire( "iframe" )
 	private Iframe frame;
@@ -40,94 +40,104 @@ public class JasperReportController extends BaseLoggedController<Window>
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		Object obj = getParameter( paramName );
+
+		byte[ ] b = null;
+		Object obj = this.getParameter( paramName );
+
 		if ( obj != null && obj instanceof ReportItem ) {
-			reportItem = (ReportItem) obj;
-			Connection conn = getConnection( );
-			if ( getReport( ) == null ) {
-				setReport( compileReport( reportItem.getReportUrl( ), reportItem.getParams( ) ) );
-			}
-			byte[ ] b = JasperRunManager.runReportToPdf( getReport( ), cofigureParameters( reportItem.getParams( ) ), conn );
+			this.reportItem = (ReportItem) obj;
+			b = JasperRunManager.runReportToPdf( this.compileReport( this.reportItem.getReportUrl( ) ), this.getParams( ), this.getConnection( ) );
 			if ( b != null ) {
-				setMedia( b );
+				this.setMedia( b );
 			}
 		}
 	}
 
-	private Map<String, Object> cofigureParameters( Map<String, Object> params )
+	private Map<String, Object> getParams( )
+	{
+		Object obj = this.getParameter( paramName );
+		if ( obj == null || !( obj instanceof ReportItem ) ) {
+			throw new InvalidParameterException( "Invalid Report Item Object" );
+		}
+		this.reportItem = (ReportItem) obj;
+		if ( this.reportItem.getParams( ) == null ) {
+			this.reportItem.setParams( new HashMap<String, Object>( ) );
+		}
+		return this.configureParameters( this.reportItem.getParams( ) );
+	}
+
+	private Map<String, Object> configureParameters( Map<String, Object> params )
 	{
 		if ( params == null ) {
 			params = new HashMap<String, Object>( );
 		}
-		String realPath;
-
-		realPath = getRealPath( "/img" );
-		params.put( "IMAGE_PATH", realPath );
+		params.put( "IMAGE_PATH", this.getRealPath( "/img" ) );
 		return params;
 	}
 
 	private void setMedia( byte[ ] obj )
 	{
-		AMedia media = new AMedia( reportItem.getName( ), "pdf", "application/pdf", obj );
-		getFrame( ).setContent( media );
+		AMedia media = new AMedia( this.reportItem.getName( ), "pdf", "application/pdf", obj );
+		this.getFrame( ).setContent( media );
 	}
 
 	public Iframe getFrame( )
 	{
-		return frame;
+		return this.frame;
 	}
 
-	protected JasperReport compileReport( String report, Map<String, Object> params )
+	/**
+	 * Brief Obtém o objeto report do jasperreport
+	 * 
+	 * @param report
+	 *            path do relatório relativo ao endereço /report do war.
+	 * @param params
+	 *            map com os parametros para o relatório
+	 * @return JasperReport object
+	 */
+	protected JasperReport compileReport( @NotNull String report )
 	{
 		if ( report == null ) {
-			return null;
+			throw new InvalidParameterException( "Report cannot be null in compileReport" );
 		}
-		if ( params == null ) {
-			params = new HashMap<String, Object>( );
-		}
-		String realPath;
-
-		realPath = getRealPath( "/img" );
-		params.put( "IMAGE_PATH", realPath );
-
 		/*
 		 * if we could get a compiled report!!! Just try to 
 		 * JasperReport jasperReport = (JasperReport)JRLoader.loadObject(new File("filename.jasper"));
 		 */
-
-		Connection conn = null;
 		try {
-			realPath = getRealPath( report );
-			File file = new File( realPath );
-			String name = SysUtils.getExtension( file );
-			if ( SysUtils.isEmpty( name ) ) {
-				name = realPath + ".jrxml";
+			String realPath = this.getReportRealPath( report );
+			String compiledFilename = realPath.replace( ".jrxml", ".jasper" );
+
+			File file = new File( compiledFilename );
+			if ( !file.exists( ) ) {
+				logger.info( "Compiling report: " + report );
+				JasperCompileManager.compileReportToFile( realPath, compiledFilename );
+				if ( !file.exists( ) ) {
+					logger.error( "Missing compiled report" + compiledFilename );
+				}
 			}
-			else {
-				name = realPath;
-			}
-			logger.info( "Compiling report: " + report );
-			JasperReport jasperReport = JasperCompileManager.compileReport( name );
-			return jasperReport;
-		}
-		catch ( JRException e ) {
-			logger.error( "JRException", e );
+			return (JasperReport) JRLoader.loadObject( file );
 		}
 		catch ( Exception e ) {
 			logger.error( "JRException", e );
+			return null;
 		}
-		finally {
-			try {
-				if ( conn != null && conn.isClosed( ) == false ) {
-					conn.close( );
-					conn = null;
-				}
-			}
-			catch ( SQLException e ) {
-				e.printStackTrace( );
-			}
+	}
+
+	private String getReportRealPath( String report )
+	{
+		String realPath;
+
+		realPath = this.getRealPath( report );
+		File file = new File( realPath );
+		String name = SysUtils.getExtension( file );
+		if ( SysUtils.isEmpty( name ) ) {
+			name = realPath + ".jrxml";
 		}
-		return null;
+		else {
+			name = realPath;
+		}
+		return realPath;
 	}
 
 	protected String getRealPath( String uri )
@@ -140,15 +150,5 @@ public class JasperReportController extends BaseLoggedController<Window>
 		InitialContext cxt = new InitialContext( );
 		DataSource ds = (DataSource) cxt.lookup( "java:/ReportDS" );
 		return ds.getConnection( );
-	}
-
-	private JasperReport getReport( )
-	{
-		return report;
-	}
-
-	private void setReport( JasperReport report )
-	{
-		this.report = report;
 	}
 }

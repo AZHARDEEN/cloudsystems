@@ -12,35 +12,38 @@ import br.com.mcampos.sysutils.SysUtils;
 
 public abstract class BaseCompanySessionBean<T extends BaseCompanyEntity> extends SimpleSessionBean<T>
 {
+	private static final long serialVersionUID = -5691331878597413478L;
 
 	@EJB
 	private CompanySessionLocal companySession;
 
 	protected Company getCompany( PrincipalDTO auth )
 	{
-		if ( auth == null )
+		if ( auth == null ) {
 			return null;
-		return companySession.get( auth.getCompanyID( ) );
+		}
+		return this.companySession.get( auth.getCompanyID( ) );
 	}
 
 	protected void set( @NotNull PrincipalDTO auth, @NotNull T entity )
 	{
-		if ( entity == null )
+		if ( entity == null ) {
 			return;
-		entity.setCompany( getCompany( auth ) );
+		}
+		entity.setCompany( this.getCompany( auth ) );
 	}
 
 	@Override
 	public T update( @NotNull PrincipalDTO auth, @NotNull T newEntity )
 	{
-		set( auth, newEntity );
+		this.set( auth, newEntity );
 		return super.update( auth, newEntity );
 	}
 
 	@Override
 	public T add( @NotNull PrincipalDTO auth, @NotNull T newEntity )
 	{
-		set( auth, newEntity );
+		this.set( auth, newEntity );
 		return super.add( auth, newEntity );
 	}
 
@@ -55,7 +58,7 @@ public abstract class BaseCompanySessionBean<T extends BaseCompanyEntity> extend
 	{
 		String sqlQuery;
 
-		sqlQuery = "select count(t) as registros from " + getPersistentClass( ).getSimpleName( ) + " as t ";
+		sqlQuery = "select count(t) as registros from " + this.getPersistentClass( ).getSimpleName( ) + " as t ";
 		if ( SysUtils.isEmpty( whereClause ) ) {
 			whereClause = "t.id.companyId = " + auth.getCompanyID( ) + " ";
 		}

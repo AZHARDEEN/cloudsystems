@@ -72,7 +72,7 @@ public abstract class BaseCrudController<BEAN extends BaseCrudSessionInterface<?
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		setStatus( statusNone );
+		this.setStatus( statusNone );
 		if ( this.updateButton != null ) {
 			this.updateButton.setDisabled( true );
 		}
@@ -92,16 +92,22 @@ public abstract class BaseCrudController<BEAN extends BaseCrudSessionInterface<?
 	}
 
 	@Listen( "onClick = #cmdRefresh" )
-	public void onClickRefresh( )
+	public void onClickRefresh( Event evt )
 	{
-		onRefresh( );
-		setTargetEntity( null );
+		if ( evt != null ) {
+			evt.stopPropagation( );
+		}
+		this.onRefresh( );
+		this.setTargetEntity( null );
 	}
 
 	@Listen( "onClick = #cmdDelete" )
-	public void onClickDelete( )
+	public void onClickDelete( Event evt )
 	{
-		Collection<ENTITY> toDelete = getEntitiesToDelete( );
+		if ( evt != null ) {
+			evt.stopPropagation( );
+		}
+		Collection<ENTITY> toDelete = this.getEntitiesToDelete( );
 		if ( SysUtils.isEmpty( toDelete ) ) {
 			return;
 		}
@@ -118,18 +124,18 @@ public abstract class BaseCrudController<BEAN extends BaseCrudSessionInterface<?
 		}
 
 		Messagebox
-				.show( deleteMsg, deleteTitle, Messagebox.YES + Messagebox.NO, Messagebox.QUESTION, getMessageboxEventListener( ) );
+				.show( deleteMsg, deleteTitle, Messagebox.YES + Messagebox.NO, Messagebox.QUESTION, this.getMessageboxEventListener( ) );
 	}
 
 	@SuppressWarnings( "unchecked" )
 	private void delete( )
 	{
-		Collection<ENTITY> toDelete = getEntitiesToDelete( );
-		BaseCrudSessionInterface<ENTITY> bean = (BaseCrudSessionInterface<ENTITY>) getSession( );
+		Collection<ENTITY> toDelete = this.getEntitiesToDelete( );
+		BaseCrudSessionInterface<ENTITY> bean = (BaseCrudSessionInterface<ENTITY>) this.getSession( );
 		try {
-			bean.remove( getPrincipal( ), toDelete );
-			afterDelete( toDelete );
-			setTargetEntity( null );
+			bean.remove( this.getPrincipal( ), toDelete );
+			this.afterDelete( toDelete );
+			this.setTargetEntity( null );
 		}
 		catch ( Exception e ) {
 			bean.storeException( e );
@@ -146,7 +152,7 @@ public abstract class BaseCrudController<BEAN extends BaseCrudSessionInterface<?
 			public void onEvent( Event event )
 			{
 				if ( Messagebox.ON_YES.equals( event.getName( ) ) ) {
-					delete( );
+					BaseCrudController.this.delete( );
 				}
 			}
 		};
@@ -156,34 +162,44 @@ public abstract class BaseCrudController<BEAN extends BaseCrudSessionInterface<?
 	@Listen( "onClick = #cmdCreate" )
 	public void onClickCreate( Event evt )
 	{
-		try {
-			setStatus( statusAdd );
-			onAddNew( );
-			changeButtons( false );
-		}
-		catch ( Exception e ) {
-			getSession( ).storeException( e );
-			throw e;
+		if ( evt != null ) {
+			evt.stopPropagation( );
+			try {
+				this.setStatus( statusAdd );
+				this.onAddNew( );
+				this.changeButtons( false );
+			}
+			catch ( Exception e ) {
+				this.getSession( ).storeException( e );
+				throw e;
+			}
+
 		}
 	}
 
 	@Listen( "onClick = #cmdUpdate" )
 	public void onClickUpdate( Event evt )
 	{
-		setStatus( statusUpdate );
-		onUpdate( );
-		changeButtons( false );
+		if ( evt != null ) {
+			this.setStatus( statusUpdate );
+			this.onUpdate( );
+			this.changeButtons( false );
+			evt.stopPropagation( );
+		}
 	}
 
 	@Listen( "onClick = #cmdSave, #cmdCancel" )
 	public void onClickConfirmCancel( Event evt )
 	{
-		if ( evt.getTarget( ).getId( ).equals( this.cmdSave.getId( ) ) ) {
-			onSave( );
+		if ( evt != null ) {
+			if ( evt.getTarget( ).getId( ).equals( this.cmdSave.getId( ) ) ) {
+				this.onSave( );
+			}
+			this.onCancel( );
+			this.changeButtons( true );
+			this.setStatus( statusNone );
+			evt.stopPropagation( );
 		}
-		onCancel( );
-		changeButtons( true );
-		setStatus( statusNone );
 	}
 
 	private void changeButtons( boolean enableOperations )
@@ -198,8 +214,8 @@ public abstract class BaseCrudController<BEAN extends BaseCrudSessionInterface<?
 
 	protected void allowUpdateAndDelete( boolean bAllow )
 	{
-		allowUpdate( bAllow );
-		allowDelete( bAllow );
+		this.allowUpdate( bAllow );
+		this.allowDelete( bAllow );
 	}
 
 	protected void allowUpdate( boolean bAllow )
@@ -219,23 +235,24 @@ public abstract class BaseCrudController<BEAN extends BaseCrudSessionInterface<?
 	protected void onSave( )
 	{
 		@SuppressWarnings( "unchecked" )
-		BaseCrudSessionInterface<ENTITY> bean = (BaseCrudSessionInterface<ENTITY>) getSession( );
+		BaseCrudSessionInterface<ENTITY> bean = (BaseCrudSessionInterface<ENTITY>) this.getSession( );
 		try {
-			updateTargetEntity( getTargetEntity( ) );
-			if ( validateEntity( getTargetEntity( ), getStatus( ) ) ) {
-				if ( getStatus( ).equals( statusAdd ) ) {
-					setTargetEntity( bean.add( getPrincipal( ), getTargetEntity( ) ) );
+			this.updateTargetEntity( this.getTargetEntity( ) );
+			if ( this.validateEntity( this.getTargetEntity( ), this.getStatus( ) ) ) {
+				if ( this.getStatus( ).equals( statusAdd ) ) {
+					this.setTargetEntity( bean.add( this.getPrincipal( ), this.getTargetEntity( ) ) );
 				}
 				else {
-					setTargetEntity( bean.update( getPrincipal( ), getTargetEntity( ) ) );
+					this.setTargetEntity( bean.update( this.getPrincipal( ), this.getTargetEntity( ) ) );
 				}
-				afterUpdate( getTargetEntity( ), getStatus( ) );
+				this.afterUpdate( this.getTargetEntity( ), this.getStatus( ) );
 			}
 		}
 		catch ( Exception e )
 		{
 			bean.storeException( e );
-			Messagebox.show( "Erro ao salvar o(s) registro(s) desejado(s): " + e.getMessage( ) + "\n" + getTargetEntity( ).getClass( ).getSimpleName( ),
+			Messagebox.show( "Erro ao salvar o(s) registro(s) desejado(s): " + e.getMessage( ) + "\n"
+					+ this.getTargetEntity( ).getClass( ).getSimpleName( ),
 					"Erro ao Excluir", Messagebox.OK, Messagebox.ERROR );
 		}
 	}

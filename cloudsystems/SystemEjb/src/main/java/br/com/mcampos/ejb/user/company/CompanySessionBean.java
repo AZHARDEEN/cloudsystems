@@ -4,6 +4,7 @@ import javax.ejb.Stateless;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.user.BaseUserSession;
+import br.com.mcampos.jpa.user.CollaboratorType;
 import br.com.mcampos.jpa.user.Company;
 import br.com.mcampos.jpa.user.CompanyType;
 import br.com.mcampos.jpa.user.UserType;
@@ -49,6 +50,10 @@ public class CompanySessionBean extends BaseUserSession<Company> implements Comp
 		this.configureDefault( newEntity );
 		newEntity = super.add( newEntity );
 		this.lazyLoad( newEntity );
+		/*
+		 * Cria uma entrada em collaborator_type como administrador geral da empresa no sistema
+		 */
+		this.getEntityManager( ).persist( new CollaboratorType( newEntity, 1, "Administrador Geral", Boolean.valueOf( true ) ) );
 		return newEntity;
 	}
 

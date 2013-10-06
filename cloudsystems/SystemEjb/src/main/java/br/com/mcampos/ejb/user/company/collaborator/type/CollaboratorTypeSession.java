@@ -6,6 +6,6 @@ import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.jpa.user.CollaboratorType;
 
 @Remote
-public interface CollaboratorTypeSessionBeanRemote extends BaseCrudSessionInterface<CollaboratorType> {
+public interface CollaboratorTypeSession extends BaseCrudSessionInterface<CollaboratorType> {
 
 }
