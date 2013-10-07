@@ -21,16 +21,16 @@ public class UserContactPK implements Serializable
 
 	public UserContactPK( String uct_description_ch, Integer usr_id_in )
 	{
-		description = uct_description_ch;
-		userId = usr_id_in;
+		this.description = uct_description_ch;
+		this.userId = usr_id_in;
 	}
 
 	@Override
 	public boolean equals( Object other )
 	{
-		if ( other instanceof UserContactPK ) {
+		if( other instanceof UserContactPK ) {
 			final UserContactPK otherUserContactPK = (UserContactPK) other;
-			final boolean areEqual = ( otherUserContactPK.description.equals( description ) && otherUserContactPK.userId.equals( userId ) );
+			final boolean areEqual = (otherUserContactPK.description.equals( this.description ) && otherUserContactPK.userId.equals( this.userId ));
 			return areEqual;
 		}
 		return false;
@@ -39,26 +39,31 @@ public class UserContactPK implements Serializable
 	@Override
 	public int hashCode( )
 	{
-		return super.hashCode( );
+		final int prime = 31;
+		int hash = 17;
+		hash = hash * prime + this.getUserId( ).hashCode( );
+		hash = hash * prime + this.getDescription( ).hashCode( );
+
+		return hash;
 	}
 
 	public String getDescription( )
 	{
-		return description;
+		return this.description;
 	}
 
 	public void setDescription( String uct_description_ch )
 	{
-		description = uct_description_ch;
+		this.description = uct_description_ch;
 	}
 
 	public Integer getUserId( )
 	{
-		return userId;
+		return this.userId;
 	}
 
 	public void setUserId( Integer usr_id_in )
 	{
-		userId = usr_id_in;
+		this.userId = usr_id_in;
 	}
 }

@@ -65,10 +65,10 @@ public class Address implements Serializable, Comparable<Address>
 
 	public AddressPK getId( )
 	{
-		if ( id == null ) {
-			id = new AddressPK( );
+		if( this.id == null ) {
+			this.id = new AddressPK( );
 		}
-		return id;
+		return this.id;
 	}
 
 	public void setId( AddressPK id )
@@ -78,67 +78,67 @@ public class Address implements Serializable, Comparable<Address>
 
 	public String getAddress( )
 	{
-		return address;
+		return this.address;
 	}
 
 	public void setAddress( String adrAdressCh )
 	{
-		address = adrAdressCh;
+		this.address = adrAdressCh;
 	}
 
 	public String getDistrict( )
 	{
-		return district;
+		return this.district;
 	}
 
 	public void setDistrict( String adrDistrictCh )
 	{
-		district = adrDistrictCh;
+		this.district = adrDistrictCh;
 	}
 
 	public Date getFromDate( )
 	{
-		return fromDate;
+		return this.fromDate;
 	}
 
 	public void setFromDate( Date adrFromDt )
 	{
-		fromDate = adrFromDt;
+		this.fromDate = adrFromDt;
 	}
 
 	public String getObs( )
 	{
-		return obs;
+		return this.obs;
 	}
 
 	public void setObs( String adrObsTx )
 	{
-		obs = adrObsTx;
+		this.obs = adrObsTx;
 	}
 
 	public Date getToDate( )
 	{
-		return toDate;
+		return this.toDate;
 	}
 
 	public void setToDate( Date adrToDt )
 	{
-		toDate = adrToDt;
+		this.toDate = adrToDt;
 	}
 
 	public String getZip( )
 	{
-		return zip;
+		return this.zip;
 	}
 
 	public void setZip( String adrZipCodeCh )
 	{
-		zip = adrZipCodeCh;
+		this.zip = adrZipCodeCh;
 	}
 
 	public City getCity( )
 	{
-		return city;
+		return this.city;
 	}
 
 	public void setCity( City city )
@@ -148,61 +148,60 @@ public class Address implements Serializable, Comparable<Address>
 
 	public Users getUser( )
 	{
-		return user;
+		return this.user;
 	}
 
 	public void setUser( Users user )
 	{
 		this.user = user;
-		if ( getUser( ) != null ) {
-			getId( ).setUserId( getUser( ).getId( ) );
+		if( this.getUser( ) != null ) {
+			this.getId( ).setUserId( this.getUser( ).getId( ) );
 		}
 	}
 
 	@Override
 	public int compareTo( Address o )
 	{
-		if ( o == null || getUser( ) == null || getType( ) == null ) {
+		if( o == null || this.getUser( ) == null || this.getType( ) == null ) {
 			return -1;
 		}
-		int nRet = 0;
-		nRet = getUser( ).compareTo( o.getUser( ) );
-		if ( nRet == 0 ) {
-			nRet = getType( ).compareTo( o.getType( ) );
-		}
-		return nRet;
+		return this.getId( ).compareTo( o.getId( ) );
 	}
 
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( obj == null || getUser( ) == null || getType( ) == null ) {
+		if( obj == null || this.getUser( ) == null || this.getType( ) == null ) {
 			return false;
 		}
-		if ( obj instanceof Address ) {
-			Address other = (Address) obj;
-			if ( getUser( ).equals( other.getUser( ) ) ) {
-				return getType( ).equals( other.getType( ) );
-			}
-			else {
-				return false;
-			}
+		if( this == obj ) {
+			return true;
+		}
+
+		if( obj instanceof Address ) {
+			return this.getId( ).equals( ((Address) obj).getId( ) );
 		}
 		else {
 			return false;
 		}
 	}
 
+	@Override
+	public int hashCode( )
+	{
+		return this.getId( ).hashCode( );
+	}
+
 	public AddressType getType( )
 	{
-		return type;
+		return this.type;
 	}
 
 	public void setType( AddressType type )
 	{
 		this.type = type;
-		if ( getType( ) != null ) {
-			getId( ).setAddressType( getType( ).getId( ) );
+		if( this.getType( ) != null ) {
+			this.getId( ).setAddressType( this.getType( ).getId( ) );
 		}
 	}
 }

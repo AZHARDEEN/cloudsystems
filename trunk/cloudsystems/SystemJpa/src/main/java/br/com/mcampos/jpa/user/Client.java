@@ -89,7 +89,7 @@ public class Client extends BaseCompanyEntity implements Serializable, Comparabl
 	@Override
 	public ClientPK getId( )
 	{
-		if ( this.id == null ) {
+		if( this.id == null ) {
 			this.id = new ClientPK( );
 		}
 		return this.id;
@@ -139,11 +139,11 @@ public class Client extends BaseCompanyEntity implements Serializable, Comparabl
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( obj instanceof Client ) {
+		if( obj instanceof Client ) {
 			Client other = (Client) obj;
 			return this.getId( ).equals( other.getId( ) );
 		}
-		else if ( obj instanceof ClientPK )
+		else if( obj instanceof ClientPK )
 		{
 			ClientPK other = (ClientPK) obj;
 			return this.getId( ).equals( other );
@@ -151,6 +151,12 @@ public class Client extends BaseCompanyEntity implements Serializable, Comparabl
 		else {
 			return false;
 		}
+	}
+
+	@Override
+	public int hashCode( )
+	{
+		return this.getId( ).hashCode( );
 	}
 
 	public String getInternalCode( )
