@@ -11,6 +11,7 @@ import org.zkoss.zul.Menu;
 import org.zkoss.zul.Menubar;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
+import org.zkoss.zul.Menuseparator;
 
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.event.IClickEvent;
@@ -30,8 +31,8 @@ public final class DynamicMenu implements Serializable
 
 	public DynamicMenu( Menubar mainMenu, IClickEvent evt )
 	{
-		setMainMenu( mainMenu );
-		setClickEvent( evt );
+		this.setMainMenu( mainMenu );
+		this.setClickEvent( evt );
 	}
 
 	public Component createMenu( br.com.mcampos.jpa.security.Menu item )
@@ -49,7 +50,7 @@ public final class DynamicMenu implements Serializable
 			menuItem.setAttribute( attrMenu, item.getUrl( ) );
 			menuItem.setValue( item.getUrl( ) );
 			menuItem.setImage( item.getImagePath( ) );
-			createListener( menuItem );
+			this.createListener( menuItem );
 			ret = menuItem;
 		}
 		else {
@@ -65,14 +66,14 @@ public final class DynamicMenu implements Serializable
 
 	private void createListener( Menuitem item )
 	{
-		if ( getClickEvent( ) != null )
+		if ( this.getClickEvent( ) != null )
 		{
 			item.addEventListener( Events.ON_CLICK, new EventListener<Event>( )
 			{
 				@Override
 				public void onEvent( Event event ) throws Exception
 				{
-					getClickEvent( ).onClick( (MouseEvent) event );
+					DynamicMenu.this.getClickEvent( ).onClick( (MouseEvent) event );
 				}
 			} );
 		}
@@ -107,13 +108,13 @@ public final class DynamicMenu implements Serializable
 		 * Recursivamente vai ate o menu pai
 		 */
 		if ( item.getParent( ) != null ) {
-			base = getParentComponent( item.getParent( ) );
+			base = this.getParentComponent( item.getParent( ) );
 			if ( base instanceof Menu ) {
 				base = base.getChildren( ).get( 0 );
 			}
 		}
 		if ( base == null ) {
-			base = getMainMenu( );
+			base = this.getMainMenu( );
 		}
 
 		/*
@@ -138,15 +139,21 @@ public final class DynamicMenu implements Serializable
 				Component current = base.getChildren( ).get( nIndex );
 				Integer sequence = (Integer) current.getAttribute( "index" );
 				if ( sequence != null && sequence.compareTo( item.getSequence( ) ) > 0 ) {
-					target = createMenu( item );
+					target = this.createMenu( item );
+					if ( item.getSeparatorBefore( ) ) {
+						base.getChildren( ).add( ( new Menuseparator( ) ) );
+					}
 					base.getChildren( ).add( nIndex, target );
 					break;
 				}
 			}
 			if ( target == null ) {
-				target = createMenu( item );
+				target = this.createMenu( item );
 				if ( ( base instanceof Menubar && target instanceof Menu )
 						|| ( base instanceof Menupopup && ( target instanceof Menu || target instanceof Menuitem ) ) ) {
+					if ( item.getSeparatorBefore( ) ) {
+						base.getChildren( ).add( ( new Menuseparator( ) ) );
+					}
 					base.getChildren( ).add( target );
 				}
 			}

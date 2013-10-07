@@ -39,6 +39,7 @@ import org.zkoss.zul.theme.Themes;
 
 import br.com.mcampos.dto.core.CredentialDTO;
 import br.com.mcampos.dto.core.PrincipalDTO;
+import br.com.mcampos.jpa.security.UserStatus;
 import br.com.mcampos.sysutils.ServiceLocator;
 import br.com.mcampos.sysutils.SysUtils;
 import br.com.mcampos.web.core.event.IDialogEvent;
@@ -72,39 +73,40 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 
 	private CookieImpl getCookieManager( )
 	{
-		if ( cookieManager == null )
-			cookieManager = new CookieImpl( );
-		return cookieManager;
+		if ( this.cookieManager == null ) {
+			this.cookieManager = new CookieImpl( );
+		}
+		return this.cookieManager;
 	}
 
 	@Override
 	public Cookie findCookie( String name )
 	{
-		return getCookieManager( ).findCookie( name );
+		return this.getCookieManager( ).findCookie( name );
 	}
 
 	@Override
 	public String getCookie( String name )
 	{
-		return getCookieManager( ).getCookie( name );
+		return this.getCookieManager( ).getCookie( name );
 	}
 
 	@Override
 	public void deleteCookie( String name )
 	{
-		getCookieManager( ).deleteCookie( name );
+		this.getCookieManager( ).deleteCookie( name );
 	}
 
 	@Override
 	public void setCookie( String name, String value )
 	{
-		getCookieManager( ).setCookie( name, value );
+		this.getCookieManager( ).setCookie( name, value );
 	}
 
 	@Override
 	public void setCookie( String name, String value, int days )
 	{
-		getCookieManager( ).setCookie( name, value, days );
+		this.getCookieManager( ).setCookie( name, value, days );
 	}
 
 	@Override
@@ -119,8 +121,9 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 			httpSession = (HttpSession) obj;
 			return httpSession.getId( );
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 	protected CredentialDTO getCredential( )
@@ -133,9 +136,10 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 			c.setRemoteHost( Executions.getCurrent( ).getRemoteHost( ) );
 			c.setProgram( Executions.getCurrent( ).getBrowser( ) );
 		}
-		else
+		else {
 			c.setRemoteAddr( "n/a" );
-		c.setSessionId( getSessionID( ) );
+		}
+		c.setSessionId( this.getSessionID( ) );
 		return c;
 	}
 
@@ -148,14 +152,15 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	@Override
 	public void setSessionAttribute( String name, Object value )
 	{
-		if ( Sessions.getCurrent( ) != null )
+		if ( Sessions.getCurrent( ) != null ) {
 			Sessions.getCurrent( ).setAttribute( name, value );
+		}
 	}
 
 	@Override
 	public void setSessionParameter( String name, Object value )
 	{
-		setSessionAttribute( name, value );
+		this.setSessionAttribute( name, value );
 	}
 
 	@Override
@@ -163,27 +168,27 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		Object value;
 
-		value = getSessionAttribute( name );
+		value = this.getSessionAttribute( name );
 		return value;
 	}
 
 	@Override
 	public void clearSessionParameter( String name )
 	{
-		setSessionParameter( name, null );
+		this.setSessionParameter( name, null );
 	}
 
 	@Override
 	public void pushSessionParameter( String name, Object value )
 	{
-		setSessionAttribute( name, value );
+		this.setSessionAttribute( name, value );
 	}
 
 	@Override
 	public Object popSessionParameter( String name )
 	{
-		Object obj = getSessionAttribute( name );
-		clearSessionParameter( name );
+		Object obj = this.getSessionAttribute( name );
+		this.clearSessionParameter( name );
 		return obj;
 	}
 
@@ -192,50 +197,77 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 		Map<?, ?> map = Executions.getCurrent( ).getArg( );
 		Object param = null;
 
-		if ( map != null )
+		if ( map != null ) {
 			param = map.get( name );
-		if ( param == null )
+		}
+		if ( param == null ) {
 			param = Executions.getCurrent( ).getParameter( name );
+		}
 		return param;
 	}
 
 	protected void gotoPage( String uri, boolean mustClear )
 	{
-		gotoPage( uri, null, this.arguments, mustClear );
+		this.gotoPage( uri, null, this.arguments, mustClear );
 	}
 
 	protected void gotoPage( String uri, Component parent, boolean mustClear )
 	{
-		gotoPage( uri, parent, this.arguments, mustClear );
+		this.gotoPage( uri, parent, this.arguments, mustClear );
 	}
 
 	protected void gotoPage( String uri, Component parent, Map<?, ?> parameters, boolean mustClear )
 	{
-		if ( parent == null && getMainWindow( ) != null )
-			parent = getMainWindow( ).getParent( );
-		if ( parent != null ) {
-			if ( mustClear )
-				if ( SysUtils.isEmpty( parent.getChildren( ) ) == false )
-					parent.getChildren( ).clear( );
-			createComponents( uri, parent, parameters );
+		if ( parent == null && this.getMainWindow( ) != null ) {
+			parent = this.getMainWindow( ).getParent( );
 		}
-		else
-			redirect( uri );
+		if ( parent != null ) {
+			if ( mustClear ) {
+				if ( !SysUtils.isEmpty( parent.getChildren( ) ) ) {
+					parent.getChildren( ).clear( );
+				}
+			}
+			this.createComponents( uri, parent, parameters );
+		}
+		else {
+			this.redirect( uri );
+		}
 	}
 
 	protected Component createComponents( String uri, Component parent, Map<?, ?> parameters )
 	{
+		uri = this.verifyLoginStatus( uri );
 		Component c = Executions.getCurrent( ).createComponents( uri, parent, parameters );
-		if ( c != null )
+		if ( c != null ) {
 			c.setAttribute( "zulPage", uri );
+		}
 		return c;
+	}
+
+	protected String verifyLoginStatus( String page )
+	{
+		PrincipalDTO dto = this.getPrincipal( );
+
+		if ( dto == null ) {
+			return page;
+		}
+
+		switch ( dto.getLoginStatus( ) ) {
+		case UserStatus.statusFullfillRecord:
+			return "/private/client/my_record.zul";
+		case UserStatus.statusExpiredPassword:
+			return "/private/change_password.zul";
+		default:
+			return page;
+		}
 	}
 
 	protected void doModal( Window w, IDialogEvent evt )
 	{
 		if ( w != null ) {
-			if ( w instanceof BaseDialogWindow )
+			if ( w instanceof BaseDialogWindow ) {
 				( (BaseDialogWindow) w ).setCallEvent( evt );
+			}
 			w.doModal( );
 		}
 	}
@@ -244,25 +276,30 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		Component parent = null;
 
-		if ( parent == null && getMainWindow( ) != null )
-			parent = getMainWindow( ).getParent( );
-		if ( parent != null )
-			if ( SysUtils.isEmpty( parent.getChildren( ) ) == false )
+		if ( parent == null && this.getMainWindow( ) != null ) {
+			parent = this.getMainWindow( ).getParent( );
+		}
+		if ( parent != null ) {
+			if ( SysUtils.isEmpty( parent.getChildren( ) ) == false ) {
 				parent.getChildren( ).clear( );
+			}
+		}
 	}
 
 	protected void redirect( String uri )
 	{
-		if ( uri == null )
+		if ( uri == null ) {
 			uri = "/private/index.zul";
+		}
 		Executions.getCurrent( ).sendRedirect( uri );
 	}
 
 	protected void setLanguage( String setLang ) throws Exception
 	{
 		// set session wide language to new value
-		if ( SysUtils.isEmpty( setLang ) )
+		if ( SysUtils.isEmpty( setLang ) ) {
 			setLang = "pt_BR";
+		}
 		Sessions.getCurrent( ).setAttribute( "preflang", setLang );
 		// read the session language attribute
 		String sessLang = (String) Sessions.getCurrent( ).getAttribute( "preflang" );
@@ -281,11 +318,14 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 			// only set lable if value found, otherwise it renders empty
 			if ( !( compLabel == null ) ) {
 				String compType = f.getType( ).getName( );
-				if ( compType.equals( "org.zkoss.zul.Button" ) )
+				if ( compType.equals( "org.zkoss.zul.Button" ) ) {
 					( (Button) f.get( this ) ).setLabel( compLabel );
+				}
 				else if ( compType.equals( "org.zkoss.zul.Label" ) )
+				{
 					( (Label) f.get( this ) ).setValue( compLabel );
-				// Other component types need to be implemented if required
+					// Other component types need to be implemented if required
+				}
 			}
 		}
 	}
@@ -294,8 +334,9 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		if ( comp != null ) {
 			String value = Labels.getLabel( comp.getId( ) );
-			if ( SysUtils.isEmpty( value ) == false )
+			if ( SysUtils.isEmpty( value ) == false ) {
 				comp.setValue( value );
+			}
 		}
 	}
 
@@ -303,8 +344,9 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		if ( comp != null ) {
 			String value = Labels.getLabel( comp.getId( ) );
-			if ( SysUtils.isEmpty( value ) == false )
+			if ( SysUtils.isEmpty( value ) == false ) {
 				comp.setLabel( value );
+			}
 		}
 	}
 
@@ -312,8 +354,9 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		if ( comp != null ) {
 			String value = Labels.getLabel( comp.getId( ) );
-			if ( SysUtils.isEmpty( value ) == false )
+			if ( SysUtils.isEmpty( value ) == false ) {
 				comp.setTitle( value );
+			}
 		}
 	}
 
@@ -321,12 +364,15 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		if ( comp != null ) {
 			Labels.getLabel( comp.getId( ) );
-			if ( comp instanceof Label )
-				setLabel( (Label) comp );
-			else if ( comp instanceof Panel )
-				setLabel( (Panel) comp );
-			else if ( comp instanceof LabelElement )
-				setLabel( (LabelElement) comp );
+			if ( comp instanceof Label ) {
+				this.setLabel( (Label) comp );
+			}
+			else if ( comp instanceof Panel ) {
+				this.setLabel( (Panel) comp );
+			}
+			else if ( comp instanceof LabelElement ) {
+				this.setLabel( (LabelElement) comp );
+			}
 		}
 	}
 
@@ -340,16 +386,19 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		try {
 			String[ ] themes = Themes.getThemes( );
-			if ( Themes.getCurrentTheme( ).equals( themes[ 2 ] ) == false )
+			if ( Themes.getCurrentTheme( ).equals( themes[ 2 ] ) == false ) {
 				Themes.setTheme( Executions.getCurrent( ), themes[ 2 ] );
+			}
 		}
 		catch ( Exception e ) {
 			e = null;
 		}
 		super.doAfterCompose( comp );
-		if ( SysUtils.isEmpty( this.labels ) == false )
-			for ( XulElement item : this.labels )
-				setLabel( item );
+		if ( SysUtils.isEmpty( this.labels ) == false ) {
+			for ( XulElement item : this.labels ) {
+				this.setLabel( item );
+			}
+		}
 	}
 
 	protected void showErrorMessage( String msg, String title )
@@ -383,7 +432,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	 */
 	protected String getRequestPath( )
 	{
-		return requestPath;
+		return this.requestPath;
 	}
 
 	/**
@@ -408,19 +457,22 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		PageDefinition pd = compInfo.getPageDefinition( );
 		logger.info( pd.getRequestPath( ) );
-		setRequestPath( pd.getRequestPath( ) );
+		this.setRequestPath( pd.getRequestPath( ) );
 		return super.doBeforeCompose( page, parent, compInfo );
 	}
 
 	protected ListModelList<?> getModel( Listbox c )
 	{
-		if ( c == null || c.getModel( ) == null )
+		if ( c == null || c.getModel( ) == null ) {
 			return null;
+		}
 		Object obj = c.getModel( );
-		if ( obj instanceof ListModelList )
+		if ( obj instanceof ListModelList ) {
 			return (ListModelList<?>) obj;
-		else
+		}
+		else {
 			return null;
+		}
 	}
 
 	/*
@@ -462,49 +514,57 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	 */
 	protected void setMask( String id, String mask )
 	{
-		setMask( id, mask, false );
+		this.setMask( id, mask, false );
 	}
 
 	protected void setMask( Component c, String mask )
 	{
-		if ( c == null )
+		if ( c == null ) {
 			return;
-		setMask( c.getId( ), mask );
+		}
+		this.setMask( c.getId( ), mask );
 	}
 
 	protected void setMask( Component c, String mask, boolean clear )
 	{
-		if ( c == null )
+		if ( c == null ) {
 			return;
-		setMask( c.getId( ), mask, clear );
+		}
+		this.setMask( c.getId( ), mask, clear );
 	}
 
 	protected void setMask( String id, String mask, boolean clear )
 	{
 		if ( clear ) {
-			if ( mask != null )
+			if ( mask != null ) {
 				Clients.evalJavaScript( "jQuery('$" + id + "').setMask('" + mask + "').val('');" );
-			else
+			}
+			else {
 				Clients.evalJavaScript( "jQuery('$" + id + "').unsetMask().val('');" );
+			}
 		}
-		else if ( mask != null )
+		else if ( mask != null ) {
 			Clients.evalJavaScript( "jQuery('$" + id + "').setMask('" + mask + "');" );
-		else
+		}
+		else {
 			Clients.evalJavaScript( "jQuery('$" + id + "').unsetMask();" );
+		}
 	}
 
 	protected PrincipalDTO getPrincipal( )
 	{
-		Object obj = getSessionParameter( currentPrincipal );
+		Object obj = this.getSessionParameter( currentPrincipal );
 
 		if ( obj instanceof PrincipalDTO ) {
 			PrincipalDTO login = (PrincipalDTO) obj;
-			if ( login != null && login.getPersonify( ) != null )
+			if ( login != null && login.getPersonify( ) != null ) {
 				return login.getPersonify( );
+			}
 			return login;
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 	protected void subscribeOnReport( )
@@ -518,7 +578,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 					evt.stopPropagation( );
 					try {
 						ReportEvent reportEvent = (ReportEvent) evt;
-						onReport( reportEvent.getItem( ) );
+						BaseController.this.onReport( reportEvent.getItem( ) );
 					}
 					catch ( Exception e ) {
 						e.printStackTrace( );
@@ -534,7 +594,7 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 	{
 		Map<String, Object> params = new HashMap<String, Object>( );
 		params.put( JasperReportController.paramName, item );
-		gotoPage( "/private/report.zul", null, params, true );
+		this.gotoPage( "/private/report.zul", null, params, true );
 	}
 
 }

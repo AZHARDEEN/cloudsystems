@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window width="100%" height="100%" closable="true" border="none" title="Permissões x Tipos de collaborador">
+    	<grid>
+    		<frozen columns="2" style="background: #DFDED8" />
+    		<columns>
+    			<column sclass="header" label="Menu" width="400px"/>
+    			<column sclass="header" label="Ver" width="30pxpx"/>
+    			<column sclass="header" label="Incluir" width="70px"/>
+    			<column sclass="header" label="Excluir" width="70px"/>
+    			<column sclass="header" label="Alterar" width="70px"/>
+    			<column sclass="header" label="Relatórios" width="100px"/>
+    		</columns>
+    	</grid>
+    </window>
+</zk>

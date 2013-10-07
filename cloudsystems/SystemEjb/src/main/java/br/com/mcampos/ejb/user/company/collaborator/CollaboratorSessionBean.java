@@ -37,6 +37,7 @@ import br.com.mcampos.sysutils.SysUtils;
 @LocalBean
 public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> implements CollaboratorSession, CollaboratorSessionLocal
 {
+	private static final long serialVersionUID = 2039876122950243668L;
 
 	private static final Logger logger = LoggerFactory.getLogger( CollaboratorSessionBean.class.getSimpleName( ) );
 
@@ -75,18 +76,18 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 			CollaboratorPK key = new CollaboratorPK( );
 			key.setCompanyId( auth.getCompanyID( ) );
 			key.setSequence( auth.getSequence( ) );
-			c = get( key );
+			c = this.get( key );
 		}
 		if ( c == null ) {
-			login = loginSession.get( auth.getUserId( ) );
+			login = this.loginSession.get( auth.getUserId( ) );
 			if ( login == null ) {
 				return null;
 			}
-			company = companySession.get( auth.getCompanyID( ) );
+			company = this.companySession.get( auth.getCompanyID( ) );
 			if ( company == null ) {
 				return null;
 			}
-			c = getByNamedQuery( Collaborator.hasCollaborator, company, login.getPerson( ) );
+			c = this.getByNamedQuery( Collaborator.hasCollaborator, company, login.getPerson( ) );
 		}
 		if ( c != null ) {
 			c.getPerson( ).getAddresses( ).size( );
@@ -104,15 +105,15 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 			return Collections.emptyList( );
 		}
 		try {
-			Login login = loginSession.get( auth.getUserId( ) );
+			Login login = this.loginSession.get( auth.getUserId( ) );
 			if ( login == null ) {
 				return null;
 			}
-			list = findByNamedQuery( Collaborator.findCompanies, login.getPerson( ) );
+			list = this.findByNamedQuery( Collaborator.findCompanies, login.getPerson( ) );
 			if ( SysUtils.isEmpty( list ) ) {
 				return Collections.emptyList( );
 			}
-			return toSimpleDTOList( list );
+			return this.toSimpleDTOList( list );
 		}
 		catch ( Exception e )
 		{
@@ -139,19 +140,19 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public LoginProperty getProperty( PrincipalDTO collaborator, String propertyName )
 	{
-		return propertySession.getProperty( collaborator, propertyName );
+		return this.propertySession.getProperty( collaborator, propertyName );
 	}
 
 	@Override
 	public void setProperty( PrincipalDTO collaborator, String propertyName, String Value )
 	{
-		propertySession.setProperty( collaborator, propertyName, Value );
+		this.propertySession.setProperty( collaborator, propertyName, Value );
 	}
 
 	@Override
 	public LoginProperty remove( PrincipalDTO collaborator, String propertyName )
 	{
-		return propertySession.remove( collaborator, propertyName );
+		return this.propertySession.remove( collaborator, propertyName );
 	}
 
 	/*
@@ -165,8 +166,8 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public AuthorizedPageOptions verifyAccess( PrincipalDTO c, String mnuUrl )
 	{
-		Login login = loginSession.get( c.getUserId( ) );
-		Menu menu = menuSession.get( mnuUrl );
+		Login login = this.loginSession.get( c.getUserId( ) );
+		Menu menu = this.menuSession.get( mnuUrl );
 		AuthorizedPageOptions auth = new AuthorizedPageOptions( );
 		if ( menu == null ) {
 			/*
@@ -176,7 +177,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 			auth.setAuthorized( true );
 		}
 		try {
-			List<Menu> menus = getMenus( c );
+			List<Menu> menus = this.getMenus( c );
 			if ( SysUtils.isEmpty( menus ) ) {
 				logger.error( "User: " + login.getPerson( ).getName( ) + " is not - Authorized for " + mnuUrl );
 				auth.setAuthorized( false );
@@ -209,15 +210,15 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 		if ( c == null ) {
 			return Collections.emptyList( );
 		}
-		Collaborator collaborator = find( c );
-		return menuSession.getMenus( collaborator );
+		Collaborator collaborator = this.find( c );
+		return this.menuSession.getMenus( collaborator );
 	}
 
 	@Override
 	public Collaborator merge( Collaborator newEntity )
 	{
 		if ( newEntity.getId( ).getSequence( ) == null || newEntity.getId( ).getSequence( ).equals( 0 ) ) {
-			newEntity.getId( ).setSequence( getNextId( Collaborator.maxSequence, newEntity.getCompany( ) ) );
+			newEntity.getId( ).setSequence( this.getNextId( Collaborator.maxSequence, newEntity.getCompany( ) ) );
 		}
 		return super.merge( newEntity );
 	}
@@ -227,10 +228,17 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	{
 		Collaborator c = new Collaborator( );
 		c.setPerson( login.getPerson( ) );
-		c.setCompany( companySession.get( companyId ) );
-		c.setCollaboratorType( getEntityManager( ).find( CollaboratorType.class, 2 ) );
+		c.setCompany( this.companySession.get( companyId ) );
+		c.setCollaboratorType( this.getEntityManager( ).find( CollaboratorType.class, 2 ) );
 		c.setCpsIdIn( 5 );
 		c.setFromDate( new Date( ) );
-		return merge( c );
+		return this.merge( c );
 	}
+
+	@Override
+	public Login getLogin( PrincipalDTO login )
+	{
+		return this.loginSession.get( login.getUserId( ) );
+	}
+
 }

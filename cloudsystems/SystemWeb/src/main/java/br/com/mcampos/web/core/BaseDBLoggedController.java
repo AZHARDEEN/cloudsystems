@@ -16,6 +16,7 @@ import br.com.mcampos.dto.AuthorizedPageOptions;
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSession;
+import br.com.mcampos.jpa.security.Login;
 import br.com.mcampos.jpa.user.Collaborator;
 import br.com.mcampos.sysutils.ServiceLocator;
 import br.com.mcampos.sysutils.SysUtils;
@@ -30,27 +31,27 @@ public abstract class BaseDBLoggedController<BEAN extends BaseSessionInterface> 
 	@Override
 	public boolean isLogged( )
 	{
-		PrincipalDTO p = getPrincipal( );
+		PrincipalDTO p = this.getPrincipal( );
 		return p != null;
 	}
 
 	@Override
 	public ComponentInfo doBeforeCompose( Page page, Component parent, ComponentInfo compInfo )
 	{
-		if ( isLogged( ) && isValidAccess( compInfo.getPageDefinition( ).getRequestPath( ) ) ) {
+		if ( this.isLogged( ) && this.isValidAccess( compInfo.getPageDefinition( ).getRequestPath( ) ) ) {
 			LOGGER.info( "Access is ok for url " + compInfo.getPageDefinition( ).getRequestPath( ) );
 			return super.doBeforeCompose( page, parent, compInfo );
 		}
 		else {
 			Sessions.getCurrent( ).invalidate( );
-			redirect( "/index.zul" );
+			this.redirect( "/index.zul" );
 			return null;
 		}
 	}
 
 	protected boolean isValidAccess( String path )
 	{
-		PrincipalDTO c = getPrincipal( );
+		PrincipalDTO c = this.getPrincipal( );
 		if ( c == null ) {
 			LOGGER.error( "Collaborator is null" );
 			return true;
@@ -59,10 +60,11 @@ public abstract class BaseDBLoggedController<BEAN extends BaseSessionInterface> 
 			LOGGER.error( "Access is not valid" );
 			return false;
 		}
-		setAuthorizedPageOptions( getCollaboratorSession( ).verifyAccess( c, path ) );
-		if ( getAuthorizedPageOptions( ).isAuthorized( ) == false )
+		this.setAuthorizedPageOptions( this.getCollaboratorSession( ).verifyAccess( c, path ) );
+		if ( this.getAuthorizedPageOptions( ).isAuthorized( ) == false ) {
 			LOGGER.error( "Invalid Access  violations" );
-		return getAuthorizedPageOptions( ).isAuthorized( );
+		}
+		return this.getAuthorizedPageOptions( ).isAuthorized( );
 	}
 
 	protected void setCollaborator( Collaborator c )
@@ -70,10 +72,14 @@ public abstract class BaseDBLoggedController<BEAN extends BaseSessionInterface> 
 		if ( c != null ) {
 			PrincipalDTO dto;
 
-			dto = getPrincipal( );
+			dto = this.getPrincipal( );
 			if ( dto == null ) {
 				dto = new PrincipalDTO( c.getCompany( ).getId( ), c.getPerson( ).getId( ), c.getPerson( ).getFriendlyName( ) );
-				setSessionParameter( currentPrincipal, dto );
+				Login login = this.getCollaboratorSession( ).getLogin( dto );
+				if ( login != null ) {
+					dto.setLoginStatus( login.getStatus( ).getId( ) );
+				}
+				this.setSessionParameter( currentPrincipal, dto );
 			}
 			else {
 				dto.setCompanyID( c.getCompany( ).getId( ) );
@@ -82,16 +88,18 @@ public abstract class BaseDBLoggedController<BEAN extends BaseSessionInterface> 
 				dto.setSequence( c.getId( ).getSequence( ) );
 			}
 		}
-		else
-			clearSessionParameter( currentPrincipal );
+		else {
+			this.clearSessionParameter( currentPrincipal );
+		}
 	}
 
 	public CollaboratorSession getCollaboratorSession( )
 	{
 		try {
-			if ( this.collaboratorSession == null )
+			if ( this.collaboratorSession == null ) {
 				this.collaboratorSession = (CollaboratorSession) ServiceLocator.getInstance( ).getRemoteSession( CollaboratorSession.class,
 						ServiceLocator.EJB_NAME[ 0 ] );
+			}
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );
@@ -120,7 +128,7 @@ public abstract class BaseDBLoggedController<BEAN extends BaseSessionInterface> 
 	{
 		Map<String, Object> params = new HashMap<String, Object>( );
 
-		PrincipalDTO dto = getPrincipal( );
+		PrincipalDTO dto = this.getPrincipal( );
 		params.put( "COMPANY_ID", dto.getCompanyID( ) );
 		params.put( "COLLABORATOR_ID", dto.getUserId( ) );
 		return params;

@@ -52,22 +52,31 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 				 * TODO: add menu routine
 				 */
 			}
-			else if ( SysUtils.isEmpty( menuItem.getValue( ) ) == false )
-				loadPage( menuItem.getValue( ), true );
+			else if ( SysUtils.isEmpty( menuItem.getValue( ) ) == false ) {
+				this.loadPage( menuItem.getValue( ), true );
+			}
 		}
 	}
 
 	public void onNotify( CompanyEventChange evt ) throws ApplicationException
 	{
-		if ( getMdiApplication( ) != null && getMdiApplication( ).getChildren( ) != null )
-			clear( );
-		if ( mainMenu == null )
+		if ( this.getMdiApplication( ) != null && this.getMdiApplication( ).getChildren( ) != null ) {
+			this.clear( );
+		}
+		if ( this.mainMenu == null ) {
 			return;
-		if ( mainMenu.getChildren( ) != null )
-			mainMenu.getChildren( ).clear( );
-		List<br.com.mcampos.jpa.security.Menu> menus = getSession( ).getMenus( getPrincipal( ) );
-		for ( br.com.mcampos.jpa.security.Menu item : menus )
-			getDynamicMenu( ).getParentComponent( item );
+		}
+		if ( this.mainMenu.getChildren( ) != null ) {
+			this.mainMenu.getChildren( ).clear( );
+		}
+		List<br.com.mcampos.jpa.security.Menu> menus = this.getSession( ).getMenus( this.getPrincipal( ) );
+		for ( br.com.mcampos.jpa.security.Menu item : menus ) {
+			this.getDynamicMenu( ).getParentComponent( item );
+		}
+		String page = this.verifyLoginStatus( null );
+		if ( !SysUtils.isEmpty( page ) ) {
+			this.loadPage( page, true );
+		}
 	}
 
 	private void clear( )
@@ -78,23 +87,24 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 			 * if ( !SysUtils.isEmpty( initPage ) ) { gotoPage( initPage,
 			 * mdiApplication ); } else
 			 */
-			getMdiApplication( ).getChildren( ).clear( );
+			this.getMdiApplication( ).getChildren( ).clear( );
 		}
 		catch ( Exception e ) {
-			showErrorMessage( e.getMessage( ), "Erro" );
+			this.showErrorMessage( e.getMessage( ), "Erro" );
 		}
 	}
 
 	private MenuFacade getSession( )
 	{
 		try {
-			if ( session == null )
-				session = (MenuFacade) ServiceLocator.getInstance( ).getRemoteSession( MenuFacade.class, null );
+			if ( this.session == null ) {
+				this.session = (MenuFacade) ServiceLocator.getInstance( ).getRemoteSession( MenuFacade.class, null );
+			}
 		}
 		catch ( NamingException e ) {
 			e.printStackTrace( );
 		}
-		return session;
+		return this.session;
 	}
 
 	@Override
@@ -106,24 +116,26 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 			@Override
 			public void onEvent( Event evt )
 			{
-				if ( evt instanceof CompanyEventChange )
+				if ( evt instanceof CompanyEventChange ) {
 					try {
-						onNotify( (CompanyEventChange) evt );
+						IndexController.this.onNotify( (CompanyEventChange) evt );
 					}
 					catch ( ApplicationException e ) {
 						e.printStackTrace( );
 						e = null;
 					}
+				}
 			}
 		} );
-		subscribeOnReport( );
+		this.subscribeOnReport( );
 	}
 
 	protected DynamicMenu getDynamicMenu( )
 	{
-		if ( dynamicMenu == null )
-			dynamicMenu = new DynamicMenu( mainMenu, this );
-		return dynamicMenu;
+		if ( this.dynamicMenu == null ) {
+			this.dynamicMenu = new DynamicMenu( this.mainMenu, this );
+		}
+		return this.dynamicMenu;
 	}
 
 	@Override
@@ -137,7 +149,7 @@ public class IndexController extends BaseLoggedMDIController implements IClickEv
 	{
 		Map<String, Object> params = new HashMap<String, Object>( );
 		params.put( JasperReportController.paramName, item );
-		gotoPage( "/private/report.zul", getMdiApplication( ), params, true );
+		this.gotoPage( "/private/report.zul", this.getMdiApplication( ), params, true );
 	}
 
 }
