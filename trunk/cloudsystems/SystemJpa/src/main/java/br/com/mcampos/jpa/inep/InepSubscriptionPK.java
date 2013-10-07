@@ -10,16 +10,10 @@ import javax.persistence.Embeddable;
  * 
  */
 @Embeddable
-public class InepSubscriptionPK implements Serializable, Comparable<InepSubscriptionPK>
+public class InepSubscriptionPK extends BaseInepEventPK implements Serializable, Comparable<InepSubscriptionPK>
 {
 	// default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
-
-	@Column( name = "usr_id_in" )
-	private Integer companyId;
-
-	@Column( name = "pct_id_in" )
-	private Integer eventId;
 
 	@Column( name = "isc_id_ch" )
 	private String id;
@@ -41,9 +35,7 @@ public class InepSubscriptionPK implements Serializable, Comparable<InepSubscrip
 
 	public InepSubscriptionPK( Integer companyId, Integer eventId, String id )
 	{
-		super( );
-		this.companyId = companyId;
-		this.eventId = eventId;
+		super( companyId, eventId );
 		this.id = id;
 	}
 
@@ -51,26 +43,6 @@ public class InepSubscriptionPK implements Serializable, Comparable<InepSubscrip
 	{
 		this.setCompanyId( t.getId( ).getCompanyId( ) );
 		this.setEventId( t.getId( ).getId( ) );
-	}
-
-	public Integer getCompanyId( )
-	{
-		return this.companyId;
-	}
-
-	public void setCompanyId( Integer usrIdIn )
-	{
-		this.companyId = usrIdIn;
-	}
-
-	public Integer getEventId( )
-	{
-		return this.eventId;
-	}
-
-	public void setEventId( Integer pctIdIn )
-	{
-		this.eventId = pctIdIn;
 	}
 
 	public String getId( )
@@ -86,16 +58,14 @@ public class InepSubscriptionPK implements Serializable, Comparable<InepSubscrip
 	@Override
 	public boolean equals( Object other )
 	{
-		if ( this == other ) {
+		if( this == other ) {
 			return true;
 		}
-		if ( !( other instanceof InepSubscriptionPK ) ) {
+		if( !(other instanceof InepSubscriptionPK) ) {
 			return false;
 		}
 		InepSubscriptionPK castOther = (InepSubscriptionPK) other;
-		return this.companyId.equals( castOther.companyId )
-				&& this.eventId.equals( castOther.eventId )
-				&& this.id.equals( castOther.id );
+		return super.equals( castOther ) && this.id.equals( castOther.id );
 
 	}
 
@@ -104,8 +74,7 @@ public class InepSubscriptionPK implements Serializable, Comparable<InepSubscrip
 	{
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.companyId.hashCode( );
-		hash = hash * prime + this.eventId.hashCode( );
+		hash = hash * prime + super.hashCode( );
 		hash = hash * prime + this.id.hashCode( );
 
 		return hash;
@@ -116,11 +85,8 @@ public class InepSubscriptionPK implements Serializable, Comparable<InepSubscrip
 	{
 		int nRet;
 
-		nRet = this.getCompanyId( ).compareTo( o.getCompanyId( ) );
-		if ( nRet == 0 ) {
-			nRet = this.getEventId( ).compareTo( o.getEventId( ) );
-		}
-		if ( nRet == 0 ) {
+		nRet = super.compareTo( o );
+		if( nRet == 0 ) {
 			nRet = this.getId( ).compareTo( o.getId( ) );
 		}
 		return nRet;

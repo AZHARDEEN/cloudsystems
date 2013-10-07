@@ -5,9 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -21,7 +18,7 @@ import br.com.mcampos.jpa.BasicEntityRenderer;
 @Entity
 @Table( name = "inep_task", schema = "inep" )
 @NamedQueries( { @NamedQuery( name = InepTask.getAllEventTasks, query = "select o from InepTask o where o.event = ?1" ) } )
-public class InepTask implements Serializable, Comparable<InepTask>, BasicEntityRenderer<InepTask>
+public class InepTask extends BaseInepEvent implements Serializable, Comparable<InepTask>, BasicEntityRenderer<InepTask>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -33,26 +30,19 @@ public class InepTask implements Serializable, Comparable<InepTask>, BasicEntity
 	@Column( name = "tsk_description_ch" )
 	private String description;
 
-	@ManyToOne
-	@JoinColumns( {
-			@JoinColumn(
-					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
-			@JoinColumn(
-					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ) } )
-	private InepEvent event;
-
 	public InepTask( )
 	{
 	}
 
 	public InepTask( InepEvent event )
 	{
-		getId( ).set( event.getId( ) );
+		this.getId( ).set( event.getId( ) );
 	}
 
+	@Override
 	public InepTaskPK getId( )
 	{
-		if ( this.id == null ) {
+		if( this.id == null ) {
 			this.id = new InepTaskPK( );
 		}
 		return this.id;
@@ -76,11 +66,11 @@ public class InepTask implements Serializable, Comparable<InepTask>, BasicEntity
 	@Override
 	public int compareTo( InepTask object, Integer field )
 	{
-		switch ( field ) {
+		switch( field ) {
 		case 0:
-			return getId( ).getId( ).compareTo( object.getId( ).getId( ) );
+			return this.getId( ).getId( ).compareTo( object.getId( ).getId( ) );
 		case 1:
-			return getDescription( ).compareTo( object.getDescription( ) );
+			return this.getDescription( ).compareTo( object.getDescription( ) );
 		default:
 			return 0;
 		}
@@ -89,45 +79,32 @@ public class InepTask implements Serializable, Comparable<InepTask>, BasicEntity
 	@Override
 	public boolean equals( Object obj )
 	{
-		return getId( ).equals( ( (InepTask) obj ).getId( ) );
+		return this.getId( ).equals( ((InepTask) obj).getId( ) );
 	}
 
 	@Override
 	public int compareTo( InepTask o )
 	{
-		return getId( ).compareTo( o.getId( ) );
+		return this.getId( ).compareTo( o.getId( ) );
 	}
 
 	@Override
 	public String getField( Integer field )
 	{
-		switch ( field ) {
+		switch( field ) {
 		case 0:
-			return getId( ).getId( ).toString( );
+			return this.getId( ).getId( ).toString( );
 		case 1:
-			return getDescription( );
+			return this.getDescription( );
 		default:
 			return "";
-		}
-	}
-
-	public InepEvent getEvent( )
-	{
-		return this.event;
-	}
-
-	public void setEvent( InepEvent event )
-	{
-		this.event = event;
-		if ( getEvent( ) != null ) {
-			getId( ).set( event.getId( ) );
 		}
 	}
 
 	@Override
 	public String toString( )
 	{
-		return getDescription( );
+		return this.getDescription( );
 	}
 
 }
