@@ -78,79 +78,79 @@ public abstract class Users implements Serializable, Comparable<Users>
 
 	public Integer getId( )
 	{
-		return id;
+		return this.id;
 	}
 
 	public void setId( Integer usr_id_in )
 	{
-		id = usr_id_in;
+		this.id = usr_id_in;
 	}
 
 	public Date getInsertDate( )
 	{
-		if ( insertDate == null ) {
-			insertDate = new Date( );
+		if( this.insertDate == null ) {
+			this.insertDate = new Date( );
 		}
-		return insertDate;
+		return this.insertDate;
 	}
 
 	public void setInsertDate( Date usr_insert_dt )
 	{
-		insertDate = usr_insert_dt;
+		this.insertDate = usr_insert_dt;
 	}
 
 	public String getName( )
 	{
-		return name;
+		return this.name;
 	}
 
 	public void setName( String usr_name_ch )
 	{
-		name = usr_name_ch;
+		this.name = usr_name_ch;
 	}
 
 	public String getNickName( )
 	{
-		return nickName;
+		return this.nickName;
 	}
 
 	public void setNickName( String usr_nick_name_ch )
 	{
-		nickName = usr_nick_name_ch;
+		this.nickName = usr_nick_name_ch;
 	}
 
 	public Date getUpdateDate( )
 	{
-		return updateDate;
+		return this.updateDate;
 	}
 
 	public void setUpdateDate( Date usr_update_dt )
 	{
-		updateDate = usr_update_dt;
+		this.updateDate = usr_update_dt;
 	}
 
 	public List<UserDocument> getDocuments( )
 	{
-		if ( documents == null ) {
-			documents = new ArrayList<UserDocument>( );
+		if( this.documents == null ) {
+			this.documents = new ArrayList<UserDocument>( );
 		}
-		return documents;
+		return this.documents;
 	}
 
 	public void setDocuments( List<UserDocument> list )
 	{
-		getDocuments( ).clear( );
-		for ( UserDocument i : list ) {
-			add( i );
+		this.getDocuments( ).clear( );
+		for( UserDocument i : list ) {
+			this.add( i );
 		}
 	}
 
 	public UserDocument add( UserDocument item )
 	{
-		if ( item != null ) {
-			int nIndex = getDocuments( ).indexOf( item );
-			if ( nIndex < 0 ) {
-				getDocuments( ).add( item );
+		if( item != null ) {
+			int nIndex = this.getDocuments( ).indexOf( item );
+			if( nIndex < 0 ) {
+				this.getDocuments( ).add( item );
 				item.setUser( this );
 			}
 		}
@@ -159,8 +159,8 @@ public abstract class Users implements Serializable, Comparable<Users>
 
 	public UserDocument remove( UserDocument item )
 	{
-		SysUtils.remove( getDocuments( ), item );
-		if ( item != null ) {
+		SysUtils.remove( this.getDocuments( ), item );
+		if( item != null ) {
 			item.setUser( null );
 		}
 		return item;
@@ -168,26 +168,26 @@ public abstract class Users implements Serializable, Comparable<Users>
 
 	public List<UserContact> getContacts( )
 	{
-		if ( contacts == null ) {
-			contacts = new ArrayList<UserContact>( );
+		if( this.contacts == null ) {
+			this.contacts = new ArrayList<UserContact>( );
 		}
-		return contacts;
+		return this.contacts;
 	}
 
 	public void setContacts( List<UserContact> list )
 	{
-		getContacts( ).clear( );
-		for ( UserContact i : list ) {
-			add( i );
+		this.getContacts( ).clear( );
+		for( UserContact i : list ) {
+			this.add( i );
 		}
 	}
 
 	public UserContact add( UserContact item )
 	{
-		if ( item != null ) {
-			int nIndex = getContacts( ).indexOf( item );
-			if ( nIndex < 0 ) {
-				getContacts( ).add( item );
+		if( item != null ) {
+			int nIndex = this.getContacts( ).indexOf( item );
+			if( nIndex < 0 ) {
+				this.getContacts( ).add( item );
 				item.setUser( this );
 			}
 		}
@@ -196,8 +196,8 @@ public abstract class Users implements Serializable, Comparable<Users>
 
 	public UserContact remove( UserContact item )
 	{
-		SysUtils.remove( getContacts( ), item );
-		if ( item != null ) {
+		SysUtils.remove( this.getContacts( ), item );
+		if( item != null ) {
 			item.setUser( null );
 		}
 		return item;
@@ -205,26 +205,26 @@ public abstract class Users implements Serializable, Comparable<Users>
 
 	public List<Address> getAddresses( )
 	{
-		if ( addresses == null ) {
-			addresses = new ArrayList<Address>( );
+		if( this.addresses == null ) {
+			this.addresses = new ArrayList<Address>( );
 		}
-		return addresses;
+		return this.addresses;
 	}
 
 	public void setAddresses( List<Address> list )
 	{
-		getAddresses( ).clear( );
-		for ( Address i : list ) {
-			add( i );
+		this.getAddresses( ).clear( );
+		for( Address i : list ) {
+			this.add( i );
 		}
 	}
 
 	public Address add( Address item )
 	{
-		if ( item != null ) {
-			int nIndex = getAddresses( ).indexOf( item );
-			if ( nIndex < 0 ) {
-				getAddresses( ).add( item );
+		if( item != null ) {
+			int nIndex = this.getAddresses( ).indexOf( item );
+			if( nIndex < 0 ) {
+				this.getAddresses( ).add( item );
 				item.setUser( this );
 			}
 		}
@@ -233,8 +233,8 @@ public abstract class Users implements Serializable, Comparable<Users>
 
 	public Address remove( Address address )
 	{
-		SysUtils.remove( getAddresses( ), address );
-		if ( address != null ) {
+		SysUtils.remove( this.getAddresses( ), address );
+		if( address != null ) {
 			address.setUser( null );
 		}
 		return address;
@@ -247,36 +247,36 @@ public abstract class Users implements Serializable, Comparable<Users>
 
 	public UserType getUserType( )
 	{
-		return userType;
+		return this.userType;
 	}
 
 	public Date getBirthDate( )
 	{
-		return birthDate;
+		return this.birthDate;
 	}
 
 	public void setBirthDate( Date usr_birth_dt )
 	{
-		birthDate = usr_birth_dt;
+		this.birthDate = usr_birth_dt;
 	}
 
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( getId( ) == null ) {
+		if( this.getId( ) == null ) {
 			return false;
 		}
-		if ( obj == null ) {
+		if( obj == null ) {
 			return false;
 		}
-		if ( obj instanceof Users ) {
+		if( obj instanceof Users ) {
 			Users other = (Users) obj;
-			return getId( ).equals( other.getId( ) );
+			return this.getId( ).equals( other.getId( ) );
 		}
-		else if ( obj instanceof Integer )
+		else if( obj instanceof Integer )
 		{
 			Integer id = (Integer) obj;
-			return getId( ).equals( id );
+			return this.getId( ).equals( id );
 		}
 		else {
 			return false;
@@ -284,33 +284,43 @@ public abstract class Users implements Serializable, Comparable<Users>
 	}
 
 	@Override
+	public int hashCode( )
+	{
+		final int prime = 31;
+		int hash = 17;
+		hash = hash * prime + this.getId( ).hashCode( );
+
+		return hash;
+	}
+
+	@Override
 	public int compareTo( Users o )
 	{
-		return getId( ).compareTo( o.getId( ) );
+		return this.getId( ).compareTo( o.getId( ) );
 	}
 
 	@Transient
 	public String getEmail( )
 	{
-		return getDocument( UserDocument.EMAIL );
+		return this.getDocument( UserDocument.EMAIL );
 	}
 
 	@Transient
 	public String getDocument( )
 	{
-		if ( getUserType( ).getId( ).equals( 1 ) ) {
-			return getDocument( UserDocument.CPF );
+		if( this.getUserType( ).getId( ).equals( 1 ) ) {
+			return this.getDocument( UserDocument.CPF );
 		}
 		else {
-			return getDocument( UserDocument.CNPJ );
+			return this.getDocument( UserDocument.CNPJ );
 		}
 	}
 
 	@Transient
 	public String getDocument( Integer type )
 	{
-		for ( UserDocument document : getDocuments( ) ) {
-			if ( document.getType( ).getId( ).equals( type ) ) {
+		for( UserDocument document : this.getDocuments( ) ) {
+			if( document.getType( ).getId( ).equals( type ) ) {
 				return document.getCode( );
 			}
 		}

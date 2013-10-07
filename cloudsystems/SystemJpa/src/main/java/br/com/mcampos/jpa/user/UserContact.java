@@ -43,50 +43,56 @@ public class UserContact implements Serializable, Comparable<UserContact>
 
 	public String getDescription( )
 	{
-		return getId( ).getDescription( );
+		return this.getId( ).getDescription( );
+	}
+
+	@Override
+	public int hashCode( )
+	{
+		return this.getId( ).hashCode( );
 	}
 
 	public void setDescription( String uct_description_ch )
 	{
-		getId( ).setDescription( uct_description_ch );
+		this.getId( ).setDescription( uct_description_ch );
 	}
 
 	public String getObs( )
 	{
-		return obs;
+		return this.obs;
 	}
 
 	public void setObs( String uct_observation_tx )
 	{
-		obs = uct_observation_tx;
+		this.obs = uct_observation_tx;
 	}
 
 	public Integer getUserId( )
 	{
-		return getId( ).getUserId( );
+		return this.getId( ).getUserId( );
 	}
 
 	public void setUserId( Integer usr_id_in )
 	{
-		getId( ).setUserId( usr_id_in );
+		this.getId( ).setUserId( usr_id_in );
 	}
 
 	public Users getUser( )
 	{
-		return user;
+		return this.user;
 	}
 
 	public void setUser( Users user )
 	{
 		this.user = user;
-		if ( user != null ) {
-			setUserId( user.getId( ) );
+		if( user != null ) {
+			this.setUserId( user.getId( ) );
 		}
 	}
 
 	public ContactType getType( )
 	{
-		return type;
+		return this.type;
 	}
 
 	public void setType( ContactType type )
@@ -97,15 +103,15 @@ public class UserContact implements Serializable, Comparable<UserContact>
 	@Override
 	public int compareTo( UserContact o )
 	{
-		if ( o == null ) {
+		if( o == null ) {
 			return 1;
 		}
 		int nRet = 0;
-		if ( getUser( ) != null ) {
-			nRet = getUser( ).compareTo( o.getUser( ) );
+		if( this.getUser( ) != null ) {
+			nRet = this.getUser( ).compareTo( o.getUser( ) );
 		}
-		if ( nRet == 0 && getType( ) != null ) {
-			nRet = getType( ).compareTo( o.getType( ) );
+		if( nRet == 0 && this.getType( ) != null ) {
+			nRet = this.getType( ).compareTo( o.getType( ) );
 		}
 		return nRet;
 	}
@@ -113,13 +119,13 @@ public class UserContact implements Serializable, Comparable<UserContact>
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( obj == null ) {
+		if( obj == null ) {
 			return false;
 		}
-		if ( obj instanceof UserContact ) {
+		if( obj instanceof UserContact ) {
 			UserContact other = (UserContact) obj;
-			if ( getUser( ) != null && getUser( ).equals( other.getUser( ) ) ) {
-				return getType( ).equals( other.getType( ) );
+			if( this.getUser( ) != null && this.getUser( ).equals( other.getUser( ) ) ) {
+				return this.getType( ).equals( other.getType( ) );
 			}
 			else {
 				return false;
@@ -132,9 +138,10 @@ public class UserContact implements Serializable, Comparable<UserContact>
 
 	public UserContactPK getId( )
 	{
-		if ( id == null )
-			id = new UserContactPK( );
-		return id;
+		if( this.id == null ) {
+			this.id = new UserContactPK( );
+		}
+		return this.id;
 	}
 
 	public void setId( UserContactPK id )
