@@ -5,8 +5,11 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.user.BaseUserSession;
 import br.com.mcampos.ejb.user.document.UserDocumentSessionLocal;
+import br.com.mcampos.jpa.security.Login;
+import br.com.mcampos.jpa.security.UserStatus;
 import br.com.mcampos.jpa.user.Person;
 import br.com.mcampos.jpa.user.UserType;
 import br.com.mcampos.jpa.user.Users;
@@ -15,6 +18,8 @@ import br.com.mcampos.sysutils.SysUtils;
 @Stateless( name = "PersonSession", mappedName = "PersonSession" )
 public class PersonSessionBean extends BaseUserSession<Person> implements PersonSession, PersonSessionLocal
 {
+	private static final long serialVersionUID = 105019512338763383L;
+
 	@EJB
 	UserDocumentSessionLocal userDocumentSession;
 
@@ -109,5 +114,25 @@ public class PersonSessionBean extends BaseUserSession<Person> implements Person
 		newEntity = super.add( newEntity );
 		this.lazyLoad( newEntity );
 		return newEntity;
+	}
+
+	@Override
+	public Person update( PrincipalDTO auth, Person newEntity )
+	{
+		this.configureDefault( newEntity );
+		newEntity = super.update( auth, newEntity );
+		this.lazyLoad( newEntity );
+		this.verifyLoginStatus( auth, newEntity );
+		return newEntity;
+	}
+
+	private void verifyLoginStatus( PrincipalDTO auth, Person newEntity )
+	{
+		if ( newEntity.getId( ).equals( auth.getUserId( ) ) ) {
+			Login login = this.getEntityManager( ).find( Login.class, newEntity.getId( ) );
+			if ( login != null && login.getStatus( ).getId( ).equals( UserStatus.statusFullfillRecord ) ) {
+				login.setStatus( this.getEntityManager( ).find( UserStatus.class, UserStatus.statusOk ) );
+			}
+		}
 	}
 }

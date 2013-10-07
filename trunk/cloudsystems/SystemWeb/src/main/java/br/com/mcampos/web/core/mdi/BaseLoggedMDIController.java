@@ -20,11 +20,11 @@ public class BaseLoggedMDIController extends BaseMDIController implements Logged
 	@Override
 	public ComponentInfo doBeforeCompose( Page page, Component parent, ComponentInfo compInfo )
 	{
-		if ( isLogged( ) ) {
+		if ( this.isLogged( ) ) {
 			return super.doBeforeCompose( page, parent, compInfo );
 		}
 		else {
-			redirect( "/index.zul" );
+			this.redirect( "/index.zul" );
 			return null;
 		}
 	}
@@ -32,6 +32,6 @@ public class BaseLoggedMDIController extends BaseMDIController implements Logged
 	@Override
 	public boolean isLogged( )
 	{
-		return getPrincipal( ) != null;
+		return this.getPrincipal( ) != null;
 	}
 }

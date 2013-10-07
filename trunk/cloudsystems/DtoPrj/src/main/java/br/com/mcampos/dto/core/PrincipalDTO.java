@@ -15,6 +15,7 @@ public class PrincipalDTO implements Serializable
 	private PrincipalDTO personify;
 	private String name;
 	private Integer sequence;
+	private Integer loginStatus;
 
 	public PrincipalDTO( )
 	{
@@ -24,6 +25,7 @@ public class PrincipalDTO implements Serializable
 	{
 		this.setCompanyID( companyId );
 		this.setUserId( userId );
+		this.setLoginStatus( this.loginStatus );
 	}
 
 	public PrincipalDTO( Integer userId, String name )
@@ -97,6 +99,16 @@ public class PrincipalDTO implements Serializable
 	public void setSequence( Integer sequence )
 	{
 		this.sequence = sequence;
+	}
+
+	public Integer getLoginStatus( )
+	{
+		return this.loginStatus;
+	}
+
+	public void setLoginStatus( Integer loginStatus )
+	{
+		this.loginStatus = loginStatus;
 	}
 
 }

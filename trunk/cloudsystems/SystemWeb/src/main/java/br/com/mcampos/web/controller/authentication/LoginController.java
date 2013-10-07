@@ -35,7 +35,7 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 	@Override
 	protected void onOk( )
 	{
-		redirect( null );
+		this.redirect( null );
 	}
 
 	@Override
@@ -54,30 +54,32 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 			return false;
 		}
 
-		value = identification.getValue( );
+		value = this.identification.getValue( );
 		if ( SysUtils.isEmpty( value ) ) {
-			identification.setFocus( true );
+			this.identification.setFocus( true );
 			return false;
 		}
 
-		value = password.getValue( );
+		value = this.password.getValue( );
 		if ( SysUtils.isEmpty( value ) ) {
-			password.setFocus( true );
+			this.password.setFocus( true );
 			return false;
 		}
-		LoginSession session = getSession( );
+		LoginSession session = this.getSession( );
 
-		Login login = session.loginByDocument( getCredential( ) );
+		Login login = session.loginByDocument( this.getCredential( ) );
 		if ( login == null ) {
-			showErrorMessage( "Erro ao realizar login. Identificação inexistente no sistema", "Login" );
-			identification.setFocus( true );
+			this.showErrorMessage( "Erro ao realizar login. Identificação inexistente no sistema", "Login" );
+			this.identification.setFocus( true );
 			return false;
 		}
 		logger.info( "Login from " + login.getPerson( ).getName( ) );
-		setSessionParameter( currentPrincipal, new PrincipalDTO( login.getId( ), login.getPerson( ).getFriendlyName( ) ) );
-		setCookie( LoggedInterface.lastLoggedUserId, getCredential( ).getIdentification( ) );
-		if ( isDebugMode( ) ) {
-			setCookie( LoggedInterface.lastLoggedUserPassword, getCredential( ).getPassword( ) );
+		PrincipalDTO auth = new PrincipalDTO( login.getId( ), login.getPerson( ).getFriendlyName( ) );
+		auth.setLoginStatus( login.getStatus( ).getId( ) );
+		this.setSessionParameter( currentPrincipal, auth );
+		this.setCookie( LoggedInterface.lastLoggedUserId, this.getCredential( ).getIdentification( ) );
+		if ( this.isDebugMode( ) ) {
+			this.setCookie( LoggedInterface.lastLoggedUserPassword, this.getCredential( ).getPassword( ) );
 		}
 		return true;
 	}
@@ -87,22 +89,22 @@ public class LoginController extends BaseCaptchaDialogController<LoginSession>
 	{
 		super.doAfterCompose( comp );
 
-		setLastLoginInfo( identification, password );
+		this.setLastLoginInfo( this.identification, this.password );
 
 	}
 
 	@Listen( "onClick = #cmdForgotPassword" )
 	public void recoverPassword( Event evt )
 	{
-		gotoPage( "/public/forgot_password.zul", true );
+		this.gotoPage( "/public/forgot_password.zul", true );
 	}
 
 	@Override
 	protected CredentialDTO getCredential( )
 	{
 		CredentialDTO c = super.getCredential( );
-		c.setIdentification( identification.getValue( ) );
-		c.setPassword( password.getValue( ) );
+		c.setIdentification( this.identification.getValue( ) );
+		c.setPassword( this.password.getValue( ) );
 		return c;
 	}
 }

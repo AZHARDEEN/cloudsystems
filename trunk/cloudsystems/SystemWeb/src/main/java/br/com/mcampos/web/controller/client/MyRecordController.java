@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.user.person.PersonSession;
+import br.com.mcampos.jpa.security.UserStatus;
 import br.com.mcampos.jpa.user.Client;
 import br.com.mcampos.jpa.user.DocumentType;
 import br.com.mcampos.jpa.user.Person;
@@ -26,9 +28,13 @@ public class MyRecordController extends BasePersonController<PersonSession>
 	protected boolean onOk( )
 	{
 
-		updatePerson( getPerson( null ) );
-		if ( validate( getPerson( null ) ) ) {
-			getSession( ).merge( getPerson( null ) );
+		this.updatePerson( this.getPerson( null ) );
+		if ( this.validate( this.getPerson( null ) ) ) {
+			PrincipalDTO dto = this.getPrincipal( );
+			this.getSession( ).update( dto, this.getPerson( null ) );
+			if ( dto.getLoginStatus( ).equals( UserStatus.statusFullfillRecord ) ) {
+				dto.setLoginStatus( UserStatus.statusOk );
+			}
 			return true;
 		}
 		else {
@@ -39,16 +45,16 @@ public class MyRecordController extends BasePersonController<PersonSession>
 	@Override
 	protected void onCancel( )
 	{
-		unloadMe( );
+		this.unloadMe( );
 	}
 
 	@Override
 	protected Person getPerson( String doc )
 	{
-		if ( person == null ) {
-			person = getSession( ).get( getPrincipal( ).getUserId( ) );
+		if ( this.person == null ) {
+			this.person = this.getSession( ).get( this.getPrincipal( ).getUserId( ) );
 		}
-		return person;
+		return this.person;
 	}
 
 	@Override
@@ -62,11 +68,11 @@ public class MyRecordController extends BasePersonController<PersonSession>
 	{
 		// TODO Auto-generated method stub
 		super.doAfterCompose( comp );
-		getBornState( ).load( );
-		getMaritalStatus( ).load( );
-		getGender( ).load( );
-		show( getPerson( null ) );
-		getName( ).setFocus( true );
+		this.getBornState( ).load( );
+		this.getMaritalStatus( ).load( );
+		this.getGender( ).load( );
+		this.show( this.getPerson( null ) );
+		this.getName( ).setFocus( true );
 	}
 
 	@Override

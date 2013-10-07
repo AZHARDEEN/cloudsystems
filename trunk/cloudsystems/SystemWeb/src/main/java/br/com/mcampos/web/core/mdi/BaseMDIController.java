@@ -34,10 +34,12 @@ public abstract class BaseMDIController extends BaseController<Window>
 
 	protected void loadPage( String page, boolean mustClear )
 	{
-		gotoPage( page, getMdiApplication( ), null, mustClear );
+		this.gotoPage( page, this.getMdiApplication( ), null, mustClear );
+		/*
 		BookmarkSession session = getBookmarkSession( );
 		Integer nIndex = session.set( new Bookmark( page, null ) );
 		Executions.getCurrent( ).getDesktop( ).setBookmark( nIndex.toString( ) );
+		*/
 	}
 
 	@Listen( "onBookmarkChange = window" )
@@ -45,11 +47,11 @@ public abstract class BaseMDIController extends BaseController<Window>
 	{
 		String str = event.getBookmark( );
 		if ( SysUtils.isEmpty( str ) == false ) {
-			BookmarkSession session = getBookmarkSession( );
+			BookmarkSession session = this.getBookmarkSession( );
 			Integer nIndex = Integer.parseInt( str );
 			Bookmark bookmark = session.get( nIndex );
 			if ( bookmark != null ) {
-				gotoPage( bookmark.getUri( ), getMdiApplication( ), bookmark.getParameters( ), true );
+				this.gotoPage( bookmark.getUri( ), this.getMdiApplication( ), bookmark.getParameters( ), true );
 			}
 			else {
 				Executions.getCurrent( ).getDesktop( ).setBookmark( "" );
