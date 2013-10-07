@@ -25,28 +25,28 @@ import br.com.mcampos.sysutils.SysUtils;
 public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Comparable<Media>
 {
 	@SuppressWarnings( "compatibility:5269327754381544397" )
-	private static final long	serialVersionUID	= -6128152754016719171L;
+	private static final long serialVersionUID = -6128152754016719171L;
 	@Id
 	@Column( name = "med_id_in", nullable = false )
 	@SequenceGenerator( name = "mediaIdGenerator", sequenceName = "seq_media", allocationSize = 1 )
 	@GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "mediaIdGenerator" )
-	private Integer				id;
+	private Integer id;
 
 	@Column( name = "med_mime_ch", length = 64 )
-	private String				mimeType;
+	private String mimeType;
 
 	@Column( name = "med_name_ch", nullable = false, length = 128 )
-	private String				name;
+	private String name;
 
 	@Basic( fetch = FetchType.LAZY )
 	@Column( name = "med_object_bin", nullable = false )
-	private byte[ ]				object;
+	private byte[ ] object;
 
 	@Column( name = "med_size_in" )
-	private Integer				size;
+	private Integer size;
 
 	@Column( name = "med_format_ch" )
-	private String				format;
+	private String format;
 
 	public Media( )
 	{
@@ -100,7 +100,7 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
 
 	public Media setObject( byte[ ] object )
 	{
-		this.object = object;
+		this.object = object.clone( );
 		this.setSize( object == null ? 0 : object.length );
 		return this;
 	}

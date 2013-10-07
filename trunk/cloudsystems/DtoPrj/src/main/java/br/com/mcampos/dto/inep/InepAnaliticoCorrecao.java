@@ -12,12 +12,12 @@ public class InepAnaliticoCorrecao implements Serializable, Comparable<InepAnali
 	@Override
 	public int compareTo( InepAnaliticoCorrecao o )
 	{
-		return getSubscritpion( ).compareTo( o.getSubscritpion( ) );
+		return this.getSubscritpion( ).compareTo( o.getSubscritpion( ) );
 	}
 
 	public String getSubscritpion( )
 	{
-		if ( this.subscritpion == null ) {
+		if( this.subscritpion == null ) {
 			this.subscritpion = "";
 		}
 		return this.subscritpion;
@@ -31,15 +31,15 @@ public class InepAnaliticoCorrecao implements Serializable, Comparable<InepAnali
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( obj instanceof InepAnaliticoCorrecao )
+		if( obj instanceof InepAnaliticoCorrecao )
 		{
 			InepAnaliticoCorrecao other = (InepAnaliticoCorrecao) obj;
-			return getSubscritpion( ).equals( other.getSubscritpion( ) );
+			return this.getSubscritpion( ).equals( other.getSubscritpion( ) );
 		}
-		else if ( obj instanceof String )
+		else if( obj instanceof String )
 		{
 			String other = (String) obj;
-			return getSubscritpion( ).equals( other );
+			return this.getSubscritpion( ).equals( other );
 		}
 		return false;
 	}
@@ -50,16 +50,16 @@ public class InepAnaliticoCorrecao implements Serializable, Comparable<InepAnali
 		final int prime = 31;
 		int hash = 17;
 
-		hash = hash * prime + getSubscritpion( ).hashCode( );
+		hash = hash * prime + this.getSubscritpion( ).hashCode( );
 		return hash;
 	}
 
 	public TaskGrade[ ] getGrades( )
 	{
-		if ( this.grades == null ) {
-			this.grades = new TaskGrade[ 4 ];
-			for ( int nIndex = 0; nIndex < this.grades.length; nIndex++ ) {
-				this.grades[ nIndex ] = new TaskGrade( );
+		if( this.grades == null ) {
+			this.grades = new TaskGrade[4];
+			for( int nIndex = 0; nIndex < this.grades.length; nIndex++ ) {
+				this.grades[nIndex] = new TaskGrade( );
 			}
 		}
 		return this.grades;
@@ -67,7 +67,7 @@ public class InepAnaliticoCorrecao implements Serializable, Comparable<InepAnali
 
 	public void setGrades( TaskGrade[ ] grades )
 	{
-		this.grades = grades;
+		this.grades = grades.clone( );
 	}
 
 }
