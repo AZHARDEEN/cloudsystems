@@ -10,16 +10,10 @@ import javax.persistence.Embeddable;
  * 
  */
 @Embeddable
-public class InepTaskPK implements Serializable, Comparable<InepTaskPK>
+public class InepTaskPK extends BaseInepEventPK implements Serializable, Comparable<InepTaskPK>
 {
 	// default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
-
-	@Column( name = "usr_id_in" )
-	private Integer companyId;
-
-	@Column( name = "pct_id_in" )
-	private Integer eventId;
 
 	@Column( name = "tsk_id_in" )
 	private Integer id;
@@ -30,41 +24,15 @@ public class InepTaskPK implements Serializable, Comparable<InepTaskPK>
 
 	public InepTaskPK( InepEvent e, int id )
 	{
-		setCompanyId( e.getCompany( ).getId( ) );
-		setEventId( e.getId( ).getId( ) );
-		setId( id );
+		this.setCompanyId( e.getCompany( ).getId( ) );
+		this.setEventId( e.getId( ).getId( ) );
+		this.setId( id );
 	}
 
 	public void set( InepEventPK key )
 	{
-		setCompanyId( key.getCompanyId( ) );
-		setEventId( key.getId( ) );
-	}
-
-	public Integer getCompanyId( )
-	{
-		if ( this.companyId == null ) {
-			this.companyId = 0;
-		}
-		return this.companyId;
-	}
-
-	public void setCompanyId( Integer usrIdIn )
-	{
-		this.companyId = usrIdIn;
-	}
-
-	public Integer getEventId( )
-	{
-		if ( this.eventId == null ) {
-			this.eventId = 0;
-		}
-		return this.eventId;
-	}
-
-	public void setEventId( Integer pctIdIn )
-	{
-		this.eventId = pctIdIn;
+		this.setCompanyId( key.getCompanyId( ) );
+		this.setEventId( key.getId( ) );
 	}
 
 	public Integer getId( )
@@ -72,24 +40,22 @@ public class InepTaskPK implements Serializable, Comparable<InepTaskPK>
 		return this.id;
 	}
 
-	public void setId( Integer tskIdIn )
+	public void setId( Integer taskId )
 	{
-		this.id = tskIdIn;
+		this.id = taskId;
 	}
 
 	@Override
 	public boolean equals( Object other )
 	{
-		if ( this == other ) {
+		if( this == other ) {
 			return true;
 		}
-		if ( !( other instanceof InepTaskPK ) ) {
+		if( !(other instanceof InepTaskPK) ) {
 			return false;
 		}
 		InepTaskPK castOther = (InepTaskPK) other;
-		return this.companyId.equals( castOther.companyId )
-				&& this.eventId.equals( castOther.eventId )
-				&& this.id.equals( castOther.id );
+		return super.equals( other ) && this.id.equals( castOther.id );
 
 	}
 
@@ -98,8 +64,7 @@ public class InepTaskPK implements Serializable, Comparable<InepTaskPK>
 	{
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.companyId.hashCode( );
-		hash = hash * prime + this.eventId.hashCode( );
+		hash = hash * prime + super.hashCode( );
 		hash = hash * prime + this.id.hashCode( );
 
 		return hash;
@@ -110,12 +75,9 @@ public class InepTaskPK implements Serializable, Comparable<InepTaskPK>
 	{
 		int nRet;
 
-		nRet = getCompanyId( ).compareTo( o.getCompanyId( ) );
-		if ( nRet == 0 ) {
-			nRet = getEventId( ).compareTo( o.getEventId( ) );
-		}
-		if ( nRet == 0 ) {
-			nRet = getId( ).compareTo( o.getId( ) );
+		nRet = super.compareTo( o );
+		if( nRet == 0 ) {
+			nRet = this.getId( ).compareTo( o.getId( ) );
 		}
 		return nRet;
 	}

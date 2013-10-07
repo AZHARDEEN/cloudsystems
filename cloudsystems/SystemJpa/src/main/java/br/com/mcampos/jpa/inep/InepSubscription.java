@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -30,7 +29,7 @@ import br.com.mcampos.jpa.user.Person;
 				name = InepSubscription.getAllEventSubsById,
 				query = "select o from InepSubscription o where o.event = ?1 and o.id.id like ?2" )
 } )
-public class InepSubscription implements Serializable, Comparable<InepSubscription>
+public class InepSubscription extends BaseInepEvent implements Serializable, Comparable<InepSubscription>
 {
 	private static final long serialVersionUID = 1L;
 	public static final String getAllEventSubs = "InepSubscription.getAllEventSubs";
@@ -38,14 +37,6 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 
 	@EmbeddedId
 	private InepSubscriptionPK id;
-
-	@ManyToOne
-	@JoinColumns( {
-			@JoinColumn(
-					name = "usr_id_in", referencedColumnName = "usr_id_in", updatable = false, insertable = false, nullable = false ),
-			@JoinColumn(
-					name = "pct_id_in", referencedColumnName = "pct_id_in", updatable = false, insertable = false, nullable = false ) } )
-	private InepEvent event;
 
 	@Column( name = "isc_written_grade_nm" )
 	private BigDecimal writtenGrade;
@@ -80,9 +71,10 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 	{
 	}
 
+	@Override
 	public InepSubscriptionPK getId( )
 	{
-		if ( this.id == null ) {
+		if( this.id == null ) {
 			this.id = new InepSubscriptionPK( );
 		}
 		return this.id;
@@ -93,19 +85,6 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 		this.id = id;
 	}
 
-	public InepEvent getEvent( )
-	{
-		return this.event;
-	}
-
-	public void setEvent( InepEvent event )
-	{
-		this.event = event;
-		if ( this.getEvent( ) != null ) {
-			this.getId( ).set( this.getEvent( ) );
-		}
-	}
-
 	@Override
 	public int compareTo( InepSubscription o )
 	{
@@ -114,7 +93,7 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 
 	public int compareTo( InepSubscription object, Integer field )
 	{
-		switch ( field ) {
+		switch( field ) {
 		case 0:
 			return this.getId( ).getId( ).compareTo( object.getId( ).getId( ) );
 		default:
@@ -125,12 +104,12 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 	@Override
 	public boolean equals( Object obj )
 	{
-		return this.getId( ).equals( ( (InepSubscription) obj ).getId( ) );
+		return this.getId( ).equals( ((InepSubscription) obj).getId( ) );
 	}
 
 	public String getField( Integer field )
 	{
-		switch ( field ) {
+		switch( field ) {
 		case 0:
 			return this.getId( ).getId( ).toString( );
 		default:
@@ -170,7 +149,7 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 
 	public List<InepMedia> getMedias( )
 	{
-		if ( this.medias == null ) {
+		if( this.medias == null ) {
 			this.medias = new ArrayList<InepMedia>( );
 		}
 		return this.medias;
@@ -183,8 +162,8 @@ public class InepSubscription implements Serializable, Comparable<InepSubscripti
 
 	public void add( InepMedia media )
 	{
-		if ( media != null ) {
-			if ( this.getMedias( ).contains( media ) == false ) {
+		if( media != null ) {
+			if( this.getMedias( ).contains( media ) == false ) {
 				this.getMedias( ).add( media );
 				media.setSubscription( this );
 			}

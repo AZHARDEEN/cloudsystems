@@ -6,7 +6,7 @@ import javax.persistence.MappedSuperclass;
 import br.com.mcampos.jpa.BaseCompanyPK;
 
 @MappedSuperclass
-public class BaseInepEventPK extends BaseCompanyPK
+public abstract class BaseInepEventPK extends BaseCompanyPK
 {
 	private static final long serialVersionUID = 4309904096061001946L;
 
@@ -37,7 +37,7 @@ public class BaseInepEventPK extends BaseCompanyPK
 	public int compareTo( BaseInepEventPK o )
 	{
 		int nRet = super.compareTo( o );
-		if ( nRet == 0 ) {
+		if( nRet == 0 ) {
 			nRet = this.getEventId( ).compareTo( o.getEventId( ) );
 		}
 		return nRet;
@@ -46,7 +46,7 @@ public class BaseInepEventPK extends BaseCompanyPK
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( obj == null || !( obj instanceof BaseInepEventPK ) ) {
+		if( obj == null || !(obj instanceof BaseInepEventPK) ) {
 			return false;
 		}
 		BaseInepEventPK other = (BaseInepEventPK) obj;
