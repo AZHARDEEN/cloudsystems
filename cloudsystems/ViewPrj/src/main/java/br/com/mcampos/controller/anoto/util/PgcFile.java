@@ -99,7 +99,7 @@ public class PgcFile implements Serializable, Runnable
 	{
 		Pen pen = PadFile.getPen( pgc );
 		Iterator it = pen.getPageAddresses( );
-		if ( it != null && it.hasNext( ) ) {
+		if( it != null && it.hasNext( ) ) {
 			return (String) it.next( );
 		}
 		else {
@@ -116,7 +116,7 @@ public class PgcFile implements Serializable, Runnable
 
 	public void uploadPgc( MediaDTO dto ) throws IOException, NoSuchPermissionException
 	{
-		if ( dto == null ) {
+		if( dto == null ) {
 			return;
 		}
 		this.setCurrentPen( PadFile.getPen( dto.getObject( ) ) );
@@ -135,15 +135,15 @@ public class PgcFile implements Serializable, Runnable
 		File file = new File( media );
 		InputStream is;
 		int length = (int) file.length( );
-		byte[ ] bytes = new byte[ length ];
+		byte[ ] bytes = new byte[length];
 		int offset = 0;
 		int numRead = 0;
 		try {
 			is = new FileInputStream( file );
-			while ( offset < bytes.length && ( numRead = is.read( bytes, offset, bytes.length - offset ) ) >= 0 ) {
+			while( offset < bytes.length && (numRead = is.read( bytes, offset, bytes.length - offset )) >= 0 ) {
 				offset += numRead;
 			}
-			if ( offset < bytes.length ) {
+			if( offset < bytes.length ) {
 				throw new IOException( "Could not completely read file " + file.getName( ) );
 			}
 
@@ -152,7 +152,7 @@ public class PgcFile implements Serializable, Runnable
 			dto.setObject( bytes );
 			return dto;
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "Create Media" + media, e );
 			return null;
 		}
@@ -160,7 +160,7 @@ public class PgcFile implements Serializable, Runnable
 
 	public List<MediaDTO> getPgcs( )
 	{
-		if ( this.pgcs == null ) {
+		if( this.pgcs == null ) {
 			this.pgcs = new ArrayList<MediaDTO>( );
 		}
 		return this.pgcs;
@@ -169,9 +169,9 @@ public class PgcFile implements Serializable, Runnable
 	private UploadFacade getRemoteSession( )
 	{
 		try {
-			return (UploadFacade) ServiceLocator.getInstance( ).getRemoteSession( UploadFacade.class, ServiceLocator.EJB_NAME[ 1 ] );
+			return (UploadFacade) ServiceLocator.getInstance( ).getRemoteSession( UploadFacade.class, ServiceLocator.EJB_NAME[1] );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "getRemoteSession", e );
 			throw new NullPointerException( "Invalid EJB Session (possible null)" );
 		}
@@ -179,7 +179,7 @@ public class PgcFile implements Serializable, Runnable
 
 	private UploadFacade getSession( )
 	{
-		if ( this.session == null ) {
+		if( this.session == null ) {
 			this.session = this.getRemoteSession( );
 		}
 		return this.session;
@@ -190,17 +190,17 @@ public class PgcFile implements Serializable, Runnable
 		List<PgcPropertyDTO> properties = new ArrayList<PgcPropertyDTO>( );
 		try {
 			Iterator it = this.getCurrentPen( ).getPropertyIds( );
-			while ( it != null && it.hasNext( ) ) {
+			while( it != null && it.hasNext( ) ) {
 				Short obj = (Short) it.next( );
-				if ( obj != null ) {
+				if( obj != null ) {
 					PgcPropertyDTO p = new PgcPropertyDTO( );
 					p.setId( obj );
 					LOGGER.info( "Propriedade: " + obj );
 					String[ ] values = this.getCurrentPen( ).getProperty( obj );
-					if ( values != null && values.length > 0 ) {
-						for ( String v : values ) {
+					if( values != null && values.length > 0 ) {
+						for( String v : values ) {
 							v = v.replaceAll( "'", "" );
-							if ( SysUtils.isEmpty( v ) ) {
+							if( SysUtils.isEmpty( v ) ) {
 								continue;
 							}
 							p.add( v );
@@ -210,7 +210,7 @@ public class PgcFile implements Serializable, Runnable
 				}
 			}
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "getProperties", e );
 		}
 		return properties;
@@ -225,21 +225,21 @@ public class PgcFile implements Serializable, Runnable
 		List<PgcPropertyDTO> properties = this.getProperties( );
 		PGCDTO insertedPgc = this.getSession( ).add( this.getCurrentPgc( ), addresses, medias, properties );
 		this.setCurrentPgc( insertedPgc );
-		if ( insertedPgc.getPgcStatus( ).getId( ) != PgcStatusDTO.statusOk ) {
+		if( insertedPgc.getPgcStatus( ).getId( ) != PgcStatusDTO.statusOk ) {
 			return insertedPgc;
 		}
 		List<PgcPenPageDTO> pgcsPenPage = this.getSession( ).getPgcPenPages( insertedPgc );
-		if ( SysUtils.isEmpty( pgcsPenPage ) ) {
+		if( SysUtils.isEmpty( pgcsPenPage ) ) {
 			return insertedPgc;
 		}
 		/*
 		 * All pgcpenpage MUST belong to one and one only form
 		 */
 		form = pgcsPenPage.get( 0 ).getForm( );
-		if ( this.getPad( ) == null ) {
+		if( this.getPad( ) == null ) {
 			this.setPad( new PadFile( form ) );
 		}
-		if ( this.getPad( ).isRegistered( form ) == false ) {
+		if( this.getPad( ).isRegistered( form ) == false ) {
 			this.getPad( ).register( form );
 		}
 		this.setCurrentPen( PadFile.getPen( pgc.getMedia( ).getObject( ), form.getApplication( ) ) );
@@ -248,12 +248,12 @@ public class PgcFile implements Serializable, Runnable
 			this.processProperties( );
 			this.processPGC( pgcsPenPage.get( 0 ) );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "persist", e );
 			try {
 				this.getSession( ).setPgcStatus( insertedPgc, 5 );
 			}
-			catch ( Exception ex ) {
+			catch( Exception ex ) {
 				LOGGER.error( "persist->setPgcStatus", e );
 			}
 		}
@@ -265,10 +265,10 @@ public class PgcFile implements Serializable, Runnable
 		Iterator it;
 
 		it = this.getCurrentPen( ).getPropertyIds( );
-		while ( it != null && it.hasNext( ) ) {
-			Short obj = ( (Short) it.next( ) );
+		while( it != null && it.hasNext( ) ) {
+			Short obj = ((Short) it.next( ));
 			String[ ] values = this.getCurrentPen( ).getProperty( obj );
-			if ( values != null && values.length > 0 ) {
+			if( values != null && values.length > 0 ) {
 
 			}
 		}
@@ -283,22 +283,22 @@ public class PgcFile implements Serializable, Runnable
 
 		books = this.getBooks( );
 		pages = null;
-		if ( SysUtils.isEmpty( books ) ) {
+		if( SysUtils.isEmpty( books ) ) {
 			pages = this.getPages( );
-			if ( SysUtils.isEmpty( pages ) ) {
+			if( SysUtils.isEmpty( pages ) ) {
 				this.getSession( ).setPgcStatus( pgcPenPage.getPgc( ), 4 );
 				return;
 			}
 			nPageIndex = 0;
-			for ( Page page : pages ) {
+			for( Page page : pages ) {
 				this.processPage( pgcPenPage, 0, nPageIndex, page );
 				nPageIndex++;
 			}
 		}
 		else {
-			for ( AnotoBook book : books ) {
+			for( AnotoBook book : books ) {
 				nPageIndex = 0;
-				for ( Page page : book.getPages( ) ) {
+				for( Page page : book.getPages( ) ) {
 					this.processPage( pgcPenPage, nBookIndex, nPageIndex, page );
 					nPageIndex++;
 				}
@@ -318,7 +318,7 @@ public class PgcFile implements Serializable, Runnable
 						page.getPageAddress( ), pgcPenPage.getPgc( ).getId( ) );
 		basePath = PadFile.getPath( basePath );
 		File file = new File( basePath );
-		if ( file.exists( ) == false ) {
+		if( file.exists( ) == false ) {
 			file.mkdirs( );
 		}
 		try {
@@ -330,13 +330,13 @@ public class PgcFile implements Serializable, Runnable
 			List<PgcAttachmentDTO> attachs = this.addAttachments( dto, page );
 			this.addAnotoImages( pgcPenPage, page, basePath, nBookIndex, nPageIndex, attachs );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "processPage. PgcPenPage: " + pgcPenPage.toString( ) + " nBookIndex: " + nBookIndex + " nPageIndex: " + nPageIndex
 					+ " page:" + page.toString( ), e );
 			return;
 		}
-		if ( pgcPenPage.getForm( ).getIcrImage( ) == false ) {
-			if ( file.exists( ) ) {
+		if( pgcPenPage.getForm( ).getIcrImage( ) == false ) {
+			if( file.exists( ) ) {
 				file.delete( );
 			}
 			file.deleteOnExit( );
@@ -347,13 +347,13 @@ public class PgcFile implements Serializable, Runnable
 			int currentPGC ) throws ApplicationException
 	{
 		List<PgcAttachmentDTO> barCodes = new ArrayList<PgcAttachmentDTO>( );
-		for ( PgcAttachmentDTO attach : attachs ) {
-			if ( attach.getType( ).equals( PgcAttachmentDTO.typeBarCode ) ) {
+		for( PgcAttachmentDTO attach : attachs ) {
+			if( attach.getType( ).equals( PgcAttachmentDTO.typeBarCode ) ) {
 				List<PgcAttachmentDTO> list;
 				list = this.getSession( ).getBarCodes( attach.getValue( ), page.getPageAddress( ), padId, currentPGC );
-				if ( SysUtils.isEmpty( list ) == false ) {
-					for ( PgcAttachmentDTO pa : list ) {
-						if ( barCodes.contains( pa ) == false ) {
+				if( SysUtils.isEmpty( list ) == false ) {
+					for( PgcAttachmentDTO pa : list ) {
+						if( barCodes.contains( pa ) == false ) {
 							barCodes.add( pa );
 						}
 					}
@@ -367,22 +367,22 @@ public class PgcFile implements Serializable, Runnable
 			int currentPGC ) throws ApplicationException, PenCreationException, PageException,
 			NoSuchPageException, FormatException, IllegalValueException
 	{
-		if ( page == null || SysUtils.isEmpty( attachs ) ) {
+		if( page == null || SysUtils.isEmpty( attachs ) ) {
 			return;
 		}
 		List<PgcAttachmentDTO> barCodes = this.getSameBarCodes( page, attachs, padId, currentPGC );
-		if ( SysUtils.isEmpty( barCodes ) ) {
+		if( SysUtils.isEmpty( barCodes ) ) {
 			return;
 		}
-		for ( PgcAttachmentDTO barCode : barCodes ) {
+		for( PgcAttachmentDTO barCode : barCodes ) {
 			byte[ ] pgcObject = this.getSession( ).getObject( barCode.getPgcPage( ).getPgc( ).getMedia( ) );
-			if ( pgcObject == null ) {
+			if( pgcObject == null ) {
 				continue;
 			}
 			PgcFile file = new PgcFile( );
 			file.setObject( this.getPad( ), pgcObject );
 			Page otherPage = file.getCurrentPen( ).getPage( page.getPageAddress( ) );
-			if ( otherPage != null ) {
+			if( otherPage != null ) {
 				page.getPenStrokes( ).addPenStrokes( otherPage.getPenStrokes( ) );
 			}
 		}
@@ -397,64 +397,64 @@ public class PgcFile implements Serializable, Runnable
 		List<MediaDTO> backgroundImages = this.loadBackgroundImages( pgcPenPage, page );
 		String renderedImage = basePath + "/renderedImage." + this.getImageFileTypeExtension( );
 		try {
-			if ( pgcPenPage.getForm( ).getConcatenatePgc( ) ) {
+			if( pgcPenPage.getForm( ).getConcatenatePgc( ) ) {
 				this.verifySameBarcode( page, attachs, pgcPenPage.getPadId( ), pgcPenPage.getPgcId( ) );
 			}
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "Exception on addAnotoImages basePath" + basePath + " nBookIndex: " + nBookIndex + " nPageIndex: " + nPageIndex, e );
 			e = null;
 		}
 
 		renderer = RendererFactory.create( page );
-		if ( SysUtils.isEmpty( backgroundImages ) ) {
+		if( SysUtils.isEmpty( backgroundImages ) ) {
 			renderer.renderToFile( renderedImage );
 			media = this.createMedia( renderedImage );
-			if ( media != null ) {
+			if( media != null ) {
 				this.getSession( ).addProcessedImage( pgcPenPage.getPgc( ), media, nBookIndex, nPageIndex );
 			}
 		}
 		else {
-			for ( MediaDTO image : backgroundImages ) {
+			for( MediaDTO image : backgroundImages ) {
 				String imagePath = basePath;
 				byte[ ] object = this.getSession( ).getObject( image );
 				String backImage = this.getPad( ).saveBackgroundImage( imagePath, image.getName( ), object );
 				renderer.setBackground( backImage );
 				renderer.renderToFile( renderedImage );
 				media = this.createMedia( renderedImage );
-				if ( media != null ) {
+				if( media != null ) {
 					this.getSession( ).addProcessedImage( pgcPenPage.getPgc( ), media, nBookIndex, nPageIndex );
 				}
 				File backFile = new File( backImage );
-				if ( backFile.exists( ) ) {
+				if( backFile.exists( ) ) {
 					backFile.delete( );
 				}
 				backFile.deleteOnExit( );
 			}
 		}
 		File file = new File( renderedImage );
-		if ( SysUtils.isEmpty( pgcPenPage.getForm( ).getImagePath( ) ) == false && SysUtils.isEmpty( attachs ) == false ) {
-			for ( PgcAttachmentDTO attach : attachs ) {
-				if ( attach.getType( ).equals( PgcAttachmentDTO.typeBarCode ) && SysUtils.isEmpty( attach.getValue( ) ) == false ) {
+		if( SysUtils.isEmpty( pgcPenPage.getForm( ).getImagePath( ) ) == false && SysUtils.isEmpty( attachs ) == false ) {
+			for( PgcAttachmentDTO attach : attachs ) {
+				if( attach.getType( ).equals( PgcAttachmentDTO.typeBarCode ) && SysUtils.isEmpty( attach.getValue( ) ) == false ) {
 					String targetFilename = pgcPenPage.getForm( ).getImagePath( );
 
-					if ( targetFilename.endsWith( "/" ) == false && targetFilename.endsWith( "\\" ) == false ) {
+					if( targetFilename.endsWith( "/" ) == false && targetFilename.endsWith( "\\" ) == false ) {
 						targetFilename += "/";
 					}
 					File targetDir = new File( targetFilename );
-					if ( targetDir.exists( ) == false ) {
+					if( targetDir.exists( ) == false ) {
 						targetDir.mkdirs( );
 					}
 					targetFilename += attach.getValue( ).trim( ) + "." + this.getImageFileTypeExtension( );
 					File dest = new File( targetFilename );
-					if ( dest.exists( ) ) {
+					if( dest.exists( ) ) {
 						dest.delete( );
 					}
 					file.renameTo( dest );
 				}
 			}
 		}
-		if ( file.exists( ) ) {
+		if( file.exists( ) ) {
 			file.delete( );
 		}
 		return backgroundImages;
@@ -462,11 +462,11 @@ public class PgcFile implements Serializable, Runnable
 
 	private boolean hasTemplate( PgcPenPageDTO pgcPenPage )
 	{
-		if ( SysUtils.isEmpty( pgcPenPage.getPenPage( ).getPage( ).getIcrTemplate( ) ) ) {
+		if( SysUtils.isEmpty( pgcPenPage.getPenPage( ).getPage( ).getIcrTemplate( ) ) ) {
 			return false;
 		}
 		File icrTemplateFile = new File( pgcPenPage.getPenPage( ).getPage( ).getIcrTemplate( ) );
-		if ( icrTemplateFile.exists( ) == false || icrTemplateFile.isFile( ) == false ) {
+		if( icrTemplateFile.exists( ) == false || icrTemplateFile.isFile( ) == false ) {
 			return false;
 		}
 		return true;
@@ -480,8 +480,8 @@ public class PgcFile implements Serializable, Runnable
 		String icrImage = null;
 		Map<String, IcrField> icrFields = null;
 
-		if ( pgcPenPage.getForm( ).getIcrImage( ) == false ) {
-			if ( this.hasTemplate( pgcPenPage ) == false ) {
+		if( pgcPenPage.getForm( ).getIcrImage( ) == false ) {
+			if( this.hasTemplate( pgcPenPage ) == false ) {
 				return icrFields;
 			}
 		}
@@ -490,16 +490,18 @@ public class PgcFile implements Serializable, Runnable
 			icrImage = String.format( "%s/%s_%s.%s", basePath, pgcPenPage.getPageAddress( ), "icr", "JPG" );
 			renderer.renderToFile( icrImage, 300 );
 			// if ( hasTemplate( pgcPenPage ) )
-			// String template = pgcPenPage.getPenPage().getPage().getIcrTemplate();
-			// icrFields = ICRObject.processImage( template, icrImage, A2iaDocument.typeJPEG );
+			// String template =
+			// pgcPenPage.getPenPage().getPage().getIcrTemplate();
+			// icrFields = ICRObject.processImage( template, icrImage,
+			// A2iaDocument.typeJPEG );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.info( "processIcr", e );
 			icrFields = null;
 		}
-		if ( pgcPenPage.getForm( ).getIcrImage( ) == false ) {
+		if( pgcPenPage.getForm( ).getIcrImage( ) == false ) {
 			File file = new File( icrImage );
-			if ( file.exists( ) ) {
+			if( file.exists( ) ) {
 				file.delete( );
 			}
 		}
@@ -512,22 +514,22 @@ public class PgcFile implements Serializable, Runnable
 		int barcodeType;
 		List<PgcAttachmentDTO> attachs = new ArrayList<PgcAttachmentDTO>( );
 
-		if ( page.hasAttachments( ) ) {
+		if( page.hasAttachments( ) ) {
 			Iterator it = page.getAttachments( );
-			while ( it != null && it.hasNext( ) ) {
+			while( it != null && it.hasNext( ) ) {
 				Attachment obj = (Attachment) it.next( );
 				dto = new PgcAttachmentDTO( pgcPage );
 				LOGGER.info( "O pgc recebido possui anexos. Tipo " + obj.getType( ) );
-				if ( obj.getType( ) == Attachment.ATTACHMENT_TYPE_BARCODE ) {
+				if( obj.getType( ) == Attachment.ATTACHMENT_TYPE_BARCODE ) {
 					dto.setType( 1 );
 					byte[ ] barCodeData = obj.getData( );
-					barcodeType = barCodeData[ 0 ];
+					barcodeType = barCodeData[0];
 					dto.setBarcodeType( barcodeType );
 					String sValue = "";
 					Byte caracter;
-					for ( int nCount = 1; nCount < barCodeData.length; nCount++ ) {
-						caracter = barCodeData[ nCount ];
-						if ( barcodeType == 4 ) {
+					for( int nCount = 1; nCount < barCodeData.length; nCount++ ) {
+						caracter = barCodeData[nCount];
+						if( barcodeType == 4 ) {
 							sValue += (char) (byte) caracter;
 						}
 						else {
@@ -535,8 +537,8 @@ public class PgcFile implements Serializable, Runnable
 						}
 
 					}
-					if ( dto.getBarcodeType( ) == 2 ) {
-						if ( sValue.length( ) > 12 ) {
+					if( dto.getBarcodeType( ) == 2 ) {
+						if( sValue.length( ) > 12 ) {
 							sValue = sValue.substring( 0, 12 );
 						}
 					}
@@ -561,12 +563,12 @@ public class PgcFile implements Serializable, Runnable
 		PgcFieldDTO fieldDTO;
 		int fieldIndex = 0;
 
-		while ( it != null && it.hasNext( ) ) {
+		while( it != null && it.hasNext( ) ) {
 			pageArea = (PageArea) it.next( );
-			if ( pageArea.getType( ) == PageArea.DRAWING_AREA ) {
+			if( pageArea.getType( ) == PageArea.DRAWING_AREA ) {
 				continue;
 			}
-			if ( pageArea.getType( ) != PageArea.USER_AREA ) {
+			if( pageArea.getType( ) != PageArea.USER_AREA ) {
 				continue;
 			}
 			fieldDTO = new PgcFieldDTO( pgcPage );
@@ -574,16 +576,16 @@ public class PgcFile implements Serializable, Runnable
 			fieldDTO.setType( new FieldTypeDTO( 1 ) );
 			fieldDTO.setHasPenstrokes( pageArea.hasPenStrokes( ) );
 			pageArea.getType( );
-			if ( fieldDTO.getHasPenstrokes( ) ) {
+			if( fieldDTO.getHasPenstrokes( ) ) {
 				Long minTime = 0L, maxTime = 0L;
 				PenStrokes pss = pageArea.getPenStrokes( );
 				Iterator strokesIt = pss.getIterator( );
-				while ( strokesIt != null && strokesIt.hasNext( ) ) {
+				while( strokesIt != null && strokesIt.hasNext( ) ) {
 					PenStroke ps = (PenStroke) strokesIt.next( );
-					if ( maxTime < ps.getEndTime( ) ) {
+					if( maxTime < ps.getEndTime( ) ) {
 						maxTime = ps.getEndTime( );
 					}
-					if ( minTime == 0 || minTime > ps.getStartTime( ) ) {
+					if( minTime == 0 || minTime > ps.getStartTime( ) ) {
 						minTime = ps.getStartTime( );
 					}
 				}
@@ -593,17 +595,17 @@ public class PgcFile implements Serializable, Runnable
 					this.getFieldImage( basePath, pageArea, fieldDTO );
 					fieldIndex++;
 				}
-				catch ( Exception e ) {
+				catch( Exception e ) {
 					LOGGER.error( "Erro em update Fields", e );
 				}
 			}
-			if ( icrFields != null ) {
+			if( icrFields != null ) {
 				IcrField field = icrFields.get( fieldDTO.getName( ) );
-				if ( field != null && field.getValue( ) != null ) {
+				if( field != null && field.getValue( ) != null ) {
 					String icrValue = field.getValue( ).toString( );
-					if ( SysUtils.isEmpty( icrValue ) == false ) {
+					if( SysUtils.isEmpty( icrValue ) == false ) {
 						icrValue = icrValue.replaceAll( "_", " " );
-						if ( SysUtils.isEmpty( icrValue ) == false ) {
+						if( SysUtils.isEmpty( icrValue ) == false ) {
 							fieldDTO.setIrcText( icrValue.trim( ) );
 						}
 					}
@@ -623,7 +625,7 @@ public class PgcFile implements Serializable, Runnable
 			LOGGER.info( "Rendering" );
 			renderer = RendererFactory.create( pageArea );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "RendererFactory.create( pageArea );", e );
 		}
 		path = basePath + "/" + "field." + this.getImageFileTypeExtension( );
@@ -631,7 +633,7 @@ public class PgcFile implements Serializable, Runnable
 		MediaDTO media = this.createMedia( path );
 		fieldDTO.setMedia( media );
 		File file = new File( path );
-		if ( file.exists( ) ) {
+		if( file.exists( ) ) {
 			file.delete( );
 		}
 	}
@@ -640,7 +642,7 @@ public class PgcFile implements Serializable, Runnable
 	{
 		List<MediaDTO> medias = null;
 
-		if ( page == null ) {
+		if( page == null ) {
 			return medias;
 		}
 		try {
@@ -648,7 +650,7 @@ public class PgcFile implements Serializable, Runnable
 			medias = this.getSession( ).getImages( dto );
 			return medias;
 		}
-		catch ( ApplicationException e ) {
+		catch( ApplicationException e ) {
 			LOGGER.error( "loadBackgroundImages", e );
 			return medias;
 		}
@@ -658,8 +660,8 @@ public class PgcFile implements Serializable, Runnable
 	{
 		Iterator it = this.getCurrentPen( ).getPageAddresses( );
 		List<String> addresses = null;
-		while ( it != null & it.hasNext( ) ) {
-			if ( addresses == null ) {
+		while( it != null & it.hasNext( ) ) {
+			if( addresses == null ) {
 				addresses = new ArrayList<String>( );
 			}
 			addresses.add( (String) it.next( ) );
@@ -674,7 +676,7 @@ public class PgcFile implements Serializable, Runnable
 			this.getCurrentPgc( ).setPenId( this.getCurrentPen( ).getPenData( ).getPenSerial( ) );
 			this.getCurrentPgc( ).setTimeDiff( this.getCurrentPen( ).getPenData( ).getTimeDiff( ) );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "setCurrentPgc", e );
 		}
 	}
@@ -697,7 +699,7 @@ public class PgcFile implements Serializable, Runnable
 	public void setObject( PadFile pad, byte[ ] object ) throws PenCreationException
 	{
 		this.setPad( pad );
-		this.bytePgc = object;
+		this.bytePgc = object.clone( );
 		this.setCurrentPen( pad.getPen( new ByteArrayInputStream( this.bytePgc ) ) );
 	}
 
@@ -716,13 +718,13 @@ public class PgcFile implements Serializable, Runnable
 		try {
 			Iterator<?> it = this.getCurrentPen( ).getLogicalBooks( );
 			int nCount = 0;
-			while ( it != null && it.hasNext( ) ) {
+			while( it != null && it.hasNext( ) ) {
 				it.next( );
 				nCount++;
 			}
 			return nCount;
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "getBookCount", e );
 			return 0;
 		}
@@ -735,8 +737,8 @@ public class PgcFile implements Serializable, Runnable
 		Iterator<?> bookIterator;
 		try {
 			bookIterator = this.getCurrentPen( ).getLogicalBooks( );
-			while ( bookIterator != null && bookIterator.hasNext( ) ) {
-				if ( books == null ) {
+			while( bookIterator != null && bookIterator.hasNext( ) ) {
+				if( books == null ) {
 					books = new ArrayList<AnotoBook>( );
 				}
 				AnotoBook ab = new AnotoBook( (Iterator<?>) bookIterator.next( ) );
@@ -744,7 +746,7 @@ public class PgcFile implements Serializable, Runnable
 			}
 			return books;
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "getBooks", e );
 			return books;
 		}
@@ -757,14 +759,14 @@ public class PgcFile implements Serializable, Runnable
 
 		try {
 			it = this.getCurrentPen( ).getPages( );
-			while ( it != null && it.hasNext( ) ) {
-				if ( list == null ) {
+			while( it != null && it.hasNext( ) ) {
+				if( list == null ) {
 					list = new ArrayList<Page>( );
 				}
 				list.add( (Page) it.next( ) );
 			}
 		}
-		catch ( PageException e ) {
+		catch( PageException e ) {
 			LOGGER.error( "getPages", e );
 			list = null;
 		}
@@ -773,7 +775,7 @@ public class PgcFile implements Serializable, Runnable
 
 	private Iterator getBook( int nIndex )
 	{
-		if ( nIndex < 0 ) {
+		if( nIndex < 0 ) {
 			return null;
 		}
 		Iterator book = null;
@@ -781,15 +783,15 @@ public class PgcFile implements Serializable, Runnable
 		try {
 			it = this.getCurrentPen( ).getLogicalBooks( );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "getBook", e );
 			return null;
 		}
-		while ( it != null && it.hasNext( ) && nIndex >= 0 ) {
+		while( it != null && it.hasNext( ) && nIndex >= 0 ) {
 			book = (Iterator) it.next( );
 			nIndex--;
 		}
-		if ( nIndex >= 0 ) {
+		if( nIndex >= 0 ) {
 			return null;
 		}
 		return book;
@@ -806,14 +808,14 @@ public class PgcFile implements Serializable, Runnable
 	public Page getPage( Iterator book, int nIndex )
 	{
 		Page page = null;
-		if ( book == null ) {
+		if( book == null ) {
 			return this.getPage( nIndex );
 		}
-		while ( book.hasNext( ) && nIndex >= 0 ) {
+		while( book.hasNext( ) && nIndex >= 0 ) {
 			page = (Page) book.next( );
 			nIndex--;
 		}
-		if ( nIndex >= 0 ) {
+		if( nIndex >= 0 ) {
 			return null;
 		}
 		return page;
@@ -826,11 +828,11 @@ public class PgcFile implements Serializable, Runnable
 		try {
 			it = this.getCurrentPen( ).getPages( );
 		}
-		catch ( PageException e ) {
+		catch( PageException e ) {
 			LOGGER.error( "getPage", e );
 			return null;
 		}
-		while ( it != null && it.hasNext( ) && nIndex >= 0 ) {
+		while( it != null && it.hasNext( ) && nIndex >= 0 ) {
 			page = (Page) it.next( );
 			nIndex--;
 		}
@@ -842,8 +844,8 @@ public class PgcFile implements Serializable, Runnable
 		int nIndex = 0;
 
 		Iterator book = this.getBook( nBook );
-		if ( book != null ) {
-			while ( book.hasNext( ) ) {
+		if( book != null ) {
+			while( book.hasNext( ) ) {
 				book.next( );
 				nIndex++;
 			}
@@ -851,12 +853,12 @@ public class PgcFile implements Serializable, Runnable
 		else {
 			try {
 				Iterator it = this.getCurrentPen( ).getPages( );
-				while ( it != null && it.hasNext( ) ) {
+				while( it != null && it.hasNext( ) ) {
 					it.next( );
 					nIndex++;
 				}
 			}
-			catch ( PageException e ) {
+			catch( PageException e ) {
 				LOGGER.error( "getPageCount", e );
 				nIndex = 0;
 			}
@@ -869,9 +871,9 @@ public class PgcFile implements Serializable, Runnable
 		Iterator books;
 		try {
 			books = this.getCurrentPen( ).getLogicalBooks( );
-			return ( books != null && books.hasNext( ) );
+			return(books != null && books.hasNext( ));
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "hasLogicalBooks", e );
 			return false;
 		}

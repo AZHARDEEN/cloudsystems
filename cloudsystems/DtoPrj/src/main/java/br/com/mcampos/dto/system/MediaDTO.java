@@ -51,8 +51,8 @@ public class MediaDTO implements Comparable<MediaDTO>, Serializable
 
 	public MediaDTO setObject( byte[ ] object )
 	{
-		this.object = object;
-		if ( object != null ) {
+		this.object = object.clone( );
+		if( object != null ) {
 			this.setSize( object.length );
 		}
 		return this;
@@ -93,7 +93,7 @@ public class MediaDTO implements Comparable<MediaDTO>, Serializable
 
 	public Integer getId( )
 	{
-		if ( this.id == null ) {
+		if( this.id == null ) {
 			this.id = 0;
 		}
 		return this.id;
@@ -102,7 +102,7 @@ public class MediaDTO implements Comparable<MediaDTO>, Serializable
 	@Override
 	public int compareTo( MediaDTO o )
 	{
-		if ( o == null ) {
+		if( o == null ) {
 			return 1;
 		}
 		return this.getId( ).compareTo( o.getId( ) );
@@ -111,10 +111,10 @@ public class MediaDTO implements Comparable<MediaDTO>, Serializable
 	@Override
 	public boolean equals( Object obj )
 	{
-		if ( obj == null || ( obj instanceof MediaDTO ) == false ) {
+		if( obj == null || (obj instanceof MediaDTO) == false ) {
 			return false;
 		}
-		return this.getId( ).equals( ( (MediaDTO) obj ).getId( ) );
+		return this.getId( ).equals( ((MediaDTO) obj).getId( ) );
 	}
 
 	@Override
