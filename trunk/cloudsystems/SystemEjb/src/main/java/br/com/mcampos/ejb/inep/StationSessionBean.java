@@ -85,6 +85,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	@Override
 	public InepMedia storeUploadInformation( PrincipalDTO auth, InepSubscription subscription, MediaDTO media )
 	{
+		subscription = this.subscriptionSession.get( subscription.getId( ) );
 		this.inepMediaSession.removeAudio( subscription );
 		InepSubscription merged = this.subscriptionSession.get( subscription.getId( ) );
 		InepMedia inepMedia = null;
@@ -92,6 +93,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 			inepMedia = this.inepMediaSession.addAudio( merged, this.mediaSession.add( media ) );
 			merged.add( inepMedia );
 		}
+		subscription.setStatus( 2 );
 		return inepMedia;
 	}
 
@@ -101,14 +103,8 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		if ( auth == null || subscription == null || elements == null || elements.length != MAX_ELEMENTS ) {
 			throw new InvalidParameterException( );
 		}
-		try {
-			String deleteQuery = "DELETE FROM InepElement o WHERE o.subscription = ?1 ";
-			Query query = this.getEntityManager( ).createQuery( deleteQuery ).setParameter( 1, subscription );
-			query.executeUpdate( );
-		}
-		catch ( Exception e ) {
-			e = null;
-		}
+		subscription = this.subscriptionSession.get( subscription.getId( ) );
+		this.removeElements( subscription );
 		for ( int id : elements ) {
 			InepElement element = new InepElement( subscription, id );
 			this.getEntityManager( ).persist( element );
@@ -122,7 +118,33 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 			oralTest = this.oralTestSession.add( new InepOralTest( subscription ), false );
 		}
 		oralTest.setInterviewGrade( BigDecimal.valueOf( grade ) );
+		subscription.setStatus( 2 );
 		this.oralTestSession.setStatus( oralTest );
+	}
+
+	private void removeElements( InepSubscription subscription )
+	{
+		try {
+			String deleteQuery = "DELETE FROM InepElement o WHERE o.subscription = ?1 ";
+			Query query = this.getEntityManager( ).createQuery( deleteQuery ).setParameter( 1, subscription );
+			query.executeUpdate( );
+		}
+		catch ( Exception e ) {
+			this.storeException( e );
+		}
+	}
+
+	private void removeObserverGrades( InepSubscription subscription )
+	{
+		try {
+			String deleteQuery = "DELETE FROM InepObserverGrade o WHERE o.subscription = ?1 ";
+			Query query = this.getEntityManager( ).createQuery( deleteQuery ).setParameter( 1, subscription );
+			query.executeUpdate( );
+		}
+		catch ( Exception e ) {
+			this.storeException( e );
+		}
+
 	}
 
 	@Override
@@ -133,14 +155,8 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		if ( auth == null || subscription == null || grades == null || grades.length != MAX_ORAL_GRADE ) {
 			throw new InvalidParameterException( );
 		}
-		try {
-			String deleteQuery = "DELETE FROM InepObserverGrade o WHERE o.subscription = ?1 ";
-			Query query = this.getEntityManager( ).createQuery( deleteQuery ).setParameter( 1, subscription );
-			query.executeUpdate( );
-		}
-		catch ( Exception e ) {
-			e = null;
-		}
+		subscription = this.subscriptionSession.get( subscription.getId( ) );
+		this.removeObserverGrades( subscription );
 		int nIndex = 0;
 		for ( int id : grades ) {
 			InepObserverGrade element = new InepObserverGrade( subscription, ++nIndex, id );
@@ -157,12 +173,37 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		}
 		oralTest.setObserverGrade( BigDecimal.valueOf( grade ) );
 		this.oralTestSession.setStatus( oralTest );
+		subscription.setStatus( 2 );
 	}
 
 	@Override
 	public List<InepMedia> lookupForName( PrincipalDTO auth, InepSubscription subscription, String mediaName )
 	{
 		return this.inepMediaSession.findByNamedQuery( InepMedia.LookupForMediaName, subscription.getEvent( ), mediaName );
+	}
+
+	@Override
+	public void reset( PrincipalDTO auth, InepSubscription subscription )
+	{
+		subscription = this.subscriptionSession.get( subscription.getId( ) );
+		if ( subscription != null ) {
+			Query query = this.getEntityManager( ).createQuery( "Delete from InepOralTest o where o.subscription = ?1" ).setParameter( 1, subscription );
+			query.executeUpdate( );
+			this.removeElements( subscription );
+			this.removeObserverGrades( subscription );
+			this.inepMediaSession.removeAudio( subscription );
+			subscription.setStatus( 1 );
+		}
+	}
+
+	@Override
+	public void setMissing( PrincipalDTO auth, InepSubscription subscription )
+	{
+		subscription = this.subscriptionSession.get( subscription.getId( ) );
+		if ( subscription != null ) {
+			this.reset( auth, subscription );
+			subscription.setStatus( 3 );
+		}
 	}
 
 }
