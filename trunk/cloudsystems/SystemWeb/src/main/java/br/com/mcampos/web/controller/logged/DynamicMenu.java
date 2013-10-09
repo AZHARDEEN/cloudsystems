@@ -143,6 +143,14 @@ public final class DynamicMenu implements Serializable
 					if ( item.getSeparatorBefore( ) ) {
 						base.getChildren( ).add( ( new Menuseparator( ) ) );
 					}
+					if ( nIndex > 0 ) {
+						if ( base.getChildren( ).get( nIndex - 1 ) instanceof Menuseparator ) {
+							nIndex--;
+							if ( nIndex < 0 ) {
+								nIndex = 0;
+							}
+						}
+					}
 					base.getChildren( ).add( nIndex, target );
 					break;
 				}
