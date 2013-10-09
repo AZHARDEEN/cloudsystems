@@ -67,6 +67,9 @@ public class InepSubscription extends BaseInepEvent implements Serializable, Com
 	@JoinColumn( name = "isc_candidate_in", referencedColumnName = "usr_id_in", nullable = true )
 	private Person person;
 
+	@Column( name = "iss_id_in" )
+	private Integer status;
+
 	public InepSubscription( )
 	{
 	}
@@ -218,5 +221,19 @@ public class InepSubscription extends BaseInepEvent implements Serializable, Com
 	public void setCitizenship( String citizenship )
 	{
 		this.citizenship = citizenship;
+	}
+
+	public Integer getStatus( )
+	{
+		return this.status;
+	}
+
+	public void setStatus( Integer status )
+	{
+		this.status = status;
+		if ( !status.equals( 2 ) ) {
+			this.setOralGrade( null );
+			this.setWrittenGrade( null );
+		}
 	}
 }
