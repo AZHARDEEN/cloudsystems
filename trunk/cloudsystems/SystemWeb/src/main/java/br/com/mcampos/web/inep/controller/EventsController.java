@@ -70,6 +70,9 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	@Wire
 	private Toolbarbutton loadSubscriptions;
 
+	@Wire
+	private Toolbarbutton loadStationResponsables;
+
 	@Override
 	protected Class<InepPackageSession> getSessionClass( )
 	{
@@ -161,26 +164,61 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 		Fileupload.get( "Arquivo Excel a ser importado", "Carregar Inscrições", 1, 4096, true );
 	}
 
-	@Listen( "onUpload=#loadSubscriptions" )
+	/**
+	 * Breaf Carregas as pessoas responsáveis pelos postos aplicadores. Esta pessoa terá acesso as funcionalidades do posto aplicador e será encarregado de
+	 * inserir as notas no sistema.
+	 * 
+	 * @param evt
+	 *            ZKoss click mouse event
+	 */
+	@Listen( "onClick=#loadStationResponsables" )
+	public void onClickUploadStationResponsabled( MouseEvent evt )
+	{
+		if ( evt != null ) {
+			evt.stopPropagation( );
+		}
+		List<InepEvent> events = this.getSelectedRecords( );
+		if ( SysUtils.isEmpty( events ) ) {
+			Messagebox.show( "Por favor, escolha um evento primeiro", "Carregar Inscrições", Messagebox.OK, Messagebox.ERROR );
+			return;
+		}
+		for ( InepEvent event : events ) {
+			if ( event.getEndDate( ) != null && event.getEndDate( ).compareTo( new Date( ) ) <= 0 ) {
+				Messagebox.show( "O evento " + event.getDescription( ) + " está fechado e não permite mais alterações",
+						"Carregar Inscrições", Messagebox.OK, Messagebox.ERROR );
+				return;
+			}
+		}
+		Executions.getCurrent( ).getDesktop( ).setAttribute( "org.zkoss.zul.Fileupload.target", this.loadStationResponsables );
+		Fileupload.get( "Arquivo Excel a ser importado", "Carregar Inscrições", 1, 4096, true );
+	}
+
+	@Listen( "onUpload=#loadSubscriptions; onUpload=#loadStationResponsables" )
 	public void onUpload( UploadEvent evt )
 	{
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
 		if ( evt.getMedia( ) == null ) {
-			Messagebox.show( "Nenhum arquivo selecionado para carga", "Carregar Inscrições", Messagebox.OK, Messagebox.ERROR );
+			Messagebox.show( "Nenhum arquivo selecionado para carga", "Carregar Arquivo", Messagebox.OK, Messagebox.ERROR );
 			return;
 		}
 		try {
-			if ( this.processFile( evt.getMedia( ) ) ) {
-				Messagebox.show( "Carga do arquivo " + evt.getMedia( ).getName( ) + " realizada com sucesso", "Carregar Inscrições", Messagebox.OK,
-						Messagebox.INFORMATION );
+			if ( evt.getTarget( ) == this.loadSubscriptions ) {
+				if ( this.processFile( evt.getMedia( ) ) ) {
+					Messagebox.show( "Carga do arquivo " + evt.getMedia( ).getName( ) + " realizada com sucesso", "Carregar Inscrições", Messagebox.OK,
+							Messagebox.INFORMATION );
+				}
+			}
+			else {
+				Messagebox.show( "Carga do arquivo " + evt.getMedia( ).getName( ) + " realizada com sucesso",
+						"Carregar Responsáveis pelos Postos Aplicadores", Messagebox.OK, Messagebox.INFORMATION );
 			}
 		}
 		catch ( Exception e ) {
 			this.getSession( ).storeException( e );
 			LOGGER.error( "ProcessFileError", e );
-			Messagebox.show( "Erro na carga do arquivo " + evt.getMedia( ).getName( ) + ".", "Carregar Inscrições", Messagebox.OK,
+			Messagebox.show( "Erro na carga do arquivo " + evt.getMedia( ).getName( ) + ".", "Carregar Arquivo", Messagebox.OK,
 					Messagebox.ERROR );
 		}
 	}

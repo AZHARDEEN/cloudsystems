@@ -43,6 +43,10 @@
 	                    <div align="Left">
 	                    	<toolbarbutton id="loadSubscriptions" label="Carregar Inscrições" image="/img/Upload_Folder-32x32.png"/>
 	                    </div>
+	                    <separator width="30px"/>
+	                    <div align="Left">
+	                    	<toolbarbutton id="loadStationResponsables" label="Carregar os Responsáveis pelos Postos" image="/img/Upload_Folder-32x32.png"/>
+	                    </div>
 	                <separator/>
 	                <div fulfill="=/templates/crud_buttons.zul"></div>
 	                </div>
