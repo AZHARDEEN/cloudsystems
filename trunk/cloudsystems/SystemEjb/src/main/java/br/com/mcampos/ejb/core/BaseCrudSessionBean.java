@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.params.SystemParameterSessionLocal;
@@ -40,7 +39,7 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 		}
 	}
 
-	public T merge( @NotNull PrincipalDTO auth, @NotNull T newEntity )
+	public T merge( PrincipalDTO auth, T newEntity )
 	{
 		try {
 			T merged = this.getEntityManager( ).merge( newEntity );
@@ -53,13 +52,13 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 	}
 
 	@Override
-	public T update( @NotNull PrincipalDTO auth, @NotNull T newEntity )
+	public T update( PrincipalDTO auth, T newEntity )
 	{
 		return this.merge( auth, newEntity );
 	}
 
 	@Override
-	public T updateAndRefresh( @NotNull PrincipalDTO auth, @NotNull T newEntity )
+	public T updateAndRefresh( PrincipalDTO auth, T newEntity )
 	{
 		T merged = this.merge( auth, newEntity );
 		this.refresh( merged );
@@ -67,7 +66,7 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 	}
 
 	@Override
-	public T add( @NotNull PrincipalDTO auth, @NotNull T newEntity )
+	public T add( PrincipalDTO auth, T newEntity )
 	{
 		/*
 		 * Do not call this class persist method, please!
@@ -76,7 +75,7 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 	}
 
 	@Override
-	public T add( @NotNull T newEntity )
+	public T add( T newEntity )
 	{
 		/*
 		 * Do not call this class persist, please!
@@ -92,7 +91,7 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 	}
 
 	@Override
-	public T addAndRefresh( @NotNull PrincipalDTO auth, @NotNull T newEntity )
+	public T addAndRefresh( PrincipalDTO auth, T newEntity )
 	{
 		if ( newEntity == null ) {
 			return null;
@@ -126,7 +125,7 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 	}
 
 	@Override
-	public T remove( @NotNull PrincipalDTO auth, @NotNull Serializable key )
+	public T remove( PrincipalDTO auth, Serializable key )
 	{
 		try {
 			T removed = this.get( key );
@@ -167,7 +166,7 @@ public abstract class BaseCrudSessionBean<T> extends PagingSessionBean<T> implem
 	}
 
 	@Override
-	public void remove( @NotNull PrincipalDTO auth, @NotNull Collection<T> entities )
+	public void remove( PrincipalDTO auth, Collection<T> entities )
 	{
 		try {
 			for ( T item : entities ) {

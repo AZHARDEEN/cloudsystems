@@ -11,13 +11,13 @@ import br.com.mcampos.dto.core.PrincipalDTO;
 
 public interface ReadOnlySessionInterface<T> extends BaseSessionInterface
 {
-	public T get( @NotNull Serializable key );
+	public T get(  Serializable key );
 
-	public Collection<T> getAll( @NotNull PrincipalDTO auth );
+	public Collection<T> getAll(  PrincipalDTO auth );
 
-	public Collection<T> getAll( @NotNull PrincipalDTO auth, String whereClause, DBPaging page );
+	public Collection<T> getAll(  PrincipalDTO auth, String whereClause, DBPaging page );
 
-	public Collection<T> getAll( @NotNull PrincipalDTO auth, String whereClause, DBPaging page, Object... params );
+	public Collection<T> getAll(  PrincipalDTO auth, String whereClause, DBPaging page, Object... params );
 
 	List<T> findByNamedQuery( String namedQuery, Object... params );
 

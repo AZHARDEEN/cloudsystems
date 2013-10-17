@@ -13,7 +13,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.search.Searchable;
@@ -53,7 +52,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 
 	@Override
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public T get( @NotNull Serializable key )
+	public T get( Serializable key )
 	{
 		T entity;
 		try {
@@ -119,7 +118,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	}
 
 	@SuppressWarnings( "unchecked" )
-	private Collection<T> getResultList( @NotNull Query query )
+	private Collection<T> getResultList( Query query )
 	{
 		try {
 			return query.getResultList( );
@@ -134,7 +133,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	}
 
 	@SuppressWarnings( "unchecked" )
-	private T getSingleResult( @NotNull Query query )
+	private T getSingleResult( Query query )
 	{
 		try {
 			Object obj;
@@ -155,7 +154,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 
 	@Override
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public Collection<T> getAll( @NotNull PrincipalDTO auth, String whereClause, DBPaging page )
+	public Collection<T> getAll( PrincipalDTO auth, String whereClause, DBPaging page )
 	{
 		Query query = this.getAllQuery( auth, whereClause );
 		if ( page != null ) {
@@ -168,7 +167,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 
 	@Override
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public Collection<T> getAll( @NotNull PrincipalDTO auth, String whereClause, DBPaging page, Object... params )
+	public Collection<T> getAll( PrincipalDTO auth, String whereClause, DBPaging page, Object... params )
 	{
 		Query query = this.getAllQuery( auth, whereClause );
 		if ( page != null ) {
