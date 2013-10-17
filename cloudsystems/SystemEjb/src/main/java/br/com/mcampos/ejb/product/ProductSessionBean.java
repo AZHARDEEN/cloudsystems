@@ -6,7 +6,6 @@ import java.util.Date;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
-import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.BaseCompanySessionBean;
@@ -21,6 +20,11 @@ import br.com.mcampos.sysutils.SysUtils;
 public class ProductSessionBean extends BaseCompanySessionBean<Product> implements ProductSession, ProductSessionLocal
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7581252468127147342L;
+
 	@Override
 	protected Class<Product> getEntityClass( )
 	{
@@ -34,7 +38,7 @@ public class ProductSessionBean extends BaseCompanySessionBean<Product> implemen
 			throw new InvalidParameterException( );
 		}
 		if ( newEntity.getId( ).getId( ) == null || newEntity.getId( ).getId( ).equals( 0 ) ) {
-			Integer nextVal = getNextId( Product.getNextId, auth.getCompanyID( ) );
+			Integer nextVal = this.getNextId( Product.getNextId, auth.getCompanyID( ) );
 			newEntity.getId( ).setId( nextVal );
 		}
 		if ( newEntity.getFromDate( ) == null ) {
@@ -53,19 +57,20 @@ public class ProductSessionBean extends BaseCompanySessionBean<Product> implemen
 	@Override
 	public Product remove( PrincipalDTO auth, Serializable key )
 	{
-		Product toRemove = get( key );
-		if ( toRemove == null )
+		Product toRemove = this.get( key );
+		if ( toRemove == null ) {
 			return null;
+		}
 		toRemove.setToDate( new Date( ) );
 		return toRemove;
 	}
 
 	@Override
-	protected String getCountQL( @NotNull PrincipalDTO auth, String whereClause )
+	protected String getCountQL( PrincipalDTO auth, String whereClause )
 	{
 		String sqlQuery;
 
-		sqlQuery = "select count(t) as registros from " + getPersistentClass( ).getSimpleName( ) + " as t ";
+		sqlQuery = "select count(t) as registros from " + this.getPersistentClass( ).getSimpleName( ) + " as t ";
 		if ( SysUtils.isEmpty( whereClause ) ) {
 			whereClause = " (t.id.companyId = " + auth.getCompanyID( ) + ") ";
 		}
@@ -100,7 +105,7 @@ public class ProductSessionBean extends BaseCompanySessionBean<Product> implemen
 	@Override
 	public Product loadObjects( PrincipalDTO auth, Product product )
 	{
-		product = getEntityManager( ).merge( product );
+		product = this.getEntityManager( ).merge( product );
 		product.getPrices( ).size( );
 		product.getKeys( ).size( );
 		return product;

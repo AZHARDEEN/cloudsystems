@@ -11,7 +11,6 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,7 +99,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepTask> getTasks( @NotNull PrincipalDTO auth )
+	public List<InepTask> getTasks( PrincipalDTO auth )
 	{
 		return (List<InepTask>) this.taskSession.getAll( auth );
 	}
@@ -738,7 +737,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	}
 
 	@Override
-	public List<InepTest> getTests( @NotNull PrincipalDTO auth, InepSubscription s )
+	public List<InepTest> getTests( PrincipalDTO auth, InepSubscription s )
 	{
 		List<InepTest> tests = (List<InepTest>) this.testSession.getAll( auth, " t.subscription = ?1", null, s );
 		return tests;

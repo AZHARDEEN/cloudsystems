@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.dto.system.MediaDTO;
@@ -40,6 +39,10 @@ import br.com.mcampos.sysutils.SysUtils;
 @LocalBean
 public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacade
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3986248629620631049L;
 	@EJB
 	InepOralTestSessionLocal oralTestSession;
 	@EJB
@@ -78,7 +81,7 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 	}
 
 	@Override
-	public List<InepOralTeamDTO> getOralTeamToChoice( InepEvent event, @NotNull PrincipalDTO auth )
+	public List<InepOralTeamDTO> getOralTeamToChoice( InepEvent event, PrincipalDTO auth )
 	{
 		List<InepRevisor> list = this.teamSession.getOralTeam( event );
 		ArrayList<InepOralTeamDTO> retList = null;

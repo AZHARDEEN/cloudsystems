@@ -3,7 +3,6 @@ package br.com.mcampos.ejb.inep.team;
 import java.util.List;
 
 import javax.ejb.Local;
-import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
@@ -16,7 +15,7 @@ import br.com.mcampos.jpa.inep.InepTest;
 @Local
 public interface TeamSessionLocal extends BaseCrudSessionInterface<InepRevisor>
 {
-	List<InepTask> getTasks( @NotNull PrincipalDTO auth );
+	List<InepTask> getTasks( PrincipalDTO auth );
 
 	List<InepRevisor> getTeam( InepTask task );
 

@@ -3,7 +3,6 @@ package br.com.mcampos.ejb.core;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.Query;
-import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
 
@@ -17,7 +16,7 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 
 	@Override
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public int count( @NotNull PrincipalDTO auth )
+	public int count( PrincipalDTO auth )
 	{
 		Long result;
 
@@ -35,7 +34,7 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 
 	@Override
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public int count( @NotNull PrincipalDTO auth, String filter )
+	public int count( PrincipalDTO auth, String filter )
 	{
 		Long result;
 
@@ -54,7 +53,7 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 
 	@Override
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
-	public int count( @NotNull PrincipalDTO auth, String filter, Object... params )
+	public int count( PrincipalDTO auth, String filter, Object... params )
 	{
 		Long result;
 
@@ -71,7 +70,7 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 
 	}
 
-	protected String getCountQL( @NotNull PrincipalDTO auth, String whereClause )
+	protected String getCountQL( PrincipalDTO auth, String whereClause )
 	{
 		String sqlQuery;
 
@@ -88,7 +87,7 @@ public abstract class PagingSessionBean<T> extends ReadOnlySessionBean<T> implem
 		return sqlQuery;
 	}
 
-	protected Query getCountQuery( @NotNull PrincipalDTO auth, String whereClause )
+	protected Query getCountQuery( PrincipalDTO auth, String whereClause )
 	{
 		try {
 			Query query = this.getEntityManager( ).createQuery( this.getCountQL( auth, whereClause ) );

@@ -2,7 +2,6 @@ package br.com.mcampos.ejb.core;
 
 import javax.ejb.EJB;
 import javax.persistence.Query;
-import javax.validation.constraints.NotNull;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
@@ -25,7 +24,7 @@ public abstract class BaseCompanySessionBean<T extends BaseCompanyEntity> extend
 		return this.companySession.get( auth.getCompanyID( ) );
 	}
 
-	protected void set( @NotNull PrincipalDTO auth, @NotNull T entity )
+	protected void set( PrincipalDTO auth, T entity )
 	{
 		if ( entity == null ) {
 			return;
@@ -34,14 +33,14 @@ public abstract class BaseCompanySessionBean<T extends BaseCompanyEntity> extend
 	}
 
 	@Override
-	public T update( @NotNull PrincipalDTO auth, @NotNull T newEntity )
+	public T update( PrincipalDTO auth, T newEntity )
 	{
 		this.set( auth, newEntity );
 		return super.update( auth, newEntity );
 	}
 
 	@Override
-	public T add( @NotNull PrincipalDTO auth, @NotNull T newEntity )
+	public T add( PrincipalDTO auth, T newEntity )
 	{
 		this.set( auth, newEntity );
 		return super.add( auth, newEntity );
@@ -54,7 +53,7 @@ public abstract class BaseCompanySessionBean<T extends BaseCompanyEntity> extend
 	}
 
 	@Override
-	protected String getCountQL( @NotNull PrincipalDTO auth, String whereClause )
+	protected String getCountQL( PrincipalDTO auth, String whereClause )
 	{
 		String sqlQuery;
 
