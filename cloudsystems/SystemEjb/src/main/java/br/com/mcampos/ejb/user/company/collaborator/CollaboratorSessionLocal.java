@@ -6,6 +6,7 @@ import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.jpa.security.Login;
 import br.com.mcampos.jpa.user.Collaborator;
+import br.com.mcampos.jpa.user.Company;
 
 @Local
 public interface CollaboratorSessionLocal extends BaseCrudSessionInterface<Collaborator>
@@ -23,5 +24,7 @@ public interface CollaboratorSessionLocal extends BaseCrudSessionInterface<Colla
 	Collaborator find( PrincipalDTO login );
 
 	Collaborator add( Login login, Integer companyId );
+
+	Collaborator get( Company c, Login l );
 
 }

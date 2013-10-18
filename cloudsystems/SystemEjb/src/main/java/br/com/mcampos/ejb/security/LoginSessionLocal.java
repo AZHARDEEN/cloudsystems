@@ -16,7 +16,7 @@ public interface LoginSessionLocal extends BaseCrudSessionInterface<Login>
 
 	Boolean sendValidationEmail( Integer userId );
 
-	public Boolean add( Person person, String password );
+	public Login add( Person person, String password );
 
 	public Login getByToken( String token );
 

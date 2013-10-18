@@ -70,12 +70,12 @@ public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> impleme
 		FileUpload entity = new FileUpload( );
 		Media mediaEntity = this.mediaSession.findByName( media.getName( ) );
 		if ( mediaEntity == null ) {
-			mediaEntity = this.mediaSession.add( media );
 			entity.setStatus( this.statusSession.get( UploadStatus.sucess ) );
 		}
 		else {
 			entity.setStatus( this.statusSession.get( UploadStatus.duplicated ) );
 		}
+		mediaEntity = this.mediaSession.add( media );
 		entity.setMedia( mediaEntity );
 		entity.setCollaborator( this.collaboratorSession.find( auth ) );
 		return this.add( auth, entity );

@@ -27,6 +27,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Toolbarbutton;
 
 import br.com.mcampos.ExcelFile;
+import br.com.mcampos.dto.inep.InepStationSubscriptionResponsableImportDTO;
 import br.com.mcampos.dto.inep.InepSubscriptionImportDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.core.DBPaging;
@@ -211,8 +212,10 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 				}
 			}
 			else {
-				Messagebox.show( "Carga do arquivo " + evt.getMedia( ).getName( ) + " realizada com sucesso",
-						"Carregar Responsáveis pelos Postos Aplicadores", Messagebox.OK, Messagebox.INFORMATION );
+				if ( this.processStationResponsableFile( evt.getMedia( ) ) ) {
+					Messagebox.show( "Carga do arquivo " + evt.getMedia( ).getName( ) + " realizada com sucesso",
+							"Carregar Responsáveis pelos Postos Aplicadores", Messagebox.OK, Messagebox.INFORMATION );
+				}
 			}
 		}
 		catch ( Exception e ) {
@@ -261,6 +264,66 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 			try {
 				this.getSession( ).add( this.getPrincipal( ), dto, events.get( 0 ) );
 				LOGGER.info( "Processing record: " + rowNumber + ". " + dto.getName( ) );
+			}
+			catch ( Exception e ) {
+				LOGGER.error( "Error processing record: " + rowNumber + ". " + dto.getName( ) );
+				this.getSession( ).storeException( e );
+				rejected++;
+			}
+			// subscriptions.add( dto );
+		}
+		// this.getSession( ).add( this.getPrincipal( ), subscriptions, events.get( 0 ) );
+		this.storeUploadFile( media, rowNumber, rejected );
+		return true;
+	}
+
+	private boolean processStationResponsableFile( Media media )
+	{
+		if ( media == null || SysUtils.isEmpty( media.getName( ) ) ) {
+			return false;
+		}
+		ExcelFile excel = new ExcelFile( media );
+		Sheet sheet = excel.getSheetAt( 0 );
+		// List<InepSubscriptionImportDTO> subscriptions = new ArrayList<InepSubscriptionImportDTO>( );
+		List<InepEvent> events = this.getSelectedRecords( );
+
+		Iterator<Row> rowIterator = sheet.iterator( );
+		int rowNumber = 0, rejected = 0;
+		while ( rowIterator.hasNext( ) ) {
+			Row row = rowIterator.next( );
+			rowNumber++;
+			if ( rowNumber == 1 ) {
+				continue;
+			}
+			Iterator<Cell> cellIterator = row.iterator( );
+			int cellIndex = 0;
+			InepStationSubscriptionResponsableImportDTO dto = new InepStationSubscriptionResponsableImportDTO( );
+			while ( cellIterator.hasNext( ) ) {
+				Cell cell = cellIterator.next( );
+				switch ( cell.getCellType( ) ) {
+				case Cell.CELL_TYPE_BLANK:
+					dto.set( cellIndex++, "" );
+					break;
+				case Cell.CELL_TYPE_STRING:
+					dto.set( cellIndex++, cell.getStringCellValue( ) );
+					break;
+				case Cell.CELL_TYPE_NUMERIC:
+					dto.set( cellIndex++, "" + cell.getNumericCellValue( ) );
+					break;
+				}
+			}
+			try {
+				if ( !SysUtils.isEmpty( dto.getStationId( ) ) && !SysUtils.isEmpty( dto.getEmail( ) ) ) {
+					LOGGER.info( "Processando{ID:" + dto.getStationId( ) + "; Name: " + dto.getName( ) + "; Address: " + dto.getAddress( ) + "; email: "
+							+ dto.getEmail( ) + "}" );
+					this.getSession( ).add( this.getPrincipal( ), dto, events.get( 0 ) );
+					LOGGER.info( "Processing record: " + rowNumber + ". " + dto.getName( ) );
+				}
+				else {
+					LOGGER.error( "Rejecting{ID:" + dto.getStationId( ) + "; Name: " + dto.getName( ) + "; Address: " + dto.getAddress( ) + "; email: "
+							+ dto.getEmail( ) + "}" );
+					rejected++;
+				}
 			}
 			catch ( Exception e ) {
 				LOGGER.error( "Error processing record: " + rowNumber + ". " + dto.getName( ) );

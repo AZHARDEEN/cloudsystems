@@ -1,6 +1,7 @@
 package br.com.mcampos.ejb.media;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -8,6 +9,7 @@ import javax.ejb.Stateless;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.jpa.system.Media;
+import br.com.mcampos.sysutils.SysUtils;
 
 /**
  * Session Bean implementation class MediaSessionBean
@@ -63,8 +65,8 @@ public class MediaSessionBean extends SimpleSessionBean<Media> implements MediaS
 	@Override
 	public Media findByName( String name )
 	{
-		Media media = this.getByNamedQuery( Media.getByName, name );
-		return media;
+		List<Media> medias = this.findByNamedQuery( Media.getByName, name );
+		return SysUtils.isEmpty( medias ) ? null : medias.get( 0 );
 	}
 
 	@Override

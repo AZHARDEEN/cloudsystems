@@ -27,6 +27,7 @@ import br.com.mcampos.jpa.security.Menu;
 import br.com.mcampos.jpa.user.Collaborator;
 import br.com.mcampos.jpa.user.CollaboratorPK;
 import br.com.mcampos.jpa.user.CollaboratorType;
+import br.com.mcampos.jpa.user.CollaboratorTypePK;
 import br.com.mcampos.jpa.user.Company;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -95,6 +96,12 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 			c.getPerson( ).getContacts( ).size( );
 		}
 		return c;
+	}
+
+	@Override
+	public Collaborator get( Company c, Login l )
+	{
+		return this.getByNamedQuery( Collaborator.hasCollaborator, c, l.getPerson( ) );
 	}
 
 	@Override
@@ -229,7 +236,8 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 		Collaborator c = new Collaborator( );
 		c.setPerson( login.getPerson( ) );
 		c.setCompany( this.companySession.get( companyId ) );
-		c.setCollaboratorType( this.getEntityManager( ).find( CollaboratorType.class, 2 ) );
+
+		c.setCollaboratorType( this.getEntityManager( ).find( CollaboratorType.class, new CollaboratorTypePK( companyId, 1 ) ) );
 		c.setCpsIdIn( 5 );
 		c.setFromDate( new Date( ) );
 		return this.merge( c );

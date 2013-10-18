@@ -336,33 +336,31 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	}
 
 	@Override
-	public Boolean add( Person person, String password )
+	public Login add( Person person, String password )
 	{
 		Login login;
 
 		if ( person == null || password == null ) {
-			return false;
+			throw new InvalidParameterException( );
 		}
 		login = this.get( person.getId( ) );
-		if ( login != null ) {
-			return false;
+		if ( login == null ) {
+			login = new Login( );
+			login.setPerson( person );
+			this.setPasswordExpirationDate( login );
 		}
-		login = new Login( );
 		/*
 		 * Nunca esquecer de vincular os objetos. Quando um objeto é instanciado
 		 * ele mantem suas características. Neste exemplo: foi instanciado uma
 		 * pessoa, que neste momento não possuia login. Ainda que o login seja
 		 * inserido no banco de dados, fica a situação inicial - sem login.
 		 */
-		login.setPerson( person );
 		login.setPassword( this.encryptPassword( password ) );
-		login.setToken( RandomStringUtils.random( 8, true, true ) );
-		this.setPasswordExpirationDate( login );
-		login.setStatus( this.statusSession.get( UserStatus.statusEmailNotValidated ) );
+		login.setStatus( this.statusSession.get( UserStatus.statusOk ) );
+		login.setTryCount( 0 );
 		login = this.merge( login );
-
-		this.sendMail( EMail.templateValidationEmail, login );
-		return true;
+		// this.sendMail( EMail.templateValidationEmail, login );
+		return login;
 
 	}
 

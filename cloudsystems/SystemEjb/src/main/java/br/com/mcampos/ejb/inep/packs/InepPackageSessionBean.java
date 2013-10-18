@@ -10,7 +10,11 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.mcampos.dto.core.PrincipalDTO;
+import br.com.mcampos.dto.inep.InepStationSubscriptionResponsableImportDTO;
 import br.com.mcampos.dto.inep.InepSubscriptionImportDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionBean;
@@ -18,8 +22,11 @@ import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.inep.InepStationSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
+import br.com.mcampos.ejb.security.LoginSessionLocal;
+import br.com.mcampos.ejb.security.role.RoleSessionLocal;
 import br.com.mcampos.ejb.user.client.ClientSessionLocal;
 import br.com.mcampos.ejb.user.company.CompanySessionLocal;
+import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 import br.com.mcampos.ejb.user.person.PersonSessionLocal;
 import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.jpa.inep.InepStation;
@@ -27,8 +34,11 @@ import br.com.mcampos.jpa.inep.InepStationPK;
 import br.com.mcampos.jpa.inep.InepSubscription;
 import br.com.mcampos.jpa.inep.InepSubscriptionPK;
 import br.com.mcampos.jpa.inep.InepTask;
+import br.com.mcampos.jpa.security.Login;
+import br.com.mcampos.jpa.security.Role;
 import br.com.mcampos.jpa.system.FileUpload;
 import br.com.mcampos.jpa.user.Client;
+import br.com.mcampos.jpa.user.Collaborator;
 import br.com.mcampos.jpa.user.Company;
 import br.com.mcampos.jpa.user.DocumentType;
 import br.com.mcampos.jpa.user.Person;
@@ -47,12 +57,22 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	 * 
 	 */
 	private static final long serialVersionUID = 4327503286585562526L;
+	private static final Logger LOGGER = LoggerFactory.getLogger( InepPackageSessionBean.class );
 
 	@EJB
 	private InepTaskSessionLocal taskSession;
 
 	@EJB
+	private LoginSessionLocal loginSession;
+
+	@EJB
+	private RoleSessionLocal roleSession;
+
+	@EJB
 	private CompanySessionLocal companySession;
+
+	@EJB
+	private CollaboratorSessionLocal collaboratorSession;
 
 	@EJB
 	private PersonSessionLocal personSession;
@@ -350,4 +370,55 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 		return file;
 	}
 
+	@Override
+	public void add( PrincipalDTO auth, InepStationSubscriptionResponsableImportDTO record, InepEvent event )
+	{
+		List<UserDocument> documents;
+		Person person;
+
+		if ( auth == null || record == null || event == null ) {
+			throw new InvalidParameterException( );
+		}
+
+		LOGGER.info( "Looking for email: " + record.getEmail( ) );
+		documents = this.personSession.searchByEmail( record.getEmail( ) );
+		if ( SysUtils.isEmpty( documents ) ) {
+			LOGGER.info( "There is no person with that email! Creating person: " + record.getName( ) );
+			person = new Person( );
+			person.setName( record.getName( ) );
+			person = this.personSession.add( person );
+			DocumentType type = this.getEntityManager( ).getReference( DocumentType.class, UserDocument.EMAIL );
+			UserDocument document = new UserDocument( record.getEmail( ), type );
+			document.setAdditionalInfo( "Email Importado pelo inep" );
+			person.add( document );
+			this.clientSession.add( auth, person );
+		}
+		else {
+			person = this.personSession.get( documents.get( 0 ).getUser( ).getId( ) );
+		}
+		Client client = this.clientSession.getClient( auth, person );
+		if ( client == null ) {
+			LOGGER.info( "This person is not a client: " + record.getName( ) );
+			this.clientSession.add( auth, person );
+		}
+		Login login = this.loginSession.get( person.getId( ) );
+		if ( login == null ) {
+			LOGGER.info( "This person has no login: " + record.getName( ) );
+			login = this.loginSession.add( person, "987654" );
+		}
+		Collaborator collaborator = this.collaboratorSession.get( client.getCompany( ), login );
+		if ( collaborator == null ) {
+			LOGGER.info( "There is no collaborator for this person: " + record.getName( ) );
+			collaborator = this.collaboratorSession.add( login, auth.getCompanyID( ) );
+		}
+		Role userRole = this.roleSession.get( 4 );
+		Role stationRole = this.roleSession.get( 22 );
+		if ( !collaborator.getRoles( ).contains( userRole ) ) {
+			collaborator.getRoles( ).add( userRole );
+		}
+		if ( !collaborator.getRoles( ).contains( stationRole ) ) {
+			collaborator.getRoles( ).add( stationRole );
+		}
+		LOGGER.info( "Done!!!!" );
+	}
 }
