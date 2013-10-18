@@ -30,7 +30,7 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 	public static final String getByToken = "Login.getByToken";
 
 	@Id
-	@Column( name = "usr_id_in", nullable = false, insertable = false, updatable = false )
+	@Column( name = "usr_id_in", nullable = false, insertable = true, updatable = true, unique = true )
 	private Integer id;
 
 	@Column( name = "lgi_passwd_exp_dt" )
@@ -50,11 +50,9 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 	@JoinColumn( name = "uts_id_in", referencedColumnName = "uts_id_in", insertable = true, updatable = true, nullable = false )
 	private UserStatus status;
 
-	@OneToOne( fetch = FetchType.EAGER, optional = false )
-	@JoinColumn(
-			name = "usr_id_in", nullable = false, referencedColumnName = "usr_id_in", columnDefinition = "Integer",
-			insertable = true, updatable = true, unique = true )
-	protected Person person;
+	@OneToOne( fetch = FetchType.EAGER )
+	@JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", insertable = false, updatable = false )
+	private Person person;
 
 	@Transient
 	private AccessLog lastLogin;
@@ -68,27 +66,27 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 
 	public Date getExpDate( )
 	{
-		return expDate;
+		return this.expDate;
 	}
 
 	public void setExpDate( Date date )
 	{
-		expDate = date;
+		this.expDate = date;
 	}
 
 	public String getPassword( )
 	{
-		return password;
+		return this.password;
 	}
 
 	public void setPassword( String passwd )
 	{
-		password = passwd;
+		this.password = passwd;
 	}
 
 	public String getToken( )
 	{
-		return token;
+		return this.token;
 	}
 
 	public void setToken( String token )
@@ -98,21 +96,21 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 
 	public Integer getTryCount( )
 	{
-		if ( tryCount == null ) {
-			tryCount = 0;
+		if ( this.tryCount == null ) {
+			this.tryCount = 0;
 		}
-		return tryCount;
+		return this.tryCount;
 	}
 
 	public void setTryCount( Integer count )
 	{
-		tryCount = count;
+		this.tryCount = count;
 	}
 
 	@Override
 	public Integer getId( )
 	{
-		return id;
+		return this.id;
 	}
 
 	public void setId( Integer id )
@@ -122,28 +120,28 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 
 	public UserStatus getStatus( )
 	{
-		return status;
+		return this.status;
 	}
 
 	public void setStatus( UserStatus id )
 	{
-		status = id;
+		this.status = id;
 	}
 
 	public void setPerson( Person person )
 	{
 		this.person = person;
-		setId( getPerson( ) != null ? getPerson( ).getId( ) : null );
+		this.setId( this.getPerson( ) != null ? this.getPerson( ).getId( ) : null );
 	}
 
 	public Person getPerson( )
 	{
-		return person;
+		return this.person;
 	}
 
 	public void incrementTryCount( )
 	{
-		tryCount++;
+		this.tryCount++;
 	}
 
 	@Override
@@ -151,15 +149,15 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 	{
 		switch ( field ) {
 		case 0:
-			return getId( ).toString( );
+			return this.getId( ).toString( );
 		case 1:
-			return getStatus( ).getDescription( );
+			return this.getStatus( ).getDescription( );
 		case 2:
-			return SysUtils.formatDate( getExpDate( ), "dd/MM/yyyy" );
+			return SysUtils.formatDate( this.getExpDate( ), "dd/MM/yyyy" );
 		case 3:
-			return SysUtils.formatDate( getLastLogin( ).getLoginDate( ) );
+			return SysUtils.formatDate( this.getLastLogin( ).getLoginDate( ) );
 		case 4:
-			return getPerson( ).getName( );
+			return this.getPerson( ).getName( );
 		default:
 			return "";
 		}
@@ -170,15 +168,15 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 	{
 		switch ( field ) {
 		case 0:
-			return o.getId( ).compareTo( getId( ) );
+			return o.getId( ).compareTo( this.getId( ) );
 		case 1:
-			return o.getStatus( ).getDescription( ).compareTo( getStatus( ).getDescription( ) );
+			return o.getStatus( ).getDescription( ).compareTo( this.getStatus( ).getDescription( ) );
 		case 2:
-			return o.getExpDate( ).compareTo( getExpDate( ) );
+			return o.getExpDate( ).compareTo( this.getExpDate( ) );
 		case 3:
-			return o.getLastLogin( ).getLoginDate( ).compareTo( getLastLogin( ).getLoginDate( ) );
+			return o.getLastLogin( ).getLoginDate( ).compareTo( this.getLastLogin( ).getLoginDate( ) );
 		case 4:
-			return o.getPerson( ).getName( ).compareTo( getPerson( ).getName( ) );
+			return o.getPerson( ).getName( ).compareTo( this.getPerson( ).getName( ) );
 		default:
 			return 0;
 		}
@@ -187,7 +185,7 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 	@Override
 	public int compareTo( Login o )
 	{
-		return o.getId( ).compareTo( getId( ) );
+		return o.getId( ).compareTo( this.getId( ) );
 	}
 
 	public void setLastLogin( AccessLog lastLogin )
@@ -197,18 +195,18 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 
 	public AccessLog getLastLogin( )
 	{
-		return lastLogin;
+		return this.lastLogin;
 	}
 
 	@Override
 	public String toString( )
 	{
-		return getPerson( ).getName( );
+		return this.getPerson( ).getName( );
 	}
 
 	public Login getPersonify( )
 	{
-		return personify;
+		return this.personify;
 	}
 
 	public void setPersonify( Login personify )

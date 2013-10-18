@@ -1,6 +1,7 @@
 package br.com.mcampos.jpa.user;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -178,6 +179,9 @@ public class Collaborator implements Serializable, Comparable<Collaborator>
 
 	public List<Role> getRoles( )
 	{
+		if ( this.roles == null ) {
+			this.roles = new ArrayList<Role>( );
+		}
 		return this.roles;
 	}
 

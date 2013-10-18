@@ -49,19 +49,19 @@ public class RegisterSessionBean extends BaseSessionBean implements RegisterSess
 		if ( dto == null ) {
 			return false;
 		}
-		if ( hasLogin( dto ) ) {
+		if ( this.hasLogin( dto ) ) {
 			/*
 			 * Neste ponto nao deveria haver usuário com o documento (email ou
 			 * cpf)
 			 */
 			return false;
 		}
-		Person person = getPersonByDocument( dto );
+		Person person = this.getPersonByDocument( dto );
 		boolean emailFound = false, cpfFound = false;
 		if ( person == null ) {
 			person = new Person( );
 			person.setName( dto.getName( ) );
-			person = personSession.merge( person );
+			person = this.personSession.merge( person );
 			// this.userDocumentSession.merge( person.getDocuments( ) );
 		}
 		else {
@@ -80,19 +80,19 @@ public class RegisterSessionBean extends BaseSessionBean implements RegisterSess
 		}
 		UserDocument document;
 		if ( emailFound == false ) {
-			document = new UserDocument( dto.getEmail( ), documentTypeSession.get( ( UserDocument.EMAIL ) ) );
+			document = new UserDocument( dto.getEmail( ), this.documentTypeSession.get( ( UserDocument.EMAIL ) ) );
 			person.add( document );
 		}
 		if ( cpfFound == false ) {
-			document = new UserDocument( dto.getDocument( ), documentTypeSession.get( ( UserDocument.CPF ) ) );
+			document = new UserDocument( dto.getDocument( ), this.documentTypeSession.get( ( UserDocument.CPF ) ) );
 			person.add( document );
 		}
-		return loginSession.add( person, dto.getPassword( ) );
+		return this.loginSession.add( person, dto.getPassword( ) ) != null;
 	}
 
 	private UserDocumentSessionLocal getUserDocumentSession( )
 	{
-		return userDocumentSession;
+		return this.userDocumentSession;
 	}
 
 	@Override
@@ -102,12 +102,12 @@ public class RegisterSessionBean extends BaseSessionBean implements RegisterSess
 			return false;
 		}
 
-		Users userA = getUserDocumentSession( ).getUserByDocument( dto.getEmail( ) );
-		if ( userA != null && getLoginSession( ).get( userA.getId( ) ) != null ) {
+		Users userA = this.getUserDocumentSession( ).getUserByDocument( dto.getEmail( ) );
+		if ( userA != null && this.getLoginSession( ).get( userA.getId( ) ) != null ) {
 			return true;
 		}
-		Users userB = getUserDocumentSession( ).getUserByDocument( CPF.removeMask( dto.getDocument( ) ) );
-		if ( userB != null && getLoginSession( ).get( userA.getId( ) ) != null ) {
+		Users userB = this.getUserDocumentSession( ).getUserByDocument( CPF.removeMask( dto.getDocument( ) ) );
+		if ( userB != null && this.getLoginSession( ).get( userA.getId( ) ) != null ) {
 			return true;
 		}
 		if ( userA != null && userB != null ) {
@@ -123,8 +123,8 @@ public class RegisterSessionBean extends BaseSessionBean implements RegisterSess
 
 	private Person getPersonByDocument( RegisterDTO dto ) throws Exception
 	{
-		Users userA = getUserDocumentSession( ).getUserByDocument( dto.getEmail( ) );
-		Users userB = getUserDocumentSession( ).getUserByDocument( CPF.removeMask( dto.getDocument( ) ) );
+		Users userA = this.getUserDocumentSession( ).getUserByDocument( dto.getEmail( ) );
+		Users userB = this.getUserDocumentSession( ).getUserByDocument( CPF.removeMask( dto.getDocument( ) ) );
 
 		if ( userA != null && userB != null ) {
 			/**
@@ -145,12 +145,12 @@ public class RegisterSessionBean extends BaseSessionBean implements RegisterSess
 
 	private LoginSessionLocal getLoginSession( )
 	{
-		return loginSession;
+		return this.loginSession;
 	}
 
 	@Override
 	public Boolean validate( String token, String password ) throws Exception
 	{
-		return loginSession.validateToken( token, password );
+		return this.loginSession.validateToken( token, password );
 	}
 }
