@@ -106,55 +106,42 @@
 									<hlayout valign="Center">
 										<radio label="5" radiogroup="comprehension" value="5" />
 										<separator width="10px" />
-										Demonstra autonomia e desenvoltura, contribuindo bastante para o desenvolvimento da interação. Apresenta fluência e
-										variedade ampla de vocabulário e de estruturas, com raras inadequações. Sua pronúncia é adequada e demonstra compreensão
-										do fluxo natural da fala.
-										<separator width="10px" />
+										<label id="lbl5" multiline="true"/>
 									</hlayout>
 								</row>
 								<row>
 									<hlayout valign="Center">
 										<radio label="4" radiogroup="comprehension" value="4" />
 										<separator width="10px" />
-										Demonstra autonomia e desenvoltura, contribuindo para o desenvolvimento da interação. Apresenta fluência e variedade ampla
-										de vocabulário e de estruturas, com inadequações ocasionais na comunicação. Sua pronúncia pode apresentar algumas
-										inadequações. Demonstra compreensão do fluxo natural da fala.
+										<label id="lbl4" multiline="true"/>
 									</hlayout>
 								</row>
 								<row>
 									<hlayout valign="Center">
 										<radio label="3" radiogroup="comprehension" value="3" />
 										<separator width="10px" />
-										Contribui para o desenvolvimento da interação. Apresenta fluência, mas também algumas inadequações de vocabulário,
-										estruturas e/ou pronúncia. Demonstra compreensão do fluxo natural da fala.
+										<label id="lbl3" multiline="true"/>
 									</hlayout>
 								</row>
 								<row>
 									<hlayout valign="Center" hflex="1">
 										<radio label="2" radiogroup="comprehension" value="2" />
 										<separator width="10px" />
-										Contribui para o desenvolvimento da interação. Apresenta poucas hesitações, com algumas interrupções no fluxo da conversa.
-										Apresenta inadequações de vocabulário, estruturas e/ou pronúncia. Pode demonstrar alguns problemas de compreensão do fluxo
-										da fala.
+										<label id="lbl2" multiline="true"/>
 									</hlayout>
 								</row>
 								<row>
 									<hlayout valign="Center">
 										<radio label="1" radiogroup="comprehension" value="1" />
 										<separator width="10px" />
-										Contribui pouco para o desenvolvimento da interação. Apresenta muitas pausas e hesitações, ocasionando interrupções no uxo
-										da conversa, ou apresenta alternância no uxo de fala entre língua portuguesa e outra língua. Apresenta muitas limitações
-										e/ou inadequações de vocabulário, estruturas e/ou pronúncia. Demonstra problemas de compreensão do fluxo natural da fala.
+										<label id="lbl1" multiline="true"/>
 									</hlayout>
 								</row>
 								<row>
 									<hlayout valign="Center">
 										<radio label="0" radiogroup="comprehension" value="0" />
 										<separator width="10px" />
-										Raramente contribui para o desenvolvimento da interação. Apresenta pausas e hesitações muito frequentes que interrompem o
-										fluxo da conversa, ou apresenta fluxo de fala em outra língua. Apresenta muitas limitações e/ou inadequações de
-										vocabulário, estruturas e/ou pronúncia, que comprometem a comunicação. Demonstra problemas de compreensão de fala
-										simplificada e pausada.
+										<label id="lbl0" multiline="true"/>
 									</hlayout>
 								</row>
 							</rows>
