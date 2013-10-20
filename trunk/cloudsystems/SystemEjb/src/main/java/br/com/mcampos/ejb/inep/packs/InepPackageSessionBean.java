@@ -31,6 +31,8 @@ import br.com.mcampos.ejb.user.person.PersonSessionLocal;
 import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.jpa.inep.InepStation;
 import br.com.mcampos.jpa.inep.InepStationPK;
+import br.com.mcampos.jpa.inep.InepStationReponsable;
+import br.com.mcampos.jpa.inep.InepStationReponsablePK;
 import br.com.mcampos.jpa.inep.InepSubscription;
 import br.com.mcampos.jpa.inep.InepSubscriptionPK;
 import br.com.mcampos.jpa.inep.InepTask;
@@ -418,6 +420,20 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 		}
 		if ( !collaborator.getRoles( ).contains( stationRole ) ) {
 			collaborator.getRoles( ).add( stationRole );
+		}
+
+		Client station = this.clientSession.get( auth, record.getStationId( ) );
+		if ( station != null ) {
+			InepStationReponsablePK r = new InepStationReponsablePK( event, station, collaborator );
+			InepStationReponsable existing = this.getEntityManager( ).find( InepStationReponsable.class, r );
+			if ( existing == null ) {
+				existing = new InepStationReponsable( );
+				existing.setId( r );
+				this.getEntityManager( ).persist( existing );
+			}
+		}
+		else {
+			LOGGER.error( "STATION not found. Station with internal id " + record.getStationId( ) + " not found" );
 		}
 		LOGGER.info( "Done!!!!" );
 	}

@@ -308,7 +308,7 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 					dto.set( cellIndex++, cell.getStringCellValue( ) );
 					break;
 				case Cell.CELL_TYPE_NUMERIC:
-					dto.set( cellIndex++, "" + cell.getNumericCellValue( ) );
+					dto.set( cellIndex++, "" + (int) cell.getNumericCellValue( ) );
 					break;
 				}
 			}

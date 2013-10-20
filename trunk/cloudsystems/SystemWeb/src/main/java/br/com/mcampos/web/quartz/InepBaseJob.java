@@ -27,13 +27,13 @@ import br.com.mcampos.sysutils.ServiceLocator;
 public abstract class InepBaseJob implements Serializable, Job
 {
 	private static final long serialVersionUID = 9162031955846573614L;
-	private static final Logger logger = LoggerFactory.getLogger( InepBaseJob.class );
-	private static final String path = "/var/local/jboss/loader/inep/written/";
+	private static final Logger LOGGER = LoggerFactory.getLogger( InepBaseJob.class );
+	private static final String PATH = "/var/local/jboss/loader/inep/written/";
 	private transient InepLoaderSession session = null;
 
 	protected static String getPath( )
 	{
-		return path;
+		return PATH;
 	}
 
 	protected InepLoaderSession getSession( )
@@ -66,7 +66,7 @@ public abstract class InepBaseJob implements Serializable, Job
 			}
 		}
 		catch ( SchedulerException e ) {
-			logger.error( "amIRunning Error", e );
+			LOGGER.error( "amIRunning Error", e );
 		}
 		return false;
 	}
@@ -102,7 +102,7 @@ public abstract class InepBaseJob implements Serializable, Job
 	protected void moveFile( String filename, String directory )
 	{
 		try {
-			logger.info( "Moving " + filename + " to " + directory );
+			LOGGER.info( "Moving " + filename + " to " + directory );
 			File file = new File( filename );
 			if ( file.exists( ) == false ) {
 				return;
@@ -114,13 +114,13 @@ public abstract class InepBaseJob implements Serializable, Job
 				}
 			}
 			if ( file.renameTo( new File( dest, file.getName( ) ) ) == false ) {
-				logger.error( "Error moving file " + filename + " to " + directory );
+				LOGGER.error( "Error moving file " + filename + " to " + directory );
 			}
 		}
 		catch ( Exception e )
 		{
-			logger.error( "Error moving file " + filename + " to directory:  " + directory );
-			logger.error( e.getMessage( ) );
+			LOGGER.error( "Error moving file " + filename + " to directory:  " + directory );
+			LOGGER.error( e.getMessage( ) );
 		}
 	}
 
