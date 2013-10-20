@@ -4,8 +4,11 @@ import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Window;
+
+import br.com.mcampos.dto.inep.StationGradeDTO;
 
 public class InterviewerController extends BaseStationController
 {
@@ -126,6 +129,30 @@ public class InterviewerController extends BaseStationController
 	{
 		super.doAfterCompose( comp );
 		this.setLabels( );
+	}
+
+	@Override
+	protected void showGradeIfexists( StationGradeDTO s )
+	{
+		if ( s != null ) {
+			if ( s.getInterviewerGrade( ) != null ) {
+				for ( Radio item : this.grade.getItems( ) ) {
+					int iGrade = Integer.parseInt( ( (String) item.getValue( ) ) );
+
+					if ( s.getInterviewerGrade( ).equals( iGrade ) ) {
+						item.setSelected( true );
+						break;
+					}
+				}
+			}
+			if ( s.getElements( ) != null ) {
+				for ( Integer item : s.getElements( ) ) {
+					if ( item != null ) {
+						this.elements[ item - 1 ].setChecked( true );
+					}
+				}
+			}
+		}
 	}
 
 }

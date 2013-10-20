@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
+import br.com.mcampos.dto.inep.StationGradeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.core.BaseSessionBean;
 import br.com.mcampos.ejb.inep.media.InepMediaSessionLocal;
@@ -206,4 +207,61 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		}
 	}
 
+	@Override
+	public StationGradeDTO getStationGrade( PrincipalDTO auth, InepSubscription subscription )
+	{
+		StationGradeDTO dto = new StationGradeDTO( );
+
+		List<InepObserverGrade> observerGrades = this.getObserverGrades( subscription );
+		if ( !SysUtils.isEmpty( observerGrades ) ) {
+			int nIndex = 0;
+			for ( InepObserverGrade item : observerGrades ) {
+				dto.getObserverGrade( )[ nIndex++ ] = item.getGrade( );
+			}
+		}
+		InepOralTest oralTest = this.oralTestSession.get( subscription );
+		if ( oralTest != null && oralTest.getInterviewGrade( ) != null ) {
+			dto.setInterviewerGrade( oralTest.getInterviewGrade( ).intValue( ) );
+		}
+		List<InepElement> elements = this.getElements( subscription );
+		if ( !SysUtils.isEmpty( elements ) ) {
+			int nIndex = 0;
+			for ( InepElement item : elements ) {
+				dto.getElements( )[ nIndex++ ] = item.getId( ).getId( );
+			}
+		}
+		return dto;
+	}
+
+	@SuppressWarnings( "unchecked" )
+	private List<InepObserverGrade> getObserverGrades( InepSubscription subscription )
+	{
+		List<InepObserverGrade> observerGrades = null;
+
+		try {
+			Query query = this.getEntityManager( ).createQuery( "select o from InepObserverGrade o where o.subscription = ?1 order by o.id " );
+			query.setParameter( 1, subscription );
+			observerGrades = query.getResultList( );
+			return observerGrades;
+		}
+		catch ( Exception e ) {
+			return observerGrades;
+		}
+	}
+
+	@SuppressWarnings( "unchecked" )
+	private List<InepElement> getElements( InepSubscription subscription )
+	{
+		List<InepElement> items = null;
+
+		try {
+			Query query = this.getEntityManager( ).createQuery( "select o from InepElement o where o.subscription = ?1 order by o.id " );
+			query.setParameter( 1, subscription );
+			items = query.getResultList( );
+			return items;
+		}
+		catch ( Exception e ) {
+			return items;
+		}
+	}
 }

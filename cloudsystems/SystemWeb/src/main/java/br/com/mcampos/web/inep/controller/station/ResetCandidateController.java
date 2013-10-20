@@ -5,6 +5,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.annotation.Listen;
 
+import br.com.mcampos.dto.inep.StationGradeDTO;
 import br.com.mcampos.jpa.inep.InepSubscription;
 
 public class ResetCandidateController extends BaseStationController
@@ -74,6 +75,11 @@ public class ResetCandidateController extends BaseStationController
 	{
 		this.getSession( ).setMissing( this.getPrincipal( ), this.getCurrentSubscription( ) );
 		this.cleanUp( );
+	}
+
+	@Override
+	protected void showGradeIfexists( StationGradeDTO grade )
+	{
 	}
 
 }
