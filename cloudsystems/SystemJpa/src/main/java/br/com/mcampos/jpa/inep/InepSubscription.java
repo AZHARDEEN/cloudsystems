@@ -27,13 +27,17 @@ import br.com.mcampos.jpa.user.Person;
 		@NamedQuery( name = InepSubscription.getAllEventSubs, query = "select o from InepSubscription o where o.event = ?1" ),
 		@NamedQuery(
 				name = InepSubscription.getAllEventSubsById,
-				query = "select o from InepSubscription o where o.event = ?1 and o.id.id like ?2" )
+				query = "select o from InepSubscription o where o.event = ?1 and o.id.id like ?2" ),
+		@NamedQuery(
+				name = InepSubscription.getAllEventSubsByIdAndStation,
+				query = "select o from InepSubscription o where o.event = ?1 and o.id.id like ?2 and o.stationId in ( ?3 )" )
 } )
 public class InepSubscription extends BaseInepEvent implements Serializable, Comparable<InepSubscription>
 {
 	private static final long serialVersionUID = 1L;
 	public static final String getAllEventSubs = "InepSubscription.getAllEventSubs";
 	public static final String getAllEventSubsById = "InepSubscription.getAllEventSubsById";
+	public static final String getAllEventSubsByIdAndStation = "InepSubscription.getAllEventSubsByIdAndStation";
 
 	@EmbeddedId
 	private InepSubscriptionPK id;
@@ -77,7 +81,7 @@ public class InepSubscription extends BaseInepEvent implements Serializable, Com
 	@Override
 	public InepSubscriptionPK getId( )
 	{
-		if( this.id == null ) {
+		if ( this.id == null ) {
 			this.id = new InepSubscriptionPK( );
 		}
 		return this.id;
@@ -96,7 +100,7 @@ public class InepSubscription extends BaseInepEvent implements Serializable, Com
 
 	public int compareTo( InepSubscription object, Integer field )
 	{
-		switch( field ) {
+		switch ( field ) {
 		case 0:
 			return this.getId( ).getId( ).compareTo( object.getId( ).getId( ) );
 		default:
@@ -107,12 +111,12 @@ public class InepSubscription extends BaseInepEvent implements Serializable, Com
 	@Override
 	public boolean equals( Object obj )
 	{
-		return this.getId( ).equals( ((InepSubscription) obj).getId( ) );
+		return this.getId( ).equals( ( (InepSubscription) obj ).getId( ) );
 	}
 
 	public String getField( Integer field )
 	{
-		switch( field ) {
+		switch ( field ) {
 		case 0:
 			return this.getId( ).getId( ).toString( );
 		default:
@@ -152,7 +156,7 @@ public class InepSubscription extends BaseInepEvent implements Serializable, Com
 
 	public List<InepMedia> getMedias( )
 	{
-		if( this.medias == null ) {
+		if ( this.medias == null ) {
 			this.medias = new ArrayList<InepMedia>( );
 		}
 		return this.medias;
@@ -165,8 +169,8 @@ public class InepSubscription extends BaseInepEvent implements Serializable, Com
 
 	public void add( InepMedia media )
 	{
-		if( media != null ) {
-			if( this.getMedias( ).contains( media ) == false ) {
+		if ( media != null ) {
+			if ( this.getMedias( ).contains( media ) == false ) {
 				this.getMedias( ).add( media );
 				media.setSubscription( this );
 			}

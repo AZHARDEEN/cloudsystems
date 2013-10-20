@@ -214,4 +214,10 @@ public class Login implements BasicEntityRenderer<Login>, Comparable<Login>
 		this.personify = personify;
 	}
 
+	@Transient
+	public boolean isExpired( )
+	{
+		return this.getExpDate( ).compareTo( new Date( ) ) < 0;
+	}
+
 }

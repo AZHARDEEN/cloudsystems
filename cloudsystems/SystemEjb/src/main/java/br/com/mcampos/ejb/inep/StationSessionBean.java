@@ -2,6 +2,8 @@ package br.com.mcampos.ejb.inep;
 
 import java.math.BigDecimal;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -18,12 +20,15 @@ import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
 import br.com.mcampos.ejb.system.fileupload.FileUploadSessionLocal;
+import br.com.mcampos.ejb.user.company.collaborator.CollaboratorSessionLocal;
 import br.com.mcampos.jpa.inep.InepElement;
 import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.jpa.inep.InepMedia;
 import br.com.mcampos.jpa.inep.InepObserverGrade;
 import br.com.mcampos.jpa.inep.InepOralTest;
+import br.com.mcampos.jpa.inep.InepStationReponsable;
 import br.com.mcampos.jpa.inep.InepSubscription;
+import br.com.mcampos.jpa.user.Collaborator;
 import br.com.mcampos.sysutils.SysUtils;
 
 /**
@@ -50,6 +55,9 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 
 	@EJB
 	private InepOralTestSessionLocal oralTestSession;
+
+	@EJB
+	private CollaboratorSessionLocal collaboratorSession;
 
 	@EJB
 	private MediaSessionBeanLocal mediaSession;
@@ -80,7 +88,37 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	@Override
 	public List<InepSubscription> getSubscriptions( PrincipalDTO auth, InepEvent evt, String part )
 	{
-		return this.subscriptionSession.getAll( auth, evt, part );
+		Collaborator collaborator = this.collaboratorSession.find( auth );
+		if ( collaborator == null ) {
+			throw new InvalidParameterException( "Authorization error" );
+		}
+		List<InepStationReponsable> stations = this.getStations( collaborator, evt );
+		if ( SysUtils.isEmpty( stations ) ) {
+			return this.subscriptionSession.getAll( auth, evt, part );
+		}
+		else {
+			List<Integer> ids = new ArrayList<Integer>( stations.size( ) );
+			for ( InepStationReponsable item : stations ) {
+				ids.add( item.getStation( ).getId( ).getSequence( ) );
+			}
+			return this.subscriptionSession.getAll( auth, evt, part, ids );
+		}
+	}
+
+	@SuppressWarnings( "unchecked" )
+	private List<InepStationReponsable> getStations( Collaborator collaborator, InepEvent event )
+	{
+		List<InepStationReponsable> stations = Collections.emptyList( );
+		try {
+			Query query = this.getEntityManager( ).createNamedQuery( InepStationReponsable.GET_ALL_FROM_COLLABORATOR );
+			query.setParameter( 1, collaborator );
+			query.setParameter( 2, event );
+			stations = query.getResultList( );
+		}
+		catch ( Exception e ) {
+			this.storeException( e );
+		}
+		return stations;
 	}
 
 	@Override

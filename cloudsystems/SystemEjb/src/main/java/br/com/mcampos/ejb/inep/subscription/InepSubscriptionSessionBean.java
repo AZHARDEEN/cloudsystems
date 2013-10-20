@@ -62,11 +62,8 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 		return this.getEventSession( ).getAll( auth );
 	}
 
-	@Override
-	public List<InepSubscription> getAll( PrincipalDTO auth, InepEvent event, String subs )
+	private String treatLikeArgument( String subs )
 	{
-		List<InepSubscription> list = Collections.emptyList( );
-
 		subs = subs.replaceAll( "\\*", "%" );
 		subs = subs.replaceAll( "\\?", "_" );
 		int nIndex;
@@ -77,10 +74,32 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 		if ( nIndex < 0 ) {
 			subs = "%" + subs + "%";
 		}
+		return subs;
+	}
+
+	@Override
+	public List<InepSubscription> getAll( PrincipalDTO auth, InepEvent event, String subs )
+	{
+		List<InepSubscription> list = Collections.emptyList( );
+
+		subs = this.treatLikeArgument( subs );
 		/*
 		 * TODO: verificar se o usuário logado no sistena não está vinculado a um posto aplicador
 		 */
 		list = this.findByNamedQuery( InepSubscription.getAllEventSubsById, event, subs );
+		return list;
+	}
+
+	@Override
+	public List<InepSubscription> getAll( PrincipalDTO auth, InepEvent event, String subs, List<Integer> stations )
+	{
+		List<InepSubscription> list = Collections.emptyList( );
+
+		subs = this.treatLikeArgument( subs );
+		/*
+		 * TODO: verificar se o usuário logado no sistena não está vinculado a um posto aplicador
+		 */
+		list = this.findByNamedQuery( InepSubscription.getAllEventSubsByIdAndStation, event, subs, stations );
 		return list;
 	}
 
@@ -143,4 +162,5 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 			}
 		}
 	}
+
 }
