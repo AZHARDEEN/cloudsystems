@@ -2,7 +2,10 @@ package br.com.mcampos.web.inep.controller.station;
 
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Radio;
 import org.zkoss.zul.Radiogroup;
+
+import br.com.mcampos.dto.inep.StationGradeDTO;
 
 public class ObserverController extends BaseStationController
 {
@@ -60,4 +63,24 @@ public class ObserverController extends BaseStationController
 		return true;
 	}
 
+	@Override
+	protected void showGradeIfexists( StationGradeDTO grade )
+	{
+		if ( grade == null || grade.getObserverGrade( ) == null ) {
+			return;
+		}
+
+		int nIndex = 0;
+		for ( Integer item : grade.getObserverGrade( ) ) {
+			if ( item != null ) {
+				for ( Radio r : this.grades[ nIndex ].getItems( ) ) {
+					if ( item.equals( Integer.parseInt( (String) r.getValue( ) ) ) ) {
+						r.setSelected( true );
+						break;
+					}
+				}
+			}
+			nIndex++;
+		}
+	}
 }

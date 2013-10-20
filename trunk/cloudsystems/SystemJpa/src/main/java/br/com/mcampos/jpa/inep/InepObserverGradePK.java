@@ -16,20 +16,20 @@ public class InepObserverGradePK extends BaseInepSubscriptionPK implements Seria
 	private static final long serialVersionUID = 1L;
 
 	@Column( name = "iog_id_in" )
-	private Integer iogIdIn;
+	private Integer id;
 
 	public InepObserverGradePK( )
 	{
 	}
 
-	public Integer getIogIdIn( )
+	public Integer getId( )
 	{
-		return this.iogIdIn;
+		return this.id;
 	}
 
-	public void setIogIdIn( Integer iogIdIn )
+	public void setId( Integer iogIdIn )
 	{
-		this.iogIdIn = iogIdIn;
+		this.id = iogIdIn;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class InepObserverGradePK extends BaseInepSubscriptionPK implements Seria
 			return false;
 		}
 		InepObserverGradePK castOther = (InepObserverGradePK) other;
-		return super.equals( other ) && this.iogIdIn.equals( castOther.iogIdIn );
+		return super.equals( other ) && this.id.equals( castOther.id );
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class InepObserverGradePK extends BaseInepSubscriptionPK implements Seria
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + super.hashCode( );
-		hash = hash * prime + this.iogIdIn.hashCode( );
+		hash = hash * prime + this.id.hashCode( );
 
 		return hash;
 	}

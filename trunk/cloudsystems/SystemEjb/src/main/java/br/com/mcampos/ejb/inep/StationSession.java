@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
+import br.com.mcampos.dto.inep.StationGradeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.core.BaseSessionInterface;
 import br.com.mcampos.jpa.inep.InepEvent;
@@ -38,5 +39,7 @@ public interface StationSession extends BaseSessionInterface
 	void reset( PrincipalDTO auth, InepSubscription subscription );
 
 	void setMissing( PrincipalDTO auth, InepSubscription subscription );
+
+	StationGradeDTO getStationGrade( PrincipalDTO auth, InepSubscription subscription );
 
 }

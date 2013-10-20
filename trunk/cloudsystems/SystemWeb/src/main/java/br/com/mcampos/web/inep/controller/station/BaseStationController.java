@@ -17,6 +17,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Window;
 
+import br.com.mcampos.dto.inep.StationGradeDTO;
 import br.com.mcampos.ejb.inep.StationSession;
 import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.jpa.inep.InepSubscription;
@@ -32,6 +33,8 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 	protected abstract boolean validate( );
 
 	protected abstract void proceed( );
+
+	protected abstract void showGradeIfexists( StationGradeDTO grade );
 
 	@Wire
 	private Bandbox subscription;
@@ -76,13 +79,19 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 		}
 	}
 
-	private void update( )
+	@Listen( "onClick = #cmdCancel" )
+	public void onCancel( )
 	{
-		this.proceed( );
 		this.cleanUp( );
 		this.subscription.setValue( "" );
 		this.divData.setVisible( false );
 		this.subscription.setFocus( true );
+	}
+
+	private void update( )
+	{
+		this.proceed( );
+		this.onCancel( );
 	}
 
 	@Override
@@ -172,6 +181,10 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 			this.candidate.setValue( s.getPerson( ).getName( ) );
 			this.citizenship.setValue( s.getCitizenship( ) );
 			this.needs.setValue( s.getSpecialNeeds( ) );
+			StationGradeDTO grade = this.getSession( ).getStationGrade( this.getPrincipal( ), s );
+			if ( grade != null ) {
+				this.showGradeIfexists( grade );
+			}
 		}
 	}
 

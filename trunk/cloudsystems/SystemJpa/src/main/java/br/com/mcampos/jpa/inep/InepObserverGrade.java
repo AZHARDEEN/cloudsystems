@@ -32,7 +32,7 @@ public class InepObserverGrade extends BaseInepSubscription implements Serializa
 	public InepObserverGrade( InepSubscription sub, int index, int grade )
 	{
 		super( sub );
-		this.getId( ).setIogIdIn( index );
+		this.getId( ).setId( index );
 		this.setGrade( grade );
 	}
 

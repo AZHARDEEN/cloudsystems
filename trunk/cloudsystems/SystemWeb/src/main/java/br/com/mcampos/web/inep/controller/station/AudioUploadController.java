@@ -13,6 +13,7 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zul.Messagebox;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
+import br.com.mcampos.dto.inep.StationGradeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.jpa.inep.InepMedia;
 import br.com.mcampos.jpa.inep.InepSubscription;
@@ -119,5 +120,11 @@ public class AudioUploadController extends BaseStationController
 		dto.setPath( file.getPath( ) );
 		this.getSession( ).storeUploadInformation( auth, subscription, dto );
 		buffer = null;
+	}
+
+	@Override
+	protected void showGradeIfexists( StationGradeDTO grade )
+	{
+
 	}
 }
