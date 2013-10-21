@@ -61,16 +61,16 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 	@Listen( "onClick=#cmdSubmit" )
 	public void onOK( Event evt )
 	{
-		Listitem item = getListbox( ).getSelectedItem( );
+		Listitem item = this.getListbox( ).getSelectedItem( );
 		if ( item != null ) {
 			ReportItem r = (ReportItem) item.getValue( );
-			if ( getCmbFormat( ) != null && getCmbFormat( ).getSelectedItem( ) != null ) {
-				String value = (String) getCmbFormat( ).getSelectedItem( ).getValue( );
+			if ( this.getCmbFormat( ) != null && this.getCmbFormat( ).getSelectedItem( ) != null ) {
+				String value = (String) this.getCmbFormat( ).getSelectedItem( ).getValue( );
 				r.setReportFormat( Integer.parseInt( value ) );
-				getSession( ).setProperty( getPrincipal( ), defaultReportFormat, value );
+				this.getSession( ).setProperty( this.getPrincipal( ), defaultReportFormat, value );
 				try {
-					getListbox( ).setSelectedItem( null );
-					doReport( r );
+					this.getListbox( ).setSelectedItem( null );
+					this.doReport( r );
 				}
 				catch ( JRException e ) {
 					// TODO Auto-generated catch block
@@ -86,13 +86,13 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
-		unloadMe( );
+		this.unloadMe( );
 	}
 
 	@Listen( "onSelect=#listReport" )
 	public void onSelect( Event evt )
 	{
-		onOK( evt );
+		this.onOK( evt );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -100,12 +100,12 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 
 	public Combobox getCmbFormat( )
 	{
-		return cmbFormat;
+		return this.cmbFormat;
 	}
 
 	public Listbox getListbox( )
 	{
-		return listbox;
+		return this.listbox;
 	}
 
 	private void doReport( ReportItem item ) throws JRException
@@ -121,26 +121,34 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		if ( getListbox( ) != null ) {
-			listbox.setItemRenderer( new ReportListRenderer( ) );
+		if ( this.getListbox( ) != null ) {
+			this.listbox.setItemRenderer( new ReportListRenderer( ) );
 		}
-		if ( getCmbFormat( ) != null && getCmbFormat( ).getItemCount( ) > 0 ) {
-			LoginProperty p = getSession( ).getProperty( getPrincipal( ), defaultReportFormat );
+		if ( this.getCmbFormat( ) != null && this.getCmbFormat( ).getItemCount( ) > 0 ) {
+			LoginProperty p = this.getSession( ).getProperty( this.getPrincipal( ), defaultReportFormat );
 			if ( p != null && SysUtils.isEmpty( p.getValue( ) ) == false ) {
-				ComboboxUtils.find( getCmbFormat( ), p.getValue( ) );
+				ComboboxUtils.find( this.getCmbFormat( ), p.getValue( ) );
 			}
 			else {
-				getCmbFormat( ).setSelectedIndex( 0 );
+				this.getCmbFormat( ).setSelectedIndex( 0 );
 			}
 		}
-		loadCombobox( );
-		if ( getRevisor( ) == null ) {
-			generalView.setVisible( true );
-			generalDiv.setVisible( true );
+		this.loadCombobox( );
+		if ( this.getRevisor( ) == null ) {
+			if ( this.generalView != null ) {
+				this.generalView.setVisible( true );
+			}
+			if ( this.generalDiv != null ) {
+				this.generalDiv.setVisible( true );
+			}
 		}
-		else if ( getRevisor( ).isCoordenador( ) ) {
-			generalView.setVisible( true );
-			generalDiv.setVisible( false );
+		else if ( this.getRevisor( ).isCoordenador( ) ) {
+			if ( this.generalView != null ) {
+				this.generalView.setVisible( true );
+			}
+			if ( this.generalDiv != null ) {
+				this.generalDiv.setVisible( false );
+			}
 		}
 	}
 
@@ -149,29 +157,30 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 	{
 		Map<String, Object> params = super.configReportParams( );
 
-		InepEvent event = (InepEvent) ( getComboEvent( ).getSelectedItem( ).getValue( ) );
+		InepEvent event = (InepEvent) ( this.getComboEvent( ).getSelectedItem( ).getValue( ) );
 		if ( event != null ) {
 			params.put( "EVENT_ID", event.getId( ).getId( ) );
 		}
-		if ( getRevisor( ) != null ) {
-			params.put( "EVENT_ID", getRevisor( ).getId( ).getEventId( ) );
-			if ( getRevisor( ).getTask( ) != null )
-				params.put( "TASK_ID", getRevisor( ).getTask( ).getId( ).getId( ) );
-			params.put( "COLLABORATOR_ID", getRevisor( ).getId( ).getSequence( ) );
-			if ( getRevisor( ).isCoordenador( ) ) {
-				if ( getCmbRevisor( ).getSelectedItem( ) != null ) {
-					InepRevisor rev = getCmbRevisor( ).getSelectedItem( ).getValue( );
+		if ( this.getRevisor( ) != null ) {
+			params.put( "EVENT_ID", this.getRevisor( ).getId( ).getEventId( ) );
+			if ( this.getRevisor( ).getTask( ) != null ) {
+				params.put( "TASK_ID", this.getRevisor( ).getTask( ).getId( ).getId( ) );
+			}
+			params.put( "COLLABORATOR_ID", this.getRevisor( ).getId( ).getSequence( ) );
+			if ( this.getRevisor( ).isCoordenador( ) ) {
+				if ( this.getCmbRevisor( ).getSelectedItem( ) != null ) {
+					InepRevisor rev = this.getCmbRevisor( ).getSelectedItem( ).getValue( );
 					params.put( "COLLABORATOR_ID", rev.getId( ).getSequence( ) );
 				}
 			}
 		}
 		else {
-			if ( getCmbRevisor( ).getSelectedItem( ) != null ) {
-				InepRevisor rev = getCmbRevisor( ).getSelectedItem( ).getValue( );
+			if ( this.getCmbRevisor( ).getSelectedItem( ) != null ) {
+				InepRevisor rev = this.getCmbRevisor( ).getSelectedItem( ).getValue( );
 				params.put( "COLLABORATOR_ID", rev.getId( ).getSequence( ) );
 			}
-			if ( getCmbTask( ).getSelectedItem( ) != null ) {
-				InepTask task = getCmbTask( ).getSelectedItem( ).getValue( );
+			if ( this.getCmbTask( ).getSelectedItem( ) != null ) {
+				InepTask task = this.getCmbTask( ).getSelectedItem( ).getValue( );
 				params.put( "TASK_ID", task.getId( ).getId( ) );
 			}
 		}
@@ -180,13 +189,13 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 
 	public InepRevisor getRevisor( )
 	{
-		if ( revisor == null ) {
-			if ( getComboEvent( ).getSelectedItem( ) != null ) {
-				revisor = getSession( ).getRevisor( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ),
-						getPrincipal( ) );
+		if ( this.revisor == null ) {
+			if ( this.getComboEvent( ).getSelectedItem( ) != null ) {
+				this.revisor = this.getSession( ).getRevisor( (InepEvent) this.getComboEvent( ).getSelectedItem( ).getValue( ),
+						this.getPrincipal( ) );
 			}
 		}
-		return revisor;
+		return this.revisor;
 	}
 
 	@Override
@@ -197,60 +206,66 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 
 	public Combobox getComboEvent( )
 	{
-		return comboEvent;
+		return this.comboEvent;
 	}
 
 	private void loadCombobox( )
 	{
-		List<InepEvent> events = getSession( ).getEvents( getPrincipal( ) );
+		List<InepEvent> events = this.getSession( ).getEvents( this.getPrincipal( ) );
 
-		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
-			getComboEvent( ).getItems( ).clear( );
+		if ( SysUtils.isEmpty( this.getComboEvent( ).getItems( ) ) == false ) {
+			this.getComboEvent( ).getItems( ).clear( );
 		}
 		for ( InepEvent e : events ) {
-			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
+			Comboitem item = this.getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
-		if ( getComboEvent( ).getItemCount( ) > 0 ) {
-			getComboEvent( ).setSelectedIndex( 0 );
-			onSelectPackage( null );
+		if ( this.getComboEvent( ).getItemCount( ) > 0 ) {
+			this.getComboEvent( ).setSelectedIndex( 0 );
+			this.onSelectPackage( null );
 		}
 	}
 
 	private void loadTasks( InepEvent event )
 	{
 
-		if ( getRevisor( ) == null ) {
-			ComboboxUtils.load( getCmbTask( ), getSession( ).getTasks( event ), null, true );
+		if ( this.getRevisor( ) == null ) {
+			if ( this.getCmbTask( ) != null ) {
+				ComboboxUtils.load( this.getCmbTask( ), this.getSession( ).getTasks( event ), null, true );
+			}
 		}
-		else if ( getRevisor( ).getTask( ) != null ) {
-			ComboboxUtils.load( getCmbTask( ), getSession( ).getTasks( event ), getRevisor( ).getTask( ), true );
+		else if ( this.getRevisor( ).getTask( ) != null ) {
+			if ( this.getCmbTask( ) != null ) {
+				ComboboxUtils.load( this.getCmbTask( ), this.getSession( ).getTasks( event ), this.getRevisor( ).getTask( ), true );
+			}
 		}
 		else {
-			loadRevisor( null );
+			this.loadRevisor( null );
 		}
 	}
 
 	private void loadRevisor( InepTask task )
 	{
-		if ( getRevisor( ) == null ) {
-			ComboboxUtils.load( getCmbRevisor( ), getSession( ).getTeam( task ), null, true );
+		if ( this.getRevisor( ) == null ) {
+			ComboboxUtils.load( this.getCmbRevisor( ), this.getSession( ).getTeam( task ), null, true );
 		}
 		else {
-			if ( getRevisor( ).getTask( ) != null )
-				ComboboxUtils.load( getCmbRevisor( ), getSession( ).getTeam( task ), getRevisor( ), true );
-			else
-				ComboboxUtils.load( getCmbRevisor( ), getSession( ).getOralTeam( getRevisor( ).getEvent( ) ), getRevisor( ), true );
+			if ( this.getRevisor( ).getTask( ) != null ) {
+				ComboboxUtils.load( this.getCmbRevisor( ), this.getSession( ).getTeam( task ), this.getRevisor( ), true );
+			}
+			else {
+				ComboboxUtils.load( this.getCmbRevisor( ), this.getSession( ).getOralTeam( this.getRevisor( ).getEvent( ) ), this.getRevisor( ), true );
+			}
 		}
-		if ( getPrincipal( ).getUserId( ).equals( 1 ) ) {
-			setReports( );
+		if ( this.getPrincipal( ).getUserId( ).equals( 1 ) ) {
+			this.setReports( );
 		}
 	}
 
 	@Listen( "onSelect = #cmbTask" )
 	public void onSelectTask( Event evt )
 	{
-		loadRevisor( (InepTask) getCmbTask( ).getSelectedItem( ).getValue( ) );
+		this.loadRevisor( (InepTask) this.getCmbTask( ).getSelectedItem( ).getValue( ) );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -259,7 +274,7 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 	@Listen( "onSelect = #cmbRevisor" )
 	public void onSelectRevisor( Event evt )
 	{
-		setReports( );
+		this.setReports( );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -268,9 +283,9 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 	@Listen( "onSelect = #comboEvent" )
 	public void onSelectPackage( Event evt )
 	{
-		Comboitem item = comboEvent.getSelectedItem( );
+		Comboitem item = this.comboEvent.getSelectedItem( );
 		if ( item != null ) {
-			loadTasks( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ) );
+			this.loadTasks( (InepEvent) this.getComboEvent( ).getSelectedItem( ).getValue( ) );
 		}
 		if ( evt != null ) {
 			evt.stopPropagation( );
@@ -279,12 +294,12 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 
 	private Combobox getCmbTask( )
 	{
-		return cmbTask;
+		return this.cmbTask;
 	}
 
 	private Combobox getCmbRevisor( )
 	{
-		return cmbRevisor;
+		return this.cmbRevisor;
 	}
 
 }

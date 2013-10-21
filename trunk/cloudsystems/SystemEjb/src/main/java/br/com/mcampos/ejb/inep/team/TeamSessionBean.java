@@ -59,6 +59,11 @@ import br.com.mcampos.sysutils.SysUtils;
 @LocalBean
 public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements TeamSession, TeamSessionLocal
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6750178113226658138L;
+
 	private static final Logger logger = LoggerFactory.getLogger( TeamSessionBean.class.getSimpleName( ) );
 
 	@EJB
