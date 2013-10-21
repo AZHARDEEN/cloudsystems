@@ -49,6 +49,7 @@ WHERE
      EVT.USR_ID_IN = $P{COMPANY_ID}
  AND EVT.PCT_ID_IN = $P{EVENT_ID}
  AND SR.COL_SEQ_IN = $P{COLLABORATOR_ID}
+ AND ISS_ID_IN = 1
 ORDER BY
      EVT.USR_ID_IN ASC,
      EVT.PCT_ID_IN ASC,
@@ -73,29 +74,19 @@ ORDER BY
 		<groupHeader>
 			<band height="50">
 				<staticText>
-					<reportElement uuid="789c8cb7-4cc5-4be3-9609-5ea9d6cc0652" x="422" y="36" width="48" height="14"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[N.O.]]></text>
-				</staticText>
-				<staticText>
 					<reportElement uuid="db9b1609-42f6-4d6a-a10e-9f291ea558b3" x="1" y="36" width="71" height="14"/>
 					<textElement/>
 					<text><![CDATA[Inscrição]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f" x="77" y="36" width="206" height="14"/>
+					<reportElement uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f" x="77" y="36" width="378" height="14"/>
 					<textElement/>
 					<text><![CDATA[Examinando]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="33242b31-da19-4003-91ad-9d23dba4eb6f" x="288" y="36" width="82" height="14"/>
+					<reportElement uuid="33242b31-da19-4003-91ad-9d23dba4eb6f" x="470" y="36" width="82" height="14"/>
 					<textElement/>
 					<text><![CDATA[Nacionalidade]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="db3a236a-a99c-4dd5-b2a0-c0a63035d114" x="374" y="36" width="48" height="14"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[N.E.]]></text>
 				</staticText>
 				<textField>
 					<reportElement uuid="88cb20af-147e-4ed4-81dc-ee509c9ca23c" x="3" y="0" width="550" height="25"/>
@@ -143,7 +134,7 @@ ORDER BY
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[Listagem Geral de Inscrições do Posto]]></text>
+				<text><![CDATA[Listagem Geral de Inscrições Sem Notas Atribuídas - Não Ausentes]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -159,24 +150,14 @@ ORDER BY
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355" x="76" y="0" width="206" height="14"/>
+					<reportElement uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355" x="76" y="0" width="378" height="14"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{examinando}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="51dc0e43-5428-4d2f-b7c4-a02b0a585b46" x="287" y="0" width="82" height="14"/>
+					<reportElement uuid="51dc0e43-5428-4d2f-b7c4-a02b0a585b46" x="469" y="0" width="82" height="14"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{nacionalidade}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.000" isBlankWhenNull="true">
-					<reportElement uuid="64e185c0-31f0-4f26-be60-a6d80f582eac" x="373" y="0" width="48" height="14"/>
-					<textElement textAlignment="Center"/>
-					<textFieldExpression><![CDATA[$F{i_grade}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.000" isBlankWhenNull="true">
-					<reportElement uuid="9133ed51-2151-4b4b-a427-3fc84a0b683e" x="421" y="0" width="48" height="14"/>
-					<textElement textAlignment="Center"/>
-					<textFieldExpression><![CDATA[$F{o_grade}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement uuid="afac717b-7231-4999-8b8f-937f7c8362f5" x="0" y="0" width="70" height="14" forecolor="#FF0000">
@@ -185,13 +166,6 @@ ORDER BY
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement uuid="8e6539f3-4d3b-4426-872e-edeea23a24a5" x="476" y="0" width="78" height="14">
-						<printWhenExpression><![CDATA[$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
-					</reportElement>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[Ausente]]></text>
-				</staticText>
 			</frame>
 		</band>
 	</detail>

@@ -137,7 +137,7 @@ public class JasperReportController extends BaseLoggedController<Window>
 		else {
 			name = realPath;
 		}
-		return realPath;
+		return name;
 	}
 
 	protected String getRealPath( String uri )
