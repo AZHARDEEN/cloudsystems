@@ -126,7 +126,7 @@ public class Media implements Serializable
 
 	public void setObject( byte[ ] medObjectBin )
 	{
-		this.object = medObjectBin.clone( );
+		this.object = medObjectBin != null ? medObjectBin.clone( ) : null;
 		this.setSize( this.getObject( ) != null ? this.getObject( ).length : 0 );
 	}
 
