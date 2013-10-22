@@ -74,21 +74,21 @@ ORDER BY
 		<groupHeader>
 			<band height="50">
 				<staticText>
-					<reportElement uuid="db9b1609-42f6-4d6a-a10e-9f291ea558b3" x="1" y="36" width="71" height="14"/>
+					<reportElement uuid="db9b1609-42f6-4d6a-a10e-9f291ea558b3" x="1" y="36" width="80" height="14"/>
 					<textElement/>
 					<text><![CDATA[Inscrição]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f" x="77" y="36" width="378" height="14"/>
+					<reportElement uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f" x="93" y="36" width="329" height="14"/>
 					<textElement/>
 					<text><![CDATA[Examinando]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="33242b31-da19-4003-91ad-9d23dba4eb6f" x="470" y="36" width="82" height="14"/>
+					<reportElement uuid="33242b31-da19-4003-91ad-9d23dba4eb6f" x="433" y="36" width="120" height="14"/>
 					<textElement/>
 					<text><![CDATA[Nacionalidade]]></text>
 				</staticText>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement uuid="88cb20af-147e-4ed4-81dc-ee509c9ca23c" x="3" y="0" width="550" height="25"/>
 					<textElement textAlignment="Center">
 						<font size="12" isBold="true"/>
@@ -143,24 +143,24 @@ ORDER BY
 			<frame>
 				<reportElement uuid="bfee00be-642f-4346-8bfe-a36693652557" style="Zebra" mode="Opaque" x="1" y="0" width="555" height="14"/>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="de5e44d9-7341-48b5-8091-59442eaac7c9" x="0" y="0" width="70" height="14">
+					<reportElement uuid="de5e44d9-7341-48b5-8091-59442eaac7c9" x="0" y="0" width="80" height="14">
 						<printWhenExpression><![CDATA[!$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
 					</reportElement>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355" x="76" y="0" width="378" height="14"/>
+					<reportElement uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355" x="92" y="0" width="329" height="14"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{examinando}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="51dc0e43-5428-4d2f-b7c4-a02b0a585b46" x="469" y="0" width="82" height="14"/>
+					<reportElement uuid="51dc0e43-5428-4d2f-b7c4-a02b0a585b46" x="432" y="0" width="120" height="14"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{nacionalidade}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="afac717b-7231-4999-8b8f-937f7c8362f5" x="0" y="0" width="70" height="14" forecolor="#FF0000">
+					<reportElement uuid="afac717b-7231-4999-8b8f-937f7c8362f5" x="0" y="0" width="80" height="14" forecolor="#FF0000">
 						<printWhenExpression><![CDATA[$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
 					</reportElement>
 					<textElement/>
