@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.validation.constraints.NotNull;
 
@@ -32,6 +33,7 @@ public class JasperReportController extends BaseLoggedController<Window>
 	public static final String paramName = "JasperReportParameter";
 	private static final Logger logger = LoggerFactory.getLogger( JasperReportController.class );
 	private ReportItem reportItem;
+	private DataSource dataSource;
 
 	@Wire( "iframe" )
 	private Iframe frame;
@@ -46,10 +48,14 @@ public class JasperReportController extends BaseLoggedController<Window>
 
 		if ( obj != null && obj instanceof ReportItem ) {
 			this.reportItem = (ReportItem) obj;
-			b = JasperRunManager.runReportToPdf( this.compileReport( this.reportItem.getReportUrl( ) ), this.getParams( ), this.getConnection( ) );
+            Connection c = this.getConnection( );
+			b = JasperRunManager.runReportToPdf( this.compileReport( this.reportItem.getReportUrl( ) ), this.getParams( ), c );
 			if ( b != null ) {
 				this.setMedia( b );
 			}
+            if ( c != null ) {
+                c.close ();
+            }
 		}
 	}
 
@@ -147,8 +153,15 @@ public class JasperReportController extends BaseLoggedController<Window>
 
 	protected Connection getConnection( ) throws Exception
 	{
-		InitialContext cxt = new InitialContext( );
-		DataSource ds = (DataSource) cxt.lookup( "java:/ReportDS" );
-		return ds.getConnection( );
+		return getDatasource().getConnection( );
+	}
+	
+	private DataSource getDatasource () throws NamingException
+	{
+		if ( dataSource == null ) {
+			InitialContext cxt = new InitialContext( );
+			dataSource = (DataSource) cxt.lookup( "java:/ReportDS" );
+		}
+		return dataSource;	
 	}
 }
