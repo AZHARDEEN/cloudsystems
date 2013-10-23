@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="84"/>
 	<style name="Zebra" mode="Transparent">
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
@@ -11,16 +11,16 @@
 	</style>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
-		<defaultValueExpression><![CDATA["E:/JAVA/Workspaces/Kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[80]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[112]]></defaultValueExpression>
 	</parameter>
 	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
@@ -52,6 +52,7 @@ WHERE
 ORDER BY
      EVT.USR_ID_IN ASC,
      EVT.PCT_ID_IN ASC,
+ST.USR_NAME_CH asc,
      STP.USR_NAME_CH ASC]]>
 	</queryString>
 	<field name="usr_id_in" class="java.lang.Integer">
