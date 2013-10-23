@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="2"/>
 	<style name="Zebra" mode="Transparent">
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
@@ -14,13 +14,13 @@
 		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[80]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[112]]></defaultValueExpression>
 	</parameter>
 	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
@@ -44,16 +44,17 @@ FROM
 	INNER JOIN USERS ST ON ( CLI.CLI_ID_IN = ST.USR_ID_IN )
 	INNER JOIN USERS STP ON ( ISC.ISC_CANDIDATE_IN = STP.USR_ID_IN )
 	INNER JOIN INEP.INEP_STATION_REPONSABLE SR ON ( CLI.USR_ID_IN = SR.USR_ID_IN AND CLI.CLI_SEQ_IN = SR.CLI_SEQ_IN )
-	LEFT OUTER JOIN INEP.INEP_ORAL_TEST O ON ( ISC.USR_ID_IN = O.USR_ID_IN AND ISC.PCT_ID_IN = O.PCT_ID_IN AND ISC.ISC_ID_CH = O.ISC_ID_CH )
+	INNER JOIN INEP.INEP_ORAL_TEST O ON ( ISC.USR_ID_IN = O.USR_ID_IN AND ISC.PCT_ID_IN = O.PCT_ID_IN AND ISC.ISC_ID_CH = O.ISC_ID_CH )
+	LEFT OUTER JOIN INEP.INEP_MEDIA IM ON ( ISC.USR_ID_IN = IM.USR_ID_IN AND ISC.PCT_ID_IN = IM.PCT_ID_IN AND ISC.ISC_ID_CH = IM.ISC_ID_CH )
 WHERE
      EVT.USR_ID_IN = $P{COMPANY_ID}
  AND EVT.PCT_ID_IN = $P{EVENT_ID}
  AND SR.COL_SEQ_IN = $P{COLLABORATOR_ID}
- AND ISS_ID_IN = 3
+ AND IM.MED_ID_IN IS NULL
 ORDER BY
      EVT.USR_ID_IN ASC,
      EVT.PCT_ID_IN ASC,
-     ST.USR_NAME_CH asc,
+ST.USR_NAME_CH asc,
      STP.USR_NAME_CH ASC]]>
 	</queryString>
 	<field name="usr_id_in" class="java.lang.Integer">
@@ -75,19 +76,29 @@ ORDER BY
 		<groupHeader>
 			<band height="50">
 				<staticText>
+					<reportElement uuid="789c8cb7-4cc5-4be3-9609-5ea9d6cc0652" x="456" y="36" width="40" height="14"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[N.O.]]></text>
+				</staticText>
+				<staticText>
 					<reportElement uuid="db9b1609-42f6-4d6a-a10e-9f291ea558b3" x="1" y="36" width="80" height="14"/>
 					<textElement/>
 					<text><![CDATA[Inscrição]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f" x="86" y="36" width="345" height="14"/>
+					<reportElement uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f" x="86" y="36" width="220" height="14"/>
 					<textElement/>
 					<text><![CDATA[Examinando]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="33242b31-da19-4003-91ad-9d23dba4eb6f" x="436" y="36" width="117" height="14"/>
+					<reportElement uuid="33242b31-da19-4003-91ad-9d23dba4eb6f" x="311" y="36" width="100" height="14"/>
 					<textElement/>
 					<text><![CDATA[Nacionalidade]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="db3a236a-a99c-4dd5-b2a0-c0a63035d114" x="414" y="36" width="40" height="14"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[N.E.]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
 					<reportElement uuid="88cb20af-147e-4ed4-81dc-ee509c9ca23c" x="3" y="0" width="550" height="25"/>
@@ -135,7 +146,7 @@ ORDER BY
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[Listagem Geral de Ausentes do Posto]]></text>
+				<text><![CDATA[Listagem Geral de Inscrições com Nota e Sem Audio Carregado]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -151,14 +162,24 @@ ORDER BY
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355" x="85" y="0" width="345" height="14"/>
+					<reportElement uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355" x="85" y="0" width="220" height="14"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{examinando}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement uuid="51dc0e43-5428-4d2f-b7c4-a02b0a585b46" x="435" y="0" width="120" height="14"/>
+					<reportElement uuid="51dc0e43-5428-4d2f-b7c4-a02b0a585b46" x="310" y="0" width="100" height="14"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{nacionalidade}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
+					<reportElement uuid="64e185c0-31f0-4f26-be60-a6d80f582eac" x="413" y="0" width="40" height="14"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{i_grade}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
+					<reportElement uuid="9133ed51-2151-4b4b-a427-3fc84a0b683e" x="455" y="0" width="40" height="14"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{o_grade}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement uuid="afac717b-7231-4999-8b8f-937f7c8362f5" x="0" y="0" width="80" height="14" forecolor="#FF0000">
@@ -167,6 +188,13 @@ ORDER BY
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement uuid="8e6539f3-4d3b-4426-872e-edeea23a24a5" x="498" y="0" width="54" height="14">
+						<printWhenExpression><![CDATA[$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Ausente]]></text>
+				</staticText>
 			</frame>
 		</band>
 	</detail>
