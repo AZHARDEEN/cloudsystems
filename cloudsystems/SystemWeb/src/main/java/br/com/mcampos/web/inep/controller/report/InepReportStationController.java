@@ -54,6 +54,17 @@ public class InepReportStationController extends BaseDBLoggedController<StationS
 		item.setReportUrl( "/reports/inep/oral_station_003" );
 		item.setParams( this.configReportParams( ) );
 		list.add( item );
+		
+		item = new ReportItem( "Listagem Geral de Audios Carregados" );
+		item.setReportUrl( "/reports/inep/oral_station_004" );
+		item.setParams( this.configReportParams( ) );
+		list.add( item );
+		
+		item = new ReportItem( "Listagem Geral de Inscrições Com Nota e Sem Audio" );
+		item.setReportUrl( "/reports/inep/oral_station_005" );
+		item.setParams( this.configReportParams( ) );
+		list.add( item );
+		
 
 		if ( this.getListbox( ) != null ) {
 			this.getListbox( ).setModel( new ListModelList<ReportItem>( list ) );

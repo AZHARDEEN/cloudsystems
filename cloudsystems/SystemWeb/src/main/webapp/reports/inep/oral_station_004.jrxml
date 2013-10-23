@@ -14,13 +14,13 @@
 		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[80]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[110]]></defaultValueExpression>
 	</parameter>
 	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
@@ -37,19 +37,23 @@
 	ISC.isc_special_needs_ch NEEDS,
 	iot_interviewer_grade_nm I_GRADE,
 	iot_observer_grade_nm O_GRADE,
-	ISS_ID_IN STATUS
+	ISS_ID_IN STATUS,
+	med_name_ch,
+	med_size_in,
+	med_url_ch
 FROM
 	INEP.INEP_PACKAGE EVT INNER JOIN INEP.INEP_SUBSCRIPTION ISC ON ( EVT.USR_ID_IN = ISC.USR_ID_IN AND EVT.PCT_ID_IN = ISC.PCT_ID_IN )
 	INNER JOIN CLIENT CLI ON ( ISC.USR_ID_IN = CLI.USR_ID_IN AND ISC.CLI_SEQ_IN = CLI.CLI_SEQ_IN )
 	INNER JOIN USERS ST ON ( CLI.CLI_ID_IN = ST.USR_ID_IN )
 	INNER JOIN USERS STP ON ( ISC.ISC_CANDIDATE_IN = STP.USR_ID_IN )
 	INNER JOIN INEP.INEP_STATION_REPONSABLE SR ON ( CLI.USR_ID_IN = SR.USR_ID_IN AND CLI.CLI_SEQ_IN = SR.CLI_SEQ_IN )
-	LEFT OUTER JOIN INEP.INEP_ORAL_TEST O ON ( ISC.USR_ID_IN = O.USR_ID_IN AND ISC.PCT_ID_IN = O.PCT_ID_IN AND ISC.ISC_ID_CH = O.ISC_ID_CH )
+	INNER JOIN INEP.INEP_MEDIA IM ON ( ISC.USR_ID_IN = IM.USR_ID_IN AND ISC.PCT_ID_IN = IM.PCT_ID_IN AND ISC.ISC_ID_CH = IM.ISC_ID_CH )
+	INNER JOIN MEDIA M on ( IM.MED_ID_IN = M.MED_ID_IN )
+	INNER JOIN INEP.INEP_ORAL_TEST O ON ( ISC.USR_ID_IN = O.USR_ID_IN AND ISC.PCT_ID_IN = O.PCT_ID_IN AND ISC.ISC_ID_CH = O.ISC_ID_CH )
 WHERE
      EVT.USR_ID_IN = $P{COMPANY_ID}
  AND EVT.PCT_ID_IN = $P{EVENT_ID}
  AND SR.COL_SEQ_IN = $P{COLLABORATOR_ID}
- AND ISS_ID_IN = 3
 ORDER BY
      EVT.USR_ID_IN ASC,
      EVT.PCT_ID_IN ASC,
@@ -69,6 +73,11 @@ ORDER BY
 	<field name="i_grade" class="java.math.BigDecimal"/>
 	<field name="o_grade" class="java.math.BigDecimal"/>
 	<field name="status" class="java.lang.Integer"/>
+	<field name="med_name_ch" class="java.lang.String"/>
+	<field name="med_size_in" class="java.lang.Integer"/>
+	<field name="med_url_ch" class="java.lang.String">
+		<fieldDescription><![CDATA[Caminho (path) onde está localizado o arquivo. Este recurso é usado para quando não se deseja armazenar a media no banco. Um exemplo é um arquivo de audio de 200mb. Nesta situação é melhor deixá-lo em disco]]></fieldDescription>
+	</field>
 	<variable name="countSubscriptions" class="java.lang.Integer" resetType="Group" resetGroup="Station" calculation="Count"/>
 	<group name="Station" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{posto}]]></groupExpression>
@@ -80,14 +89,9 @@ ORDER BY
 					<text><![CDATA[Inscrição]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f" x="86" y="36" width="345" height="14"/>
+					<reportElement uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f" x="86" y="36" width="289" height="14"/>
 					<textElement/>
 					<text><![CDATA[Examinando]]></text>
-				</staticText>
-				<staticText>
-					<reportElement uuid="33242b31-da19-4003-91ad-9d23dba4eb6f" x="436" y="36" width="117" height="14"/>
-					<textElement/>
-					<text><![CDATA[Nacionalidade]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
 					<reportElement uuid="88cb20af-147e-4ed4-81dc-ee509c9ca23c" x="3" y="0" width="550" height="25"/>
@@ -96,6 +100,11 @@ ORDER BY
 					</textElement>
 					<textFieldExpression><![CDATA[$F{posto}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement uuid="2cc6a1e8-57f9-4a58-b626-0b47e8edf720" x="380" y="36" width="173" height="14"/>
+					<textElement/>
+					<text><![CDATA[Arquivo Carregado]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -135,7 +144,7 @@ ORDER BY
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[Listagem Geral de Ausentes do Posto]]></text>
+				<text><![CDATA[Listagem Geral de Audios Carregados do Posto]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -151,14 +160,9 @@ ORDER BY
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355" x="85" y="0" width="345" height="14"/>
+					<reportElement uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355" x="85" y="0" width="289" height="14"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{examinando}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement uuid="51dc0e43-5428-4d2f-b7c4-a02b0a585b46" x="435" y="0" width="120" height="14"/>
-					<textElement/>
-					<textFieldExpression><![CDATA[$F{nacionalidade}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement uuid="afac717b-7231-4999-8b8f-937f7c8362f5" x="0" y="0" width="80" height="14" forecolor="#FF0000">
@@ -166,6 +170,11 @@ ORDER BY
 					</reportElement>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="e0b7bf46-8eff-40f2-b04c-ef444f07db27" x="379" y="0" width="173" height="14"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{med_name_ch}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
