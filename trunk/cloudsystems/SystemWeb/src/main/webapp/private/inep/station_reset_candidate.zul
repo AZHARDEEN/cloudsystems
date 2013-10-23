@@ -3,6 +3,10 @@
 	<window width="100%" height="100%" closable="true" border="none" title="Módulo de Administração da Inscrição"
 		apply="br.com.mcampos.web.inep.controller.station.ResetCandidateController">
 		<div width="100%" height="62px" align="Center" fulfill="=/private/inep/inep_logo.zul" />
+		<div width="100%" height="18px" align="Center" style="background-color:rgba(255,0,0,0.1)">
+			<label value = "Evento Oficial 2º Semestre 2013" />
+		</div>
+		<separator />
 		<borderlayout>
 			<center flex="true">
 				<div align="Center" width="600px">
