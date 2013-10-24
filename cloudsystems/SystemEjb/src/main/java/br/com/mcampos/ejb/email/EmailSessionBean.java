@@ -14,6 +14,11 @@ import br.com.mcampos.jpa.system.EMail;
 public class EmailSessionBean extends SimpleSessionBean<EMail> implements EmailSession, EmailSessionLocal
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6228595648302506733L;
+
 	@Override
 	protected Class<EMail> getEntityClass( )
 	{

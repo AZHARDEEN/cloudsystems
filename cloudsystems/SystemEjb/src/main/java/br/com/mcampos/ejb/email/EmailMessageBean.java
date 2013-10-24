@@ -58,7 +58,7 @@ public class EmailMessageBean implements MessageListener
 				if ( object != null && object instanceof MailDTO ) {
 					MailDTO dto = (MailDTO) object;
 
-					MimeMessage mailMessage = new MimeMessage( getMailSession( ) );
+					MimeMessage mailMessage = new MimeMessage( this.getMailSession( ) );
 					mailMessage.setSubject( dto.getSubject( ) );
 					for ( String to : dto.getRecipients( ) ) {
 						mailMessage.addRecipient( MimeMessage.RecipientType.TO, new InternetAddress( to ) );
@@ -114,13 +114,13 @@ public class EmailMessageBean implements MessageListener
 
 	private Session getMailSession( )
 	{
-		if ( mailSession == null ) {
+		if ( this.mailSession == null ) {
 			Properties props = new Properties( );
 			SMTPAuthenticator auth = new SMTPAuthenticator( );
-			props = configureProperties( props );
-			mailSession = Session.getDefaultInstance( props, auth );
+			props = this.configureProperties( props );
+			this.mailSession = Session.getInstance( props, auth );
 		}
-		return mailSession;
+		return this.mailSession;
 	}
 
 }
