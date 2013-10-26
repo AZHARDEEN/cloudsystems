@@ -9,7 +9,7 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<!-- this is for weblogic. <jta-data-source>jdbc/CloudDS</jta-data-source> -->
 		<!-- For jboss, we need a java:someresource -->
-		<jta-data-source>java:/CloudOldDS</jta-data-source>
+		<jta-data-source>jdbc/CloudOldDS</jta-data-source>
 		<class>br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact</class>
 		<class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage</class>
 		<class>br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country</class>

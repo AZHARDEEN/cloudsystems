@@ -4,7 +4,7 @@
              version="2.0">
   <persistence-unit name="SystemEJB" >
   	<provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <jta-data-source>java:/CloudDS</jta-data-source>
+    <jta-data-source>jdbc/CloudDS</jta-data-source>
     <class>br.com.mcampos.jpa.user.UserType</class>
     <class>br.com.mcampos.jpa.user.AddressType</class>
     <class>br.com.mcampos.jpa.user.UserContact</class>
