@@ -160,7 +160,7 @@ public class JasperReportController extends BaseLoggedController<Window>
 	{
 		if ( dataSource == null ) {
 			InitialContext cxt = new InitialContext( );
-			dataSource = (DataSource) cxt.lookup( "java:/ReportDS" );
+			dataSource = (DataSource) cxt.lookup( "jdbc/ReportDS" );
 		}
 		return dataSource;	
 	}
