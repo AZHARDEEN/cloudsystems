@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+  <div align="center" id="rootParent" apply="br.com.mcampos.controller.user.collaborator.CollaboratorRoleController" width="100%"
+       height="100%">
+    <borderlayout id="borderLayout">
+      <north autoscroll="false" height="65px">
+        <grid>
+          <columns>
+            <column width="20%" align="center"/>
+            <column width="60%" align="center"/>
+            <column width="20%" align="center"/>
+          </columns>
+          <rows>
+            <row>
+              <image id="imageClienteLogo"/>
+              <label id="labelClientRoleTitle" style="font-size:20px;color:#0C7A9A" value="##"/>
+              <image id="imageCompanyLogo"/>
+            </row>
+          </rows>
+        </grid>
+      </north>
+      <center flex="true">
+        <grid width="720px">
+          <columns>
+            <column width="45%" id="columnSetRole" label="##"/>
+            <column width="10%" align="center"/>
+            <column width="45%" id="columnAvailableRole" label="##"/>
+          </columns>
+          <rows>
+            <row>
+              <listbox id="listRole" height="400px" multiple="true">
+                <listhead>
+                  <listheader id="listHeaderCode1" label="##" width="10%" align="center"/>
+                  <listheader id="headerDescription1" label="##" width="45%" align="left"/>
+                  <listheader id="listHeaderParent1" label="##" width="45%" align="left"/>
+                </listhead>
+              </listbox>
+              <vbox>
+                <button image="/img/icontexto-webdev-arrow-left-032x032.png" id="btnAddRole" label="Atribuir" width="120px"/>
+                <button image="/img/icontexto-webdev-arrow-right-032x032.png" id="btnRemoveRole" label="Revogar" width="120px"/>
+              </vbox>
+              <listbox id="listAvailableRole" height="400px" multiple="true">
+                <listhead>
+                  <listheader id="listHeaderCode" label="##" width="10%" align="center"/>
+                  <listheader id="headerDescription" label="##" width="45%" align="left"/>
+                  <listheader id="listHeaderParent" label="##" width="45%" align="left"/>
+                </listhead>
+              </listbox>
+            </row>
+          </rows>
+        </grid>
+      </center>
+    </borderlayout>
+  </div>
+</zk>

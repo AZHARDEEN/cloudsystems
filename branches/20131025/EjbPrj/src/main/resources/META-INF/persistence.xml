@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="    
+        http://java.sun.com/xml/ns/persistence    
+        http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="EjbPrj">
+		<description>Descrição do conector CloudSystems</description>
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<!-- this is for weblogic. <jta-data-source>jdbc/CloudDS</jta-data-source> -->
+		<!-- For jboss, we need a java:someresource -->
+		<jta-data-source>jdbc/CloudOldDS</jta-data-source>
+		<class>br.com.mcampos.ejb.cloudsystem.user.contact.entity.UserContact</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.image.PgcProcessedImage</class>
+		<class>br.com.mcampos.ejb.cloudsystem.locality.country.entity.Country</class>
+		<class>br.com.mcampos.ejb.cloudsystem.system.EMail</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.login.accesslog.AccessLog</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.collaborator.role.entity.CollaboratorRole</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.address.entity.Address</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.collaborator.type.entity.CollaboratorType</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.Users</class>
+		<class>br.com.mcampos.ejb.cloudsystem.security.accesslog.AccessLogType</class>
+		<class>br.com.mcampos.ejb.cloudsystem.system.SystemMessageType</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.attribute.documenttype.entity.DocumentType</class>
+		<class>br.com.mcampos.ejb.cloudsystem.system.SystemMessage</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.property.entity.PgcProperty</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.penpage.entity.AnotoPenPage</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.Pgc</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.address.addresstype.entity.AddressType</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpenpage.PgcPenPage</class>
+		<class>br.com.mcampos.ejb.cloudsystem.locality.state.entity.State</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.document.entity.UserDocument</class>
+		<class>br.com.mcampos.ejb.cloudsystem.security.task.subtask.Subtask</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.login.Login</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.page.AnotoPage</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.attribute.userstatus.entity.UserStatus</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.attribute.gender.entity.Gender</class>
+		<class>br.com.mcampos.ejb.cloudsystem.security.permissionassignment.PermissionAssignment</class>
+		<class>br.com.mcampos.ejb.cloudsystem.system.EMailPart</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.person.entity.Person</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.attribute.usertype.entity.entity.UserType</class>
+		<class>br.com.mcampos.ejb.cloudsystem.security.task.Task</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.page.BackgroundImage</class>
+		<class>br.com.mcampos.ejb.cloudsystem.client.entity.Client</class>
+		<class>br.com.mcampos.ejb.cloudsystem.security.menu.locale.MenuLocale</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.attribute.companytype.CompanyType</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.attribute.companyposition.entity.CompanyPosition</class>
+		<class>br.com.mcampos.ejb.cloudsystem.system.SystemParameters</class>
+		<class>br.com.mcampos.ejb.cloudsystem.system.EMailPartType</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.collaborator.entity.Collaborator</class>
+		<class>br.com.mcampos.ejb.cloudsystem.media.entity.Media</class>
+		<class>br.com.mcampos.ejb.cloudsystem.security.role.Role</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.field.PgcField</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.pgcstatus.PgcStatus</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.PgcPage</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.pgcpage.attachment.PgcPageAttachment</class>
+		<class>br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.form.media.FormMedia</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.attribute.contacttype.entity.ContactType</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.attribute.title.entity.Title</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.pgc.attachment.entity.PgcAttachment</class>
+		<class>br.com.mcampos.ejb.cloudsystem.security.menu.Menu</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.pad.Pad</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.attribute.civilstate.entity.CivilState</class>
+		<class>br.com.mcampos.ejb.cloudsystem.locality.city.entity.City</class>
+		<class>br.com.mcampos.ejb.cloudsystem.locality.region.entity.Region</class>
+		<class>br.com.mcampos.ejb.cloudsystem.system.revisedstatus.entity.RevisionStatus</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.form.user.entity.AnotoFormUser</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.pen.user.entity.AnotoPenUser</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.media.entity.UserMedia</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.media.type.entity.UserMediaType</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.company.role.entity.CompanyRole</class>
+		<class>br.com.mcampos.ejb.cloudsystem.system.systemuserproperty.entity.SystemUserProperty</class>
+		<class>br.com.mcampos.ejb.cloudsystem.security.taskmenu.TaskMenu</class>
+		<class>br.com.mcampos.ejb.cloudsystem.user.company.entity.Company</class>
+		<class>br.com.mcampos.ejb.cloudsystem.system.audit.AuditedObject</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.pen.AnotoPen</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.page.field.entity.AnotoPageField</class>
+		<class>br.com.mcampos.ejb.cloudsystem.anoto.form.AnotoForm</class>
+		<class>br.com.mcampos.ejb.cloudsystem.typing.iab.entity.DadosIab</class>
+		<shared-cache-mode>NONE</shared-cache-mode>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+		</properties>
+	</persistence-unit>
+</persistence>

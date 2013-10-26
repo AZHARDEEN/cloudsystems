@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T:/Workspaces/indigo/cloudsystems/SystemWeb/WebContent/img"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  inep_oral_test.isc_id_ch,
+  inep_oral_test.iot_station_ch,
+  inep_oral_test.iot_interviewer_grade_nm,
+  inep_oral_test.iot_observer_grade_nm,
+  inep_oral_test.iot_final_grade_nm,
+  inep_oral_test.iot_variance_in,
+  inep_oral_test.iot_agreement_grade_in,
+  inep_oral_test.iot_agreement2_grade_nm,
+  coalesce ( inep_oral_test.iot_agreement2_grade_nm, inep_oral_test.iot_agreement_grade_in, inep_oral_test.iot_final_grade_nm) npo
+FROM
+  inep.inep_oral_test
+WHERE
+  inep_oral_test.iot_variance_in > 0 AND
+  inep_oral_test.usr_id_in = $P{COMPANY_ID} AND
+  inep_oral_test.pct_id_in = $P{EVENT_ID}
+ORDER BY
+  inep_oral_test.isc_id_ch]]>
+	</queryString>
+	<field name="isc_id_ch" class="java.lang.String"/>
+	<field name="iot_station_ch" class="java.lang.String"/>
+	<field name="iot_interviewer_grade_nm" class="java.math.BigDecimal"/>
+	<field name="iot_observer_grade_nm" class="java.math.BigDecimal"/>
+	<field name="iot_final_grade_nm" class="java.math.BigDecimal"/>
+	<field name="iot_variance_in" class="java.lang.Integer"/>
+	<field name="iot_agreement_grade_in" class="java.lang.Integer"/>
+	<field name="iot_agreement2_grade_nm" class="java.math.BigDecimal"/>
+	<field name="npo" class="java.math.BigDecimal"/>
+	<variable name="variance" class="java.lang.Number">
+		<variableExpression><![CDATA[new BigDecimal ($F{iot_interviewer_grade_nm}.doubleValue() - $F{iot_observer_grade_nm}.doubleValue()).abs()]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="0" y="0" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Discrepâncias por Posto Aplicador]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="96" splitType="Stretch">
+			<image>
+				<reportElement uuid="b8f3d208-d5c0-4eec-a205-6241c030a737" x="3" y="1" width="117" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="4312c333-ca76-4c9c-bb9f-42a166d16665" x="144" y="2" width="231" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="54632e40-5f44-4f64-9069-37b26efbf901" x="388" y="3" width="165" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="73f6c36b-86f4-4a07-853d-dee6a5c4562a" x="0" y="76" width="80" height="20"/>
+				<textElement/>
+				<text><![CDATA[Inscrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c15b4245-ab48-4a8c-85f7-62612f84fb5e" x="80" y="76" width="251" height="20"/>
+				<textElement/>
+				<text><![CDATA[Posto Aplicador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e8003ff0-07d8-48f9-b9c8-d40fef04971a" x="413" y="76" width="35" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Reav.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="091cba2f-913a-44d9-a374-1395e81daccc" x="451" y="76" width="35" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Cons.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6c93f171-1c0f-4598-b918-c6055096b42e" x="337" y="76" width="35" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Posto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d98cf23f-cc0f-490d-b821-b39f07654955" x="337" y="53" width="216" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Notas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0652c959-0231-4ed9-8ca5-064eec422145" x="501" y="76" width="54" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NFO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1e722d7b-74e3-4691-ac92-4d212344ca18" x="375" y="76" width="35" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Disc.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement uuid="881dac4d-613d-4187-b803-d858a134fc6f" x="0" y="0" width="80" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bcefbc1e-97fc-4db4-b364-ec91aebb23f9" x="80" y="0" width="250" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{iot_station_ch}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement uuid="847edf09-1bee-444e-96ca-8673084b93b1" x="413" y="0" width="35" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{iot_agreement_grade_in}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement uuid="d3989579-092f-4bb5-9a21-301b14d8f248" x="451" y="0" width="35" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{iot_agreement2_grade_nm}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement uuid="6d6ef5cd-9dff-47d0-bc3c-b2619dc7adb2" x="337" y="0" width="35" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{iot_final_grade_nm}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement uuid="be8f436a-6f79-4894-9664-d2dd2b83a201" x="375" y="0" width="35" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{variance}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement uuid="f8c37b73-e92d-4e4f-be37-ab0cbdf54d1e" x="501" y="0" width="54" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{npo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7" x="455" y="0" width="100" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6" x="0" y="0" width="199" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd" x="0" y="0" width="555" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Zebra" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E5E5E5"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[80]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	EVT.USR_ID_IN,
+	EVT.PCT_ID_IN,
+	EVT.PCT_CODE_CH EVENTO,
+	ST.USR_NAME_CH AS POSTO,
+	ISC.ISC_ID_CH,
+	STP.USR_NAME_CH AS EXAMINANDO,
+	ISC.isc_citizenship_ch NACIONALIDADE,
+	ISC.isc_special_needs_ch NEEDS,
+	iot_interviewer_grade_nm I_GRADE,
+	iot_observer_grade_nm O_GRADE,
+	ISS_ID_IN STATUS
+FROM
+	INEP.INEP_PACKAGE EVT INNER JOIN INEP.INEP_SUBSCRIPTION ISC ON ( EVT.USR_ID_IN = ISC.USR_ID_IN AND EVT.PCT_ID_IN = ISC.PCT_ID_IN )
+	INNER JOIN CLIENT CLI ON ( ISC.USR_ID_IN = CLI.USR_ID_IN AND ISC.CLI_SEQ_IN = CLI.CLI_SEQ_IN )
+	INNER JOIN USERS ST ON ( CLI.CLI_ID_IN = ST.USR_ID_IN )
+	INNER JOIN USERS STP ON ( ISC.ISC_CANDIDATE_IN = STP.USR_ID_IN )
+	INNER JOIN INEP.INEP_STATION_REPONSABLE SR ON ( CLI.USR_ID_IN = SR.USR_ID_IN AND CLI.CLI_SEQ_IN = SR.CLI_SEQ_IN )
+	LEFT OUTER JOIN INEP.INEP_ORAL_TEST O ON ( ISC.USR_ID_IN = O.USR_ID_IN AND ISC.PCT_ID_IN = O.PCT_ID_IN AND ISC.ISC_ID_CH = O.ISC_ID_CH )
+WHERE
+     EVT.USR_ID_IN = $P{COMPANY_ID}
+ AND EVT.PCT_ID_IN = $P{EVENT_ID}
+ AND SR.COL_SEQ_IN = $P{COLLABORATOR_ID}
+ AND ISS_ID_IN = 3
+ORDER BY
+     EVT.USR_ID_IN ASC,
+     EVT.PCT_ID_IN ASC,
+     ST.USR_NAME_CH asc,
+     STP.USR_NAME_CH ASC]]>
+	</queryString>
+	<field name="usr_id_in" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Usar sequence: seq_usuario]]></fieldDescription>
+	</field>
+	<field name="pct_id_in" class="java.lang.Integer"/>
+	<field name="evento" class="java.lang.String"/>
+	<field name="posto" class="java.lang.String"/>
+	<field name="isc_id_ch" class="java.lang.String"/>
+	<field name="examinando" class="java.lang.String"/>
+	<field name="nacionalidade" class="java.lang.String"/>
+	<field name="needs" class="java.lang.String"/>
+	<field name="i_grade" class="java.math.BigDecimal"/>
+	<field name="o_grade" class="java.math.BigDecimal"/>
+	<field name="status" class="java.lang.Integer"/>
+	<variable name="countSubscriptions" class="java.lang.Integer" resetType="Group" resetGroup="Station" calculation="Count"/>
+	<group name="Station" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{posto}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<staticText>
+					<reportElement uuid="db9b1609-42f6-4d6a-a10e-9f291ea558b3" x="1" y="36" width="80" height="14"/>
+					<textElement/>
+					<text><![CDATA[Inscrição]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f" x="86" y="36" width="345" height="14"/>
+					<textElement/>
+					<text><![CDATA[Examinando]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="33242b31-da19-4003-91ad-9d23dba4eb6f" x="436" y="36" width="117" height="14"/>
+					<textElement/>
+					<text><![CDATA[Nacionalidade]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="88cb20af-147e-4ed4-81dc-ee509c9ca23c" x="3" y="0" width="550" height="25"/>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{posto}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<textField>
+					<reportElement uuid="958b35a8-28cd-420f-8c58-ea61f139671b" x="132" y="16" width="94" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$V{Station_COUNT}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="1ea71788-2101-4cf5-8cba-3b62634c1b01" x="1" y="16" width="130" height="20"/>
+					<textElement/>
+					<text><![CDATA[Total de Inscrições do Posto]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="75" splitType="Stretch">
+			<image>
+				<reportElement uuid="b8f3d208-d5c0-4eec-a205-6241c030a737" x="3" y="21" width="117" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="4312c333-ca76-4c9c-bb9f-42a166d16665" x="144" y="22" width="231" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="54632e40-5f44-4f64-9069-37b26efbf901" x="388" y="23" width="165" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="3" y="0" width="550" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Listagem Geral de Ausentes do Posto]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<frame>
+				<reportElement uuid="bfee00be-642f-4346-8bfe-a36693652557" style="Zebra" mode="Opaque" x="1" y="0" width="555" height="14"/>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="de5e44d9-7341-48b5-8091-59442eaac7c9" x="0" y="0" width="80" height="14">
+						<printWhenExpression><![CDATA[!$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
+					</reportElement>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355" x="85" y="0" width="345" height="14"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{examinando}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="51dc0e43-5428-4d2f-b7c4-a02b0a585b46" x="435" y="0" width="120" height="14"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{nacionalidade}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="afac717b-7231-4999-8b8f-937f7c8362f5" x="0" y="0" width="80" height="14" forecolor="#FF0000">
+						<printWhenExpression><![CDATA[$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
+					</reportElement>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7" x="455" y="0" width="100" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6" x="0" y="0" width="226" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f2686c43-7383-4c53-9146-17cebd296639" x="355" y="0" width="67" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="8a85253a-ecbf-4214-b0b6-7052e4986eea" x="238" y="0" width="117" height="15"/>
+				<textElement/>
+				<text><![CDATA[Contador de Inscrições]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

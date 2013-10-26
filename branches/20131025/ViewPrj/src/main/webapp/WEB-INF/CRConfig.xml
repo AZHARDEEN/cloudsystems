@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?><CrystalReportEngine-configuration>
+    <reportlocation>/</reportlocation>
+    <timeout>10</timeout>
+    
+    <ExternalFunctionLibraryClassNames> 
+		<classname> </classname>
+		<classname> </classname>
+    </ExternalFunctionLibraryClassNames>
+    
+<keycode>CFK0A-Y0TTM2M-00UFAFF-N43M</keycode>
+<Javaserver-configuration>
+<DataDriverCommon>
+	<JavaDir>C:\Programs\CrystalReport2008\javasdk\bin</JavaDir>
+    <Classpath>C:\Programs\CrystalReport2008\Common\4.0\java\lib\external\postgresql-8.4-701.jdbc3.jar;C:\Programs\CrystalReport2008\Common\4.0\java\lib\crlovmanifest.jar;C:\Programs\CrystalReport2008\Common\4.0\java\lib\CRLOVExternal.jar;C:\Programs\CrystalReport2008\Common\4.0\java\lib\CRDBJDBCServer.jar;C:\Programs\CrystalReport2008\Common\4.0\java\lib\CRDBXMLServer.jar;C:\Programs\CrystalReport2008\Common\4.0\java\lib\CRDBJavaBeansServer.jar;C:\Programs\CrystalReport2008\Common\4.0\java\lib\external\log4j.jar;C:\Programs\CrystalReport2008\Common\4.0\java\lib\CRDBSForceServer.jar;C:\Programs\CrystalReport2008\Common\4.0\java\lib\external\CRDBSForceExternal.jar;C:\Programs\CrystalReport2008\Common\4.0\java\lib\CRDBWicServer.jar;C:\Programs\CrystalReport2008\Common\4.0\java\lib\external\CRDBWicExternal.jar;C:\Programs\CrystalReport2008\Common\4.0\java\lib\external\CRDBXMLExternal.jar;${CLASSPATH}</Classpath>
+	<IORFileLocation>${TEMP}</IORFileLocation>
+	<JavaServerTimeout>1800</JavaServerTimeout>
+	<JavaServerStartupTimeout>30</JavaServerStartupTimeout>
+	<JVMMaxHeap>64000000</JVMMaxHeap>
+	<JVMMinHeap>32000000</JVMMinHeap>
+	<NumberOfThreads>100</NumberOfThreads>
+</DataDriverCommon>
+<JDBC>
+	<CacheRowSetSize>100</CacheRowSetSize>
+	<JDBCURL>jdbc:postgresql://127.0.0.1:5432</JDBCURL>
+	<JDBCClassName>org.postgresql.Driver</JDBCClassName>
+	<JDBCUserName>cloud</JDBCUserName>
+	<JNDIURL></JNDIURL>
+	<JNDIConnectionFactory></JNDIConnectionFactory>
+	<JNDIInitContext>/</JNDIInitContext>
+	<JNDIUserName>weblogic</JNDIUserName>
+	<GenericJDBCDriver>
+    <Option>yes</Option>
+    <DatabaseStructure>catalogs,tables</DatabaseStructure>
+    <StoredProcType>Standard</StoredProcType>
+    <LogonStyle>Oracle</LogonStyle>
+  </GenericJDBCDriver>
+</JDBC>
+<XML>
+	<CacheRowSetSize>100</CacheRowSetSize>
+	<PreReadNBytes>4096</PreReadNBytes>
+	<MaxCacheXMLSize>153600</MaxCacheXMLSize>
+	<XMLLocalURL></XMLLocalURL>
+	<SchemaLocalURL></SchemaLocalURL>
+	<XMLHttpURL></XMLHttpURL>
+	<SchemaHttpURL></SchemaHttpURL>
+	<RepositoryPath>C:\Programs\CrystalReport2008\Common\4.0\java\lib\external</RepositoryPath>
+	<ExternalNamespace>C:\Programs\CrystalReport2008\Common\4.0\java\xsd\wsdl.xsd;C:\Programs\CrystalReport2008\Common\4.0\java\xsd\wsdl_encoding.xsd</ExternalNamespace>
+	<SocketTimeout>60000</SocketTimeout>
+</XML>
+<JavaBeans>
+    <CacheRowSetSize>100</CacheRowSetSize>
+	<JavaBeansClassPath></JavaBeansClassPath>
+	<CallBackFunction>CrystalReportsLogoff</CallBackFunction>
+</JavaBeans>
+<SForce>
+         <CacheRowSetSize>100</CacheRowSetSize>
+         <QueryBatchSize>2000</QueryBatchSize>
+         <SocketTimeout>600000</SocketTimeout>
+         <UseProxy>FALSE</UseProxy>
+         <ProxyAddress>
+         </ProxyAddress>
+         <ProxyPort>
+         </ProxyPort>
+         <BatchLookupCacheJoinSize>200</BatchLookupCacheJoinSize>
+</SForce>
+</Javaserver-configuration>
+</CrystalReportEngine-configuration>

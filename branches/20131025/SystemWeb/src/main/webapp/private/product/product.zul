@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+	<window width="100%" height="100%" closable="true" border="none" title="Cadastro de Produtos ou Serviços"
+		apply="br.com.mcampos.web.controller.product.ProductController">
+		<script type="text/JavaScript" defer="true">
+			jq(document).ready( function() { 
+				jq('$price1').setMask ( 'decimal' ); 
+				jq('$price2').setMask ( 'decimal' ); 
+				jq('$price3').setMask ( 'decimal' ); 
+				jq('$price4').setMask ( 'decimal' ); 
+			} );
+		</script>
+		<borderlayout>
+			<center flex="true">
+				<listbox vflex="true" autopaging="true" id="listTable" multiple="true" mold="paging" emptyMessage="Sem produtos no seu catálogo">
+					<listhead>
+						<listheader align="center" label="Código" id="lblId" width="50px" value="productId" />
+						<listheader align="left" label="Nome" id="lblName" sort="auto" value="name" width="1" />
+						<listheader align="left" label="Tipo" id="lblType" sort="auto" width="1" value="typeDescription" />
+					</listhead>
+				</listbox>
+			</center>
+			<east autoscroll="true" splittable="true" width="50%">
+				<div id="divEast">
+					<div id="divInfo">
+						<grid fixedLayout="true" span="true">
+							<columns>
+								<column label="Campo" width="150px" />
+								<column label="Valor" />
+							</columns>
+							<rows>
+								<row>
+									<label value="Código" />
+									<label id="infoId" />
+								</row>
+								<row>
+									<label value="Nome" />
+									<label id="infoName" />
+								</row>
+								<row>
+									<label value="Tipo" />
+									<label id="infoType" />
+								</row>
+								<row>
+									<label value="Descrição" />
+									<label id="infoDescription" />
+								</row>
+								<row align="center" spans="2">
+									<label value="Composição de Preços"/>
+								</row>
+								<row>
+									<label value="Compra" />
+									<label id="infoPrice1" />
+								</row>
+								<row>
+									<label value="Minimo" />
+									<label id="infoPrice2" />
+								</row>
+								<row>
+									<label value="Normal" />
+									<label id="infoPrice3" />
+								</row>
+								<row>
+									<label value="Máximo" />
+									<label id="infoPrice4" />
+								</row>
+							</rows>
+						</grid>
+						<separator />
+						<div fulfill="=/templates/crud_buttons.zul"></div>
+					</div>
+					<div id="divEdit" visible="false">
+						<grid fixedLayout="true">
+							<columns>
+								<column label="Campo" width="150px" />
+								<column label="Valor" />
+							</columns>
+							<rows>
+								<row>
+									<label value="Código" />
+									<intbox id="id" use="br.com.mcampos.web.core.dbwidgets.DBIntbox" PrimaryKey="true" />
+								</row>
+								<row>
+									<label value="Nome" />
+									<textbox id="name" hflex="true" use="br.com.mcampos.web.core.dbwidgets.DBTextbox" />
+								</row>
+								<row>
+									<label value="Tipo" />
+									<combobox id="type" hflex="true" use="br.com.mcampos.web.core.combobox.ProductTypeCombobox" />
+								</row>
+								<row>
+									<label value="Descrição" />
+									<textbox id="description" hflex="true" multiline="true" rows="3" use="br.com.mcampos.web.core.dbwidgets.DBTextbox" />
+								</row>
+								<row align="center" spans="2">
+									<label value="Composição de Preços"/>
+								</row>
+								<row>
+									<label value="Compra" />
+									<decimalbox width="100px" id="price1"/>
+								</row>
+								<row>
+									<label value="Minimo" />
+									<decimalbox width="100px" id="price2"/>
+								</row>
+								<row>
+									<label value="Normal" />
+									<decimalbox width="100px" id="price3"/>
+								</row>
+								<row>
+									<label value="Máximo" />
+									<decimalbox width="100px" id="price4"/>
+								</row>
+							</rows>
+						</grid>
+						<separator />
+						<div fulfill="=/templates/save_cancel.zul"></div>
+					</div>
+				</div>
+			</east>
+		</borderlayout>
+	</window>
+</zk>

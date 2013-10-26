@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+   <!-- Por favor, nao mude o id desta div -->
+   <window width="100%" height="100%">
+      <borderlayout>
+         <center>
+            <calendars weekOfYear="false" days="7" firstDayOfWeek="MONDAY" id="cal"/>
+         </center>
+      </borderlayout>
+   </window>
+</zk>
+
+
+

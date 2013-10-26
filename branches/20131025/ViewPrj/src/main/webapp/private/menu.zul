@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+	<div width="100%" apply="br.com.mcampos.controller.MenuController"
+		align="center" id="divMainMenu">
+		<menubar id="mainMenu" width="100%">
+			<menu label="Apresentação">
+				<menupopup>
+					<menuitem label="Painel de Controle" id="mnuAnotoView" value="/private/admin/anoto/anoto_view2.zul"/>
+					<menuitem label="Controle de Qualidade" id="mnuAnotoQuality" value="/private/admin/anoto/anoto_quality.zul"/>
+					<menuseparator />
+					<menuitem label="Pgc´s Carregados" id="mnuPcg" value="/private/admin/anoto/anoto_pcg.zul"/>
+				</menupopup>
+			</menu>
+			<menu label="Tabelas">
+				<menupopup>
+					<menuitem label="Formulários" id="mnuAnotoForm" value="/private/admin/anoto/anoto_form.zul"/>
+					<menuseparator />
+					<menuitem label="Campos do Formulário" id="mnuAnotoField" value="/private/admin/anoto/anoto_field.zul"/>
+					<menuseparator />
+					<menuitem label="Canetas" id="mnuAnotoPen" value="/private/admin/anoto/anoto_pen.zul"/>
+					<menuitem label="Usuários de Canetas" id="mnuAnotoPenUser" value="/private/admin/anoto/anoto_pen_user.zul"/>
+				</menupopup>
+			</menu>
+			<menu label="Segurança">
+				<menupopup>
+					<menuitem label="Logout" id="mnuLogout" />
+				</menupopup>
+			</menu>
+		</menubar>
+	</div>
+</zk>

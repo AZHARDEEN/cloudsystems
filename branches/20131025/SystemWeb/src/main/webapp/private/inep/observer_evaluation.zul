@@ -1,0 +1,164 @@
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<window width="100%" height="100%" closable="true" border="none" title="Ficha de Avaliação da Interação Face a Face - Observador"
+		apply="br.com.mcampos.web.inep.controller.station.ObserverController">
+		<div width="100%" height="62px" align="Center" fulfill="=/private/inep/inep_logo.zul" />
+		<div width="100%" height="18px" align="Center" style="background-color:rgba(255,0,0,0.1)">
+			<label value = "Evento Oficial 2º Semestre 2013" />
+		</div>
+		<separator />
+		<borderlayout>
+			<center flex="true">
+				<div align="Center" width="600px">
+					<grid width="600px">
+						<columns>
+							<column width="30%" />
+							<column />
+						</columns>
+						<rows>
+							<row>
+								<label value="Número de Inscrição:" />
+								<bandbox maxlength="32" id="subscription" width="200px" mold="rounded">
+									<bandpopup>
+										<listbox height="250px" width="300px" mold="paging" autopaging="true" id="list">
+											<listhead>
+												<listheader label="Inscrições" />
+											</listhead>
+										</listbox>
+									</bandpopup>
+								</bandbox>
+							</row>
+							<row>
+								<label value="Nome do Examinando:" />
+								<label id="candidate" />
+							</row>
+							<row>
+								<label value="Nacionalidade:" />
+								<label id="citizenship" />
+							</row>
+							<row>
+								<label value="Necessidades Especiais:" />
+								<label id="needs" />
+							</row>
+						</rows>
+					</grid>
+					<separator />
+					<div id="divData" visible="false">
+						<grid width="600px">
+							<columns>
+								<column width="30%" />
+								<column />
+							</columns>
+							<rows>
+								<row>
+									<label value="Compreensão:" />
+									<hlayout>
+										<radiogroup id="comprehension" />
+										<radio label="5" radiogroup="comprehension" value="5" />
+										<separator width="20px" />
+										<radio label="4" radiogroup="comprehension" value="4" />
+										<separator width="20px" />
+										<radio label="3" radiogroup="comprehension" value="3" />
+										<separator width="20px" />
+										<radio label="2" radiogroup="comprehension" value="2" />
+										<separator width="20px" />
+										<radio label="1" radiogroup="comprehension" value="1" />
+										<separator width="20px" />
+										<radio label="0" radiogroup="comprehension" value="0" />
+									</hlayout>
+								</row>
+								<row>
+									<label value="Competência Interacional:" />
+									<hlayout>
+										<radiogroup id="interaction" />
+										<radio label="5" radiogroup="interaction" value="5" />
+										<separator width="20px" />
+										<radio label="4" radiogroup="interaction" value="4" />
+										<separator width="20px" />
+										<radio label="3" radiogroup="interaction" value="3" />
+										<separator width="20px" />
+										<radio label="2" radiogroup="interaction" value="2" />
+										<separator width="20px" />
+										<radio label="1" radiogroup="interaction" value="1" />
+										<separator width="20px" />
+										<radio label="0" radiogroup="interaction" value="0" />
+									</hlayout>
+								</row>
+								<row>
+									<label value="Fluência:" />
+									<hlayout>
+										<radiogroup id="fluency" />
+										<radio label="5" radiogroup="fluency" value="5" />
+										<separator width="20px" />
+										<radio label="4" radiogroup="fluency" value="4" />
+										<separator width="20px" />
+										<radio label="3" radiogroup="fluency" value="3" />
+										<separator width="20px" />
+										<radio label="2" radiogroup="fluency" value="2" />
+										<separator width="20px" />
+										<radio label="1" radiogroup="fluency" value="1" />
+										<separator width="20px" />
+										<radio label="0" radiogroup="fluency" value="0" />
+									</hlayout>
+								</row>
+								<row>
+									<label value="Adequação Lexical:" />
+									<hlayout>
+										<radiogroup id="lexical" />
+										<radio label="5" radiogroup="lexical" value="5" />
+										<separator width="20px" />
+										<radio label="4" radiogroup="lexical" value="4" />
+										<separator width="20px" />
+										<radio label="3" radiogroup="lexical" value="3" />
+										<separator width="20px" />
+										<radio label="2" radiogroup="lexical" value="2" />
+										<separator width="20px" />
+										<radio label="1" radiogroup="lexical" value="1" />
+										<separator width="20px" />
+										<radio label="0" radiogroup="lexical" value="0" />
+									</hlayout>
+								</row>
+								<row>
+									<label value="Adequação Gramatical:" />
+									<hlayout>
+										<radiogroup id="grammar" />
+										<radio label="5" radiogroup="grammar" value="5" />
+										<separator width="20px" />
+										<radio label="4" radiogroup="grammar" value="4" />
+										<separator width="20px" />
+										<radio label="3" radiogroup="grammar" value="3" />
+										<separator width="20px" />
+										<radio label="2" radiogroup="grammar" value="2" />
+										<separator width="20px" />
+										<radio label="1" radiogroup="grammar" value="1" />
+										<separator width="20px" />
+										<radio label="0" radiogroup="grammar" value="0" />
+									</hlayout>
+								</row>
+								<row>
+									<label value="Pronúncia:" />
+									<hlayout valign="center">
+										<radiogroup id="accent" />
+										<radio label="5" radiogroup="accent" value="5" />
+										<separator width="20px" />
+										<radio label="4" radiogroup="accent" value="4" />
+										<separator width="20px" />
+										<radio label="3" radiogroup="accent" value="3" />
+										<separator width="20px" />
+										<radio label="2" radiogroup="accent" value="2" />
+										<separator width="20px" />
+										<radio label="1" radiogroup="accent" value="1" />
+										<separator width="20px" />
+										<radio label="0" radiogroup="accent" value="0" />
+									</hlayout>
+								</row>
+							</rows>
+						</grid>
+						<separator height="30px" />
+						<div fulfill="=/templates/submit_cancel.zul"></div>
+					</div>
+				</div>
+			</center>
+		</borderlayout>
+	</window>
+</zk>

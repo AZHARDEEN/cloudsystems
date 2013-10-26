@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+    <window width="100%" height="100%" closable="true" border="none" title="Cadastro de Aplicações (Formulários) da Caneta Digital" 
+    	apply = "br.com.mcampos.web.fdigital.controller.AnotoFormController">
+        <borderlayout>
+            <center flex="true">
+                <div width="100%" height="100%" id="divListBoxRecord">
+	                <listbox vflex="true" autopaging="true" id="listTable" multiple="true" mold="paging">
+	                    <listhead>
+	                        <listheader align="left" label="Aplicação" sort="auto" width="160px" value="application"/>
+	                        <listheader align="left" label="Descrição" sort="auto" value="description"/>
+	                    </listhead>
+	                </listbox>
+                </div>
+            </center>
+            <east autoscroll="true" splittable="true" width="50%">
+                <div id="divEast">
+                    <tabbox id="associationTab">
+                        <tabs>
+                            <tab label="Dados da Aplicação" id="tabAppData"/>
+                            <tab label="Arquivos PAD" id="tabPadFile"/>
+                            <tab label="Usuários" id="tabFormUsers"/>
+                            <tab label="Canetas" id="tabPen"/>
+                            <tab label="Outros Arquivos" id="tabOtherFiles"/>
+                        </tabs>
+                        <tabpanels>
+                            <tabpanel>
+			                 <div id="divInfo">
+			                     <grid width="100%">
+			                         <columns>
+			                             <column align="left" width="160px"/>
+			                             <column align="left"/>
+			                         </columns>
+			                         <rows>
+			                             <row>
+			                                 <label id="labelCode" value="Código"/>
+			                                 <label id="infoId"/>
+			                             </row>
+			                             <row>
+			                                 <label id="labelApplication" value="Applicação"/>
+			                                 <label id="recordIP"/>
+			                             </row>
+			                             <row>
+			                                 <label id="labelDescription" value="Descrição"/>
+			                                 <label id="infoDescription"/>
+			                             </row>
+			                             <row>
+			                                 <label id="labelIcrImage" value="ICR"/>
+			                                 <label id="recordIcrImage"/>
+			                             </row>
+			                             <row>
+			                                 <label id="labelConcatPgc" value="Concatenação"/>
+			                                 <label id="recordConcatPgc"/>
+			                             </row>
+			                             <row>
+			                                 <label id="labelImagePath" value="Imagem"/>
+			                                 <label id="recordImagePath"/>
+			                             </row>
+			                         </rows>
+			                     </grid>
+			                  <separator/>
+			                  <div fulfill="=/templates/crud_buttons.zul"></div>
+			                 </div>
+			                 <div id="divEdit" visible="false">
+			                     <grid width="100%" fixedLayout="true">
+			                         <columns>
+			                             <column align="left" width="160px"/>
+			                             <column align="left"/>
+			                         </columns>
+			                         <rows>
+			                             <row visible="false">
+			                                 <label id="labelEditCode" value="##"/>
+			                                 <intbox id="id" width="99%" value="1" />
+			                             </row>
+			                             <row>
+			                                 <label id="labelEditApplication" value="##"/>
+			                                 <textbox id="editIP" width="99%" value="" maxlength="16"/>
+			                             </row>
+			                             <row>
+			                                 <label id="labelEditDescription" value="##"/>
+			                                 <textbox id="description" width="99%" value="" use="br.com.mcampos.web.core.dbwidgets.DBTextbox" />
+			                             </row>
+			                             <row>
+			                                 <label id="labelEditIcrImage" value="##"/>
+			                                 <checkbox id="editIcrImage" width="99%" checked="false"/>
+			                             </row>
+			                             <row>
+			                                 <label id="labelEditConcatPgc" value="##"/>
+			                                 <checkbox id="editConcatPgc" width="99%" checked="false"/>
+			                             </row>
+			                             <row>
+			                                 <label id="labelEditImagePath" value="##"/>
+			                                 <textbox id="editImagePath" width="99%" value=""/>
+			                             </row>
+			                         </rows>
+			                     </grid>
+			                  <separator/>
+			                  <div fulfill="=/templates/save_cancel.zul" />
+			                 </div>
+                            </tabpanel>
+                            <tabpanel>
+                            	<hlayout width="100%" >
+                            		<div align="left" width="350px">
+	                            		<hlayout>
+		                                    <button id="btnAddAttach" label="Novo Arquivo PAD" disabled="true" upload="true,native"
+		                                                   image="/img/icontexto-webdev-add-016x016.png" />
+		                                    <button id="btnProperties" label="Propriedades" disabled="true"
+		                                                   image="/img/icontexto-webdev-alert-016x016.png"/>
+		                                    <button image="/img/icontexto-webdev-file-016x016.png" label="Exportar PAD"
+		                                                   id="btnExport" disabled="true"/>
+	                                    </hlayout>
+                                    </div>
+                                    <div align="right" width="130px">
+                                    <button id="btnRemoveAttach" label="Excluir PAD Selecionado" disabled="true"
+                                                   image="/img/icontexto-webdev-remove-016x016.png"/>
+                                    </div>
+                                </hlayout>
+                                <listbox id="listAttachs" rows="13" autopaging="true" mold="paging" >
+                                    <listhead sizable="true">
+                                        <listheader align="left" label="Nome" id="listHeaderName"/>
+                                    </listhead>
+                                </listbox>
+                            </tabpanel>
+                            <tabpanel>
+	                            <button id="btnAddUser" label="##" disabled="true" image="/img/icontexto-webdev-add-016x016.png"/>
+	                            <button id="btnRemoveUser" label="##" disabled="true" image="/img/icontexto-webdev-remove-016x016.png"/>
+                                <listbox id="listUsers" rows="13" autopaging="true" mold="paging" >
+                                    <listhead sizable="true">
+                                        <listheader align="left" label="Código" id="listUserCode" width="20%"/>
+                                        <listheader align="left" label="Nome" id="listUserName"/>
+                                    </listhead>
+                                </listbox>
+                            </tabpanel>
+                            <tabpanel>
+                                <hbox>
+                                    <vbox>
+                                        <label value="##" id="labelLinked"/>
+                                        <listbox id="listAdded" rows="13" autopaging="true" mold="paging">
+                                            <listhead sizable="true">
+                                                <listheader align="left" label="##" id="listHeaderCode"/>
+                                            </listhead>
+                                        </listbox>
+                                    </vbox>
+                                    <vbox>
+                                        <button image="/img/icontexto-webdev-arrow-left-032x032.png" id="btnAddPen"/>
+                                        <button image="/img/icontexto-webdev-arrow-right-032x032.png" id="btnRemovePen"/>
+                                    </vbox>
+                                    <vbox>
+                                        <label value="##" id="labelAvailable"/>
+                                        <listbox id="listAvailable" rows="13" autopaging="true" mold="paging" droppable="true">
+                                            <listhead sizable="true">
+                                                <listheader align="left" label="##" id="listHeadeCodeAvailable"/>
+                                            </listhead>
+                                        </listbox>
+                                    </vbox>
+                                </hbox>
+                            </tabpanel>
+                            <tabpanel>
+                            	<hlayout width="100%" >
+                            		<div align="left" width="350px">
+	                            		<hlayout>
+		                                    <button id="btnAddAttachOther" label="##" disabled="true"
+		                                                   image="/img/icontexto-webdev-add-016x016.png"/>
+		                                    <button image="/img/icontexto-webdev-file-016x016.png" label="##"
+		                                                   id="btnExportOther"/>
+	                                    </hlayout>
+                                    </div>
+                                    <div align="right" width="130px">
+	                                    <button id="btnRemoveAttachOther" label="##" disabled="true"
+                                                   image="/img/icontexto-webdev-remove-016x016.png"/>
+                                    </div>
+                                </hlayout>
+                                <listbox id="listAttachsOther" rows="13" autopaging="true" mold="paging">
+                                    <listhead sizable="true">
+                                        <listheader align="left" label="##" id="listHeaderNameOther"/>
+                                        <listheader align="left" label="Tamanho(Bytes)" />
+                                    </listhead>
+                                </listbox>
+                            </tabpanel>
+                        </tabpanels>
+                    </tabbox>
+                </div>
+            </east>
+        </borderlayout>
+    </window>
+</zk>

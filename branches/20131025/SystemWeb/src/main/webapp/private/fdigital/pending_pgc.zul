@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+    <window width="100%" height="100%" closable="true" border="none" title="Lista de PGC's pendentes no sistema" 
+    	apply = "br.com.mcampos.web.fdigital.controller.PendingPgcController">
+    	<borderlayout>
+    		<center >
+		    	<div width="100%" height="100%">
+		    		<hlayout valign="middle">
+						<paging id="topPaging"/>
+						<separator  orient= "horizontal" width="50px"/>
+						<toolbarbutton  id="cmdFilter" image="/img/icontexto-webdev-search-032x032.png" label="Filtro"/>
+					</hlayout>
+			        <listbox id="listTable" multiple="true" vflex="true">
+			            <listhead>
+			                <listheader align="left" label="Código" sort="auto" width="80px" value="id"/>
+			                <listheader align="left" label="Descrição" sort="auto" value="description"/>
+			                <listheader align="left" label="Caneta" sort="auto" width = "150px" value="penId"/>
+			                <listheader align="left" label="Inserido Em" sort="auto" width="160px" value="insertDate"/>
+			                <listheader align="left" label="Status" sort="auto" value="status"/>
+			            </listhead>
+			        </listbox>
+		        </div>
+	        </center>
+        </borderlayout>
+	</window>
+</zk>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+    <window width="100%" height="100%" closable="true" border="none" title="Cadastro de Eventos"
+            apply="br.com.mcampos.web.inep.controller.EventsController" >
+		<div width="100%" height="62px" align="Center" fulfill="=/private/inep/inep_logo.zul" />
+	    <borderlayout>
+	        <center flex="true">
+	            <listbox vflex="true" autopaging="true" id="listTable" multiple="true" mold="paging">
+	                <listhead>
+	                    <listheader align="center" label="Código" width="80px" value="id"/>
+	                    <listheader align="left" label="Descrição" sort="auto" value="description"/>
+	                </listhead>
+	            </listbox>
+	        </center>
+	        <east autoscroll="true" splittable="true" width="50%">
+	            <div id="divEast">
+	                <div id="divInfo">
+	                    <grid fixedLayout="true">
+	                        <columns>
+	                            <column label="Campo" width="150px"/>
+	                            <column label="Valor"/>
+	                        </columns>
+	                        <rows>
+	                            <row>
+		                            <label value="Código"/>
+		                            <label id="infoId" width="100%"/>
+		                        </row>
+	                            <row>
+		                            <label value="Descrição"/>
+		                            <label id="infoDescription" width="100%"/>
+		                        </row>
+	                            <row>
+		                            <label value="Início Vigência"/>
+		                            <label id="infoInitDate" width="100%"/>
+		                        </row>
+	                            <row>
+		                            <label value="Término Vigência"/>
+		                            <label id="infoEndDate" width="100%"/>
+		                        </row>
+	                        </rows>
+	                    </grid>
+	                    <separator />
+	                    <div align="Left">
+	                    	<toolbarbutton id="loadSubscriptions" label="Carregar Inscrições" image="/img/Upload_Folder-32x32.png"/>
+	                    </div>
+	                    <separator width="30px"/>
+	                    <div align="Left">
+	                    	<toolbarbutton id="loadStationResponsables" label="Carregar os Responsáveis pelos Postos" image="/img/Upload_Folder-32x32.png"/>
+	                    </div>
+	                <separator/>
+	                <div fulfill="=/templates/crud_buttons.zul"></div>
+	                </div>
+	                <div id="divEdit" visible="false">
+	                    <grid fixedLayout="true">
+	                        <columns>
+	                            <column label="Campo" width="150px"/>
+	                            <column label="Valor"/>
+	                        </columns>
+	                        <rows>
+	                            <row>
+		                            <label value="Código"/>
+		                            <intbox id="id" use="br.com.mcampos.web.core.dbwidgets.DBIntbox" PrimaryKey="true"/>
+		                        </row>
+	                            <row>
+		                            <label value="Descrição"/>
+		                            <textbox id="description" width="100%" use="br.com.mcampos.web.core.dbwidgets.DBTextbox"/>
+		                        </row>
+	                            <row>
+		                            <label value="Inicio"/>
+		                            <datebox id="initDate" />
+		                        </row>
+	                            <row>
+		                            <label value="Fim"/>
+		                            <datebox id="endDate" />
+		                        </row>
+	                        </rows>
+	                    </grid>
+	                <separator/>
+	                <div fulfill="=/templates/save_cancel.zul"></div>
+	                </div>
+	            </div>
+	        </east>
+	    </borderlayout>
+    </window>
+</zk>

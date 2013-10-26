@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<div id="divDocumentList" apply="br.com.mcampos.controller.commom.DocumentListController" xmlns="http://www.zkoss.org/2005/zul">
+ <listbox fixedLayout="true" id="documentList" rows="4">
+  <listhead sizable="true">
+   <listheader id="headerDocumentType" label="##" sort="auto" align="left" width="20%"/>
+   <listheader id="headerDocumentDescription" label="##" sort="auto" align="left" width="40%"/>
+   <listheader id="headerDocumentObs" label="##" width="40%"/>
+  </listhead>
+ </listbox>
+ <separator bar="true"/>
+ <grid>
+  <columns>
+   <column width="20%"/>
+   <column/>
+  </columns>
+  <rows>
+   <row>
+    <label value="##" id="labelDocumentType"/>
+    <combobox id="documentType" width="150px" readonly="true"></combobox>
+   </row>
+   <row>
+    <label value="##" id="labelDocumentCode"/>
+    <textbox id="documentId" maxlength="32" width="300px"/>
+   </row>
+   <row>
+    <label value="##" id="labelDocumentObs"/>
+    <textbox id="documentComent" width="99%" maxlength="255" multiline="true" rows="2"/>
+   </row>
+  </rows>
+ </grid>
+ <separator bar="true"/>
+ <div align="center">
+  <hbox align="center">
+   <button label="##" id="addDocument" image="/img/icontexto-webdev-add-032x032.png"/>
+   <button label="##" id="updateDocument" image="/img/icontexto-webdev-alert-032x032.png"/>
+   <button label="##" id="removeDocument" image="/img/icontexto-webdev-remove-032x032.png"/>
+  </hbox>
+ </div>
+</div>

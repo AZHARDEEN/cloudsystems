@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window width="100%" border="none">
+        <span style="font-size:small">
+            <label id="labelCopyright" value="##" width="70%"/>
+        </span>
+    </window>
+</zk>
