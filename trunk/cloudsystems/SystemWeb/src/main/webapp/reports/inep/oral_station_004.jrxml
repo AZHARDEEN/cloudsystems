@@ -20,7 +20,7 @@
 		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[110]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[139]]></defaultValueExpression>
 	</parameter>
 	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
@@ -35,8 +35,6 @@
 	STP.USR_NAME_CH AS EXAMINANDO,
 	ISC.isc_citizenship_ch NACIONALIDADE,
 	ISC.isc_special_needs_ch NEEDS,
-	iot_interviewer_grade_nm I_GRADE,
-	iot_observer_grade_nm O_GRADE,
 	ISS_ID_IN STATUS,
 	med_name_ch,
 	med_size_in,
@@ -49,11 +47,10 @@ FROM
 	INNER JOIN INEP.INEP_STATION_REPONSABLE SR ON ( CLI.USR_ID_IN = SR.USR_ID_IN AND CLI.CLI_SEQ_IN = SR.CLI_SEQ_IN )
 	INNER JOIN INEP.INEP_MEDIA IM ON ( ISC.USR_ID_IN = IM.USR_ID_IN AND ISC.PCT_ID_IN = IM.PCT_ID_IN AND ISC.ISC_ID_CH = IM.ISC_ID_CH )
 	INNER JOIN MEDIA M on ( IM.MED_ID_IN = M.MED_ID_IN )
-	INNER JOIN INEP.INEP_ORAL_TEST O ON ( ISC.USR_ID_IN = O.USR_ID_IN AND ISC.PCT_ID_IN = O.PCT_ID_IN AND ISC.ISC_ID_CH = O.ISC_ID_CH )
 WHERE
-     EVT.USR_ID_IN = $P{COMPANY_ID}
- AND EVT.PCT_ID_IN = $P{EVENT_ID}
- AND SR.COL_SEQ_IN = $P{COLLABORATOR_ID}
+     EVT.USR_ID_IN = 13623
+ AND EVT.PCT_ID_IN = 2
+ AND SR.COL_SEQ_IN = 139
 ORDER BY
      EVT.USR_ID_IN ASC,
      EVT.PCT_ID_IN ASC,
@@ -70,8 +67,6 @@ ORDER BY
 	<field name="examinando" class="java.lang.String"/>
 	<field name="nacionalidade" class="java.lang.String"/>
 	<field name="needs" class="java.lang.String"/>
-	<field name="i_grade" class="java.math.BigDecimal"/>
-	<field name="o_grade" class="java.math.BigDecimal"/>
 	<field name="status" class="java.lang.Integer"/>
 	<field name="med_name_ch" class="java.lang.String"/>
 	<field name="med_size_in" class="java.lang.Integer"/>
