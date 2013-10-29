@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0             http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>br.com.mcampos</groupId>
@@ -9,7 +8,6 @@
 	<packaging>pom</packaging>
 	<name>System</name>
 	<url>http://meusistema.info</url>
-
 
 	<modules>
 		<module>SysUtils</module>
@@ -22,123 +20,141 @@
 		<module>ViewPrj</module>
 	</modules>
 
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<distribution>repo</distribution>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-		</license>
-	</licenses>
-
-
 	<properties>
+
+		<zk.version>6.5.4</zk.version>
+    
+        <maven-war-plugin>2.4</maven-war-plugin>
+        <maven-ear-plugin>2.8</maven-ear-plugin>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
-		<maven.compiler.target>1.7</maven.compiler.target>
-		<maven.compiler.source>1.7</maven.compiler.source>
-
-		<!-- JBoss dependency versions -->
-		<version.org.jboss.as.plugins.maven.plugin>7.3.Final</version.org.jboss.as.plugins.maven.plugin>
-		<version.org.jboss.spec.jboss.javaee.6.0>3.0.0.Final</version.org.jboss.spec.jboss.javaee.6.0>
-
 		<!-- other plugin versions -->
 		<version.compiler.plugin>2.3.1</version.compiler.plugin>
 		<version.ejb.plugin>2.3</version.ejb.plugin>
 		<maven.pmd.plugin.version>5.0.2</maven.pmd.plugin.version>
-
 		<system.ear.version>1.0.1</system.ear.version>
 		<system.war.version>1.0.1</system.war.version>
 		<system.jpa.version>1.0.1</system.jpa.version>
 		<system.ejb.version>1.0.1</system.ejb.version>
 		<sysutils.version>1.0.1</sysutils.version>
-
-		<slf4j.version>1.7.5</slf4j.version>
-
-
-		<!-- Define the version of the JBoss BOMs we want to import to specify 
-			tested stacks. -->
-		<version.jboss.bom>1.0.7.Final</version.jboss.bom>
-
-
+		<project_version>1.0.2</project_version>
 	</properties>
-
-
-
-	<dependencyManagement>
-		<dependencies>
-			<!-- JBoss distributes a complete set of Java EE 6 APIs including a Bill 
-				of Materials (BOM). A BOM specifies the versions of a "stack" (or a collection) 
-				of artifacts. We use this here so that we always get the correct versions 
-				of artifacts. Here we use the jboss-javaee-6.0-with-tools stack (you can 
-				read this as the JBoss stack of the Java EE 6 APIs, with some extras tools 
-				for your project, such as Arquillian for testing) and the jboss-javaee-6.0-with-hibernate 
-				stack you can read this as the JBoss stack of the Java EE 6 APIs, with extras 
-				from the Hibernate family of projects) -->
-			<dependency>
-				<groupId>org.jboss.bom</groupId>
-				<artifactId>jboss-javaee-6.0-with-tools</artifactId>
-				<version>${version.jboss.bom}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.bom</groupId>
-				<artifactId>jboss-javaee-6.0-with-hibernate</artifactId>
-				<version>${version.jboss.bom}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
-
-
 	<build>
-
-		<pluginManagement>
-			<plugins>
-				<!--The configuration of this plugin is used to store the Eclipse M2E 
-					settings only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>jasperreports-maven-plugin</artifactId>
-										<versionRange> [0.0,)</versionRange>
-										<goals>
-											<!-- plugin goals -->
-											<goal>compile-reports</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<!-- M2E should ignore the plugin -->
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.jboss.as.plugins</groupId>
-					<artifactId>jboss-as-maven-plugin</artifactId>
-					<version>7.4.Final</version>
-					<configuration>
-						<jbossHome>/usr/jboss-4.2.3.GA</jbossHome>
-						<serverName>all</serverName>
-						<fileName>target/my-project.war</fileName>
-					</configuration>
-				</plugin>
-
-			</plugins>
-		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+    				<source>1.7</source>
+    				<target>1.7</target>
+					<debug>true</debug>
+					<debuglevel>lines,vars,source</debuglevel>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+		</plugins>
+       
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources/common</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>        
 	</build>
+    
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+            <version>4.11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>jboss7</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<target_server>jboss7</target_server>
+				<version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
+				<!-- JBoss dependency versions -->
+				<version.org.jboss.as.plugins.maven.plugin>7.3.Final</version.org.jboss.as.plugins.maven.plugin>
+				<version.org.jboss.spec.jboss.javaee.6.0>3.0.0.Final</version.org.jboss.spec.jboss.javaee.6.0>
+				<!-- Define the version of the JBoss BOMs we want to import to specify tested stacks. -->
+				<version.jboss.bom>1.0.7.Final</version.jboss.bom>
+                
+                <persistence_provider>org.hibernate.ejb.HibernatePersistenceProvider</persistence_provider>
+			</properties>                                                                         
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jboss.as.plugins</groupId>
+						<artifactId>jboss-as-maven-plugin</artifactId>
+						<version>7.5.Final</version>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>jboss8</id>
+			<properties>
+				<target_server>jboss8</target_server>
+				<version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
+				<!-- JBoss dependency versions -->
+				<version.org.jboss.as.plugins.maven.plugin>7.3.Final</version.org.jboss.as.plugins.maven.plugin>
+				<version.org.jboss.spec.jboss.javaee.6.0>3.0.0.Final</version.org.jboss.spec.jboss.javaee.6.0>
+				<!-- Define the version of the JBoss BOMs we want to import to specify tested stacks. -->
+				<version.jboss.bom>1.0.7.Final</version.jboss.bom>
+                <persistence_provider>org.hibernate.jpa.HibernatePersistenceProvider</persistence_provider>
+			</properties>                                                                         
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jboss.as.plugins</groupId>
+						<artifactId>jboss-as-maven-plugin</artifactId>
+						<version>7.5.Final</version>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>glassfish</id>
+			<properties>
+				<target_server>glassfish</target_server>
+                <persistence_provider>org.eclipse.persistence.jpa.PersistenceProvider</persistence_provider>
+			</properties>
+		</profile>
+		<profile>
+			<id>weblogic</id>
+			<properties>
+				<target_server>weblogic-10</target_server>
+			</properties>
+		</profile>
+	</profiles>
+
 
 </project>

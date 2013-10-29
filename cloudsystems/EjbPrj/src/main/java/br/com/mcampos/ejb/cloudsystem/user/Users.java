@@ -70,7 +70,7 @@ public abstract class Users implements Serializable, Comparable<Users>
 	@JoinColumn( name = "ust_id_in", nullable = false, referencedColumnName = "ust_id_in", columnDefinition = "Integer" )
 	private UserType userType;
 
-	@OneToMany( mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true )
+	@OneToMany( mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL )
 	private Set<UserDocument> documents;
 
 	/*

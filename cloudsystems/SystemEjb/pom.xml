@@ -40,29 +40,7 @@
 		<version.compiler.plugin>2.3.1</version.compiler.plugin>
 		<version.ejb.plugin>2.3</version.ejb.plugin>
 	</properties>
-
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.jboss.spec</groupId>
-				<artifactId>jboss-javaee-6.0</artifactId>
-				<version>3.0.0.Final</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
-
 	<dependencies>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>br.com.mcampos.sysutils</groupId>
 			<artifactId>SysUtils</artifactId>
@@ -90,35 +68,11 @@
 			<version>1.9.0</version>
 			<scope>compile</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.5</version>
-		</dependency>
-
+        
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jboss.spec.javax.annotation</groupId>
-			<artifactId>jboss-annotations-api_1.1_spec</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jboss.spec.javax.ejb</groupId>
-			<artifactId>jboss-ejb-api_3.1_spec</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -127,45 +81,44 @@
 			<version>1.1-rev-1</version>
 			<scope>provided</scope>
 		</dependency>
-
+        
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mailapi</artifactId>
 			<version>1.4.3</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.jboss.ejb3</groupId>
-			<artifactId>jboss-ejb3-ext-api</artifactId>
-			<version>2.1.0</version>
+        
+        <dependency>
+        	<groupId>javax.ejb</groupId>
+        	<artifactId>javax.ejb-api</artifactId>
+        	<version>3.2</version>
 			<scope>provided</scope>
-		</dependency>
-
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+        	<groupId>javax.validation</groupId>
+        	<artifactId>validation-api</artifactId>
+        	<version>1.1.0.Final</version>
+            <scope>provided</scope>
+        </dependency>        
+                    
 	</dependencies>
-
 	<build>
 		<!-- Set the name of the deployment -->
 		<finalName>SystemEjb</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources/${target_server}</directory>
+            </resource>
+        </resources>            
 		<plugins>
-			<!-- JBoss AS plugin to deploy the application -->
-			<plugin>
-				<groupId>org.jboss.as.plugins</groupId>
-				<artifactId>jboss-as-maven-plugin</artifactId>
-				<version>7.3.Final</version>
-				<configuration>
-					<filename>${project.build.finalName}.jar</filename>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${version.compiler.plugin}</version>
-				<configuration>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-ejb-plugin</artifactId>
@@ -176,8 +129,43 @@
 					<generateClient>true</generateClient>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
-
+    
+    
+	<profiles>
+		<!-- 
+		#######################################################################################################
+		#####################################     JBOSS AS 7.1.1 PROFILE     ##################################
+		####################################################################################################### 
+		-->
+		<profile>
+			<id>jboss7</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>            
+        	<build>
+        		<!-- Set the name of the deployment -->
+        		<finalName>SystemEjb</finalName>
+        		<plugins>
+        			<!-- JBoss AS plugin to deploy the application -->
+        			<plugin>
+        				<groupId>org.jboss.as.plugins</groupId>
+        				<artifactId>jboss-as-maven-plugin</artifactId>
+        				<version>7.4.Final</version>
+        				<configuration>
+        					<filename>${project.build.finalName}.jar</filename>
+        				</configuration>
+        			</plugin>
+        		</plugins>
+        	</build>
+		</profile>
+		<profile>
+			<id>glassfish</id>
+        	<build>
+        		<!-- Set the name of the deployment -->
+        		<finalName>SystemEjb</finalName>
+        	</build>
+		</profile>
+	</profiles>
 </project>

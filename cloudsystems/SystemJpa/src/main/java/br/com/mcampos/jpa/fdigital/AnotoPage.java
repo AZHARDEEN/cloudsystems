@@ -51,11 +51,11 @@ public class AnotoPage implements Serializable, BasicEntityRenderer<AnotoPage>, 
 	private Pad pad;
 
 	// bi-directional many-to-one association to AnotoPageField
-	@OneToMany( mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true )
+	@OneToMany( mappedBy = "page", cascade = CascadeType.ALL )
 	private List<AnotoPageField> fields;
 
 	// bi-directional many-to-one association to AnotoPenPage
-	@OneToMany( mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true )
+	@OneToMany( mappedBy = "page", cascade = CascadeType.ALL )
 	private List<AnotoPenPage> pens;
 
 	public AnotoPage( )

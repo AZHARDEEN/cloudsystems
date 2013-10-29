@@ -2,7 +2,6 @@ package br.com.mcampos.ejb.email;
 
 import java.util.Properties;
 
-import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
 import javax.jms.Message;
@@ -14,6 +13,9 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.mcampos.dto.MailDTO;
 import br.com.mcampos.ejb.params.SystemParameterSessionLocal;
 
@@ -21,14 +23,10 @@ import br.com.mcampos.ejb.params.SystemParameterSessionLocal;
  * Message-Driven Bean implementation class for: EmailMessageBean
  * 
  */
-@MessageDriven( name = "EmailMessage",
-		activationConfig = {
-				@ActivationConfigProperty( propertyName = "destinationType", propertyValue = "javax.jms.Queue" ),
-				@ActivationConfigProperty( propertyName = "destination", propertyValue = EmailMessageBean.destinationName ),
-				@ActivationConfigProperty( propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge" )
-		} )
+@MessageDriven( name = "EmailMessageBean" )
 public class EmailMessageBean implements MessageListener
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger( EmailMessageBean.class );
 
 	@EJB
 	private SystemParameterSessionLocal properties;
@@ -45,11 +43,13 @@ public class EmailMessageBean implements MessageListener
 
 	public EmailMessageBean( )
 	{
+		LOGGER.info( "EmailMessageBean::EmailMessageBean creating a new Instance" );
 	}
 
 	@Override
 	public void onMessage( Message message )
 	{
+		LOGGER.info( "New Message to Process" );
 		if ( message instanceof ObjectMessage ) {
 			ObjectMessage objMessage = (ObjectMessage) message;
 			try {
@@ -78,6 +78,7 @@ public class EmailMessageBean implements MessageListener
 
 	protected Properties configureProperties( Properties props )
 	{
+		LOGGER.info( "EmailMessageBean::configureProperties configure properties" );
 		// java.security.Security.addProvider( new
 		// com.sun.net.ssl.internal.ssl.Provider( ) );
 		// System.setProperty( "javax.net.debug", "ssl,handshake" );
@@ -115,11 +116,13 @@ public class EmailMessageBean implements MessageListener
 	private Session getMailSession( )
 	{
 		if ( this.mailSession == null ) {
+			LOGGER.info( "EmailMessageBean::getMailSession Creating a new Mail Session" );
 			Properties props = new Properties( );
 			SMTPAuthenticator auth = new SMTPAuthenticator( );
 			props = this.configureProperties( props );
 			this.mailSession = Session.getInstance( props, auth );
 		}
+		LOGGER.info( "Geting a mail session" );
 		return this.mailSession;
 	}
 

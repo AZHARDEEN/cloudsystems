@@ -10,7 +10,6 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import org.jboss.ejb3.annotation.TransactionTimeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -220,7 +219,6 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 	}
 
 	@Override
-	@TransactionTimeout( unit = TimeUnit.MINUTES, value = 20 )
 	public void distribute( InepTask task )
 	{
 		int x = 0;

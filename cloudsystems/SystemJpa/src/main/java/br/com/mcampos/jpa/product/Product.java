@@ -70,10 +70,10 @@ public class Product extends BaseCompanyEntity implements Serializable, Comparab
 	@Column( name = "prd_visible_bt" )
 	private Boolean visible;
 
-	@OneToMany( mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true )
+	@OneToMany( mappedBy = "product", cascade = CascadeType.ALL )
 	private List<Price> prices;
 
-	@OneToMany( mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true )
+	@OneToMany( mappedBy = "product", cascade = CascadeType.ALL )
 	private List<ProductKeyword> keys;
 
 	public Product( )

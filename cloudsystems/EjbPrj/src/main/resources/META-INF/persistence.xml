@@ -6,7 +6,7 @@
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	<persistence-unit name="EjbPrj">
 		<description>Descrição do conector CloudSystems</description>
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<provider>${persistence_provider}</provider>
 		<!-- this is for weblogic. <jta-data-source>jdbc/CloudDS</jta-data-source> -->
 		<!-- For jboss, we need a java:someresource -->
 		<jta-data-source>jdbc/CloudOldDS</jta-data-source>

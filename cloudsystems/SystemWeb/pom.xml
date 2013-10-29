@@ -24,14 +24,18 @@
 	<name>SystemWeb Webapp</name>
 	<url>http://maven.apache.org</url>
 
-
 	<properties>
-		<zk.version>6.5.3</zk.version>
 		<apache.poi.version>3.9</apache.poi.version>
 	</properties>
 
 
 	<dependencies>
+        <dependency>
+        	<groupId>javax.servlet</groupId>
+        	<artifactId>javax.servlet-api</artifactId>
+        	<version>3.1.0</version>
+        </dependency>
+                
 		<dependency>
 			<groupId>br.com.mcampos.sysutils</groupId>
 			<artifactId>SysUtils</artifactId>
@@ -57,17 +61,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.jboss.spec.javax.servlet</groupId>
-			<artifactId>jboss-servlet-api_3.0_spec</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.zkoss.zk</groupId>
 			<artifactId>zkbind</artifactId>
@@ -172,37 +165,32 @@
 			<artifactId>poi</artifactId>
 			<version>${apache.poi.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>${apache.poi.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.jboss</groupId>
-			<artifactId>jboss-remote-naming</artifactId>
-			<version>1.0.2.Final</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.jboss.xnio</groupId>
-			<artifactId>xnio-nio</artifactId>
-			<version>3.0.0.GA</version>
-		</dependency>
-
-
-
 	</dependencies>
 
 
 	<build>
 		<finalName>System</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources/${target_server}</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources/common</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>        
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
+				<version>${maven-war-plugin}</version>
 				<configuration>
 					<!-- Java EE 6 doesn't require web.xml, Maven needs to catch up! -->
 					<failOnMissingWebXml>false</failOnMissingWebXml>
@@ -211,7 +199,6 @@
 							<directory>${basedir}/src/main/java</directory>
 							<targetPath>WEB-INF/classes</targetPath>
 							<includes>
-								<include>**/*.properties</include>
 								<include>**/*.xml</include>
 								<include>**/*.css</include>
 								<include>**/*.html</include>
@@ -221,21 +208,21 @@
 					</webResources>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${version.compiler.plugin}</version>
-				<configuration>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
-				</configuration>
-			</plugin>
-
-
 		</plugins>
-
 	</build>
-
-
-
+    
+   
+	<profiles>
+		<!-- 
+		#######################################################################################################
+		#####################################     JBOSS AS 7.1.1 PROFILE     ##################################
+		####################################################################################################### 
+		-->
+		<profile>
+			<id>jboss7</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>            
+		</profile>
+	</profiles>
 </project>

@@ -3,8 +3,9 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
   <persistence-unit name="SystemEJB" >
-  	<provider>org.hibernate.ejb.HibernatePersistence</provider>
+  	<provider>${persistence_provider}</provider>
     <jta-data-source>jdbc/CloudDS</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <class>br.com.mcampos.jpa.user.UserType</class>
     <class>br.com.mcampos.jpa.user.AddressType</class>
     <class>br.com.mcampos.jpa.user.UserContact</class>
