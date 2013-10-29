@@ -160,7 +160,7 @@ public abstract class BaseCrudController<BEAN extends BaseCrudSessionInterface<?
 	}
 
 	@Listen( "onClick = #cmdCreate" )
-	public void onClickCreate( Event evt )
+	public void onClickCreate( Event evt ) throws Exception
 	{
 		if ( evt != null ) {
 			evt.stopPropagation( );

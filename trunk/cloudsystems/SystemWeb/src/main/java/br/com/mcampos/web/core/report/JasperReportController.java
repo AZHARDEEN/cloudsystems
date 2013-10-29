@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import javax.validation.constraints.NotNull;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
@@ -101,7 +100,7 @@ public class JasperReportController extends BaseLoggedController<Window>
 	 *            map com os parametros para o relatório
 	 * @return JasperReport object
 	 */
-	protected JasperReport compileReport( @NotNull String report )
+	protected JasperReport compileReport( String report )
 	{
 		if ( report == null ) {
 			throw new InvalidParameterException( "Report cannot be null in compileReport" );

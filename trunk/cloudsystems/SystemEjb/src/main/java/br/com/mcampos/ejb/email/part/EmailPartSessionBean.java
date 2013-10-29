@@ -14,9 +14,11 @@ import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.Session;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.mcampos.dto.MailDTO;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
-import br.com.mcampos.ejb.email.EmailMessageBean;
 import br.com.mcampos.ejb.email.EmailSessionLocal;
 import br.com.mcampos.jpa.system.EMail;
 import br.com.mcampos.jpa.system.EMailPart;
@@ -30,14 +32,21 @@ import br.com.mcampos.sysutils.SysUtils;
 @LocalBean
 public class EmailPartSessionBean extends SimpleSessionBean<EMailPart> implements EmailPartSession, EmailPartSessionLocal
 {
+	private static final long serialVersionUID = 4323918684639108025L;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger( EmailPartSessionBean.class );
 	@EJB
 	private EmailSessionLocal emailSession;
 
 	@Resource( mappedName = "java:/JmsXA" )
-	private transient ConnectionFactory cf;
-	
-	@Resource( mappedName = EmailMessageBean.destinationName )
-	private transient Queue queue;
+	private ConnectionFactory cf;
+
+	// @Resource( mappedName = "java:/cloudq" )
+	@Resource( lookup = "java:jboss/exported/jms/queue/cloudq" )
+	private Queue queue;
+
+	private Connection connection;
+	private Session session;
 
 	@Override
 	protected Class<EMailPart> getEntityClass( )
@@ -48,7 +57,7 @@ public class EmailPartSessionBean extends SimpleSessionBean<EMailPart> implement
 	@Override
 	public MailDTO getTemplate( EMail templateId )
 	{
-		List<EMailPart> parts = findByNamedQuery( EMailPart.getParts, templateId );
+		List<EMailPart> parts = this.findByNamedQuery( EMailPart.getParts, templateId );
 		if ( SysUtils.isEmpty( parts ) ) {
 			return null;
 		}
@@ -71,37 +80,46 @@ public class EmailPartSessionBean extends SimpleSessionBean<EMailPart> implement
 	@Override
 	public MailDTO getTemplate( Integer templateId )
 	{
-		EMail email = emailSession.get( templateId );
+		EMail email = this.emailSession.get( templateId );
 		if ( email == null ) {
 			return null;
 		}
-		return getTemplate( email );
+		return this.getTemplate( email );
 	}
 
 	@Override
 	public Boolean sendMail( MailDTO dto )
 	{
-		Connection connection;
-		Session session;
 		try {
-			connection = cf.createConnection( );
-			if ( connection != null ) {
-				session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
-				if ( session != null ) {
-					MessageProducer mp = session.createProducer( queue );
-					ObjectMessage objmsg = session.createObjectMessage( dto );
-					mp.send( objmsg );
-					mp.close( );
-					return true;
-				}
-				return false;
-			}
-			return false;
+			MessageProducer mp = this.getSession( ).createProducer( this.queue );
+			ObjectMessage objmsg = this.getSession( ).createObjectMessage( dto );
+			LOGGER.info( "Putting into email queue" );
+			mp.send( objmsg );
+			mp.close( );
+			return true;
 		}
 		catch ( JMSException e ) {
-			e.printStackTrace( );
+			LOGGER.error( "Error sending email", e );
 			return false;
 		}
+	}
+
+	private Connection getConnection( ) throws JMSException
+	{
+		if ( this.connection == null ) {
+			LOGGER.info( "Creating a new Connection" );
+			this.connection = this.cf.createConnection( );
+		}
+		return this.connection;
+	}
+
+	private Session getSession( ) throws JMSException
+	{
+		if ( this.session == null ) {
+			LOGGER.info( "Creating a new Email Session" );
+			this.session = this.getConnection( ).createSession( false, Session.AUTO_ACKNOWLEDGE );
+		}
+		return this.session;
 	}
 
 }

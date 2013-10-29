@@ -59,13 +59,13 @@ public abstract class Users implements Serializable, Comparable<Users>
 	@JoinColumn( name = "ust_id_in", referencedColumnName = "ust_id_in", insertable = true, updatable = true, nullable = false )
 	private UserType userType;
 
-	@OneToMany( mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true )
+	@OneToMany( mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL )
 	private List<UserDocument> documents;
 
-	@OneToMany( mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true )
+	@OneToMany( mappedBy = "user", cascade = CascadeType.ALL )
 	private List<UserContact> contacts;
 
-	@OneToMany( mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true )
+	@OneToMany( mappedBy = "user", cascade = CascadeType.ALL )
 	private List<Address> addresses;
 
 	@Column( name = "usr_birth_dt" )

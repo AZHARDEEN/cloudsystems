@@ -44,7 +44,7 @@ public abstract class InepBaseJob implements Serializable, Job
 			}
 		}
 		catch ( NamingException e ) {
-			e.printStackTrace( );
+			LOGGER.error( "Error getting session object", e );
 		}
 		return this.session;
 	}

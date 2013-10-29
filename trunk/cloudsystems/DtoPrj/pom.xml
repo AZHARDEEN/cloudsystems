@@ -8,7 +8,6 @@
 		<version>1.0</version>
 	</parent>
 
-
 	<groupId>br.com.mcampos.dtoprj</groupId>
 	<artifactId>DtoPrj</artifactId>
 	<version>1.0.0</version>
@@ -19,62 +18,15 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
 			<groupId>br.com.mcampos.sysutils</groupId>
 			<artifactId>SysUtils</artifactId>
 			<version>1.0.1</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>br.com.mcampos.sysutils</groupId>
-			<artifactId>SysUtils</artifactId>
-			<version>1.0.1</version>
-			<scope>provided</scope>
-		</dependency>
-		
-
 	</dependencies>
-
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>${maven.pmd.plugin.version}</version>
-				<configuration>
-					<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
-					<minimumTokens>100</minimumTokens>
-					<targetJdk>${maven.compiler.target}</targetJdk>
-				</configuration>
-			</plugin>
-		</plugins>
-		
-		
-	</reporting>
-	
-	
 	<build>
 		<!-- Set the name of the deployment -->
 		<finalName>SysUtils</finalName>
-		<plugins>
-
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${version.compiler.plugin}</version>
-				<configuration>
-					<source>${maven.compiler.source}</source>
-					<target>${maven.compiler.target}</target>
-				</configuration>
-			</plugin>
-			
-		</plugins>
 	</build>
-	
 
 </project>

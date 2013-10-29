@@ -142,7 +142,7 @@ public abstract class BaseDBListController<BEAN extends BaseCrudSessionInterface
 	}
 
 	@Listen( "onSelect = listbox#listTable" )
-	public void onSelectListbox( Event evt )
+	public void onSelectListbox( Event evt ) throws Exception
 	{
 		if ( evt != null ) {
 			evt.stopPropagation( );

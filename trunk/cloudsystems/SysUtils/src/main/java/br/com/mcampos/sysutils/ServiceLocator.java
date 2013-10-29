@@ -29,9 +29,9 @@ public final class ServiceLocator
 
 	private ServiceLocator( ) throws NamingException
 	{
-		context = new InitialContext( );
-		cache = Collections.synchronizedMap( new HashMap<String, Object>( ) );
-		logger.info( "Singleton Service Locator is created" );
+		this.context = new InitialContext( );
+		this.cache = Collections.synchronizedMap( new HashMap<String, Object>( ) );
+		this.logger.info( "Singleton Service Locator is created" );
 	}
 
 	public static synchronized ServiceLocator getInstance( ) throws NamingException
@@ -46,14 +46,14 @@ public final class ServiceLocator
 	{
 		Object home = null;
 
-		if ( cache != null && cache.containsKey( name ) ) {
-			home = cache.get( name );
+		if ( this.cache != null && this.cache.containsKey( name ) ) {
+			home = this.cache.get( name );
 		}
 		else {
-			logger.info( "Cache miss for ejb : " + name );
-			home = context.lookup( name );
-			if ( cache != null ) {
-				cache.put( name, home );
+			this.logger.info( "Cache miss for ejb : " + name );
+			home = this.context.lookup( name );
+			if ( this.cache != null ) {
+				this.cache.put( name, home );
 			}
 		}
 		return home;
@@ -79,7 +79,7 @@ public final class ServiceLocator
 			final String viewClassName = cls.getName( );
 			String contextName;
 
-			contextName = "ejb:" + getAppName( ) + "/" + ( SysUtils.isEmpty( ejbProjectName ) ? getModuleName( ) : ejbProjectName )
+			contextName = "ejb:" + this.getAppName( ) + "/" + ( SysUtils.isEmpty( ejbProjectName ) ? this.getModuleName( ) : ejbProjectName )
 					+ "/" + distinctName + beanName + "!" + viewClassName;
 			return contextName;
 		}
@@ -92,7 +92,7 @@ public final class ServiceLocator
 	{
 		Object obj = null;
 		if ( cls != null ) {
-			obj = getHome( makeEJBSessionNameLocator( cls, ejbProjectName ) );
+			obj = this.getHome( this.makeEJBSessionNameLocator( cls, ejbProjectName ) );
 			if ( obj != null ) {
 				obj = PortableRemoteObject.narrow( obj, cls );
 			}
@@ -105,31 +105,31 @@ public final class ServiceLocator
 
 	private String getAppName( )
 	{
-		if ( SysUtils.isEmpty( appName ) ) {
+		if ( SysUtils.isEmpty( this.appName ) ) {
 			try {
-				appName = (String) getHome( JNDI_APP_NAME );
-				logger.info( "APP NAME FOUND: " + appName );
+				this.appName = (String) this.getHome( JNDI_APP_NAME );
+				this.logger.info( "APP NAME FOUND: " + this.appName );
 			}
 			catch ( NamingException e ) {
-				logger.warn( "Failed to get module name: " + JNDI_APP_NAME, e );
-				appName = "System";
+				this.logger.warn( "Failed to get module name: " + JNDI_APP_NAME, e );
+				this.appName = "System";
 			}
 		}
-		return appName;
+		return this.appName;
 	}
 
 	private String getModuleName( )
 	{
-		if ( SysUtils.isEmpty( moduleName ) ) {
+		if ( SysUtils.isEmpty( this.moduleName ) ) {
 			try {
-				moduleName = (String) getHome( JNDI_MODULE_NAME );
-				logger.info( "MODULE NAME FOUND: " + appName );
+				this.moduleName = (String) this.getHome( JNDI_MODULE_NAME );
+				this.logger.info( "MODULE NAME FOUND: " + this.appName );
 			}
 			catch ( NamingException e ) {
-				logger.warn( "Failed to get module name: " + JNDI_MODULE_NAME, e );
-				moduleName = "SystemEJB";
+				this.logger.warn( "Failed to get module name: " + JNDI_MODULE_NAME, e );
+				this.moduleName = "SystemEJB";
 			}
 		}
-		return moduleName;
+		return this.moduleName;
 	}
 }
