@@ -9,10 +9,12 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the price database table.
- * 
+ *
  */
 @Entity
 @NamedQuery( name = "Price.findAll", query = "SELECT p FROM Price p" )
@@ -25,6 +27,7 @@ public class Price extends BaseProduct implements Serializable, Comparable<Price
 	private PricePK id;
 
 	@Column( name = "pct_to_dt" )
+	@Temporal( TemporalType.DATE )
 	private Date toDate;
 
 	@Column( name = "prc_value_nm" )
@@ -37,10 +40,10 @@ public class Price extends BaseProduct implements Serializable, Comparable<Price
 	@Override
 	public PricePK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new PricePK( );
+		if ( id == null ) {
+			id = new PricePK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( PricePK id )
@@ -50,28 +53,28 @@ public class Price extends BaseProduct implements Serializable, Comparable<Price
 
 	public Date getToDate( )
 	{
-		return this.toDate;
+		return toDate;
 	}
 
 	public void setToDate( Date pctToDt )
 	{
-		this.toDate = pctToDt;
+		toDate = pctToDt;
 	}
 
 	public BigDecimal getValue( )
 	{
-		return this.value;
+		return value;
 	}
 
 	public void setValue( BigDecimal prcValueNm )
 	{
-		this.value = prcValueNm;
+		value = prcValueNm;
 	}
 
 	@Override
 	public int compareTo( Price o )
 	{
-		return this.getId( ).compareTo( o.getId( ) );
+		return getId( ).compareTo( o.getId( ) );
 	}
 
 	@Override
@@ -82,11 +85,11 @@ public class Price extends BaseProduct implements Serializable, Comparable<Price
 		}
 		if ( obj instanceof Price ) {
 			Price other = (Price) obj;
-			return this.getId( ).equals( other.getId( ) );
+			return getId( ).equals( other.getId( ) );
 		}
 		if ( obj instanceof PricePK ) {
 			PricePK other = (PricePK) obj;
-			return this.getId( ).equals( other );
+			return getId( ).equals( other );
 		}
 		else {
 			return false;

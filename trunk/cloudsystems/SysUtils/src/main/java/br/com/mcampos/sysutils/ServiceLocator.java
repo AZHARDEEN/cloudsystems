@@ -21,6 +21,7 @@ public final class ServiceLocator
 
 	private String appName;
 	private String moduleName;
+	private String targetServer;
 
 	private static final String JNDI_MODULE_NAME = "java:app/ModuleName";
 	private static final String JNDI_APP_NAME = "java:global/AppName";
@@ -29,14 +30,14 @@ public final class ServiceLocator
 
 	private ServiceLocator( ) throws NamingException
 	{
-		this.context = new InitialContext( );
-		this.cache = Collections.synchronizedMap( new HashMap<String, Object>( ) );
-		this.logger.info( "Singleton Service Locator is created" );
+		context = new InitialContext( );
+		cache = Collections.synchronizedMap( new HashMap<String, Object>( ) );
+		logger.info( "Singleton Service Locator is created" );
 	}
 
 	public static synchronized ServiceLocator getInstance( ) throws NamingException
 	{
-		if ( myServiceLocator == null ) {
+		if( myServiceLocator == null ) {
 			myServiceLocator = new ServiceLocator( );
 		}
 		return myServiceLocator;
@@ -46,14 +47,14 @@ public final class ServiceLocator
 	{
 		Object home = null;
 
-		if ( this.cache != null && this.cache.containsKey( name ) ) {
-			home = this.cache.get( name );
+		if( cache != null && cache.containsKey( name ) ) {
+			home = cache.get( name );
 		}
 		else {
-			this.logger.info( "Cache miss for ejb : " + name );
-			home = this.context.lookup( name );
-			if ( this.cache != null ) {
-				this.cache.put( name, home );
+			logger.info( "Cache miss for ejb : " + name );
+			home = context.lookup( name );
+			if( cache != null ) {
+				cache.put( name, home );
 			}
 		}
 		return home;
@@ -65,22 +66,37 @@ public final class ServiceLocator
 	}
 
 	/*
-		For stateless beans:
-			ejb:<app-name>/<module-name>/<distinct-name>/<bean-name>!<fully-qualified-classname-of-the-remote-interface>
-	
-		For stateful beans:
-			ejb:<app-name>/<module-name>/<distinct-name>/<bean-name>!<fully-qualified-classname-of-the-remote-interface>?stateful
+	 * For stateless beans:
+	 * ejb:<app-name>/<module-name>/<distinct-name>/<bean-name
+	 * >!<fully-qualified-classname-of-the-remote-interface>
+	 *
+	 * For stateful beans:
+	 * ejb:<app-name>/<module-name>/<distinct-name>/<bean-name
+	 * >!<fully-qualified-classname-of-the-remote-interface>?stateful
 	 */
 	protected String makeEJBSessionNameLocator( Class<?> cls, String ejbProjectName )
 	{
-		if ( cls != null ) {
+		if( cls != null ) {
 			final String distinctName = "";
 			final String beanName = cls.getSimpleName( );
 			final String viewClassName = cls.getName( );
 			String contextName;
 
-			contextName = "ejb:" + this.getAppName( ) + "/" + ( SysUtils.isEmpty( ejbProjectName ) ? this.getModuleName( ) : ejbProjectName )
-					+ "/" + distinctName + beanName + "!" + viewClassName;
+			if( targetServer == null ) {
+				targetServer = SysProperties.getInstance( ).getProperty( "target_server" );
+				if( targetServer == null ) {
+					targetServer = "jboss7";
+				}
+			}
+
+			if( "jboss7".equalsIgnoreCase( targetServer ) || targetServer == null ) {
+				contextName = "ejb:" + getAppName( ) + "/" + (SysUtils.isEmpty( ejbProjectName ) ? getModuleName( ) : ejbProjectName)
+						+ "/" + distinctName + beanName + "!" + viewClassName;
+			}
+			else {
+				contextName = "ejb:" + getAppName( ) + "/" + (SysUtils.isEmpty( ejbProjectName ) ? getModuleName( ) : ejbProjectName)
+						+ "/" + distinctName + beanName + "!" + viewClassName;
+			}
 			return contextName;
 		}
 		else {
@@ -91,9 +107,9 @@ public final class ServiceLocator
 	public Object getRemoteSession( Class<?> cls, String ejbProjectName ) throws NamingException
 	{
 		Object obj = null;
-		if ( cls != null ) {
-			obj = this.getHome( this.makeEJBSessionNameLocator( cls, ejbProjectName ) );
-			if ( obj != null ) {
+		if( cls != null ) {
+			obj = getHome( makeEJBSessionNameLocator( cls, ejbProjectName ) );
+			if( obj != null ) {
 				obj = PortableRemoteObject.narrow( obj, cls );
 			}
 			return obj;
@@ -105,31 +121,24 @@ public final class ServiceLocator
 
 	private String getAppName( )
 	{
-		if ( SysUtils.isEmpty( this.appName ) ) {
-			try {
-				this.appName = (String) this.getHome( JNDI_APP_NAME );
-				this.logger.info( "APP NAME FOUND: " + this.appName );
-			}
-			catch ( NamingException e ) {
-				this.logger.warn( "Failed to get module name: " + JNDI_APP_NAME, e );
-				this.appName = "System";
-			}
+		if( SysUtils.isEmpty( appName ) ) {
+			appName = SysProperties.getInstance( ).getProperty( "appName", "System" );
 		}
-		return this.appName;
+		return appName;
 	}
 
 	private String getModuleName( )
 	{
-		if ( SysUtils.isEmpty( this.moduleName ) ) {
+		if( SysUtils.isEmpty( moduleName ) ) {
 			try {
-				this.moduleName = (String) this.getHome( JNDI_MODULE_NAME );
-				this.logger.info( "MODULE NAME FOUND: " + this.appName );
+				moduleName = (String) getHome( JNDI_MODULE_NAME );
+				logger.info( "MODULE NAME FOUND: " + moduleName );
 			}
-			catch ( NamingException e ) {
-				this.logger.warn( "Failed to get module name: " + JNDI_MODULE_NAME, e );
-				this.moduleName = "SystemEJB";
+			catch( NamingException e ) {
+				logger.warn( "Failed to get module name: " + JNDI_MODULE_NAME, e );
+				moduleName = "SystemEJB";
 			}
 		}
-		return this.moduleName;
+		return moduleName;
 	}
 }
