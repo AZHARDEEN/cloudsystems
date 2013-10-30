@@ -5,7 +5,6 @@
   <persistence-unit name="SystemEJB" >
   	<provider>${persistence_provider}</provider>
     <jta-data-source>jdbc/CloudDS</jta-data-source>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <class>br.com.mcampos.jpa.user.UserType</class>
     <class>br.com.mcampos.jpa.user.AddressType</class>
     <class>br.com.mcampos.jpa.user.UserContact</class>
