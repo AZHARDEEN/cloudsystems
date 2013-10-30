@@ -51,7 +51,7 @@ public class PgcPenPage implements Serializable, EntityCopyInterface<PgcPenPageD
 	private Integer sequence;
 
 	@Id
-	@Column( name = "pgc_id_in", nullable = false, insertable = false, updatable = false )
+	@Column( name = "pgc_id_in", nullable = false, insertable = true, updatable = true )
 	private Integer pgcId;
 
 	@ManyToOne
