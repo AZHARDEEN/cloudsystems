@@ -21,9 +21,7 @@
 	</modules>
 
 	<properties>
-
 		<zk.version>6.5.4</zk.version>
-    
         <maven-war-plugin>2.4</maven-war-plugin>
         <maven-ear-plugin>2.8</maven-ear-plugin>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -37,6 +35,8 @@
 		<system.ejb.version>1.0.1</system.ejb.version>
 		<sysutils.version>1.0.1</sysutils.version>
 		<project_version>1.0.2</project_version>
+		
+		<ear.final.name>System</ear.final.name>
 	</properties>
 	<build>
 		<plugins>

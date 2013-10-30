@@ -65,7 +65,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>System</finalName>
+		<finalName>${ear.final.name}</finalName>
 	</build>
 
 	<!-- Define the versions of your ear components here -->
