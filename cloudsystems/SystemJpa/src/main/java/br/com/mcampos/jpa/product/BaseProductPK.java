@@ -10,7 +10,7 @@ public abstract class BaseProductPK extends BaseCompanyPK
 {
 	private static final long serialVersionUID = -6421717762510849993L;
 
-	@Column( name = "prd_id_in", insertable = false, updatable = false )
+	@Column( name = "prd_id_in", nullable = false, updatable = true, insertable = true )
 	private Integer productId;
 
 	public Integer getProductId( )
