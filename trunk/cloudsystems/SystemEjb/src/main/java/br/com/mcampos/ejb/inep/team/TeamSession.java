@@ -7,6 +7,7 @@ import javax.ejb.Remote;
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.dto.inep.InepAnaliticoCorrecao;
 import br.com.mcampos.dto.inep.InepTaskCounters;
+import br.com.mcampos.dto.inep.StationDTO;
 import br.com.mcampos.dto.inep.reporting.BaseSubscriptionDTO;
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.ejb.user.company.collaborator.UserPropertyInterface;
@@ -79,4 +80,6 @@ public interface TeamSession extends BaseCrudSessionInterface<InepRevisor>, User
 	void resetTasks( PrincipalDTO auth, InepSubscription s, List<InepTask> tasks );
 
 	void swapTasks( InepSubscription s, InepTask t1, InepTask t2 );
+
+	List<StationDTO> getStations( PrincipalDTO auth, InepEvent evt );
 }

@@ -221,7 +221,7 @@
 		####################################################################################################### 
 		-->
 		<profile>
-			<id>jbossas</id>
+			<id>jboss7</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>

@@ -10,7 +10,7 @@ import br.com.mcampos.jpa.user.Collaborator;
 
 /**
  * The primary key class for the inep_station_reponsable database table.
- * 
+ *
  */
 @Embeddable
 public class InepStationReponsablePK extends BaseInepEventPK implements Serializable
@@ -18,10 +18,10 @@ public class InepStationReponsablePK extends BaseInepEventPK implements Serializ
 	// default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column( name = "cli_seq_in", insertable = false, updatable = false, unique = true, nullable = false )
+	@Column( name = "cli_seq_in", insertable = true, updatable = true, nullable = false )
 	private Integer stationId;
 
-	@Column( name = "col_seq_in", insertable = false, updatable = false, unique = true, nullable = false )
+	@Column( name = "col_seq_in", insertable = true, updatable = true, nullable = false )
 	private Integer responsableId;
 
 	public InepStationReponsablePK( )
@@ -30,29 +30,29 @@ public class InepStationReponsablePK extends BaseInepEventPK implements Serializ
 
 	public InepStationReponsablePK( InepEvent event, Client station, Collaborator resonsable )
 	{
-		this.set( event );
-		this.setStationId( station.getId( ).getSequence( ) );
-		this.setResponsableId( resonsable.getId( ).getSequence( ) );
+		set( event );
+		setStationId( station.getId( ).getSequence( ) );
+		setResponsableId( resonsable.getId( ).getSequence( ) );
 	}
 
 	public Integer getStationId( )
 	{
-		return this.stationId;
+		return stationId;
 	}
 
 	public void setStationId( Integer cliSeqIn )
 	{
-		this.stationId = cliSeqIn;
+		stationId = cliSeqIn;
 	}
 
 	public Integer getResponsableId( )
 	{
-		return this.responsableId;
+		return responsableId;
 	}
 
 	public void setResponsableId( Integer cliSeq2In )
 	{
-		this.responsableId = cliSeq2In;
+		responsableId = cliSeq2In;
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class InepStationReponsablePK extends BaseInepEventPK implements Serializ
 			return false;
 		}
 		InepStationReponsablePK castOther = (InepStationReponsablePK) other;
-		return super.equals( castOther ) && this.stationId.equals( castOther.stationId ) && this.responsableId.equals( castOther.responsableId );
+		return super.equals( castOther ) && stationId.equals( castOther.stationId ) && responsableId.equals( castOther.responsableId );
 	}
 
 	@Override
@@ -74,8 +74,8 @@ public class InepStationReponsablePK extends BaseInepEventPK implements Serializ
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + super.hashCode( );
-		hash = hash * prime + this.stationId.hashCode( );
-		hash = hash * prime + this.responsableId.hashCode( );
+		hash = hash * prime + stationId.hashCode( );
+		hash = hash * prime + responsableId.hashCode( );
 
 		return hash;
 	}

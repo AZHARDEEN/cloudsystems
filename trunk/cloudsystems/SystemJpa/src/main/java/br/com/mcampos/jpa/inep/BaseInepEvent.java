@@ -34,19 +34,19 @@ public abstract class BaseInepEvent extends BaseCompanyEntity
 
 	public InepEvent getEvent( )
 	{
-		return this.event;
+		return event;
 	}
 
 	public void setEvent( InepEvent event )
 	{
 		this.event = event;
 		if ( event != null ) {
-			this.setCompany( event.getCompany( ) );
-			this.getId( ).setEventId( event.getId( ).getId( ) );
+			setCompany( event.getCompany( ) );
+			getId( ).setEventId( event.getId( ).getId( ) );
 		}
 		else {
-			this.setCompany( null );
-			this.getId( ).setEventId( null );
+			setCompany( null );
+			getId( ).setEventId( null );
 
 		}
 	}
@@ -55,7 +55,7 @@ public abstract class BaseInepEvent extends BaseCompanyEntity
 	public boolean equals( Object obj )
 	{
 		if ( obj != null ) {
-			return this.getId( ).equals( ( (BaseInepEvent) obj ).getId( ) );
+			return getId( ).equals( ( (BaseInepEvent) obj ).getId( ) );
 		}
 		else {
 			return false;
@@ -64,7 +64,7 @@ public abstract class BaseInepEvent extends BaseCompanyEntity
 
 	public int compareTo( BaseInepEvent other )
 	{
-		return this.getId( ).compareTo( other.getId( ) );
+		return getId( ).compareTo( other.getId( ) );
 	}
 
 }

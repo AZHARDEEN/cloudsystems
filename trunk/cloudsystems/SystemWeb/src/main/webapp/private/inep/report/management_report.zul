@@ -1,0 +1,27 @@
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd ">
+	<div align="Center">
+		<window title="Relatórios" border="normal" closable="true" width="680px" apply="br.com.mcampos.web.inep.controller.report.InepManagementReportController">
+			<div>
+				<vlayout>
+					<hlayout>
+						<label value="Evento"  width="100px"/>
+						<combobox id="comboEvent" readonly="true" hflex="true" />
+					</hlayout>
+					<hlayout>
+						<label value="Posto Aplicador" width="100px"/>
+						<combobox id="comboStation" readonly="true" hflex="true" />
+					</hlayout>
+					<listbox vflex="true" id="listReport" rows="15">
+						<listhead>
+							<listheader align="Left" label="Nome do Relatório" id="headerReportName" hflex="1" />
+						</listhead>
+					</listbox>
+				</vlayout>
+				<div align="center" xmlns="http://www.zkoss.org/2005/zul">
+					<button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png" dir="reverse" width="150px" />
+				</div>
+			</div>
+		</window>
+	</div>
+</zk>

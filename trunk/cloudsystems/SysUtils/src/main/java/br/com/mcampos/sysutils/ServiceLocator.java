@@ -89,8 +89,9 @@ public final class ServiceLocator
 				}
 			}
 
-			if( "jboss7".equalsIgnoreCase( targetServer ) || targetServer == null ) {
-				contextName = "ejb:" + getAppName( ) + "/" + (SysUtils.isEmpty( ejbProjectName ) ? getModuleName( ) : ejbProjectName)
+			if( "glassfish".equalsIgnoreCase( targetServer ) ) {
+				// java:global/System/SystemEJB/StateSession!br.com.mcampos.ejb.locale.state.StateSessionBean
+				contextName = "java:global/" + getAppName( ) + "/" + (SysUtils.isEmpty( ejbProjectName ) ? getModuleName( ) : ejbProjectName)
 						+ "/" + distinctName + beanName + "!" + viewClassName;
 			}
 			else {
