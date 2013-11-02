@@ -336,6 +336,9 @@ public abstract class BaseReportController extends BaseDBLoggedController<TeamSe
 				Comboitem cbItem = comboStation.appendItem( item.getInteralCode( ) + "-" + item.getName( ) );
 				cbItem.setValue( item );
 			}
+			if( comboStation.getItemCount( ) > 0 ) {
+				comboStation.setSelectedIndex( 0 );
+			}
 			setReports( );
 		}
 
