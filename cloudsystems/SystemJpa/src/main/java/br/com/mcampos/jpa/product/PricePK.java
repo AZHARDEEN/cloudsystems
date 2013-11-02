@@ -9,7 +9,7 @@ import javax.persistence.TemporalType;
 
 /**
  * The primary key class for the price database table.
- * 
+ *
  */
 @Embeddable
 public class PricePK extends BaseProductPK implements Serializable, Comparable<PricePK>
@@ -17,7 +17,7 @@ public class PricePK extends BaseProductPK implements Serializable, Comparable<P
 	// default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column( name = "pct_id_in", insertable = false, updatable = false )
+	@Column( name = "pct_id_in", insertable = true, updatable = true, nullable = false )
 	private Integer priceTypeId;
 
 	@Temporal( TemporalType.TIMESTAMP )
@@ -82,8 +82,9 @@ public class PricePK extends BaseProductPK implements Serializable, Comparable<P
 		int nRet = super.compareTo( o );
 		if ( nRet == 0 ) {
 			nRet = getPriceTypeId( ).compareTo( o.getPriceTypeId( ) );
-			if ( nRet == 0 )
+			if ( nRet == 0 ) {
 				nRet = getFromDate( ).compareTo( o.getFromDate( ) );
+			}
 		}
 		return 0;
 	}

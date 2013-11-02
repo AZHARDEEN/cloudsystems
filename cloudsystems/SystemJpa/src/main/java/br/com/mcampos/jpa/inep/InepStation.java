@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -14,14 +15,19 @@ import br.com.mcampos.jpa.user.Client;
 
 /**
  * The persistent class for the inep_station database table.
- * 
+ *
  */
 @Entity
 @Table( name = "inep_station", schema = "inep" )
-@NamedQuery( name = "InepStation.findAll", query = "SELECT i FROM InepStation i" )
+@NamedQueries( {
+		@NamedQuery( name = "InepStation.findAll", query = "SELECT i FROM InepStation i" ),
+		@NamedQuery( name = InepStation.getAllEventStations, query = "SELECT i FROM InepStation i where i.event = ?1" )
+} )
 public class InepStation extends BaseInepEvent implements Serializable
 {
 	private static final long serialVersionUID = 1L;
+
+	public static final String getAllEventStations = "InepStation.getAllEventStations";
 
 	@EmbeddedId
 	private InepStationPK id;
@@ -40,10 +46,10 @@ public class InepStation extends BaseInepEvent implements Serializable
 	@Override
 	public InepStationPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new InepStationPK( );
+		if ( id == null ) {
+			id = new InepStationPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( InepStationPK id )
@@ -53,19 +59,19 @@ public class InepStation extends BaseInepEvent implements Serializable
 
 	public Client getClient( )
 	{
-		return this.client;
+		return client;
 	}
 
 	public void setClient( Client client )
 	{
 		this.client = client;
 		if ( client != null ) {
-			this.setCompany( client.getCompany( ) );
-			this.getId( ).setClientId( client.getId( ).getSequence( ) );
+			setCompany( client.getCompany( ) );
+			getId( ).setClientId( client.getId( ).getSequence( ) );
 		}
 		else {
-			this.getId( ).setCompanyId( null );
-			this.getId( ).setClientId( null );
+			getId( ).setCompanyId( null );
+			getId( ).setClientId( null );
 		}
 
 	}

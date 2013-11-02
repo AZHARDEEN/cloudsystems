@@ -17,13 +17,13 @@ import br.com.mcampos.jpa.BasicEntityRenderer;
 
 /**
  * The persistent class for the inep_package database table.
- * 
+ *
  */
 @Entity
 @Table( name = "inep_package", schema = "inep" )
 @NamedQueries(
 {
-		@NamedQuery( name = InepEvent.getAll, query = "select o from InepEvent o where o.company = ?1 " ),
+		@NamedQuery( name = InepEvent.getAll, query = "select o from InepEvent o where o.company = ?1 order by o.initDate desc" ),
 		@NamedQuery( name = InepEvent.getAllAvailable, query = "select o from InepEvent o where ( o.endDate is null or o.endDate >= CURRENT_TIMESTAMP )" ),
 		@NamedQuery( name = InepEvent.getAvailable, query = "select o from InepEvent o where o.company = ?1 and "
 				+ "( o.endDate is null or o.endDate >= CURRENT_TIMESTAMP )" )
@@ -56,10 +56,10 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 	@Override
 	public InepEventPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new InepEventPK( );
+		if ( id == null ) {
+			id = new InepEventPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void setId( InepEventPK id )
@@ -69,12 +69,12 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 
 	public String getDescription( )
 	{
-		return this.description;
+		return description;
 	}
 
 	public void setDescription( String pctCodeCh )
 	{
-		this.description = pctCodeCh;
+		description = pctCodeCh;
 	}
 
 	@Override
@@ -82,9 +82,9 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 	{
 		switch ( field ) {
 		case 0:
-			return this.getId( ).getId( ).compareTo( object.getId( ).getId( ) );
+			return getId( ).getId( ).compareTo( object.getId( ).getId( ) );
 		case 1:
-			return this.getDescription( ).compareTo( object.getDescription( ) );
+			return getDescription( ).compareTo( object.getDescription( ) );
 		default:
 			return 0;
 		}
@@ -93,13 +93,13 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 	@Override
 	public boolean equals( Object obj )
 	{
-		return this.getId( ).equals( ( (InepEvent) obj ).getId( ) );
+		return getId( ).equals( ( (InepEvent) obj ).getId( ) );
 	}
 
 	@Override
 	public int compareTo( InepEvent o )
 	{
-		return this.getId( ).compareTo( o.getId( ) );
+		return getId( ).compareTo( o.getId( ) );
 	}
 
 	@Override
@@ -107,9 +107,9 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 	{
 		switch ( field ) {
 		case 0:
-			return this.getId( ).getId( ).toString( );
+			return getId( ).getId( ).toString( );
 		case 1:
-			return this.getDescription( );
+			return getDescription( );
 		default:
 			return "";
 		}
@@ -117,7 +117,7 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 
 	public Date getInitDate( )
 	{
-		return this.initDate;
+		return initDate;
 	}
 
 	public void setInitDate( Date initDate )
@@ -127,7 +127,7 @@ public class InepEvent extends BaseCompanyEntity implements Serializable, Compar
 
 	public Date getEndDate( )
 	{
-		return this.endDate;
+		return endDate;
 	}
 
 	public void setEndDate( Date endDate )

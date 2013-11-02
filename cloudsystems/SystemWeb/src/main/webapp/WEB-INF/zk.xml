@@ -63,6 +63,9 @@
     <system-config>
         <disable-event-thread>true</disable-event-thread>
     	<id-generator-class>br.com.mcampos.zkutils.SimpleIDGenerator</id-generator-class>
+		<ui-factory-class>
+			org.zkoss.zk.ui.http.SerializableUiFactory
+		</ui-factory-class>
 	</system-config>
 	<library-property>
     	<name>org.zkoss.composite.packageScan</name>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="683"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Zebra" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E5E5E5"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[102]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	EVT.*,
+	CLI_INTERNAL_CODE_CH CODIGO,
+	USR_NAME_CH POSTO,
+	( SELECT coalesce ( COUNT(*), 0 ) FROM INEP.INEP_SUBSCRIPTION SB WHERE SB.USR_ID_IN = S.USR_ID_IN AND S.CLI_SEQ_IN = SB.CLI_SEQ_IN ) INSCRICOES,
+	( SELECT coalesce ( COUNT(*), 0 ) FROM INEP.INEP_SUBSCRIPTION SB WHERE SB.USR_ID_IN = S.USR_ID_IN AND S.CLI_SEQ_IN = SB.CLI_SEQ_IN AND ISS_ID_IN IN (1, 3 ) ) AUSENTES,
+	( SELECT coalesce ( COUNT(*), 0 ) FROM INEP.INEP_SUBSCRIPTION SB INNER JOIN INEP.INEP_MEDIA IM ON ( SB.USR_ID_IN = IM.USR_ID_IN AND SB.PCT_ID_IN = IM.PCT_ID_IN AND SB.ISC_ID_CH = IM.ISC_ID_CH AND IMT_ID_IN = 2 )
+	WHERE SB.USR_ID_IN = S.USR_ID_IN AND S.CLI_SEQ_IN = SB.CLI_SEQ_IN AND ISS_ID_IN IN (2) ) AUDIOS
+FROM
+	INEP.INEP_STATION S INNER JOIN CLIENT C ON ( S.CLI_SEQ_IN = C.CLI_SEQ_IN AND S.USR_ID_IN = C.USR_ID_IN )
+	INNER JOIN USERS U ON ( C.CLI_ID_IN = U.USR_ID_IN )
+	INNER JOIN INEP.INEP_PACKAGE EVT ON ( S.USR_ID_IN = EVT.USR_ID_IN AND S.PCT_ID_IN = EVT.PCT_ID_IN )
+where s.usr_id_in = $P{COMPANY_ID}
+and s.pct_id_in = $P{EVENT_ID}
+ORDER BY EVT.USR_ID_IN, EVT.PCT_ID_IN, USR_NAME_CH]]>
+	</queryString>
+	<field name="usr_id_in" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Usar sequence: seq_usuario]]></fieldDescription>
+	</field>
+	<field name="pct_id_in" class="java.lang.Integer"/>
+	<field name="pct_code_ch" class="java.lang.String"/>
+	<field name="pct_init_dt" class="java.sql.Timestamp"/>
+	<field name="pct_end_dt" class="java.sql.Timestamp"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="posto" class="java.lang.String"/>
+	<field name="inscricoes" class="java.lang.Long"/>
+	<field name="ausentes" class="java.lang.Long"/>
+	<field name="audios" class="java.lang.Long"/>
+	<variable name="percentAusentes" class="java.lang.Double">
+		<variableExpression><![CDATA[(($F{ausentes}.doubleValue()) / ($F{inscricoes}.doubleValue()))]]></variableExpression>
+	</variable>
+	<variable name="presentes" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{inscricoes}.intValue() - $F{ausentes}.intValue()]]></variableExpression>
+	</variable>
+	<variable name="SemAudio" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{presentes}.intValue() - $F{audios}.intValue()]]></variableExpression>
+	</variable>
+	<variable name="grandTotalInscricoes" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{inscricoes}]]></variableExpression>
+	</variable>
+	<variable name="grandTotalAusentes" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{ausentes}]]></variableExpression>
+	</variable>
+	<variable name="grandtotalPresentes" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$V{presentes}]]></variableExpression>
+	</variable>
+	<variable name="grandTotalAudios" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{audios}]]></variableExpression>
+	</variable>
+	<variable name="grandTotalDifAudios" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$V{SemAudio}]]></variableExpression>
+	</variable>
+	<group name="Event" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{pct_id_in}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<textField isBlankWhenNull="true">
+					<reportElement x="3" y="0" width="385" height="20" uuid="3b37ab20-c84b-48a9-a0ad-1d0902ccfcc8"/>
+					<textFieldExpression><![CDATA[$F{pct_code_ch}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="3" y="30" width="37" height="20" uuid="a7c86d98-e4ad-46c6-9361-e71354febd6d"/>
+					<text><![CDATA[Código]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="44" y="30" width="344" height="20" uuid="5f8e0d74-3622-4985-a087-d14b512698ee"/>
+					<text><![CDATA[Posto Aplicador]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="388" y="30" width="52" height="20" uuid="244db5a8-4d71-476b-bd03-ef66691dc628"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Inscrições]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="440" y="30" width="81" height="20" uuid="84073161-5752-4c77-a8c6-31880da42427"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Ausentes]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="521" y="30" width="50" height="20" uuid="b7c3a9ad-049d-4fd5-b09f-ae17327e5972"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Presentes]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="571" y="30" width="52" height="20" uuid="be28695b-7378-4f4d-9855-066b4f97aff4"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Audios]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="623" y="30" width="52" height="20" uuid="06bb3746-0eaf-4b40-a57c-8304c81b953d"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Dif. Audio]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="48" width="802" height="1" uuid="12f52fd8-0cdd-4abb-ab9e-15f8e6997d01"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="11"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="75" splitType="Stretch">
+			<image>
+				<reportElement x="3" y="21" width="117" height="50" uuid="b8f3d208-d5c0-4eec-a205-6241c030a737"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="274" y="22" width="231" height="50" uuid="4312c333-ca76-4c9c-bb9f-42a166d16665"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="627" y="23" width="165" height="50" uuid="54632e40-5f44-4f64-9069-37b26efbf901"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="3" y="0" width="799" height="20" uuid="19eb60da-e12f-494b-bfcf-2b6310180f15"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Listagem Geral da Situação dos Postos]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<frame>
+				<reportElement style="Zebra" mode="Opaque" x="1" y="0" width="801" height="14" uuid="bfee00be-642f-4346-8bfe-a36693652557"/>
+				<textField>
+					<reportElement x="2" y="0" width="37" height="14" uuid="5df1a8fc-5a5e-4a6f-bd1e-0d0847a7dcc7"/>
+					<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="43" y="0" width="344" height="14" uuid="592b71fb-aa6e-459e-af42-197386fe7187"/>
+					<textFieldExpression><![CDATA[$F{posto}]]></textFieldExpression>
+				</textField>
+				<textField pattern="0000" isBlankWhenNull="true">
+					<reportElement x="387" y="0" width="52" height="14" uuid="dd0d800a-72c8-4ec1-b484-8801d85ff102"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{inscricoes}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement x="439" y="0" width="30" height="14" uuid="534cfa17-9451-4355-93f7-4e78381f63b7"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{ausentes}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,000.00 %" isBlankWhenNull="true">
+					<reportElement x="470" y="0" width="50" height="14" uuid="e134a791-f648-4ab1-b7a0-1d207206a561"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$V{percentAusentes}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement x="520" y="0" width="50" height="14" uuid="0fd4b4c3-7ea5-414b-9358-fbca2e514639"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$V{presentes}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement x="570" y="0" width="52" height="14" uuid="bef8b34a-2a8b-44f2-ae1d-a301ad3a0c43"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{audios}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement x="622" y="0" width="52" height="14" uuid="80f6d427-7dd1-4aee-b750-faa00d36bbd1"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$V{SemAudio}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="691" y="0" width="108" height="14" forecolor="#FF0000" uuid="67d03dfe-e839-4d3e-b641-eeb360be8471">
+						<printWhenExpression><![CDATA[$V{percentAusentes}.doubleValue() > .9]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[Verificar Problema]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="700" y="0" width="100" height="15" uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement x="0" y="0" width="226" height="15" uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="459" y="0" width="67" height="15" uuid="f2686c43-7383-4c53-9146-17cebd296639"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="342" y="0" width="117" height="15" uuid="8a85253a-ecbf-4214-b0b6-7052e4986eea"/>
+				<text><![CDATA[Contador de Postos]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="801" height="1" uuid="f26fd6f4-58c3-49a7-8a79-f93a50294ab2"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="50">
+			<textField pattern="0000" isBlankWhenNull="true">
+				<reportElement x="388" y="0" width="52" height="16" uuid="8e5eb587-05d6-49cb-b17e-582be1ec19fc"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$V{grandTotalInscricoes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="0" width="30" height="16" uuid="ddb6e85a-43d6-4f79-861c-95c57db0cd67"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$V{grandTotalAusentes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="0000" isBlankWhenNull="true">
+				<reportElement x="521" y="0" width="50" height="16" uuid="c4ad3a3b-cc92-4b37-8516-db6529017444"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$V{grandtotalPresentes}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="571" y="0" width="52" height="16" uuid="fbc6c344-f8df-464e-b479-00b0cf39d0b5"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$V{grandTotalAudios}]]></textFieldExpression>
+			</textField>
+			<textField pattern="0000" isBlankWhenNull="true">
+				<reportElement x="623" y="0" width="52" height="16" uuid="63e1ffbc-4ea2-445c-b5fa-58bb69e88518"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$V{grandTotalDifAudios}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="288" y="0" width="100" height="16" uuid="33c54628-97c2-4f07-8fdf-b697a916397b"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Totais Gerais]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="802" height="1" uuid="05772b23-2f83-40bb-b51c-e55b76d98e97"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>
