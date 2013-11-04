@@ -89,11 +89,11 @@ ST.USR_NAME_CH asc,
 	</variable>
 	<variable name="Composicao" class="java.lang.String">
 		<variableExpression><![CDATA["Composição: " + $F{compreensao}.toString()
-+"        Competência: " + $F{competencia}.toString()
-+"        Fluência: " + $F{fluencia}.toString()
-+"        Adeq. Lexical: " + $F{adeq_lexical}.toString()
-+"        Adeq. Gramatical: " + $F{adeq_gramatical}.toString()
-+"        Pronúncia: " + $F{pronuncia}.toString()]]></variableExpression>
++"       Competência: " + $F{competencia}.toString()
++"       Fluência: " + $F{fluencia}.toString()
++"       Adeq. Lexical: " + $F{adeq_lexical}.toString()
++"       Adeq. Gramatical: " + $F{adeq_gramatical}.toString()
++"       Pronúncia: " + $F{pronuncia}.toString()]]></variableExpression>
 	</variable>
 	<group name="Station" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{posto}]]></groupExpression>
