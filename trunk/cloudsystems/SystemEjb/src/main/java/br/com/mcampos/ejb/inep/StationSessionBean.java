@@ -64,6 +64,13 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 
 	private static final int MAX_ELEMENTS = 3;
 	private static final int MAX_ORAL_GRADE = 6;
+	
+	private static final double ORAL_GRADE_WEIGHT_PART1 = 0.50D; 
+	private static final double ORAL_GRADE_WEIGHT_PART2 = 0.42D; 
+	private static final double ORAL_GRADE_WEIGHT_PART3 = 0.08D;
+	
+	private static final double PART1_ELEMENTS = 3.0D;
+	private static final double PART2_ELEMENTS = 2.0D;
 
 	@Override
 	/**
@@ -191,6 +198,10 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	{
 
 		Double grade = 0.0D;
+		Double grade_part_1 = 0.0D;
+		Double grade_part_2 = 0.0D;
+		Double grade_part_3 = 0.0D;
+		
 		if ( auth == null || subscription == null || grades == null || grades.length != MAX_ORAL_GRADE ) {
 			throw new InvalidParameterException( );
 		}
@@ -199,12 +210,26 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		int nIndex = 0;
 		for ( int id : grades ) {
 			InepObserverGrade element = new InepObserverGrade( subscription, ++nIndex, id );
-			grade += id;
+			switch ( nIndex ) {
+			case 1:
+			case 2:
+			case 3:
+				grade_part_1 += id;
+				break;
+			case 4:
+			case 5:
+				grade_part_2 += id;
+				break;
+			case 6:
+				grade_part_3 += id;
+			}
 			this.getEntityManager( ).persist( element );
 		}
-		grade /= ( (double) MAX_ORAL_GRADE );
+		grade = ( ( grade_part_1 / PART1_ELEMENTS * ORAL_GRADE_WEIGHT_PART1 ) 
+				+ ( grade_part_1 / PART2_ELEMENTS * ORAL_GRADE_WEIGHT_PART2 ) 
+				+ ( grade_part_3 * ORAL_GRADE_WEIGHT_PART3 ) );
 		/*
-		 * Setup Interviewer Grade
+		 * Setup Oral Grade
 		 */
 		InepOralTest oralTest = this.oralTestSession.get( subscription );
 		if ( oralTest == null ) {
