@@ -7,6 +7,7 @@ import javax.ejb.Remote;
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.dto.inep.InepStationSubscriptionResponsableImportDTO;
 import br.com.mcampos.dto.inep.InepSubscriptionImportDTO;
+import br.com.mcampos.dto.inep.StationGradeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.ejb.core.DBPaging;
@@ -30,5 +31,7 @@ public interface InepPackageSession extends BaseCrudSessionInterface<InepEvent>
 	void add( PrincipalDTO auth, InepStationSubscriptionResponsableImportDTO record, InepEvent event );
 
 	FileUpload storeUploadInformation( PrincipalDTO auth, MediaDTO media, int processed, int rejected );
+
+	void verifyInepRecord( PrincipalDTO auth, InepEvent evt, StationGradeDTO dto );
 
 }

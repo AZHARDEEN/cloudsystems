@@ -32,7 +32,7 @@ public interface StationSession extends BaseSessionInterface
 
 	void setInterviewerInformation( PrincipalDTO auth, InepSubscription subscription, int[ ] elements, int grade );
 
-	void setObserverInformation( PrincipalDTO auth, InepSubscription subscription, int[ ] grades );
+	void setObserverInformation( PrincipalDTO auth, InepSubscription subscription, Integer[ ] grades );
 
 	List<InepMedia> lookupForName( PrincipalDTO auth, InepSubscription subscription, String mediaName );
 

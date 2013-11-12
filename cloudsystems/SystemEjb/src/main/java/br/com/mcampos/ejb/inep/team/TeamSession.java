@@ -82,4 +82,5 @@ public interface TeamSession extends BaseCrudSessionInterface<InepRevisor>, User
 	void swapTasks( InepSubscription s, InepTask t1, InepTask t2 );
 
 	List<StationDTO> getStations( PrincipalDTO auth, InepEvent evt );
+
 }

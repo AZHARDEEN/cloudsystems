@@ -7,24 +7,16 @@ import br.com.mcampos.sysutils.SysUtils;
 public class StationGradeDTO implements Serializable
 {
 	private static final long serialVersionUID = 695389858869111266L;
-	
+	public static final Integer MAX_OBSERVER_GRADE = 6;
+	public static final Integer MAX_ELEMENTS = 3;
+
 	private String subscription;
-
-	public String getSubscription() {
-		return subscription;
-	}
-
-	public void setSubscription(String subscription) {
-		this.subscription = subscription;
-	}
-
 
 	private Integer[ ] observerGrade;
 	private Integer[ ] elements;
 	private Integer interviewerGrade;
 
-	public static final Integer MAX_OBSERVER_GRADE = 6;
-	public static final Integer MAX_ELEMENTS = 3;
+	private Boolean isMising = true;
 
 	public Integer[ ] getObserverGrade( )
 	{
@@ -38,11 +30,14 @@ public class StationGradeDTO implements Serializable
 	{
 		this.observerGrade = observerGrade;
 	}
-	
-	public void setObserverGrade ( int nIndex, int value ) {
-		if ( nIndex < 0 || nIndex > 5)
+
+	public void setObserverGrade( int nIndex, int value )
+	{
+		if ( nIndex < 0 || nIndex > 5 ) {
 			throw new IndexOutOfBoundsException( "Observer Grade " + nIndex + " out of bouds" );
-		getObserverGrade()[ nIndex ] = value;
+		}
+		this.getObserverGrade( )[ nIndex ] = value;
+		this.setIsMising( false );
 	}
 
 	public Integer[ ] getElements( )
@@ -66,16 +61,17 @@ public class StationGradeDTO implements Serializable
 	public void setInterviewerGrade( Integer interviewerGrade )
 	{
 		this.interviewerGrade = interviewerGrade;
+		this.setIsMising( false );
 	}
-	
-	
-	public void set ( int nIndex, String value )
+
+	public void set( int nIndex, String value )
 	{
-		if ( SysUtils.isEmpty(value))
+		if ( SysUtils.isEmpty( value ) ) {
 			return;
+		}
 		switch ( nIndex ) {
 		case 3:
-			setSubscription(value);
+			this.setSubscription( value );
 			break;
 		case 4:
 		case 5:
@@ -83,12 +79,32 @@ public class StationGradeDTO implements Serializable
 		case 7:
 		case 8:
 		case 9:
-			setObserverGrade( nIndex - 4, Integer.valueOf(value));
+			this.setObserverGrade( nIndex - 4, Integer.valueOf( value ) );
 			break;
 		case 11:
-			setInterviewerGrade(Integer.valueOf(value));
+			this.setInterviewerGrade( Integer.valueOf( value ) );
 			break;
 		}
+	}
+
+	public String getSubscription( )
+	{
+		return this.subscription;
+	}
+
+	public void setSubscription( String subscription )
+	{
+		this.subscription = subscription;
+	}
+
+	public Boolean getIsMising( )
+	{
+		return this.isMising;
+	}
+
+	public void setIsMising( Boolean isMising )
+	{
+		this.isMising = isMising;
 	}
 
 }
