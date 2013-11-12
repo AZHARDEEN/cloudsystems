@@ -110,20 +110,20 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	@Override
 	public List<InepTask> getTasks( PrincipalDTO auth )
 	{
-		return (List<InepTask>) taskSession.getAll( auth );
+		return (List<InepTask>) this.taskSession.getAll( auth );
 	}
 
 	@Override
 	public List<InepTask> getTasks( InepEvent evt )
 	{
-		List<InepTask> list = taskSession.getAll( evt );
+		List<InepTask> list = this.taskSession.getAll( evt );
 		return list;
 	}
 
 	@Override
 	public List<InepRevisor> getTeam( InepTask task )
 	{
-		InepTask entityTask = taskSession.get( task.getId( ) );
+		InepTask entityTask = this.taskSession.get( task.getId( ) );
 		if ( entityTask == null ) {
 			return Collections.emptyList( );
 		}
@@ -142,7 +142,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	public InepRevisor getRevisor( InepEvent event, PrincipalDTO auth )
 	{
 		if ( auth != null && event != null ) {
-			return getRevisorSession( ).get( event, auth );
+			return this.getRevisorSession( ).get( event, auth );
 		}
 		else {
 			return null;
@@ -158,7 +158,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		if ( status == null || status.intValue( ) < 1 ) {
 			status = 1;
 		}
-		return distributionSession.get( revisor, status );
+		return this.distributionSession.get( revisor, status );
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		String ql = "from InepRevision o where o.id.packageId = ?1 " +
 				"and o.id.taskId = ?2 and o.id.companyId = ?3 and o.id.collaboratorId = ?4 and o.id.testId = ?5";
-		Query query = getEntityManager( ).createQuery( ql );
+		Query query = this.getEntityManager( ).createQuery( ql );
 		query.setParameter( 1, t.getId( ).getEventId( ) );
 		query.setParameter( 2, t.getId( ).getTaskId( ) );
 		query.setParameter( 3, t.getId( ).getCompanyId( ) );
@@ -183,33 +183,33 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 	private DistributionStatus getStatus( Integer status )
 	{
-		return getEntityManager( ).find( DistributionStatus.class, status );
+		return this.getEntityManager( ).find( DistributionStatus.class, status );
 	}
 
 	@Override
 	public InepDistribution updateRevision( InepDistribution dist )
 	{
-		InepDistribution entity = getEntityManager( ).find( InepDistribution.class, dist.getId( ) );
+		InepDistribution entity = this.getEntityManager( ).find( InepDistribution.class, dist.getId( ) );
 		if ( entity != null ) {
 			if ( entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) == false
 					&& entity.getRevisor( ).isCoordenador( ) == false ) {
 				throw new RuntimeException( "Uma nota já foi atribuída para esta prova. Nota atribuida anteriormente foi: " + entity.getNota( ) );
 			}
-			dist = getEntityManager( ).merge( dist );
+			dist = this.getEntityManager( ).merge( dist );
 		}
 		else {
-			getEntityManager( ).persist( dist );
+			this.getEntityManager( ).persist( dist );
 		}
 		if ( dist.getRevisor( ).isCoordenador( ) == false ) {
-			dist.setStatus( getStatus( DistributionStatus.statusRevised ) );
-			if ( hasVariance( dist ) ) {
-				variance( dist, getStatus( DistributionStatus.statusVariance ) );
+			dist.setStatus( this.getStatus( DistributionStatus.statusRevised ) );
+			if ( this.hasVariance( dist ) ) {
+				this.variance( dist, this.getStatus( DistributionStatus.statusVariance ) );
 			}
 		}
 		else {
-			dist.setStatus( getStatus( DistributionStatus.statusFinalRevised ) );
-			variance( dist, getStatus( DistributionStatus.statusFinalRevised ) );
-			testSession.setGrade( dist.getTest( ), dist.getNota( ) <= 5 ? dist.getNota( ) : 0 );
+			dist.setStatus( this.getStatus( DistributionStatus.statusFinalRevised ) );
+			this.variance( dist, this.getStatus( DistributionStatus.statusFinalRevised ) );
+			this.testSession.setGrade( dist.getTest( ), dist.getNota( ) <= 5 ? dist.getNota( ) : 0 );
 		}
 		return dist;
 	}
@@ -218,22 +218,22 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		List<InepRevisor> coordinators;
 		InepDistribution varianceDistribution;
-		if ( sendToAllFromTask( ) == false ) {
-			coordinators = revisorSession.findByNamedQuery( InepRevisor.getAllCoordinatorsToTask,
+		if ( this.sendToAllFromTask( ) == false ) {
+			coordinators = this.revisorSession.findByNamedQuery( InepRevisor.getAllCoordinatorsToTask,
 					entity.getRevisor( ).getTask( ) );
 		}
 		else {
-			coordinators = revisorSession.findByNamedQuery( InepRevisor.getAllTeamByEventAndTask,
+			coordinators = this.revisorSession.findByNamedQuery( InepRevisor.getAllTeamByEventAndTask,
 					entity.getRevisor( ).getTask( ) );
 		}
 		for ( InepRevisor otherRevisor : coordinators )
 		{
-			varianceDistribution = distributionSession.get( new InepDistributionPK( otherRevisor, entity.getTest( ) ) );
+			varianceDistribution = this.distributionSession.get( new InepDistributionPK( otherRevisor, entity.getTest( ) ) );
 			if ( varianceDistribution == null ) {
 				varianceDistribution = new InepDistribution( otherRevisor, entity.getTest( ) );
 			}
 			varianceDistribution.setStatus( status );
-			varianceDistribution = distributionSession.merge( varianceDistribution );
+			varianceDistribution = this.distributionSession.merge( varianceDistribution );
 		}
 	}
 
@@ -248,8 +248,8 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		Integer threshold;
 		int variance;
 
-		others = distributionSession.findByNamedQuery( InepDistribution.getAllFromTest, entity.getTest( ) );
-		threshold = getTreshold( );
+		others = this.distributionSession.findByNamedQuery( InepDistribution.getAllFromTest, entity.getTest( ) );
+		threshold = this.getTreshold( );
 		for ( InepDistribution other : others ) {
 			if ( other.equals( entity ) || other.getNota( ) == null ) {
 				continue;
@@ -260,7 +260,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			}
 			if ( variance > threshold || ( other.getNota( ) > 5 && entity.getNota( ).equals( other.getNota( ) ) == false ) ) {
 				bRet = true;
-				other.setStatus( getStatus( DistributionStatus.statusVariance ) );
+				other.setStatus( this.getStatus( DistributionStatus.statusVariance ) );
 			}
 			else {
 				double grade = 0.0;
@@ -275,11 +275,11 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 				}
 				grade += n;
 				grade /= 2.0;
-				testSession.setGrade( other.getTest( ), grade );
+				this.testSession.setGrade( other.getTest( ), grade );
 			}
 		}
 		if ( bRet == true ) {
-			entity.setStatus( getStatus( DistributionStatus.statusVariance ) );
+			entity.setStatus( this.getStatus( DistributionStatus.statusVariance ) );
 		}
 		return bRet;
 	}
@@ -310,26 +310,26 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	@Override
 	public List<InepDistribution> getOtherDistributions( InepTest test )
 	{
-		List<InepDistribution> others = distributionSession.findByNamedQuery( InepDistribution.getOtherDistribution, test );
+		List<InepDistribution> others = this.distributionSession.findByNamedQuery( InepDistribution.getOtherDistribution, test );
 
 		return others;
 	}
 
 	public CollaboratorSessionLocal getCollaboratorSession( )
 	{
-		return collaboratorSession;
+		return this.collaboratorSession;
 	}
 
 	public InepRevisorSessionLocal getRevisorSession( )
 	{
-		return revisorSession;
+		return this.revisorSession;
 	}
 
 	@Override
 	public List<InepEvent> getEvents( PrincipalDTO auth )
 	{
 		if ( auth != null ) {
-			return taskSession.getEvents( auth );
+			return this.taskSession.getEvents( auth );
 		}
 		else {
 			return null;
@@ -341,7 +341,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		byte[ ] obj = null;
 
-		InepDistribution merged = distributionSession.get( item.getId( ) );
+		InepDistribution merged = this.distributionSession.get( item.getId( ) );
 		if ( merged == null || merged.getTest( ).getTask( ) == null ) {
 			return null;
 		}
@@ -366,11 +366,11 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 			Query query;
 
 			if ( rev.isCoordenador( ) ) {
-				query = getEntityManager( ).createNamedQuery( InepDistribution.getCoordCounter );
+				query = this.getEntityManager( ).createNamedQuery( InepDistribution.getCoordCounter );
 				query.setParameter( 1, rev.getTask( ) );
 			}
 			else {
-				query = getEntityManager( ).createNamedQuery( InepDistribution.getRevisorCounter );
+				query = this.getEntityManager( ).createNamedQuery( InepDistribution.getRevisorCounter );
 				query.setParameter( 1, rev );
 			}
 			try {
@@ -414,7 +414,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 		try {
 			InepAnaliticoCorrecao analitico = null;
-			List<InepTest> tests = testSession.getTests( revisor );
+			List<InepTest> tests = this.testSession.getTests( revisor );
 			for ( InepTest test : tests )
 			{
 				if ( test.getSubscription( ).getId( ).getId( ).equals( lastSubscription ) == false )
@@ -424,7 +424,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 					analitico.setSubscritpion( test.getSubscription( ).getId( ).getId( ) );
 					list.add( analitico );
 				}
-				loadGrades( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
+				this.loadGrades( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
 			}
 		}
 		catch ( Exception e )
@@ -445,7 +445,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 		try {
 			InepAnaliticoCorrecao analitico = null;
-			List<InepTest> tests = testSession.getTests( task );
+			List<InepTest> tests = this.testSession.getTests( task );
 			for ( InepTest test : tests )
 			{
 				if ( test.getSubscription( ).getId( ).getId( ).equals( lastSubscription ) == false )
@@ -455,7 +455,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 					analitico.setSubscritpion( test.getSubscription( ).getId( ).getId( ) );
 					list.add( analitico );
 				}
-				loadGrades( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
+				this.loadGrades( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
 			}
 		}
 		catch ( Exception e )
@@ -476,7 +476,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 		try {
 			InepAnaliticoCorrecao analitico = null;
-			List<InepTest> tests = testSession.getTests( event );
+			List<InepTest> tests = this.testSession.getTests( event );
 			for ( InepTest test : tests )
 			{
 				if ( test.getSubscription( ).getId( ).getId( ).equals( lastSubscription ) == false )
@@ -486,7 +486,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 					analitico.setSubscritpion( test.getSubscription( ).getId( ).getId( ) );
 					list.add( analitico );
 				}
-				loadGrades( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
+				this.loadGrades( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
 			}
 		}
 		catch ( Exception e )
@@ -503,7 +503,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		if ( s == null || grade == null ) {
 			return;
 		}
-		List<InepDistribution> distributions = distributionSession.get( s );
+		List<InepDistribution> distributions = this.distributionSession.get( s );
 		for ( InepDistribution item : distributions )
 		{
 			if ( item.getNota( ) == null ) {
@@ -528,7 +528,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		if ( s == null || grade == null ) {
 			return;
 		}
-		List<InepDistribution> distributions = distributionSession.getVariance( s );
+		List<InepDistribution> distributions = this.distributionSession.getVariance( s );
 		for ( InepDistribution item : distributions )
 		{
 			if ( item.getNota( ) == null ) {
@@ -557,13 +557,13 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		case 1:
 			break;
 		case 2:
-			list = notasFinais( event );
+			list = this.notasFinais( event );
 			break;
 		case 3:
-			list = notaConsenso( event );
+			list = this.notaConsenso( event );
 			break;
 		case 4:
-			list = notasIndividuais( event );
+			list = this.notasIndividuais( event );
 			break;
 		}
 		return list;
@@ -572,11 +572,11 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	private List<BaseSubscriptionDTO> notasIndividuais( InepEvent event )
 	{
 		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
-		List<InepDistribution> dists = distributionSession.getAllforReport( event );
+		List<InepDistribution> dists = this.distributionSession.getAllforReport( event );
 		for ( InepDistribution item : dists )
 		{
 			NotasIndividuaisCorretorDTO dto = new NotasIndividuaisCorretorDTO( );
-			dto.setCpf( getCpf( item.getRevisor( ).getCollaborator( ).getPerson( ) ) );
+			dto.setCpf( this.getCpf( item.getRevisor( ).getCollaborator( ).getPerson( ) ) );
 			dto.setNota( item.getNota( ) );
 			dto.setSubscription( item.getTest( ).getSubscription( ).getId( ).getId( ) );
 			dto.setTarefa( item.getTest( ).getTask( ).getId( ).getId( ) );
@@ -590,7 +590,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
 		List<SubscriptionGradeView> dists;
-		Query query = getEntityManager( ).createNamedQuery( SubscriptionGradeView.getAllByEvent );
+		Query query = this.getEntityManager( ).createNamedQuery( SubscriptionGradeView.getAllByEvent );
 		query.setParameter( 1, event.getId( ).getCompanyId( ) );
 		query.setParameter( 2, event.getId( ).getId( ) );
 		try {
@@ -616,7 +616,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	private List<BaseSubscriptionDTO> notaConsenso( InepEvent event )
 	{
 		List<BaseSubscriptionDTO> list = new ArrayList<BaseSubscriptionDTO>( );
-		List<InepDistribution> dists = distributionSession.getVarianceForReport( event );
+		List<InepDistribution> dists = this.distributionSession.getVarianceForReport( event );
 		for ( InepDistribution item : dists )
 		{
 			NotasConsenso dto = new NotasConsenso( );
@@ -649,14 +649,14 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		List<InepAnaliticoCorrecao> list = new ArrayList<InepAnaliticoCorrecao>( );
 		try {
 			InepAnaliticoCorrecao analitico = null;
-			List<InepTest> tests = testSession.getTestsWithVariance( event );
+			List<InepTest> tests = this.testSession.getTestsWithVariance( event );
 			for ( InepTest test : tests )
 			{
 				analitico = new InepAnaliticoCorrecao( );
 				test.getSubscription( ).getId( ).getId( );
 				analitico.setSubscritpion( test.getSubscription( ).getId( ).getId( ) );
 				list.add( analitico );
-				loadGradesWithVariance( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
+				this.loadGradesWithVariance( test, analitico.getGrades( )[ test.getTask( ).getId( ).getId( ) - 1 ] );
 			}
 		}
 		catch ( Exception e )
@@ -678,7 +678,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	@Override
 	public List<Object[ ]> getWorkStatus( InepEvent event )
 	{
-		Query query = getEntityManager( ).createNamedQuery( InepDistribution.getWorkStatus );
+		Query query = this.getEntityManager( ).createNamedQuery( InepDistribution.getWorkStatus );
 		query.setParameter( 1, event );
 		@SuppressWarnings( "unchecked" )
 		List<Object[ ]> list = query.getResultList( );
@@ -688,31 +688,31 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	@Override
 	public LoginProperty getProperty( PrincipalDTO collaborator, String propertyName )
 	{
-		return propertySession.getProperty( collaborator, propertyName );
+		return this.propertySession.getProperty( collaborator, propertyName );
 	}
 
 	@Override
 	public void setProperty( PrincipalDTO collaborator, String propertyName, String Value )
 	{
-		propertySession.setProperty( collaborator, propertyName, Value );
+		this.propertySession.setProperty( collaborator, propertyName, Value );
 	}
 
 	@Override
 	public LoginProperty remove( PrincipalDTO collaborator, String propertyName )
 	{
-		return propertySession.remove( collaborator, propertyName );
+		return this.propertySession.remove( collaborator, propertyName );
 	}
 
 	@Override
 	public List<InepSubscription> getSubscriptions( PrincipalDTO collaborator, InepEvent event, String part )
 	{
-		return subscriptionSession.getAll( collaborator, event, part );
+		return this.subscriptionSession.getAll( collaborator, event, part );
 	}
 
 	@Override
 	public List<InepDistribution> getDistribution( InepSubscription e )
 	{
-		return distributionSession.getAll( e );
+		return this.distributionSession.getAll( e );
 	}
 
 	@Override
@@ -723,7 +723,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		key.set( t, s );
 		byte[ ] obj = null;
 
-		InepTest merged = testSession.get( key );
+		InepTest merged = this.testSession.get( key );
 		if ( merged == null ) {
 			return null;
 		}
@@ -748,27 +748,27 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	@Override
 	public List<InepTest> getTests( PrincipalDTO auth, InepSubscription s )
 	{
-		List<InepTest> tests = (List<InepTest>) testSession.getAll( auth, " t.subscription = ?1", null, s );
+		List<InepTest> tests = (List<InepTest>) this.testSession.getAll( auth, " t.subscription = ?1", null, s );
 		return tests;
 	}
 
 	@Override
 	public InepOralTest getOralTest( InepSubscription s )
 	{
-		return oralTestSession.get( s );
+		return this.oralTestSession.get( s );
 	}
 
 	@Override
 	public void resetTasks( PrincipalDTO auth, InepSubscription s, List<InepTask> tasks )
 	{
-		InepSubscription merged = subscriptionSession.get( s.getId( ) );
+		InepSubscription merged = this.subscriptionSession.get( s.getId( ) );
 		if ( merged == null ) {
 			throw new InvalidParameterException( "Não existe a inscrição" );
 		}
 		for ( InepTask task : tasks ) {
 			InepTestPK key = new InepTestPK( task, merged );
-			InepTest test = testSession.get( key );
-			resetTest( auth, test );
+			InepTest test = this.testSession.get( key );
+			this.resetTest( auth, test );
 		}
 		merged.setWrittenGrade( null );
 		merged.setAgreementGrade( null );
@@ -780,31 +780,31 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		if ( test == null ) {
 			return;
 		}
-		List<InepDistribution> list = distributionSession.findByNamedQuery( InepDistribution.getAllFromTest, test );
+		List<InepDistribution> list = this.distributionSession.findByNamedQuery( InepDistribution.getAllFromTest, test );
 		if ( SysUtils.isEmpty( list ) ) {
 			return;
 		}
 		for ( InepDistribution item : list ) {
 			switch ( item.getStatus( ).getId( ) ) {
 			case 2:
-				item.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
+				item.setStatus( this.statusSession.get( DistributionStatus.statusDistributed ) );
 				item.setNota( null );
 				break;
 			case 3:
 				if ( item.getNota( ) == null ) {
-					distributionSession.remove( auth, item.getId( ) );
+					this.distributionSession.remove( auth, item.getId( ) );
 				}
 				else {
-					item.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
+					item.setStatus( this.statusSession.get( DistributionStatus.statusDistributed ) );
 					item.setNota( null );
 				}
 				break;
 			case 4:
 				if ( item.getRevisor( ).isCoordenador( ).equals( true ) ) {
-					distributionSession.remove( auth, item.getId( ) );
+					this.distributionSession.remove( auth, item.getId( ) );
 				}
 				else {
-					item.setStatus( statusSession.get( DistributionStatus.statusDistributed ) );
+					item.setStatus( this.statusSession.get( DistributionStatus.statusDistributed ) );
 					item.setNota( null );
 				}
 				break;
@@ -817,7 +817,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	public void swapTasks( InepSubscription s, InepTask t1, InepTask t2 )
 	{
 		InepMedia m1 = null, m2 = null;
-		InepSubscription merged = subscriptionSession.get( s.getId( ) );
+		InepSubscription merged = this.subscriptionSession.get( s.getId( ) );
 		if ( merged == null ) {
 			throw new InvalidParameterException( "Não existe a inscrição" );
 		}
@@ -844,7 +844,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 				+ event.getId( ).getCompanyId( )
 				+ " and s.pct_id_in = " + event.getId( ).getId( ) + " and s.isc_id_ch in ( select distinct isc_id_ch from inep.inep_test t " +
 				"where t.usr_id_in = s.usr_id_in and t.pct_id_in = s.pct_id_in and t.isc_id_ch = s.isc_id_ch )";
-		Query query = getEntityManager( ).createNativeQuery( sql );
+		Query query = this.getEntityManager( ).createNativeQuery( sql );
 		@SuppressWarnings( "unchecked" )
 		List<Object[ ]> result = query.getResultList( );
 		return result;
@@ -853,13 +853,13 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	@Override
 	public List<InepOralDistribution> getOralDistributions( InepOralTest s )
 	{
-		return oralDistributionSession.getOralDistributions( s );
+		return this.oralDistributionSession.getOralDistributions( s );
 	}
 
 	@Override
 	public List<StationDTO> getStations( PrincipalDTO auth, InepEvent evt )
 	{
-		return stationSession.getAll( evt );
+		return this.stationSession.getAll( evt );
 	}
 
 }

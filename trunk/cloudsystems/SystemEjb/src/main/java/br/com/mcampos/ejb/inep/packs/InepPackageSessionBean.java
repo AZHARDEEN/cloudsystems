@@ -16,10 +16,12 @@ import org.slf4j.LoggerFactory;
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.dto.inep.InepStationSubscriptionResponsableImportDTO;
 import br.com.mcampos.dto.inep.InepSubscriptionImportDTO;
+import br.com.mcampos.dto.inep.StationGradeDTO;
 import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.core.CollaboratorBaseSessionBean;
 import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.inep.InepStationSessionLocal;
+import br.com.mcampos.ejb.inep.StationSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
 import br.com.mcampos.ejb.security.LoginSessionLocal;
@@ -87,6 +89,9 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 
 	@EJB
 	private InepSubscriptionSessionLocal subscriptionEvent;
+
+	@EJB
+	private StationSessionLocal gradeSession;
 
 	@Override
 	protected Class<InepEvent> getEntityClass( )
@@ -437,4 +442,23 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 		}
 		LOGGER.info( "Done!!!!" );
 	}
+
+	@Override
+	public void verifyInepRecord( PrincipalDTO auth, InepEvent evt, StationGradeDTO other )
+	{
+		InepSubscription subscription = this.subscriptionEvent.get( new InepSubscriptionPK( evt, other.getSubscription( ) ) );
+		if ( subscription == null ) {
+			return;
+		}
+		if ( other.getIsMising( ) ) {
+			this.gradeSession.setMissing( auth, subscription );
+			return;
+		}
+		/**
+		 * TODO: compare!!!!!!
+		 */
+		this.gradeSession.setInterviewerInformation( auth, subscription, null, other.getInterviewerGrade( ) );
+		this.gradeSession.setObserverInformation( auth, subscription, other.getObserverGrade( ) );
+	}
+
 }

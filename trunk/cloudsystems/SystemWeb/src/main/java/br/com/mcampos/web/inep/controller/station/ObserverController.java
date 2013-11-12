@@ -41,7 +41,7 @@ public class ObserverController extends BaseStationController
 	@Override
 	protected void proceed( )
 	{
-		int[ ] ids = new int[ this.grades.length ];
+		Integer[ ] ids = new Integer[ this.grades.length ];
 
 		int nIndex = 0;
 		for ( Radiogroup item : this.grades ) {

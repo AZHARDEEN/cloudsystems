@@ -35,7 +35,7 @@ import br.com.mcampos.sysutils.SysUtils;
  * Brief Session Bean implementation class StationSessionBean Esta classe é o facade das telas do posto aplicador.
  */
 @Stateless( name = "StationSession", mappedName = "StationSession" )
-public class StationSessionBean extends BaseSessionBean implements StationSession
+public class StationSessionBean extends BaseSessionBean implements StationSession, StationSessionLocal
 {
 	private static final long serialVersionUID = 7677179078573223942L;
 	@EJB
@@ -64,11 +64,11 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 
 	private static final int MAX_ELEMENTS = 3;
 	private static final int MAX_ORAL_GRADE = 6;
-	
-	private static final double ORAL_GRADE_WEIGHT_PART1 = 0.50D; 
-	private static final double ORAL_GRADE_WEIGHT_PART2 = 0.42D; 
+
+	private static final double ORAL_GRADE_WEIGHT_PART1 = 0.50D;
+	private static final double ORAL_GRADE_WEIGHT_PART2 = 0.42D;
 	private static final double ORAL_GRADE_WEIGHT_PART3 = 0.08D;
-	
+
 	private static final double PART1_ELEMENTS = 3.0D;
 	private static final double PART2_ELEMENTS = 2.0D;
 
@@ -146,14 +146,20 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	@Override
 	public void setInterviewerInformation( PrincipalDTO auth, InepSubscription subscription, int[ ] elements, int grade )
 	{
-		if ( auth == null || subscription == null || elements == null || elements.length != MAX_ELEMENTS ) {
-			throw new InvalidParameterException( );
+		if ( auth == null || subscription == null ) {
+			throw new InvalidParameterException( "Invalid parameters for setInterviewerInformation" );
 		}
 		subscription = this.subscriptionSession.get( subscription.getId( ) );
-		this.removeElements( subscription );
-		for ( int id : elements ) {
-			InepElement element = new InepElement( subscription, id );
-			this.getEntityManager( ).persist( element );
+
+		if ( elements != null ) {
+			if ( elements.length != MAX_ELEMENTS ) {
+				throw new InvalidParameterException( "Invalid elements for subscription " + subscription.getId( ).getId( ) );
+			}
+			this.removeElements( subscription );
+			for ( int id : elements ) {
+				InepElement element = new InepElement( subscription, id );
+				this.getEntityManager( ).persist( element );
+			}
 		}
 
 		/*
@@ -194,14 +200,14 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	}
 
 	@Override
-	public void setObserverInformation( PrincipalDTO auth, InepSubscription subscription, int[ ] grades )
+	public void setObserverInformation( PrincipalDTO auth, InepSubscription subscription, Integer[ ] grades )
 	{
 
 		Double grade = 0.0D;
 		Double grade_part_1 = 0.0D;
 		Double grade_part_2 = 0.0D;
 		Double grade_part_3 = 0.0D;
-		
+
 		if ( auth == null || subscription == null || grades == null || grades.length != MAX_ORAL_GRADE ) {
 			throw new InvalidParameterException( );
 		}
@@ -225,8 +231,8 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 			}
 			this.getEntityManager( ).persist( element );
 		}
-		grade = ( ( grade_part_1 / PART1_ELEMENTS * ORAL_GRADE_WEIGHT_PART1 ) 
-				+ ( grade_part_1 / PART2_ELEMENTS * ORAL_GRADE_WEIGHT_PART2 ) 
+		grade = ( ( grade_part_1 / PART1_ELEMENTS * ORAL_GRADE_WEIGHT_PART1 )
+				+ ( grade_part_2 / PART2_ELEMENTS * ORAL_GRADE_WEIGHT_PART2 )
 				+ ( grade_part_3 * ORAL_GRADE_WEIGHT_PART3 ) );
 		/*
 		 * Setup Oral Grade
