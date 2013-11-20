@@ -87,40 +87,40 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	@Override
 	protected void showFields( InepEvent e )
 	{
-		if ( e != null )
+		if( e != null )
 		{
-			this.infoInitDate.setValue( SysUtils.formatDate( e.getInitDate( ) ) );
-			this.infoEndDate.setValue( SysUtils.formatDate( e.getEndDate( ) ) );
-			this.initDate.setValue( e.getInitDate( ) );
-			this.endDate.setValue( e.getEndDate( ) );
-			this.infoId.setValue( e.getId( ).getId( ).toString( ) );
-			this.infoDescription.setValue( e.getDescription( ) );
-			this.id.setValue( e.getId( ).getId( ) );
-			this.description.setValue( e.getDescription( ) );
+			infoInitDate.setValue( SysUtils.formatDate( e.getInitDate( ) ) );
+			infoEndDate.setValue( SysUtils.formatDate( e.getEndDate( ) ) );
+			initDate.setValue( e.getInitDate( ) );
+			endDate.setValue( e.getEndDate( ) );
+			infoId.setValue( e.getId( ).getId( ).toString( ) );
+			infoDescription.setValue( e.getDescription( ) );
+			id.setValue( e.getId( ).getId( ) );
+			description.setValue( e.getDescription( ) );
 		}
 		else
 		{
-			this.infoInitDate.setValue( "" );
-			this.infoEndDate.setValue( "" );
-			this.infoId.setValue( "" );
-			this.infoDescription.setValue( "" );
+			infoInitDate.setValue( "" );
+			infoEndDate.setValue( "" );
+			infoId.setValue( "" );
+			infoDescription.setValue( "" );
 
-			this.initDate.setValue( null );
-			this.endDate.setValue( new Date( ) );
-			this.id.setValue( this.getSession( ).getNextId( this.getPrincipal( ) ) );
-			this.description.setValue( "" );
-			this.description.setFocus( true );
+			initDate.setValue( null );
+			endDate.setValue( new Date( ) );
+			id.setValue( this.getSession( ).getNextId( getPrincipal( ) ) );
+			description.setValue( "" );
+			description.setFocus( true );
 		}
 	}
 
 	@Override
 	protected void updateTargetEntity( InepEvent target )
 	{
-		target.setEndDate( this.endDate.getValue( ) );
-		target.setInitDate( this.initDate.getValue( ) != null ? this.initDate.getValue( ) : new Date( ) );
-		target.getId( ).setCompanyId( this.getPrincipal( ).getCompanyID( ) );
-		target.getId( ).setId( this.id.getValue( ) );
-		target.setDescription( this.description.getValue( ) );
+		target.setEndDate( endDate.getValue( ) );
+		target.setInitDate( initDate.getValue( ) != null ? initDate.getValue( ) : new Date( ) );
+		target.getId( ).setCompanyId( getPrincipal( ).getCompanyID( ) );
+		target.getId( ).setId( id.getValue( ) );
+		target.setDescription( description.getValue( ) );
 	}
 
 	@Override
@@ -138,119 +138,120 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	@Override
 	protected Collection<InepEvent> getList( )
 	{
-		return this.getAll( 0 );
+		return getAll( 0 );
 	}
 
 	@Override
 	protected Collection<InepEvent> getAll( int activePage )
 	{
-		return this.getSession( ).getAll( this.getPrincipal( ), new DBPaging( activePage, ListboxParams.maxListBoxPageSize ) );
+		return this.getSession( ).getAll( getPrincipal( ), new DBPaging( activePage, ListboxParams.maxListBoxPageSize ) );
 	}
 
 	@Listen( "onClick=#loadSubscriptions" )
 	public void onClickUpload( MouseEvent evt )
 	{
-		if ( evt != null ) {
+		if( evt != null ) {
 			evt.stopPropagation( );
 		}
-		List<InepEvent> events = this.getSelectedRecords( );
-		if ( SysUtils.isEmpty( events ) ) {
+		List<InepEvent> events = getSelectedRecords( );
+		if( SysUtils.isEmpty( events ) ) {
 			Messagebox.show( "Por favor, escolha um evento primeiro", "Carregar Inscrições", Messagebox.OK, Messagebox.ERROR );
 			return;
 		}
-		for ( InepEvent event : events ) {
-			if ( event.getEndDate( ) != null && event.getEndDate( ).compareTo( new Date( ) ) <= 0 ) {
+		for( InepEvent event : events ) {
+			if( event.getEndDate( ) != null && event.getEndDate( ).compareTo( new Date( ) ) <= 0 ) {
 				Messagebox.show( "O evento " + event.getDescription( ) + " está fechado e não permite mais alterações",
 						"Carregar Inscrições", Messagebox.OK, Messagebox.ERROR );
 				return;
 			}
 		}
-		Executions.getCurrent( ).getDesktop( ).setAttribute( "org.zkoss.zul.Fileupload.target", this.loadSubscriptions );
+		Executions.getCurrent( ).getDesktop( ).setAttribute( "org.zkoss.zul.Fileupload.target", loadSubscriptions );
 		Fileupload.get( "Arquivo Excel a ser importado", "Carregar Inscrições", 1, 4096, true );
 	}
 
 	/**
-	 * Breaf Carregas as pessoas responsáveis pelos postos aplicadores. Esta pessoa terá acesso as funcionalidades do posto aplicador e será encarregado de
-	 * inserir as notas no sistema.
-	 * 
+	 * Breaf Carregas as pessoas responsáveis pelos postos aplicadores. Esta
+	 * pessoa terá acesso as funcionalidades do posto aplicador e será
+	 * encarregado de inserir as notas no sistema.
+	 *
 	 * @param evt
 	 *            ZKoss click mouse event
 	 */
 	@Listen( "onClick=#loadStationResponsables" )
 	public void onClickUploadStationResponsabled( MouseEvent evt )
 	{
-		if ( evt != null ) {
+		if( evt != null ) {
 			evt.stopPropagation( );
 		}
-		List<InepEvent> events = this.getSelectedRecords( );
-		if ( SysUtils.isEmpty( events ) ) {
+		List<InepEvent> events = getSelectedRecords( );
+		if( SysUtils.isEmpty( events ) ) {
 			Messagebox.show( "Por favor, escolha um evento primeiro", "Carregar Inscrições", Messagebox.OK, Messagebox.ERROR );
 			return;
 		}
-		for ( InepEvent event : events ) {
-			if ( event.getEndDate( ) != null && event.getEndDate( ).compareTo( new Date( ) ) <= 0 ) {
+		for( InepEvent event : events ) {
+			if( event.getEndDate( ) != null && event.getEndDate( ).compareTo( new Date( ) ) <= 0 ) {
 				Messagebox.show( "O evento " + event.getDescription( ) + " está fechado e não permite mais alterações",
 						"Carregar Inscrições", Messagebox.OK, Messagebox.ERROR );
 				return;
 			}
 		}
-		Executions.getCurrent( ).getDesktop( ).setAttribute( "org.zkoss.zul.Fileupload.target", this.loadStationResponsables );
+		Executions.getCurrent( ).getDesktop( ).setAttribute( "org.zkoss.zul.Fileupload.target", loadStationResponsables );
 		Fileupload.get( "Arquivo Excel a ser importado", "Carregar Inscrições", 1, 4096, true );
 	}
 
 	@Listen( "onClick=#loadFromInepAdministrativeSystem" )
 	public void onClickUploadInepCompare( MouseEvent evt )
 	{
-		if ( evt != null ) {
+		if( evt != null ) {
 			evt.stopPropagation( );
 		}
-		List<InepEvent> events = this.getSelectedRecords( );
-		if ( SysUtils.isEmpty( events ) ) {
+		List<InepEvent> events = getSelectedRecords( );
+		if( SysUtils.isEmpty( events ) ) {
 			Messagebox.show( "Por favor, escolha um evento primeiro", "Comparar Inscrições", Messagebox.OK, Messagebox.ERROR );
 			return;
 		}
-		for ( InepEvent event : events ) {
-			if ( event.getEndDate( ) != null && event.getEndDate( ).compareTo( new Date( ) ) <= 0 ) {
+		for( InepEvent event : events ) {
+			if( event.getEndDate( ) != null && event.getEndDate( ).compareTo( new Date( ) ) <= 0 ) {
 				Messagebox.show( "O evento " + event.getDescription( ) + " está fechado e não permite mais alterações",
 						"Comparar Inscrições", Messagebox.OK, Messagebox.ERROR );
 				return;
 			}
 		}
-		Executions.getCurrent( ).getDesktop( ).setAttribute( "org.zkoss.zul.Fileupload.target", this.loadFromInepAdministrativeSystem );
+		Executions.getCurrent( ).getDesktop( ).setAttribute( "org.zkoss.zul.Fileupload.target", loadFromInepAdministrativeSystem );
 		Fileupload.get( "Arquivo Excel a ser importado", "Carregar Inscrições", 1, 4096, true );
 	}
 
 	@Listen( "onUpload=#loadSubscriptions; onUpload=#loadStationResponsables; onUpload=#loadFromInepAdministrativeSystem" )
 	public void onUpload( UploadEvent evt )
 	{
-		if ( evt != null ) {
+		if( evt != null ) {
 			evt.stopPropagation( );
 		}
-		if ( evt.getMedia( ) == null ) {
+		if( evt.getMedia( ) == null ) {
 			Messagebox.show( "Nenhum arquivo selecionado para carga", "Carregar Arquivo", Messagebox.OK, Messagebox.ERROR );
 			return;
 		}
 		try {
-			if ( evt.getTarget( ) == this.loadSubscriptions ) {
-				if ( this.processFile( evt.getMedia( ) ) ) {
+			if( evt.getTarget( ) == loadSubscriptions ) {
+				if( processFile( evt.getMedia( ) ) ) {
 					Messagebox.show( "Carga do arquivo " + evt.getMedia( ).getName( ) + " realizada com sucesso", "Carregar Inscrições", Messagebox.OK,
 							Messagebox.INFORMATION );
 				}
 			}
-			else if ( evt.getTarget( ) == this.loadStationResponsables ) {
-				if ( this.processStationResponsableFile( evt.getMedia( ) ) ) {
+			else if( evt.getTarget( ) == loadStationResponsables ) {
+				if( processStationResponsableFile( evt.getMedia( ) ) ) {
 					Messagebox.show( "Carga do arquivo " + evt.getMedia( ).getName( ) + " realizada com sucesso",
 							"Carregar Responsáveis pelos Postos Aplicadores", Messagebox.OK, Messagebox.INFORMATION );
 				}
 			}
-			else if ( evt.getTarget( ) == this.loadFromInepAdministrativeSystem ) {
-				if ( this.compareToInepFile( evt.getMedia( ) ) ) {
+			else if( evt.getTarget( ) == loadFromInepAdministrativeSystem ) {
+				if( compareToInepFile( evt.getMedia( ) ) ) {
 					Messagebox.show( "Comparação com o arquivo " + evt.getMedia( ).getName( ) + " do sistema admintrativo do INEP realizada com sucesso",
 							"Comparação com o sistema administrativo do INEP", Messagebox.OK, Messagebox.INFORMATION );
 				}
 			}
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			this.getSession( ).storeException( e );
 			LOGGER.error( "ProcessFileError", e );
 			Messagebox.show( "Erro na carga do arquivo " + evt.getMedia( ).getName( ) + ".", "Carregar Arquivo", Messagebox.OK,
@@ -260,29 +261,29 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 
 	private boolean processFile( Media media ) throws IOException
 	{
-		if ( media == null || SysUtils.isEmpty( media.getName( ) ) ) {
+		if( media == null || SysUtils.isEmpty( media.getName( ) ) ) {
 			return false;
 		}
 		ExcelFile excel = new ExcelFile( media );
 		Sheet sheet = excel.getSheetAt( 0 );
 		// List<InepSubscriptionImportDTO> subscriptions = new
 		// ArrayList<InepSubscriptionImportDTO>( );
-		List<InepEvent> events = this.getSelectedRecords( );
+		List<InepEvent> events = getSelectedRecords( );
 
 		Iterator<Row> rowIterator = sheet.iterator( );
 		int rowNumber = 0, rejected = 0;
-		while ( rowIterator.hasNext( ) ) {
+		while( rowIterator.hasNext( ) ) {
 			Row row = rowIterator.next( );
 			rowNumber++;
-			if ( rowNumber == 1 ) {
+			if( rowNumber == 1 ) {
 				continue;
 			}
 			Iterator<Cell> cellIterator = row.iterator( );
 			int cellIndex = 0;
 			InepSubscriptionImportDTO dto = new InepSubscriptionImportDTO( );
-			while ( cellIterator.hasNext( ) ) {
+			while( cellIterator.hasNext( ) ) {
 				Cell cell = cellIterator.next( );
-				switch ( cell.getCellType( ) ) {
+				switch( cell.getCellType( ) ) {
 				case Cell.CELL_TYPE_BLANK:
 					dto.set( cellIndex++, "" );
 					break;
@@ -295,10 +296,10 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 				}
 			}
 			try {
-				this.getSession( ).add( this.getPrincipal( ), dto, events.get( 0 ) );
+				this.getSession( ).add( getPrincipal( ), dto, events.get( 0 ) );
 				LOGGER.info( "Processing record: " + rowNumber + ". " + dto.getName( ) );
 			}
-			catch ( Exception e ) {
+			catch( Exception e ) {
 				LOGGER.error( "Error processing record: " + rowNumber + ". " + dto.getName( ) );
 				this.getSession( ).storeException( e );
 				rejected++;
@@ -307,35 +308,35 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 		}
 		// this.getSession( ).add( this.getPrincipal( ), subscriptions,
 		// events.get( 0 ) );
-		this.storeUploadFile( media, rowNumber, rejected );
+		storeUploadFile( media, rowNumber, rejected );
 		return true;
 	}
 
 	private boolean processStationResponsableFile( Media media )
 	{
-		if ( media == null || SysUtils.isEmpty( media.getName( ) ) ) {
+		if( media == null || SysUtils.isEmpty( media.getName( ) ) ) {
 			return false;
 		}
 		ExcelFile excel = new ExcelFile( media );
 		Sheet sheet = excel.getSheetAt( 0 );
 		// List<InepSubscriptionImportDTO> subscriptions = new
 		// ArrayList<InepSubscriptionImportDTO>( );
-		List<InepEvent> events = this.getSelectedRecords( );
+		List<InepEvent> events = getSelectedRecords( );
 
 		Iterator<Row> rowIterator = sheet.iterator( );
 		int rowNumber = 0, rejected = 0;
-		while ( rowIterator.hasNext( ) ) {
+		while( rowIterator.hasNext( ) ) {
 			Row row = rowIterator.next( );
 			rowNumber++;
-			if ( rowNumber == 1 ) {
+			if( rowNumber == 1 ) {
 				continue;
 			}
 			Iterator<Cell> cellIterator = row.iterator( );
 			int cellIndex = 0;
 			InepStationSubscriptionResponsableImportDTO dto = new InepStationSubscriptionResponsableImportDTO( );
-			while ( cellIterator.hasNext( ) ) {
+			while( cellIterator.hasNext( ) ) {
 				Cell cell = cellIterator.next( );
-				switch ( cell.getCellType( ) ) {
+				switch( cell.getCellType( ) ) {
 				case Cell.CELL_TYPE_BLANK:
 					dto.set( cellIndex++, "" );
 					break;
@@ -348,10 +349,10 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 				}
 			}
 			try {
-				if ( !SysUtils.isEmpty( dto.getStationId( ) ) && !SysUtils.isEmpty( dto.getEmail( ) ) ) {
+				if( !SysUtils.isEmpty( dto.getStationId( ) ) && !SysUtils.isEmpty( dto.getEmail( ) ) ) {
 					LOGGER.info( "Processando{ID:" + dto.getStationId( ) + "; Name: " + dto.getName( ) + "; Address: " + dto.getAddress( ) + "; email: "
 							+ dto.getEmail( ) + "}" );
-					this.getSession( ).add( this.getPrincipal( ), dto, events.get( 0 ) );
+					this.getSession( ).add( getPrincipal( ), dto, events.get( 0 ) );
 					LOGGER.info( "Processing record: " + rowNumber + ". " + dto.getName( ) );
 				}
 				else {
@@ -360,7 +361,7 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 					rejected++;
 				}
 			}
-			catch ( Exception e ) {
+			catch( Exception e ) {
 				LOGGER.error( "Error processing record: " + rowNumber + ". " + dto.getName( ) );
 				this.getSession( ).storeException( e );
 				rejected++;
@@ -369,7 +370,7 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 		}
 		// this.getSession( ).add( this.getPrincipal( ), subscriptions,
 		// events.get( 0 ) );
-		this.storeUploadFile( media, rowNumber, rejected );
+		storeUploadFile( media, rowNumber, rejected );
 		return true;
 	}
 
@@ -377,10 +378,10 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 	{
 		try {
 			MediaDTO dto = UploadMedia.getMedia( media );
-			this.getSession( ).storeUploadInformation( this.getPrincipal( ), dto, processed, rejected );
+			this.getSession( ).storeUploadInformation( getPrincipal( ), dto, processed, rejected );
 
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			LOGGER.error( "Error storing file upload information", e );
 			this.getSession( ).storeException( e );
 		}
@@ -388,7 +389,7 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 
 	private boolean compareToInepFile( Media media )
 	{
-		if ( !this.loadInepFile( media ) ) {
+		if( !loadInepFile( media ) ) {
 			return false;
 		}
 		return true;
@@ -396,10 +397,10 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 
 	private boolean loadInepFile( Media media )
 	{
-		if ( media == null || SysUtils.isEmpty( media.getName( ) ) ) {
+		if( media == null || SysUtils.isEmpty( media.getName( ) ) ) {
 			return false;
 		}
-		List<InepEvent> events = this.getSelectedRecords( );
+		List<InepEvent> events = getSelectedRecords( );
 		ExcelFile excel = new ExcelFile( media );
 		Sheet sheet = excel.getSheetAt( 0 );
 		// List<InepSubscriptionImportDTO> subscriptions = new
@@ -407,10 +408,10 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 
 		Iterator<Row> rowIterator = sheet.iterator( );
 		int rowNumber = 0, rejected = 0;
-		while ( rowIterator.hasNext( ) ) {
+		while( rowIterator.hasNext( ) ) {
 			Row row = rowIterator.next( );
 			rowNumber++;
-			if ( rowNumber == 1 ) {
+			if( rowNumber == 1 ) {
 				continue;
 			}
 			Iterator<Cell> cellIterator = row.iterator( );
@@ -418,9 +419,9 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 			String value = "";
 
 			StationGradeDTO dto = new StationGradeDTO( );
-			while ( cellIterator.hasNext( ) ) {
+			while( cellIterator.hasNext( ) ) {
 				Cell cell = cellIterator.next( );
-				switch ( cell.getCellType( ) ) {
+				switch( cell.getCellType( ) ) {
 				case Cell.CELL_TYPE_BLANK:
 					value = "";
 					break;
@@ -433,11 +434,24 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 				}
 				dto.set( cellIndex++, value );
 			}
-			this.getSession( ).verifyInepRecord( this.getPrincipal( ), events.get( 0 ), dto );
+			// this.getSession( ).verifyInepRecord( this.getPrincipal( ),
+			// events.get( 0 ), dto );
+			StationGradeDTO mine = getSession( ).getOralGrade( getPrincipal( ), events.get( 0 ), dto );
+			if( mine == null ) {
+				System.out.println( "Linha: " + rowNumber + " - " + dto.getSubscription( ) + " NÃO EXISTE" );
+			}
+			else if( !dto.compareGrades( mine ) ) {
+				if( dto.getIsMising( ) == false && mine.getIsMising( ) == true ) {
+					getSession( ).verifyInepRecord( getPrincipal( ), events.get( 0 ), dto );
+				}
+				else {
+					System.out.println( "Linha: " + rowNumber + " - " + dto.export( ) + ";" + mine.export( ) );
+				}
+			}
 		}
 		// this.getSession( ).add( this.getPrincipal( ), subscriptions,
 		// events.get( 0 ) );
-		this.storeUploadFile( media, rowNumber, rejected );
+		storeUploadFile( media, rowNumber, rejected );
 		return true;
 	}
 

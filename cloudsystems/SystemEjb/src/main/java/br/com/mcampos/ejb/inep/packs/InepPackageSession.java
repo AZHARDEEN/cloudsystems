@@ -34,4 +34,6 @@ public interface InepPackageSession extends BaseCrudSessionInterface<InepEvent>
 
 	void verifyInepRecord( PrincipalDTO auth, InepEvent evt, StationGradeDTO dto );
 
+	StationGradeDTO getOralGrade( PrincipalDTO auth, InepEvent evt, StationGradeDTO other );
+
 }

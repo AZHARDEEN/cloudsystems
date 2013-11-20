@@ -58,7 +58,7 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 		InepPackageSessionLocal
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 4327503286585562526L;
 	private static final Logger LOGGER = LoggerFactory.getLogger( InepPackageSessionBean.class );
@@ -111,7 +111,7 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 		if ( c == null ) {
 			return Collections.emptyList( );
 		}
-		Company company = this.companySession.get( c.getCompanyID( ) );
+		Company company = companySession.get( c.getCompanyID( ) );
 		return this.findByNamedQuery( InepEvent.getAll, page, company );
 	}
 
@@ -121,9 +121,9 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 		if ( c == null ) {
 			return 0;
 		}
-		Query query = this.getEntityManager( ).createQuery(
+		Query query = getEntityManager( ).createQuery(
 				"select max( o.id.id ) + 1 from InepEvent o where o.company = ?1" );
-		query.setParameter( 1, this.companySession.get( c.getCompanyID( ) ) );
+		query.setParameter( 1, companySession.get( c.getCompanyID( ) ) );
 		Integer id;
 		try {
 			id = (Integer) query.getSingleResult( );
@@ -140,7 +140,7 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	@Override
 	public List<InepEvent> getAvailable( PrincipalDTO c )
 	{
-		Company company = this.companySession.get( c.getCompanyID( ) );
+		Company company = companySession.get( c.getCompanyID( ) );
 		if ( company == null ) {
 			return Collections.emptyList( );
 		}
@@ -160,7 +160,7 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 			InepTask task = new InepTask( newEntity );
 			task.getId( ).setId( i );
 			task.setDescription( "Tarefa " + i );
-			this.taskSession.add( auth, task );
+			taskSession.add( auth, task );
 		}
 	}
 
@@ -168,16 +168,16 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	public InepEvent add( PrincipalDTO auth, InepEvent newEntity )
 	{
 		newEntity = super.add( auth, newEntity );
-		this.createTasks( auth, newEntity );
+		createTasks( auth, newEntity );
 		return newEntity;
 	}
 
 	@Override
 	public InepEvent remove( PrincipalDTO auth, Serializable key )
 	{
-		InepEvent event = this.get( key );
+		InepEvent event = get( key );
 		if ( event != null ) {
-			this.taskSession.remove( event );
+			taskSession.remove( event );
 			return super.remove( auth, key );
 		}
 		return null;
@@ -187,7 +187,7 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	 * Brief Adiciona um registro de importação do INEP na base de dados, sempre verificando a existência do mesmo, ou seja, antes de incluir, certifica
 	 * que a tupla já existe ou não. Esta é a versão para inserção de múltiplos registros Esta função é chamada na carga das inscrições que, no momento, é
 	 * feito na tela de gerenciamento de eventos
-	 * 
+	 *
 	 * @see public InepStation add( PrincipalDTO auth, InepSubscriptionImportDTO subscription, InepEvent event )
 	 */
 	@Override
@@ -212,11 +212,11 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 		if ( auth == null || auth.getCompanyID( ) == null || auth.getUserId( ) == null || dto == null ) {
 			throw new InvalidParameterException( );
 		}
-		Client client = this.getClient( auth, dto );
-		InepStation station = this.getStation( auth, event, client );
-		InepSubscription subscription = this.getSubscription( auth, event, dto.getSubscription( ) );
+		Client client = getClient( auth, dto );
+		InepStation station = getStation( auth, event, client );
+		InepSubscription subscription = getSubscription( auth, event, dto.getSubscription( ) );
 		subscription.setStationId( station.getId( ).getClientId( ) );
-		Person person = this.getPerson( auth, dto );
+		Person person = getPerson( auth, dto );
 		subscription.setPerson( person );
 		subscription.setSpecialNeeds( dto.getSpecialNeeds( ) );
 		subscription.setCitizenship( dto.getCountry( ) );
@@ -225,7 +225,7 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	/**
 	 * Brief Adiciona a inscrição no banco de dados, se já existir esta inscrição nada é feito Esta função é chamada na carga das inscrições que, no
 	 * momento, é feito na tela de gerenciamento de eventos
-	 * 
+	 *
 	 * @param auth
 	 * @param event
 	 * @param id
@@ -233,12 +233,12 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	 */
 	private InepSubscription getSubscription( PrincipalDTO auth, InepEvent event, String id )
 	{
-		InepSubscription subscription = this.subscriptionEvent.get( new InepSubscriptionPK( event, id ) );
+		InepSubscription subscription = subscriptionEvent.get( new InepSubscriptionPK( event, id ) );
 		if ( subscription == null ) {
 			subscription = new InepSubscription( );
 			subscription.setEvent( event );
 			subscription.getId( ).setId( id );
-			subscription = this.subscriptionEvent.add( subscription );
+			subscription = subscriptionEvent.add( subscription );
 		}
 		return subscription;
 
@@ -247,7 +247,7 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	/**
 	 * Brief Obtém um posto aplicador (InepStation) válido para inclusão na tabela de posto aplicador do inep Esta função é chamada na carga das inscrições
 	 * que, no momento, é feito na tela de gerenciamento de eventos
-	 * 
+	 *
 	 * @param auth
 	 * @param event
 	 * @param client
@@ -257,12 +257,12 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	{
 		InepStationPK key = new InepStationPK( client.getId( ).getCompanyId( ), event.getId( ).getId( ), client.getId( ).getSequence( ) );
 		InepStation station;
-		station = this.stationSession.get( key );
+		station = stationSession.get( key );
 		if ( station == null ) {
 			station = new InepStation( );
 			station.setClient( client );
 			station.setEvent( event );
-			station = this.stationSession.add( station );
+			station = stationSession.add( station );
 		}
 		return station;
 	}
@@ -270,7 +270,7 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	/**
 	 * Brief obtém um cliente válido para inclusão na tabela de posto aplicador do inep Esta função é chamada na carga das inscrições que, no momento, é
 	 * feito na tela de gerenciamento de eventos
-	 * 
+	 *
 	 * @param auth
 	 * @param subscription
 	 * @return Client
@@ -278,10 +278,10 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	private Client getClient( PrincipalDTO auth, InepSubscriptionImportDTO subscription )
 	{
 		Client client = null;
-		client = this.clientSession.get( auth, subscription.getStationId( ) );
+		client = clientSession.get( auth, subscription.getStationId( ) );
 		if ( client == null ) {
 			Company station = this.getCompany( auth, subscription );
-			client = this.clientSession.add( auth, station );
+			client = clientSession.add( auth, station );
 			client.setInternalCode( subscription.getStationId( ) );
 		}
 		return client;
@@ -292,7 +292,7 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	 * + id do posto aplicador Importante informar que a combinação do tipo do documento internalCode + o valor não é único, em outras palavras, um
 	 * registro na tabela users pode ter mais de uma ocorrência de internalCode A combinação em questão (inep.station+id) tenta garantir a unicidade de uma
 	 * tupla dentro do banco de dados. Esta função é chamada na carga das inscrições que, no momento, é feito na tela de gerenciamento de eventos
-	 * 
+	 *
 	 * @param auth
 	 * @param subscription
 	 * @return Company
@@ -303,16 +303,16 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 		 * Tenta garantir a unicidade de uma tupla
 		 */
 		String code = "inep.station." + subscription.getStationId( );
-		List<UserDocument> documents = this.companySession.searchByDocument( UserDocument.INTERNAL_CODE, code );
+		List<UserDocument> documents = companySession.searchByDocument( UserDocument.INTERNAL_CODE, code );
 		Company station = null;
 		if ( SysUtils.isEmpty( documents ) ) {
 			station = new Company( );
 			station.setName( subscription.getStationName( ) );
-			station = this.companySession.add( auth, station );
+			station = companySession.add( auth, station );
 			UserDocument document = new UserDocument( );
 			document.setAdditionalInfo( "Regitro importado via sistema - Inep" );
 			document.setCode( code );
-			document.setType( this.getEntityManager( ).getReference( DocumentType.class, UserDocument.INTERNAL_CODE ) );
+			document.setType( getEntityManager( ).getReference( DocumentType.class, UserDocument.INTERNAL_CODE ) );
 			station.add( document );
 		}
 		else if ( documents.size( ) > 1 ) {
@@ -329,8 +329,8 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	 * originário do pais do candidato ou passaporte. Existe a possibilidade de recuperarmos mais de um registro, o que seria um problema e neste caso o
 	 * sistema ainda não está preparado para tratar Esta função é chamada na carga das inscrições que, no momento, é feito na tela de gerenciamento de
 	 * eventos. Talvez fosse melhor mudar para uma nova tela. Se não houver um registro, será incluído uma nova pessoa.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param auth
 	 * @param dto
 	 *            do tipo InepSubscriptionImportDTO
@@ -343,16 +343,16 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 		int documentType;
 
 		documentType = "passaporte".equalsIgnoreCase( dto.getDocumentType( ) ) ? UserDocument.PASSAPORTE : UserDocument.IDENTITIDADE;
-		documents = this.companySession.searchByDocument( documentType, dto.getDocument( ) );
+		documents = companySession.searchByDocument( documentType, dto.getDocument( ) );
 		if ( SysUtils.isEmpty( documents ) ) {
 			person = new Person( );
 			person.setName( dto.getName( ) );
-			person = this.personSession.add( person );
-			DocumentType type = this.getEntityManager( ).getReference( DocumentType.class, documentType );
+			person = personSession.add( person );
+			DocumentType type = getEntityManager( ).getReference( DocumentType.class, documentType );
 			UserDocument document = new UserDocument( dto.getDocument( ), type );
 			document.setAdditionalInfo( dto.getDocumentType( ) + "\nImportado pelo inep" );
 			person.add( document );
-			this.clientSession.add( auth, person );
+			clientSession.add( auth, person );
 		}
 		else if ( documents.size( ) == 1 ) {
 			if ( documents.get( 0 ).getUser( ) instanceof Person ) {
@@ -388,38 +388,38 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 		}
 
 		LOGGER.info( "Looking for email: " + record.getEmail( ) );
-		documents = this.personSession.searchByEmail( record.getEmail( ) );
+		documents = personSession.searchByEmail( record.getEmail( ) );
 		if ( SysUtils.isEmpty( documents ) ) {
 			LOGGER.info( "There is no person with that email! Creating person: " + record.getName( ) );
 			person = new Person( );
 			person.setName( record.getName( ) );
-			person = this.personSession.add( person );
-			DocumentType type = this.getEntityManager( ).getReference( DocumentType.class, UserDocument.EMAIL );
+			person = personSession.add( person );
+			DocumentType type = getEntityManager( ).getReference( DocumentType.class, UserDocument.EMAIL );
 			UserDocument document = new UserDocument( record.getEmail( ), type );
 			document.setAdditionalInfo( "Email Importado pelo inep" );
 			person.add( document );
-			this.clientSession.add( auth, person );
+			clientSession.add( auth, person );
 		}
 		else {
-			person = this.personSession.get( documents.get( 0 ).getUser( ).getId( ) );
+			person = personSession.get( documents.get( 0 ).getUser( ).getId( ) );
 		}
-		Client client = this.clientSession.getClient( auth, person );
+		Client client = clientSession.getClient( auth, person );
 		if ( client == null ) {
 			LOGGER.info( "This person is not a client: " + record.getName( ) );
-			this.clientSession.add( auth, person );
+			clientSession.add( auth, person );
 		}
-		Login login = this.loginSession.get( person.getId( ) );
+		Login login = loginSession.get( person.getId( ) );
 		if ( login == null ) {
 			LOGGER.info( "This person has no login: " + record.getName( ) );
-			login = this.loginSession.add( person, "987654" );
+			login = loginSession.add( person, "987654" );
 		}
-		Collaborator collaborator = this.collaboratorSession.get( client.getCompany( ), login );
+		Collaborator collaborator = collaboratorSession.get( client.getCompany( ), login );
 		if ( collaborator == null ) {
 			LOGGER.info( "There is no collaborator for this person: " + record.getName( ) );
-			collaborator = this.collaboratorSession.add( login, auth.getCompanyID( ) );
+			collaborator = collaboratorSession.add( login, auth.getCompanyID( ) );
 		}
-		Role userRole = this.roleSession.get( 4 );
-		Role stationRole = this.roleSession.get( 22 );
+		Role userRole = roleSession.get( 4 );
+		Role stationRole = roleSession.get( 22 );
 		if ( !collaborator.getRoles( ).contains( userRole ) ) {
 			collaborator.getRoles( ).add( userRole );
 		}
@@ -427,14 +427,14 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 			collaborator.getRoles( ).add( stationRole );
 		}
 
-		Client station = this.clientSession.get( auth, record.getStationId( ) );
+		Client station = clientSession.get( auth, record.getStationId( ) );
 		if ( station != null ) {
 			InepStationReponsablePK r = new InepStationReponsablePK( event, station, collaborator );
-			InepStationReponsable existing = this.getEntityManager( ).find( InepStationReponsable.class, r );
+			InepStationReponsable existing = getEntityManager( ).find( InepStationReponsable.class, r );
 			if ( existing == null ) {
 				existing = new InepStationReponsable( );
 				existing.setId( r );
-				this.getEntityManager( ).persist( existing );
+				getEntityManager( ).persist( existing );
 			}
 		}
 		else {
@@ -446,19 +446,26 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 	@Override
 	public void verifyInepRecord( PrincipalDTO auth, InepEvent evt, StationGradeDTO other )
 	{
-		InepSubscription subscription = this.subscriptionEvent.get( new InepSubscriptionPK( evt, other.getSubscription( ) ) );
+		InepSubscription subscription = subscriptionEvent.get( new InepSubscriptionPK( evt, other.getSubscription( ) ) );
 		if ( subscription == null ) {
 			return;
 		}
 		if ( other.getIsMising( ) ) {
-			this.gradeSession.setMissing( auth, subscription );
+			gradeSession.setMissing( auth, subscription );
 			return;
 		}
-		/**
-		 * TODO: compare!!!!!!
-		 */
-		this.gradeSession.setInterviewerInformation( auth, subscription, null, other.getInterviewerGrade( ) );
-		this.gradeSession.setObserverInformation( auth, subscription, other.getObserverGrade( ) );
+		gradeSession.setInterviewerInformation( auth, subscription, null, other.getInterviewerGrade( ) );
+		gradeSession.setObserverInformation( auth, subscription, other.getObserverGrade( ) );
+	}
+
+	public StationGradeDTO getOralGrade( PrincipalDTO auth, InepEvent evt, StationGradeDTO other )
+	{
+		InepSubscription subscription = subscriptionEvent.get( new InepSubscriptionPK( evt, other.getSubscription( ) ) );
+		if( subscription == null ) {
+			return null;
+		}
+		return gradeSession.getStationGrade( auth, subscription );
+
 	}
 
 }
