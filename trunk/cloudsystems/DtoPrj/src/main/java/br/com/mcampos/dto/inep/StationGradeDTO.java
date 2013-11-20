@@ -20,10 +20,10 @@ public class StationGradeDTO implements Serializable
 
 	public Integer[ ] getObserverGrade( )
 	{
-		if ( this.observerGrade == null ) {
-			this.observerGrade = new Integer[ MAX_OBSERVER_GRADE ];
+		if ( observerGrade == null ) {
+			observerGrade = new Integer[ MAX_OBSERVER_GRADE ];
 		}
-		return this.observerGrade;
+		return observerGrade;
 	}
 
 	public void setObserverGrade( Integer[ ] observerGrade )
@@ -36,16 +36,16 @@ public class StationGradeDTO implements Serializable
 		if ( nIndex < 0 || nIndex > 5 ) {
 			throw new IndexOutOfBoundsException( "Observer Grade " + nIndex + " out of bouds" );
 		}
-		this.getObserverGrade( )[ nIndex ] = value;
-		this.setIsMising( false );
+		getObserverGrade( )[ nIndex ] = value;
+		setIsMising( false );
 	}
 
 	public Integer[ ] getElements( )
 	{
-		if ( this.elements == null ) {
-			this.elements = new Integer[ MAX_ELEMENTS ];
+		if ( elements == null ) {
+			elements = new Integer[ MAX_ELEMENTS ];
 		}
-		return this.elements;
+		return elements;
 	}
 
 	public void setElements( Integer[ ] elements )
@@ -55,13 +55,13 @@ public class StationGradeDTO implements Serializable
 
 	public Integer getInterviewerGrade( )
 	{
-		return this.interviewerGrade;
+		return interviewerGrade;
 	}
 
 	public void setInterviewerGrade( Integer interviewerGrade )
 	{
 		this.interviewerGrade = interviewerGrade;
-		this.setIsMising( false );
+		setIsMising( false );
 	}
 
 	public void set( int nIndex, String value )
@@ -70,26 +70,26 @@ public class StationGradeDTO implements Serializable
 			return;
 		}
 		switch ( nIndex ) {
-		case 3:
-			this.setSubscription( value );
+		case 2:
+			setSubscription( value );
 			break;
+		case 3:
 		case 4:
 		case 5:
 		case 6:
 		case 7:
 		case 8:
-		case 9:
-			this.setObserverGrade( nIndex - 4, Integer.valueOf( value ) );
+			this.setObserverGrade( nIndex - 3, Integer.valueOf( value ) );
 			break;
-		case 11:
-			this.setInterviewerGrade( Integer.valueOf( value ) );
+		case 10:
+			setInterviewerGrade( Integer.valueOf( value ) );
 			break;
 		}
 	}
 
 	public String getSubscription( )
 	{
-		return this.subscription;
+		return subscription;
 	}
 
 	public void setSubscription( String subscription )
@@ -99,12 +99,53 @@ public class StationGradeDTO implements Serializable
 
 	public Boolean getIsMising( )
 	{
-		return this.isMising;
+		return isMising;
 	}
 
 	public void setIsMising( Boolean isMising )
 	{
 		this.isMising = isMising;
+	}
+
+	public boolean compareGrades( StationGradeDTO other )
+	{
+		if( other == null ) {
+			return false;
+		}
+		if( !getSubscription( ).equals( other.getSubscription( ) ) ) {
+			return false;
+		}
+		if( !getIsMising( ).equals( other.getIsMising( ) ) ) {
+			return false;
+		}
+		if( getIsMising( ) ) {
+			return true;
+		}
+		if( !getInterviewerGrade( ).equals( other.getInterviewerGrade( ) ) ) {
+			return false;
+		}
+		for( int nIndex = 0; nIndex < getObserverGrade( ).length; nIndex++ ) {
+			if( !getObserverGrade( )[nIndex].equals( other.getObserverGrade( )[nIndex] ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public String export ( )
+	{
+		String out = String.format( "%s;%d;%d;%d;%d;%d;%d;%.02f;%d;%.02f;%.02f",
+				getSubscription( ),
+				getObserverGrade( )[0],
+				getObserverGrade( )[1],
+				getObserverGrade( )[2],
+				getObserverGrade( )[3],
+				getObserverGrade( )[4],
+				getObserverGrade( )[5],
+				0D,
+				getInterviewerGrade( ),
+				0D, 0D );
+		return out;
 	}
 
 }
