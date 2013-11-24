@@ -28,24 +28,26 @@ public class InepLoaderJob extends InepBaseJob
 		try {
 			List<InepEvent> currentEvents;
 
-			if ( amIRunning( arg0 ) ) {
+			if ( this.amIRunning( arg0 ) ) {
 				logger.info( "Already running!!!!" );
 				return;
 			}
 
-			currentEvents = getSession( ).getAvailableEvents( );
-			if ( SysUtils.isEmpty( currentEvents ) )
+			currentEvents = this.getSession( ).getAvailableEvents( );
+			if ( SysUtils.isEmpty( currentEvents ) ) {
 				return;
+			}
 			for ( InepEvent item : currentEvents ) {
-				String[ ] files = getFiles( item, ".pdf" );
-				if ( files == null )
+				String[ ] files = this.getFiles( item, ".pdf" );
+				if ( files == null ) {
 					return;
+				}
 				for ( String file : files )
 				{
-					String eventPath = getBasePath( item );
+					String eventPath = this.getBasePath( item );
 					parts = file.split( "-" );
 					if ( parts == null || parts.length < 2 ) {
-						moveFile( eventPath + file, eventPath + "ERR/" );
+						this.moveFile( eventPath + file, eventPath + "ERR/" );
 						continue;
 					}
 					try {
@@ -63,14 +65,14 @@ public class InepLoaderJob extends InepBaseJob
 							task = Integer.parseInt( aux );
 						}
 						catch ( NumberFormatException e ) {
-							moveFile( eventPath + file, eventPath + "ERR/" );
+							this.moveFile( eventPath + file, eventPath + "ERR/" );
 							continue;
 						}
-						bRet = processFile( item, eventPath + file, subscripton, task );
-						moveFile( eventPath + file, bRet ? eventPath + "PRO/" : eventPath + "ERR/" );
+						bRet = this.processFile( item, eventPath + file, subscripton, task );
+						this.moveFile( eventPath + file, bRet ? eventPath + "PRO/" : eventPath + "ERR/" );
 					}
 					catch ( Exception e ) {
-						moveFile( eventPath + file, eventPath + "ERR/" );
+						this.moveFile( eventPath + file, eventPath + "ERR/" );
 						logger.error( e.getMessage( ) );
 					}
 				}
@@ -78,14 +80,14 @@ public class InepLoaderJob extends InepBaseJob
 		}
 		catch ( Exception e )
 		{
-			logger.error( e.getMessage( ) );
+			logger.error( "Error on Execute", e );
 		}
 	}
 
 	private boolean processFile( InepEvent pack, String file, String subscription, Integer task )
 	{
 		InepTestPK key = new InepTestPK( );
-		byte[ ] object = read( file );
+		byte[ ] object = this.read( file );
 		if ( object == null || object.length <= 0 ) {
 			return false;
 		}
@@ -94,6 +96,6 @@ public class InepLoaderJob extends InepBaseJob
 		key.setEventId( pack.getId( ).getId( ) );
 		key.setSubscriptionId( subscription );
 		key.setTaskId( task );
-		return getSession( ).insert( key, object );
+		return this.getSession( ).insert( key, object );
 	}
 }

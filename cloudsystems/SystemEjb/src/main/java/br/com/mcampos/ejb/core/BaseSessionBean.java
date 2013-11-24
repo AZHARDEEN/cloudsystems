@@ -28,7 +28,7 @@ public abstract class BaseSessionBean implements BaseSessionInterface, Serializa
 	private static final long serialVersionUID = -5194649999923317181L;
 	private static final Logger logger = LoggerFactory.getLogger( BaseSessionBean.class.getSimpleName( ) );
 	@Resource
-	private SessionContext sessionContext; // **< Contexto de sessão do EJB. Até hoje eu ainda não usei
+	private SessionContext sessionContext; // **< Contexto de sessão do EJB. Até hoje eu ainda não usei para que isso serve
 
 	@PersistenceContext( unitName = "SystemEJB" )
 	private EntityManager em;// **< Entity Manager. Esta variável é fundamental para todo o sistema

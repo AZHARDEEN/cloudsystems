@@ -17,4 +17,6 @@ public interface CompanySessionLocal extends BaseCrudSessionInterface<Company>
 
 	List<UserDocument> searchByEmail( String lookFor );
 
+	List<Company> getWithUploadJobsEnabled( );
+
 }

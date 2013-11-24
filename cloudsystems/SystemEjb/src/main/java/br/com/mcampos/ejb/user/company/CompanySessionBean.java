@@ -1,5 +1,7 @@
 package br.com.mcampos.ejb.user.company;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
@@ -66,6 +68,12 @@ public class CompanySessionBean extends BaseUserSession<Company> implements Comp
 		if ( newEntity.getType( ) == null ) {
 			newEntity.setType( this.getEntityManager( ).find( CompanyType.class, CompanyType.defaultType ) );
 		}
+	}
+
+	@Override
+	public List<Company> getWithUploadJobsEnabled( )
+	{
+		return this.findByNamedQuery( Company.getAllWithUploadJobEnabled );
 	}
 
 }

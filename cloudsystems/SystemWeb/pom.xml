@@ -26,6 +26,7 @@
 
 	<properties>
 		<apache.poi.version>3.9</apache.poi.version>
+		<apache.lucene.version>4.5.1</apache.lucene.version>
 	</properties>
 
 
@@ -60,6 +61,18 @@
 			<version>${system.ejb.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${apache.lucene.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>${apache.lucene.version}</version>
+		</dependency>
+                        		
 
 		<dependency>
 			<groupId>org.zkoss.zk</groupId>
@@ -121,7 +134,7 @@
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.2.0</version>
+			<version>2.2.1</version>
 		</dependency>
 
 

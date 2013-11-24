@@ -23,7 +23,7 @@ import br.com.mcampos.jpa.inep.InepTestPK;
 /**
  * Session Bean implementation class InepLoaderSessionBean
  */
-@Stateless( mappedName = "InepLoaderSession" )
+@Stateless( mappedName = "InepLoaderSession", name = "InepLoaderSession" )
 public class InepLoaderSessionBean implements InepLoaderSession
 {
 	@EJB
