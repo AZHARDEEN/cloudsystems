@@ -427,4 +427,35 @@ public final class SysUtils
 				"^\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d)\\D*(\\d).*$",
 				"$1$2\\.$3$4$5\\.$6$7$8$9/$10$11$12$13-$14$15" );
 	}
+
+	public static List<String> searchDirectory( File directory )
+	{
+		List<String> items = new ArrayList<String>( );
+		if ( directory.isDirectory( ) ) {
+			search( directory, items );
+		}
+		return items;
+	}
+
+	private static void search( File file, List<String> items )
+	{
+
+		if ( file.isDirectory( ) ) {
+			// do you have permission to read this directory?
+			if ( file.canRead( ) ) {
+				for ( File temp : file.listFiles( ) ) {
+					if ( temp.isDirectory( ) ) {
+						search( temp, items );
+					}
+					else {
+						items.add( temp.getAbsoluteFile( ).toString( ) );
+					}
+
+				}
+			}
+			else {
+				LOGGER.error( file.getAbsoluteFile( ) + " Permission Denied" );
+			}
+		}
+	}
 }

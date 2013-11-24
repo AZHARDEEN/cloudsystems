@@ -8,6 +8,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,9 +20,14 @@ import javax.persistence.Table;
 @Entity
 @Table( name = "company", schema = "public" )
 @DiscriminatorValue( "2" )
+@NamedQueries( {
+		@NamedQuery( name = Company.getAllWithUploadJobEnabled, query = "select o from Company o where o.hasUploadJob = true" )
+} )
 public class Company extends Users implements Serializable
 {
 	private static final long serialVersionUID = 1L;
+
+	public static final String getAllWithUploadJobEnabled = "Company.getAllWithUploadJobEnabled";
 
 	@ManyToOne
 	@JoinColumn( name = "ctp_id_in", nullable = false )
@@ -44,53 +51,56 @@ public class Company extends Users implements Serializable
 	@OneToMany( mappedBy = "holding" )
 	private List<Company> companies;
 
+	@Column( name = "cpn_upload_job_bt", nullable = true, columnDefinition = "boolean" )
+	private Boolean hasUploadJob;
+
 	public Company( )
 	{
 	}
 
 	public Boolean getIeIsento( )
 	{
-		return ieIsento;
+		return this.ieIsento;
 	}
 
 	public void setIeIsento( Boolean usrIsentoIeBt )
 	{
-		ieIsento = usrIsentoIeBt;
+		this.ieIsento = usrIsentoIeBt;
 	}
 
 	public Boolean getImIsento( )
 	{
-		return imIsento;
+		return this.imIsento;
 	}
 
 	public void setImIsento( Boolean usrIsentoImBt )
 	{
-		imIsento = usrIsentoImBt;
+		this.imIsento = usrIsentoImBt;
 	}
 
 	public Boolean getOptanteSimples( )
 	{
-		return optanteSimples;
+		return this.optanteSimples;
 	}
 
 	public void setOptanteSimples( Boolean usrOptanteSimplesBt )
 	{
-		optanteSimples = usrOptanteSimplesBt;
+		this.optanteSimples = usrOptanteSimplesBt;
 	}
 
 	public Company getHolding( )
 	{
-		return holding;
+		return this.holding;
 	}
 
 	public void setHolding( Company company )
 	{
-		holding = company;
+		this.holding = company;
 	}
 
 	public List<Company> getCompanies( )
 	{
-		return companies;
+		return this.companies;
 	}
 
 	public void setCompanies( List<Company> companies )
@@ -100,12 +110,22 @@ public class Company extends Users implements Serializable
 
 	public CompanyType getType( )
 	{
-		return type;
+		return this.type;
 	}
 
 	public void setType( CompanyType type )
 	{
 		this.type = type;
+	}
+
+	public Boolean hasUploadJob( )
+	{
+		return this.hasUploadJob;
+	}
+
+	public void setHasUploadJob( Boolean hasUploadJob )
+	{
+		this.hasUploadJob = hasUploadJob;
 	}
 
 }

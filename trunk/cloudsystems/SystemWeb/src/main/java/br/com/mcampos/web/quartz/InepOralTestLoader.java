@@ -15,7 +15,7 @@ public class InepOralTestLoader extends InepBaseJob
 	private static String INITAL_PATH = "/var/local/jboss/loader/inep/audio";
 	private ArrayList<String> fileToProcess = new ArrayList<String>( );
 	private int nIndex = 0;
-	private static final Logger logger = LoggerFactory.getLogger( InepLoaderJob.class );
+	private static final Logger logger = LoggerFactory.getLogger( InepOralTestLoader.class );
 	public static final String jobName = "oralLoaderJob";
 	public static final String jobGroup = "mcampos";
 
