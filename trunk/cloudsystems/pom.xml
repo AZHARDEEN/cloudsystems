@@ -21,7 +21,7 @@
 	</modules>
 
 	<properties>
-		<zk.version>6.5.4</zk.version>
+		<zk.version>7.0.0</zk.version>
         <maven-war-plugin>2.4</maven-war-plugin>
         <maven-ear-plugin>2.8</maven-ear-plugin>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
