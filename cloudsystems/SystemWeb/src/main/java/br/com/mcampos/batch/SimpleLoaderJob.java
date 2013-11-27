@@ -1,6 +1,11 @@
 package br.com.mcampos.batch;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.quartz.JobExecutionContext;
@@ -8,6 +13,8 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.mcampos.MediaUtil;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.jpa.user.Company;
 import br.com.mcampos.sysutils.SysUtils;
 
@@ -40,6 +47,35 @@ public class SimpleLoaderJob extends BaseQuartzJob
 		}
 		List<String> items = SysUtils.searchDirectory( new File( basePath ) );
 		if ( SysUtils.isEmpty( items ) ) {
+			return;
+		}
+		for ( String item : items ) {
+			this.processFile( c, new File( item ) );
+		}
+	}
+
+	private void processFile( Company c, File file )
+	{
+		if ( !file.exists( ) )
+		{
+			LOGGER.error( "File " + file.getAbsolutePath( ) + " does not exists" );
+			return;
+		}
+		if ( !file.canRead( ) ) {
+			LOGGER.error( "File " + file.getAbsolutePath( ) + " cannot be read" );
+			return;
+		}
+		try {
+			InputStream is = new FileInputStream( file );
+			byte[ ] buffer = SysUtils.readByteFromStream( is );
+			is.close( );
+			String mimeType = Files.probeContentType( Paths.get( file.getAbsolutePath( ) ) );
+			LOGGER.info( "Processing " + file.getAbsolutePath( ) + ". MimeType is " + mimeType + ". Size: " + buffer.length );
+			MediaDTO mediaDto = MediaUtil.getMediaDTO( c.getId( ), file.getName( ), buffer, mimeType );
+			file.delete( );
+		}
+		catch ( IOException e ) {
+			LOGGER.error( "Error acessing file " + file.getAbsolutePath( ), e );
 			return;
 		}
 	}
