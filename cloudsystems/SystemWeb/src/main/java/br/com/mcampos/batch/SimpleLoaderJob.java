@@ -72,6 +72,7 @@ public class SimpleLoaderJob extends BaseQuartzJob
 			String mimeType = Files.probeContentType( Paths.get( file.getAbsolutePath( ) ) );
 			LOGGER.info( "Processing " + file.getAbsolutePath( ) + ". MimeType is " + mimeType + ". Size: " + buffer.length );
 			MediaDTO mediaDto = MediaUtil.getMediaDTO( c.getId( ), file.getName( ), buffer, mimeType );
+			this.getSession( ).set( c, mediaDto );
 			file.delete( );
 		}
 		catch ( IOException e ) {

@@ -14,6 +14,7 @@ import br.com.mcampos.dto.AssefazDTO;
 import br.com.mcampos.dto.RejectedDTO;
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.ejb.core.DBPaging;
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
 import br.com.mcampos.ejb.user.client.ClientSessionLocal;
@@ -28,6 +29,7 @@ import br.com.mcampos.jpa.system.UploadStatus;
 import br.com.mcampos.jpa.user.Client;
 import br.com.mcampos.jpa.user.ClientEntry;
 import br.com.mcampos.jpa.user.Collaborator;
+import br.com.mcampos.jpa.user.Company;
 import br.com.mcampos.jpa.user.Person;
 import br.com.mcampos.jpa.user.UserDocument;
 import br.com.mcampos.sysutils.SysUtils;
@@ -79,6 +81,28 @@ public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> impleme
 		entity.setMedia( mediaEntity );
 		entity.setCollaborator( this.collaboratorSession.find( auth ) );
 		return this.add( auth, entity );
+	}
+
+	@Override
+	public FileUpload addNewFile( Company c, MediaDTO media )
+	{
+		if ( c == null || media == null || SysUtils.isEmpty( media.getName( ) ) ) {
+			throw new InvalidParameterException( );
+		}
+		FileUpload entity = new FileUpload( );
+		Media mediaEntity = this.mediaSession.findByName( media.getName( ) );
+		if ( mediaEntity == null ) {
+			entity.setStatus( this.statusSession.get( UploadStatus.sucess ) );
+		}
+		else {
+			entity.setStatus( this.statusSession.get( UploadStatus.duplicated ) );
+		}
+		mediaEntity = this.mediaSession.add( media );
+		entity.getId( ).setCompanyId( c.getId( ) );
+		entity.setMedia( mediaEntity );
+		entity.setRecords( 0 );
+		entity.setRejecteds( 0 );
+		return this.add( entity );
 	}
 
 	public void deleteAllByMediaId( PrincipalDTO auth, Serializable mediaId )
@@ -155,7 +179,7 @@ public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> impleme
 		ClientEntry entry = new ClientEntry( );
 
 		entry.setClient( c );
-		entry.setCollaboratorId( entity.getId( ).getSequence( ) );
+		entry.setCollaboratorId( entity.getCollaborator_id( ) );
 		entry.setCycle( 201304 );
 		entry.setMediaId( entity.getId( ).getMedia( ) );
 		entry.setValue( new BigDecimal( dto.getPayment( ) ) );
@@ -213,5 +237,11 @@ public class FileUploadSessionBean extends SimpleSessionBean<FileUpload> impleme
 	public List<FileUpload> getAllByMedia( Media media )
 	{
 		return this.findByNamedQuery( FileUpload.getAllByMedia, media );
+	}
+
+	@Override
+	public List<FileUpload> getFilesToProcess( Company c )
+	{
+		return this.findByNamedQuery( FileUpload.getFilesToProcess, new DBPaging( 0, 500 ), c.getId( ) );
 	}
 }

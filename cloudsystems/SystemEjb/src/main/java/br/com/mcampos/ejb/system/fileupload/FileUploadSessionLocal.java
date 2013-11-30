@@ -12,15 +12,20 @@ import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.core.BaseCrudSessionInterface;
 import br.com.mcampos.jpa.system.FileUpload;
 import br.com.mcampos.jpa.system.Media;
+import br.com.mcampos.jpa.user.Company;
 
 @Local
 public interface FileUploadSessionLocal extends BaseCrudSessionInterface<FileUpload>
 {
 	FileUpload addNewFile( PrincipalDTO c, MediaDTO media );
 
+	FileUpload addNewFile( Company c, MediaDTO media );
+
 	FileUpload update( FileUpload entity, ArrayList<RejectedDTO> rejecteds );
 
 	AssefazDTO add( PrincipalDTO auth, FileUpload entity, AssefazDTO dto, boolean bCreateIfNotExists );
 
 	List<FileUpload> getAllByMedia( Media media );
+
+	List<FileUpload> getFilesToProcess( Company c );
 }

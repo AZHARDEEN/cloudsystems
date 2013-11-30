@@ -31,27 +31,32 @@ public class UploadStatus extends SimpleTable<UploadStatus>
 	{
 	}
 
+	public UploadStatus( Integer id )
+	{
+		this.setId( id );
+	}
+
 	@Override
 	public Integer getId( )
 	{
-		return id;
+		return this.id;
 	}
 
 	@Override
 	public void setId( Integer upsIdIn )
 	{
-		id = upsIdIn;
+		this.id = upsIdIn;
 	}
 
 	@Override
 	public String getDescription( )
 	{
-		return description;
+		return this.description;
 	}
 
 	@Override
 	public void setDescription( String upsDescriptionCh )
 	{
-		description = upsDescriptionCh;
+		this.description = upsDescriptionCh;
 	}
 }

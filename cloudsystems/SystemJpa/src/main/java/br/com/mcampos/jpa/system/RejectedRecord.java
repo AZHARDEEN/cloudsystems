@@ -29,12 +29,14 @@ public class RejectedRecord implements Serializable
 	@Column( name = "rrd_value_ch" )
 	private String value;
 
+	@Column( name = "col_seq_in", insertable = true, updatable = true, nullable = true )
+	private Integer sequence;
+
 	// bi-directional many-to-one association to UploadStatus
 	@ManyToOne( optional = false )
 	@JoinColumns( {
-			@JoinColumn( name = "usr_id_in", insertable = false, updatable = false, nullable = false, referencedColumnName = "usr_id_in" ),
-			@JoinColumn( name = "col_seq_in", insertable = false, updatable = false, nullable = false, referencedColumnName = "col_seq_in" ),
-			@JoinColumn( name = "med_id_in", insertable = false, updatable = false, nullable = false, referencedColumnName = "med_id_in" )
+			@JoinColumn( name = "usr_id_in", insertable = false, updatable = false, nullable = true, referencedColumnName = "usr_id_in" ),
+			@JoinColumn( name = "med_id_in", insertable = false, updatable = false, nullable = true, referencedColumnName = "med_id_in" )
 	} )
 	private FileUpload fileUpload;
 
@@ -44,10 +46,10 @@ public class RejectedRecord implements Serializable
 
 	public RejectedRecordPK getId( )
 	{
-		if ( id == null ) {
-			id = new RejectedRecordPK( );
+		if ( this.id == null ) {
+			this.id = new RejectedRecordPK( );
 		}
-		return id;
+		return this.id;
 	}
 
 	public void setId( RejectedRecordPK id )
@@ -57,32 +59,32 @@ public class RejectedRecord implements Serializable
 
 	public String getCause( )
 	{
-		return cause;
+		return this.cause;
 	}
 
 	public void setCause( String rrdCauseCh )
 	{
-		cause = rrdCauseCh;
+		this.cause = rrdCauseCh;
 	}
 
 	public String getValue( )
 	{
-		return value;
+		return this.value;
 	}
 
 	public void setValue( String rrdValueCh )
 	{
-		value = rrdValueCh;
+		this.value = rrdValueCh;
 	}
 
 	public FileUpload getFileUpload( )
 	{
-		return fileUpload;
+		return this.fileUpload;
 	}
 
 	public void setFileUpload( FileUpload fileUpload )
 	{
 		this.fileUpload = fileUpload;
-		getId( ).set( fileUpload );
+		this.getId( ).set( fileUpload );
 	}
 }

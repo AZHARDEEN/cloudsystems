@@ -37,4 +37,6 @@ public interface InepSubscriptionSessionLocal extends BaseCrudSessionInterface<I
 
 	public void setWrittenGrade( InepSubscription s, BigDecimal grade );
 
+	public InepSubscription get( String id );
+
 }
