@@ -130,11 +130,18 @@ ORDER BY
 				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="3" y="0" width="550" height="20"/>
+				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="3" y="0" width="493" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
 				<text><![CDATA[Listagem Geral de Inscrições Sem Notas Atribuídas - Não Ausentes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9673e3ac-6616-4017-b2f1-fd9af93bcebb" x="437" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[oral_station_003]]></text>
 			</staticText>
 		</band>
 	</pageHeader>

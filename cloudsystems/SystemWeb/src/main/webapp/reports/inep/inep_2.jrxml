@@ -121,11 +121,18 @@ order by
 	<title>
 		<band height="22" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="0" y="0" width="555" height="20"/>
+				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="0" y="0" width="553" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
 				<text><![CDATA[Situação da Correção]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1cf6963c-9331-479c-b9f1-ead5148f9946" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[inep_2]]></text>
 			</staticText>
 		</band>
 	</title>

@@ -3,9 +3,13 @@ package br.com.mcampos;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.InvalidParameterException;
 
 import br.com.mcampos.dto.system.MediaDTO;
+import br.com.mcampos.jpa.system.Media;
 
 public final class MediaUtil
 {
@@ -49,6 +53,25 @@ public final class MediaUtil
 		out.write( content, 0, content.length );
 		out.close( );
 		return file.getAbsolutePath( );
+	}
+
+	public static byte[ ] getObject( Media media )
+	{
+		byte[ ] obj = null;
+
+		if ( media.getObject( ) != null ) {
+			obj = media.getObject( ).clone( );
+		}
+		else {
+			Path path = Paths.get( media.getPath( ) );
+			try {
+				obj = Files.readAllBytes( path );
+			}
+			catch ( IOException e ) {
+				e.printStackTrace( );
+			}
+		}
+		return obj;
 	}
 
 }

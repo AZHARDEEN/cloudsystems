@@ -150,6 +150,13 @@ order by
 				</textElement>
 				<text><![CDATA[Média de Notas Por Tarefa/Corretor]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="49111924-8ee8-4156-b62b-90277807afba" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[inep_8]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

@@ -252,12 +252,17 @@ public abstract class BaseController<T extends Component> extends SelectorCompos
 			return page;
 		}
 
-		switch ( dto.getLoginStatus( ) ) {
-		case UserStatus.statusFullfillRecord:
-			return "/private/client/my_record.zul";
-		case UserStatus.statusExpiredPassword:
-			return "/private/change_password.zul";
-		default:
+		if ( dto.getLoginStatus( ) != null ) {
+			switch ( dto.getLoginStatus( ) ) {
+			case UserStatus.statusFullfillRecord:
+				return "/private/client/my_record.zul";
+			case UserStatus.statusExpiredPassword:
+				return "/private/change_password.zul";
+			default:
+				return page;
+			}
+		}
+		else {
 			return page;
 		}
 	}

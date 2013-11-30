@@ -60,6 +60,13 @@ ORDER BY USR_NAME_CH]]>
 				</textElement>
 				<text><![CDATA[Consolidado de Inscrições por Posto Aplicador]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="4d64641c-0ba6-4dea-9e68-884ccc4c78d6" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[InscricoesPorPostoAplicador]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

@@ -9,12 +9,14 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import br.com.mcampos.jpa.user.Client;
 import br.com.mcampos.jpa.user.Person;
 
 /**
@@ -72,6 +74,13 @@ public class InepSubscription extends BaseInepEvent implements Serializable, Com
 	@ManyToOne
 	@JoinColumn( name = "isc_candidate_in", referencedColumnName = "usr_id_in", nullable = true )
 	private Person person;
+
+	@ManyToOne
+	@JoinColumns( {
+			@JoinColumn( name = "usr_id_in", referencedColumnName = "usr_id_in", nullable = true, updatable = false, insertable = false ),
+			@JoinColumn( name = "cli_seq_in", referencedColumnName = "cli_seq_in", nullable = true, updatable = false, insertable = false )
+	} )
+	private Client station;
 
 	@Column( name = "iss_id_in" )
 	private Integer status;
@@ -241,5 +250,15 @@ public class InepSubscription extends BaseInepEvent implements Serializable, Com
 			this.setOralGrade( null );
 			this.setWrittenGrade( null );
 		}
+	}
+
+	public Client getStation( )
+	{
+		return this.station;
+	}
+
+	public void setStation( Client station )
+	{
+		this.station = station;
 	}
 }

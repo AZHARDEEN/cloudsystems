@@ -66,6 +66,13 @@ order by
 				</textElement>
 				<text><![CDATA[Discrepância Oral/Escrita]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="39767c0c-c7ac-43d1-b9f1-14e1c9e9bc11" x="440" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[inep_10]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

@@ -42,12 +42,12 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	{
 		InepSubscription s = this.getSubscription( entity, createSubscription );
 		entity.setSubscription( s );
-		entity.setStatus( this.statusSession.get( DistributionStatus.statusDistributed ) );
+		entity.setStatusId( 1 );
 		entity = this.merge( entity );
-		if ( entity.getFinalGrade( ) != null && entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) ) {
+		if ( entity.getFinalGrade( ) != null && entity.getStatusId( ).equals( DistributionStatus.statusDistributed ) ) {
 			this.subscriptionSession.setOralGrade( s, entity.getFinalGrade( ) );
 		}
-		if ( entity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed ) ) {
+		if ( entity.getStatusId( ).equals( DistributionStatus.statusDistributed ) ) {
 			entity.setVarianceStatus( 0 );
 		}
 		else {
@@ -84,21 +84,15 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 		if ( newEntity == null ) {
 			return null;
 		}
-		if ( newEntity.getStatus( ).getId( ).equals( DistributionStatus.statusDistributed )
+		if ( newEntity.getStatusId( ).equals( DistributionStatus.statusDistributed )
 				&& newEntity.getInterviewGrade( ) != null && newEntity.getObserverGrade( ) != null ) {
 			double grade1, grade2;
 
 			grade1 = newEntity.getInterviewGrade( ).doubleValue( );
 			grade2 = newEntity.getObserverGrade( ).doubleValue( );
 			double variance = Math.abs( grade1 - grade2 );
-			if ( variance >= 1.5 ) {
-				newEntity.setStatus( this.statusSession.get( DistributionStatus.statusVariance ) );
-			}
-			if ( grade1 >= 2.0 && grade2 < 2.0 ) {
-				newEntity.setStatus( this.statusSession.get( DistributionStatus.statusVariance ) );
-			}
-			if ( grade2 >= 2.0 && grade1 < 2.0 ) {
-				newEntity.setStatus( this.statusSession.get( DistributionStatus.statusVariance ) );
+			if ( variance >= 1.5 || ( grade1 >= 2.0 && grade2 < 2.0 ) || ( grade2 >= 2.0 && grade1 < 2.0 ) ) {
+				newEntity.setStatusId( 2 );
 			}
 		}
 		return newEntity;
@@ -113,14 +107,14 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	@Override
 	public void setAgreementGrade( InepOralTest test, Integer grade, boolean isCoordinator )
 	{
-		test.setStatus( this.statusSession.get( DistributionStatus.statusRevised ) );
+		test.setStatusId( 4 );
 		if ( isCoordinator == false ) {
 			test.setAgreementGrade( grade );
 			if ( test.getVarianceStatus( ).intValue( ) < 10 ) {
 				double variance = test.getFinalGrade( ).doubleValue( );
 				variance = Math.abs( variance - ( (double) grade ) );
 				if ( variance > 1.5 ) {
-					test.setStatus( this.statusSession.get( DistributionStatus.statusVariance ) );
+					test.setStatusId( 5 );
 					test.setVarianceStatus( 3 );
 				}
 				else {

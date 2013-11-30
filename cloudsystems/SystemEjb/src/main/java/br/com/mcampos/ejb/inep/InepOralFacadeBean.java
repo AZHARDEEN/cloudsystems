@@ -109,7 +109,7 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 		DistributionStatus status = this.statusSession.get( DistributionStatus.statusDistributed );
 		for ( InepOralTest test : tests ) {
 			InepOralTest merged = this.oralTestSession.merge( test );
-			merged.setStatus( status );
+			merged.setStatusId( 3 );
 			this.oralDistributionSession.merge( new InepOralDistribution( merged, r1, status ) );
 			this.oralDistributionSession.merge( new InepOralDistribution( merged, r2, status ) );
 		}
@@ -132,10 +132,9 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 		}
 		medias = new ArrayList<Media>( );
 		for ( InepMedia media : merged.getMedias( ) ) {
-			if ( media.getTask( ) == null ) {
-				if ( media.getMedia( ).getObject( ).length > 0 ) {
-					medias.add( media.getMedia( ) );
-				}
+			if ( media.getTask( ) == null && media.getMedia( ) != null ) {
+				media.getMedia( ).getObject( );
+				medias.add( media.getMedia( ) );
 			}
 		}
 		return medias;
@@ -184,7 +183,7 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 			if ( other != null && !merged.getNota( ).equals( other.getNota( ) ) ) {
 				throw new RuntimeException( "As notas da prova oral não poder ser diferentes entre os corretores" );
 			}
-			if ( !merged.getTest( ).getStatus( ).getId( ).equals( DistributionStatus.statusRevised ) ) {
+			if ( !merged.getTest( ).getStatusId( ).equals( DistributionStatus.statusRevised ) ) {
 				List<InepRevisor> coordinators = this.revisorSession.getOralCoordinator( item.getTest( ).getSubscription( ).getEvent( ) );
 				for ( InepRevisor c : coordinators ) {
 					this.oralDistributionSession.merge( new InepOralDistribution( merged.getTest( ), c,

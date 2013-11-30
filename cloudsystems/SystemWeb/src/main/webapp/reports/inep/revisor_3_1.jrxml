@@ -55,7 +55,14 @@ ORDER BY
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[Extrato de Correção da Parte Oral]]></text>
+				<text><![CDATA[Discrepâncias por Posto Aplicador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1b79c601-e7ec-4af9-a5f9-ab001d7252e0" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[revisor_3_1]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -86,7 +93,7 @@ ORDER BY
 			<staticText>
 				<reportElement uuid="e8003ff0-07d8-48f9-b9c8-d40fef04971a" x="353" y="76" width="54" height="20"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[Intrervist.]]></text>
+				<text><![CDATA[Intrevist.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="091cba2f-913a-44d9-a374-1395e81daccc" x="409" y="76" width="48" height="20"/>

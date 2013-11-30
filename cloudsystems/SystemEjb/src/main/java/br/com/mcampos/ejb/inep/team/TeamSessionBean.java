@@ -30,6 +30,7 @@ import br.com.mcampos.ejb.inep.distribution.DistributionSessionLocal;
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
 import br.com.mcampos.ejb.inep.distribution.InepOralDistributionLocal;
 import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
+import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSessionLocal;
 import br.com.mcampos.ejb.inep.subscription.InepSubscriptionSessionLocal;
 import br.com.mcampos.ejb.inep.task.InepTaskSessionLocal;
@@ -88,14 +89,21 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 
 	@EJB
 	private InepSubscriptionSessionLocal subscriptionSession;
+
 	@EJB
 	private InepOralTestSessionLocal oralTestSession;
+
 	@EJB
 	private DistributionStatusSessionLocal statusSession;
+
 	@EJB
 	private InepOralDistributionLocal oralDistributionSession;
+
 	@EJB
 	private InepStationSessionLocal stationSession;
+
+	@EJB
+	private InepPackageSessionLocal eventSession;
 
 	public TeamSessionBean( )
 	{
@@ -330,6 +338,16 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 	{
 		if ( auth != null ) {
 			return this.taskSession.getEvents( auth );
+		}
+		else {
+			return null;
+		}
+	}
+
+	public List<InepEvent> getAvailableEvents( PrincipalDTO auth )
+	{
+		if ( auth != null ) {
+			return this.eventSession.getAvailable( );
 		}
 		else {
 			return null;

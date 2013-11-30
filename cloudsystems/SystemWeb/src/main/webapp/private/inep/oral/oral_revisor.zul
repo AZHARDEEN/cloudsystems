@@ -12,9 +12,7 @@
 		                <listhead>
 		                    <listheader align="left" label="Inscrição" width="150px"/>
 		                    <listheader align="Left" label="Posto Aplicador" />
-		                    <listheader align="center" label="PO" width="70px" />
-		                    <listheader align="center" label="PE"  width="70px" />
-		                    <listheader align="Center" label="Audio" width="100px"/>
+		                    <listheader align="Center" label="Download Áudio" width="120px"/>
 		                </listhead>
 		            </listbox>
 	            </div>

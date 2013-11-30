@@ -80,6 +80,13 @@ WHERE
 				</textElement>
 				<text><![CDATA[Extrato de Correção - Corretor]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="f05f6f74-1995-498c-8978-5beed8d2e591" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[revisor_1]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

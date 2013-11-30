@@ -13,7 +13,6 @@ import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.inep.distribution.DistributionStatusSessionLocal;
 import br.com.mcampos.ejb.inep.oral.InepOralTestSessionLocal;
 import br.com.mcampos.ejb.inep.packs.InepPackageSessionLocal;
-import br.com.mcampos.jpa.inep.DistributionStatus;
 import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.jpa.inep.InepOralTest;
 import br.com.mcampos.jpa.inep.InepSubscription;
@@ -152,7 +151,7 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 		if ( bVariance ) {
 			InepOralTest oralTest = this.oralTestSession.get( s );
 			if ( oralTest != null ) {
-				oralTest.setStatus( this.statusSession.get( DistributionStatus.statusVariance ) );
+				oralTest.setStatusId( 12 );
 				if ( oralTest.getVarianceStatus( ).equals( 0 ) ) {
 					oralTest.setVarianceStatus( 11 );
 				}

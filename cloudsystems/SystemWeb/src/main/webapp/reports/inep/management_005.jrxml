@@ -145,11 +145,18 @@ ST.USR_NAME_CH asc,
 				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="3" y="0" width="550" height="20"/>
+				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="3" y="0" width="493" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
 				<text><![CDATA[Listagem Geral de Inscrições com Nota e Sem Audio Carregado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3e83d93e-4e7c-4abb-b47a-78ad722f8dbc" x="440" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[management_005]]></text>
 			</staticText>
 		</band>
 	</pageHeader>

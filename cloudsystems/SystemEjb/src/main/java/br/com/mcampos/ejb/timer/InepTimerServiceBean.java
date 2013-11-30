@@ -48,7 +48,6 @@ public class InepTimerServiceBean
 	@Schedule( minute = "*/3", hour = "*", persistent = false )
 	public void process( )
 	{
-		LOGGER.info( "Starting Inep timer" );
 		Company c = this.companySession.get( ID );
 		List<FileUpload> items = this.uploadSession.getFilesToProcess( c );
 		if ( SysUtils.isEmpty( items ) ) {

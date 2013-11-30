@@ -46,27 +46,27 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 	@Listen( "onSelect = #companies" )
 	public void onSelectCompanies( )
 	{
-		Comboitem comboItem = companies.getSelectedItem( );
-		if( comboItem != null && comboItem.getValue( ) instanceof SimpleDTO ) {
+		Comboitem comboItem = this.companies.getSelectedItem( );
+		if ( comboItem != null && comboItem.getValue( ) instanceof SimpleDTO ) {
 			SimpleDTO dto = (SimpleDTO) comboItem.getValue( );
-			if( dto != null && dto.getId( ) != null ) {
-				setCookie( lastCompany, dto.getId( ).toString( ) );
+			if ( dto != null && dto.getId( ) != null ) {
+				this.setCookie( lastCompany, dto.getId( ).toString( ) );
 			}
 		}
-		setCurrentCompany( );
+		this.setCurrentCompany( );
 
 	}
 
 	private void setCurrentCompany( )
 	{
-		Comboitem comboItem = companies.getSelectedItem( );
-		if( comboItem != null && comboItem.getValue( ) instanceof SimpleDTO ) {
+		Comboitem comboItem = this.companies.getSelectedItem( );
+		if ( comboItem != null && comboItem.getValue( ) instanceof SimpleDTO ) {
 			SimpleDTO dto = (SimpleDTO) comboItem.getValue( );
-			PrincipalDTO auth = getPrincipal( );
+			PrincipalDTO auth = this.getPrincipal( );
 			auth.setCompanyID( dto.getId( ) );
-			Collaborator c = getSession( ).find( auth );
-			if( c != null ) {
-				setCollaborator( c );
+			Collaborator c = this.getSession( ).find( auth );
+			if ( c != null ) {
+				this.setCollaborator( c );
 				EventQueues.lookup( IndexController.queueName, true ).publish( new CompanyEventChange( c ) );
 			}
 		}
@@ -76,22 +76,22 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		List<SimpleDTO> list = getSession( ).getCompanies( getPrincipal( ) );
-		load( companies, list, false );
-		locateLastUsedCompany( );
-		if( companies.getSelectedIndex( ) != -1 ) {
-			setCurrentCompany( );
+		List<SimpleDTO> list = this.getSession( ).getCompanies( this.getPrincipal( ) );
+		load( this.companies, list, false );
+		this.locateLastUsedCompany( );
+		if ( this.companies.getSelectedIndex( ) != -1 ) {
+			this.setCurrentCompany( );
 		}
-		version.setValue( Executions.getCurrent( ).getDesktop( ).getWebApp( ).getVersion( ) );
-		if( who != null ) {
-			who.setValue( "Usuário: " + getPrincipal( ) );
+		this.version.setValue( Executions.getCurrent( ).getDesktop( ).getWebApp( ).getVersion( ) );
+		if ( this.who != null ) {
+			this.who.setValue( "Usuário: " + this.getPrincipal( ) );
 		}
-		PrincipalDTO login = getRealLoggedUser( );
-		if( btnUnpersonify != null && login != null && login.getPersonify( ) != null ) {
-			btnUnpersonify.setVisible( true );
+		PrincipalDTO login = this.getRealLoggedUser( );
+		if ( this.btnUnpersonify != null && login != null && login.getPersonify( ) != null ) {
+			this.btnUnpersonify.setVisible( true );
 		}
 		else {
-			btnUnpersonify.setVisible( false );
+			this.btnUnpersonify.setVisible( false );
 		}
 	}
 
@@ -103,29 +103,29 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 
 	private void locateLastUsedCompany( )
 	{
-		String value = getCookie( lastCompany );
-		if( SysUtils.isEmpty( value ) == false )
+		String value = this.getCookie( lastCompany );
+		if ( SysUtils.isEmpty( value ) == false )
 		{
 			try {
 				Integer id = Integer.parseInt( value );
-				for( Comboitem item : companies.getItems( ) ) {
+				for ( Comboitem item : this.companies.getItems( ) ) {
 					SimpleDTO dto = (SimpleDTO) item.getValue( );
-					if( dto != null && dto.getId( ).equals( id ) ) {
-						companies.setSelectedItem( item );
+					if ( dto != null && dto.getId( ).equals( id ) ) {
+						this.companies.setSelectedItem( item );
 						break;
 					}
 				}
 			}
-			catch( Exception e )
+			catch ( Exception e )
 			{
-				if( companies.getItemCount( ) > 0 ) {
-					companies.setSelectedIndex( 0 );
+				if ( this.companies.getItemCount( ) > 0 ) {
+					this.companies.setSelectedIndex( 0 );
 				}
 			}
 		}
 		else {
-			if( companies.getItemCount( ) > 0 ) {
-				companies.setSelectedIndex( 0 );
+			if ( this.companies.getItemCount( ) > 0 ) {
+				this.companies.setSelectedIndex( 0 );
 			}
 		}
 	}
@@ -139,28 +139,31 @@ public class SouthController extends BaseDBLoggedController<CollaboratorSession>
 	@Listen( "onClick=#btnUnpersonify" )
 	public void unpersonify( MouseEvent evt )
 	{
-		PrincipalDTO login = getRealLoggedUser( );
-		if( login != null ) {
+		PrincipalDTO login = this.getRealLoggedUser( );
+		if ( login != null ) {
 			login.setPersonify( null );
 		}
-		if( btnUnpersonify != null )
-			btnUnpersonify.setVisible( false );
-		redirect( null );
-		if( evt != null )
+		if ( this.btnUnpersonify != null ) {
+			this.btnUnpersonify.setVisible( false );
+		}
+		this.redirect( null );
+		if ( evt != null ) {
 			evt.stopPropagation( );
+		}
 	}
 
 	private PrincipalDTO getRealLoggedUser( )
 	{
-		Object obj = getPrincipal( );
+		Object obj = this.getSessionParameter( currentPrincipal );
 
-		if( obj instanceof PrincipalDTO ) {
+		if ( obj instanceof PrincipalDTO ) {
 			PrincipalDTO login = (PrincipalDTO) obj;
 			logger.warn( "GetRealLoggedUser has been called from " + login.getUserId( ) );
 			return login;
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 }

@@ -102,6 +102,13 @@ order by
 				</textElement>
 				<text><![CDATA[Situação da Correção - Coordenador]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="53a1e9c4-5347-4144-8b2a-79a470cf69de" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[inep_1_2]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

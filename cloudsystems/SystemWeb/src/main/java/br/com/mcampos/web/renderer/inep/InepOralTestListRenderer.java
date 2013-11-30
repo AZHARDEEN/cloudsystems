@@ -13,10 +13,20 @@ public class InepOralTestListRenderer extends BaseListRenderer<InepOralTest>
 	{
 		super.render( item, data, index );
 		item.setContext( "listPopupOralTest" );
-		addCell( item, data.getSubscription( ).getId( ).getId( ) );
-		addCell( item, data.getStation( ) );
-		addCell( item, data.getSubscription( ).getOralGrade( ) );
-		addCell( item, data.getSubscription( ).getWrittenGrade( ) );
-		addCell( item, "Discrepância Oral" );
+		this.addCell( item, data.getSubscription( ).getId( ).getId( ) );
+		this.addCell( item, data.getSubscription( ).getStation( ).getClient( ).getName( ) );
+		this.addCell( item, data.getObserverGrade( ) );
+		this.addCell( item, data.getInterviewGrade( ) );
+		this.addCell( item, data.getFinalGrade( ) );
+		double obsGrade, intrGrade;
+		obsGrade = data.getObserverGrade( ).doubleValue( );
+		intrGrade = data.getInterviewGrade( ).doubleValue( );
+
+		if ( ( obsGrade < 2 && intrGrade >= 2 ) || ( obsGrade >= 2 && intrGrade < 2 ) ) {
+			this.addCell( item, "Certifica e Não Certifica" );
+		}
+		else {
+			this.addCell( item, "Discrepância >= 1,5" );
+		}
 	}
 }
