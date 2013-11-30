@@ -287,7 +287,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 
 	private void loadCombobox( )
 	{
-		List<InepEvent> events = this.getSession( ).getEvents( this.getPrincipal( ) );
+		List<InepEvent> events = this.getSession( ).getAvailableEvents( this.getPrincipal( ) );
 
 		if ( SysUtils.isEmpty( this.getComboEvent( ).getItems( ) ) == false ) {
 			this.getComboEvent( ).getItems( ).clear( );
@@ -299,6 +299,9 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		if ( this.getComboEvent( ).getItemCount( ) > 0 ) {
 			this.getComboEvent( ).setSelectedIndex( 0 );
 			this.onSelectPackage( null );
+		}
+		if ( this.getComboEvent( ).getItemCount( ) == 1 ) {
+			this.getComboEvent( ).setDisabled( true );
 		}
 	}
 

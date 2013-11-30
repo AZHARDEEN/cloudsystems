@@ -146,6 +146,13 @@ ST.USR_NAME_CH asc,
 				</textElement>
 				<text><![CDATA[Listagem Geral de Inscrições do Posto]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="03e96819-2b97-4ff6-ac3b-b37c8b1102eb" x="437" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[management_008]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<detail>

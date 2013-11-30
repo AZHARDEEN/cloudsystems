@@ -131,6 +131,13 @@ order by
 				</textElement>
 				<text><![CDATA[Situação da Correção]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="9bc3036c-8e46-439c-9667-eae5ca391c89" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[inep_1_1]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>
@@ -178,7 +185,7 @@ order by
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="17" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
 				<reportElement uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7" x="455" y="0" width="100" height="15"/>
 				<textElement textAlignment="Right"/>

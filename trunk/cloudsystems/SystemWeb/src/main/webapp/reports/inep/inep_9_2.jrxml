@@ -255,6 +255,13 @@ order by
 				</textElement>
 				<text><![CDATA[Discrepâncias por Corretor]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="4652d9a9-9013-4c5f-bdf3-aa8b188ccfa4" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[inep_9_2]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

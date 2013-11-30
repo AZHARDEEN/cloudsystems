@@ -87,22 +87,25 @@ ORDER BY
 		<groupHeader>
 			<band height="50">
 				<staticText>
-					<reportElement x="1" y="36" width="80" height="14" uuid="db9b1609-42f6-4d6a-a10e-9f291ea558b3"/>
+					<reportElement uuid="db9b1609-42f6-4d6a-a10e-9f291ea558b3" x="1" y="36" width="80" height="14"/>
+					<textElement/>
 					<text><![CDATA[Inscrição]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="86" y="36" width="289" height="14" uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f"/>
+					<reportElement uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f" x="86" y="36" width="289" height="14"/>
+					<textElement/>
 					<text><![CDATA[Examinando]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="3" y="0" width="550" height="25" uuid="88cb20af-147e-4ed4-81dc-ee509c9ca23c"/>
+					<reportElement uuid="88cb20af-147e-4ed4-81dc-ee509c9ca23c" x="3" y="0" width="550" height="25"/>
 					<textElement textAlignment="Center">
 						<font size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{posto}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="380" y="36" width="173" height="14" uuid="2cc6a1e8-57f9-4a58-b626-0b47e8edf720"/>
+					<reportElement uuid="2cc6a1e8-57f9-4a58-b626-0b47e8edf720" x="380" y="36" width="173" height="14"/>
+					<textElement/>
 					<text><![CDATA[Arquivo Carregado]]></text>
 				</staticText>
 			</band>
@@ -110,11 +113,13 @@ ORDER BY
 		<groupFooter>
 			<band height="50">
 				<textField>
-					<reportElement x="132" y="16" width="94" height="20" uuid="958b35a8-28cd-420f-8c58-ea61f139671b"/>
+					<reportElement uuid="958b35a8-28cd-420f-8c58-ea61f139671b" x="132" y="16" width="94" height="20"/>
+					<textElement/>
 					<textFieldExpression><![CDATA[$V{Station_COUNT}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="1" y="16" width="130" height="20" uuid="1ea71788-2101-4cf5-8cba-3b62634c1b01"/>
+					<reportElement uuid="1ea71788-2101-4cf5-8cba-3b62634c1b01" x="1" y="16" width="130" height="20"/>
+					<textElement/>
 					<text><![CDATA[Total de Inscrições do Posto]]></text>
 				</staticText>
 			</band>
@@ -126,48 +131,59 @@ ORDER BY
 	<pageHeader>
 		<band height="75" splitType="Stretch">
 			<image>
-				<reportElement x="3" y="21" width="117" height="50" uuid="b8f3d208-d5c0-4eec-a205-6241c030a737"/>
+				<reportElement uuid="b8f3d208-d5c0-4eec-a205-6241c030a737" x="3" y="21" width="117" height="50"/>
 				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="144" y="22" width="231" height="50" uuid="4312c333-ca76-4c9c-bb9f-42a166d16665"/>
+				<reportElement uuid="4312c333-ca76-4c9c-bb9f-42a166d16665" x="144" y="22" width="231" height="50"/>
 				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="388" y="23" width="165" height="50" uuid="54632e40-5f44-4f64-9069-37b26efbf901"/>
+				<reportElement uuid="54632e40-5f44-4f64-9069-37b26efbf901" x="388" y="23" width="165" height="50"/>
 				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="3" y="0" width="550" height="20" uuid="19eb60da-e12f-494b-bfcf-2b6310180f15"/>
+				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="3" y="0" width="550" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
 				<text><![CDATA[Listagem Geral de Audios Carregados do Posto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5c608bc1-e9f4-43c7-b1c8-eeee4af7c90c" x="440" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[management_006]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<detail>
 		<band height="14" splitType="Stretch">
 			<frame>
-				<reportElement style="Zebra" mode="Opaque" x="1" y="0" width="555" height="14" uuid="bfee00be-642f-4346-8bfe-a36693652557"/>
+				<reportElement uuid="bfee00be-642f-4346-8bfe-a36693652557" style="Zebra" mode="Opaque" x="1" y="0" width="555" height="14"/>
 				<textField isBlankWhenNull="true">
-					<reportElement x="0" y="0" width="80" height="14" uuid="de5e44d9-7341-48b5-8091-59442eaac7c9">
+					<reportElement uuid="de5e44d9-7341-48b5-8091-59442eaac7c9" x="0" y="0" width="80" height="14">
 						<printWhenExpression><![CDATA[!$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
 					</reportElement>
+					<textElement/>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="85" y="0" width="289" height="14" uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355"/>
+					<reportElement uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355" x="85" y="0" width="289" height="14"/>
+					<textElement/>
 					<textFieldExpression><![CDATA[$F{examinando}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="0" y="0" width="80" height="14" forecolor="#FF0000" uuid="afac717b-7231-4999-8b8f-937f7c8362f5">
+					<reportElement uuid="afac717b-7231-4999-8b8f-937f7c8362f5" x="0" y="0" width="80" height="14" forecolor="#FF0000">
 						<printWhenExpression><![CDATA[$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
 					</reportElement>
+					<textElement/>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="379" y="0" width="173" height="14" uuid="e0b7bf46-8eff-40f2-b04c-ef444f07db27"/>
+					<reportElement uuid="e0b7bf46-8eff-40f2-b04c-ef444f07db27" x="379" y="0" width="173" height="14"/>
+					<textElement/>
 					<textFieldExpression><![CDATA[$F{med_name_ch}]]></textFieldExpression>
 				</textField>
 			</frame>
@@ -176,20 +192,23 @@ ORDER BY
 	<pageFooter>
 		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement x="455" y="0" width="100" height="15" uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7"/>
+				<reportElement uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7" x="455" y="0" width="100" height="15"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy HH:mm:ss">
-				<reportElement x="0" y="0" width="226" height="15" uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6"/>
+				<reportElement uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6" x="0" y="0" width="226" height="15"/>
+				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="355" y="0" width="67" height="15" uuid="f2686c43-7383-4c53-9146-17cebd296639"/>
+				<reportElement uuid="f2686c43-7383-4c53-9146-17cebd296639" x="355" y="0" width="67" height="15"/>
+				<textElement/>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="238" y="0" width="117" height="15" uuid="8a85253a-ecbf-4214-b0b6-7052e4986eea"/>
+				<reportElement uuid="8a85253a-ecbf-4214-b0b6-7052e4986eea" x="238" y="0" width="117" height="15"/>
+				<textElement/>
 				<text><![CDATA[Contador de Inscrições]]></text>
 			</staticText>
 		</band>

@@ -41,6 +41,8 @@ public interface TeamSession extends BaseCrudSessionInterface<InepRevisor>, User
 
 	List<InepEvent> getEvents( PrincipalDTO auth );
 
+	List<InepEvent> getAvailableEvents( PrincipalDTO auth );
+
 	InepRevisor getRevisor( InepEvent event, PrincipalDTO auth );
 
 	byte[ ] getMedia( InepDistribution item );

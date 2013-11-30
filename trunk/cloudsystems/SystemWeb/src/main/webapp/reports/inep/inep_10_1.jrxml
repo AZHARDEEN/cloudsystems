@@ -66,6 +66,13 @@ order by
 				</textElement>
 				<text><![CDATA[Oral/Escrita - Certifica/Não Certifica]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="09b7fd4f-cb61-4ed1-ad58-3cd4ebb8763e" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[inep_10_1]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

@@ -57,6 +57,13 @@ ORDER BY s.isc_id_ch]]>
 				</textElement>
 				<text><![CDATA[Notas Finais]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="fd64e092-4008-423e-9875-bb37107a6540" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[inep_6]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

@@ -62,6 +62,13 @@ ORDER BY NAME]]>
 				</textElement>
 				<text><![CDATA[Número de Audios por Corretor]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="9d8b754c-f72f-4edf-b713-af19c34cc6e6" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[revisor_3_3]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

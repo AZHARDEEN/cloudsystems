@@ -176,6 +176,13 @@ order by
 				</textElement>
 				<text><![CDATA[Concentração de Notas por Corretor]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="03afbc4e-f228-4c54-a497-2be9f273e769" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[inep_7_2]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

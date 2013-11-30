@@ -18,8 +18,9 @@
 		                <listhead>
 		                    <listheader align="left" label="Inscrição" width="120px"/>
 		                    <listheader align="Left" label="Posto Aplicador"  />
-		                    <listheader align="center" label="PO" width="70px" />
-		                    <listheader align="center" label="PE"  width="70px" />
+		                    <listheader align="center" label="Obser." width="70px" />
+		                    <listheader align="center" label="Entr." width="70px" />
+		                    <listheader align="center" label="Posto" width="70px" />
 		                    <listheader align="left" label="Motivo"  width="200px" />
 		                </listhead>
 		            </listbox>

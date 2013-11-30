@@ -137,6 +137,13 @@ ORDER BY
 				</textElement>
 				<text><![CDATA[Listagem Geral de Ausentes do Posto]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="56924503-26eb-4934-9acf-f291e4a26295" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[oral_station_003]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<detail>

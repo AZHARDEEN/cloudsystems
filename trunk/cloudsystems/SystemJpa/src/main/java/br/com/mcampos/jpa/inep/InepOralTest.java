@@ -6,9 +6,6 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -22,8 +19,7 @@ import javax.persistence.Table;
 @NamedQueries( {
 		@NamedQuery(
 				name = InepOralTest.getVarianceOralOnly,
-				query = "select o from InepOralTest o WHERE o.subscription.event = ?1 and o.status.id = 3 and o.agreementGrade is null " +
-						"and o.subscription.oralGrade < 2 and o.subscription.writtenGrade >= 2 order by o.station " ),
+				query = "select o from InepOralTest o WHERE o.subscription.event = ?1 and o.statusId = 2 and o.agreementGrade is null order by o.subscription " ),
 		@NamedQuery(
 				name = InepOralTest.getBySubscription,
 				query = "select o from InepOralTest o WHERE o.subscription = ?1 " )
@@ -53,9 +49,8 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 	@Column( name = "iot_status_ch" )
 	private String descStatus;
 
-	@ManyToOne( fetch = FetchType.EAGER, optional = false )
-	@JoinColumn( name = "ids_id_in", referencedColumnName = "ids_id_in", updatable = true, insertable = true, nullable = false )
-	private DistributionStatus status;
+	@Column( name = "ids_id_in", nullable = true )
+	private Integer statusId;
 
 	@Column( name = "iot_agreement_grade_in", nullable = true )
 	private Integer agreementGrade;
@@ -161,16 +156,6 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 		this.station = iotStationCh;
 	}
 
-	public DistributionStatus getStatus( )
-	{
-		return this.status;
-	}
-
-	public void setStatus( DistributionStatus status )
-	{
-		this.status = status;
-	}
-
 	public Integer getAgreementGrade( )
 	{
 		return this.agreementGrade;
@@ -229,5 +214,15 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 	public void setVarianceStatus( Integer varianceStatus )
 	{
 		this.varianceStatus = varianceStatus;
+	}
+
+	public Integer getStatusId( )
+	{
+		return this.statusId;
+	}
+
+	public void setStatusId( Integer statusId )
+	{
+		this.statusId = statusId;
 	}
 }
