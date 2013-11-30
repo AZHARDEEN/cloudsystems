@@ -18,9 +18,6 @@ public class RejectedRecordPK implements Serializable
 	@Column( name = "usr_id_in" )
 	private Integer companyId;
 
-	@Column( name = "col_seq_in" )
-	private Integer sequence;
-
 	@Column( name = "med_id_in" )
 	private Integer mediaId;
 
@@ -35,14 +32,12 @@ public class RejectedRecordPK implements Serializable
 	{
 		if ( fileUpload == null )
 		{
-			setCompanyId( null );
-			setSequence( null );
-			setMediaId( null );
+			this.setCompanyId( null );
+			this.setMediaId( null );
 		}
 		else {
-			setCompanyId( fileUpload.getId( ).getCompanyId( ) );
-			setSequence( fileUpload.getId( ).getSequence( ) );
-			setMediaId( fileUpload.getId( ).getMedia( ) );
+			this.setCompanyId( fileUpload.getId( ).getCompanyId( ) );
+			this.setMediaId( fileUpload.getId( ).getMedia( ) );
 		}
 	}
 
@@ -54,16 +49,6 @@ public class RejectedRecordPK implements Serializable
 	public void setCompanyId( Integer usrIdIn )
 	{
 		this.companyId = usrIdIn;
-	}
-
-	public Integer getSequence( )
-	{
-		return this.sequence;
-	}
-
-	public void setSequence( Integer colSeqIn )
-	{
-		this.sequence = colSeqIn;
 	}
 
 	public Integer getMediaId( )
@@ -87,7 +72,6 @@ public class RejectedRecordPK implements Serializable
 		}
 		RejectedRecordPK castOther = (RejectedRecordPK) other;
 		return this.companyId.equals( castOther.companyId )
-				&& this.sequence.equals( castOther.sequence )
 				&& this.mediaId.equals( castOther.mediaId )
 				&& this.id.equals( castOther.id );
 
@@ -99,7 +83,6 @@ public class RejectedRecordPK implements Serializable
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + this.companyId.hashCode( );
-		hash = hash * prime + this.sequence.hashCode( );
 		hash = hash * prime + this.mediaId.hashCode( );
 		hash = hash * prime + this.id.hashCode( );
 

@@ -25,6 +25,7 @@ import br.com.mcampos.jpa.user.Person;
 @Table( name = "inep_subscription", schema = "inep" )
 @NamedQueries( {
 		@NamedQuery( name = InepSubscription.getAllEventSubs, query = "select o from InepSubscription o where o.event = ?1" ),
+		@NamedQuery( name = InepSubscription.getBySubscriptionId, query = "select o from InepSubscription o where o.id.id = ?1" ),
 		@NamedQuery(
 				name = InepSubscription.getAllEventSubsById,
 				query = "select o from InepSubscription o where o.event = ?1 and o.id.id like ?2" ),
@@ -38,6 +39,7 @@ public class InepSubscription extends BaseInepEvent implements Serializable, Com
 	public static final String getAllEventSubs = "InepSubscription.getAllEventSubs";
 	public static final String getAllEventSubsById = "InepSubscription.getAllEventSubsById";
 	public static final String getAllEventSubsByIdAndStation = "InepSubscription.getAllEventSubsByIdAndStation";
+	public static final String getBySubscriptionId = "InepSubscription.getBySubscriptionId";
 
 	@EmbeddedId
 	private InepSubscriptionPK id;

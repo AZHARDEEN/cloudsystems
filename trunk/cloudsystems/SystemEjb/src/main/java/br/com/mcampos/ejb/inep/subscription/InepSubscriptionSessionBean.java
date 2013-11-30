@@ -163,4 +163,10 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 		}
 	}
 
+	@Override
+	public InepSubscription get( String id )
+	{
+		return this.getByNamedQuery( InepSubscription.getBySubscriptionId, id );
+	}
+
 }

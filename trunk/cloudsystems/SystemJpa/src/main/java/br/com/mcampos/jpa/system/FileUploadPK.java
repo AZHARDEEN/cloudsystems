@@ -20,9 +20,6 @@ public class FileUploadPK implements Serializable, Comparable<FileUploadPK>
 	@Column( name = "usr_id_in" )
 	private Integer companyId;
 
-	@Column( name = "col_seq_in" )
-	private Integer sequence;
-
 	@Column( name = "med_id_in" )
 	private Integer media;
 
@@ -34,12 +31,10 @@ public class FileUploadPK implements Serializable, Comparable<FileUploadPK>
 	{
 		if ( key != null )
 		{
-			setCompanyId( key.getCompanyId( ) );
-			setSequence( key.getSequence( ) );
+			this.setCompanyId( key.getCompanyId( ) );
 		}
 		else {
-			setCompanyId( null );
-			setSequence( null );
+			this.setCompanyId( null );
 		}
 	}
 
@@ -51,16 +46,6 @@ public class FileUploadPK implements Serializable, Comparable<FileUploadPK>
 	public void setCompanyId( Integer usrIdIn )
 	{
 		this.companyId = usrIdIn;
-	}
-
-	public Integer getSequence( )
-	{
-		return this.sequence;
-	}
-
-	public void setSequence( Integer colSeqIn )
-	{
-		this.sequence = colSeqIn;
 	}
 
 	public Integer getMedia( )
@@ -84,7 +69,6 @@ public class FileUploadPK implements Serializable, Comparable<FileUploadPK>
 		}
 		FileUploadPK castOther = (FileUploadPK) other;
 		return this.companyId.equals( castOther.companyId )
-				&& this.sequence.equals( castOther.sequence )
 				&& this.media.equals( castOther.media );
 
 	}
@@ -95,7 +79,6 @@ public class FileUploadPK implements Serializable, Comparable<FileUploadPK>
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + this.companyId.hashCode( );
-		hash = hash * prime + this.sequence.hashCode( );
 		hash = hash * prime + this.media.hashCode( );
 
 		return hash;
@@ -112,10 +95,7 @@ public class FileUploadPK implements Serializable, Comparable<FileUploadPK>
 		}
 		int nRet = this.getCompanyId( ).compareTo( other.getCompanyId( ) );
 		if ( nRet == 0 ) {
-			nRet = this.getSequence( ).compareTo( other.getSequence( ) );
-			if ( nRet == 0 ) {
-				nRet = this.getMedia( ).compareTo( other.getMedia( ) );
-			}
+			nRet = this.getMedia( ).compareTo( other.getMedia( ) );
 		}
 		return 0;
 	}
