@@ -3,7 +3,6 @@ package br.com.mcampos.ejb.core;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.StringWriter;
-import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
@@ -14,8 +13,6 @@ import javax.persistence.PersistenceContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import br.com.mcampos.jpa.system.LogProgramException;
 
 /**
  * Brief Esta é a classe base de todos os SessionBean no java ou seja, todas os SessionBeans devem derivar desta interface. O maior motivo para que todas
@@ -67,15 +64,6 @@ public abstract class BaseSessionBean implements BaseSessionInterface, Serializa
 	public void storeException( Exception e )
 	{
 		try {
-			if ( e == null ) {
-				return;
-			}
-			String trace = this.getStackTrace( e );
-
-			LogProgramException log = new LogProgramException( );
-			log.setDescription( trace );
-			log.setInsertDate( new Date( ) );
-			this.getEntityManager( ).persist( log );
 			logger.error( "Store Program Exception", e );
 		}
 		catch ( Exception exp ) {

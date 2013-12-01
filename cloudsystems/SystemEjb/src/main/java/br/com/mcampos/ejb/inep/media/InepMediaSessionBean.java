@@ -7,11 +7,16 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.mcampos.ejb.core.SimpleSessionBean;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
 import br.com.mcampos.jpa.inep.InepMedia;
+import br.com.mcampos.jpa.inep.InepMediaPK;
 import br.com.mcampos.jpa.inep.InepSubscription;
 import br.com.mcampos.jpa.inep.InepTest;
+import br.com.mcampos.jpa.system.FileUpload;
 import br.com.mcampos.jpa.system.Media;
 
 /**
@@ -22,6 +27,7 @@ import br.com.mcampos.jpa.system.Media;
 public class InepMediaSessionBean extends SimpleSessionBean<InepMedia> implements InepMediaSession, InepMediaSessionLocal
 {
 	private static final long serialVersionUID = 5074675431050412230L;
+	private static final Logger LOGGER = LoggerFactory.getLogger( InepMediaSessionBean.class.getSimpleName( ) );
 
 	@EJB
 	private MediaSessionBeanLocal mediaSession;
@@ -71,4 +77,32 @@ public class InepMediaSessionBean extends SimpleSessionBean<InepMedia> implement
 		return this.add( inepMedia );
 	}
 
+	@Override
+	public InepMedia addPDF( InepTest test, String name, FileUpload f )
+	{
+		InepMediaPK key = new InepMediaPK( test.getSubscription( ).getId( ) );
+		key.setMediaId( f.getMediaId( ) );
+		InepMedia inepMedia = this.get( key );
+		if ( inepMedia != null ) {
+			return inepMedia;
+		}
+		try {
+			inepMedia = this.getByNamedQuery( InepMedia.getTest, test.getSubscription( ), test.getId( ).getTaskId( ) );
+			if ( inepMedia != null ) {
+				LOGGER.error( "InepMedia already found for " + test.getSubscription( ).getId( ).getId( ) + " and Task " + test.getId( ).getTaskId( ) );
+				return null;
+			}
+		}
+		catch ( Exception e ) {
+			LOGGER.error( "Error trying to find media for subscription " + test.getSubscription( ).getId( ).getId( ) + " and Task "
+					+ test.getId( ).getTaskId( ), e );
+		}
+		inepMedia = new InepMedia( test.getSubscription( ) );
+		inepMedia.setMedia( f.getMedia( ) );
+		inepMedia.setTask( test.getId( ).getTaskId( ) );
+		inepMedia.setType( InepMedia.TYPE_TEST );
+		test.getSubscription( ).add( inepMedia );
+		inepMedia = this.add( inepMedia );
+		return inepMedia;
+	}
 }
