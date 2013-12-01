@@ -45,7 +45,7 @@ ALTER FUNCTION inep.certificationlevel(numeric)
 
 ALTER TABLE inep.inep_oral_test DROP CONSTRAINT inep_oral_test_ids_id_in_fkey;
 
-
+ALTER TABLE inep.inep_oral_test DROP COLUMN iot_written_grade_nm;
 
 
 

@@ -16,16 +16,19 @@ public class InepOralDistributionCoordinatoListRenderer extends BaseListRenderer
 	{
 		super.render( item, data, index );
 		item.setContext( "listPopupOralTest" );
-		if ( data.getTest( ).getVarianceStatus( ).intValue( ) > 10 )
-			addCell( item, data.getId( ).getSubscriptionId( ) + "***" );
-		else
-			addCell( item, data.getId( ).getSubscriptionId( ) );
+		if ( data.getTest( ).getVarianceStatus( ).intValue( ) > 10 ) {
+			this.addCell( item, data.getId( ).getSubscriptionId( ) + "***" );
+		}
+		else {
+			this.addCell( item, data.getId( ).getSubscriptionId( ) );
+		}
 
-		addCell( item, data.getTest( ).getStation( ) );
-		addCell( item, data.getTest( ).getFinalGrade( ).toString( ) );
-		addCell( item, data.getTest( ).getAgreementGrade( ).toString( ) );
-		addCell( item, data.getTest( ).getSubscription( ).getOralGrade( ) );
-		addCell( item, data.getTest( ).getSubscription( ).getWrittenGrade( ) );
+		this.addCell( item, data.getTest( ).getSubscription( ).getStation( ).getClient( ).getName( ) );
+		this.addCell( item, data.getTest( ).getObserverGrade( ).toString( ) );
+		this.addCell( item, data.getTest( ).getInterviewGrade( ).toString( ) );
+		this.addCell( item, data.getTest( ).getFinalGrade( ).toString( ) );
+		this.addCell( item, data.getTest( ).getAgreementGrade( ).toString( ) );
+		this.addCell( item, data.getTest( ).getSubscription( ).getWrittenGrade( ) );
 		Listcell cell = new Listcell( );
 		Button btnDownload = new Button( "Audio" );
 		cell.appendChild( btnDownload );
