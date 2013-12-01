@@ -188,6 +188,16 @@ public class InepSubscription extends BaseInepEvent implements Serializable, Com
 		}
 	}
 
+	public void remove( InepMedia media )
+	{
+		if ( media != null ) {
+			if ( this.getMedias( ).contains( media ) ) {
+				this.getMedias( ).remove( media );
+				media.setSubscription( null );
+			}
+		}
+	}
+
 	public BigDecimal getAgreementGrade( )
 	{
 		return this.agreementGrade;

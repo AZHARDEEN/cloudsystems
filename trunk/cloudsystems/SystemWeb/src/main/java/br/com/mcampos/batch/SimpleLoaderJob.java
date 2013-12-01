@@ -70,6 +70,9 @@ public class SimpleLoaderJob extends BaseQuartzJob
 			byte[ ] buffer = SysUtils.readByteFromStream( is );
 			is.close( );
 			String mimeType = Files.probeContentType( Paths.get( file.getAbsolutePath( ) ) );
+			if ( SysUtils.isEmpty( mimeType ) ) {
+				mimeType = this.findOutMimeType( file.getName( ) );
+			}
 			LOGGER.info( "Processing " + file.getAbsolutePath( ) + ". MimeType is " + mimeType + ". Size: " + buffer.length );
 			MediaDTO mediaDto = MediaUtil.getMediaDTO( c.getId( ), file.getName( ), buffer, mimeType );
 			this.getSession( ).set( c, mediaDto );
@@ -79,5 +82,15 @@ public class SimpleLoaderJob extends BaseQuartzJob
 			LOGGER.error( "Error acessing file " + file.getAbsolutePath( ), e );
 			return;
 		}
+	}
+
+	private String findOutMimeType( String fileName )
+	{
+		String mime = null;
+		fileName = fileName.toLowerCase( );
+		if ( fileName.endsWith( ".pdf" ) ) {
+			mime = "application/pdf";
+		}
+		return mime;
 	}
 }
