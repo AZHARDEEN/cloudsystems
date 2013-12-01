@@ -183,11 +183,11 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 			if ( other != null && !merged.getNota( ).equals( other.getNota( ) ) ) {
 				throw new RuntimeException( "As notas da prova oral não poder ser diferentes entre os corretores" );
 			}
-			if ( !merged.getTest( ).getStatusId( ).equals( DistributionStatus.statusRevised ) ) {
+			if ( !merged.getTest( ).getStatusId( ).equals( 4 ) ) {
 				List<InepRevisor> coordinators = this.revisorSession.getOralCoordinator( item.getTest( ).getSubscription( ).getEvent( ) );
+				DistributionStatus st = this.statusSession.get( DistributionStatus.statusDistributed );
 				for ( InepRevisor c : coordinators ) {
-					this.oralDistributionSession.merge( new InepOralDistribution( merged.getTest( ), c,
-							this.statusSession.get( DistributionStatus.statusDistributed ) ) );
+					this.oralDistributionSession.add( new InepOralDistribution( merged.getTest( ), c, st ) );
 				}
 			}
 		}

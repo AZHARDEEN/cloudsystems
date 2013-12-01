@@ -58,9 +58,6 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 	@Column( name = "iot_variance_in", nullable = true )
 	private Integer varianceStatus;
 
-	@Column( name = "iot_written_grade_nm", nullable = true )
-	private BigDecimal writtenGrade;
-
 	@Column( name = "iot_agreement2_grade_nm", nullable = true )
 	private BigDecimal agreement2Grade;
 
@@ -164,16 +161,6 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 	public void setAgreementGrade( Integer agreementGrade )
 	{
 		this.agreementGrade = agreementGrade;
-	}
-
-	public BigDecimal getWrittenGrade( )
-	{
-		return this.writtenGrade;
-	}
-
-	public void setWrittenGrade( BigDecimal writtenGrade )
-	{
-		this.writtenGrade = writtenGrade;
 	}
 
 	public BigDecimal getAgreement2Grade( )

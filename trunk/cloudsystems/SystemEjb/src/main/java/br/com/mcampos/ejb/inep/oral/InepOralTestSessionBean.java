@@ -84,7 +84,7 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 		if ( newEntity == null ) {
 			return null;
 		}
-		if ( newEntity.getStatusId( ).equals( DistributionStatus.statusDistributed )
+		if ( newEntity.getStatusId( ).equals( 1 )
 				&& newEntity.getInterviewGrade( ) != null && newEntity.getObserverGrade( ) != null ) {
 			double grade1, grade2;
 
@@ -110,31 +110,21 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 		test.setStatusId( 4 );
 		if ( isCoordinator == false ) {
 			test.setAgreementGrade( grade );
-			if ( test.getVarianceStatus( ).intValue( ) < 10 ) {
-				double variance = test.getFinalGrade( ).doubleValue( );
-				variance = Math.abs( variance - ( (double) grade ) );
-				if ( variance > 1.5 ) {
-					test.setStatusId( 5 );
-					test.setVarianceStatus( 3 );
-				}
-				else {
-					this.subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
-					test.setVarianceStatus( 2 );
-				}
+			double variance = test.getFinalGrade( ).doubleValue( );
+			variance = Math.abs( variance - ( (double) grade ) );
+			if ( variance >= 1.5 ) {
+				test.setStatusId( 5 );
 			}
 			else {
-				test.getSubscription( ).setAgreementGrade( new BigDecimal( grade ) );
+				this.subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
 			}
+			test.getSubscription( ).setAgreementGrade( new BigDecimal( grade ) );
 		}
 		else {
-			if ( test.getVarianceStatus( ).intValue( ) < 10 ) {
-				test.setAgreement2Grade( new BigDecimal( grade ) );
-				this.subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
-				test.setVarianceStatus( 4 );
-			}
-			else {
-				test.getSubscription( ).setAgreementGrade( new BigDecimal( grade ) );
-			}
+			test.setAgreement2Grade( new BigDecimal( grade ) );
+			this.subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
+			test.getSubscription( ).setAgreementGrade( new BigDecimal( grade ) );
+			test.setStatusId( 6 );
 		}
 	}
 
