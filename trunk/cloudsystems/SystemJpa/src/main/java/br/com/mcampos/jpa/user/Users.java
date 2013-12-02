@@ -88,7 +88,7 @@ public abstract class Users implements Serializable, Comparable<Users>
 
 	public Date getInsertDate( )
 	{
-		if( this.insertDate == null ) {
+		if ( this.insertDate == null ) {
 			this.insertDate = new Date( );
 		}
 		return this.insertDate;
@@ -131,7 +131,7 @@ public abstract class Users implements Serializable, Comparable<Users>
 
 	public List<UserDocument> getDocuments( )
 	{
-		if( this.documents == null ) {
+		if ( this.documents == null ) {
 			this.documents = new ArrayList<UserDocument>( );
 		}
 		return this.documents;
@@ -140,18 +140,18 @@ public abstract class Users implements Serializable, Comparable<Users>
 	public void setDocuments( List<UserDocument> list )
 	{
 		this.getDocuments( ).clear( );
-		for( UserDocument i : list ) {
+		for ( UserDocument i : list ) {
 			this.add( i );
 		}
 	}
 
 	public UserDocument add( UserDocument item )
 	{
-		if( item != null ) {
+		if ( item != null ) {
 			int nIndex = this.getDocuments( ).indexOf( item );
-			if( nIndex < 0 ) {
-				this.getDocuments( ).add( item );
+			if ( nIndex < 0 ) {
 				item.setUser( this );
+				this.getDocuments( ).add( item );
 			}
 		}
 		return item;
@@ -160,7 +160,7 @@ public abstract class Users implements Serializable, Comparable<Users>
 	public UserDocument remove( UserDocument item )
 	{
 		SysUtils.remove( this.getDocuments( ), item );
-		if( item != null ) {
+		if ( item != null ) {
 			item.setUser( null );
 		}
 		return item;
@@ -168,7 +168,7 @@ public abstract class Users implements Serializable, Comparable<Users>
 
 	public List<UserContact> getContacts( )
 	{
-		if( this.contacts == null ) {
+		if ( this.contacts == null ) {
 			this.contacts = new ArrayList<UserContact>( );
 		}
 		return this.contacts;
@@ -177,18 +177,18 @@ public abstract class Users implements Serializable, Comparable<Users>
 	public void setContacts( List<UserContact> list )
 	{
 		this.getContacts( ).clear( );
-		for( UserContact i : list ) {
+		for ( UserContact i : list ) {
 			this.add( i );
 		}
 	}
 
 	public UserContact add( UserContact item )
 	{
-		if( item != null ) {
+		if ( item != null ) {
 			int nIndex = this.getContacts( ).indexOf( item );
-			if( nIndex < 0 ) {
-				this.getContacts( ).add( item );
+			if ( nIndex < 0 ) {
 				item.setUser( this );
+				this.getContacts( ).add( item );
 			}
 		}
 		return item;
@@ -197,7 +197,7 @@ public abstract class Users implements Serializable, Comparable<Users>
 	public UserContact remove( UserContact item )
 	{
 		SysUtils.remove( this.getContacts( ), item );
-		if( item != null ) {
+		if ( item != null ) {
 			item.setUser( null );
 		}
 		return item;
@@ -205,7 +205,7 @@ public abstract class Users implements Serializable, Comparable<Users>
 
 	public List<Address> getAddresses( )
 	{
-		if( this.addresses == null ) {
+		if ( this.addresses == null ) {
 			this.addresses = new ArrayList<Address>( );
 		}
 		return this.addresses;
@@ -214,18 +214,18 @@ public abstract class Users implements Serializable, Comparable<Users>
 	public void setAddresses( List<Address> list )
 	{
 		this.getAddresses( ).clear( );
-		for( Address i : list ) {
+		for ( Address i : list ) {
 			this.add( i );
 		}
 	}
 
 	public Address add( Address item )
 	{
-		if( item != null ) {
+		if ( item != null ) {
 			int nIndex = this.getAddresses( ).indexOf( item );
-			if( nIndex < 0 ) {
-				this.getAddresses( ).add( item );
+			if ( nIndex < 0 ) {
 				item.setUser( this );
+				this.getAddresses( ).add( item );
 			}
 		}
 		return item;
@@ -234,7 +234,7 @@ public abstract class Users implements Serializable, Comparable<Users>
 	public Address remove( Address address )
 	{
 		SysUtils.remove( this.getAddresses( ), address );
-		if( address != null ) {
+		if ( address != null ) {
 			address.setUser( null );
 		}
 		return address;
@@ -263,17 +263,17 @@ public abstract class Users implements Serializable, Comparable<Users>
 	@Override
 	public boolean equals( Object obj )
 	{
-		if( this.getId( ) == null ) {
+		if ( this.getId( ) == null ) {
 			return false;
 		}
-		if( obj == null ) {
+		if ( obj == null ) {
 			return false;
 		}
-		if( obj instanceof Users ) {
+		if ( obj instanceof Users ) {
 			Users other = (Users) obj;
 			return this.getId( ).equals( other.getId( ) );
 		}
-		else if( obj instanceof Integer )
+		else if ( obj instanceof Integer )
 		{
 			Integer id = (Integer) obj;
 			return this.getId( ).equals( id );
@@ -308,7 +308,7 @@ public abstract class Users implements Serializable, Comparable<Users>
 	@Transient
 	public String getDocument( )
 	{
-		if( this.getUserType( ).getId( ).equals( 1 ) ) {
+		if ( this.getUserType( ).getId( ).equals( 1 ) ) {
 			return this.getDocument( UserDocument.CPF );
 		}
 		else {
@@ -319,8 +319,8 @@ public abstract class Users implements Serializable, Comparable<Users>
 	@Transient
 	public String getDocument( Integer type )
 	{
-		for( UserDocument document : this.getDocuments( ) ) {
-			if( document.getType( ).getId( ).equals( type ) ) {
+		for ( UserDocument document : this.getDocuments( ) ) {
+			if ( document.getType( ).getId( ).equals( type ) ) {
 				return document.getCode( );
 			}
 		}

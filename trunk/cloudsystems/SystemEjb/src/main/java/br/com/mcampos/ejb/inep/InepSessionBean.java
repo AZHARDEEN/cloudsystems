@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -308,15 +307,7 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 			person = this.personSession.getByDocument( cpf );
 		}
 		if ( person == null ) {
-			person = new Person( );
-			if ( SysUtils.isEmpty( email ) == false ) {
-				person.add( new UserDocument( email, this.documentTypeSession.get( UserDocument.EMAIL ) ) );
-			}
-			if ( SysUtils.isEmpty( cpf ) == false ) {
-				person.add( new UserDocument( cpf, this.documentTypeSession.get( UserDocument.CPF ) ) );
-			}
-			person.setName( name );
-			person = this.personSession.merge( person );
+			person = this.createPerson( name, email, cpf );
 		}
 		Login login = this.loginSession.get( person.getId( ) );
 		if ( login == null ) {
@@ -335,6 +326,21 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		return this.revisorSession.merge( rev );
 	}
 
+	private Person createPerson( String name, String email, String cpf )
+	{
+		Person person = new Person( );
+		person.setName( name.trim( ) );
+		person = this.personSession.add( person );
+
+		if ( SysUtils.isEmpty( email ) == false ) {
+			person.add( new UserDocument( email, this.documentTypeSession.get( UserDocument.EMAIL ) ) );
+		}
+		if ( SysUtils.isEmpty( cpf ) == false ) {
+			person.add( new UserDocument( cpf, this.documentTypeSession.get( UserDocument.CPF ) ) );
+		}
+		return person;
+	}
+
 	@Override
 	public InepRevisor add( InepEvent event, Integer task, String name, String email, String cpf, Integer type )
 	{
@@ -347,15 +353,7 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 			person = this.personSession.getByDocument( cpf );
 		}
 		if ( person == null ) {
-			person = new Person( );
-			if ( SysUtils.isEmpty( email ) == false ) {
-				person.add( new UserDocument( email, this.documentTypeSession.get( UserDocument.EMAIL ) ) );
-			}
-			if ( SysUtils.isEmpty( cpf ) == false ) {
-				person.add( new UserDocument( cpf, this.documentTypeSession.get( UserDocument.CPF ) ) );
-			}
-			person.setName( name );
-			person = this.personSession.merge( person );
+			person = this.createPerson( name, email, cpf );
 		}
 		Login login = this.loginSession.get( person.getId( ) );
 		if ( login == null ) {
