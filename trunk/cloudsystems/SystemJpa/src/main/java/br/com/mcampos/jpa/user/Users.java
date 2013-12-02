@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.management.openmbean.InvalidKeyException;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -150,6 +151,9 @@ public abstract class Users implements Serializable, Comparable<Users>
 		if ( item != null ) {
 			int nIndex = this.getDocuments( ).indexOf( item );
 			if ( nIndex < 0 ) {
+				if ( this.getId( ) == null || this.getId( ).equals( 0 ) ) {
+					throw new InvalidKeyException( "UserId cannot be null or zero" );
+				}
 				item.setUser( this );
 				this.getDocuments( ).add( item );
 			}
@@ -187,6 +191,9 @@ public abstract class Users implements Serializable, Comparable<Users>
 		if ( item != null ) {
 			int nIndex = this.getContacts( ).indexOf( item );
 			if ( nIndex < 0 ) {
+				if ( this.getId( ) == null || this.getId( ).equals( 0 ) ) {
+					throw new InvalidKeyException( "UserId cannot be null or zero" );
+				}
 				item.setUser( this );
 				this.getContacts( ).add( item );
 			}
@@ -224,6 +231,9 @@ public abstract class Users implements Serializable, Comparable<Users>
 		if ( item != null ) {
 			int nIndex = this.getAddresses( ).indexOf( item );
 			if ( nIndex < 0 ) {
+				if ( this.getId( ) == null || this.getId( ).equals( 0 ) ) {
+					throw new InvalidKeyException( "UserId cannot be null or zero" );
+				}
 				item.setUser( this );
 				this.getAddresses( ).add( item );
 			}
