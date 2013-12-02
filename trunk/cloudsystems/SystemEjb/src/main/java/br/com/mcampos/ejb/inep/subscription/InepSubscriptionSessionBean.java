@@ -109,7 +109,13 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 		if ( s.getWrittenGrade( ) == null ) {
 			return;
 		}
-		this.verifyVariance( s );
+		InepOralTest oralTest = this.oralTestSession.get( s );
+		if ( oralTest == null ) {
+			return;
+		}
+		if ( oralTest.getStatusId( ).equals( 5 ) ) {
+			this.verifyVariance( s );
+		}
 	}
 
 	@Override
@@ -150,16 +156,18 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 		}
 		if ( bVariance ) {
 			InepOralTest oralTest = this.oralTestSession.get( s );
-			if ( oralTest != null ) {
+			if ( this.canPutInVariance( oralTest ) ) {
 				oralTest.setStatusId( 12 );
-				if ( oralTest.getVarianceStatus( ).equals( 0 ) ) {
-					oralTest.setVarianceStatus( 11 );
-				}
-				else {
-					oralTest.setVarianceStatus( oralTest.getVarianceStatus( ) + 10 );
-				}
 			}
 		}
+	}
+
+	private boolean canPutInVariance( InepOralTest o )
+	{
+		if ( o == null ) {
+			return false;
+		}
+		return ( o.getStatusId( ).equals( 1 ) || o.getStatusId( ).equals( 4 ) || o.getStatusId( ).equals( 6 ) );
 	}
 
 	@Override
