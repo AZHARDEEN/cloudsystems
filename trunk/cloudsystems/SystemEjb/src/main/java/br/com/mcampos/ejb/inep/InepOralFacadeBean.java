@@ -25,6 +25,7 @@ import br.com.mcampos.jpa.inep.DistributionStatus;
 import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.jpa.inep.InepMedia;
 import br.com.mcampos.jpa.inep.InepOralDistribution;
+import br.com.mcampos.jpa.inep.InepOralDistributionPK;
 import br.com.mcampos.jpa.inep.InepOralTest;
 import br.com.mcampos.jpa.inep.InepRevisor;
 import br.com.mcampos.jpa.inep.InepSubscription;
@@ -168,12 +169,7 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 			throw new InvalidParameterException( "Item não existe (InepOralDistribution)" );
 		}
 		merged.setNota( grade );
-		if ( item.getRevisor( ).isCoordenador( ) ) {
-			merged.setStatus( this.statusSession.get( DistributionStatus.statusRevised ) );
-		}
-		else {
-			merged.setStatus( this.statusSession.get( DistributionStatus.statusFinalRevised ) );
-		}
+		merged.setStatus( this.statusSession.get( DistributionStatus.statusRevised ) );
 		/*
 		 * Cuidado, a posicao da linha abaixo e importante!!!!
 		 */
@@ -183,11 +179,19 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 			if ( other != null && !merged.getNota( ).equals( other.getNota( ) ) ) {
 				throw new RuntimeException( "As notas da prova oral não poder ser diferentes entre os corretores" );
 			}
-			if ( !merged.getTest( ).getStatusId( ).equals( 4 ) ) {
+			if ( other == null && !merged.getTest( ).getStatusId( ).equals( 4 ) ) {
 				List<InepRevisor> coordinators = this.revisorSession.getOralCoordinator( item.getTest( ).getSubscription( ).getEvent( ) );
 				DistributionStatus st = this.statusSession.get( DistributionStatus.statusDistributed );
 				for ( InepRevisor c : coordinators ) {
-					this.oralDistributionSession.add( new InepOralDistribution( merged.getTest( ), c, st ) );
+					InepOralDistributionPK key = new InepOralDistributionPK( );
+					key.setCompanyId( merged.getId().getCompanyId( ) );
+					key.setEventId( merged.getId( ).getEventId( ) );
+					key.setSubscriptionId( merged.getId( ).getSubscriptionId( ) );
+					key.setCollaboratorId( c.getId( ).getSequence( ) );
+					InepOralDistribution coordinatorDistribution = oralDistributionSession.get( key  );
+					if ( coordinatorDistribution == null ) {
+						this.oralDistributionSession.add( new InepOralDistribution( merged.getTest( ), c, st ) );
+					}
 				}
 			}
 		}
