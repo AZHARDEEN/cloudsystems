@@ -11,15 +11,17 @@
 	round ( o.iot_observer_grade_nm, 2 ) NT_OBSERVADOR,
 	round ( o.iot_interviewer_grade_nm, 2 ) NT_ENTREVISTADOR,
 	round ( abs( o.iot_observer_grade_nm - o.iot_interviewer_grade_nm ), 2 ) DISCREPANCIA,
-	round ( o.iot_final_grade_nm, 2 ) NT_PROVA_ORAL
+	round ( o.iot_final_grade_nm, 2 ) NT_PROVA_ORAL,
+	st.iss_descriptin_ch status
 from 
 	inep.inep_subscription s inner join client c on ( s.usr_id_in = c.usr_id_in and s.cli_seq_in = c.cli_seq_in )
 	inner join users p on ( c.cli_id_in = p.usr_id_in )
+	inner join inep.inep_subscription_status st on ( s.iss_id_in = st.iss_id_in )
 	left outer join inep.inep_oral_test o on ( o.usr_id_in = s.usr_id_in and o.pct_id_in = s.pct_id_in and o.isc_id_ch = s.isc_id_ch )
 where 
 	s.usr_id_in = 13623
 and 	s.pct_id_in = 2
-order by c.cli_internal_code_ch, s.isc_id_ch
+order by s.isc_id_ch
 
 
 
