@@ -208,6 +208,14 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		else {
 			this.getEntityManager( ).persist( dist );
 		}
+		/*
+		 * Prova de ouro não faz absolutamente nada.
+		 */
+		if ( dist.getIsGolden( ) )
+			return dist;
+		/*
+		 * Não é uma prova de ouro, proceda normalmente
+		 */
 		if ( dist.getRevisor( ).isCoordenador( ) == false ) {
 			dist.setStatus( this.getStatus( DistributionStatus.statusRevised ) );
 			if ( this.hasVariance( dist ) ) {

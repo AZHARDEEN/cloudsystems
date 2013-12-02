@@ -138,6 +138,9 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 	@Column( name = "dis_priority_in" )
 	private Integer priority;
 
+	@Column( name = "dis_golden_bt", nullable = true, columnDefinition = "boolean", insertable = true, updatable = true, unique = false )
+	private Boolean isGolden;
+	
 	public InepDistribution( )
 	{
 	}
@@ -280,5 +283,18 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 	{
 		this.startDate = startDate;
 	}
+	
+	public Boolean getIsGolden( )
+	{
+		if ( isGolden == null )
+			isGolden = false;
+		return isGolden;
+	}
+
+	public void setIsGolden( Boolean isGolden )
+	{
+		this.isGolden = isGolden;
+	}
+	
 
 }
