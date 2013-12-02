@@ -241,7 +241,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		if ( oralTest == null ) {
 			oralTest = oralTestSession.add( new InepOralTest( subscription ), false );
 		}
-		oralTest.setObserverGrade( BigDecimal.valueOf( grade ) );
+		oralTest.setObserverGrade( BigDecimal.valueOf( grade ).setScale( 2 ) );
 		oralTestSession.setStatus( oralTest );
 		subscription.setStatus( 2 );
 	}
