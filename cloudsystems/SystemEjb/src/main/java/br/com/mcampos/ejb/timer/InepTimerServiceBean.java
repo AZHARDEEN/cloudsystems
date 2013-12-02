@@ -76,7 +76,7 @@ public class InepTimerServiceBean
 				continue;
 			}
 			try {
-				if ( "audio/mpeg".equalsIgnoreCase( item.getMedia( ).getMimeType( ) ) || "audio/wav".equalsIgnoreCase( item.getMedia( ).getMimeType( ) ) ) {
+				if ( this.isAudio( item.getMedia( ).getMimeType( ) ) ) {
 					this.processAudioFile( item );
 				}
 				else if ( "application/pdf".equalsIgnoreCase( item.getMedia( ).getMimeType( ) ) ) {
@@ -94,6 +94,11 @@ public class InepTimerServiceBean
 			}
 			this.em.flush( );
 		}
+	}
+
+	private boolean isAudio( String mimeType )
+	{
+		return ( "audio/mpeg".equalsIgnoreCase( mimeType ) || "audio/wav".equalsIgnoreCase( mimeType ) || "audio/x-wav".equalsIgnoreCase( mimeType ) );
 	}
 
 	private InepTask getTaskFromFilename( FileUpload item, InepSubscription s )
