@@ -107,25 +107,26 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	@Override
 	public void setAgreementGrade( InepOralTest test, Integer grade, boolean isCoordinator )
 	{
-		test.setStatusId( 4 );
+		int nIndex = 0;
+		if ( test.getStatusId( ).compareTo( 10 ) > 0 ) {
+			nIndex = 10;
+		}
+		test.setStatusId( 4 + nIndex );
 		if ( isCoordinator == false ) {
 			test.setAgreementGrade( grade );
 			double variance = test.getFinalGrade( ).doubleValue( );
 			variance = Math.abs( variance - ( (double) grade ) );
 			if ( variance >= 1.5 ) {
-				test.setStatusId( 5 );
-			}
-			else {
-				this.subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
+				test.setStatusId( 5 + nIndex );
 			}
 			test.getSubscription( ).setAgreementGrade( new BigDecimal( grade ) );
 		}
 		else {
 			test.setAgreement2Grade( new BigDecimal( grade ) );
-			this.subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
 			test.getSubscription( ).setAgreementGrade( new BigDecimal( grade ) );
-			test.setStatusId( 6 );
+			test.setStatusId( 6 + nIndex );
 		}
+		this.subscriptionSession.setOralGrade( test.getSubscription( ), new BigDecimal( grade ) );
 	}
 
 	@Override
