@@ -36,32 +36,33 @@ public class InepDistributionPK implements Serializable
 
 	public InepDistributionPK( InepRevisor r, InepTest t )
 	{
-		set( r, t );
+		this.set( r, t );
 	}
 
 	public void set( InepRevisor r, InepTest t )
 	{
-		set( r );
-		set( t );
+		this.set( r );
+		this.set( t );
 	}
 
 	public void set( InepRevisor c )
 	{
 		if ( c != null )
 		{
-			setCompanyId( c.getId( ).getCompanyId( ) );
-			setEventId( c.getId( ).getEventId( ) );
-			setCollaboratorId( c.getId( ).getSequence( ) );
+			this.setCompanyId( c.getId( ).getCompanyId( ) );
+			this.setEventId( c.getId( ).getEventId( ) );
+			this.setCollaboratorId( c.getId( ).getSequence( ) );
+			this.setTaskId( c.getTaskId( ) );
 		}
 	}
 
 	public void set( InepTest c )
 	{
 		if ( c != null ) {
-			setCompanyId( c.getId( ).getCompanyId( ) );
-			setEventId( c.getId( ).getEventId( ) );
-			setSubscriptionId( c.getId( ).getSubscriptionId( ) );
-			setTaskId( c.getId( ).getTaskId( ) );
+			this.setCompanyId( c.getId( ).getCompanyId( ) );
+			this.setEventId( c.getId( ).getEventId( ) );
+			this.setSubscriptionId( c.getId( ).getSubscriptionId( ) );
+			this.setTaskId( c.getId( ).getTaskId( ) );
 		}
 	}
 
@@ -151,18 +152,18 @@ public class InepDistributionPK implements Serializable
 	{
 		int nRet;
 
-		nRet = getCompanyId( ).compareTo( id.getCompanyId( ) );
+		nRet = this.getCompanyId( ).compareTo( id.getCompanyId( ) );
 		if ( nRet == 0 ) {
-			nRet = getEventId( ).compareTo( id.getEventId( ) );
+			nRet = this.getEventId( ).compareTo( id.getEventId( ) );
 		}
 		if ( nRet == 0 ) {
-			nRet = getSubscriptionId( ).compareTo( id.getSubscriptionId( ) );
+			nRet = this.getSubscriptionId( ).compareTo( id.getSubscriptionId( ) );
 		}
 		if ( nRet == 0 ) {
-			nRet = getTaskId( ).compareTo( id.getTaskId( ) );
+			nRet = this.getTaskId( ).compareTo( id.getTaskId( ) );
 		}
 		if ( nRet == 0 ) {
-			nRet = getCollaboratorId( ).compareTo( id.getCollaboratorId( ) );
+			nRet = this.getCollaboratorId( ).compareTo( id.getCollaboratorId( ) );
 		}
 		return nRet;
 	}

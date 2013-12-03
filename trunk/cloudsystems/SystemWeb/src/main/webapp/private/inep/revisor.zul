@@ -36,6 +36,7 @@
 	            <div id="divEast">
 	            	<toolbarbutton id="loadRevisor" label="Carregar Revisores" upload="true" ></toolbarbutton>
 	            	<toolbarbutton id="distribute" label="Distribuir"></toolbarbutton>
+	            	<toolbarbutton id="goldenTest" label="Prova de Ouro"></toolbarbutton>
 	                <div id="divInfo">
 	                    <grid fixedLayout="true">
 	                        <columns>

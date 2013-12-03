@@ -12,7 +12,9 @@ import javax.naming.NamingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -24,8 +26,8 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
-import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.dto.inep.CorretorDTO;
+import br.com.mcampos.dto.system.MediaDTO;
 import br.com.mcampos.ejb.inep.InepSession;
 import br.com.mcampos.ejb.inep.revisor.InepRevisorSession;
 import br.com.mcampos.jpa.inep.InepEvent;
@@ -270,6 +272,21 @@ public class RevisorController extends BaseDBListController<InepRevisorSession, 
 		for ( InepTask task : tasks ) {
 			logger.info( "Distributing task: " + task.getDescription( ) );
 			this.getInepSession( ).distribute( task );
+		}
+		if ( evt != null ) {
+			evt.stopPropagation( );
+		}
+	}
+
+	@Listen( "onClick = #goldenTest" )
+	public void distributeGoldenTest( MouseEvent evt )
+	{
+		try {
+			this.getInepSession( ).distributeGoldenTests( (InepEvent) this.getComboEvent( ).getSelectedItem( ).getValue( ) );
+			Messagebox.show( "Provas de Ouro distribuídas com sucesso", "Prova de Ouro", Messagebox.OK, Messagebox.INFORMATION );
+		}
+		catch ( Exception e ) {
+			Messagebox.show( "Erro ao distribuir as provas de ouro", "Prova de Ouro", Messagebox.OK, Messagebox.ERROR );
 		}
 		if ( evt != null ) {
 			evt.stopPropagation( );

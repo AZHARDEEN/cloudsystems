@@ -21,5 +21,7 @@ public interface InepSession extends BaseCrudSessionInterface<InepTask>
 
 	InepRevisor add( InepTask task, String name, String email, String cpf, boolean coordenador );
 
-	public InepRevisor add( InepEvent event, Integer task, String name, String email, String cpf, Integer type );
+	InepRevisor add( InepEvent event, Integer task, String name, String email, String cpf, Integer type );
+
+	void distributeGoldenTests( InepEvent event );
 }
