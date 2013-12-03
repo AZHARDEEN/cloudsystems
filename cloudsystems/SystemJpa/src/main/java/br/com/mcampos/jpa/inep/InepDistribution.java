@@ -30,10 +30,10 @@ import br.com.mcampos.jpa.BasicEntityRenderer;
 				query = "select o from InepDistribution o where o.revisor = ?1 and o.status.id = ?2 and o.revisor.task = o.test.task order by o.priority, o.test.subscription" ),
 		@NamedQuery(
 				name = InepDistribution.getOtherDistribution,
-				query = "select o from InepDistribution o where o.test = ?1 and o.status.id = 3" ),
+				query = "select o from InepDistribution o where o.test = ?1 and o.status.id = 3 and (o.isGolden is null or o.isGolden = false)" ),
 		@NamedQuery(
 				name = InepDistribution.getAllFromTest,
-				query = "select o from InepDistribution o where o.test = ?1" ),
+				query = "select o from InepDistribution o where o.test = ?1 and (o.isGolden is null or o.isGolden = false) " ),
 		@NamedQuery(
 				name = InepDistribution.hasPendingDistribution,
 				query = "select count(o) from InepDistribution o where o.test.subscription = ?1 and o.status.id not in ( 2, 4 ) " ),
@@ -140,22 +140,23 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	@Column( name = "dis_golden_bt", nullable = true, columnDefinition = "boolean", insertable = true, updatable = true, unique = false )
 	private Boolean isGolden;
-	
+
 	public InepDistribution( )
 	{
 	}
 
 	public InepDistribution( InepRevisor r, InepTest t )
 	{
-		getId( ).set( r, t );
+		this.getId( ).set( r, t );
 	}
 
+	@Override
 	public InepDistributionPK getId( )
 	{
-		if ( id == null ) {
-			id = new InepDistributionPK( );
+		if ( this.id == null ) {
+			this.id = new InepDistributionPK( );
 		}
-		return id;
+		return this.id;
 	}
 
 	public void setId( InepDistributionPK id )
@@ -165,7 +166,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public DistributionStatus getStatus( )
 	{
-		return status;
+		return this.status;
 	}
 
 	public void setStatus( DistributionStatus status )
@@ -175,7 +176,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public Integer getNota( )
 	{
-		return nota;
+		return this.nota;
 	}
 
 	public void setNota( Integer nota )
@@ -185,33 +186,33 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public InepRevisor getRevisor( )
 	{
-		return revisor;
+		return this.revisor;
 	}
 
 	public void setRevisor( InepRevisor revisor )
 	{
 		this.revisor = revisor;
-		if ( getRevisor( ) != null ) {
-			getId( ).set( revisor );
+		if ( this.getRevisor( ) != null ) {
+			this.getId( ).set( revisor );
 		}
 	}
 
 	public InepTest getTest( )
 	{
-		return test;
+		return this.test;
 	}
 
 	public void setTest( InepTest test )
 	{
 		this.test = test;
-		if ( getTest( ) != null ) {
-			getId( ).set( test );
+		if ( this.getTest( ) != null ) {
+			this.getId( ).set( test );
 		}
 	}
 
 	public String getObs( )
 	{
-		return obs;
+		return this.obs;
 	}
 
 	public void setObs( String obs )
@@ -221,10 +222,10 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public Date getInsertDate( )
 	{
-		if ( insertDate == null ) {
-			insertDate = new Date( );
+		if ( this.insertDate == null ) {
+			this.insertDate = new Date( );
 		}
-		return insertDate;
+		return this.insertDate;
 	}
 
 	public void setInsertDate( Date insertDate )
@@ -234,7 +235,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public Date getUpdateDate( )
 	{
-		return updateDate;
+		return this.updateDate;
 	}
 
 	public void setUpdateDate( Date updateDate )
@@ -247,7 +248,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 	{
 		switch ( field ) {
 		case 0:
-			return getId( ).toString( );
+			return this.getId( ).toString( );
 		default:
 			return "";
 		}
@@ -258,7 +259,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 	{
 		switch ( field ) {
 		case 0:
-			return getId( ).compareTo( object.getId( ) );
+			return this.getId( ).compareTo( object.getId( ) );
 		default:
 			return 0;
 		}
@@ -266,7 +267,7 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public Integer getPriority( )
 	{
-		return priority;
+		return this.priority;
 	}
 
 	public void setPriority( Integer priority )
@@ -276,25 +277,25 @@ public class InepDistribution implements Serializable, BasicEntityRenderer<InepD
 
 	public Date getStartDate( )
 	{
-		return startDate;
+		return this.startDate;
 	}
 
 	public void setStartDate( Date startDate )
 	{
 		this.startDate = startDate;
 	}
-	
+
 	public Boolean getIsGolden( )
 	{
-		if ( isGolden == null )
-			isGolden = false;
-		return isGolden;
+		if ( this.isGolden == null ) {
+			this.isGolden = false;
+		}
+		return this.isGolden;
 	}
 
 	public void setIsGolden( Boolean isGolden )
 	{
 		this.isGolden = isGolden;
 	}
-	
 
 }
