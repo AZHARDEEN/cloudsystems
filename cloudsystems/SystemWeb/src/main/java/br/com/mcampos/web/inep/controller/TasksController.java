@@ -2,6 +2,7 @@ package br.com.mcampos.web.inep.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -274,6 +275,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		this.hideTasks( );
 		// String.format( "/img/pdf/%s-%d-4.pdf", item.getId(
 		// ).getSubscriptionId( ), item.getId( ).getTaskId( ) );
+		item.setStartDate( new Date( ) );
 		byte[ ] obj = this.getSession( ).getMedia( item );
 		if ( obj != null && obj.length > 0 ) {
 			AMedia media = new AMedia( null, null, null, obj );

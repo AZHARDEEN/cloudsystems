@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +33,10 @@ import br.com.mcampos.ejb.user.document.type.DocumentTypeSessionLocal;
 import br.com.mcampos.ejb.user.person.PersonSessionLocal;
 import br.com.mcampos.jpa.inep.DistributionStatus;
 import br.com.mcampos.jpa.inep.InepDistribution;
+import br.com.mcampos.jpa.inep.InepDistributionPK;
 import br.com.mcampos.jpa.inep.InepEvent;
 import br.com.mcampos.jpa.inep.InepEventPK;
+import br.com.mcampos.jpa.inep.InepGoldenTest;
 import br.com.mcampos.jpa.inep.InepRevisor;
 import br.com.mcampos.jpa.inep.InepTask;
 import br.com.mcampos.jpa.inep.InepTaskPK;
@@ -373,5 +376,51 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		rev.setType( this.getEntityManager( ).find( RevisorType.class, type ) );
 		rev.setCoordenador( false );
 		return this.revisorSession.merge( rev );
+	}
+
+	@SuppressWarnings( "unchecked" )
+	@Override
+	public void distributeGoldenTests( InepEvent event )
+	{
+		logger.info( "Distributing Golden Test" );
+		List<InepGoldenTest> list;
+		Integer lastTask = 0;
+
+		Query q = this.getEntityManager( ).createNamedQuery( InepGoldenTest.getAll );
+		this.setQueryParams( q, event.getId( ).getCompanyId( ), event.getId( ).getId( ) );
+		list = (List<InepGoldenTest>) q.getResultList( );
+		if ( SysUtils.isEmpty( list ) ) {
+			logger.info( "No Golden Tests to distribute!" );
+		}
+		logger.info( "We have about " + list.size( ) + " golden tests to distribute!" );
+		DistributionStatus status = this.distributionStatusSession.get( DistributionStatus.statusDistributed );
+		List<InepRevisor> team = null;
+		for ( InepGoldenTest item : list ) {
+			if ( !lastTask.equals( item.getId( ).getTskIdIn( ) ) ) {
+				lastTask = item.getId( ).getTskIdIn( );
+				InepTaskPK taskKey = new InepTaskPK( event, item.getId( ).getTskIdIn( ) );
+				team = this.teamSession.findByNamedQuery( InepRevisor.getAllRevisorByEventAndTask, this.taskSession.get( taskKey ) );
+			}
+
+			if ( SysUtils.isEmpty( team ) ) {
+				continue;
+			}
+			logger.info( "Distributing  " + item.getId( ).getSubscriptionId( ) + " and task " + lastTask );
+			for ( InepRevisor revisor : team ) {
+				InepDistributionPK distributionKey = new InepDistributionPK( revisor, null );
+				distributionKey.setSubscriptionId( item.getId( ).getSubscriptionId( ) );
+				distributionKey.setTaskId( item.getId( ).getTskIdIn( ) );
+
+				InepDistribution distribution = this.distributionSession.get( distributionKey );
+				if ( distribution == null ) {
+					distribution = new InepDistribution( revisor, null );
+					distribution.setInsertDate( new Date( ) );
+					distribution.getId( ).setSubscriptionId( item.getId( ).getSubscriptionId( ) );
+					distribution.setStatus( status );
+					distribution.setIsGolden( true );
+					this.distributionSession.add( distribution );
+				}
+			}
+		}
 	}
 }

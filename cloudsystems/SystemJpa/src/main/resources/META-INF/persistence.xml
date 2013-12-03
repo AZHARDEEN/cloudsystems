@@ -139,6 +139,8 @@
     <class>br.com.mcampos.jpa.inep.InepObserverGradePK</class>
     <class>br.com.mcampos.jpa.inep.InepStationReponsable</class>
     <class>br.com.mcampos.jpa.inep.InepStationReponsablePK</class>
+    <class>br.com.mcampos.jpa.inep.InepGoldenTest</class>
+    <class>br.com.mcampos.jpa.inep.InepGoldenTestPK</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
     	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>

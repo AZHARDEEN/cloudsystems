@@ -3,7 +3,6 @@ package br.com.mcampos.ejb.inep.team;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -211,8 +210,10 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		/*
 		 * Prova de ouro não faz absolutamente nada.
 		 */
-		if ( dist.getIsGolden( ) )
+		if ( dist.getIsGolden( ) ) {
+			dist.setStatus( this.getStatus( DistributionStatus.statusRevised ) );
 			return dist;
+		}
 		/*
 		 * Não é uma prova de ouro, proceda normalmente
 		 */
@@ -352,6 +353,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 		}
 	}
 
+	@Override
 	public List<InepEvent> getAvailableEvents( PrincipalDTO auth )
 	{
 		if ( auth != null ) {
@@ -380,7 +382,7 @@ public class TeamSessionBean extends SimpleSessionBean<InepRevisor> implements T
 				break;
 			}
 		}
-		merged.setStartDate( new Date( ) );
+		merged.setStartDate( item.getStartDate( ) );
 		return obj;
 	}
 
