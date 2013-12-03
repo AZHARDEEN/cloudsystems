@@ -3,7 +3,7 @@
 	version="3.0">
 	<description>Cloudsystems</description>
 	<session-config>
-		<session-timeout>15</session-timeout>
+		<session-timeout>30</session-timeout>
 	</session-config>
 	<mime-mapping>
 		<extension>xul</extension>
