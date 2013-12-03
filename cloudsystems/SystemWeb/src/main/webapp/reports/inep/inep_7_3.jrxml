@@ -11,13 +11,13 @@
 	</style>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
-		<defaultValueExpression><![CDATA["T:/Workspaces/indigo/cloudsystems/SystemWeb/WebContent/img"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
@@ -86,28 +86,28 @@ order by
 	<field name="anulado" class="java.lang.Long"/>
 	<field name="branco" class="java.lang.Long"/>
 	<field name="total" class="java.lang.Long"/>
-	<variable name="variable1" class="java.math.BigDecimal">
+	<variable name="variable1" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{nota0}.doubleValue()/$F{total}.doubleValue()]]></variableExpression>
 	</variable>
-	<variable name="variable2" class="java.math.BigDecimal">
+	<variable name="variable2" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{nota1}.doubleValue()/$F{total}.doubleValue()]]></variableExpression>
 	</variable>
-	<variable name="variable3" class="java.math.BigDecimal">
+	<variable name="variable3" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{nota2}.doubleValue()/$F{total}.doubleValue()]]></variableExpression>
 	</variable>
-	<variable name="variable4" class="java.math.BigDecimal">
+	<variable name="variable4" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{nota3}.doubleValue()/$F{total}.doubleValue()]]></variableExpression>
 	</variable>
-	<variable name="variable5" class="java.math.BigDecimal">
+	<variable name="variable5" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{nota4}.doubleValue()/$F{total}.doubleValue()]]></variableExpression>
 	</variable>
-	<variable name="variable6" class="java.math.BigDecimal">
+	<variable name="variable6" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{nota5}.doubleValue()/$F{total}.doubleValue()]]></variableExpression>
 	</variable>
-	<variable name="variable7" class="java.math.BigDecimal">
+	<variable name="variable7" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{anulado}.doubleValue()/$F{total}.doubleValue()]]></variableExpression>
 	</variable>
-	<variable name="variable8" class="java.math.BigDecimal">
+	<variable name="variable8" class="java.lang.Double">
 		<variableExpression><![CDATA[$F{branco}.doubleValue()/$F{total}.doubleValue()]]></variableExpression>
 	</variable>
 	<group name="Tarefa" keepTogether="true">

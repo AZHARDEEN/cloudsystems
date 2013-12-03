@@ -11,13 +11,13 @@
 	</style>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
-		<defaultValueExpression><![CDATA["T:/Workspaces/indigo/cloudsystems/SystemWeb/WebContent/img"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select
@@ -36,9 +36,14 @@
 	end as finalgrade4
 from
 	inep.gradeview2
+where
+	usr_id_in = $P{COMPANY_ID}
+and 	pct_id_in = $P{EVENT_ID}
 order by usr_id_in, pct_id_in, isc_id_ch]]>
 	</queryString>
-	<field name="usr_id_in" class="java.lang.Integer"/>
+	<field name="usr_id_in" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Usar sequence: seq_usuario]]></fieldDescription>
+	</field>
 	<field name="pct_id_in" class="java.lang.Integer"/>
 	<field name="isc_id_ch" class="java.lang.String"/>
 	<field name="task1_grade1" class="java.math.BigDecimal"/>
@@ -57,7 +62,7 @@ order by usr_id_in, pct_id_in, isc_id_ch]]>
 	<field name="finalgrade2" class="java.math.BigDecimal"/>
 	<field name="finalgrade3" class="java.math.BigDecimal"/>
 	<field name="finalgrade4" class="java.math.BigDecimal"/>
-	<variable name="finalgrade" class="java.math.BigDecimal">
+	<variable name="finalgrade" class="java.lang.Double">
 		<variableExpression><![CDATA[($F{finalgrade1}.floatValue()
 +$F{finalgrade2}.floatValue()
 +$F{finalgrade3}.floatValue()
