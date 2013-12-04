@@ -134,4 +134,10 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 	{
 		return this.getByNamedQuery( InepOralTest.getBySubscription, s );
 	}
+
+	@Override
+	public List<InepOralTest> getVarianceWrittenOnly( InepEvent pack )
+	{
+		return this.findByNamedQuery( InepOralTest.getVarianceOralWritten, pack );
+	}
 }

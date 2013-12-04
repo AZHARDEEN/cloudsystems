@@ -19,7 +19,10 @@ import javax.persistence.Table;
 @NamedQueries( {
 		@NamedQuery(
 				name = InepOralTest.getVarianceOralOnly,
-				query = "select o from InepOralTest o WHERE o.subscription.event = ?1 and o.statusId = 2 and o.agreementGrade is null order by o.subscription " ),
+				query = "select o from InepOralTest o WHERE o.subscription.event = ?1 and o.statusId = 2 order by o.subscription " ),
+		@NamedQuery(
+				name = InepOralTest.getVarianceOralWritten,
+				query = "select o from InepOralTest o WHERE o.subscription.event = ?1 and o.statusId = 12 order by o.subscription " ),
 		@NamedQuery(
 				name = InepOralTest.getBySubscription,
 				query = "select o from InepOralTest o WHERE o.subscription = ?1 " )
@@ -28,7 +31,7 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	public static final String getVarianceOralOnly = "InepOralTest.getVarianceOralOnly";
-	public static final String getVariance2OralOnly = "InepOralTest.getVariance2OralOnly";
+	public static final String getVarianceOralWritten = "InepOralTest.getVarianceOralWritten";
 	public static final String getBySubscription = "InepOralTest.getBySubscription";
 
 	@EmbeddedId
