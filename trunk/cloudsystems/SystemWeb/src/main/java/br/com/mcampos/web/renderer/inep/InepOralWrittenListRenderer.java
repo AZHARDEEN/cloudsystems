@@ -16,6 +16,8 @@ public class InepOralWrittenListRenderer extends BaseListRenderer<InepOralTest>
 		this.addCell( item, data.getSubscription( ).getStation( ).getClient( ).getName( ) );
 		this.addCell( item, data.getObserverGrade( ) );
 		this.addCell( item, data.getInterviewGrade( ) );
+		this.addCell( item, data.getAgreementGrade( ) );
+		this.addCell( item, data.getAgreement2Grade( ) );
 		this.addCell( item, data.getFinalGrade( ) );
 		this.addCell( item, data.getSubscription( ).getWrittenGrade( ) );
 	}

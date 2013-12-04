@@ -18,10 +18,12 @@
 		                <listhead>
 		                    <listheader align="left" label="Inscrição" width="120px"/>
 		                    <listheader align="Left" label="Posto Aplicador"  />
-		                    <listheader align="center" label="Obser." width="70px" />
-		                    <listheader align="center" label="Entr." width="70px" />
-		                    <listheader align="center" label="Oral" width="70px" />
-		                    <listheader align="center" label="Escrita" width="70px" />
+		                    <listheader align="center" label="Obser." width="80px" />
+		                    <listheader align="center" label="Entr." width="80px" />
+		                    <listheader align="center" label="Discr." width="80px" />
+		                    <listheader align="center" label="Consenso" width="80px" />
+		                    <listheader align="center" label="Oral" width="80px" />
+		                    <listheader align="center" label="Escrita" width="80px" />
 		                </listhead>
 		            </listbox>
 	            </div>
