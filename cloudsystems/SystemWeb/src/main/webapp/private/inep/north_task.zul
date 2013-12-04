@@ -20,8 +20,8 @@
 			<toolbarbutton id="countAll" width="140px" sclass="tasksStyle" />
 			<label value="Corrigidas"/>
 			<toolbarbutton id="countRevised" width="140px" sclass="revisedStyle"/>
-			<label value="Discrepâncias" visible="false"/>
-			<toolbarbutton id="countVariance" width="140px" sclass="varianceStyle" visible="false"/>
+			<label value="Discrepâncias" />
+			<toolbarbutton id="countVariance" width="140px" sclass="varianceStyle" />
 		</hlayout>
 	</div>
 </zk>

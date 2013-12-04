@@ -332,7 +332,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 			{
 				this.countAll.setLabel( "" + dto.getTasks( ) );
 				this.countRevised.setLabel( "" + dto.getRevised( ) );
-				this.countVariance.setLabel( "" + dto.getVariance( ) );
+				this.countVariance.setLabel( "Discr." );
 			}
 			else
 			{
@@ -341,7 +341,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 				percent = ( ( (double) dto.getRevised( ) ) / ( (double) total ) * 100 );
 				this.countRevised.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getRevised( ), total, percent ) );
 				percent = ( ( (double) dto.getVariance( ) ) / ( (double) total ) * 100 );
-				this.countVariance.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getVariance( ), total, percent ) );
+				this.countVariance.setLabel( "Discr." );
 			}
 		}
 		else
