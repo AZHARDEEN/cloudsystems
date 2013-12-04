@@ -39,6 +39,7 @@ AND DIS_GRADE_IN IS NOT NULL
 ORDER BY
 	G.USR_ID_IN,
 	G.PCT_ID_IN,
+	G.TSK_ID_IN,
 	G.ISC_ID_CH]]>
 	</queryString>
 	<field name="usr_id_in" class="java.lang.Integer">
@@ -70,7 +71,16 @@ ORDER BY
 	<field name="usr_update_dt" class="java.sql.Timestamp"/>
 	<field name="usr_observation_tx" class="java.lang.String"/>
 	<field name="usr_birth_dt" class="java.sql.Timestamp"/>
-	<group name="GoldenTest">
+	<group name="GoldenTest" keepTogether="true">
+		<groupExpression><![CDATA[$F{tsk_id_in}]]></groupExpression>
+		<groupHeader>
+			<band height="11"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="19"/>
+		</groupFooter>
+	</group>
+	<group name="GoldenTest2">
 		<groupExpression><![CDATA[$F{isc_id_ch}]]></groupExpression>
 		<groupHeader>
 			<band height="39">
@@ -78,11 +88,6 @@ ORDER BY
 					<reportElement uuid="678b486f-d9e2-4104-b199-608f8c67be2b" x="0" y="0" width="144" height="20"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement uuid="5f167c2f-4f4f-45a4-bdd4-6085cc7cba54" x="423" y="0" width="117" height="20"/>
-					<textElement/>
-					<textFieldExpression><![CDATA[$F{igt_grade_in}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement uuid="d894adaf-02c3-403a-a50f-8b40db8f8d02" x="199" y="0" width="100" height="20"/>
@@ -111,10 +116,18 @@ ORDER BY
 					<textElement textAlignment="Center" verticalAlignment="Bottom"/>
 					<text><![CDATA[Nota]]></text>
 				</staticText>
+				<textField>
+					<reportElement uuid="5f167c2f-4f4f-45a4-bdd4-6085cc7cba54" x="423" y="1" width="117" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{igt_grade_in}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="5d92ba9b-622f-45a7-9f1c-b508d9e50a41" x="0" y="37" width="555" height="1"/>
+				</line>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="19"/>
+			<band height="7"/>
 		</groupFooter>
 	</group>
 	<background>
