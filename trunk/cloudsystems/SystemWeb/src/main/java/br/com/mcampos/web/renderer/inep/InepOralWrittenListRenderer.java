@@ -12,14 +12,14 @@ public class InepOralWrittenListRenderer extends BaseListRenderer<InepOralTest>
 	{
 		super.render( item, data, index );
 		item.setContext( "listPopupOralTest" );
-		this.addCell( item, data.getSubscription( ).getId( ).getId( ) );
-		this.addCell( item, data.getSubscription( ).getStation( ).getClient( ).getName( ) );
-		this.addCell( item, data.getObserverGrade( ) );
-		this.addCell( item, data.getInterviewGrade( ) );
-		this.addCell( item, data.getAgreementGrade( ) );
-		this.addCell( item, data.getAgreement2Grade( ) );
-		this.addCell( item, data.getFinalGrade( ) );
-		this.addCell( item, data.getSubscription( ).getWrittenGrade( ) );
+		addCell( item, data.getSubscription( ).getId( ).getId( ) );
+		addCell( item, data.getSubscription( ).getStation( ).getClient( ).getName( ) );
+		addCell( item, data.getObserverGrade( ) );
+		addCell( item, data.getInterviewGrade( ) );
+		addCell( item, data.getAgreementGrade( ) );
+		addCell( item, data.getAgreement2Grade( ) );
+		addCell( item, data.getSubscription( ).getOralGrade( ) );
+		addCell( item, data.getSubscription( ).getWrittenGrade( ) );
 	}
 
 }
