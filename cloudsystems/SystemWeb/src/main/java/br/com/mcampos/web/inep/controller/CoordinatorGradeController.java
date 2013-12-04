@@ -93,7 +93,12 @@ public abstract class CoordinatorGradeController extends BaseController<Window>
 		if ( d == null || d.getNota( ) == null ) {
 			return;
 		}
-		this.sv6.setSelectedIndex( d.getNota( ) );
+		try {
+			this.sv6.setSelectedIndex( d.getNota( ) );
+		}
+		catch ( Exception e ) {
+			e = null;
+		}
 		for ( Radio r : this.options ) {
 			r.setDisabled( true );
 			r.setSclass( "" );
