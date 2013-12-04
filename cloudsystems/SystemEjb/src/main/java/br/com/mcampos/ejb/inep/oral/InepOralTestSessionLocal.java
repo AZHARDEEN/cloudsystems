@@ -16,6 +16,8 @@ public interface InepOralTestSessionLocal extends BaseCrudSessionInterface<InepO
 
 	List<InepOralTest> getVarianceOralOnly( InepEvent pack );
 
+	List<InepOralTest> getVarianceWrittenOnly( InepEvent pack );
+
 	void setAgreementGrade( InepOralTest test, Integer grade, boolean isCoordinator );
 
 	InepOralTest get( InepSubscription s );

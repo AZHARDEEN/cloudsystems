@@ -184,16 +184,22 @@ public class InepOralFacadeBean extends BaseSessionBean implements InepOralFacad
 				DistributionStatus st = this.statusSession.get( DistributionStatus.statusDistributed );
 				for ( InepRevisor c : coordinators ) {
 					InepOralDistributionPK key = new InepOralDistributionPK( );
-					key.setCompanyId( merged.getId().getCompanyId( ) );
+					key.setCompanyId( merged.getId( ).getCompanyId( ) );
 					key.setEventId( merged.getId( ).getEventId( ) );
 					key.setSubscriptionId( merged.getId( ).getSubscriptionId( ) );
 					key.setCollaboratorId( c.getId( ).getSequence( ) );
-					InepOralDistribution coordinatorDistribution = oralDistributionSession.get( key  );
+					InepOralDistribution coordinatorDistribution = this.oralDistributionSession.get( key );
 					if ( coordinatorDistribution == null ) {
 						this.oralDistributionSession.add( new InepOralDistribution( merged.getTest( ), c, st ) );
 					}
 				}
 			}
 		}
+	}
+
+	@Override
+	public List<InepOralTest> getVarianceOralWritten( PrincipalDTO c, InepEvent pack )
+	{
+		return this.oralTestSession.getVarianceWrittenOnly( pack );
 	}
 }

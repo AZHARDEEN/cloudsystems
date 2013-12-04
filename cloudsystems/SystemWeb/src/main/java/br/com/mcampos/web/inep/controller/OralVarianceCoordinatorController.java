@@ -38,6 +38,11 @@ public class OralVarianceCoordinatorController extends BaseOralController implem
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
+		this.setRenderer( );
+	}
+
+	protected void setRenderer( )
+	{
 		this.getListbox( ).setItemRenderer( new InepOralTestListRenderer( ) );
 	}
 
@@ -59,12 +64,12 @@ public class OralVarianceCoordinatorController extends BaseOralController implem
 		}
 	}
 
-	private Listbox getListbox( )
+	protected Listbox getListbox( )
 	{
 		return this.listbox;
 	}
 
-	private void setModel( List<InepOralTest> list )
+	protected void setModel( List<InepOralTest> list )
 	{
 		@SuppressWarnings( "rawtypes" )
 		ListModelList model = new ListModelList<InepOralTest>( list );
