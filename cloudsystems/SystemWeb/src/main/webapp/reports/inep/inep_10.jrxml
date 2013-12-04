@@ -11,13 +11,13 @@
 	</style>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
-		<defaultValueExpression><![CDATA["T:/Workspaces/indigo/cloudsystems/SystemWeb/WebContent/img"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
@@ -39,7 +39,7 @@
 from
 	inep.inep_oral_test t,
 	inep.inep_subscription s
-where iot_variance_in >= 10
+where ( ids_id_in >= 10 or iot_variance_in >= 10 )
 and s.isc_id_ch = t.isc_id_ch
 and t.usr_id_in = $P{COMPANY_ID}
 and t.pct_id_in = $P{EVENT_ID}
@@ -165,12 +165,12 @@ order by
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$F{consenso}]]></textFieldExpression>
 				</textField>
-				<textField pattern="###0.0" isBlankWhenNull="true">
+				<textField pattern="###0.00" isBlankWhenNull="true">
 					<reportElement uuid="1c1846f3-1016-42d4-b074-2730fe8ab9b9" x="250" y="0" width="40" height="14"/>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$F{po}]]></textFieldExpression>
 				</textField>
-				<textField pattern="###0.0" isBlankWhenNull="true">
+				<textField pattern="###0.00" isBlankWhenNull="true">
 					<reportElement uuid="f058d7d9-5e43-4947-b6bf-59685a57d7a9" x="290" y="0" width="33" height="14"/>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$F{pe}]]></textFieldExpression>
