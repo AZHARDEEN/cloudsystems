@@ -11,13 +11,13 @@
 	</style>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
-		<defaultValueExpression><![CDATA["T:/Workspaces/indigo/cloudsystems/SystemWeb/WebContent/img"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
@@ -128,7 +128,7 @@ order by
 	<field name="equal_grade" class="java.lang.Long"/>
 	<field name="greather_grade" class="java.lang.Long"/>
 	<field name="less_grade" class="java.lang.Long"/>
-	<variable name="Total" class="java.lang.Integer">
+	<variable name="Total" class="java.lang.Long">
 		<variableExpression><![CDATA[$F{equal_grade} + $F{greather_grade} + $F{less_grade}]]></variableExpression>
 	</variable>
 	<variable name="pcLess" class="java.lang.Double">

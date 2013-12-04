@@ -5,13 +5,13 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
-		<defaultValueExpression><![CDATA["T:/Workspaces/indigo/cloudsystems/SystemWeb/WebContent/img"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
@@ -22,7 +22,7 @@
 	<queryString>
 		<![CDATA[SELECT
   inep_oral_test.isc_id_ch,
-  inep_oral_test.iot_station_ch,
+  coalesce ( inep_oral_test.iot_station_ch, usr_name_ch ) iot_station_ch ,
   inep_oral_test.iot_interviewer_grade_nm,
   inep_oral_test.iot_observer_grade_nm,
   inep_oral_test.iot_final_grade_nm,
@@ -31,9 +31,11 @@
   inep_oral_test.iot_agreement2_grade_nm,
   coalesce ( inep_oral_test.iot_agreement2_grade_nm, inep_oral_test.iot_agreement_grade_in, inep_oral_test.iot_final_grade_nm) npo
 FROM
-  inep.inep_oral_test
+  inep.inep_oral_test inner join inep.inep_subscription s on ( inep_oral_test.usr_id_in = s.usr_id_in and inep_oral_test.pct_id_in = s.pct_id_in and inep_oral_test.isc_id_ch = s.isc_id_ch )
+  inner join client c on ( s.usr_id_in = c.usr_id_in and s.cli_seq_in = c.cli_seq_in )
+  inner join users u on ( c.cli_id_in = u.usr_id_in )
 WHERE
-  inep_oral_test.iot_variance_in > 0 AND
+  ( inep_oral_test.iot_variance_in > 0 or ids_id_in > 10 ) AND
   inep_oral_test.usr_id_in = $P{COMPANY_ID} AND
   inep_oral_test.pct_id_in = $P{EVENT_ID}
 ORDER BY
