@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Zebra" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E5E5E5"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	*
+FROM
+	INEP.INEP_GOLDEN_TEST G INNER JOIN INEP.INEP_DISTRIBUTION D ON ( G.USR_ID_IN = D.USR_ID_IN AND G.PCT_ID_IN = G.PCT_ID_IN AND D.TSK_ID_IN = G.TSK_ID_IN AND G.ISC_ID_CH = D.ISC_ID_CH )
+	INNER JOIN COLLABORATOR C ON ( D.USR_ID_IN = C.USR_ID_IN AND D.COL_SEQ_IN = C.COL_SEQ_IN )
+	INNER JOIN USERS U ON ( C.COL_ID_IN = U.USR_ID_IN )
+WHERE
+	G.USR_ID_IN = $P{COMPANY_ID}
+AND 	G.PCT_ID_IN = $P{EVENT_ID}
+AND DIS_GRADE_IN IS NOT NULL
+ORDER BY
+	G.USR_ID_IN,
+	G.PCT_ID_IN,
+	G.ISC_ID_CH]]>
+	</queryString>
+	<field name="usr_id_in" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Usar sequence: seq_usuario]]></fieldDescription>
+	</field>
+	<field name="pct_id_in" class="java.lang.Integer"/>
+	<field name="isc_id_ch" class="java.lang.String"/>
+	<field name="tsk_id_in" class="java.lang.Integer"/>
+	<field name="igt_grade_in" class="java.lang.Integer"/>
+	<field name="dis_grade_in" class="java.lang.Integer"/>
+	<field name="col_seq_in" class="java.lang.Integer"/>
+	<field name="dis_obs_tx" class="java.lang.String"/>
+	<field name="dis_insert_dt" class="java.sql.Timestamp"/>
+	<field name="ids_id_in" class="java.lang.Integer"/>
+	<field name="dis_update_dt" class="java.sql.Timestamp"/>
+	<field name="dis_priority_in" class="java.lang.Integer"/>
+	<field name="isc_level_in" class="java.lang.Integer"/>
+	<field name="dis_start_dt" class="java.sql.Timestamp"/>
+	<field name="dis_golden_bt" class="java.lang.Boolean"/>
+	<field name="col_id_in" class="java.lang.Integer"/>
+	<field name="col_from_dt" class="java.sql.Timestamp"/>
+	<field name="col_to_dt" class="java.sql.Timestamp"/>
+	<field name="clt_id_in" class="java.lang.Integer"/>
+	<field name="cps_id_in" class="java.lang.Integer"/>
+	<field name="usr_name_ch" class="java.lang.String"/>
+	<field name="ust_id_in" class="java.lang.String"/>
+	<field name="usr_nick_name_ch" class="java.lang.String"/>
+	<field name="usr_insert_dt" class="java.sql.Timestamp"/>
+	<field name="usr_update_dt" class="java.sql.Timestamp"/>
+	<field name="usr_observation_tx" class="java.lang.String"/>
+	<field name="usr_birth_dt" class="java.sql.Timestamp"/>
+	<group name="GoldenTest">
+		<groupExpression><![CDATA[$F{isc_id_ch}]]></groupExpression>
+		<groupHeader>
+			<band height="39">
+				<textField>
+					<reportElement uuid="678b486f-d9e2-4104-b199-608f8c67be2b" x="0" y="0" width="144" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="5f167c2f-4f4f-45a4-bdd4-6085cc7cba54" x="423" y="0" width="117" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{igt_grade_in}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="d894adaf-02c3-403a-a50f-8b40db8f8d02" x="199" y="0" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{tsk_id_in}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="40e52cce-aaa6-4023-8834-4dac33530cc7" x="155" y="0" width="44" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[Tarefa:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ac1d5a55-f464-485f-8459-a24cd7bb5a71" x="311" y="0" width="112" height="20"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[Nota de Referência:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="b6668b80-ff3c-4486-9826-3fb1810e9987" x="0" y="21" width="100" height="16"/>
+					<textElement verticalAlignment="Bottom"/>
+					<text><![CDATA[Corretor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="216ad1fc-c313-4cbd-b48a-8df674cee776" x="299" y="21" width="47" height="16"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+					<text><![CDATA[Nota]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="19"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="0" y="0" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prova de Ouro - Listagem Geral]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="39767c0c-c7ac-43d1-b9f1-14e1c9e9bc11" x="440" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[inep_12]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<elementGroup/>
+			<image>
+				<reportElement uuid="6cd20d8c-8ef0-40ca-aee3-3eeb3b61a13c" x="3" y="0" width="117" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="75a50f28-1c27-4b0e-8f9b-8f4d91a39ddf" x="388" y="2" width="165" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="f643afe2-77e7-4361-a7e7-7b314f698f0b" x="144" y="1" width="231" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement uuid="bfee00be-642f-4346-8bfe-a36693652557" style="Zebra" mode="Opaque" x="0" y="0" width="555" height="15"/>
+				<textField>
+					<reportElement uuid="95437879-b4b6-4dc5-b650-4c2e7ef4d28c" x="0" y="0" width="299" height="14"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{usr_name_ch}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="8600ed83-f14c-4458-87e7-e3c72dd30168" x="299" y="0" width="47" height="14"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{dis_grade_in}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7" x="455" y="0" width="100" height="23"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6" x="0" y="0" width="103" height="23"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd" x="0" y="0" width="555" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="0592877d-f553-4430-bab8-32b5a14f08fb" x="199" y="1" width="100" height="22"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="fc5403a2-32cd-47c6-a7fb-7f5fc88c9c3d" x="150" y="1" width="49" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Registros:]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="14" splitType="Stretch"/>
+	</summary>
+</jasperReport>

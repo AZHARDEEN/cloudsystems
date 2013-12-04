@@ -5,16 +5,16 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
-		<defaultValueExpression><![CDATA["T:/Workspaces/indigo/cloudsystems/SystemWeb/WebContent/img"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[33]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[145]]></defaultValueExpression>
 	</parameter>
 	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
@@ -59,13 +59,13 @@ WHERE
 	<field name="grade3" class="java.lang.Integer"/>
 	<field name="final_grade" class="java.lang.Integer"/>
 	<field name="users_usr_name_ch" class="java.lang.String"/>
-	<variable name="isc_id_ch_1" class="java.lang.Integer" calculation="Count">
+	<variable name="isc_id_ch_1" class="java.lang.String" calculation="Count">
 		<variableExpression><![CDATA[$F{isc_id_ch}]]></variableExpression>
 	</variable>
 	<variable name="notaFinal" class="java.lang.Float">
-		<variableExpression><![CDATA[($F{dis_grade_in} + $F{grade2}) / 2]]></variableExpression>
+		<variableExpression><![CDATA[(float)(($F{dis_grade_in} + $F{grade2}) / 2D)]]></variableExpression>
 	</variable>
-	<variable name="notaFinal2" class="java.lang.Float">
+	<variable name="notaFinal2" class="java.lang.Integer">
 		<variableExpression><![CDATA[$F{grade3}]]></variableExpression>
 	</variable>
 	<background>
@@ -193,14 +193,14 @@ WHERE
 			<elementGroup/>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement uuid="1205188d-faaa-4b36-9491-ff8bc61ae930" x="497" y="0" width="52" height="15">
-					<printWhenExpression><![CDATA[$F{ids_id_in}.equals( 2 ) && $V{notaFinal} <= 5]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{ids_id_in}.equals( 2 ) && $V{notaFinal}.intValue() <= 5]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{notaFinal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement uuid="f04a1df6-f28f-4685-b7a5-e3ec94e01d5c" x="497" y="0" width="52" height="15">
-					<printWhenExpression><![CDATA[$F{ids_id_in}.equals( 4 ) && $V{notaFinal2} <= 5]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{ids_id_in}.equals( 4 ) && $V{notaFinal2}.intValue() <= 5]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{notaFinal2}]]></textFieldExpression>
