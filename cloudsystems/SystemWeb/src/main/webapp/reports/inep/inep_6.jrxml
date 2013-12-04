@@ -11,7 +11,7 @@
 	</style>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
-		<defaultValueExpression><![CDATA["T:/Workspaces/indigo/cloudsystems/SystemWeb/WebContent/img"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
