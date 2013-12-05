@@ -24,10 +24,12 @@ public class InepOralDistributionCoordinatoListRenderer extends BaseListRenderer
 		}
 
 		this.addCell( item, data.getTest( ).getSubscription( ).getStation( ).getClient( ).getName( ) );
-		this.addCell( item, data.getTest( ).getObserverGrade( ).toString( ) );
-		this.addCell( item, data.getTest( ).getInterviewGrade( ).toString( ) );
+		this.addCell( item, data.getTest( ).getObserverGrade( ) );
+		this.addCell( item, data.getTest( ).getInterviewGrade( ) );
+		this.addCell( item, data.getTest( ).getFinalGrade( ) );
+		this.addCell( item, data.getTest( ).getAgreementGrade( ) );
+		this.addCell( item, data.getTest( ).getAgreement2Grade( ) );
 		this.addCell( item, data.getTest( ).getSubscription( ).getOralGrade( ) );
-		this.addCell( item, data.getTest( ).getAgreementGrade( ).toString( ) );
 		this.addCell( item, data.getTest( ).getSubscription( ).getWrittenGrade( ) );
 		Listcell cell = new Listcell( );
 		Button btnDownload = new Button( "Audio" );
