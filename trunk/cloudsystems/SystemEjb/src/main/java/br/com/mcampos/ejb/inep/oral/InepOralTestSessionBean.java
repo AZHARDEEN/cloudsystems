@@ -113,13 +113,28 @@ public class InepOralTestSessionBean extends SimpleSessionBean<InepOralTest> imp
 		}
 		test.setStatusId( 4 + nIndex );
 		if ( isCoordinator == false ) {
+			test.getSubscription( ).setAgreementGrade( new BigDecimal( grade ) );
 			test.setAgreementGrade( grade );
-			double variance = test.getFinalGrade( ).doubleValue( );
-			variance = Math.abs( variance - ( (double) grade ) );
+			double variance;
+			if ( nIndex == 0 ) {
+				variance = test.getFinalGrade( ).doubleValue( );
+			}
+			else {
+				variance = grade;
+			}
+			if ( test.getSubscription( ).getWrittenGrade( ) != null && grade >= test.getSubscription( ).getWrittenGrade( ).doubleValue( ) ) {
+				// Se a nota da prova oral for maior que a nota da prova escrita, nao ha discrepancia
+				variance = 0;
+			}
+			else {
+				variance = Math.abs( variance - ( (double) grade ) );
+			}
+			if ( nIndex > 0 && test.getAgreement2Grade( ) != null ) {
+				variance = 0;
+			}
 			if ( variance >= 1.5 ) {
 				test.setStatusId( 5 + nIndex );
 			}
-			test.getSubscription( ).setAgreementGrade( new BigDecimal( grade ) );
 		}
 		else {
 			test.setAgreement2Grade( new BigDecimal( grade ) );
