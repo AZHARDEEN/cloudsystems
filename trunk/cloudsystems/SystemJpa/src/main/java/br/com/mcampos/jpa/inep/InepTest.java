@@ -28,7 +28,8 @@ import javax.persistence.Table;
 				query = "select o from InepTest o where o.subscription = ?1 order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
 		@NamedQuery(
 				name = InepTest.getAllEventTasks,
-				query = "select o from InepTest o where o.task = ?1 order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
+				query = "select o from InepTest o where o.task = ?1 and not exists ( select t from InepDistribution t where t.test = o ) "
+						+ "order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
 		@NamedQuery(
 				name = InepTest.getAllTestsWithVariance,
 				query = "select o from InepTest o where o.subscription.event = ?1 " +
@@ -75,15 +76,15 @@ public class InepTest implements Serializable
 
 	public InepTest( InepTask task )
 	{
-		setTask( task );
+		this.setTask( task );
 	}
 
 	public InepTestPK getId( )
 	{
-		if ( id == null ) {
-			id = new InepTestPK( );
+		if ( this.id == null ) {
+			this.id = new InepTestPK( );
 		}
-		return id;
+		return this.id;
 	}
 
 	public void setId( InepTestPK id )
@@ -93,35 +94,36 @@ public class InepTest implements Serializable
 
 	public InepTask getTask( )
 	{
-		return task;
+		return this.task;
 	}
 
 	public void setTask( InepTask task )
 	{
 		this.task = task;
-		if ( getTask( ) != null ) {
+		if ( this.getTask( ) != null ) {
 			this.getId( ).set( task );
 		}
 	}
 
 	public InepSubscription getSubscription( )
 	{
-		return subscription;
+		return this.subscription;
 	}
 
 	public void setSubscription( InepSubscription subscription )
 	{
 		this.subscription = subscription;
-		if ( getSubscription( ) != null ) {
-			getId( ).set( subscription );
+		if ( this.getSubscription( ) != null ) {
+			this.getId( ).set( subscription );
 		}
 	}
 
 	public BigDecimal getGrade( )
 	{
-		if ( grade == null )
-			grade = new BigDecimal( 0 );
-		return grade;
+		if ( this.grade == null ) {
+			this.grade = new BigDecimal( 0 );
+		}
+		return this.grade;
 	}
 
 	public void setGrade( BigDecimal grade )

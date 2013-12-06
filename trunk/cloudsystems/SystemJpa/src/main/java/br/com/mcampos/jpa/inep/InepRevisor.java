@@ -25,7 +25,8 @@ import br.com.mcampos.jpa.user.Collaborator;
 @NamedQueries( {
 		@NamedQuery( name = InepRevisor.getTeamByTask, query = "select o from InepRevisor o " ),
 		@NamedQuery( name = InepRevisor.getAllTeamByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 " ),
-		@NamedQuery( name = InepRevisor.getAllRevisorByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = false " ),
+		@NamedQuery( name = InepRevisor.getAllRevisorByEventAndTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = false "
+				+ "and coalesce (o.ignoreOnDistribute, false) = false" ),
 		@NamedQuery( name = InepRevisor.getAllTeamByEvent, query = "select o from InepRevisor o where o.id.companyId = ?1 and o.id.eventId = ?2" ),
 		@NamedQuery( name = InepRevisor.getAllCoordinatorsToTask, query = "select o from InepRevisor o where o.task = ?1 and o.coordenador = true" ),
 		@NamedQuery( name = InepRevisor.getAllTeam, query = "select o from InepRevisor o where o.coordenador = false" ),
@@ -86,6 +87,9 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 	@Column( name = "tsk_id_in", nullable = true, updatable = true, insertable = true )
 	private Integer taskId;
 
+	@Column( name = "rvs_ignore_bt", nullable = true, updatable = true, insertable = true )
+	private Boolean ignoreOnDistribute;
+
 	@ManyToOne( optional = false )
 	@JoinColumn( name = "irt_id_in", referencedColumnName = "irt_id_in", updatable = true, insertable = true, nullable = false )
 	private RevisorType type;
@@ -96,16 +100,17 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 
 	public InepRevisor( Collaborator c, InepEvent e )
 	{
-		getId( ).set( c );
-		getId( ).set( e );
+		this.getId( ).set( c );
+		this.getId( ).set( e );
 	}
 
+	@Override
 	public InepRevisorPK getId( )
 	{
-		if ( id == null ) {
-			id = new InepRevisorPK( );
+		if ( this.id == null ) {
+			this.id = new InepRevisorPK( );
 		}
-		return id;
+		return this.id;
 	}
 
 	public void setId( InepRevisorPK id )
@@ -115,26 +120,27 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 
 	public Boolean isCoordenador( )
 	{
-		if ( coordenador == null )
+		if ( this.coordenador == null ) {
 			return false;
-		return coordenador;
+		}
+		return this.coordenador;
 	}
 
 	public void setCoordenador( Boolean rvsCoordinatorBt )
 	{
-		coordenador = rvsCoordinatorBt;
+		this.coordenador = rvsCoordinatorBt;
 	}
 
 	public Collaborator getCollaborator( )
 	{
-		return collaborator;
+		return this.collaborator;
 	}
 
 	public void setCollaborator( Collaborator collaborator )
 	{
 		this.collaborator = collaborator;
-		if ( getCollaborator( ) != null ) {
-			getId( ).set( getCollaborator( ) );
+		if ( this.getCollaborator( ) != null ) {
+			this.getId( ).set( this.getCollaborator( ) );
 		}
 	}
 
@@ -143,13 +149,13 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 	{
 		switch ( field ) {
 		case 0:
-			return getId( ).compareTo( object.getId( ) );
+			return this.getId( ).compareTo( object.getId( ) );
 		case 1:
-			return getCollaborator( ).getPerson( ).getName( ).compareTo( object.getCollaborator( ).getPerson( ).getName( ) );
+			return this.getCollaborator( ).getPerson( ).getName( ).compareTo( object.getCollaborator( ).getPerson( ).getName( ) );
 		case 2:
-			return getTask( ).getDescription( ).compareTo( object.getTask( ).getDescription( ) );
+			return this.getTask( ).getDescription( ).compareTo( object.getTask( ).getDescription( ) );
 		case 3:
-			return isCoordenador( ).compareTo( object.isCoordenador( ) );
+			return this.isCoordenador( ).compareTo( object.isCoordenador( ) );
 		default:
 			return 0;
 		}
@@ -158,13 +164,13 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 	@Override
 	public boolean equals( Object obj )
 	{
-		return getId( ).equals( ( (InepRevisor) obj ).getId( ) );
+		return this.getId( ).equals( ( (InepRevisor) obj ).getId( ) );
 	}
 
 	@Override
 	public int compareTo( InepRevisor o )
 	{
-		return getId( ).compareTo( o.getId( ) );
+		return this.getId( ).compareTo( o.getId( ) );
 	}
 
 	@Override
@@ -172,13 +178,13 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 	{
 		switch ( field ) {
 		case 0:
-			return getId( ).getSequence( ).toString( );
+			return this.getId( ).getSequence( ).toString( );
 		case 1:
-			return getCollaborator( ).getPerson( ).getName( );
+			return this.getCollaborator( ).getPerson( ).getName( );
 		case 2:
-			return getTask( ).getDescription( );
+			return this.getTask( ).getDescription( );
 		case 3:
-			return isCoordenador( ) ? "SIM" : "";
+			return this.isCoordenador( ) ? "SIM" : "";
 		default:
 			return "";
 		}
@@ -186,27 +192,27 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 
 	public InepTask getTask( )
 	{
-		return task;
+		return this.task;
 	}
 
 	public void setTask( InepTask task )
 	{
 		this.task = task;
 		if ( task != null ) {
-			getId( ).set( task );
-			setTaskId( task.getId( ).getId( ) );
+			this.getId( ).set( task );
+			this.setTaskId( task.getId( ).getId( ) );
 		}
 	}
 
 	@Override
 	public String toString( )
 	{
-		return getCollaborator( ).getPerson( ).getName( );
+		return this.getCollaborator( ).getPerson( ).getName( );
 	}
 
 	public Integer getTaskId( )
 	{
-		return taskId;
+		return this.taskId;
 	}
 
 	public void setTaskId( Integer taskId )
@@ -216,7 +222,7 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 
 	public RevisorType getType( )
 	{
-		return type;
+		return this.type;
 	}
 
 	public void setType( RevisorType type )
@@ -226,11 +232,22 @@ public class InepRevisor implements Serializable, Comparable<InepRevisor>, Basic
 
 	public InepEvent getEvent( )
 	{
-		return event;
+		return this.event;
 	}
 
 	public void setEvent( InepEvent event )
 	{
 		this.event = event;
 	}
+
+	public Boolean getIgnoreOnDistribute( )
+	{
+		return this.ignoreOnDistribute;
+	}
+
+	public void setIgnoreOnDistribute( Boolean ignoreOnDistribute )
+	{
+		this.ignoreOnDistribute = ignoreOnDistribute;
+	}
+
 }
