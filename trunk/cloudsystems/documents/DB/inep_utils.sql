@@ -88,5 +88,54 @@ and t.ids_id_in in ( 4, 14 )
 
 
 
+delete from inep.inep_oral_distribution where (usr_id_in, pct_id_in, isc_id_ch, col_seq_in) in (
+
+SELECT d.usr_id_in, d.pct_id_in, d.isc_id_ch, d.col_seq_in 
+FROM INEP.INEP_ORAL_DISTRIBUTION D inner join inep.inep_oral_test t on ( d.usr_id_in = t.usr_id_in and d.pct_id_in = t.pct_id_in and d.isc_id_ch = t.isc_id_ch )
+inner join inep.inep_subscription s on ( s.usr_id_in = t.usr_id_in and s.pct_id_in = t.pct_id_in and s.isc_id_ch = t.isc_id_ch )
+WHERE D.USR_ID_IN = 13623 AND D.PCT_ID_IN = 2
+AND D.COL_SEQ_IN = 72
+and d.ids_id_in = 1
+--and t.ids_id_in in ( 4, 14 )
+--and s.isc_written_grade_nm < s.isc_oral_grade_nm 
+and t.isc_id_ch in( select isc_id_ch from (
+select isc_id_ch, count(*) from inep.inep_oral_distribution 
+where col_seq_in <> 72
+group by isc_id_ch
+having count(*) > 2 ) t
+)
+
+)
 
 
+
+delete from inep.inep_oral_distribution where (usr_id_in, pct_id_in, isc_id_ch, col_seq_in) in (
+
+SELECT d.usr_id_in, d.pct_id_in, d.isc_id_ch, d.col_seq_in 
+FROM INEP.INEP_ORAL_DISTRIBUTION D inner join inep.inep_oral_test t on ( d.usr_id_in = t.usr_id_in and d.pct_id_in = t.pct_id_in and d.isc_id_ch = t.isc_id_ch )
+inner join inep.inep_subscription s on ( s.usr_id_in = t.usr_id_in and s.pct_id_in = t.pct_id_in and s.isc_id_ch = t.isc_id_ch )
+WHERE D.USR_ID_IN = 13623 AND D.PCT_ID_IN = 2
+AND D.COL_SEQ_IN = 72
+and d.ids_id_in = 1
+--and t.ids_id_in in ( 4, 14 )
+and s.isc_written_grade_nm <= s.isc_oral_grade_nm 
+
+)
+
+
+
+
+
+delete from inep.inep_oral_distribution where (usr_id_in, pct_id_in, isc_id_ch, col_seq_in) in (
+
+SELECT d.usr_id_in, d.pct_id_in, d.isc_id_ch, d.col_seq_in 
+FROM INEP.INEP_ORAL_DISTRIBUTION D inner join inep.inep_oral_test t on ( d.usr_id_in = t.usr_id_in and d.pct_id_in = t.pct_id_in and d.isc_id_ch = t.isc_id_ch )
+inner join inep.inep_subscription s on ( s.usr_id_in = t.usr_id_in and s.pct_id_in = t.pct_id_in and s.isc_id_ch = t.isc_id_ch )
+WHERE D.USR_ID_IN = 13623 AND D.PCT_ID_IN = 2
+AND D.COL_SEQ_IN = 72
+and d.ids_id_in = 1
+--and t.ids_id_in in ( 4, 14 )
+and abs ( t.iot_agreement_grade_in - t.iot_final_grade_nm ) < 1.5 
+and s.isc_oral_grade_nm >= 2
+
+)

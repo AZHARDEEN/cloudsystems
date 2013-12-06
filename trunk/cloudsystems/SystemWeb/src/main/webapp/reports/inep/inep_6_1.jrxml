@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Zebra" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 1]]></conditionExpression>
+			<style backcolor="#E5E5E5"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	s.isc_id_ch subscription,
+	s.isc_written_grade_nm written,
+	coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) oral,
+	case when s.isc_written_grade_nm < coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm )
+	then s.isc_written_grade_nm else coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) end as final
+FROM
+	INEP.INEP_SUBSCRIPTION s LEFT OUTER JOIN INEP.INEP_ORAL_test o on (
+		s.usr_id_in = o.usr_id_in and s.pct_id_in = o.pct_id_in
+		and s.isc_id_ch = o.isc_id_ch )
+WHERE
+  s.usr_id_in = $P{COMPANY_ID} AND
+  s.pct_id_in = $P{EVENT_ID}
+AND ( ( s.isc_written_grade_nm IS NULL AND S.ISC_ORAL_GRADE_NM IS NOT NULL) OR ( s.isc_written_grade_nm IS not NULL AND S.ISC_ORAL_GRADE_NM IS NULL) )
+ORDER BY s.isc_id_ch]]>
+	</queryString>
+	<field name="subscription" class="java.lang.String"/>
+	<field name="written" class="java.math.BigDecimal"/>
+	<field name="oral" class="java.math.BigDecimal"/>
+	<field name="final" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20" uuid="19eb60da-e12f-494b-bfcf-2b6310180f15"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Notas Finais]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="439" y="0" width="116" height="14" uuid="fd64e092-4008-423e-9875-bb37107a6540"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[inep_6]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="96" splitType="Stretch">
+			<image>
+				<reportElement x="3" y="1" width="117" height="50" uuid="b8f3d208-d5c0-4eec-a205-6241c030a737"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="144" y="2" width="231" height="50" uuid="4312c333-ca76-4c9c-bb9f-42a166d16665"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="388" y="3" width="165" height="50" uuid="54632e40-5f44-4f64-9069-37b26efbf901"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="76" width="91" height="20" uuid="73f6c36b-86f4-4a07-853d-dee6a5c4562a"/>
+				<text><![CDATA[INSCRIÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="187" y="76" width="100" height="20" uuid="e8003ff0-07d8-48f9-b9c8-d40fef04971a"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nota Prova Escrita]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="336" y="76" width="100" height="20" uuid="091cba2f-913a-44d9-a374-1395e81daccc"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nota Parte Oral]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="76" width="100" height="20" uuid="6c93f171-1c0f-4598-b918-c6055096b42e"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nota Final]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<frame>
+				<reportElement style="Zebra" mode="Opaque" x="0" y="0" width="555" height="16" uuid="bfee00be-642f-4346-8bfe-a36693652557"/>
+				<textField>
+					<reportElement style="Zebra" x="0" y="0" width="91" height="16" backcolor="#FFFFFF" uuid="194f6dc0-a2a1-44cc-87cc-dd81a75b0fd5"/>
+					<textFieldExpression><![CDATA[$F{subscription}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement x="187" y="0" width="100" height="16" uuid="c5f5b62e-04cb-40f5-9b3b-ed43c2210c21"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{written}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement x="336" y="0" width="100" height="16" uuid="cf416393-89f7-42cc-a573-196ee75057e3"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{oral}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.000" isBlankWhenNull="true">
+					<reportElement x="455" y="0" width="100" height="16" uuid="2d51bd40-36e4-490c-b9d6-6c44ac598389"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{final}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement x="455" y="0" width="100" height="15" uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement x="0" y="0" width="199" height="15" uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd"/>
+			</line>
+			<textField>
+				<reportElement x="325" y="0" width="100" height="15" uuid="f6b4b035-0342-47dc-b576-764d498a7100"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="225" y="0" width="100" height="15" uuid="fcb93a0d-76c7-4fa6-b9ff-ffc767ad0bd6"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Registros:]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
