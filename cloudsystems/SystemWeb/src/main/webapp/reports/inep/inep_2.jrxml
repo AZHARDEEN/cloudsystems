@@ -46,7 +46,6 @@ where
 	inep_revisor.rvs_coordinator_bt = false
 and inep_revisor."usr_id_in" = $P{COMPANY_ID}
 and inep_revisor."pct_id_in" = $P{EVENT_ID}
-and inep_revisor."tsk_id_in" = $P{TASK_ID}
 order by
      inep_revisor."usr_id_in",
      inep_revisor."tsk_id_in",

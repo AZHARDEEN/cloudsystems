@@ -235,7 +235,6 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		logger.info( "Done..." );
 		InepRevisor current;
 		Boolean mustAdd = false;
-
 		for ( InepTest test : tests ) {
 			if ( x >= team.size( ) ) {
 				x = 0;
