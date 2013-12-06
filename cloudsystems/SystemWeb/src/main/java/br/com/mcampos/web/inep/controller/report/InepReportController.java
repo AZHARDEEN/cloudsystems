@@ -66,6 +66,11 @@ public class InepReportController extends BaseReportController
 			item.setParams( this.configReportParams( ) );
 			list.add( item );
 
+			item = new ReportItem( "Situação da Correção - Corretores" );
+			item.setReportUrl( "/reports/inep/inep_2_1" );
+			item.setParams( this.configReportParams( ) );
+			list.add( item );
+
 			/*Relatorio 5*/
 			item = new ReportItem( "Situação da Correção - Coordenadores" );
 			item.setReportUrl( "/reports/inep/inep_1_2" );
