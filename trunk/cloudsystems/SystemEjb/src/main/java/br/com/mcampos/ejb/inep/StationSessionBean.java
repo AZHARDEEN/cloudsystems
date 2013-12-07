@@ -32,7 +32,8 @@ import br.com.mcampos.jpa.user.Collaborator;
 import br.com.mcampos.sysutils.SysUtils;
 
 /**
- * Brief Session Bean implementation class StationSessionBean Esta classe é o facade das telas do posto aplicador.
+ * Brief Session Bean implementation class StationSessionBean Esta classe é o
+ * facade das telas do posto aplicador.
  */
 @Stateless( name = "StationSession", mappedName = "StationSession" )
 public class StationSessionBean extends BaseSessionBean implements StationSession, StationSessionLocal
@@ -83,10 +84,10 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		List<InepEvent> events;
 
 		events = eventSession.getAvailable( auth );
-		if ( SysUtils.isEmpty( events ) ) {
+		if( SysUtils.isEmpty( events ) ) {
 			return null;
 		}
-		if ( events.size( ) > 1 ) {
+		if( events.size( ) > 1 ) {
 			throw new RuntimeException( "Too Many Events" );
 		}
 		return events.get( 0 );
@@ -96,16 +97,16 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	public List<InepSubscription> getSubscriptions( PrincipalDTO auth, InepEvent evt, String part )
 	{
 		Collaborator collaborator = collaboratorSession.find( auth );
-		if ( collaborator == null ) {
+		if( collaborator == null ) {
 			throw new InvalidParameterException( "Authorization error" );
 		}
 		List<InepStationReponsable> stations = getStations( collaborator, evt );
-		if ( SysUtils.isEmpty( stations ) ) {
+		if( SysUtils.isEmpty( stations ) ) {
 			return subscriptionSession.getAll( auth, evt, part );
 		}
 		else {
 			List<Integer> ids = new ArrayList<Integer>( stations.size( ) );
-			for ( InepStationReponsable item : stations ) {
+			for( InepStationReponsable item : stations ) {
 				ids.add( item.getStation( ).getId( ).getSequence( ) );
 			}
 			return subscriptionSession.getAll( auth, evt, part, ids );
@@ -122,7 +123,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 			query.setParameter( 2, event );
 			stations = query.getResultList( );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			storeException( e );
 		}
 		return stations;
@@ -135,7 +136,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		inepMediaSession.removeAudio( subscription );
 		InepSubscription merged = subscriptionSession.get( subscription.getId( ) );
 		InepMedia inepMedia = null;
-		if ( merged != null ) {
+		if( merged != null ) {
 			inepMedia = inepMediaSession.addAudio( merged, mediaSession.add( media ) );
 			merged.add( inepMedia );
 		}
@@ -146,17 +147,17 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	@Override
 	public void setInterviewerInformation( PrincipalDTO auth, InepSubscription subscription, int[ ] elements, int grade )
 	{
-		if ( auth == null || subscription == null ) {
+		if( auth == null || subscription == null ) {
 			throw new InvalidParameterException( "Invalid parameters for setInterviewerInformation" );
 		}
 		subscription = subscriptionSession.get( subscription.getId( ) );
 
-		if ( elements != null ) {
-			if ( elements.length != MAX_ELEMENTS ) {
+		if( elements != null ) {
+			if( elements.length != MAX_ELEMENTS ) {
 				throw new InvalidParameterException( "Invalid elements for subscription " + subscription.getId( ).getId( ) );
 			}
 			removeElements( subscription );
-			for ( int id : elements ) {
+			for( int id : elements ) {
 				InepElement element = new InepElement( subscription, id );
 				getEntityManager( ).persist( element );
 			}
@@ -166,7 +167,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		 * Setup Interviewer Grade
 		 */
 		InepOralTest oralTest = oralTestSession.get( subscription );
-		if ( oralTest == null ) {
+		if( oralTest == null ) {
 			oralTest = oralTestSession.add( new InepOralTest( subscription ), false );
 		}
 		oralTest.setInterviewGrade( BigDecimal.valueOf( grade ) );
@@ -181,7 +182,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 			Query query = getEntityManager( ).createQuery( deleteQuery ).setParameter( 1, subscription );
 			query.executeUpdate( );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			storeException( e );
 		}
 	}
@@ -193,7 +194,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 			Query query = getEntityManager( ).createQuery( deleteQuery ).setParameter( 1, subscription );
 			query.executeUpdate( );
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			storeException( e );
 		}
 
@@ -208,15 +209,15 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		Double grade_part_2 = 0.0D;
 		Double grade_part_3 = 0.0D;
 
-		if ( auth == null || subscription == null || grades == null || grades.length != MAX_ORAL_GRADE ) {
+		if( auth == null || subscription == null || grades == null || grades.length != MAX_ORAL_GRADE ) {
 			throw new InvalidParameterException( );
 		}
 		subscription = subscriptionSession.get( subscription.getId( ) );
 		removeObserverGrades( subscription );
 		int nIndex = 0;
-		for ( int id : grades ) {
+		for( int id : grades ) {
 			InepObserverGrade element = new InepObserverGrade( subscription, ++nIndex, id );
-			switch ( nIndex ) {
+			switch( nIndex ) {
 			case 1:
 			case 2:
 			case 3:
@@ -231,14 +232,14 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 			}
 			getEntityManager( ).persist( element );
 		}
-		grade = ( ( grade_part_1 / PART1_ELEMENTS * ORAL_GRADE_WEIGHT_PART1 )
-				+ ( grade_part_2 / PART2_ELEMENTS * ORAL_GRADE_WEIGHT_PART2 )
-				+ ( grade_part_3 * ORAL_GRADE_WEIGHT_PART3 ) );
+		grade = ((grade_part_1 / PART1_ELEMENTS * ORAL_GRADE_WEIGHT_PART1)
+				+ (grade_part_2 / PART2_ELEMENTS * ORAL_GRADE_WEIGHT_PART2)
+				+ (grade_part_3 * ORAL_GRADE_WEIGHT_PART3));
 		/*
 		 * Setup Oral Grade
 		 */
 		InepOralTest oralTest = oralTestSession.get( subscription );
-		if ( oralTest == null ) {
+		if( oralTest == null ) {
 			oralTest = oralTestSession.add( new InepOralTest( subscription ), false );
 		}
 		BigDecimal obGrade = BigDecimal.valueOf( grade );
@@ -263,7 +264,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	public void reset( PrincipalDTO auth, InepSubscription subscription )
 	{
 		subscription = subscriptionSession.get( subscription.getId( ) );
-		if ( subscription != null ) {
+		if( subscription != null ) {
 			Query query = getEntityManager( ).createQuery( "Delete from InepOralTest o where o.subscription = ?1" ).setParameter( 1, subscription );
 			query.executeUpdate( );
 			removeElements( subscription );
@@ -277,7 +278,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 	public void setMissing( PrincipalDTO auth, InepSubscription subscription )
 	{
 		subscription = subscriptionSession.get( subscription.getId( ) );
-		if ( subscription != null ) {
+		if( subscription != null ) {
 			reset( auth, subscription );
 			subscription.setStatus( 3 );
 		}
@@ -289,21 +290,21 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 		StationGradeDTO dto = new StationGradeDTO( );
 
 		List<InepObserverGrade> observerGrades = getObserverGrades( subscription );
-		if ( !SysUtils.isEmpty( observerGrades ) ) {
+		if( !SysUtils.isEmpty( observerGrades ) ) {
 			int nIndex = 0;
-			for ( InepObserverGrade item : observerGrades ) {
-				dto.getObserverGrade( )[ nIndex++ ] = item.getGrade( );
+			for( InepObserverGrade item : observerGrades ) {
+				dto.getObserverGrade( )[nIndex++] = item.getGrade( );
 			}
 		}
 		InepOralTest oralTest = oralTestSession.get( subscription );
-		if ( oralTest != null && oralTest.getInterviewGrade( ) != null ) {
+		if( oralTest != null && oralTest.getInterviewGrade( ) != null ) {
 			dto.setInterviewerGrade( oralTest.getInterviewGrade( ).intValue( ) );
 		}
 		List<InepElement> elements = getElements( subscription );
-		if ( !SysUtils.isEmpty( elements ) ) {
+		if( !SysUtils.isEmpty( elements ) ) {
 			int nIndex = 0;
-			for ( InepElement item : elements ) {
-				dto.getElements( )[ nIndex++ ] = item.getId( ).getId( );
+			for( InepElement item : elements ) {
+				dto.getElements( )[nIndex++] = item.getId( ).getId( );
 			}
 		}
 		dto.setSubscription( subscription.getId( ).getId( ) );
@@ -321,7 +322,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 			observerGrades = query.getResultList( );
 			return observerGrades;
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			return observerGrades;
 		}
 	}
@@ -337,7 +338,7 @@ public class StationSessionBean extends BaseSessionBean implements StationSessio
 			items = query.getResultList( );
 			return items;
 		}
-		catch ( Exception e ) {
+		catch( Exception e ) {
 			return items;
 		}
 	}

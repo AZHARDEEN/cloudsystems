@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 /**
  * The persistent class for the inep_oral_test database table.
- * 
+ *
  */
 @Entity
 @Table( name = "inep_oral_test", schema = "inep" )
@@ -78,22 +78,22 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 
 	public InepOralTest( InepEvent item )
 	{
-		this.set( item );
+		set( item );
 	}
 
 	@Override
 	public InepOralTestPK getId( )
 	{
-		if ( this.id == null ) {
-			this.id = new InepOralTestPK( );
+		if ( id == null ) {
+			id = new InepOralTestPK( );
 		}
-		return this.id;
+		return id;
 	}
 
 	public void set( InepEvent item )
 	{
-		this.getId( ).setCompanyId( item.getId( ).getCompanyId( ) );
-		this.getId( ).setEventId( item.getId( ).getId( ) );
+		getId( ).setCompanyId( item.getId( ).getCompanyId( ) );
+		getId( ).setEventId( item.getId( ).getId( ) );
 	}
 
 	public void setId( InepOralTestPK id )
@@ -103,62 +103,63 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 
 	public BigDecimal getFinalGrade( )
 	{
-		return this.finalGrade;
+		return finalGrade;
 	}
 
 	public void setFinalGrade( BigDecimal iotFinalGradeNm )
 	{
-		this.finalGrade = iotFinalGradeNm;
+		finalGrade = iotFinalGradeNm;
 	}
 
 	public BigDecimal getInterviewGrade( )
 	{
-		return this.interviewGrade;
+		return interviewGrade;
 	}
 
 	public void setInterviewGrade( BigDecimal iotInterviewerGradeNm )
 	{
-		this.interviewGrade = iotInterviewerGradeNm;
-		this.setSubscriptionOralGrade( );
+		interviewGrade = iotInterviewerGradeNm;
+		setSubscriptionOralGrade( );
 	}
 
 	public BigDecimal getObserverGrade( )
 	{
-		return this.observerGrade;
+		return observerGrade;
 	}
 
 	public void setObserverGrade( BigDecimal iotObserverGradeNm )
 	{
-		this.observerGrade = iotObserverGradeNm;
-		this.setSubscriptionOralGrade( );
+		observerGrade = iotObserverGradeNm;
+		setSubscriptionOralGrade( );
 	}
 
 	private void setSubscriptionOralGrade( )
 	{
-		if ( this.getSubscription( ) != null && this.getObserverGrade( ) != null && this.getInterviewGrade( ) != null ) {
+		if ( getSubscription( ) != null && getObserverGrade( ) != null && getInterviewGrade( ) != null ) {
 			double dValue = 0;
-			dValue += this.getObserverGrade( ).doubleValue( );
-			dValue += this.getInterviewGrade( ).doubleValue( );
+			dValue += getObserverGrade( ).doubleValue( );
+			dValue += getInterviewGrade( ).doubleValue( );
 			dValue /= 2.0D;
-			BigDecimal value = BigDecimal.valueOf( dValue ).setScale( 2 );
-			this.setFinalGrade( value );
-			this.getSubscription( ).setOralGrade( value );
+			BigDecimal value = BigDecimal.valueOf( dValue );
+			value.setScale( 2 );
+			setFinalGrade( value );
+			getSubscription( ).setOralGrade( value );
 		}
 	}
 
 	public String getStation( )
 	{
-		return this.station;
+		return station;
 	}
 
 	public void setStation( String iotStationCh )
 	{
-		this.station = iotStationCh;
+		station = iotStationCh;
 	}
 
 	public Integer getAgreementGrade( )
 	{
-		return this.agreementGrade;
+		return agreementGrade;
 	}
 
 	public void setAgreementGrade( Integer agreementGrade )
@@ -168,7 +169,7 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 
 	public BigDecimal getAgreement2Grade( )
 	{
-		return this.agreement2Grade;
+		return agreement2Grade;
 	}
 
 	public void setAgreement2Grade( BigDecimal agreement2Grade )
@@ -178,7 +179,7 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 
 	public BigDecimal getRealGrade( )
 	{
-		return this.realGrade;
+		return realGrade;
 	}
 
 	public void setRealGrade( BigDecimal realGrade )
@@ -188,7 +189,7 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 
 	public String getDescStatus( )
 	{
-		return this.descStatus;
+		return descStatus;
 	}
 
 	public void setDescStatus( String descStatus )
@@ -198,7 +199,7 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 
 	public Integer getVarianceStatus( )
 	{
-		return this.varianceStatus;
+		return varianceStatus;
 	}
 
 	public void setVarianceStatus( Integer varianceStatus )
@@ -208,7 +209,7 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 
 	public Integer getStatusId( )
 	{
-		return this.statusId;
+		return statusId;
 	}
 
 	public void setStatusId( Integer statusId )
