@@ -141,7 +141,7 @@ public class InepOralTest extends BaseInepSubscription implements Serializable
 			dValue += getInterviewGrade( ).doubleValue( );
 			dValue /= 2.0D;
 			BigDecimal value = BigDecimal.valueOf( dValue );
-			value.setScale( 2 );
+			// value.setScale( 2 );
 			setFinalGrade( value );
 			getSubscription( ).setOralGrade( value );
 		}
