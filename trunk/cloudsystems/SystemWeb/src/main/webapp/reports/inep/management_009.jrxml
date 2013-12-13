@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MeuSistema"/>
+	<style name="Zebra" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 1]]></conditionExpression>
+			<style backcolor="#E5E5E5"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select id, station,
+count(nao_certifica) nao_certifica,
+count(level_1) level_1,
+count(level_2) level_2,
+count(level_3) level_3,
+count(level_4) level_4,
+count(*) as total
+from (
+		select *,
+			case when level = 0 then 1 else null end nao_certifica,
+			case when level = 1 then 1 else null end level_1,
+			case when level = 2 then 1 else null end level_2,
+			case when level = 3 then 1 else null end level_3,
+			case when level = 4 then 1 else null end level_4
+		from (
+				select *, inep.certificationlevel ( final ) as level from (
+				SELECT
+					c.cli_internal_code_ch id,
+					u.usr_name_ch station,
+					s.isc_id_ch subscription,
+					coalesce ( s.isc_written_grade_nm, 0 ) written,
+					coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 ) oral,
+					case when coalesce ( s.isc_written_grade_nm, 0 ) < coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 )
+					then coalesce ( s.isc_written_grade_nm, 0 ) else coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 ) end as final
+				FROM
+					INEP.INEP_SUBSCRIPTION s LEFT OUTER JOIN INEP.INEP_ORAL_test o on (s.usr_id_in = o.usr_id_in and s.pct_id_in = o.pct_id_in and s.isc_id_ch = o.isc_id_ch )
+					inner join client c on ( c.usr_id_in = s.usr_id_in and c.cli_seq_in = s.cli_seq_in )
+					inner join users u on ( c.cli_id_in = u.usr_id_in )
+				WHERE
+				  s.usr_id_in = $P{COMPANY_ID}  AND
+				  s.pct_id_in =  $P{EVENT_ID}
+				ORDER BY u.usr_name_ch, s.isc_id_ch
+				) as t1
+		) as t2
+) as t3 group by id, station
+order by station]]>
+	</queryString>
+	<field name="id" class="java.lang.String"/>
+	<field name="station" class="java.lang.String"/>
+	<field name="nao_certifica" class="java.lang.Long"/>
+	<field name="level_1" class="java.lang.Long"/>
+	<field name="level_2" class="java.lang.Long"/>
+	<field name="level_3" class="java.lang.Long"/>
+	<field name="level_4" class="java.lang.Long"/>
+	<field name="total" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="0" y="0" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Relatório Gerencial de Certificação Por Posto Aplicador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fd64e092-4008-423e-9875-bb37107a6540" x="439" y="0" width="116" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[management_009]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="96" splitType="Stretch">
+			<image>
+				<reportElement uuid="b8f3d208-d5c0-4eec-a205-6241c030a737" x="3" y="1" width="117" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="4312c333-ca76-4c9c-bb9f-42a166d16665" x="144" y="2" width="231" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="54632e40-5f44-4f64-9069-37b26efbf901" x="388" y="3" width="165" height="50"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="73f6c36b-86f4-4a07-853d-dee6a5c4562a" x="0" y="76" width="280" height="20"/>
+				<textElement/>
+				<text><![CDATA[Posto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0316ae96-b9f3-4196-8e04-046a7ae8bc01" x="280" y="56" width="46" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Não Certifica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3174b1ff-3d5a-4f23-9d1b-19db77a7f5cf" x="326" y="56" width="180" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Certifica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fe939862-cd7f-4187-9d26-4d35895bb0d1" x="507" y="76" width="46" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d14d7ec9-33ae-4905-a284-1f3d9ec971f4" x="326" y="76" width="45" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[N1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f97d7c07-614b-4d16-8595-1bc7907e2312" x="371" y="76" width="45" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[N2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b08323dd-d3aa-47b1-90d3-a9a359dc9cd0" x="416" y="76" width="45" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[N3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="314f85cf-521f-4b9b-9f3c-c22d919392b9" x="461" y="76" width="45" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[N4]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<frame>
+				<reportElement uuid="bfee00be-642f-4346-8bfe-a36693652557" style="Zebra" mode="Opaque" x="0" y="0" width="555" height="16"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement uuid="77f3eb43-d74a-4096-bbbe-96119b1ab7e3" x="0" y="1" width="280" height="14">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{station}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="1d6750ff-ef69-4d32-b65c-8c0d686fd969" x="280" y="1" width="46" height="14"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{nao_certifica}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="1b7d9447-2498-4ed2-9e00-57c9598ad02d" x="326" y="1" width="45" height="14"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{level_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="c606be87-c3ac-4f90-8c20-b713a844b660" x="371" y="1" width="45" height="14"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{level_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="8c4d8bbc-bed8-412c-9233-54cba7607af3" x="416" y="1" width="45" height="14"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{level_3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="095220b4-ffb8-4f19-9b19-f1dfcb3c7300" x="461" y="1" width="45" height="14"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{level_4}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement uuid="be835ab1-1e5d-4eaf-9573-07c454ea0ef2" x="507" y="1" width="45" height="14"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7" x="455" y="0" width="100" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6" x="0" y="0" width="199" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd" x="0" y="0" width="555" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

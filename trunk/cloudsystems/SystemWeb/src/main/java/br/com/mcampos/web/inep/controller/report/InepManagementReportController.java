@@ -19,46 +19,51 @@ public class InepManagementReportController extends BaseReportController
 
 		item = new ReportItem( "Listagem Geral da Situação dos Postos" );
 		item.setReportUrl( "/reports/inep/management_001" );
-		item.setParams( configReportParams( ) );
+		item.setParams( this.configReportParams( ) );
 		list.add( item );
 
 		item = new ReportItem( "Listagem Geral de Inscrições do Posto" );
 		item.setReportUrl( "/reports/inep/management_002" );
-		item.setParams( configReportParams( ) );
+		item.setParams( this.configReportParams( ) );
 		list.add( item );
 
 		item = new ReportItem( "Listagem Geral de Ausentes do Posto" );
 		item.setReportUrl( "/reports/inep/management_003" );
-		item.setParams( configReportParams( ) );
+		item.setParams( this.configReportParams( ) );
 		list.add( item );
 
 		item = new ReportItem( "Listagem Geral de Inscrições Sem Nota e Não Ausentes" );
 		item.setReportUrl( "/reports/inep/management_004" );
-		item.setParams( configReportParams( ) );
+		item.setParams( this.configReportParams( ) );
 		list.add( item );
 
 		item = new ReportItem( "Listagem Geral de Audios Carregados" );
 		item.setReportUrl( "/reports/inep/management_006" );
-		item.setParams( configReportParams( ) );
+		item.setParams( this.configReportParams( ) );
 		list.add( item );
 
 		item = new ReportItem( "Listagem Geral de Inscrições Com Nota e Sem Audio" );
 		item.setReportUrl( "/reports/inep/management_005" );
-		item.setParams( configReportParams( ) );
+		item.setParams( this.configReportParams( ) );
 		list.add( item );
 
 		item = new ReportItem( "Elementos Provocadores por Posto" );
 		item.setReportUrl( "/reports/inep/management_007" );
-		item.setParams( configReportParams( ) );
+		item.setParams( this.configReportParams( ) );
 		list.add( item );
 
 		item = new ReportItem( "Gráfico de Uso dos Elementos Provocadores" );
 		item.setReportUrl( "/reports/inep/management_008" );
-		item.setParams( configReportParams( ) );
+		item.setParams( this.configReportParams( ) );
 		list.add( item );
 
-		if( getListbox( ) != null ) {
-			getListbox( ).setModel( new ListModelList<ReportItem>( list ) );
+		item = new ReportItem( "Certificação por Posto Aplicador" );
+		item.setReportUrl( "/reports/inep/management_009" );
+		item.setParams( this.configReportParams( ) );
+		list.add( item );
+
+		if ( this.getListbox( ) != null ) {
+			this.getListbox( ).setModel( new ListModelList<ReportItem>( list ) );
 		}
 	}
 
