@@ -1,5 +1,7 @@
 package br.com.mcampos.controller.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.event.Event;
@@ -21,12 +23,17 @@ import br.com.mcampos.util.system.ImageUtil;
 
 public class LoggedBaseController<T extends Component> extends BaseController<T>
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1140575280281060812L;
 	protected static String alternativePath = "/private/index.zul";
 	protected static String errorTitleI3 = "ErrorTitle";
 	protected LoginLocator loginLocator;
 
 	private Image imageClienteLogo;
 	private Image imageCompanyLogo;
+	private static final Logger LOGGER = LoggerFactory.getLogger( LoggedBaseController.class.getSimpleName( ) );
 
 	protected Label labelTitle;
 
@@ -43,35 +50,38 @@ public class LoggedBaseController<T extends Component> extends BaseController<T>
 	@Override
 	public ComponentInfo doBeforeCompose( Page page, Component parent, ComponentInfo compInfo )
 	{
-		if ( isUserLogged( ) == false ) {
-			redirect( "/index.zul" );
+		LOGGER.info( "Requesting Page: ", page.getRequestPath( ) );
+		if ( this.isUserLogged( ) == false ) {
+			this.redirect( "/index.zul" );
 			return null;
 		}
 		else {
-			AuthenticationDTO user = getLoggedInUser( );
+			AuthenticationDTO user = this.getLoggedInUser( );
 			int status;
 
 			try {
-				status = getLoginLocator( ).getStatus( user );
+				status = this.getLoginLocator( ).getStatus( user );
 				switch ( status ) {
 				case UserStatusDTO.statusFullfillRecord:
 					String path = page.getRequestPath( );
 					if ( path.endsWith( "myrecord.zul" ) == false && ( this instanceof MyRecord ) == false ) {
-						redirect( "/private/user/person/myrecord.zul" );
+						this.redirect( "/private/user/person/myrecord.zul" );
 						return null;
 					}
-					else
+					else {
+						LOGGER.info( "Granted request to path: ", page.getRequestPath( ) );
 						return super.doBeforeCompose( page, parent, compInfo );
+					}
 				case UserStatusDTO.statusExpiredPassword:
-					redirect( "/private/change_password.zul" );
+					this.redirect( "/private/change_password.zul" );
 					break;
 				default:
 					return super.doBeforeCompose( page, parent, compInfo );
 				}
 			}
 			catch ( ApplicationException e ) {
-				showErrorMessage( e.getMessage( ), "Erro ao obter status do usuário" );
-				redirect( "/index.zul" );
+				this.showErrorMessage( e.getMessage( ), "Erro ao obter status do usuário" );
+				this.redirect( "/index.zul" );
 			}
 		}
 		return null;
@@ -79,21 +89,23 @@ public class LoggedBaseController<T extends Component> extends BaseController<T>
 
 	public LoginLocator getLoginLocator( )
 	{
-		if ( loginLocator == null )
-			loginLocator = new LoginLocator( );
-		return loginLocator;
+		if ( this.loginLocator == null ) {
+			this.loginLocator = new LoginLocator( );
+		}
+		return this.loginLocator;
 	}
 
 	protected void showErrorMessage( String description )
 	{
-		showErrorMessage( description, errorTitleI3 );
+		this.showErrorMessage( description, errorTitleI3 );
 	}
 
 	protected void showErrorMessage( String description, String titleId )
 	{
-		String title = getLabel( titleId );
-		if ( SysUtils.isEmpty( title ) )
-			title = getLabel( errorTitleI3 );
+		String title = this.getLabel( titleId );
+		if ( SysUtils.isEmpty( title ) ) {
+			title = this.getLabel( errorTitleI3 );
+		}
 		Messagebox.show( description, SysUtils.isEmpty( title ) ? "Error" : title, Messagebox.OK, Messagebox.ERROR );
 	}
 
@@ -101,8 +113,9 @@ public class LoggedBaseController<T extends Component> extends BaseController<T>
 	{
 		if ( evt.getData( ) instanceof String ) {
 			String message = (String) evt.getData( );
-			if ( message.equals( "changeLogo" ) )
-				showLogo( );
+			if ( message.equals( "changeLogo" ) ) {
+				this.showLogo( );
+			}
 		}
 	}
 
@@ -110,9 +123,10 @@ public class LoggedBaseController<T extends Component> extends BaseController<T>
 	public void doAfterCompose( T comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		showLogo( );
-		if ( labelTitle != null )
-			labelTitle.setValue( getPageTitle( ) );
+		this.showLogo( );
+		if ( this.labelTitle != null ) {
+			this.labelTitle.setValue( this.getPageTitle( ) );
+		}
 	}
 
 	protected String getPageTitle( )
@@ -122,25 +136,30 @@ public class LoggedBaseController<T extends Component> extends BaseController<T>
 
 	private void showLogo( )
 	{
-		if ( imageClienteLogo == null && imageCompanyLogo == null )
+		if ( this.imageClienteLogo == null && this.imageCompanyLogo == null ) {
 			return;
+		}
 
-		MediaDTO[ ] medias = getLoginLocator( ).getLogo( getLoggedInUser( ) );
+		MediaDTO[ ] medias = this.getLoginLocator( ).getLogo( this.getLoggedInUser( ) );
 		if ( medias != null ) {
-			if ( imageClienteLogo != null && medias[ 0 ] != null && medias[ 0 ].getObject( ) != null )
-				ImageUtil.loadImage( imageClienteLogo, medias[ 0 ] );
-			if ( imageCompanyLogo != null && medias[ 1 ] != null && medias[ 1 ].getObject( ) != null )
-				ImageUtil.loadImage( imageCompanyLogo, medias[ 1 ] );
+			if ( this.imageClienteLogo != null && medias[ 0 ] != null && medias[ 0 ].getObject( ) != null ) {
+				ImageUtil.loadImage( this.imageClienteLogo, medias[ 0 ] );
+			}
+			if ( this.imageCompanyLogo != null && medias[ 1 ] != null && medias[ 1 ].getObject( ) != null ) {
+				ImageUtil.loadImage( this.imageCompanyLogo, medias[ 1 ] );
+			}
 		}
 	}
 
 	protected void setLabel( Columns cols )
 	{
-		if ( cols != null && cols.getChildren( ).size( ) > 0 )
+		if ( cols != null && cols.getChildren( ).size( ) > 0 ) {
 			for ( int index = 0; index < cols.getChildren( ).size( ); index++ ) {
 				Column col = (Column) cols.getChildren( ).get( index );
-				if ( col != null )
-					setLabel( col );
+				if ( col != null ) {
+					this.setLabel( col );
+				}
 			}
+		}
 	}
 }

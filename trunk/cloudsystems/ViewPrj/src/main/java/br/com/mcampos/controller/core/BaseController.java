@@ -11,11 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zk.ui.util.ConventionWires;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
@@ -43,6 +44,7 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 	protected Component rootParent;
 	protected transient HashMap<String, Object> arguments = new HashMap<String, Object>( );
 	protected static final String basePage = "/private/index.zul";
+	private static final Logger LOGGER = LoggerFactory.getLogger( LoggedBaseController.class.getSimpleName( ) );
 
 	protected Image imageClienteLogo;
 	protected Image imageCompanyLogo;
@@ -60,23 +62,26 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 	@Override
 	public void doAfterCompose( COMPONENT comp ) throws Exception
 	{
+		LOGGER.info( "Called doAfterCompose( COMPONENT comp ) throws Exception FROM BaseController[" + comp.getId( ) + "]" );
 		super.doAfterCompose( comp );
-		ConventionWires.wireVariables( comp, this, '$', false, false );
-		ConventionWires.addForwards( comp, this, '$' );
 		int a = 0;
 
-		if ( a == 0 )
+		if ( a == 0 ) {
 			a++;
+		}
 	}
 
 	protected String getCookie( String name )
 	{
 		Cookie[ ] cookies = ( (HttpServletRequest) Executions.getCurrent( ).getNativeRequest( ) ).getCookies( );
 
-		if ( cookies != null )
-			for ( Cookie cookie : cookies )
-				if ( name.equalsIgnoreCase( cookie.getName( ) ) )
+		if ( cookies != null ) {
+			for ( Cookie cookie : cookies ) {
+				if ( name.equalsIgnoreCase( cookie.getName( ) ) ) {
 					return cookie.getValue( );
+				}
+			}
+		}
 		return null;
 	}
 
@@ -108,8 +113,9 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 			httpSession = (HttpSession) obj;
 			return httpSession.getId( );
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 	protected Object getSessionAttribute( String name )
@@ -119,8 +125,9 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 
 	protected void setSessionAttribute( String name, Object value )
 	{
-		if ( Sessions.getCurrent( ) != null )
+		if ( Sessions.getCurrent( ) != null ) {
 			Sessions.getCurrent( ).setAttribute( name, value );
+		}
 	}
 
 	/*
@@ -139,35 +146,35 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 
 	protected void setLoggedInUser( AuthenticationDTO user )
 	{
-		setSessionAttribute( CloudSystemSessionListener.userSessionId, user );
+		this.setSessionAttribute( CloudSystemSessionListener.userSessionId, user );
 	}
 
 	protected AuthenticationDTO getLoggedInUser( )
 	{
-		return (AuthenticationDTO) getSessionAttribute( CloudSystemSessionListener.userSessionId );
+		return (AuthenticationDTO) this.getSessionAttribute( CloudSystemSessionListener.userSessionId );
 	}
 
 	protected Boolean isUserLogged( )
 	{
-		return getLoggedInUser( ) != null ? true : false;
+		return this.getLoggedInUser( ) != null ? true : false;
 	}
 
 	protected void setSessionParameter( String name, Object value )
 	{
-		setSessionAttribute( name, value );
+		this.setSessionAttribute( name, value );
 	}
 
 	protected Object getSessionParameter( String name )
 	{
 		Object value;
 
-		value = getSessionAttribute( name );
+		value = this.getSessionAttribute( name );
 		return value;
 	}
 
 	protected void clearSessionParameter( String name )
 	{
-		setSessionParameter( name, null );
+		this.setSessionParameter( name, null );
 	}
 
 	protected Object getParameter( String name )
@@ -175,29 +182,32 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 		Map map = Executions.getCurrent( ).getArg( );
 		Object param = null;
 
-		if ( map != null )
+		if ( map != null ) {
 			param = map.get( name );
-		if ( param == null )
+		}
+		if ( param == null ) {
 			param = Executions.getCurrent( ).getParameter( name );
+		}
 		return param;
 	}
 
 	protected void gotoPage( String uri )
 	{
-		gotoPage( uri, null, arguments );
+		this.gotoPage( uri, null, this.arguments );
 	}
 
 	protected void gotoPage( String uri, Component parent )
 	{
-		gotoPage( uri, parent, arguments );
+		this.gotoPage( uri, parent, this.arguments );
 	}
 
 	protected void gotoPage( String uri, Component parent, Map parameters )
 	{
 		if ( parent != null ) {
 			try {
-				if ( SysUtils.isEmpty( parent.getChildren( ) ) == false )
+				if ( SysUtils.isEmpty( parent.getChildren( ) ) == false ) {
 					parent.getChildren( ).clear( );
+				}
 			}
 			catch ( NullPointerException e ) {
 				e = null;
@@ -205,75 +215,81 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 			// setBookmark( uri, parent, parameters );
 			Executions.getCurrent( ).createComponents( uri, parent, parameters );
 		}
-		else
-			redirect( uri );
+		else {
+			this.redirect( uri );
+		}
 	}
 
 	protected void gotoPage( PageBrowseHistory history )
 	{
 		Component rootComponent;
 
-		if ( history == null )
+		if ( history == null ) {
 			return;
+		}
 		if ( history.getRoot( ) != null ) {
 			rootComponent = history.getRoot( );
-			if ( rootComponent != null && SysUtils.isEmpty( rootComponent.getChildren( ) ) == false )
+			if ( rootComponent != null && SysUtils.isEmpty( rootComponent.getChildren( ) ) == false ) {
 				if ( Executions.getCurrent( ).getDesktop( ).equals( rootComponent.getDesktop( ) ) ) {
 					history.getRoot( ).getChildren( ).clear( );
 					Executions.getCurrent( ).createComponents( history.getUri( ), history.getRoot( ), history.getParameter( ) );
 				}
-				else
-					redirect( basePage );
+				else {
+					this.redirect( basePage );
+				}
+			}
 		}
-		else
-			redirect( history.getUri( ) );
+		else {
+			this.redirect( history.getUri( ) );
+		}
 	}
 
 	protected void gotoPage( String uri, Map parameters )
 	{
-		gotoPage( uri, null, parameters );
+		this.gotoPage( uri, null, parameters );
 	}
 
 	protected Component getRootParent( )
 	{
-		return rootParent;
+		return this.rootParent;
 	}
 
 	protected void redirect( String uri )
 	{
-		clearBookmark( );
+		this.clearBookmark( );
 		Executions.getCurrent( ).sendRedirect( uri );
 	}
 
 	protected void redirectNewWindow( String uri )
 	{
-		clearBookmark( );
+		this.clearBookmark( );
 		Executions.getCurrent( ).sendRedirect( uri, "_blank" );
 	}
 
 	protected void clearBookmark( )
 	{
-		clearSessionParameter( browseHistoryParameterName );
+		this.clearSessionParameter( browseHistoryParameterName );
 	}
 
 	protected void removeMe( )
 	{
-		if ( rootParent != null ) {
+		if ( this.rootParent != null ) {
 			Component parent;
 
-			parent = rootParent.getParent( );
+			parent = this.rootParent.getParent( );
 			if ( parent != null ) {
 				List children = parent.getChildren( );
 
-				if ( children != null )
+				if ( children != null ) {
 					children.clear( );
+				}
 			}
 		}
 	}
 
 	public void onClick$cmdCancel( )
 	{
-		removeMe( );
+		this.removeMe( );
 	}
 
 	/*
@@ -306,8 +322,9 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 		System.out.println( "Org Language: " + Sessions.getCurrent( ).getAttribute( "preflang" ) );
 
 		// set session wide language to new value
-		if ( !setLang.isEmpty( ) )
+		if ( !setLang.isEmpty( ) ) {
 			Sessions.getCurrent( ).setAttribute( "preflang", setLang );
+		}
 
 		// read the session language attribute
 		String sessLang = (String) Sessions.getCurrent( ).getAttribute( "preflang" );
@@ -330,11 +347,16 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 
 			// only set lable if value found, otherwise it renders empty
 			if ( !( compLabel == null ) )
-				if ( compType.equals( "org.zkoss.zul.Button" ) )
+			{
+				if ( compType.equals( "org.zkoss.zul.Button" ) ) {
 					( (Button) f.get( this ) ).setLabel( compLabel );
+				}
 				else if ( compType.equals( "org.zkoss.zul.Label" ) )
+				{
 					( (Label) f.get( this ) ).setValue( compLabel );
-			// Other component types need to be implemented if required
+					// Other component types need to be implemented if required
+				}
+			}
 		}
 	}
 
@@ -342,8 +364,9 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 	{
 		if ( comp != null ) {
 			String value = Labels.getLabel( comp.getId( ) );
-			if ( SysUtils.isEmpty( value ) == false )
+			if ( SysUtils.isEmpty( value ) == false ) {
 				comp.setValue( value );
+			}
 		}
 	}
 
@@ -351,8 +374,9 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 	{
 		if ( comp != null ) {
 			String value = Labels.getLabel( comp.getId( ) );
-			if ( SysUtils.isEmpty( value ) == false )
+			if ( SysUtils.isEmpty( value ) == false ) {
 				comp.setLabel( value );
+			}
 		}
 	}
 
@@ -360,8 +384,9 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 	{
 		if ( comp != null ) {
 			String value = Labels.getLabel( comp.getId( ) );
-			if ( SysUtils.isEmpty( value ) == false )
+			if ( SysUtils.isEmpty( value ) == false ) {
 				comp.setTitle( value );
+			}
 		}
 	}
 
@@ -372,28 +397,33 @@ public abstract class BaseController<COMPONENT extends Component> extends Generi
 
 	protected void loadCombobox( Combobox combo, List list )
 	{
-		if ( combo == null || SysUtils.isEmpty( list ) )
+		if ( combo == null || SysUtils.isEmpty( list ) ) {
 			return;
+		}
 
-		if ( combo.getChildren( ) != null )
+		if ( combo.getChildren( ) != null ) {
 			combo.getChildren( ).clear( );
-		if ( SysUtils.isEmpty( list ) == false )
+		}
+		if ( SysUtils.isEmpty( list ) == false ) {
 			for ( Object dto : list ) {
 				Comboitem item = combo.appendItem( dto.toString( ) );
-				if ( item != null )
+				if ( item != null ) {
 					item.setValue( dto );
+				}
 			}
+		}
 	}
 
 	protected void setParameter( String name, Object value )
 	{
-		arguments.put( name, value );
+		this.arguments.put( name, value );
 	}
 
 	protected void setClientLogo( byte[ ] image )
 	{
-		if ( imageClienteLogo != null )
-			ImageUtil.loadImage( imageClienteLogo, image );
+		if ( this.imageClienteLogo != null ) {
+			ImageUtil.loadImage( this.imageClienteLogo, image );
+		}
 	}
 
 }

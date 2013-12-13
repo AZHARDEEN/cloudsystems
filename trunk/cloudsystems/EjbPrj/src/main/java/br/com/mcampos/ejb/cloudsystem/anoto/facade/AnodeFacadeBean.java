@@ -460,6 +460,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 			throws ApplicationException
 	{
 		this.authenticate( auth );
+		LOGGER.info( "getAllPgcPenPage" );
 		if ( props != null && props.size( ) > 0 ) {
 			/* Trocar o DTO pela entidade */
 			Object value;
@@ -474,14 +475,21 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 		}
 		List<PgcPage> list = this.pgcPenPageSession.getAll( props, maxRecords, bNewFirst );
 		if ( SysUtils.isEmpty( list ) ) {
+			LOGGER.info( "List<PgcPage> is empty" );
 			return Collections.emptyList( );
 		}
-		List<AnotoResultList> resultList = new ArrayList<AnotoResultList>( );
+		List<AnotoResultList> resultList = new ArrayList<AnotoResultList>( list.size( ) );
+		LOGGER.info( "Converting to DTO. List<PgcPage> has " + list.size( ) + " elements " );
 		try {
 			for ( PgcPage page : list ) {
 				AnotoResultList item = new AnotoResultList( );
 
-				if ( page.getPgc( ) == null || page.getPgc( ).getPgcPenPages( ) == null ) {
+				if ( page.getPgc( ) == null ) {
+					LOGGER.error( "Page has no PGC [" + page.toString( ) + "]" );
+					continue;
+				}
+				if ( page.getPgc( ).getPgcPenPages( ) == null ) {
+					LOGGER.error( "PGC has not PenPages [" + page.toString( ) + "]" );
 					continue;
 				}
 				item.setForm( page.getPgc( ).getPgcPenPages( ).get( 0 ).getPenPage( ).getPage( ).getPad( ).getForm( ).toDTO( ) );
@@ -496,6 +504,7 @@ public class AnodeFacadeBean extends AbstractSecurity implements AnodeFacade
 		catch ( Exception e ) {
 			LOGGER.error( "getAllPgcPenPage", e );
 		}
+		LOGGER.info( "returning a List<AnotoResultList> with " + resultList.size( ) + " Elements" );
 		return resultList;
 	}
 

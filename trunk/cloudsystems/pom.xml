@@ -22,8 +22,8 @@
 
 	<properties>
 		<zk.version>7.0.0</zk.version>
-        <maven-war-plugin>2.4</maven-war-plugin>
-        <maven-ear-plugin>2.8</maven-ear-plugin>
+		<maven-war-plugin>2.4</maven-war-plugin>
+		<maven-ear-plugin>2.8</maven-ear-plugin>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- other plugin versions -->
 		<version.compiler.plugin>2.3.1</version.compiler.plugin>
@@ -35,7 +35,7 @@
 		<system.ejb.version>1.0.1</system.ejb.version>
 		<sysutils.version>1.0.1</sysutils.version>
 		<project_version>1.0.2</project_version>
-		
+
 		<ear.final.name>System</ear.final.name>
 	</properties>
 	<build>
@@ -45,48 +45,69 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-    				<source>1.7</source>
-    				<target>1.7</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<debug>true</debug>
 					<debuglevel>lines,vars,source</debuglevel>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
 		</plugins>
-       
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/resources/common</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>        
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources/common</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
-    
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
-            <version>4.11</version>
+			<version>4.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.5</version>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.0.13</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.0.13</version>
+		</dependency>
+
 	</dependencies>
 
 	<profiles>
@@ -103,9 +124,9 @@
 				<version.org.jboss.spec.jboss.javaee.6.0>3.0.0.Final</version.org.jboss.spec.jboss.javaee.6.0>
 				<!-- Define the version of the JBoss BOMs we want to import to specify tested stacks. -->
 				<version.jboss.bom>1.0.7.Final</version.jboss.bom>
-                
-                <persistence_provider>org.hibernate.ejb.HibernatePersistence</persistence_provider>
-			</properties>                                                                         
+
+				<persistence_provider>org.hibernate.ejb.HibernatePersistence</persistence_provider>
+			</properties>
 
 			<build>
 				<plugins>
@@ -127,8 +148,8 @@
 				<version.org.jboss.spec.jboss.javaee.6.0>3.0.0.Final</version.org.jboss.spec.jboss.javaee.6.0>
 				<!-- Define the version of the JBoss BOMs we want to import to specify tested stacks. -->
 				<version.jboss.bom>1.0.7.Final</version.jboss.bom>
-                <persistence_provider>org.hibernate.jpa.HibernatePersistenceProvider</persistence_provider>
-			</properties>                                                                         
+				<persistence_provider>org.hibernate.jpa.HibernatePersistenceProvider</persistence_provider>
+			</properties>
 
 			<build>
 				<plugins>
@@ -145,7 +166,7 @@
 			<id>glassfish</id>
 			<properties>
 				<target_server>glassfish</target_server>
-                <persistence_provider>org.eclipse.persistence.jpa.PersistenceProvider</persistence_provider>
+				<persistence_provider>org.eclipse.persistence.jpa.PersistenceProvider</persistence_provider>
 			</properties>
 		</profile>
 		<profile>

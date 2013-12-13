@@ -1,5 +1,16 @@
 package br.com.mcampos.ejb.cloudsystem.anoto.upload;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import br.com.mcampos.dto.ApplicationException;
 import br.com.mcampos.dto.anoto.AnotoPageDTO;
@@ -44,254 +55,254 @@ import br.com.mcampos.ejb.cloudsystem.media.entity.Media;
 import br.com.mcampos.ejb.cloudsystem.system.fieldtype.entity.FieldType;
 import br.com.mcampos.sysutils.SysUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-
 @Stateless( name = "UploadFacade", mappedName = "UploadFacade" )
 @TransactionAttribute( TransactionAttributeType.REQUIRES_NEW )
 public class UploadFacadeBean extends AbstractSecurity implements UploadFacade
 {
-    public static final Integer messageId = 25;
+	public static final Integer messageId = 25;
 
-    @PersistenceContext( unitName = "EjbPrj" )
-    private transient EntityManager em;
+	@PersistenceContext( unitName = "EjbPrj" )
+	private transient EntityManager em;
 
+	@EJB
+	private MediaSessionLocal mediaSession;
 
-    @EJB
-    private MediaSessionLocal mediaSession;
+	@EJB
+	private PGCSessionLocal pgcSession;
 
-    @EJB
-    private PGCSessionLocal pgcSession;
+	@EJB
+	private AnodePenSessionLocal penSession;
 
-    @EJB
-    private AnodePenSessionLocal penSession;
+	@EJB
+	private PadSessionLocal padSession;
 
-    @EJB
-    private PadSessionLocal padSession;
+	@EJB
+	private PgcPageAttachmentSessionLocal pageAttachSession;
 
-    @EJB
-    private PgcPageAttachmentSessionLocal pageAttachSession;
+	@EJB
+	private PageFieldSessionLocal pageFieldSession;
 
-    @EJB
-    private PageFieldSessionLocal pageFieldSession;
+	@EJB
+	private PgcPageSessionLocal pgcPageSession;
 
-    @EJB
-    private PgcPageSessionLocal pgcPageSession;
+	@Override
+	protected EntityManager getEntityManager( )
+	{
+		return this.em;
+	}
 
+	@Override
+	public Integer getMessageTypeId( )
+	{
+		return messageId;
+	}
 
-    protected EntityManager getEntityManager()
-    {
-        return em;
-    }
+	@Override
+	public PGCDTO add( PGCDTO dto, List<String> addresses, ArrayList<MediaDTO> medias,
+			List<PgcPropertyDTO> properties ) throws ApplicationException
+	{
+		// authenticate( auth ); IT´S FREE FOR NOW
+		/*Does this media exists??*/
+		Pgc pgc = PgcUtil.createEntity( dto );
+		Media media = this.mediaSession.add( pgc.getMedia( ) );
+		pgc.setMedia( media );
+		pgc.setInsertDate( new Date( ) );
+		PgcStatus status = new PgcStatus( 1 );
+		pgc.setPgcStatus( status );
+		/*Search for a pen in our database*/
+		pgc = this.pgcSession.add( pgc );
+		this.addPgcAttachment( pgc, medias );
+		this.addProperties( pgc, properties );
+		this.verifyBindings( pgc, addresses );
+		return pgc.toDTO( );
+	}
 
-    public Integer getMessageTypeId()
-    {
-        return messageId;
-    }
+	private void addPgcAttachment( Pgc pgc, ArrayList<MediaDTO> medias ) throws ApplicationException
+	{
+		Media media;
 
-    public PGCDTO add( PGCDTO dto, List<String> addresses, ArrayList<MediaDTO> medias,
-                       List<PgcPropertyDTO> properties ) throws ApplicationException
-    {
-        //authenticate( auth ); IT´S FREE FOR NOW
-        /*Does this media exists??*/
-        Pgc pgc = PgcUtil.createEntity( dto );
-        Media media = mediaSession.add( pgc.getMedia() );
-        pgc.setMedia( media );
-        pgc.setInsertDate( new Date() );
-        PgcStatus status = new PgcStatus( 1 );
-        pgc.setPgcStatus( status );
-        /*Search for a pen in our database*/
-        pgc = pgcSession.add( pgc );
-        addPgcAttachment( pgc, medias );
-        addProperties( pgc, properties );
-        verifyBindings( pgc, addresses );
-        return pgc.toDTO();
-    }
+		if ( SysUtils.isEmpty( medias ) == false ) {
+			for ( MediaDTO m : medias ) {
+				media = this.mediaSession.add( MediaUtil.createEntity( m ) );
+				PgcAttachment attach = new PgcAttachment( );
+				attach.setMediaId( media.getId( ) );
+				attach.setPgcId( pgc.getId( ) );
+				this.getEntityManager( ).persist( attach );
+			}
+		}
+	}
 
+	private void addProperties( Pgc pgc, List<PgcPropertyDTO> properties ) throws ApplicationException
+	{
+		int nSequence = 1;
 
-    private void addPgcAttachment( Pgc pgc, ArrayList<MediaDTO> medias ) throws ApplicationException
-    {
-        Media media;
+		for ( PgcPropertyDTO p : properties ) {
+			for ( String s : p.getValues( ) ) {
+				s = s.replaceAll( "'", "" );
+				if ( SysUtils.isEmpty( s ) ) {
+					continue;
+				}
+				PgcProperty property = new PgcProperty( );
+				property.setPgcId( pgc.getId( ) );
+				property.setId( p.getId( ) );
+				property.setValue( s );
+				property.setSequence( nSequence );
+				nSequence++;
+				this.getEntityManager( ).persist( property );
+			}
+		}
+	}
 
-        if ( SysUtils.isEmpty( medias ) == false ) {
-            for ( MediaDTO m : medias ) {
-                media = mediaSession.add( MediaUtil.createEntity( m ) );
-                PgcAttachment attach = new PgcAttachment();
-                attach.setMediaId( media.getId() );
-                attach.setPgcId( pgc.getId() );
-                getEntityManager().persist( attach );
-            }
-        }
-    }
+	private boolean verifyBindings( Pgc pgc, List<String> addresses ) throws ApplicationException
+	{
+		AnotoPen anotoPen;
+		anotoPen = this.penSession.get( pgc.getPenId( ) );
+		if ( anotoPen == null ) {
+			this.pgcSession.setPgcStatus( pgc, PgcStatus.statusNoPen );
+			return false;
+		}
+		return this.hasAnotoPages( pgc, addresses, anotoPen );
+	}
 
-    private void addProperties( Pgc pgc, List<PgcPropertyDTO> properties ) throws ApplicationException
-    {
-        int nSequence = 1;
+	private boolean hasAnotoPages( Pgc pgc, List<String> addresses, AnotoPen anotoPen ) throws ApplicationException
+	{
+		for ( String address : addresses ) {
+			List<AnotoPage> list = this.padSession.getPages( address );
+			if ( SysUtils.isEmpty( list ) == false ) {
+				this.attachPenPage( list, anotoPen, pgc );
+			}
+			else {
+				if ( pgc.getPgcStatus( ).getId( ) != PgcStatus.statusNoPenForm ) {
+					this.pgcSession.setPgcStatus( pgc, PgcStatus.statusNoPenForm );
+				}
+			}
+		}
+		return true;
+	}
 
-        for ( PgcPropertyDTO p : properties ) {
-            for ( String s : p.getValues() ) {
-                s = s.replaceAll( "'", "" );
-                if ( SysUtils.isEmpty( s ) )
-                    continue;
-                PgcProperty property = new PgcProperty();
-                property.setPgcId( pgc.getId() );
-                property.setId( p.getId() );
-                property.setValue( s );
-                property.setSequence( nSequence );
-                nSequence++;
-                getEntityManager().persist( property );
-            }
-        }
-    }
+	private boolean attachPenPage( List<AnotoPage> pages, AnotoPen pen, Pgc pgc ) throws ApplicationException
+	{
+		AnotoPenPage item;
 
+		for ( AnotoPage page : pages ) {
+			item = this.padSession.getPenPage( pen, page );
+			if ( item != null ) {
+				this.pgcSession.attach( pgc, item );
+			}
+		}
+		return true;
+	}
 
-    private boolean verifyBindings( Pgc pgc, List<String> addresses ) throws ApplicationException
-    {
-        AnotoPen anotoPen;
-        anotoPen = penSession.get( pgc.getPenId() );
-        if ( anotoPen == null ) {
-            pgcSession.setPgcStatus( pgc, PgcStatus.statusNoPen );
-            return false;
-        }
-        return hasAnotoPages( pgc, addresses, anotoPen );
-    }
+	@Override
+	public void setPgcStatus( PGCDTO dto, Integer newStatus ) throws ApplicationException
+	{
+		Pgc pgc = this.pgcSession.get( dto.getId( ) );
+		if ( pgc != null ) {
+			this.pgcSession.setPgcStatus( pgc, newStatus );
+		}
+	}
 
-    private boolean hasAnotoPages( Pgc pgc, List<String> addresses, AnotoPen anotoPen ) throws ApplicationException
-    {
-        for ( String address : addresses ) {
-            List<AnotoPage> list = padSession.getPages( address );
-            if ( SysUtils.isEmpty( list ) == false )
-                attachPenPage( list, anotoPen, pgc );
-            else {
-                if ( pgc.getPgcStatus().getId() != PgcStatus.statusNoPenForm )
-                    pgcSession.setPgcStatus( pgc, PgcStatus.statusNoPenForm );
-            }
-        }
-        return true;
-    }
+	@Override
+	public List<PgcPenPageDTO> getPgcPenPages( PGCDTO pgc ) throws ApplicationException
+	{
+		List<PgcPenPage> list = null;
+		Pgc entity = this.pgcSession.get( pgc.getId( ) );
+		if ( entity != null ) {
+			list = this.pgcSession.get( entity );
+		}
+		return AnotoUtils.toPgcPenPageList( list );
+	}
 
-    private boolean attachPenPage( List<AnotoPage> pages, AnotoPen pen, Pgc pgc ) throws ApplicationException
-    {
-        AnotoPenPage item;
+	@Override
+	public void add( PgcPageDTO dto ) throws ApplicationException
+	{
+		PgcPage entity = PgcPageUtil.createEntity( dto );
+		this.pgcPageSession.add( entity );
+	}
 
-        for ( AnotoPage page : pages ) {
-            item = padSession.getPenPage( pen, page );
-            if ( item != null ) {
-                pgcSession.attach( pgc, item );
-            }
-        }
-        return true;
-    }
+	@Override
+	public List<PgcAttachmentDTO> getBarCodes( String barCodeValue, String pageAddress, Integer padId,
+			Integer currentPGC ) throws ApplicationException
+	{
+		if ( SysUtils.isEmpty( barCodeValue ) ) {
+			return Collections.emptyList( );
+		}
 
+		List<PgcPageAttachment> entities;
 
-    public void setPgcStatus( PGCDTO dto, Integer newStatus ) throws ApplicationException
-    {
-        Pgc pgc = pgcSession.get( dto.getId() );
-        if ( pgc != null )
-            pgcSession.setPgcStatus( pgc, newStatus );
-    }
+		entities = this.pageAttachSession.getAll( barCodeValue, pageAddress, padId, currentPGC );
+		return AnotoUtils.toPgcAttachmentList( entities );
+	}
 
-    public List<PgcPenPageDTO> getPgcPenPages( PGCDTO pgc ) throws ApplicationException
-    {
-        List<PgcPenPage> list = null;
-        Pgc entity = pgcSession.get( pgc.getId() );
-        if ( entity != null ) {
-            list = pgcSession.get( entity );
-        }
-        return AnotoUtils.toPgcPenPageList( list );
-    }
+	@Override
+	public byte[ ] getObject( MediaDTO key ) throws ApplicationException
+	{
+		return this.mediaSession.getObject( key.getId( ) );
+	}
 
-    public void add( PgcPageDTO dto ) throws ApplicationException
-    {
-        PgcPage entity = PgcPageUtil.createEntity( dto );
-        pgcPageSession.add( entity );
-    }
+	@Override
+	public void addProcessedImage( PGCDTO pgc, MediaDTO media, int book, int page ) throws ApplicationException
+	{
+		Pgc entity = this.pgcSession.get( pgc.getId( ) );
+		if ( entity != null ) {
+			Media mediaEntity = this.mediaSession.add( MediaUtil.createEntity( media ) );
+			PgcProcessedImage pi = new PgcProcessedImage( new PgcPage( entity, book, page ), mediaEntity, book, page );
+			this.pgcSession.add( pi );
+		}
+	}
 
+	@Override
+	public void addPgcAttachment( PgcAttachmentDTO dto ) throws ApplicationException
+	{
+		Media media = null;
+		if ( dto.getMedia( ) != null ) {
+			media = this.mediaSession.add( MediaUtil.createEntity( dto.getMedia( ) ) );
+		}
+		PgcPageAttachment entity = DTOFactory.copy( dto );
+		entity.setMedia( media );
+		this.pgcSession.add( entity );
+	}
 
-    public List<PgcAttachmentDTO> getBarCodes( String barCodeValue, String pageAddress, Integer padId,
-                                               Integer currentPGC ) throws ApplicationException
-    {
-        if ( SysUtils.isEmpty( barCodeValue ) )
-            return Collections.emptyList();
+	@Override
+	public void addPgcField( PgcFieldDTO dto ) throws ApplicationException
+	{
 
-        List<PgcPageAttachment> entities;
+		PgcField field = PgcFieldUtil.createEntity( dto );
+		AnotoPageField pageField = this.pageFieldSession.get( new AnotoPageFieldPK( dto.getPgcPage( ).getAnotoPage( ), dto.getName( ) ) );
+		if ( pageField != null ) {
+			field.setType( pageField.getType( ) );
+			if ( pageField.getType( ).getId( ).equals( FieldType.typeBoolean ) || pageField.hasIcr( ) == false ) {
+				field.setMedia( null );
+			}
+			field.setSequence( pageField.getSequence( ) );
+		}
+		else {
+			field.setType( this.getEntityManager( ).find( FieldType.class, field.getType( ).getId( ) ) );
+		}
+		Media media = null;
+		if ( dto.getMedia( ) != null ) {
+			media = this.mediaSession.add( MediaUtil.createEntity( dto.getMedia( ) ) );
+		}
+		field.setMedia( media );
+		field.setType( this.getEntityManager( ).find( FieldType.class, field.getType( ).getId( ) ) );
+		PgcPageDTO p = dto.getPgcPage( );
+		PgcPagePK page = new PgcPagePK( p.getPgc( ).getId( ), p.getBookId( ), p.getPageId( ) );
+		PgcPage pe = this.getEntityManager( ).find( PgcPage.class, page );
+		field.setPgcPage( pe );
+		this.pgcSession.add( field );
+	}
 
-        entities = pageAttachSession.getAll( barCodeValue, pageAddress, padId, currentPGC );
-        return AnotoUtils.toPgcAttachmentList( entities );
-    }
+	@Override
+	public List<MediaDTO> getImages( AnotoPageDTO page ) throws ApplicationException
+	{
+		return AnotoUtils.toMediaList( this.padSession.getImages( this.getPageEntity( page ) ) );
+	}
 
-    public byte[] getObject( MediaDTO key ) throws ApplicationException
-    {
-        return mediaSession.getObject( key.getId() );
-    }
-
-    public void addProcessedImage( PGCDTO pgc, MediaDTO media, int book, int page ) throws ApplicationException
-    {
-        Pgc entity = pgcSession.get( pgc.getId() );
-        if ( entity != null ) {
-            Media mediaEntity = mediaSession.add( MediaUtil.createEntity( media ) );
-            PgcProcessedImage pi = new PgcProcessedImage( new PgcPage( entity, book, page ), mediaEntity, book, page );
-            pgcSession.add( pi );
-        }
-    }
-
-    public void addPgcAttachment( PgcAttachmentDTO dto ) throws ApplicationException
-    {
-        Media media = null;
-        if ( dto.getMedia() != null )
-            media = mediaSession.add( MediaUtil.createEntity( dto.getMedia() ) );
-        PgcPageAttachment entity = DTOFactory.copy( dto );
-        entity.setMedia( media );
-        pgcSession.add( entity );
-    }
-
-
-    public void addPgcField( PgcFieldDTO dto ) throws ApplicationException
-    {
-
-        PgcField field = PgcFieldUtil.createEntity( dto );
-        AnotoPageField pageField = pageFieldSession.get( new AnotoPageFieldPK( dto.getPgcPage().getAnotoPage(), dto.getName() ) );
-        if ( pageField != null ) {
-            field.setType( pageField.getType() );
-            if ( pageField.getType().getId().equals( FieldType.typeBoolean ) || pageField.hasIcr() == false )
-                field.setMedia( null );
-            field.setSequence( pageField.getSequence() );
-        }
-        else
-            field.setType( getEntityManager().find( FieldType.class, field.getType().getId() ) );
-        Media media = null;
-        if ( dto.getMedia() != null )
-            media = mediaSession.add( MediaUtil.createEntity( dto.getMedia() ) );
-        field.setMedia( media );
-        field.setType( getEntityManager().find( FieldType.class, field.getType().getId() ) );
-        PgcPageDTO p = dto.getPgcPage();
-        PgcPagePK page = new PgcPagePK( p.getPgc().getId(), p.getBookId(), p.getPageId() );
-        PgcPage pe = getEntityManager().find( PgcPage.class, page );
-        field.setPgcPage( pe );
-        pgcSession.add( field );
-    }
-
-    public List<MediaDTO> getImages( AnotoPageDTO page ) throws ApplicationException
-    {
-        return AnotoUtils.toMediaList( padSession.getImages( getPageEntity( page ) ) );
-    }
-
-    private AnotoPage getPageEntity( AnotoPageDTO page )
-    {
-        AnotoPagePK key = new AnotoPagePK( page );
-        AnotoPage entity = padSession.getPage( key );
-        return entity;
-    }
+	private AnotoPage getPageEntity( AnotoPageDTO page )
+	{
+		AnotoPagePK key = new AnotoPagePK( page );
+		AnotoPage entity = this.padSession.getPage( key );
+		return entity;
+	}
 
 }
-

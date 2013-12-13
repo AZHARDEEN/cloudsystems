@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -67,13 +68,11 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 	@Column( name = "pgc_time_diff_in" )
 	private Long timediff;
 
-	/*
-	@OneToMany( mappedBy = "pgc", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY )
+	@OneToMany( mappedBy = "pgc" )
 	private List<PgcPage> pages;
 
-	@OneToMany( mappedBy = "pgc", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY )
+	@OneToMany( mappedBy = "pgc" )
 	private List<PgcPenPage> pgcPenPages;
-	*/
 
 	public Pgc( )
 	{
@@ -81,49 +80,50 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 
 	public Pgc( Integer pk, Timestamp insertDate )
 	{
-		id = pk;
+		this.id = pk;
 		this.insertDate = insertDate;
 	}
 
 	public Integer getId( )
 	{
-		return id;
+		return this.id;
 	}
 
 	public void setId( Integer pk )
 	{
-		id = pk;
+		this.id = pk;
 	}
 
 	public Date getInsertDate( )
 	{
-		return insertDate;
+		return this.insertDate;
 	}
 
 	public void setInsertDate( Date indate )
 	{
-		insertDate = indate;
+		this.insertDate = indate;
 	}
 
 	@Override
 	public PGCDTO toDTO( )
 	{
 		PGCDTO dto = new PGCDTO( this.getMedia( ).toDTO( ) );
-		dto.setPgcStatus( getPgcStatus( ).toDTO( ) );
-		dto.setInsertDate( getInsertDate( ) );
+		dto.setPgcStatus( this.getPgcStatus( ).toDTO( ) );
+		dto.setInsertDate( this.getInsertDate( ) );
 		return dto;
 	}
 
 	public void setMedia( Media media )
 	{
 		this.media = media;
-		if ( media != null )
-			setId( media.getId( ) );
+		if ( media != null ) {
+			this.setId( media.getId( ) );
+		}
 	}
 
 	public Media getMedia( )
 	{
-		return media;
+		return this.media;
 	}
 
 	public void setPgcStatus( PgcStatus pgcStatus )
@@ -133,7 +133,7 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 
 	public PgcStatus getPgcStatus( )
 	{
-		return pgcStatus;
+		return this.pgcStatus;
 	}
 
 	public void setDescription( String description )
@@ -143,7 +143,7 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 
 	public String getDescription( )
 	{
-		return description;
+		return this.description;
 	}
 
 	public void setPenId( String penId )
@@ -153,7 +153,7 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 
 	public String getPenId( )
 	{
-		return penId;
+		return this.penId;
 	}
 
 	public void setTimediff( Long timediff )
@@ -163,27 +163,27 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 
 	public Long getTimediff( )
 	{
-		return timediff;
+		return this.timediff;
 	}
 
 	public void setPages( List<PgcPage> books )
 	{
-		// pages = books;
+		this.pages = books;
 	}
 
 	public List<PgcPage> getPages( )
 	{
-		return null;// pages;
+		return this.pages;
 	}
 
 	public void setPgcPenPages( List<PgcPenPage> pgcPenPages )
 	{
-		// this.pgcPenPages = pgcPenPages;
+		this.pgcPenPages = pgcPenPages;
 	}
 
 	public List<PgcPenPage> getPgcPenPages( )
 	{
-		return null;// pgcPenPages;
+		return this.pgcPenPages;
 	}
 
 	public void setRevisionStatus( RevisionStatus revisionStatus )
@@ -193,6 +193,12 @@ public class Pgc implements Serializable, EntityCopyInterface<PGCDTO>
 
 	public RevisionStatus getRevisionStatus( )
 	{
-		return revisionStatus;
+		return this.revisionStatus;
+	}
+
+	@Override
+	public String toString( )
+	{
+		return "ID: PgcId: " + this.getId( ) + " Pen: " + this.getPenId( ) + " InsertDate: " + this.getInsertDate( ).toString( );
 	}
 }

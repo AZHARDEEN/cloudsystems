@@ -17,7 +17,7 @@
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
@@ -28,10 +28,10 @@
 	<queryString>
 		<![CDATA[SELECT
 	s.isc_id_ch subscription,
-	s.isc_written_grade_nm written,
-	coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) oral,
-	case when s.isc_written_grade_nm < coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm )
-	then s.isc_written_grade_nm else coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) end as final
+	coalesce ( s.isc_written_grade_nm, 0 ) written,
+	coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 ) oral,
+	case when coalesce ( s.isc_written_grade_nm, 0 ) < coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 )
+	then coalesce ( s.isc_written_grade_nm, 0 ) else coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 ) end as final
 FROM
 	INEP.INEP_SUBSCRIPTION s LEFT OUTER JOIN INEP.INEP_ORAL_test o on (
 		s.usr_id_in = o.usr_id_in and s.pct_id_in = o.pct_id_in
