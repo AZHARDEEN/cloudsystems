@@ -13,6 +13,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.com.mcampos.dto.anoto.PgcPageDTO;
@@ -54,15 +55,11 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
 	@JoinColumn( name = "pgc_id_in", referencedColumnName = "pgc_id_in", insertable = false, updatable = false )
 	private Pgc pgc;
 
-	/*
-	 * @OneToMany( mappedBy = "pgcPage", cascade = CascadeType.ALL,
-	 * orphanRemoval = true, fetch = FetchType.LAZY ) private
-	 * List<PgcPageAttachment> attachments;
-	 * 
-	 * @OneToMany( mappedBy = "pgcPage", cascade = CascadeType.ALL,
-	 * orphanRemoval = true, fetch = FetchType.LAZY ) private List<PgcField>
-	 * fields;
-	 */
+	@OneToMany( mappedBy = "pgcPage" )
+	private List<PgcPageAttachment> attachments;
+
+	@OneToMany( mappedBy = "pgcPage" )
+	private List<PgcField> fields;
 
 	@ManyToOne( fetch = FetchType.EAGER )
 	@JoinColumns( { @JoinColumn( name = "frm_id_in", referencedColumnName = "frm_id_in", nullable = false ),
@@ -118,7 +115,7 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
 	public void setPgc( Pgc pgc )
 	{
 		this.pgc = pgc;
-		if( pgc != null ) {
+		if ( pgc != null ) {
 			this.setPgcId( pgc.getId( ) );
 		}
 	}
@@ -130,22 +127,22 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
 
 	public void setAttachments( List<PgcPageAttachment> attachments )
 	{
-		// this.attachments = attachments;
+		this.attachments = attachments;
 	}
 
 	public List<PgcPageAttachment> getAttachments( )
 	{
-		return null;// attachments;
+		return this.attachments;
 	}
 
 	public void setFields( List<PgcField> fields )
 	{
-		// this.fields = fields;
+		this.fields = fields;
 	}
 
 	public List<PgcField> getFields( )
 	{
-		return null; // fields;
+		return this.fields;
 	}
 
 	@Override
@@ -178,5 +175,11 @@ public class PgcPage implements Serializable, EntityCopyInterface<PgcPageDTO>
 	public RevisionStatus getRevisionStatus( )
 	{
 		return this.revisionStatus;
+	}
+
+	@Override
+	public String toString( )
+	{
+		return "ID: " + this.getPgc( ) + ", BookId: " + this.getBookId( ) + ", PageId: " + this.getPageId( );
 	}
 }

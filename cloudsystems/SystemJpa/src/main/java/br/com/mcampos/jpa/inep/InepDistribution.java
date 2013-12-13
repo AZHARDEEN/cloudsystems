@@ -53,12 +53,12 @@ import br.com.mcampos.jpa.BasicEntityRenderer;
 		@NamedQuery(
 				name = InepDistribution.getAll,
 				query = "select o from InepDistribution o where o.test.subscription.event =?1 and o.nota is not null " +
-						"and o.revisor.coordenador = false " +
+						"and o.revisor.coordenador = false and (o.isGolden is null or o.isGolden = false) " +
 						"order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
 		@NamedQuery(
 				name = InepDistribution.getAllVariance,
 				query = "select o from InepDistribution o where o.test.subscription.event = ?1 and o.status.id = 4 " +
-						"and o.nota is not null and o.revisor.coordenador = true " +
+						"and o.nota is not null and o.revisor.coordenador = true and (o.isGolden is null or o.isGolden = false)  " +
 						"order by o.id.companyId, o.id.eventId, o.id.subscriptionId, o.id.taskId" ),
 		@NamedQuery(
 				name = InepDistribution.getAllSubscription,

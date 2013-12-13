@@ -86,7 +86,7 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
 
 	public Media setName( String name )
 	{
-		if( SysUtils.isEmpty( name ) ) {
+		if ( SysUtils.isEmpty( name ) ) {
 			throw new InvalidParameterException( "Media name could not be null" );
 		}
 		this.name = name;
@@ -100,8 +100,10 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
 
 	public Media setObject( byte[ ] object )
 	{
-		this.object = object.clone( );
 		this.setSize( object == null ? 0 : object.length );
+		if ( this.getSize( ) > 0 ) {
+			this.object = object.clone( );
+		}
 		return this;
 	}
 
@@ -145,10 +147,10 @@ public class Media implements Serializable, EntityCopyInterface<MediaDTO>, Compa
 	@Override
 	public int compareTo( Media o )
 	{
-		if( o == null ) {
+		if ( o == null ) {
 			return -1;
 		}
-		if( this.getId( ) == null ) {
+		if ( this.getId( ) == null ) {
 			return 1;
 		}
 		return this.getId( ).compareTo( o.getId( ) );

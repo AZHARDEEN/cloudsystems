@@ -11,11 +11,6 @@
 			<listhead>
 				<listheader label="Relatório" /> 
 			</listhead>
-			<listitem value="1">
-				<listcell>
-					<label value="Arquivo (Pacotes/Inscrição)" />
-				</listcell>
-			</listitem>
 			<listitem value="2">
 				<listcell>
 					<label value="Arquivo (Notas finais)" />

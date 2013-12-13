@@ -20,7 +20,7 @@ public class PgcPenPageListRenderer implements ListitemRenderer
 	public PgcPenPageListRenderer( )
 	{
 		super( );
-		renderedDateFormat = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
+		this.renderedDateFormat = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class PgcPenPageListRenderer implements ListitemRenderer
 		( (Listcell) item.getChildren( ).get( nIndex++ ) ).setLabel( aux.toString( ) );
 		( (Listcell) item.getChildren( ).get( nIndex++ ) ).setLabel( dto.getPen( ).toString( ) );
 		try {
-			( (Listcell) item.getChildren( ).get( nIndex++ ) ).setLabel( renderedDateFormat.format( dto.getPgcPage( ).getPgc( ).getInsertDate( ) ) );
+			( (Listcell) item.getChildren( ).get( nIndex++ ) ).setLabel( this.renderedDateFormat.format( dto.getPgcPage( ).getPgc( ).getInsertDate( ) ) );
 		}
 		catch ( Exception e ) {
 			e = null;
@@ -63,27 +63,31 @@ public class PgcPenPageListRenderer implements ListitemRenderer
 		( (Listcell) item.getChildren( ).get( nIndex++ ) ).setLabel( dto.getCellNumber( ) );
 		( (Listcell) item.getChildren( ).get( nIndex++ ) ).setLabel( dto.getLatitude( ) );
 		( (Listcell) item.getChildren( ).get( nIndex++ ) ).setLabel( dto.getLongitude( ) );
-		( (Listcell) item.getChildren( ).get( nIndex++ ) ).setLabel( dto.getAttach( ) ? "SIM" : "" );
+		// ( (Listcell) item.getChildren( ).get( nIndex++ ) ).setLabel( dto.getAttach( ) ? "SIM" : "" );
 
-		showFormFields( item, dto.getFields( ) );
+		this.showFormFields( item, dto.getFields( ) );
 	}
 
 	private void showFormFields( Listitem item, List<PgcFieldDTO> fields )
 	{
-		if ( SysUtils.isEmpty( fields ) )
+		if ( SysUtils.isEmpty( fields ) ) {
 			return;
+		}
 		Listhead head = item.getListbox( ).getListhead( );
-		if ( head.getChildren( ).size( ) < 14 )
+		if ( head.getChildren( ).size( ) < 14 ) {
 			for ( PgcFieldDTO field : fields ) {
-				if ( field.getName( ).equals( "CEP" ) )
+				if ( field.getName( ).equals( "CEP" ) ) {
 					continue;
+				}
 				Listheader h = new Listheader( field.getName( ) );
 				h.setWidth( ( field.getName( ).length( ) * 10 ) + "px" );
 				head.appendChild( h );
 			}
+		}
 		for ( PgcFieldDTO field : fields ) {
-			if ( field.getName( ).equals( "CEP" ) )
+			if ( field.getName( ).equals( "CEP" ) ) {
 				continue;
+			}
 			Listcell cell = new Listcell( field.getValue( ) );
 			item.appendChild( cell );
 		}
