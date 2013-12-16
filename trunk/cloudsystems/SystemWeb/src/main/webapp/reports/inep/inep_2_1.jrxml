@@ -66,41 +66,41 @@ order by
 		<groupHeader>
 			<band height="39">
 				<line>
-					<reportElement uuid="2592040c-b3ea-44cc-a251-3b335a410f23" x="0" y="38" width="555" height="1"/>
+					<reportElement x="0" y="38" width="555" height="1" uuid="2592040c-b3ea-44cc-a251-3b335a410f23"/>
 				</line>
 				<staticText>
-					<reportElement uuid="0cf99e56-1354-4c8a-84e3-bcc444e1856b" x="-1" y="20" width="233" height="18"/>
+					<reportElement x="-1" y="20" width="233" height="18" uuid="0cf99e56-1354-4c8a-84e3-bcc444e1856b"/>
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
 					<text><![CDATA[Corretor]]></text>
 				</staticText>
 				<textField>
-					<reportElement uuid="ae037cdd-b817-4cf2-97e2-832e6ca23433" x="44" y="0" width="100" height="20"/>
+					<reportElement x="44" y="0" width="100" height="20" uuid="ae037cdd-b817-4cf2-97e2-832e6ca23433"/>
 					<textElement>
 						<font size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{inep_revisor_tsk_id_in}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement uuid="97a29d36-0be6-470d-92a3-45559ca973ef" x="-1" y="0" width="45" height="20"/>
+					<reportElement x="-1" y="0" width="45" height="20" uuid="97a29d36-0be6-470d-92a3-45559ca973ef"/>
 					<textElement>
 						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Tarefa]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="c46be5aa-bee9-4969-bb47-f3e81f9c4645" x="310" y="19" width="70" height="20"/>
+					<reportElement x="342" y="19" width="70" height="20" uuid="c46be5aa-bee9-4969-bb47-f3e81f9c4645"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Distribuídas]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="819ad66c-87a5-4543-8c47-578f433f176c" x="400" y="18" width="70" height="20"/>
+					<reportElement x="412" y="18" width="70" height="20" uuid="819ad66c-87a5-4543-8c47-578f433f176c"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Corrigidas]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="5a5efa7a-78d5-49f8-819c-23cfad31e399" x="483" y="18" width="70" height="20"/>
+					<reportElement x="483" y="18" width="70" height="20" uuid="5a5efa7a-78d5-49f8-819c-23cfad31e399"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Discrepância]]></text>
 				</staticText>
@@ -109,7 +109,7 @@ order by
 		<groupFooter>
 			<band height="18">
 				<line>
-					<reportElement uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd" x="0" y="0" width="555" height="1"/>
+					<reportElement x="0" y="0" width="555" height="1" uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd"/>
 				</line>
 			</band>
 		</groupFooter>
@@ -120,14 +120,14 @@ order by
 	<title>
 		<band height="22" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="0" y="0" width="553" height="20"/>
+				<reportElement x="0" y="0" width="553" height="20" uuid="19eb60da-e12f-494b-bfcf-2b6310180f15"/>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
 				<text><![CDATA[Situação da Correção]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="1cf6963c-9331-479c-b9f1-ead5148f9946" x="439" y="0" width="116" height="14"/>
+				<reportElement x="439" y="0" width="116" height="14" uuid="1cf6963c-9331-479c-b9f1-ead5148f9946"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
@@ -138,15 +138,15 @@ order by
 	<pageHeader>
 		<band height="53" splitType="Stretch">
 			<image>
-				<reportElement uuid="b8f3d208-d5c0-4eec-a205-6241c030a737" x="3" y="1" width="117" height="50"/>
+				<reportElement x="3" y="1" width="117" height="50" uuid="b8f3d208-d5c0-4eec-a205-6241c030a737"/>
 				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement uuid="4312c333-ca76-4c9c-bb9f-42a166d16665" x="144" y="2" width="231" height="50"/>
+				<reportElement x="144" y="2" width="231" height="50" uuid="4312c333-ca76-4c9c-bb9f-42a166d16665"/>
 				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement uuid="54632e40-5f44-4f64-9069-37b26efbf901" x="388" y="3" width="165" height="50"/>
+				<reportElement x="388" y="3" width="165" height="50" uuid="54632e40-5f44-4f64-9069-37b26efbf901"/>
 				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
 			</image>
 		</band>
@@ -154,43 +154,49 @@ order by
 	<columnHeader>
 		<band height="22" splitType="Stretch">
 			<printWhenExpression><![CDATA[false]]></printWhenExpression>
+			<staticText>
+				<reportElement x="6" y="2" width="100" height="20" uuid="1086e934-68ae-481e-8954-7b8e9636f0a0"/>
+				<text><![CDATA[inep_revisor_col_seq_in]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<elementGroup/>
 			<textField>
-				<reportElement uuid="b2969af5-f89a-46ae-b9ad-4734e4d23396" x="310" y="0" width="71" height="14"/>
+				<reportElement x="342" y="0" width="70" height="14" uuid="b2969af5-f89a-46ae-b9ad-4734e4d23396"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{distribuido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="246d5573-891e-4276-9d90-c5492143bbfc" x="400" y="0" width="70" height="14"/>
+				<reportElement x="412" y="0" width="70" height="14" uuid="246d5573-891e-4276-9d90-c5492143bbfc"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{corrigido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="f24f054c-7ae5-46f4-8110-7446ab9a4da6" x="483" y="0" width="70" height="14"/>
+				<reportElement x="483" y="0" width="70" height="14" uuid="f24f054c-7ae5-46f4-8110-7446ab9a4da6"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{variance}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="0af04a80-25d8-4fa2-82ea-bc62ca5891e1" x="1" y="0" width="295" height="14"/>
-				<textElement/>
+				<reportElement x="19" y="0" width="323" height="14" uuid="0af04a80-25d8-4fa2-82ea-bc62ca5891e1"/>
 				<textFieldExpression><![CDATA[$F{users_usr_name_ch}]]></textFieldExpression>
+			</textField>
+			<textField pattern="000" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="20" height="14" uuid="387645c6-0496-4c8e-b3cc-34a2365c1353"/>
+				<textFieldExpression><![CDATA[$F{inep_revisor_col_seq_in}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<pageFooter>
 		<band height="17" splitType="Stretch">
 			<textField>
-				<reportElement uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7" x="455" y="0" width="100" height="15"/>
+				<reportElement x="455" y="0" width="100" height="15" uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy HH:mm:ss">
-				<reportElement uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6" x="0" y="0" width="199" height="15"/>
-				<textElement/>
+				<reportElement x="0" y="0" width="199" height="15" uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
