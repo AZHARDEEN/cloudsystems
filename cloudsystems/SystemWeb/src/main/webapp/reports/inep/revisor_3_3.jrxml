@@ -5,13 +5,13 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
-		<defaultValueExpression><![CDATA["T:/Workspaces/indigo/cloudsystems/SystemWeb/WebContent/img"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
@@ -50,20 +50,26 @@ ORDER BY NAME]]>
 	<variable name="totalAudios" class="java.lang.Long">
 		<variableExpression><![CDATA[$F{todo}.longValue() + $F{done}.longValue()]]></variableExpression>
 	</variable>
+	<variable name="done_1" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{done}]]></variableExpression>
+	</variable>
+	<variable name="todo_1" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{todo}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="22" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="19eb60da-e12f-494b-bfcf-2b6310180f15" x="0" y="0" width="555" height="20"/>
+				<reportElement x="0" y="0" width="555" height="20" uuid="19eb60da-e12f-494b-bfcf-2b6310180f15"/>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
 				<text><![CDATA[Número de Audios por Corretor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9d8b754c-f72f-4edf-b713-af19c34cc6e6" x="439" y="0" width="116" height="14"/>
+				<reportElement x="439" y="0" width="116" height="14" uuid="9d8b754c-f72f-4edf-b713-af19c34cc6e6"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
@@ -74,39 +80,39 @@ ORDER BY NAME]]>
 	<pageHeader>
 		<band height="96" splitType="Stretch">
 			<image>
-				<reportElement uuid="b8f3d208-d5c0-4eec-a205-6241c030a737" x="3" y="1" width="117" height="50"/>
+				<reportElement x="3" y="1" width="117" height="50" uuid="b8f3d208-d5c0-4eec-a205-6241c030a737"/>
 				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement uuid="4312c333-ca76-4c9c-bb9f-42a166d16665" x="144" y="2" width="231" height="50"/>
+				<reportElement x="144" y="2" width="231" height="50" uuid="4312c333-ca76-4c9c-bb9f-42a166d16665"/>
 				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement uuid="54632e40-5f44-4f64-9069-37b26efbf901" x="388" y="3" width="165" height="50"/>
+				<reportElement x="388" y="3" width="165" height="50" uuid="54632e40-5f44-4f64-9069-37b26efbf901"/>
 				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement uuid="55777c68-ccf5-4ce5-bb7f-a189c967dacf" x="3" y="76" width="249" height="20"/>
+				<reportElement x="3" y="76" width="249" height="20" uuid="55777c68-ccf5-4ce5-bb7f-a189c967dacf"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Corretor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="c0eda0c0-2ed3-4649-96a7-bbea33e39ff5" x="288" y="76" width="71" height="20"/>
+				<reportElement x="288" y="76" width="71" height="20" uuid="c0eda0c0-2ed3-4649-96a7-bbea33e39ff5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[A Escutar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a204e2e5-e3bf-4369-af88-59105e49505b" x="288" y="56" width="265" height="20"/>
+				<reportElement x="288" y="56" width="265" height="20" uuid="a204e2e5-e3bf-4369-af88-59105e49505b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Número de Audios]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="3dd31182-bedb-415a-9932-4664bb6e94a9" x="383" y="76" width="71" height="20"/>
+				<reportElement x="383" y="76" width="71" height="20" uuid="3dd31182-bedb-415a-9932-4664bb6e94a9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Finalizados]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="3a132c17-dabb-4c0a-8421-5909d881c673" x="482" y="76" width="71" height="20"/>
+				<reportElement x="482" y="76" width="71" height="20" uuid="3a132c17-dabb-4c0a-8421-5909d881c673"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Total]]></text>
 			</staticText>
@@ -115,45 +121,62 @@ ORDER BY NAME]]>
 	<detail>
 		<band height="16" splitType="Stretch">
 			<textField>
-				<reportElement uuid="fd4c4eb4-188e-4d3e-8435-652787b13014" x="3" y="0" width="249" height="16"/>
+				<reportElement x="3" y="0" width="249" height="16" uuid="fd4c4eb4-188e-4d3e-8435-652787b13014"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="0000">
-				<reportElement uuid="7f36bba6-983a-4323-8d1d-f41ac86470c6" x="288" y="0" width="71" height="16"/>
+				<reportElement x="288" y="0" width="71" height="16" uuid="7f36bba6-983a-4323-8d1d-f41ac86470c6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{todo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="0000">
-				<reportElement uuid="387eedfb-aa7a-4ff9-9c39-ab439d58b702" x="383" y="0" width="71" height="16"/>
+				<reportElement x="383" y="0" width="71" height="16" uuid="387eedfb-aa7a-4ff9-9c39-ab439d58b702"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{done}]]></textFieldExpression>
 			</textField>
 			<textField pattern="0000">
-				<reportElement uuid="eb770759-34be-40b7-99a9-5e77b71fa1a4" x="482" y="0" width="71" height="16"/>
+				<reportElement x="482" y="0" width="71" height="16" uuid="eb770759-34be-40b7-99a9-5e77b71fa1a4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{totalAudios}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="17" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<textField>
-				<reportElement uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7" x="455" y="0" width="100" height="15"/>
+				<reportElement x="455" y="0" width="100" height="15" uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy HH:mm:ss">
-				<reportElement uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6" x="0" y="0" width="199" height="15"/>
-				<textElement/>
+				<reportElement x="0" y="0" width="199" height="15" uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd" x="0" y="0" width="555" height="1"/>
+				<reportElement x="0" y="0" width="555" height="1" uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd"/>
 			</line>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="383" y="0" width="71" height="16" uuid="2db7ea47-11d2-49f9-bdaa-5f65ceca39d4"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{done_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="288" y="0" width="71" height="16" uuid="afa76d01-8403-4329-9b36-86aaa8a25b4b"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{todo_1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="553" height="1" uuid="1a159859-6430-41df-a67a-e0c5b4e1d2d6"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="1" width="288" height="15" uuid="91ba435e-df7e-4516-b986-eb8bd2e91bba"/>
+				<text><![CDATA[Totais:]]></text>
+			</staticText>
+		</band>
 	</summary>
 </jasperReport>
