@@ -54,7 +54,7 @@ public class InepMediaSessionBean extends SimpleSessionBean<InepMedia> implement
 	@Override
 	public void removeAudio( InepSubscription isc )
 	{
-		Query query = this.getEntityManager( ).createQuery( "delete from InepMedia o where o.subscription = ?1 and o.type = 2" ).setParameter( 1, isc );
+		Query query = getEntityManager( ).createQuery( "delete from InepMedia o where o.subscription = ?1 and o.type = 2" ).setParameter( 1, isc );
 		query.executeUpdate( );
 	}
 
@@ -67,7 +67,7 @@ public class InepMediaSessionBean extends SimpleSessionBean<InepMedia> implement
 		media.setMimeType( "text/pdf" );
 		media.setObject( object );
 		media.setInsertDate( new Date( ) );
-		media = this.mediaSession.add( media );
+		media = mediaSession.add( media );
 
 		InepMedia inepMedia = new InepMedia( test.getSubscription( ) );
 		inepMedia.setMedia( media );
@@ -82,15 +82,17 @@ public class InepMediaSessionBean extends SimpleSessionBean<InepMedia> implement
 	{
 		InepMediaPK key = new InepMediaPK( test.getSubscription( ).getId( ) );
 		key.setMediaId( f.getMediaId( ) );
-		InepMedia inepMedia = this.get( key );
+		InepMedia inepMedia = get( key );
 		if ( inepMedia != null ) {
 			return inepMedia;
 		}
 		try {
 			inepMedia = this.getByNamedQuery( InepMedia.getTest, test.getSubscription( ), test.getId( ).getTaskId( ) );
 			if ( inepMedia != null ) {
-				LOGGER.error( "InepMedia already found for " + test.getSubscription( ).getId( ).getId( ) + " and Task " + test.getId( ).getTaskId( ) );
-				return null;
+				LOGGER.info( "InepMedia already found for " + test.getSubscription( ).getId( ).getId( ) + " and Task " + test.getId( ).getTaskId( ) );
+				LOGGER.info( "Changing media from " + inepMedia.getMedia( ).getId( ) + " to " + f.getMediaId( ) );
+				inepMedia.setMedia( f.getMedia( ) );
+				return inepMedia;
 			}
 		}
 		catch ( Exception e ) {
