@@ -95,7 +95,7 @@ public class InepMediaSessionBean extends SimpleSessionBean<InepMedia> implement
 		try {
 			if( !SysUtils.isEmpty( merged.getSubscription( ).getMedias( ) ) ) {
 				for( InepMedia m : merged.getSubscription( ).getMedias( ) ) {
-					if( test.getTask( ).equals( m.getTask( ) ) ) {
+					if( test.getTask( ).getId( ).getId( ).equals( m.getTask( ) ) ) {
 						LOGGER.info( "Changing Media from " + m.getMedia( ).getId( ) + " to " + f.getMediaId( ) );
 						m.setMedia( f.getMedia( ) );
 						return m;
