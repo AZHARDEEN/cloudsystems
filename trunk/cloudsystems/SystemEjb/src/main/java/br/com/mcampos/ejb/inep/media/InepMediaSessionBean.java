@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.ejb.core.SimpleSessionBean;
+import br.com.mcampos.ejb.inep.test.InepTestSessionLocal;
 import br.com.mcampos.ejb.media.MediaSessionBeanLocal;
 import br.com.mcampos.jpa.inep.InepMedia;
 import br.com.mcampos.jpa.inep.InepMediaPK;
@@ -18,6 +19,7 @@ import br.com.mcampos.jpa.inep.InepSubscription;
 import br.com.mcampos.jpa.inep.InepTest;
 import br.com.mcampos.jpa.system.FileUpload;
 import br.com.mcampos.jpa.system.Media;
+import br.com.mcampos.sysutils.SysUtils;
 
 /**
  * Session Bean implementation class InepMediaSessionBean
@@ -31,6 +33,9 @@ public class InepMediaSessionBean extends SimpleSessionBean<InepMedia> implement
 
 	@EJB
 	private MediaSessionBeanLocal mediaSession;
+
+	@EJB
+	private InepTestSessionLocal testSession;
 
 	@Override
 	protected Class<InepMedia> getEntityClass( )
@@ -86,24 +91,27 @@ public class InepMediaSessionBean extends SimpleSessionBean<InepMedia> implement
 		if ( inepMedia != null ) {
 			return inepMedia;
 		}
+		InepTest merged = testSession.get( test.getId( ) );
 		try {
-			inepMedia = this.getByNamedQuery( InepMedia.getTest, test.getSubscription( ), test.getId( ).getTaskId( ) );
-			if ( inepMedia != null ) {
-				LOGGER.info( "InepMedia already found for " + test.getSubscription( ).getId( ).getId( ) + " and Task " + test.getId( ).getTaskId( ) );
-				LOGGER.info( "Changing media from " + inepMedia.getMedia( ).getId( ) + " to " + f.getMediaId( ) );
-				inepMedia.setMedia( f.getMedia( ) );
-				return inepMedia;
+			if( !SysUtils.isEmpty( merged.getSubscription( ).getMedias( ) ) ) {
+				for( InepMedia m : merged.getSubscription( ).getMedias( ) ) {
+					if( test.getTask( ).equals( m.getTask( ) ) ) {
+						LOGGER.info( "Changing Media from " + m.getMedia( ).getId( ) + " to " + f.getMediaId( ) );
+						m.setMedia( f.getMedia( ) );
+						return m;
+					}
+				}
 			}
 		}
 		catch ( Exception e ) {
-			LOGGER.error( "Error trying to find media for subscription " + test.getSubscription( ).getId( ).getId( ) + " and Task "
-					+ test.getId( ).getTaskId( ), e );
+			LOGGER.error( "Error trying to find media for subscription " + merged.getSubscription( ).getId( ).getId( ) + " and Task "
+					+ merged.getId( ).getTaskId( ), e );
 		}
-		inepMedia = new InepMedia( test.getSubscription( ) );
+		inepMedia = new InepMedia( merged.getSubscription( ) );
 		inepMedia.setMedia( f.getMedia( ) );
-		inepMedia.setTask( test.getId( ).getTaskId( ) );
+		inepMedia.setTask( merged.getId( ).getTaskId( ) );
 		inepMedia.setType( InepMedia.TYPE_TEST );
-		test.getSubscription( ).add( inepMedia );
+		merged.getSubscription( ).add( inepMedia );
 		inepMedia = this.add( inepMedia );
 		return inepMedia;
 	}
