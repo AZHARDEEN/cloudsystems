@@ -58,7 +58,7 @@ from (
 				WHERE
 				  s.usr_id_in = $P{COMPANY_ID}  AND
 				  s.pct_id_in =  $P{EVENT_ID} and
-				  s.iss_id_in <> 3
+				  S.isc_written_grade_nm is not null
 				ORDER BY u.usr_name_ch, s.isc_id_ch
 				) as t1
 		) as t2
