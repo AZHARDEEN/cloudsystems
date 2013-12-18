@@ -13,17 +13,22 @@
 			</listhead>
 			<listitem value="2">
 				<listcell>
-					<label value="Arquivo (Notas finais)" />
+					<label value="Report 2 - Notas finais da Prova Escrita" />
 				</listcell>
 			</listitem>
 			<listitem value="3">
 				<listcell>
-					<label value="Arquivo (Notas de Consenso)" />
+					<label value="Report 3 - Notas de Consenso da Prova Escrita" />
 				</listcell>
 			</listitem>
 			<listitem value="4">
 				<listcell>
-					<label value="Arquivo (Notas Individuais por Corretor)" />
+					<label value="Report 4 - Notas Individuais por Corretor da Prova Escrita" />
+				</listcell>
+			</listitem>
+			<listitem value="5">
+				<listcell>
+					<label value="Report 5 - Reavaliações ou Consenso da Prova Oral" />
 				</listcell>
 			</listitem>
 		</listbox>

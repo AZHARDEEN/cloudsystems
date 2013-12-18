@@ -43,7 +43,7 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 	{
 		List<InepSubscription> list = Collections.emptyList( );
 
-		InepEvent merged = this.getEventSession( ).get( event.getId( ) );
+		InepEvent merged = getEventSession( ).get( event.getId( ) );
 		if ( merged != null ) {
 			list = this.findByNamedQuery( InepSubscription.getAllEventSubs, merged );
 		}
@@ -52,13 +52,13 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 
 	private InepPackageSessionLocal getEventSession( )
 	{
-		return this.eventSession;
+		return eventSession;
 	}
 
 	@Override
 	public List<InepEvent> getEvents( PrincipalDTO auth )
 	{
-		return this.getEventSession( ).getAll( auth );
+		return getEventSession( ).getAll( auth );
 	}
 
 	private String treatLikeArgument( String subs )
@@ -81,7 +81,7 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 	{
 		List<InepSubscription> list = Collections.emptyList( );
 
-		subs = this.treatLikeArgument( subs );
+		subs = treatLikeArgument( subs );
 		/*
 		 * TODO: verificar se o usuário logado no sistena não está vinculado a um posto aplicador
 		 */
@@ -94,7 +94,7 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 	{
 		List<InepSubscription> list = Collections.emptyList( );
 
-		subs = this.treatLikeArgument( subs );
+		subs = treatLikeArgument( subs );
 		/*
 		 * TODO: verificar se o usuário logado no sistena não está vinculado a um posto aplicador
 		 */
@@ -106,15 +106,16 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 	public void setOralGrade( InepSubscription s, BigDecimal grade )
 	{
 		s.setOralGrade( grade );
+		s.setStatus( 2 );
 		if ( s.getWrittenGrade( ) == null ) {
 			return;
 		}
-		InepOralTest oralTest = this.oralTestSession.get( s );
+		InepOralTest oralTest = oralTestSession.get( s );
 		if ( oralTest == null ) {
 			return;
 		}
 		if ( oralTest.getStatusId( ).equals( 5 ) ) {
-			this.verifyVariance( s );
+			verifyVariance( s );
 		}
 	}
 
@@ -122,10 +123,11 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 	public void setWrittenGrade( InepSubscription s, BigDecimal grade )
 	{
 		s.setWrittenGrade( grade );
+		s.setStatus( 2 );
 		if ( s.getOralGrade( ) == null ) {
 			return;
 		}
-		this.verifyVariance( s );
+		verifyVariance( s );
 
 	}
 
@@ -155,8 +157,8 @@ public class InepSubscriptionSessionBean extends SimpleSessionBean<InepSubscript
 			bVariance = true;
 		}
 		if ( bVariance ) {
-			InepOralTest oralTest = this.oralTestSession.get( s );
-			if ( this.canPutInVariance( oralTest ) ) {
+			InepOralTest oralTest = oralTestSession.get( s );
+			if ( canPutInVariance( oralTest ) ) {
 				oralTest.setStatusId( 12 );
 			}
 		}
