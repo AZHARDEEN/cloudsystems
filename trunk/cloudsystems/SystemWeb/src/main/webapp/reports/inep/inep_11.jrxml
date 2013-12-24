@@ -68,8 +68,8 @@ from (
 			case when faixa_revisao is not null then faixa_posto - faixa_revisao else null end diferenca
 		from (
 			select
-				iot_station_ch,
-				iot_status_ch status,
+				coalesce ( iot_station_ch, usr_name_ch ) iot_station_ch,
+				coalesce (iot_status_ch, case when iss_id_in = 2 then 'Presente' else 'Ausente' end ) status,
 				iot_final_grade_nm,
 				case
 					when iot_final_grade_nm < 2 then 1
@@ -85,7 +85,14 @@ from (
 					when coalesce ( iot_agreement_grade_in, iot_agreement2_grade_nm ) between 3.51 and 4.25 then 4
 					when coalesce ( iot_agreement_grade_in, iot_agreement2_grade_nm ) >= 4.26 then 5 end faixa_revisao
 			from
-				inep.inep_oral_test
+				inep.inep_oral_test t inner join inep.inep_subscription s on ( s.usr_id_in = t.usr_id_in and s.pct_id_in = t.pct_id_in and s.isc_id_ch = t.isc_id_ch )
+				INNER JOIN CLIENT C ON( S.USR_ID_IN = C.USR_ID_IN AND S.CLI_SEQ_IN = C.CLI_SEQ_IN )
+				INNER JOIN USERS U ON ( C.CLI_ID_IN = U.USR_ID_IN )
+			where
+			S.PCT_ID_IN  = $P{EVENT_ID}
+			AND S.USR_ID_IN = $P{COMPANY_ID}
+
+
 		) as t
 	) t1
 ) t3
@@ -150,7 +157,7 @@ iot_station_ch]]>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[inep_10]]></text>
+				<text><![CDATA[inep_11]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -305,16 +312,6 @@ iot_station_ch]]>
 					<textElement textAlignment="Center" verticalAlignment="Top"/>
 					<text><![CDATA[2]]></text>
 				</staticText>
-				<staticText>
-					<reportElement x="3" y="28" width="73" height="15" uuid="ea731c5b-1eb5-4d8b-9cd1-2ec649b8bace"/>
-					<textElement textAlignment="Center"/>
-					<text><![CDATA[Ausentes]]></text>
-				</staticText>
-				<textField>
-					<reportElement x="3" y="43" width="73" height="15" uuid="14b21de9-83e5-417f-ba8c-6ebcb3830f66"/>
-					<textElement textAlignment="Center"/>
-					<textFieldExpression><![CDATA[$F{ausentes}]]></textFieldExpression>
-				</textField>
 			</frame>
 		</band>
 	</detail>
