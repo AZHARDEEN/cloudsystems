@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="108"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
 		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
@@ -29,14 +29,14 @@
      users."usr_name_ch" AS users_usr_name_ch,
      ( select count(*) from inep.inep_distribution d
 		where d.usr_id_in = inep_revisor.usr_id_in and d.pct_id_in = inep_revisor.pct_id_in and d.col_seq_in = inep_revisor.col_seq_in and
-			inep_revisor.tsk_id_in = d.tsk_id_in and inep_revisor."tsk_id_in" = d."tsk_id_in" and ids_id_in = 1 ) as distribuido,
+			inep_revisor.tsk_id_in = d.tsk_id_in and inep_revisor."tsk_id_in" = d."tsk_id_in" and ids_id_in = 1 and d.dis_golden_bt is false ) as distribuido,
      ( select count(*) from inep.inep_distribution d
 		where d.usr_id_in = inep_revisor.usr_id_in and d.pct_id_in = inep_revisor.pct_id_in and d.col_seq_in = inep_revisor.col_seq_in and
-			inep_revisor.tsk_id_in = d.tsk_id_in and inep_revisor."tsk_id_in" = d."tsk_id_in" and ids_id_in = 2 ) as corrigido,
+			inep_revisor.tsk_id_in = d.tsk_id_in and inep_revisor."tsk_id_in" = d."tsk_id_in" and ids_id_in = 2 and d.dis_golden_bt is false ) as corrigido,
      ( select count(*) from inep.inep_distribution d
 		where d.usr_id_in = inep_revisor.usr_id_in and d.pct_id_in = inep_revisor.pct_id_in and  d.col_seq_in = inep_revisor.col_seq_in and
 			inep_revisor.tsk_id_in = d.tsk_id_in and inep_revisor."tsk_id_in" = d."tsk_id_in" and ids_id_in in (3,4)
-			and dis_grade_in is not null ) as variance
+			and dis_grade_in is not null and d.dis_golden_bt is false ) as variance
 FROM
      "inep"."inep_revisor" inep_revisor INNER JOIN "public"."collaborator" collaborator
 		ON inep_revisor."usr_id_in" = collaborator."usr_id_in" AND collaborator."col_seq_in" = inep_revisor."col_seq_in"
@@ -61,6 +61,9 @@ order by
 	<field name="distribuido" class="java.lang.Long"/>
 	<field name="corrigido" class="java.lang.Long"/>
 	<field name="variance" class="java.lang.Long"/>
+	<variable name="sum" class="java.lang.Long">
+		<variableExpression><![CDATA[$F{variance}.longValue() + $F{corrigido}.longValue() + $F{distribuido}.longValue()]]></variableExpression>
+	</variable>
 	<group name="Tarefa" keepTogether="true">
 		<groupExpression><![CDATA[$F{inep_revisor_tsk_id_in}]]></groupExpression>
 		<groupHeader>
@@ -90,19 +93,24 @@ order by
 					<text><![CDATA[Tarefa]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="342" y="19" width="70" height="20" uuid="c46be5aa-bee9-4969-bb47-f3e81f9c4645"/>
+					<reportElement x="288" y="19" width="65" height="20" uuid="c46be5aa-bee9-4969-bb47-f3e81f9c4645"/>
 					<textElement textAlignment="Center"/>
-					<text><![CDATA[Distribuídas]]></text>
+					<text><![CDATA[Distribuída]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="412" y="18" width="70" height="20" uuid="819ad66c-87a5-4543-8c47-578f433f176c"/>
+					<reportElement x="354" y="18" width="65" height="20" uuid="819ad66c-87a5-4543-8c47-578f433f176c"/>
 					<textElement textAlignment="Center"/>
-					<text><![CDATA[Corrigidas]]></text>
+					<text><![CDATA[Corrigida]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="483" y="18" width="70" height="20" uuid="5a5efa7a-78d5-49f8-819c-23cfad31e399"/>
+					<reportElement x="421" y="18" width="65" height="20" uuid="5a5efa7a-78d5-49f8-819c-23cfad31e399"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Discrepância]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="490" y="18" width="65" height="20" uuid="29040365-f8d1-4664-b82b-30dcb941e0ac"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Total]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
@@ -164,27 +172,32 @@ order by
 		<band height="15" splitType="Stretch">
 			<elementGroup/>
 			<textField>
-				<reportElement x="342" y="0" width="70" height="14" uuid="b2969af5-f89a-46ae-b9ad-4734e4d23396"/>
+				<reportElement x="288" y="0" width="65" height="14" uuid="b2969af5-f89a-46ae-b9ad-4734e4d23396"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{distribuido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="412" y="0" width="70" height="14" uuid="246d5573-891e-4276-9d90-c5492143bbfc"/>
+				<reportElement x="354" y="0" width="65" height="14" uuid="246d5573-891e-4276-9d90-c5492143bbfc"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{corrigido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="483" y="0" width="70" height="14" uuid="f24f054c-7ae5-46f4-8110-7446ab9a4da6"/>
+				<reportElement x="421" y="0" width="65" height="14" uuid="f24f054c-7ae5-46f4-8110-7446ab9a4da6"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{variance}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="19" y="0" width="323" height="14" uuid="0af04a80-25d8-4fa2-82ea-bc62ca5891e1"/>
+				<reportElement x="19" y="0" width="265" height="14" uuid="0af04a80-25d8-4fa2-82ea-bc62ca5891e1"/>
 				<textFieldExpression><![CDATA[$F{users_usr_name_ch}]]></textFieldExpression>
 			</textField>
 			<textField pattern="000" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="20" height="14" uuid="387645c6-0496-4c8e-b3cc-34a2365c1353"/>
 				<textFieldExpression><![CDATA[$F{inep_revisor_col_seq_in}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="490" y="0" width="65" height="14" uuid="dc953971-39b7-444e-8c2a-1a38bf935acd"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{sum}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
