@@ -17,6 +17,8 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jasypt.util.password.BasicPasswordEncryptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.com.mcampos.dto.MailDTO;
 import br.com.mcampos.dto.core.CredentialDTO;
@@ -45,9 +47,10 @@ import br.com.mcampos.sysutils.SysUtils;
 public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginSession, LoginSessionLocal
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 3462045502068856970L;
+	private static final Logger LOGGER = LoggerFactory.getLogger( LoginSessionBean.class.getSimpleName( ) );
 
 	@EJB
 	private SystemParameterSessionLocal paramSession;
@@ -87,7 +90,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	@Override
 	public Login getByDocument( String document )
 	{
-		Query query = this.getEntityManager( ).createNamedQuery( UserDocument.findDocument );
+		Query query = getEntityManager( ).createNamedQuery( UserDocument.findDocument );
 		query.setParameter( 1, document );
 		UserDocument doc;
 
@@ -113,11 +116,11 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		}
 
 		try {
-			Login login = this.getByDocument( credential.getIdentification( ) );
+			Login login = getByDocument( credential.getIdentification( ) );
 			if ( login != null && this.verifyPassword( login, credential ) == false ) {
 				return null;
 			}
-			this.log( login, this.getLogTypeSession( ).get( AccessLogType.accessLogTypeNormalLogin ), credential );
+			log( login, getLogTypeSession( ).get( AccessLogType.accessLogTypeNormalLogin ), credential );
 			return login;
 		}
 		catch ( Exception e ) {
@@ -131,7 +134,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		if ( login == null || SysUtils.isEmpty( credential.getPassword( ) ) ) {
 			return false;
 		}
-		if ( login.getTryCount( ) > this.getParamSession( ).getMaxTryCount( ) ) {
+		if ( login.getTryCount( ) > getParamSession( ).getMaxTryCount( ) ) {
 			return false;
 		}
 		if ( this.verifyPassword( login, credential.getPassword( ) ) == false ) {
@@ -160,7 +163,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 			login.incrementTryCount( );
 			tryCount = login.getTryCount( );
 			if ( tryCount > maxTryCount ) {
-				login.setStatus( this.statusSession.get( UserStatus.statusMaxLoginTryCount ) );
+				login.setStatus( statusSession.get( UserStatus.statusMaxLoginTryCount ) );
 			}
 			return false;
 		}
@@ -186,35 +189,38 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		log.setUser( login );
 		log.setLoginDate( new Timestamp( ( new Date( ) ).getTime( ) ) );
 
-		log = this.getLogSession( ).merge( log );
+		log = getLogSession( ).merge( log );
 		return true;
 	}
 
 	private SystemParameterSessionLocal getParamSession( )
 	{
-		return this.paramSession;
+		return paramSession;
 	}
 
 	private AccessLogTypeSessionLocal getLogTypeSession( )
 	{
-		return this.logTypeSession;
+		return logTypeSession;
 	}
 
 	private AccessLogSessionLocal getLogSession( )
 	{
-		return this.logSession;
+		return logSession;
 	}
 
 	@Override
 	public Login get( Serializable key )
 	{
-		return this.getLastAccess( super.get( key ) );
+		LOGGER.info( "LoginSessionBean->get using " + key.getClass( ).getName( ) + " as argument from " + this.getClass( ).getName( ) );
+		Login login = super.get( key );
+
+		return this.getLastAccess( login );
 	}
 
 	private Login getLastAccess( Login login )
 	{
 		if ( login != null ) {
-			AccessLog lastLogin = this.getLogSession( ).getLastLogin( login );
+			AccessLog lastLogin = getLogSession( ).getLastLogin( login );
 
 			login.setLastLogin( lastLogin );
 		}
@@ -262,15 +268,15 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 
 	private void changePassword( Login entity, CredentialDTO credential, String newPassword )
 	{
-		this.archivePassword( entity );
-		entity.setPassword( this.encryptPassword( newPassword ) );
-		this.archivePassword( entity );
+		archivePassword( entity );
+		entity.setPassword( encryptPassword( newPassword ) );
+		archivePassword( entity );
 		entity.setTryCount( 0 );
-		this.setPasswordExpirationDate( entity );
-		entity.setStatus( this.statusSession.get( UserStatus.statusOk ) );
-		this.log( entity, this.getLogTypeSession( ).get( AccessLogType.accessLogTypeNormalLogin ), credential );
+		setPasswordExpirationDate( entity );
+		entity.setStatus( statusSession.get( UserStatus.statusOk ) );
+		log( entity, getLogTypeSession( ).get( AccessLogType.accessLogTypeNormalLogin ), credential );
 		entity.setToken( newPassword );
-		this.sendMail( EMail.templatePasswordChanged, entity );
+		sendMail( EMail.templatePasswordChanged, entity );
 		entity.setToken( null );
 	}
 
@@ -300,12 +306,12 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		if ( login == null || login.getStatus( ).getId( ).equals( UserStatus.statusEmailNotValidated ) == false ) {
 			return false;
 		}
-		return this.sendMail( EMail.templateValidationEmail, login );
+		return sendMail( EMail.templateValidationEmail, login );
 	}
 
 	private Boolean sendMail( Integer templateId, Object... params )
 	{
-		MailDTO dto = this.getEmailPartSession( ).getTemplate( templateId );
+		MailDTO dto = getEmailPartSession( ).getTemplate( templateId );
 		if ( dto == null ) {
 			return false;
 		}
@@ -314,14 +320,14 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 				continue;
 			}
 			Login login = (Login) param;
-			dto.setBody( this.translateTokens( dto.getBody( ), login, login.getToken( ) ) );
+			dto.setBody( translateTokens( dto.getBody( ), login, login.getToken( ) ) );
 			for ( UserDocument item : login.getPerson( ).getDocuments( ) ) {
 				if ( item.getType( ).getId( ).equals( UserDocument.EMAIL ) ) {
 					dto.addRecipient( item.getCode( ) );
 				}
 			}
 			try {
-				return this.getEmailPartSession( ).sendMail( dto );
+				return getEmailPartSession( ).sendMail( dto );
 			}
 			catch ( Exception e ) {
 				e.printStackTrace( );
@@ -332,7 +338,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 
 	public EmailPartSessionLocal getEmailPartSession( )
 	{
-		return this.emailPartSession;
+		return emailPartSession;
 	}
 
 	@Override
@@ -347,7 +353,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		if ( login == null ) {
 			login = new Login( );
 			login.setPerson( person );
-			this.setPasswordExpirationDate( login );
+			setPasswordExpirationDate( login );
 		}
 		/*
 		 * Nunca esquecer de vincular os objetos. Quando um objeto é instanciado
@@ -355,8 +361,8 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		 * pessoa, que neste momento não possuia login. Ainda que o login seja
 		 * inserido no banco de dados, fica a situação inicial - sem login.
 		 */
-		login.setPassword( this.encryptPassword( password ) );
-		login.setStatus( this.statusSession.get( UserStatus.statusOk ) );
+		login.setPassword( encryptPassword( password ) );
+		login.setStatus( statusSession.get( UserStatus.statusOk ) );
 		login.setTryCount( 0 );
 		login = this.merge( login );
 		// this.sendMail( EMail.templateValidationEmail, login );
@@ -420,7 +426,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		if ( SysUtils.isEmpty( token ) || SysUtils.isEmpty( password ) ) {
 			return false;
 		}
-		Login login = this.getByToken( token );
+		Login login = getByToken( token );
 		if ( login == null ) {
 			return false;
 		}
@@ -431,8 +437,8 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		 * Clear token
 		 */
 		login.setToken( null );
-		login.setStatus( this.statusSession.get( UserStatus.statusFullfillRecord ) );
-		this.sendMail( EMail.templateValidationEmail, login );
+		login.setStatus( statusSession.get( UserStatus.statusFullfillRecord ) );
+		sendMail( EMail.templateValidationEmail, login );
 		return true;
 	}
 
@@ -443,7 +449,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		try {
 			List<LastUsedPassword> list;
 
-			list = this.lupSession.findByNamedQuery( LastUsedPassword.findAllByLogin, new DBPaging( 0, 50 ), login );
+			list = lupSession.findByNamedQuery( LastUsedPassword.findAllByLogin, new DBPaging( 0, 50 ), login );
 			passwordEncryptor = new BasicPasswordEncryptor( );
 			for ( LastUsedPassword password : list ) {
 				if ( passwordEncryptor.checkPassword( newPassword, password.getId( ).getPassword( ) ) ) {
@@ -468,16 +474,16 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	{
 		LastUsedPassword lastUsedPassword;
 
-		lastUsedPassword = this.lupSession.get( login );
+		lastUsedPassword = lupSession.get( login );
 		if ( lastUsedPassword == null ) {
-			this.lupSession.closeAllUsedPassword( login );
+			lupSession.closeAllUsedPassword( login );
 			lastUsedPassword = new LastUsedPassword( login );
 			lastUsedPassword.setFromDate( new Date( ) );
-			this.lupSession.persist( lastUsedPassword );
+			lupSession.persist( lastUsedPassword );
 		}
 		else {
 			lastUsedPassword.setToDate( new Date( ) );
-			this.lupSession.merge( lastUsedPassword );
+			lupSession.merge( lastUsedPassword );
 		}
 	}
 
@@ -487,8 +493,8 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		if ( id == null ) {
 			throw new InvalidParameterException( this.getClass( ).getSimpleName( ) + " - Login could not be null" );
 		}
-		AccessLogType type = this.getLogTypeSession( ).get( AccessLogType.accessLogTypeLogout );
-		this.log( this.get( id ), type, credential );
+		AccessLogType type = getLogTypeSession( ).get( AccessLogType.accessLogTypeLogout );
+		log( this.get( id ), type, credential );
 	}
 
 	@Override
@@ -507,13 +513,13 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 			logins.add( login );
 		}
 		else if ( searchField.equalsIgnoreCase( "name" ) ) {
-			return this.searchByName( lookFor );
+			return searchByName( lookFor );
 		}
 		else if ( searchField.equalsIgnoreCase( "email" ) ) {
-			return this.searchByEmail( lookFor );
+			return searchByEmail( lookFor );
 		}
 		else if ( searchField.equalsIgnoreCase( "cpf" ) ) {
-			return this.searchByCPF( lookFor );
+			return searchByCPF( lookFor );
 		}
 		return logins;
 	}
@@ -545,7 +551,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		}
 		lookFor = lookFor.toLowerCase( );
 		String sql = "select o from Login o where o.person in (" +
-				this.getUserDocumentSQL( lookFor ) + ")";
+				getUserDocumentSQL( lookFor ) + ")";
 		sql = sql + "order by o.person.name";
 		return this.findByQuery( sql, new DBPaging( 0, 40 ), UserDocument.EMAIL, lookFor );
 	}
@@ -558,7 +564,7 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		lookFor = lookFor.replaceAll( "\\.", "" );
 		lookFor = lookFor.replaceAll( "-", "" );
 		String sql = "select o from Login o where o.person in (" +
-				this.getUserDocumentSQL( lookFor ) + ")";
+				getUserDocumentSQL( lookFor ) + ")";
 		sql = sql + "order by o.person.name";
 		return this.findByQuery( sql, new DBPaging( 0, 40 ), UserDocument.CPF, lookFor );
 	}
@@ -596,9 +602,9 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		if ( targetLogin == null ) {
 			return toReset;
 		}
-		targetLogin.setStatus( this.statusSession.get( ( UserStatus.statusOk ) ) );
+		targetLogin.setStatus( statusSession.get( ( UserStatus.statusOk ) ) );
 		targetLogin.setTryCount( 0 );
-		this.setPasswordExpirationDate( targetLogin );
+		setPasswordExpirationDate( targetLogin );
 		String newPwd = RandomStringUtils.random( 8, true, true );
 		this.changePassword( targetLogin, credential, newPwd );
 		return targetLogin;
@@ -609,5 +615,4 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 	{
 		return RandomStringUtils.randomAscii( count );
 	}
-
 }
