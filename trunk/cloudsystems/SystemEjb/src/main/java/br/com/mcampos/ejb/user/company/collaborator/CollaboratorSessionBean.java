@@ -80,11 +80,11 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 			c = this.get( key );
 		}
 		if ( c == null ) {
-			login = this.loginSession.get( auth.getUserId( ) );
+			login = loginSession.get( auth.getUserId( ) );
 			if ( login == null ) {
 				return null;
 			}
-			company = this.companySession.get( auth.getCompanyID( ) );
+			company = companySession.get( auth.getCompanyID( ) );
 			if ( company == null ) {
 				return null;
 			}
@@ -112,7 +112,8 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 			return Collections.emptyList( );
 		}
 		try {
-			Login login = this.loginSession.get( auth.getUserId( ) );
+			logger.info( "Getting Login Info from getCompanies (" + auth.getUserId( ).toString( ) + ")" );
+			Login login = loginSession.get( auth.getUserId( ) );
 			if ( login == null ) {
 				return null;
 			}
@@ -120,7 +121,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 			if ( SysUtils.isEmpty( list ) ) {
 				return Collections.emptyList( );
 			}
-			return this.toSimpleDTOList( list );
+			return toSimpleDTOList( list );
 		}
 		catch ( Exception e )
 		{
@@ -147,24 +148,24 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public LoginProperty getProperty( PrincipalDTO collaborator, String propertyName )
 	{
-		return this.propertySession.getProperty( collaborator, propertyName );
+		return propertySession.getProperty( collaborator, propertyName );
 	}
 
 	@Override
 	public void setProperty( PrincipalDTO collaborator, String propertyName, String Value )
 	{
-		this.propertySession.setProperty( collaborator, propertyName, Value );
+		propertySession.setProperty( collaborator, propertyName, Value );
 	}
 
 	@Override
 	public LoginProperty remove( PrincipalDTO collaborator, String propertyName )
 	{
-		return this.propertySession.remove( collaborator, propertyName );
+		return propertySession.remove( collaborator, propertyName );
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * br.com.mcampos.ejb.user.company.collaborator.CollaboratorSession#verifyAccess
 	 * (br.com.mcampos.ejb.user.company.collaborator.Collaborator,
@@ -173,8 +174,8 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public AuthorizedPageOptions verifyAccess( PrincipalDTO c, String mnuUrl )
 	{
-		Login login = this.loginSession.get( c.getUserId( ) );
-		Menu menu = this.menuSession.get( mnuUrl );
+		Login login = loginSession.get( c.getUserId( ) );
+		Menu menu = menuSession.get( mnuUrl );
 		AuthorizedPageOptions auth = new AuthorizedPageOptions( );
 		if ( menu == null ) {
 			/*
@@ -184,7 +185,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 			auth.setAuthorized( true );
 		}
 		try {
-			List<Menu> menus = this.getMenus( c );
+			List<Menu> menus = getMenus( c );
 			if ( SysUtils.isEmpty( menus ) ) {
 				logger.error( "User: " + login.getPerson( ).getName( ) + " is not - Authorized for " + mnuUrl );
 				auth.setAuthorized( false );
@@ -206,7 +207,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * br.com.mcampos.ejb.user.company.collaborator.CollaboratorSession#getMenus
 	 * (br.com.mcampos.ejb.user.company.collaborator.Collaborator)
@@ -217,8 +218,8 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 		if ( c == null ) {
 			return Collections.emptyList( );
 		}
-		Collaborator collaborator = this.find( c );
-		return this.menuSession.getMenus( collaborator );
+		Collaborator collaborator = find( c );
+		return menuSession.getMenus( collaborator );
 	}
 
 	@Override
@@ -235,9 +236,9 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	{
 		Collaborator c = new Collaborator( );
 		c.setPerson( login.getPerson( ) );
-		c.setCompany( this.companySession.get( companyId ) );
+		c.setCompany( companySession.get( companyId ) );
 
-		c.setCollaboratorType( this.getEntityManager( ).find( CollaboratorType.class, new CollaboratorTypePK( companyId, 1 ) ) );
+		c.setCollaboratorType( getEntityManager( ).find( CollaboratorType.class, new CollaboratorTypePK( companyId, 1 ) ) );
 		c.setCpsIdIn( 5 );
 		c.setFromDate( new Date( ) );
 		return this.merge( c );
@@ -246,7 +247,7 @@ public class CollaboratorSessionBean extends SimpleSessionBean<Collaborator> imp
 	@Override
 	public Login getLogin( PrincipalDTO login )
 	{
-		return this.loginSession.get( login.getUserId( ) );
+		return loginSession.get( login.getUserId( ) );
 	}
 
 }
