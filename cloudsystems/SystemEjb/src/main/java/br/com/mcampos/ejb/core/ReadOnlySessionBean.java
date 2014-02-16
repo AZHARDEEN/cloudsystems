@@ -14,6 +14,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.mcampos.dto.core.PrincipalDTO;
 import br.com.mcampos.ejb.core.search.Searchable;
 import br.com.mcampos.ejb.core.search.Searchables;
@@ -25,6 +28,7 @@ import br.com.mcampos.sysutils.SysUtils;
 public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements ReadOnlySessionInterface<T>
 {
 	private static final long serialVersionUID = 4852211960728247204L;
+	private static final Logger LOGGER = LoggerFactory.getLogger( ReadOnlySessionBean.class.getSimpleName( ) );
 
 	private Class<T> persistentClass;
 
@@ -56,15 +60,16 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	{
 		T entity;
 		try {
-			entity = this.getEntityManager( ).find( this.getPersistentClass( ), key );
+			LOGGER.info( "EntityManager->get using " + key.getClass( ).getName( ) + " as argument " );
+			entity = getEntityManager( ).find( this.getPersistentClass( ), key );
 		}
 		catch ( IllegalArgumentException e )
 		{
-			this.storeException( e );
+			storeException( e );
 			throw e;
 		}
 		catch ( Exception e ) {
-			this.storeException( e );
+			storeException( e );
 			throw e;
 		}
 		return entity;
@@ -101,11 +106,11 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 					sqlQuery += " order by " + orderBy;
 				}
 			}
-			Query query = this.getEntityManager( ).createQuery( sqlQuery );
+			Query query = getEntityManager( ).createQuery( sqlQuery );
 			return query;
 		}
 		catch ( Exception e ) {
-			this.storeException( e );
+			storeException( e );
 			throw e;
 		}
 	}
@@ -127,7 +132,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 			return null;
 		}
 		catch ( Exception e ) {
-			this.storeException( e );
+			storeException( e );
 			return Collections.emptyList( );
 		}
 	}
@@ -147,7 +152,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 			return null;
 		}
 		catch ( Exception e ) {
-			this.storeException( e );
+			storeException( e );
 			return null;
 		}
 	}
@@ -195,7 +200,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 			}
 		}
 		catch ( Exception e ) {
-			this.storeException( e );
+			storeException( e );
 			throw e;
 		}
 
@@ -212,7 +217,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByNamedQuery( String namedQuery, DBPaging paging, Object... params )
 	{
-		Query query = this.getEntityManager( ).createNamedQuery( namedQuery );
+		Query query = getEntityManager( ).createNamedQuery( namedQuery );
 		this.setQueryParams( query, params );
 		this.page( paging, query );
 		return (List<T>) this.getResultList( query );
@@ -229,7 +234,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByNamedParams( String queryname, DBPaging paging, Map<String, Object> params )
 	{
-		Query query = this.getEntityManager( ).createNamedQuery( queryname );
+		Query query = getEntityManager( ).createNamedQuery( queryname );
 		this.setQueryParams( query, params );
 		this.page( paging, query );
 		return (List<T>) this.getResultList( query );
@@ -246,7 +251,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByNativeQuery( String sql, DBPaging paging, Object... params )
 	{
-		Query query = this.getEntityManager( ).createNativeQuery( sql );
+		Query query = getEntityManager( ).createNativeQuery( sql );
 		this.setQueryParams( query, params );
 		this.page( paging, query );
 		return (List<T>) this.getResultList( query );
@@ -271,7 +276,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public T getByNamedQuery( String namedQuery, DBPaging paging, Object... params )
 	{
-		Query query = this.getEntityManager( ).createNamedQuery( namedQuery );
+		Query query = getEntityManager( ).createNamedQuery( namedQuery );
 		this.setQueryParams( query, params );
 		this.page( paging, query );
 		return this.getSingleResult( query );
@@ -288,7 +293,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public T getByNamedParams( String queryname, DBPaging paging, Map<String, Object> params )
 	{
-		Query query = this.getEntityManager( ).createNamedQuery( queryname );
+		Query query = getEntityManager( ).createNamedQuery( queryname );
 		this.setQueryParams( query, params );
 		this.page( paging, query );
 		return this.getSingleResult( query );
@@ -305,7 +310,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public T getByNativeQuery( String sql, DBPaging paging, Object... params )
 	{
-		Query query = this.getEntityManager( ).createNativeQuery( sql );
+		Query query = getEntityManager( ).createNativeQuery( sql );
 		this.setQueryParams( query, params );
 		this.page( paging, query );
 		return this.getSingleResult( query );
@@ -315,7 +320,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public Integer getNextId( )
 	{
-		Query query = this.getEntityManager( ).createQuery(
+		Query query = getEntityManager( ).createQuery(
 				"select max( o.id ) + 1 from " + this.getPersistentClass( ).getSimpleName( ) + " o" );
 		Integer id;
 		try {
@@ -325,7 +330,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 			}
 		}
 		catch ( Exception e ) {
-			this.storeException( e );
+			storeException( e );
 			id = 1;
 		}
 		return id;
@@ -335,7 +340,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public Integer getNextId( String namedQuery, Object... params )
 	{
-		Query query = this.getEntityManager( ).createNamedQuery( namedQuery );
+		Query query = getEntityManager( ).createNamedQuery( namedQuery );
 		Integer id;
 		try {
 			this.setQueryParams( query, params );
@@ -345,7 +350,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 			}
 		}
 		catch ( Exception e ) {
-			this.storeException( e );
+			storeException( e );
 			id = 1;
 		}
 		return id;
@@ -362,7 +367,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByQuery( String sql, DBPaging paging, Object... params )
 	{
-		Query query = this.getEntityManager( ).createQuery( sql );
+		Query query = getEntityManager( ).createQuery( sql );
 		this.setQueryParams( query, params );
 		this.page( paging, query );
 		return (List<T>) this.getResultList( query );
@@ -379,7 +384,7 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	@TransactionAttribute( TransactionAttributeType.SUPPORTS )
 	public List<T> findByQuery( String sql, DBPaging paging, Map<String, Object> params )
 	{
-		Query query = this.getEntityManager( ).createQuery( sql );
+		Query query = getEntityManager( ).createQuery( sql );
 		this.setQueryParams( query, params );
 		this.page( paging, query );
 		return (List<T>) this.getResultList( query );

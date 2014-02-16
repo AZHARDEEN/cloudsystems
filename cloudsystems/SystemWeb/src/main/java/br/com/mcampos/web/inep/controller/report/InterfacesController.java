@@ -202,7 +202,8 @@ public class InterfacesController extends BaseDBLoggedController<TeamSession>
 					"d.usr_id_in = " + event.getId( ).getCompanyId( ).toString( ) +
 					"and 	d.pct_id_in = " + event.getId( ).getId( ).toString( ) +
 					"and 	d.dis_golden_bt is false " +
-					"and 	r.rvs_coordinator_bt is true " +
+					"and 	r.rvs_coordinator_bt is true "
+					+ "and DIS_INSERT_DT >= TO_TIMESTAMP ( '20140101 000000', 'YYYYMMDD HH24MISS' ) " +
 					"order by 1, 2";
 			break;
 		case 4:
@@ -220,7 +221,8 @@ public class InterfacesController extends BaseDBLoggedController<TeamSession>
 					"d.usr_id_in = " + event.getId( ).getCompanyId( ).toString( ) +
 					"and 	d.pct_id_in = " + event.getId( ).getId( ).toString( ) +
 					"and 	d.dis_golden_bt is false " +
-					"and 	ud.doc_id_in = 1 " +
+					"and 	ud.doc_id_in = 1 "
+					+ "and DIS_INSERT_DT >= TO_TIMESTAMP ( '20140101 000000', 'YYYYMMDD HH24MISS' ) " +
 					"and 	r.rvs_coordinator_bt is false " +
 					"order by 1, 2, 3";
 			break;
