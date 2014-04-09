@@ -361,13 +361,19 @@ public class LoginSessionBean extends SimpleSessionBean<Login> implements LoginS
 		 * pessoa, que neste momento não possuia login. Ainda que o login seja
 		 * inserido no banco de dados, fica a situação inicial - sem login.
 		 */
-		login.setPassword( encryptPassword( password ) );
-		login.setStatus( statusSession.get( UserStatus.statusOk ) );
-		login.setTryCount( 0 );
+		setPassword( login, password );
 		login = this.merge( login );
 		// this.sendMail( EMail.templateValidationEmail, login );
 		return login;
 
+	}
+
+	@Override
+	public void setPassword( Login login, String password )
+	{
+		login.setPassword( encryptPassword( password ) );
+		login.setStatus( statusSession.get( UserStatus.statusOk ) );
+		login.setTryCount( 0 );
 	}
 
 	private void setPasswordExpirationDate( Login login )

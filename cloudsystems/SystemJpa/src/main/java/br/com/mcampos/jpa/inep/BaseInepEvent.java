@@ -29,7 +29,7 @@ public abstract class BaseInepEvent extends BaseCompanyEntity
 
 	public BaseInepEvent( @NotNull InepEvent evt )
 	{
-		super( evt.getCompany( ) );
+		setEvent( evt );
 	}
 
 	public InepEvent getEvent( )

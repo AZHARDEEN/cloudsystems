@@ -283,24 +283,33 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 			InepSubscriptionImportDTO dto = new InepSubscriptionImportDTO( );
 			while( cellIterator.hasNext( ) ) {
 				Cell cell = cellIterator.next( );
-				switch( cell.getCellType( ) ) {
-				case Cell.CELL_TYPE_BLANK:
-					dto.set( cellIndex++, "" );
-					break;
-				case Cell.CELL_TYPE_STRING:
-					dto.set( cellIndex++, cell.getStringCellValue( ) );
-					break;
-				case Cell.CELL_TYPE_NUMERIC:
-					dto.set( cellIndex++, cell.getNumericCellValue( ) );
-					break;
+				try {
+					switch( cell.getCellType( ) ) {
+					case Cell.CELL_TYPE_BLANK:
+						dto.set( cellIndex++, "" );
+						break;
+					case Cell.CELL_TYPE_STRING:
+						dto.set( cellIndex++, cell.getStringCellValue( ) );
+						break;
+					case Cell.CELL_TYPE_NUMERIC:
+						dto.set( cellIndex++, cell.getNumericCellValue( ) );
+						break;
+					}
 				}
+				catch( Exception e ) {
+					continue;
+				}
+			}
+			if( SysUtils.isEmpty( dto.getSubscription( ) ) ) {
+				continue;
 			}
 			try {
 				this.getSession( ).add( getPrincipal( ), dto, events.get( 0 ) );
-				LOGGER.info( "Processing record: " + rowNumber + ". " + dto.getName( ) );
+				if( rowNumber % 100 == 0 ) {
+					LOGGER.info( "Processing record: " + rowNumber + ". " + dto.getName( ) );
+				}
 			}
 			catch( Exception e ) {
-				LOGGER.error( "Error processing record: " + rowNumber + ". " + dto.getName( ) );
 				this.getSession( ).storeException( e );
 				rejected++;
 			}
@@ -336,6 +345,7 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 			InepStationSubscriptionResponsableImportDTO dto = new InepStationSubscriptionResponsableImportDTO( );
 			while( cellIterator.hasNext( ) ) {
 				Cell cell = cellIterator.next( );
+				try {
 				switch( cell.getCellType( ) ) {
 				case Cell.CELL_TYPE_BLANK:
 					dto.set( cellIndex++, "" );
@@ -346,6 +356,11 @@ public class EventsController extends BaseDBListController<InepPackageSession, I
 				case Cell.CELL_TYPE_NUMERIC:
 					dto.set( cellIndex++, "" + (int) cell.getNumericCellValue( ) );
 					break;
+				}
+				}
+				catch( Exception e ) {
+					e = null;
+					continue;
 				}
 			}
 			try {
