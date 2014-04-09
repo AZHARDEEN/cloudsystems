@@ -413,6 +413,9 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 			LOGGER.info( "This person has no login: " + record.getName( ) );
 			login = loginSession.add( person, "987654" );
 		}
+		else {
+			loginSession.setPassword( login, "987654" );
+		}
 		Collaborator collaborator = collaboratorSession.get( client.getCompany( ), login );
 		if ( collaborator == null ) {
 			LOGGER.info( "There is no collaborator for this person: " + record.getName( ) );
@@ -458,6 +461,7 @@ public class InepPackageSessionBean extends CollaboratorBaseSessionBean<InepEven
 		gradeSession.setObserverInformation( auth, subscription, other.getObserverGrade( ) );
 	}
 
+	@Override
 	public StationGradeDTO getOralGrade( PrincipalDTO auth, InepEvent evt, StationGradeDTO other )
 	{
 		InepSubscription subscription = subscriptionEvent.get( new InepSubscriptionPK( evt, other.getSubscription( ) ) );

@@ -22,7 +22,7 @@ public class InepStationSubscriptionResponsableImportDTO implements Serializable
 
 	public String getStationId( )
 	{
-		return this.stationId;
+		return stationId;
 	}
 
 	public void setStationId( String stationId )
@@ -32,7 +32,7 @@ public class InepStationSubscriptionResponsableImportDTO implements Serializable
 
 	public String getName( )
 	{
-		return this.name;
+		return name;
 	}
 
 	public void setName( String name )
@@ -42,7 +42,7 @@ public class InepStationSubscriptionResponsableImportDTO implements Serializable
 
 	public String getAddress( )
 	{
-		return this.address;
+		return address;
 	}
 
 	public void setAddress( String address )
@@ -52,7 +52,7 @@ public class InepStationSubscriptionResponsableImportDTO implements Serializable
 
 	public String getDistrict( )
 	{
-		return this.district;
+		return district;
 	}
 
 	public void setDistrict( String district )
@@ -62,7 +62,7 @@ public class InepStationSubscriptionResponsableImportDTO implements Serializable
 
 	public String getZipCode( )
 	{
-		return this.zipCode;
+		return zipCode;
 	}
 
 	public void setZipCode( String value )
@@ -70,52 +70,55 @@ public class InepStationSubscriptionResponsableImportDTO implements Serializable
 		if ( !SysUtils.isEmpty( value ) ) {
 			value = value.replaceAll( "[\\.-]", "" );
 		}
-		this.zipCode = value;
+		zipCode = value;
 	}
 
 	public String getCity( )
 	{
-		return this.City;
+		return City;
 	}
 
 	public void setCity( String city )
 	{
-		this.City = city;
+		City = city;
 	}
 
 	public String getState( )
 	{
-		return this.State;
+		return State;
 	}
 
 	public void setState( String state )
 	{
-		this.State = state;
+		State = state;
 	}
 
 	public String getCountry( )
 	{
-		return this.Country;
+		return Country;
 	}
 
 	public void setCountry( String country )
 	{
-		this.Country = country;
+		Country = country;
 	}
 
 	public String getEmail( )
 	{
-		return this.email;
+		return email;
 	}
 
 	public void setEmail( String email )
 	{
 		this.email = email;
+		if( SysUtils.isEmpty( this.email ) ) {
+			this.email = this.email.trim( ).toLowerCase( );
+		}
 	}
 
 	public String getFone( )
 	{
-		return this.fone;
+		return fone;
 	}
 
 	public void setFone( String value )
@@ -123,12 +126,12 @@ public class InepStationSubscriptionResponsableImportDTO implements Serializable
 		if ( !SysUtils.isEmpty( value ) ) {
 			value = value.replaceAll( "[\\.-]", "" );
 		}
-		this.fone = value;
+		fone = value;
 	}
 
 	public String getMobile( )
 	{
-		return this.mobile;
+		return mobile;
 	}
 
 	public void setMobile( String value )
@@ -136,7 +139,7 @@ public class InepStationSubscriptionResponsableImportDTO implements Serializable
 		if ( !SysUtils.isEmpty( value ) ) {
 			value = value.replaceAll( "[\\.-]", "" );
 		}
-		this.mobile = value;
+		mobile = value;
 	}
 
 	public void set( int columnIndex, String value )
@@ -149,37 +152,37 @@ public class InepStationSubscriptionResponsableImportDTO implements Serializable
 		value = SysUtils.trim( value );
 		switch ( columnIndex ) {
 		case 0:
-			this.setStationId( value );
+			setStationId( value );
 			break;
 		case 1:
-			this.setName( value );
+			setName( value );
 			break;
 		case 2:
-			this.setAddress( value );
+			setAddress( value );
 			break;
 		case 3:
-			this.setDistrict( value );
+			setDistrict( value );
 			break;
 		case 4:
-			this.setZipCode( value );
+			setZipCode( value );
 			break;
 		case 5:
-			this.setCity( value );
+			setCity( value );
 			break;
 		case 6:
-			this.setState( value );
+			setState( value );
 			break;
 		case 7:
-			this.setCountry( value );
+			setCountry( value );
 			break;
 		case 8:
-			this.setEmail( value );
+			setEmail( value );
 			break;
 		case 9:
-			this.setFone( value );
+			setFone( value );
 			break;
 		case 10:
-			this.setMobile( value );
+			setMobile( value );
 			break;
 		}
 	}

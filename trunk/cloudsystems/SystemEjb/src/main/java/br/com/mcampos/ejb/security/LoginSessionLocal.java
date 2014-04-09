@@ -25,4 +25,6 @@ public interface LoginSessionLocal extends BaseCrudSessionInterface<Login>
 	boolean verifyPassword( Integer userId, String password );
 
 	public boolean validateToken( String token, String password );
+
+	public void setPassword( Login login, String password );
 }

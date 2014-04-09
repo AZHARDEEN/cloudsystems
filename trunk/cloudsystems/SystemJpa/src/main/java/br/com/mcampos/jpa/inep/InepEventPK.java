@@ -11,7 +11,7 @@ import br.com.mcampos.jpa.user.Company;
 
 /**
  * The primary key class for the inep_package database table.
- * 
+ *
  */
 @Embeddable
 public class InepEventPK extends BaseCompanyPK implements Serializable, Comparable<InepEventPK>
@@ -19,7 +19,7 @@ public class InepEventPK extends BaseCompanyPK implements Serializable, Comparab
 	// default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column( name = "pct_id_in" )
+	@Column( name = "pct_id_in", unique = true, nullable = false, insertable = true, updatable = true )
 	private Integer id;
 
 	public InepEventPK( )

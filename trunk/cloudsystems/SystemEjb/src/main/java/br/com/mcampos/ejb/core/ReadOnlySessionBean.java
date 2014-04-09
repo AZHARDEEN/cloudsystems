@@ -60,7 +60,6 @@ public abstract class ReadOnlySessionBean<T> extends BaseSessionBean implements 
 	{
 		T entity;
 		try {
-			LOGGER.info( "EntityManager->get using " + key.getClass( ).getName( ) + " as argument from " + this.getClass( ).getName( ) );
 			entity = getEntityManager( ).find( this.getPersistentClass( ), key );
 		}
 		catch ( IllegalArgumentException e )
