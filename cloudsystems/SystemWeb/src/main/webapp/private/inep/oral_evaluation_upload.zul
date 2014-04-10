@@ -4,7 +4,7 @@
 		apply="br.com.mcampos.web.inep.controller.station.AudioUploadController">
 		<div width="100%" height="62px" align="Center" fulfill="=/private/inep/inep_logo.zul" />
 		<div width="100%" height="18px" align="Center" style="background-color:rgba(255,0,0,0.1)">
-			<label value = "Evento Oficial 2º Semestre 2013" />
+			<label value = "Evento Oficial 1º Semestre 2014" id="lblTitle" />
 		</div>
 		<separator />
 		<borderlayout>
@@ -43,10 +43,8 @@
 						</rows>
 					</grid>
 					<separator />
-					<div id="divData" visible="false">
-						<button upload="true,maxsize=40960,multiple=true,native" id="uploadAudio" image="/img/audio-128x128.png"
-							label="Enviar audio da entrevista" orient="vertical"/>
-					</div>
+					<button upload="true,maxsize=40960,accept=audio/*,native" id="uploadAudio" image="/img/audio-128x128.png"
+						label="Enviar audio da entrevista" orient="vertical" visible="false" />
 				</div>
 			</center>
 		</borderlayout>

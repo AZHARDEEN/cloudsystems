@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.event.UploadEvent;
 import org.zkoss.zk.ui.select.annotation.Listen;
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Messagebox;
 
 import br.com.mcampos.dto.core.PrincipalDTO;
@@ -29,6 +31,9 @@ public class AudioUploadController extends BaseStationController
 
 	private static final String SAVE_DIR = "/var/local/jboss/upload";
 
+	@Wire
+	private Button uploadAudio;
+
 	@Override
 	protected boolean validate( )
 	{
@@ -46,16 +51,17 @@ public class AudioUploadController extends BaseStationController
 		super.cleanUp( );
 	}
 
-	@Listen( "onUpload=#uploadAudio" )
+	@Listen( "onUpload=button" )
 	public void onUploadAudio( UploadEvent evt ) throws IOException
 	{
-		InepSubscription subscription = this.getCurrentSubscription( );
-		if ( evt != null ) {
+		InepSubscription subscription = getCurrentSubscription( );
+		if( evt != null && subscription != null ) {
+			evt.stopPropagation( );
 			Media media = evt.getMedia( );
 			String msg = media.getName( ) + " for subscription " + subscription.getId( ).getId( ) + ". Size: "
 					+ media.getStreamData( ).available( );
 			try {
-				this.saveAudio( subscription, media );
+				saveAudio( subscription, media );
 				LOGGER.info( "Uploading audio " + msg );
 				Messagebox.show( "Audio enviado com sucesso: " + msg, "Enviar Audio", Messagebox.OK, Messagebox.INFORMATION );
 			}
@@ -65,16 +71,15 @@ public class AudioUploadController extends BaseStationController
 				this.getSession( ).storeException( e );
 				Messagebox.show( "ERRO ao enviar: " + msg, "Enviar Audio", Messagebox.OK, Messagebox.ERROR );
 			}
-			evt.stopPropagation( );
 		}
 	}
 
 	private void saveAudio( InepSubscription subscription, Media audio ) throws IOException
 	{
-		PrincipalDTO auth = this.getPrincipal( );
+		PrincipalDTO auth = getPrincipal( );
 
 		List<InepMedia> medias = this.getSession( ).lookupForName( auth, subscription, audio.getName( ) );
-		this.onOkSave( subscription, audio );
+		onOkSave( subscription, audio );
 		if ( !SysUtils.isEmpty( medias ) ) {
 			String subscriptions = "";
 			for ( InepMedia item : medias ) {
@@ -91,12 +96,12 @@ public class AudioUploadController extends BaseStationController
 						"Enviar Audio", Messagebox.OK, Messagebox.EXCLAMATION );
 			}
 		}
-		this.cleanUp( );
+		cleanUp( );
 	}
 
 	public void onOkSave( InepSubscription subscription, Media audio ) throws IOException
 	{
-		PrincipalDTO auth = this.getPrincipal( );
+		PrincipalDTO auth = getPrincipal( );
 		InepSubscriptionPK id = subscription.getId( );
 		File dir = new File( SAVE_DIR + "/" + id.getCompanyId( ) + "/" + id.getEventId( ) + "/audio" );
 		if ( !dir.exists( ) ) {
@@ -126,4 +131,19 @@ public class AudioUploadController extends BaseStationController
 	{
 
 	}
+
+	@Override
+	public void onCancel( )
+	{
+		super.onCancel( );
+		uploadAudio.setVisible( false );
+	}
+
+	@Override
+	protected void showInfo( InepSubscription s )
+	{
+		super.showInfo( s );
+		uploadAudio.setVisible( true );
+	}
+
 }

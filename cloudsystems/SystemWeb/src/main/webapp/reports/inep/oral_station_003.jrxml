@@ -17,7 +17,7 @@
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[3]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[41]]></defaultValueExpression>
@@ -43,7 +43,7 @@ FROM
 	INNER JOIN CLIENT CLI ON ( ISC.USR_ID_IN = CLI.USR_ID_IN AND ISC.CLI_SEQ_IN = CLI.CLI_SEQ_IN )
 	INNER JOIN USERS ST ON ( CLI.CLI_ID_IN = ST.USR_ID_IN )
 	INNER JOIN USERS STP ON ( ISC.ISC_CANDIDATE_IN = STP.USR_ID_IN )
-	INNER JOIN INEP.INEP_STATION_REPONSABLE SR ON ( CLI.USR_ID_IN = SR.USR_ID_IN AND CLI.CLI_SEQ_IN = SR.CLI_SEQ_IN )
+	INNER JOIN INEP.INEP_STATION_REPONSABLE SR ON ( CLI.USR_ID_IN = SR.USR_ID_IN AND CLI.CLI_SEQ_IN = SR.CLI_SEQ_IN and evt.pct_id_in = sr.pct_id_in )
 	LEFT OUTER JOIN INEP.INEP_ORAL_TEST O ON ( ISC.USR_ID_IN = O.USR_ID_IN AND ISC.PCT_ID_IN = O.PCT_ID_IN AND ISC.ISC_ID_CH = O.ISC_ID_CH )
 WHERE
      EVT.USR_ID_IN = $P{COMPANY_ID}
@@ -145,7 +145,7 @@ ORDER BY
 			<frame>
 				<reportElement style="Zebra" mode="Opaque" x="1" y="0" width="555" height="14" uuid="bfee00be-642f-4346-8bfe-a36693652557"/>
 				<textField isBlankWhenNull="true">
-					<reportElement x="0" y="0" width="80" height="14" uuid="de5e44d9-7341-48b5-8091-59442eaac7c9">
+					<reportElement x="0" y="0" width="92" height="14" uuid="de5e44d9-7341-48b5-8091-59442eaac7c9">
 						<printWhenExpression><![CDATA[!$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
@@ -159,7 +159,7 @@ ORDER BY
 					<textFieldExpression><![CDATA[$F{nacionalidade}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="0" y="0" width="80" height="14" forecolor="#FF0000" uuid="afac717b-7231-4999-8b8f-937f7c8362f5">
+					<reportElement x="0" y="0" width="92" height="14" forecolor="#FF0000" uuid="afac717b-7231-4999-8b8f-937f7c8362f5">
 						<printWhenExpression><![CDATA[$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
