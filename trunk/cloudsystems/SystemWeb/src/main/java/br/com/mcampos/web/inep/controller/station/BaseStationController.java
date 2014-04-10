@@ -51,15 +51,18 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 	@Wire
 	private Label needs;
 
+	@Wire
+	private Label lblTitle;
+
 	private InepEvent currentEvent;
 
 	@Listen( "onClick = #cmdSubmit" )
 	public void onOk( Event evt )
 	{
-		if ( this.validate( ) == false ) {
+		if ( validate( ) == false ) {
 			return;
 		}
-		InepSubscription s = this.getCurrentSubscription( );
+		InepSubscription s = getCurrentSubscription( );
 
 		Messagebox.show( "Confirma a avaliação do(a) examinando " + s.getPerson( ).getName( ) + "?", "Confirmação", Messagebox.YES | Messagebox.NO,
 				Messagebox.QUESTION, 0,
@@ -82,28 +85,31 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 	@Listen( "onClick = #cmdCancel" )
 	public void onCancel( )
 	{
-		this.cleanUp( );
-		this.subscription.setValue( "" );
-		this.divData.setVisible( false );
-		this.subscription.setFocus( true );
+		cleanUp( );
+		subscription.setValue( "" );
+		if( divData != null ) {
+			divData.setVisible( false );
+		}
+		subscription.setFocus( true );
 	}
 
 	private void update( )
 	{
-		this.proceed( );
-		this.onCancel( );
+		proceed( );
+		onCancel( );
 	}
 
 	@Override
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		this.cleanUp( );
-		this.subscription.setFocus( true );
-		this.listBox.setItemRenderer( new SubscriptionItemRenderer( ) );
-		if ( this.getCurrentEvent( ) == null ) {
+		cleanUp( );
+		subscription.setFocus( true );
+		listBox.setItemRenderer( new SubscriptionItemRenderer( ) );
+		if ( getCurrentEvent( ) == null ) {
 			Messagebox.show( "Não há nenhum evento de correção ativo", "Evento", Messagebox.OK, Messagebox.EXCLAMATION );
 		}
+		lblTitle.setValue( getCurrentEvent( ).getDescription( ) );
 
 	}
 
@@ -113,15 +119,15 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
-		this.getSubscription( this.subscription.getValue( ) );
+		getSubscription( subscription.getValue( ) );
 	}
 
 	protected InepEvent getCurrentEvent( )
 	{
-		if ( this.currentEvent == null ) {
-			this.currentEvent = this.getSession( ).getCurrentEvent( this.getPrincipal( ) );
+		if ( currentEvent == null ) {
+			currentEvent = this.getSession( ).getCurrentEvent( getPrincipal( ) );
 		}
-		return this.currentEvent;
+		return currentEvent;
 	}
 
 	@Override
@@ -133,18 +139,18 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 	protected void getSubscription( String part )
 	{
 
-		InepEvent event = this.getCurrentEvent( );
+		InepEvent event = getCurrentEvent( );
 		if ( event == null || SysUtils.isEmpty( part ) ) {
 			return;
 		}
 		if ( part.length( ) >= 3 ) {
 			LOGGER.info( "Searching for Subscription: " + part );
-			List<InepSubscription> list = this.getSession( ).getSubscriptions( this.getPrincipal( ), event, part );
-			this.listBox.setModel( new ListModelList<InepSubscription>( list ) );
+			List<InepSubscription> list = this.getSession( ).getSubscriptions( getPrincipal( ), event, part );
+			listBox.setModel( new ListModelList<InepSubscription>( list ) );
 			if ( SysUtils.isEmpty( list ) ) {
 				return;
 			}
-			this.subscription.open( );
+			subscription.open( );
 		}
 	}
 
@@ -154,43 +160,45 @@ public abstract class BaseStationController extends BaseDBLoggedController<Stati
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
-		InepSubscription s = this.getCurrentSubscription( );
+		InepSubscription s = getCurrentSubscription( );
 		if ( s != null ) {
-			this.subscription.setValue( s.getId( ).getId( ) );
-			this.subscription.close( );
-			this.showInfo( s );
+			subscription.setValue( s.getId( ).getId( ) );
+			subscription.close( );
+			showInfo( s );
 		}
 	}
 
 	protected InepSubscription getCurrentSubscription( )
 	{
-		Listitem item = this.listBox.getSelectedItem( );
+		Listitem item = listBox.getSelectedItem( );
 		if ( item == null || item.getValue( ) == null ) {
 			return null;
 		}
 		return item.getValue( );
 	}
 
-	private void showInfo( InepSubscription s )
+	protected void showInfo( InepSubscription s )
 	{
-		this.divData.setVisible( s != null );
-		this.candidate.setValue( "" );
-		this.citizenship.setValue( "" );
-		this.needs.setValue( "" );
+		if( divData != null ) {
+			divData.setVisible( s != null );
+		}
+		candidate.setValue( "" );
+		citizenship.setValue( "" );
+		needs.setValue( "" );
 		if ( s != null ) {
-			this.candidate.setValue( s.getPerson( ).getName( ) );
-			this.citizenship.setValue( s.getCitizenship( ) );
-			this.needs.setValue( s.getSpecialNeeds( ) );
-			StationGradeDTO grade = this.getSession( ).getStationGrade( this.getPrincipal( ), s );
+			candidate.setValue( s.getPerson( ).getName( ) );
+			citizenship.setValue( s.getCitizenship( ) );
+			needs.setValue( s.getSpecialNeeds( ) );
+			StationGradeDTO grade = this.getSession( ).getStationGrade( getPrincipal( ), s );
 			if ( grade != null ) {
-				this.showGradeIfexists( grade );
+				showGradeIfexists( grade );
 			}
 		}
 	}
 
 	protected void cleanUp( )
 	{
-		this.showInfo( null );
+		showInfo( null );
 	}
 
 }
