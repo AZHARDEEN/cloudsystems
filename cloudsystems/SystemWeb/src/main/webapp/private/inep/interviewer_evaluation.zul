@@ -158,6 +158,8 @@
 								<button label="Cancelar" id="cmdCancel" image="/img/icontexto-webdev-cancel-032x032.png" dir="reverse" width="150px" />
 							</hlayout>
 						</div>
+						<separator height="150px" orient="vertical"/>
+						<label>.</label>
 					</div>
 				</div>
 			</center>

@@ -156,6 +156,8 @@
 						</grid>
 						<separator height="30px" />
 						<div fulfill="=/templates/submit_cancel.zul"></div>
+						<separator height="150px" orient="vertical"/>
+						<label>.</label>
 					</div>
 				</div>
 			</center>
