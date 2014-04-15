@@ -44,8 +44,8 @@ from
 	inep.inep_station p inner join client c on ( p.usr_id_in = c.usr_id_in and p.cli_seq_in = c.cli_seq_in )
 	inner join users u on ( c.cli_id_in = u.usr_id_in )
 where
-	p.usr_id_in = 13623
-and 	p.pct_id_in = 3
+	p.usr_id_in = $P{COMPANY_ID}
+and 	p.pct_id_in = $P{EVENT_ID}
 order by 1]]>
 	</queryString>
 	<field name="usr_name_ch" class="java.lang.String"/>
@@ -76,14 +76,14 @@ order by 1]]>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[Situação Geral Aplicação dos Postos]]></text>
+				<text><![CDATA[Situação Geral Postos Aplicadores]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="437" y="0" width="116" height="14" uuid="03e96819-2b97-4ff6-ac3b-b37c8b1102eb"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[management_008]]></text>
+				<text><![CDATA[oral_station_006]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="467" y="87" width="40" height="14" uuid="b56e97d1-d3a8-434a-bf4d-b844e9c44090"/>
@@ -120,27 +120,27 @@ order by 1]]>
 		<band height="15" splitType="Stretch">
 			<frame>
 				<reportElement style="Zebra" mode="Opaque" x="1" y="0" width="555" height="14" uuid="bfee00be-642f-4346-8bfe-a36693652557"/>
-				<textField>
+				<textField pattern="000" isBlankWhenNull="true">
 					<reportElement x="319" y="0" width="50" height="14" uuid="0ac6c5a6-8986-4ab7-ba3c-0387c65e5447"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{inscricoes}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField pattern="000" isBlankWhenNull="true">
 					<reportElement x="370" y="0" width="50" height="14" uuid="62a22a8c-6239-4b3a-8037-a5bc70c62fba"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{entrevistador}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField pattern="000" isBlankWhenNull="true">
 					<reportElement x="421" y="0" width="45" height="14" uuid="4efc3448-af69-4143-bcc9-f057fc0fa238"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{observador}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField pattern="000" isBlankWhenNull="true">
 					<reportElement x="467" y="0" width="40" height="14" uuid="68cde5f4-c9ea-4de3-9038-ecd5b86b4dd7"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{audios}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField pattern="000" isBlankWhenNull="true">
 					<reportElement x="508" y="0" width="45" height="14" uuid="6712150d-ae4f-4008-94e8-c210fef1c15a"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{ausentes}]]></textFieldExpression>
