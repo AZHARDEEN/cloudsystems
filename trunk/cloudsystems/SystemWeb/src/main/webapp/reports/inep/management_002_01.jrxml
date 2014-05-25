@@ -25,6 +25,9 @@
 	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
+	<parameter name="STATION_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[292]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
 	EVT.USR_ID_IN,
@@ -37,20 +40,28 @@
 	ISC.isc_special_needs_ch NEEDS,
 	iot_interviewer_grade_nm I_GRADE,
 	iot_observer_grade_nm O_GRADE,
-	ISS_ID_IN STATUS
+	ISS_ID_IN STATUS,
+	( SELECT OB.IOT_GRADE_IN FROM INEP.INEP_OBSERVER_GRADE OB WHERE ISC.USR_ID_IN = OB.USR_ID_IN AND ISC.PCT_ID_IN = OB.PCT_ID_IN AND ISC.ISC_ID_CH = OB.ISC_ID_CH AND IOG_ID_IN = 1) Compreensao,
+	( SELECT OB.IOT_GRADE_IN FROM INEP.INEP_OBSERVER_GRADE OB WHERE ISC.USR_ID_IN = OB.USR_ID_IN AND ISC.PCT_ID_IN = OB.PCT_ID_IN AND ISC.ISC_ID_CH = OB.ISC_ID_CH AND IOG_ID_IN = 2) Competencia,
+	( SELECT OB.IOT_GRADE_IN FROM INEP.INEP_OBSERVER_GRADE OB WHERE ISC.USR_ID_IN = OB.USR_ID_IN AND ISC.PCT_ID_IN = OB.PCT_ID_IN AND ISC.ISC_ID_CH = OB.ISC_ID_CH AND IOG_ID_IN = 3) Fluencia,
+	( SELECT OB.IOT_GRADE_IN FROM INEP.INEP_OBSERVER_GRADE OB WHERE ISC.USR_ID_IN = OB.USR_ID_IN AND ISC.PCT_ID_IN = OB.PCT_ID_IN AND ISC.ISC_ID_CH = OB.ISC_ID_CH AND IOG_ID_IN = 4) Adeq_Lexical,
+	( SELECT OB.IOT_GRADE_IN FROM INEP.INEP_OBSERVER_GRADE OB WHERE ISC.USR_ID_IN = OB.USR_ID_IN AND ISC.PCT_ID_IN = OB.PCT_ID_IN AND ISC.ISC_ID_CH = OB.ISC_ID_CH AND IOG_ID_IN = 5) Adeq_Gramatical,
+	( SELECT OB.IOT_GRADE_IN FROM INEP.INEP_OBSERVER_GRADE OB WHERE ISC.USR_ID_IN = OB.USR_ID_IN AND ISC.PCT_ID_IN = OB.PCT_ID_IN AND ISC.ISC_ID_CH = OB.ISC_ID_CH AND IOG_ID_IN = 6) Pronuncia
 FROM
 	INEP.INEP_PACKAGE EVT INNER JOIN INEP.INEP_SUBSCRIPTION ISC ON ( EVT.USR_ID_IN = ISC.USR_ID_IN AND EVT.PCT_ID_IN = ISC.PCT_ID_IN )
 	INNER JOIN CLIENT CLI ON ( ISC.USR_ID_IN = CLI.USR_ID_IN AND ISC.CLI_SEQ_IN = CLI.CLI_SEQ_IN )
 	INNER JOIN USERS ST ON ( CLI.CLI_ID_IN = ST.USR_ID_IN )
 	INNER JOIN USERS STP ON ( ISC.ISC_CANDIDATE_IN = STP.USR_ID_IN )
-	INNER JOIN INEP.INEP_STATION_REPONSABLE SR ON ( CLI.USR_ID_IN = SR.USR_ID_IN AND CLI.CLI_SEQ_IN = SR.CLI_SEQ_IN and evt.pct_id_in = sr.pct_id_in )
-	INNER JOIN INEP.INEP_ORAL_TEST O ON ( ISC.USR_ID_IN = O.USR_ID_IN AND ISC.PCT_ID_IN = O.PCT_ID_IN AND ISC.ISC_ID_CH = O.ISC_ID_CH )
-	LEFT OUTER JOIN INEP.INEP_MEDIA IM ON ( ISC.USR_ID_IN = IM.USR_ID_IN AND ISC.PCT_ID_IN = IM.PCT_ID_IN AND ISC.ISC_ID_CH = IM.ISC_ID_CH )
+	INNER JOIN INEP.INEP_STATION_REPONSABLE SR ON ( CLI.USR_ID_IN = SR.USR_ID_IN AND CLI.CLI_SEQ_IN = SR.CLI_SEQ_IN AND ISC.PCT_ID_IN = SR.PCT_ID_IN )
+	LEFT OUTER JOIN INEP.INEP_ORAL_TEST O ON ( ISC.USR_ID_IN = O.USR_ID_IN AND ISC.PCT_ID_IN = O.PCT_ID_IN AND ISC.ISC_ID_CH = O.ISC_ID_CH )
 WHERE
      EVT.USR_ID_IN = $P{COMPANY_ID}
  AND EVT.PCT_ID_IN = $P{EVENT_ID}
- AND IM.MED_ID_IN IS NULL
-and IM.IME_ID_IN = 2
+AND (
+	ABS ( iot_interviewer_grade_nm - iot_observer_grade_nm ) >= 1.5
+		OR ( iot_interviewer_grade_nm < 2 AND iot_observer_grade_nm >= 2 )
+		OR ( iot_interviewer_grade_nm >= 2 and iot_observer_grade_nm < 2 )
+)
 ORDER BY
      EVT.USR_ID_IN ASC,
      EVT.PCT_ID_IN ASC,
@@ -70,13 +81,33 @@ ST.USR_NAME_CH asc,
 	<field name="i_grade" class="java.math.BigDecimal"/>
 	<field name="o_grade" class="java.math.BigDecimal"/>
 	<field name="status" class="java.lang.Integer"/>
+	<field name="compreensao" class="java.lang.Integer"/>
+	<field name="competencia" class="java.lang.Integer"/>
+	<field name="fluencia" class="java.lang.Integer"/>
+	<field name="adeq_lexical" class="java.lang.Integer"/>
+	<field name="adeq_gramatical" class="java.lang.Integer"/>
+	<field name="pronuncia" class="java.lang.Integer"/>
 	<variable name="countSubscriptions" class="java.lang.Integer" resetType="Group" resetGroup="Station" calculation="Count"/>
+	<variable name="npo" class="java.lang.Double">
+		<variableExpression><![CDATA[($F{i_grade}.doubleValue()+$F{o_grade}.doubleValue())/2]]></variableExpression>
+	</variable>
+	<variable name="Composicao" class="java.lang.String">
+		<variableExpression><![CDATA["Compreensão: " + $F{compreensao}.toString()
++"      Competência: " + $F{competencia}.toString()
++"      Fluência: " + $F{fluencia}.toString()
++"      Adeq. Lexical: " + $F{adeq_lexical}.toString()
++"      Adeq. Gramatical: " + $F{adeq_gramatical}.toString()
++"      Pronúncia: " + $F{pronuncia}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Discripancia" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{i_grade}.subtract ($F{o_grade}).abs()]]></variableExpression>
+	</variable>
 	<group name="Station" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{posto}]]></groupExpression>
 		<groupHeader>
 			<band height="50">
 				<staticText>
-					<reportElement x="456" y="36" width="40" height="14" uuid="789c8cb7-4cc5-4be3-9609-5ea9d6cc0652"/>
+					<reportElement x="403" y="36" width="35" height="14" uuid="789c8cb7-4cc5-4be3-9609-5ea9d6cc0652"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[N.O.]]></text>
 				</staticText>
@@ -85,15 +116,11 @@ ST.USR_NAME_CH asc,
 					<text><![CDATA[Inscrição]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="86" y="36" width="220" height="14" uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f"/>
+					<reportElement x="82" y="36" width="252" height="14" uuid="e92ca7ef-ffea-4a22-8423-2f66ce45b82f"/>
 					<text><![CDATA[Examinando]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="311" y="36" width="100" height="14" uuid="33242b31-da19-4003-91ad-9d23dba4eb6f"/>
-					<text><![CDATA[Nacionalidade]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="414" y="36" width="40" height="14" uuid="db3a236a-a99c-4dd5-b2a0-c0a63035d114"/>
+					<reportElement x="439" y="36" width="35" height="14" uuid="db3a236a-a99c-4dd5-b2a0-c0a63035d114"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[N.E.]]></text>
 				</staticText>
@@ -104,6 +131,16 @@ ST.USR_NAME_CH asc,
 					</textElement>
 					<textFieldExpression><![CDATA[$F{posto}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement x="475" y="36" width="35" height="14" uuid="005b4961-2c98-4a4f-a76b-a5fd161c44a5"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[N.P.O]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="510" y="36" width="42" height="14" uuid="71101fd9-4585-449a-8033-410ec94d5d80"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[DISC]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -137,51 +174,50 @@ ST.USR_NAME_CH asc,
 				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="3" y="0" width="471" height="20" uuid="19eb60da-e12f-494b-bfcf-2b6310180f15"/>
+				<reportElement x="3" y="0" width="550" height="20" uuid="19eb60da-e12f-494b-bfcf-2b6310180f15"/>
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[Listagem Geral de Inscrições com Nota e Sem Audio Carregado]]></text>
+				<text><![CDATA[Listagem Geral de Inscrições do Posto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="437" y="0" width="116" height="14" uuid="a8e726c9-f23b-4eb0-a08a-453c8a19816e"/>
+				<reportElement x="439" y="0" width="116" height="14" uuid="2ec13e59-e13a-4b6d-ac51-224dbc56d78e"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[oral_station_005]]></text>
+				<text><![CDATA[management_002]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="14" splitType="Stretch">
+		<band height="29" splitType="Stretch">
 			<frame>
-				<reportElement style="Zebra" mode="Opaque" x="1" y="0" width="555" height="14" uuid="bfee00be-642f-4346-8bfe-a36693652557"/>
+				<reportElement style="Zebra" mode="Opaque" x="0" y="0" width="555" height="29" uuid="bfee00be-642f-4346-8bfe-a36693652557"/>
+				<line>
+					<reportElement x="0" y="28" width="555" height="1" uuid="13c7dc91-6331-47d4-841b-4ed30285d7e4"/>
+				</line>
 				<textField isBlankWhenNull="true">
-					<reportElement x="0" y="0" width="85" height="14" uuid="de5e44d9-7341-48b5-8091-59442eaac7c9">
+					<reportElement x="0" y="0" width="80" height="14" uuid="de5e44d9-7341-48b5-8091-59442eaac7c9">
 						<printWhenExpression><![CDATA[!$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="85" y="0" width="220" height="14" uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355"/>
+					<reportElement x="81" y="0" width="253" height="14" uuid="057bd7aa-11a4-44d8-b31c-9a79ef4fe355"/>
 					<textFieldExpression><![CDATA[$F{examinando}]]></textFieldExpression>
 				</textField>
-				<textField>
-					<reportElement x="310" y="0" width="100" height="14" uuid="51dc0e43-5428-4d2f-b7c4-a02b0a585b46"/>
-					<textFieldExpression><![CDATA[$F{nacionalidade}]]></textFieldExpression>
-				</textField>
 				<textField pattern="#,##0.000" isBlankWhenNull="true">
-					<reportElement x="413" y="0" width="40" height="14" uuid="64e185c0-31f0-4f26-be60-a6d80f582eac"/>
+					<reportElement x="439" y="0" width="35" height="14" uuid="64e185c0-31f0-4f26-be60-a6d80f582eac"/>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$F{i_grade}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.000" isBlankWhenNull="true">
-					<reportElement x="455" y="0" width="40" height="14" uuid="9133ed51-2151-4b4b-a427-3fc84a0b683e"/>
+					<reportElement x="403" y="0" width="35" height="14" uuid="9133ed51-2151-4b4b-a427-3fc84a0b683e"/>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$F{o_grade}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="0" y="0" width="85" height="14" forecolor="#FF0000" uuid="afac717b-7231-4999-8b8f-937f7c8362f5">
+					<reportElement x="0" y="0" width="80" height="14" forecolor="#FF0000" uuid="afac717b-7231-4999-8b8f-937f7c8362f5">
 						<printWhenExpression><![CDATA[$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{isc_id_ch}]]></textFieldExpression>
@@ -193,6 +229,25 @@ ST.USR_NAME_CH asc,
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Ausente]]></text>
 				</staticText>
+				<textField pattern="#,##0.000" isBlankWhenNull="true">
+					<reportElement x="475" y="0" width="35" height="14" uuid="5c64b36e-61a8-45bf-97ea-ae5b0729e7b2">
+						<printWhenExpression><![CDATA[!$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$V{npo}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="14" width="552" height="14" uuid="ccb1b0ec-dd59-4ddd-8b6f-07a29b1f9e06">
+						<printWhenExpression><![CDATA[!$F{status}.equals (Integer.valueOf(3))]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$V{Composicao}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="517" y="0" width="35" height="14" uuid="178a0b4e-6819-438f-b116-cbbb77813841">
+						<printWhenExpression><![CDATA[$V{Discripancia}.doubleValue() >= 1.5]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$V{Discripancia}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</detail>
