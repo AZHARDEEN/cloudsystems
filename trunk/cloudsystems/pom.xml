@@ -21,7 +21,7 @@
 	</modules>
 
 	<properties>
-		<zk.version>7.0.1</zk.version>
+		<zk.version>7.0.2</zk.version>
 		<maven-war-plugin>2.4</maven-war-plugin>
 		<maven-ear-plugin>2.8</maven-ear-plugin>
 		<es.version>1.0.1</es.version>
