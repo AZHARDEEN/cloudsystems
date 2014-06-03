@@ -95,41 +95,41 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	public void doAfterCompose( Window comp ) throws Exception
 	{
 		super.doAfterCompose( comp );
-		this.getListbox( ).setItemRenderer( new InepDistributionRenderer( ) );
-		this.loadCombobox( );
-		this.updateCounters( );
+		getListbox( ).setItemRenderer( new InepDistributionRenderer( ) );
+		loadCombobox( );
+		updateCounters( );
 	}
 
 	protected Listbox getListbox( )
 	{
-		return this.listbox;
+		return listbox;
 	}
 
 	protected List<Paging> getPaging( )
 	{
-		return this.pagings;
+		return pagings;
 	}
 
 	@Listen( "onSelect = listbox#listTable" )
 	public void onSelect( Event evt )
 	{
 		@SuppressWarnings( "unchecked" )
-		ListModelList<InepDistribution> model = ( (ListModelList<InepDistribution>) (Object) this.getListbox( ).getModel( ) );
-		if ( this.getListbox( ) != null && this.getListbox( ).getSelectedItem( ) != null ) {
+		ListModelList<InepDistribution> model = ( (ListModelList<InepDistribution>) (Object) getListbox( ).getModel( ) );
+		if ( getListbox( ) != null && getListbox( ).getSelectedItem( ) != null ) {
 			InepDistribution d = null;
 			for ( InepDistribution item : model.getSelection( ) ) {
 				d = item;
 				break;
 			}
 			if ( d != null ) {
-				this.showFields( d );
+				showFields( d );
 				if ( d.getRevisor( ).isCoordenador( ) ) {
 					EventQueues.lookup( coordinatorEvent, true ).publish(
 							new CoordinatorEventChange( this.getSession( ).getOtherDistributions( d.getTest( ) ) ) );
 				}
 			}
 		}
-		this.updateCounters( );
+		updateCounters( );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -139,16 +139,16 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	public void onSelectPackage( Event evt )
 	{
 		List<InepDistribution> list = Collections.emptyList( );
-		Comboitem item = this.comboEvent.getSelectedItem( );
-		if ( item != null && this.getRevisor( ) != null ) {
-			this.revisor = null;
-			if ( this.getRevisor( ).isCoordenador( ) ) {
-				this.setTestStatus( DistributionStatus.statusVariance );
+		Comboitem item = comboEvent.getSelectedItem( );
+		if ( item != null && getRevisor( ) != null ) {
+			revisor = null;
+			if ( getRevisor( ).isCoordenador( ) ) {
+				setTestStatus( DistributionStatus.statusVariance );
 			}
-			list = this.getSession( ).getTests( this.getRevisor( ), this.getTestStatus( ) );
+			list = this.getSession( ).getTests( getRevisor( ), getTestStatus( ) );
 		}
-		this.getListbox( ).setModel( new ListModelList<InepDistribution>( list ) );
-		this.updateCounters( );
+		getListbox( ).setModel( new ListModelList<InepDistribution>( list ) );
+		updateCounters( );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
@@ -157,24 +157,24 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	protected void showFields( InepDistribution rev )
 	{
 		if ( rev != null ) {
-			this.notas.setSelectedItem( null );
-			this.showFrame( rev );
+			notas.setSelectedItem( null );
+			showFrame( rev );
 			if ( rev.getNota( ) != null ) {
-				this.notas.setSelectedIndex( rev.getNota( ) );
+				notas.setSelectedIndex( rev.getNota( ) );
 			}
 		}
 		else {
-			this.hideTasks( );
+			hideTasks( );
 		}
-		if ( this.isBlocked( rev ) ) {
-			this.cmdInepSave.setVisible( false );
-			for ( Radio r : this.options ) {
+		if ( isBlocked( rev ) ) {
+			cmdInepSave.setVisible( false );
+			for ( Radio r : options ) {
 				r.setDisabled( true );
 			}
 		}
 		else {
-			this.cmdInepSave.setVisible( true );
-			for ( Radio r : this.options ) {
+			cmdInepSave.setVisible( true );
+			for ( Radio r : options ) {
 				r.setDisabled( false );
 			}
 		}
@@ -183,14 +183,14 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	@Listen( "onClick = #cmdInepSave" )
 	public void onClickSubmit( Event evt )
 	{
-		int nIndex = this.notas.getSelectedIndex( );
+		int nIndex = notas.getSelectedIndex( );
 		if ( nIndex >= 0 ) {
-			Listitem item = this.getListbox( ).getSelectedItem( );
+			Listitem item = getListbox( ).getSelectedItem( );
 			if ( item != null ) {
-				InepDistribution rev = (InepDistribution) this.getListbox( ).getSelectedItem( ).getValue( );
-				if ( this.isBlocked( rev ) == false )
+				InepDistribution rev = (InepDistribution) getListbox( ).getSelectedItem( ).getValue( );
+				if ( isBlocked( rev ) == false )
 				{
-					rev.setNota( this.notas.getSelectedIndex( ) );
+					rev.setNota( notas.getSelectedIndex( ) );
 					try {
 						this.getSession( ).updateRevision( rev );
 					}
@@ -198,23 +198,23 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 						Messagebox.show( e.getMessage( ), "Erro Atualizando inscrição " + rev.getId( ).getSubscriptionId( ), Messagebox.OK,
 								Messagebox.ERROR );
 					}
-					this.showTasks( );
+					showTasks( );
 				}
 			}
-			this.updateCounters( );
+			updateCounters( );
 		}
 		@SuppressWarnings( "unchecked" )
-		ListModelList<InepDistribution> model = ( (ListModelList<InepDistribution>) (Object) this.getListbox( ).getModel( ) );
+		ListModelList<InepDistribution> model = ( (ListModelList<InepDistribution>) (Object) getListbox( ).getModel( ) );
 		if ( model != null ) {
 			model.removeAll( model.getSelection( ) );
 		}
-		this.cmdInepSave.setDisabled( false );
-		this.cmdCancel.setDisabled( false );
+		cmdInepSave.setDisabled( false );
+		cmdCancel.setDisabled( false );
 		if ( model.getSize( ) > 0 ) {
 			ArrayList<InepDistribution> sel = new ArrayList<InepDistribution>( 1 );
 			sel.add( model.get( 0 ) );
 			model.setSelection( sel );
-			this.onSelect( null );
+			onSelect( null );
 		}
 		if ( evt != null ) {
 			evt.stopPropagation( );
@@ -225,7 +225,7 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	{
 		if ( test != null ) {
 			Integer status = test.getStatus( ).getId( );
-			if ( this.getRevisor( ).isCoordenador( ) ) {
+			if ( getRevisor( ).isCoordenador( ) ) {
 				return status.equals( DistributionStatus.statusVariance ) == false;
 			}
 			else {
@@ -238,32 +238,32 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	@Listen( "onClick = #cmdCancel" )
 	public void onClickCancel( Event evt )
 	{
-		this.showTasks( );
-		this.getListbox( ).clearSelection( );
-		this.updateCounters( );
+		showTasks( );
+		getListbox( ).clearSelection( );
+		updateCounters( );
 		if ( evt != null ) {
 			evt.stopPropagation( );
 		}
-		this.updateCounters( );
+		updateCounters( );
 	}
 
 	private void showTasks( )
 	{
-		this.showFields( null );
-		this.divFrame.setVisible( false );
-		this.divListbox.setVisible( true );
-		if ( this.inepGrade != null ) {
-			this.inepGrade.setVisible( false );
+		showFields( null );
+		divFrame.setVisible( false );
+		divListbox.setVisible( true );
+		if ( inepGrade != null ) {
+			inepGrade.setVisible( false );
 		}
-		this.getListbox( ).setVisible( true );
+		getListbox( ).setVisible( true );
 	}
 
 	private void hideTasks( )
 	{
-		this.divFrame.setVisible( true );
-		this.divListbox.setVisible( false );
-		if ( this.inepGrade != null ) {
-			this.inepGrade.setVisible( true );
+		divFrame.setVisible( true );
+		divListbox.setVisible( false );
+		if ( inepGrade != null ) {
+			inepGrade.setVisible( true );
 		}
 	}
 
@@ -272,83 +272,87 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 		if ( item == null ) {
 			return;
 		}
-		this.hideTasks( );
+		hideTasks( );
 		// String.format( "/img/pdf/%s-%d-4.pdf", item.getId(
 		// ).getSubscriptionId( ), item.getId( ).getTaskId( ) );
+		logger.info( "Getting image for subscription " + item.getTest( ).getSubscription( ).getId( ).getId( ) + " - " + item.getTest( ).getId( ).getTaskId( ) );
 		item.setStartDate( new Date( ) );
 		byte[ ] obj = this.getSession( ).getMedia( item );
 		if ( obj != null && obj.length > 0 ) {
-			AMedia media = new AMedia( null, null, null, obj );
-			this.framePdf.setContent( media );
+			logger.info( "Media for " + item.getTest( ).getSubscription( ).getId( ).getId( ) + " - " + item.getTest( ).getId( ).getTaskId( ) + " has "
+					+ obj.length + " bytes " );
+			AMedia media = new AMedia( item.getTest( ).getSubscription( ).getId( ).getId( ), "pdf", "application/pdf", obj );
+			framePdf.setContent( media );
 		}
 		else {
-			this.framePdf.setContent( null );
+			logger.info( "No media for " + item.getTest( ).getSubscription( ).getId( ).getId( ) + " - " + item.getTest( ).getId( ).getTaskId( ) );
+			framePdf.setContent( null );
 		}
 
 	}
 
 	private void loadCombobox( )
 	{
-		List<InepEvent> events = this.getSession( ).getAvailableEvents( this.getPrincipal( ) );
+		List<InepEvent> events = this.getSession( ).getAvailableEvents( getPrincipal( ) );
 
-		if ( SysUtils.isEmpty( this.getComboEvent( ).getItems( ) ) == false ) {
-			this.getComboEvent( ).getItems( ).clear( );
+		if ( SysUtils.isEmpty( getComboEvent( ).getItems( ) ) == false ) {
+			getComboEvent( ).getItems( ).clear( );
 		}
 		for ( InepEvent e : events ) {
-			Comboitem item = this.getComboEvent( ).appendItem( e.getDescription( ) );
+			Comboitem item = getComboEvent( ).appendItem( e.getDescription( ) );
 			item.setValue( e );
 		}
-		if ( this.getComboEvent( ).getItemCount( ) > 0 ) {
-			this.getComboEvent( ).setSelectedIndex( 0 );
-			this.onSelectPackage( null );
+		if ( getComboEvent( ).getItemCount( ) > 0 ) {
+			getComboEvent( ).setSelectedIndex( 0 );
+			onSelectPackage( null );
 		}
-		if ( this.getComboEvent( ).getItemCount( ) == 1 ) {
-			this.getComboEvent( ).setDisabled( true );
+		if ( getComboEvent( ).getItemCount( ) == 1 ) {
+			getComboEvent( ).setDisabled( true );
 		}
 	}
 
 	public Combobox getComboEvent( )
 	{
-		return this.comboEvent;
+		return comboEvent;
 	}
 
 	public InepRevisor getRevisor( )
 	{
-		if ( this.revisor == null ) {
-			this.revisor = this.getSession( ).getRevisor( (InepEvent) this.getComboEvent( ).getSelectedItem( ).getValue( ),
-					this.getPrincipal( ) );
+		if ( revisor == null ) {
+			revisor = this.getSession( ).getRevisor( (InepEvent) getComboEvent( ).getSelectedItem( ).getValue( ),
+					getPrincipal( ) );
 		}
-		return this.revisor;
+		return revisor;
 	}
 
 	private void updateCounters( )
 	{
-		InepTaskCounters dto = this.getSession( ).getCounters( this.getRevisor( ) );
+		InepTaskCounters dto = this.getSession( ).getCounters( getRevisor( ) );
 		if ( dto != null ) {
 			int total = dto.getTasks( ) + dto.getRevised( ) + dto.getVariance( );
 			double percent = 0;
 
 			if ( total == 0 )
 			{
-				this.countAll.setLabel( "" + dto.getTasks( ) );
-				this.countRevised.setLabel( "" + dto.getRevised( ) );
-				this.countVariance.setLabel( "Discr." );
+				countAll.setLabel( "" + dto.getTasks( ) );
+				countRevised.setLabel( "" + dto.getRevised( ) );
+				countVariance.setLabel( "Discr." );
 			}
 			else
 			{
 				percent = ( ( (double) dto.getTasks( ) ) / ( (double) total ) * 100 );
-				this.countAll.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getTasks( ), total, percent ) );
+				countAll.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getTasks( ), total, percent ) );
 				percent = ( ( (double) dto.getRevised( ) ) / ( (double) total ) * 100 );
-				this.countRevised.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getRevised( ), total, percent ) );
+				countRevised.setLabel( String.format( "%04d de %04d - %06.2f%%", dto.getRevised( ), total, percent ) );
 				percent = ( ( (double) dto.getVariance( ) ) / ( (double) total ) * 100 );
-				this.countVariance.setLabel( "Discr." );
+				countVariance.setLabel( "Discr." );
 			}
 		}
 		else
 		{
-			this.countAll.setLabel( "" );
-			this.countRevised.setLabel( "" );
-			this.countVariance.setLabel( "" );
+			countAll.setLabel( "" );
+			countRevised.setLabel( "" );
+			countVariance.setLabel( "" );
 		}
 	}
 
@@ -356,23 +360,23 @@ public class TasksController extends BaseDBLoggedController<TeamSession>
 	public void onCountersClick( MouseEvent evt )
 	{
 		if ( evt != null ) {
-			if ( evt.getTarget( ).equals( this.countAll ) ) {
-				this.setTestStatus( DistributionStatus.statusDistributed );
+			if ( evt.getTarget( ).equals( countAll ) ) {
+				setTestStatus( DistributionStatus.statusDistributed );
 			}
-			else if ( evt.getTarget( ).equals( this.countRevised ) ) {
-				this.setTestStatus( DistributionStatus.statusRevised );
+			else if ( evt.getTarget( ).equals( countRevised ) ) {
+				setTestStatus( DistributionStatus.statusRevised );
 			}
 			else {
-				this.setTestStatus( DistributionStatus.statusVariance );
+				setTestStatus( DistributionStatus.statusVariance );
 			}
-			this.onSelectPackage( evt );
+			onSelectPackage( evt );
 			evt.stopPropagation( );
 		}
 	}
 
 	private Integer getTestStatus( )
 	{
-		return this.testStatus;
+		return testStatus;
 	}
 
 	private void setTestStatus( Integer testStatus )
