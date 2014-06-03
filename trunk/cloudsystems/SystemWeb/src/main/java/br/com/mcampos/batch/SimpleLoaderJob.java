@@ -26,15 +26,15 @@ public class SimpleLoaderJob extends BaseQuartzJob
 	@Override
 	public void execute( JobExecutionContext context ) throws JobExecutionException
 	{
-		if ( this.amIRunning( context ) ) {
+		if ( amIRunning( context ) ) {
 			return;
 		}
-		List<Company> companies = this.getSession( ).getCompanies( );
+		List<Company> companies = getSession( ).getCompanies( );
 		if ( SysUtils.isEmpty( companies ) ) {
 			return;
 		}
 		for ( Company company : companies ) {
-			this.processCompanyUpload( company );
+			processCompanyUpload( company );
 		}
 	}
 
@@ -47,10 +47,15 @@ public class SimpleLoaderJob extends BaseQuartzJob
 		}
 		List<String> items = SysUtils.searchDirectory( new File( basePath ) );
 		if ( SysUtils.isEmpty( items ) ) {
+			LOGGER.info( "No file to process for comapany: " + c.getName( ) );
 			return;
 		}
+		else
+		{
+			LOGGER.info( items.size( ) + " files to process for company:  " + c.getName( ) );
+		}
 		for ( String item : items ) {
-			this.processFile( c, new File( item ) );
+			processFile( c, new File( item ) );
 		}
 	}
 
@@ -71,11 +76,11 @@ public class SimpleLoaderJob extends BaseQuartzJob
 			is.close( );
 			String mimeType = Files.probeContentType( Paths.get( file.getAbsolutePath( ) ) );
 			if ( SysUtils.isEmpty( mimeType ) ) {
-				mimeType = this.findOutMimeType( file.getName( ) );
+				mimeType = findOutMimeType( file.getName( ) );
 			}
 			LOGGER.info( "Processing " + file.getAbsolutePath( ) + ". MimeType is " + mimeType + ". Size: " + buffer.length );
 			MediaDTO mediaDto = MediaUtil.getMediaDTO( c.getId( ), file.getName( ), buffer, mimeType );
-			this.getSession( ).set( c, mediaDto );
+			getSession( ).set( c, mediaDto );
 			file.delete( );
 		}
 		catch ( IOException e ) {
