@@ -26,14 +26,14 @@ public class SimpleLoaderJob extends BaseQuartzJob
 	@Override
 	public void execute( JobExecutionContext context ) throws JobExecutionException
 	{
-		if ( amIRunning( context ) ) {
+		if( amIRunning( context ) ) {
 			return;
 		}
 		List<Company> companies = getSession( ).getCompanies( );
-		if ( SysUtils.isEmpty( companies ) ) {
+		if( SysUtils.isEmpty( companies ) ) {
 			return;
 		}
-		for ( Company company : companies ) {
+		for( Company company : companies ) {
 			processCompanyUpload( company );
 		}
 	}
@@ -41,12 +41,12 @@ public class SimpleLoaderJob extends BaseQuartzJob
 	private void processCompanyUpload( Company c )
 	{
 		String basePath = this.getBasePath( c );
-		if ( SysUtils.isEmpty( basePath ) ) {
+		if( SysUtils.isEmpty( basePath ) ) {
 			LOGGER.error( "Error getting base path for company ", c.getName( ) );
 			return;
 		}
 		List<String> items = SysUtils.searchDirectory( new File( basePath ) );
-		if ( SysUtils.isEmpty( items ) ) {
+		if( SysUtils.isEmpty( items ) ) {
 			LOGGER.info( "No file to process for comapany: " + c.getName( ) );
 			return;
 		}
@@ -54,19 +54,19 @@ public class SimpleLoaderJob extends BaseQuartzJob
 		{
 			LOGGER.info( items.size( ) + " files to process for company:  " + c.getName( ) );
 		}
-		for ( String item : items ) {
+		for( String item : items ) {
 			processFile( c, new File( item ) );
 		}
 	}
 
 	private void processFile( Company c, File file )
 	{
-		if ( !file.exists( ) )
+		if( !file.exists( ) )
 		{
 			LOGGER.error( "File " + file.getAbsolutePath( ) + " does not exists" );
 			return;
 		}
-		if ( !file.canRead( ) ) {
+		if( !file.canRead( ) ) {
 			LOGGER.error( "File " + file.getAbsolutePath( ) + " cannot be read" );
 			return;
 		}
@@ -75,7 +75,7 @@ public class SimpleLoaderJob extends BaseQuartzJob
 			byte[ ] buffer = SysUtils.readByteFromStream( is );
 			is.close( );
 			String mimeType = Files.probeContentType( Paths.get( file.getAbsolutePath( ) ) );
-			if ( SysUtils.isEmpty( mimeType ) ) {
+			if( SysUtils.isEmpty( mimeType ) ) {
 				mimeType = findOutMimeType( file.getName( ) );
 			}
 			LOGGER.info( "Processing " + file.getAbsolutePath( ) + ". MimeType is " + mimeType + ". Size: " + buffer.length );
@@ -83,7 +83,7 @@ public class SimpleLoaderJob extends BaseQuartzJob
 			getSession( ).set( c, mediaDto );
 			file.delete( );
 		}
-		catch ( IOException e ) {
+		catch( IOException e ) {
 			LOGGER.error( "Error acessing file " + file.getAbsolutePath( ), e );
 			return;
 		}
@@ -93,7 +93,7 @@ public class SimpleLoaderJob extends BaseQuartzJob
 	{
 		String mime = null;
 		fileName = fileName.toLowerCase( );
-		if ( fileName.endsWith( ".pdf" ) ) {
+		if( fileName.endsWith( ".pdf" ) ) {
 			mime = "application/pdf";
 		}
 		return mime;
