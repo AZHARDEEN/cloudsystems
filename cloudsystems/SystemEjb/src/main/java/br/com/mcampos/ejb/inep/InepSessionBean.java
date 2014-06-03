@@ -357,10 +357,10 @@ public class InepSessionBean extends SimpleSessionBean<InepTask> implements Inep
 		if ( person == null ) {
 			person = createPerson( name, email, cpf );
 		}
-		if( SysUtils.isEmpty( person.getDocument( ) ) ) {
+		if( SysUtils.isEmpty( person.getDocument( ) ) && !SysUtils.isEmpty( cpf ) ) {
 			person.add( new UserDocument( cpf, documentTypeSession.get( UserDocument.CPF ) ) );
 		}
-		if( SysUtils.isEmpty( person.getEmail( ) ) ) {
+		if( SysUtils.isEmpty( person.getEmail( ) ) && !SysUtils.isEmpty( email ) ) {
 			person.add( new UserDocument( email, documentTypeSession.get( UserDocument.EMAIL ) ) );
 		}
 		Login login = loginSession.get( person.getId( ) );
