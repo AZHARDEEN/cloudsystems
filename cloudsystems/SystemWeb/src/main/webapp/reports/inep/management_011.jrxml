@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MeuSistema"/>
+	<style name="Zebra" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 1]]></conditionExpression>
+			<style backcolor="#E5E5E5"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+	isc_id_ch inscricao,
+	usr_name_ch candidato,
+	isc_written_grade_nm escrita,
+	isc_oral_grade_nm oral,
+	least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) ) final,
+	inep.certificationlevel (  least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) )  ) nivel,
+	case
+		when inep.certificationlevel ( least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) ) ) = 0 then 'Sem Certificação'
+		when inep.certificationlevel (  least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) ) ) = 1 then 'Intermediário'
+		when inep.certificationlevel (  least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) ) ) = 2 then 'Intermediário Superior'
+		when inep.certificationlevel (  least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) ) ) = 3 then 'Avançado'
+		when inep.certificationlevel (  least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) ) ) = 4 then 'Avançado Superior'
+	end as ds_nivel
+from
+	inep.inep_subscription s inner join users u on ( u.usr_id_in = s.isc_candidate_in )
+where
+	s.usr_id_in = $P{COMPANY_ID}
+and 	s.pct_id_in = $P{EVENT_ID}
+order by nivel, usr_name_ch]]>
+	</queryString>
+	<field name="inscricao" class="java.lang.String"/>
+	<field name="candidato" class="java.lang.String"/>
+	<field name="escrita" class="java.math.BigDecimal"/>
+	<field name="oral" class="java.math.BigDecimal"/>
+	<field name="final" class="java.math.BigDecimal"/>
+	<field name="nivel" class="java.lang.Integer"/>
+	<field name="ds_nivel" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20" uuid="19eb60da-e12f-494b-bfcf-2b6310180f15"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Resultado Final - DOU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="439" y="0" width="116" height="14" uuid="fd64e092-4008-423e-9875-bb37107a6540"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[management_011]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="82" splitType="Stretch">
+			<image>
+				<reportElement x="3" y="1" width="117" height="50" uuid="b8f3d208-d5c0-4eec-a205-6241c030a737"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="144" y="2" width="231" height="50" uuid="4312c333-ca76-4c9c-bb9f-42a166d16665"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="388" y="3" width="165" height="50" uuid="54632e40-5f44-4f64-9069-37b26efbf901"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="63" width="90" height="19" uuid="2061e896-8c50-49fb-b32a-eea17d38ceb4"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Inscrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="63" width="345" height="19" uuid="bbb7f12a-cf3d-4944-bb2d-9c6956f26330"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Candidato]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="63" width="118" height="19" uuid="33e1e60d-93e0-4026-8c93-ab347556600c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nível de Certificação]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<frame>
+				<reportElement style="Zebra" mode="Opaque" x="0" y="0" width="555" height="16" uuid="bfee00be-642f-4346-8bfe-a36693652557"/>
+				<textField>
+					<reportElement x="0" y="0" width="90" height="15" uuid="0d4eaa8a-6512-47dd-9656-264022a6f6d4"/>
+					<textFieldExpression><![CDATA[$F{inscricao}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="90" y="0" width="345" height="15" uuid="2af1ae38-56d1-4da8-9bf7-5d20c1c46da7"/>
+					<textFieldExpression><![CDATA[$F{candidato}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="435" y="1" width="118" height="14" uuid="3c191e1f-a63a-4a1e-bd16-94a421bbca62"/>
+					<textElement>
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ds_nivel}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="455" y="5" width="100" height="15" uuid="fcd98851-0dfb-4e61-9d7a-fa47df7838a7"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement x="0" y="5" width="199" height="15" uuid="13e14f69-54ad-451a-a39d-8f2e853ec8f6"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" uuid="4f77d195-a711-49a0-8a64-f030e628bda5"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>
