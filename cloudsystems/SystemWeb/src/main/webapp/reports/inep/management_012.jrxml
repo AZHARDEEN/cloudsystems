@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9c9037-ce76-456b-99f9-52a139104f04">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="830"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MeuSistema"/>
+	<style name="Zebra" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 1]]></conditionExpression>
+			<style backcolor="#E5E5E5"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="IMAGE_PATH" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Image Path]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T:/workspaces/kepler/projetos/cloudsystems/SystemWeb/src/main/webapp/img"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[3]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TASK_ID" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select nivel, ds_nivel, count(*) total
+from (
+select
+	isc_id_ch inscricao,
+	usr_name_ch candidato,
+	isc_written_grade_nm escrita,
+	isc_oral_grade_nm oral,
+	least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) ) final,
+	inep.certificationlevel (  least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) )  ) nivel,
+	case
+		when inep.certificationlevel ( least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) ) ) = 0 then 'Sem Certificação'
+		when inep.certificationlevel (  least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) ) ) = 1 then 'Intermediário'
+		when inep.certificationlevel (  least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) ) ) = 2 then 'Intermediário Superior'
+		when inep.certificationlevel (  least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) ) ) = 3 then 'Avançado'
+		when inep.certificationlevel (  least ( coalesce ( isc_written_grade_nm, 0 ), coalesce ( isc_oral_grade_nm, 0 ) ) ) = 4 then 'Avançado Superior'
+	end ds_nivel
+from
+	inep.inep_subscription s inner join users u on ( u.usr_id_in = s.isc_candidate_in )
+where
+	s.usr_id_in = $P{COMPANY_ID}
+and 	s.pct_id_in = $P{EVENT_ID}
+) as t1
+group by nivel, ds_nivel
+order by nivel]]>
+	</queryString>
+	<field name="nivel" class="java.lang.Integer"/>
+	<field name="ds_nivel" class="java.lang.String"/>
+	<field name="total" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20" uuid="19eb60da-e12f-494b-bfcf-2b6310180f15"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Resultado Final - DOU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="439" y="0" width="116" height="14" uuid="fd64e092-4008-423e-9875-bb37107a6540"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[management_011]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="61" splitType="Stretch">
+			<image>
+				<reportElement x="3" y="1" width="117" height="50" uuid="b8f3d208-d5c0-4eec-a205-6241c030a737"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_celpe_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="144" y="2" width="231" height="50" uuid="4312c333-ca76-4c9c-bb9f-42a166d16665"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_inep_60.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="388" y="3" width="165" height="50" uuid="54632e40-5f44-4f64-9069-37b26efbf901"/>
+				<imageExpression><![CDATA[$P{IMAGE_PATH}.toString() + "/inep/logo_br_60.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="10"/>
+	</columnHeader>
+	<detail>
+		<band height="22">
+			<textField>
+				<reportElement x="0" y="0" width="287" height="18" uuid="2f5df93e-399d-425f-8aa4-3dcae58997d7"/>
+				<textFieldExpression><![CDATA[$F{nivel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="287" y="0" width="137" height="18" uuid="228c23f1-fa69-4dfc-8757-6be8bcbdc387"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="541">
+			<pieChart>
+				<chart>
+					<reportElement x="0" y="0" width="553" height="538" uuid="0481ddbb-3961-4832-a2e8-94aeb8accbcd"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{ds_nivel}]]></keyExpression>
+					<valueExpression><![CDATA[$F{total}]]></valueExpression>
+					<labelExpression><![CDATA[$F{total}.toString()]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="12" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="17" splitType="Stretch"/>
+	</summary>
+</jasperReport>

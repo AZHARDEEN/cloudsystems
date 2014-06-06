@@ -67,6 +67,11 @@ public class InepManagementReportController extends BaseReportController
 		item.setParams( configReportParams( ) );
 		list.add( item );
 
+		item = new ReportItem( "Relatório Final - Gráfico" );
+		item.setReportUrl( "/reports/inep/management_012" );
+		item.setParams( configReportParams( ) );
+		list.add( item );
+
 		if ( getListbox( ) != null ) {
 			getListbox( ).setModel( new ListModelList<ReportItem>( list ) );
 		}
