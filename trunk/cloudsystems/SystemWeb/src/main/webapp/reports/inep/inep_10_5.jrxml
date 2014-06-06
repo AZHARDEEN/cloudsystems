@@ -17,7 +17,7 @@
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[3]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
@@ -43,13 +43,12 @@ from
 	inep.inep_subscription s
 where
     s.isc_id_ch = t.isc_id_ch
-and t.iot_variance_in between 1 and 9
-and ( iot_agreement_grade_in is not null or iot_agreement2_grade_nm is not null )
-and ( ids_id_in <> 3 or ids_id_in is null )
-and case when coalesce ( isc_written_grade_nm, 0 ) <  coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm, 0 )
-	then isc_written_grade_nm else coalesce ( iot_agreement2_grade_nm, iot_agreement_grade_in, iot_final_grade_nm ) end >= 2
-and t.usr_id_in = $P{COMPANY_ID}
-and t.pct_id_in = $P{EVENT_ID}
+and s.usr_id_in = t.usr_id_in
+and s.pct_id_in = t.pct_id_in
+and ( ( iot_interviewer_grade_nm < 2 and iot_observer_grade_nm >= 2 ) or ( iot_observer_grade_nm < 2 and iot_interviewer_grade_nm >= 2 )
+	or abs ( iot_interviewer_grade_nm - iot_observer_grade_nm ) >= 1.5 )
+and s.usr_id_in = $P{COMPANY_ID}
+and s.pct_id_in = $P{EVENT_ID}
 order by
 	s.isc_id_ch]]>
 	</queryString>
@@ -73,14 +72,14 @@ order by
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Oral/Escrita - Provas Reavaliadas]]></text>
+				<text><![CDATA[Oral/Escrita - Provas Reavaliadas (Entr/Obs)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="439" y="0" width="116" height="14" uuid="44285283-ccf6-4539-9df6-c55f4d96462d"/>
+				<reportElement x="439" y="0" width="116" height="14" uuid="8439defd-cd30-4942-aa3a-41b00b541287"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[inep_10_3]]></text>
+				<text><![CDATA[inep_10_5]]></text>
 			</staticText>
 		</band>
 	</title>
