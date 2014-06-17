@@ -33,7 +33,9 @@
 	( SELECT coalesce ( COUNT(*), 0 ) FROM INEP.INEP_SUBSCRIPTION SB WHERE SB.USR_ID_IN = S.USR_ID_IN AND S.CLI_SEQ_IN = SB.CLI_SEQ_IN and sb.pct_id_in = evt.pct_id_in ) INSCRICOES,
 	( SELECT coalesce ( COUNT(*), 0 ) FROM INEP.INEP_SUBSCRIPTION SB WHERE SB.USR_ID_IN = S.USR_ID_IN AND S.CLI_SEQ_IN = SB.CLI_SEQ_IN AND ISS_ID_IN IN (1, 3 ) and sb.pct_id_in = evt.pct_id_in  ) AUSENTES,
 	( SELECT coalesce ( COUNT(*), 0 ) FROM INEP.INEP_SUBSCRIPTION SB INNER JOIN INEP.INEP_MEDIA IM ON ( SB.USR_ID_IN = IM.USR_ID_IN AND SB.PCT_ID_IN = IM.PCT_ID_IN AND SB.ISC_ID_CH = IM.ISC_ID_CH AND IMT_ID_IN = 2 and sb.pct_id_in = evt.pct_id_in  )
-	WHERE SB.USR_ID_IN = S.USR_ID_IN AND S.CLI_SEQ_IN = SB.CLI_SEQ_IN AND ISS_ID_IN IN (2) ) AUDIOS
+	WHERE SB.USR_ID_IN = S.USR_ID_IN AND S.CLI_SEQ_IN = SB.CLI_SEQ_IN AND ISS_ID_IN IN (2) ) AUDIOS,
+	( SELECT coalesce ( COUNT(*), 0 ) FROM INEP.INEP_SUBSCRIPTION SB WHERE SB.USR_ID_IN = S.USR_ID_IN AND S.CLI_SEQ_IN = SB.CLI_SEQ_IN and sb.pct_id_in = evt.pct_id_in and sb.isc_written_grade_nm is not null ) escritas,
+	( SELECT coalesce ( COUNT(*), 0 ) FROM INEP.INEP_SUBSCRIPTION SB WHERE SB.USR_ID_IN = S.USR_ID_IN AND S.CLI_SEQ_IN = SB.CLI_SEQ_IN and sb.pct_id_in = evt.pct_id_in and sb.isc_oral_grade_nm is not null ) orais
 FROM
 	INEP.INEP_STATION S INNER JOIN CLIENT C ON ( S.CLI_SEQ_IN = C.CLI_SEQ_IN AND S.USR_ID_IN = C.USR_ID_IN )
 	INNER JOIN USERS U ON ( C.CLI_ID_IN = U.USR_ID_IN )
@@ -54,6 +56,8 @@ ORDER BY EVT.USR_ID_IN, EVT.PCT_ID_IN, USR_NAME_CH]]>
 	<field name="inscricoes" class="java.lang.Long"/>
 	<field name="ausentes" class="java.lang.Long"/>
 	<field name="audios" class="java.lang.Long"/>
+	<field name="escritas" class="java.lang.Long"/>
+	<field name="orais" class="java.lang.Long"/>
 	<variable name="percentAusentes" class="java.lang.Double">
 		<variableExpression><![CDATA[(($F{ausentes}.doubleValue()) / ($F{inscricoes}.doubleValue()))]]></variableExpression>
 	</variable>
@@ -87,41 +91,56 @@ ORDER BY EVT.USR_ID_IN, EVT.PCT_ID_IN, USR_NAME_CH]]>
 					<textFieldExpression><![CDATA[$F{pct_code_ch}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="3" y="30" width="37" height="20" uuid="a7c86d98-e4ad-46c6-9361-e71354febd6d"/>
-					<text><![CDATA[Código]]></text>
+					<reportElement x="2" y="30" width="20" height="20" uuid="a7c86d98-e4ad-46c6-9361-e71354febd6d"/>
+					<text><![CDATA[ID]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="44" y="30" width="344" height="20" uuid="5f8e0d74-3622-4985-a087-d14b512698ee"/>
+					<reportElement x="22" y="30" width="344" height="20" uuid="5f8e0d74-3622-4985-a087-d14b512698ee"/>
 					<text><![CDATA[Posto Aplicador]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="388" y="30" width="52" height="20" uuid="244db5a8-4d71-476b-bd03-ef66691dc628"/>
+					<reportElement x="367" y="30" width="50" height="20" uuid="244db5a8-4d71-476b-bd03-ef66691dc628"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Inscrições]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="440" y="30" width="81" height="20" uuid="84073161-5752-4c77-a8c6-31880da42427"/>
+					<reportElement x="417" y="30" width="81" height="20" uuid="84073161-5752-4c77-a8c6-31880da42427"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Ausentes]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="521" y="30" width="50" height="20" uuid="b7c3a9ad-049d-4fd5-b09f-ae17327e5972"/>
+					<reportElement x="498" y="30" width="50" height="20" uuid="b7c3a9ad-049d-4fd5-b09f-ae17327e5972"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Presentes]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="571" y="30" width="52" height="20" uuid="be28695b-7378-4f4d-9855-066b4f97aff4"/>
+					<reportElement x="549" y="30" width="40" height="20" uuid="be28695b-7378-4f4d-9855-066b4f97aff4"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Audios]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="623" y="30" width="52" height="20" uuid="06bb3746-0eaf-4b40-a57c-8304c81b953d"/>
+					<reportElement x="590" y="30" width="50" height="20" uuid="06bb3746-0eaf-4b40-a57c-8304c81b953d"/>
 					<textElement textAlignment="Center"/>
 					<text><![CDATA[Dif. Audio]]></text>
 				</staticText>
 				<line>
 					<reportElement x="0" y="48" width="802" height="1" uuid="12f52fd8-0cdd-4abb-ab9e-15f8e6997d01"/>
 				</line>
+				<staticText>
+					<reportElement x="640" y="30" width="40" height="20" uuid="d5d1fddd-31d9-49bd-be50-7f42a01ab7fa"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Esc.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="640" y="10" width="81" height="20" uuid="00c740a0-a389-4dc0-ba1e-182a6a08c57e"/>
+					<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+					<text><![CDATA[Provas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="680" y="30" width="40" height="20" uuid="c4b9d5fd-6302-411c-bc33-44bcf9d68e4b"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Oral]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -166,50 +185,61 @@ ORDER BY EVT.USR_ID_IN, EVT.PCT_ID_IN, USR_NAME_CH]]>
 			<frame>
 				<reportElement style="Zebra" mode="Opaque" x="1" y="0" width="801" height="14" uuid="bfee00be-642f-4346-8bfe-a36693652557"/>
 				<textField>
-					<reportElement x="2" y="0" width="37" height="14" uuid="5df1a8fc-5a5e-4a6f-bd1e-0d0847a7dcc7"/>
+					<reportElement x="0" y="0" width="21" height="14" uuid="5df1a8fc-5a5e-4a6f-bd1e-0d0847a7dcc7"/>
 					<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="43" y="0" width="344" height="14" uuid="592b71fb-aa6e-459e-af42-197386fe7187"/>
+					<reportElement x="21" y="0" width="344" height="14" uuid="592b71fb-aa6e-459e-af42-197386fe7187"/>
 					<textFieldExpression><![CDATA[$F{posto}]]></textFieldExpression>
 				</textField>
 				<textField pattern="0000" isBlankWhenNull="true">
-					<reportElement x="387" y="0" width="52" height="14" uuid="dd0d800a-72c8-4ec1-b484-8801d85ff102"/>
+					<reportElement x="366" y="0" width="50" height="14" uuid="dd0d800a-72c8-4ec1-b484-8801d85ff102"/>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$F{inscricoes}]]></textFieldExpression>
 				</textField>
 				<textField pattern="000" isBlankWhenNull="true">
-					<reportElement x="439" y="0" width="30" height="14" uuid="534cfa17-9451-4355-93f7-4e78381f63b7"/>
+					<reportElement x="416" y="0" width="30" height="14" uuid="534cfa17-9451-4355-93f7-4e78381f63b7"/>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$F{ausentes}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,000.00 %" isBlankWhenNull="true">
-					<reportElement x="470" y="0" width="50" height="14" uuid="e134a791-f648-4ab1-b7a0-1d207206a561"/>
+					<reportElement x="447" y="0" width="50" height="14" uuid="e134a791-f648-4ab1-b7a0-1d207206a561"/>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$V{percentAusentes}]]></textFieldExpression>
 				</textField>
 				<textField pattern="000" isBlankWhenNull="true">
-					<reportElement x="520" y="0" width="50" height="14" uuid="0fd4b4c3-7ea5-414b-9358-fbca2e514639"/>
+					<reportElement x="497" y="0" width="50" height="14" uuid="0fd4b4c3-7ea5-414b-9358-fbca2e514639"/>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$V{presentes}]]></textFieldExpression>
 				</textField>
 				<textField pattern="000" isBlankWhenNull="true">
-					<reportElement x="570" y="0" width="52" height="14" uuid="bef8b34a-2a8b-44f2-ae1d-a301ad3a0c43"/>
+					<reportElement x="548" y="0" width="40" height="14" uuid="bef8b34a-2a8b-44f2-ae1d-a301ad3a0c43"/>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$F{audios}]]></textFieldExpression>
 				</textField>
 				<textField pattern="000" isBlankWhenNull="true">
-					<reportElement x="622" y="0" width="52" height="14" uuid="80f6d427-7dd1-4aee-b750-faa00d36bbd1"/>
+					<reportElement x="589" y="0" width="50" height="14" uuid="80f6d427-7dd1-4aee-b750-faa00d36bbd1"/>
 					<textElement textAlignment="Center"/>
 					<textFieldExpression><![CDATA[$V{SemAudio}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="691" y="0" width="108" height="14" forecolor="#FF0000" uuid="67d03dfe-e839-4d3e-b641-eeb360be8471">
-						<printWhenExpression><![CDATA[$V{percentAusentes}.doubleValue() > .9]]></printWhenExpression>
+						<printWhenExpression><![CDATA[(($V{percentAusentes}.doubleValue() > .9) ||
+($F{escritas}.longValue() != $F{orais}.longValue()))]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right"/>
 					<text><![CDATA[Verificar Problema]]></text>
 				</staticText>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement x="639" y="0" width="40" height="14" uuid="809885db-f209-4e91-8e00-2403eb2bc70b"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{escritas}]]></textFieldExpression>
+				</textField>
+				<textField pattern="000" isBlankWhenNull="true">
+					<reportElement x="679" y="0" width="40" height="14" uuid="b8c6a9a6-6363-4198-bed5-a573ebb520e0"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{orais}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</detail>
