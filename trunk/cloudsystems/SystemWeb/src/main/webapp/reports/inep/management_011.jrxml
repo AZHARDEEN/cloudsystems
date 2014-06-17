@@ -18,7 +18,7 @@
 		<defaultValueExpression><![CDATA[13623]]></defaultValueExpression>
 	</parameter>
 	<parameter name="EVENT_ID" class="java.lang.Integer" isForPrompting="false">
-		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[3]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COLLABORATOR_ID" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[26]]></defaultValueExpression>
@@ -46,6 +46,7 @@ from
 where
 	s.usr_id_in = $P{COMPANY_ID}
 and 	s.pct_id_in = $P{EVENT_ID}
+and  ( coalesce ( s.isc_written_grade_nm, 0 ) > 0 or coalesce ( s.isc_oral_grade_nm, 0 ) > 0 )
 order by nivel, usr_name_ch]]>
 	</queryString>
 	<field name="inscricao" class="java.lang.String"/>
@@ -149,6 +150,15 @@ order by nivel, usr_name_ch]]>
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="7cad3f77-7260-48b4-878e-5c82d5ef98dd"/>
 			</line>
+			<staticText>
+				<reportElement x="216" y="5" width="82" height="15" uuid="854f0a37-0400-4c9f-8055-01412eb52592"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Registros:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="301" y="5" width="154" height="15" uuid="86b3c686-8a3b-491f-9f6b-9519046762fb"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<summary>

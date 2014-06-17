@@ -48,6 +48,7 @@ from
 where
 	s.usr_id_in = $P{COMPANY_ID}
 and 	s.pct_id_in = $P{EVENT_ID}
+and  ( coalesce ( s.isc_written_grade_nm, 0 ) > 0 or coalesce ( s.isc_oral_grade_nm, 0 ) > 0 )
 ) as t1
 group by nivel, ds_nivel
 order by nivel]]>
