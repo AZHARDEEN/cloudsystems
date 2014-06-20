@@ -220,7 +220,7 @@ public class InterfacesController extends BaseDBLoggedController<TeamSession>
 					"where " +
 					"d.usr_id_in = " + event.getId( ).getCompanyId( ).toString( ) +
 					"and 	d.pct_id_in = " + event.getId( ).getId( ).toString( ) +
-					"and 	d.dis_golden_bt is false " +
+					"and 	d.dis_golden_bt is false and d.dis_grade_in is not null " +
 					"and 	ud.doc_id_in = 1 "
 					+ "and DIS_INSERT_DT >= TO_TIMESTAMP ( '20140101 000000', 'YYYYMMDD HH24MISS' ) " +
 					"and 	r.rvs_coordinator_bt is false " +
